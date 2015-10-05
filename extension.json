@@ -1,0 +1,236 @@
+{
+  "name": "dtm",
+  "displayName": "DTM",
+  "conditionDelegates": [
+    {
+      "displayName": "Browser",
+      "path": "src/conditions/browser/browser.js"
+    },
+    {
+      "displayName": "Cart Amount",
+      "path": "src/conditions/cartAmount/cartAmount.js"
+    },
+    {
+      "displayName": "Cart Item Quantity",
+      "path": "src/conditions/cartItemQuantity/cartItemQuantity.js"
+    },
+    {
+      "displayName": "Cookie Opt-out",
+      "path": "src/conditions/cookieOptOut/cookieOptOut.js"
+    },
+    {
+      "displayName": "Custom",
+      "path": "src/conditions/custom/custom.js"
+    },
+    {
+      "displayName": "Device Type",
+      "path": "src/conditions/deviceType/deviceType.js"
+    },
+    {
+      "displayName": "Domain",
+      "path": "src/conditions/domain/domain.js"
+    },
+    {
+      "displayName": "Hash",
+      "path": "src/conditions/hash/hash.js"
+    },
+    {
+      "displayName": "Landing Page",
+      "path": "src/conditions/landingPage/landingPage.js"
+    },
+    {
+      "displayName": "Logged In",
+      "path": "src/conditions/loggedIn/loggedIn.js"
+    },
+    {
+      "displayName": "New/Returning Visitor",
+      "path": "src/conditions/newReturning/newReturning.js"
+    },
+    {
+      "displayName": "Operating System",
+      "path": "src/conditions/operatingSystem/operatingSystem.js"
+    },
+    {
+      "displayName": "Page Views",
+      "path": "src/conditions/pageViews/pageViews.js"
+    },
+    {
+      "displayName": "Path",
+      "path": "src/conditions/path/path.js"
+    },
+    {
+      "displayName": "Previous Converter",
+      "path": "src/conditions/previousConverter/previousConverter.js"
+    },
+    {
+      "displayName": "Protocol",
+      "path": "src/conditions/protocol/protocol.js"
+    },
+    {
+      "displayName": "Registered User",
+      "path": "src/conditions/registeredUser/registeredUser.js"
+    },
+    {
+      "displayName": "Screen Resolution",
+      "path": "src/conditions/screenResolution/screenResolution.js"
+    },
+    {
+      "displayName": "Sessions",
+      "path": "src/conditions/sessions/sessions.js"
+    },
+    {
+      "displayName": "Subdomain",
+      "path": "src/conditions/subdomain/subdomain.js"
+    },
+    {
+      "displayName": "Time On Site",
+      "path": "src/conditions/timeOnSite/timeOnSite.js"
+    },
+    {
+      "displayName": "Traffic Source",
+      "path": "src/conditions/trafficSource/trafficSource.js"
+    },
+    {
+      "displayName": "URL Parameter",
+      "path": "src/conditions/urlParameter/urlParameter.js"
+    },
+    {
+      "displayName": "Window Size",
+      "path": "src/conditions/windowSize/windowSize.js"
+    }
+  ],
+  "eventDelegates": [
+    {
+      "displayName": "Click",
+      "path": "src/events/click/click.js"
+    },
+    {
+      "displayName": "Direct Call",
+      "path": "src/events/directCall/directCall.js"
+    },
+    {
+      "displayName": "DOM Ready",
+      "path": "src/events/domReady/domReady.js"
+    },
+    {
+      "displayName": "Element Exists",
+      "path": "src/events/elementExists/elementExists.js"
+    },
+    {
+      "displayName": "Enters Viewport",
+      "path": "src/events/entersViewport/entersViewport.js"
+    },
+    {
+      "displayName": "Hover",
+      "path": "src/events/hover/hover.js"
+    },
+    {
+      "displayName": "On Load",
+      "path": "src/events/onload/onload.js"
+    },
+    {
+      "displayName": "Page Bottom",
+      "path": "src/events/pageBottom/pageBottom.js"
+    },
+    {
+      "displayName": "Page Top",
+      "path": "src/events/pageTop/pageTop.js"
+    },
+    {
+      "displayName": "Timeout",
+      "path": "src/events/timeout/timeout.js"
+    },
+    {
+      "displayName": "Keypress",
+      "path": "src/events/keypress/keypress.js"
+    },
+    {
+      "displayName": "Focus",
+      "path": "src/events/focus/focus.js"
+    },
+    {
+      "displayName": "Blur",
+      "path": "src/events/blur/blur.js"
+    },
+    {
+      "displayName": "Submit",
+      "path": "src/events/submit/submit.js"
+    },
+    {
+      "displayName": "Play",
+      "path": "src/events/play/play.js"
+    },
+    {
+      "displayName": "Pause",
+      "path": "src/events/pause/pause.js"
+    },
+    {
+      "displayName": "Ended",
+      "path": "src/events/ended/ended.js"
+    },
+    {
+      "displayName": "Volume Change",
+      "path": "src/events/volumechange/volumechange.js"
+    },
+    {
+      "displayName": "Stalled",
+      "path": "src/events/stalled/stalled.js"
+    },
+    {
+      "displayName": "Loaded Data",
+      "path": "src/events/loadeddata/loadeddata.js"
+    },
+    {
+      "displayName": "Time Played",
+      "path": "src/events/timePlayed/timePlayed.js"
+    },
+    {
+      "displayName": "Orientation Change",
+      "path": "src/events/orientationchange/orientationchange.js"
+    },
+    {
+      "displayName": "Zoom Change",
+      "path": "src/events/zoomchange/zoomchange.js"
+    }
+  ],
+  "dataElementDelegates": [
+    {
+      "displayName": "Cookie",
+      "path": "src/dataElements/cookie/cookie.js"
+    },
+    {
+      "displayName": "Custom",
+      "path": "src/dataElements/custom/custom.js"
+    },
+    {
+      "displayName": "DOM Attribute",
+      "path": "src/dataElements/dom/dom.js"
+    },
+    {
+      "displayName": "Querystring Parameter",
+      "path": "src/dataElements/queryParam/queryParam.js"
+    },
+    {
+      "displayName": "Variable",
+      "path": "src/dataElements/variable/variable.js"
+    }
+  ],
+  "resources": [
+    {
+      "name": "visitorTracking",
+      "path": "src/resources/visitorTracking/visitorTracking.js"
+    },
+    {
+      "name": "compareNumbers",
+      "path": "src/resources/compareNumbers/compareNumbers.js"
+    },
+    {
+      "name": "createBubbly",
+      "path": "src/resources/createBubbly/createBubbly.js"
+    },
+    {
+      "name": "matchesProperties",
+      "path": "src/resources/matchesProperties/matchesProperties.js"
+    }
+  ]
+}
