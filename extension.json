@@ -137,10 +137,6 @@
       "path": "src/events/pageTop/pageTop.js"
     },
     {
-      "displayName": "Timeout",
-      "path": "src/events/timeout/timeout.js"
-    },
-    {
       "displayName": "Keypress",
       "path": "src/events/keypress/keypress.js"
     },
