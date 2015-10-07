@@ -4,7 +4,7 @@
   "description": "DTM extension for Turbine",
   "repository": {
     "type": "git",
-    "url": "git@git.corp.adobe.com:Activation/turbine-dtm.git"
+    "url": "git@git.corp.adobe.com:Activation/turbine-extension-dtm.git"
   },
   "keywords": [
     "turbine",
