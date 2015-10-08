@@ -13,7 +13,7 @@
   ],
   "devDependencies": {
     "gulp": "^3.9.0",
-    "turbine": "git+ssh://git@git.corp.adobe.com:Activation/turbine.git#split_from_extensions",
+    "turbine": "git+ssh://git@git.corp.adobe.com:Activation/turbine.git",
     "turbine-gulp-testrunner": "git+ssh://git@git.corp.adobe.com:Activation/turbine-gulp-testrunner.git",
     "turbine-gulp-builder": "git+ssh://git@git.corp.adobe.com:Activation/turbine-gulp-builder.git"
   },
