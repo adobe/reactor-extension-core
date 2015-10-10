@@ -74,8 +74,7 @@ describe('hover event type', function() {
       bubbleStop: false
     }, bTrigger);
 
-    // Give the poller time to pick up on the target elements.
-    jasmine.clock().tick(10000);
+    __tickGlobalPoll();
 
     Simulate.mouseenter(aElement);
 
@@ -128,8 +127,7 @@ describe('hover event type', function() {
       bubbleStop: false
     }, a2Trigger);
 
-    // Give the poller time to pick up on the target elements.
-    jasmine.clock().tick(10000);
+    __tickGlobalPoll();
 
     Simulate.mouseenter(aElement);
 
@@ -172,8 +170,7 @@ describe('hover event type', function() {
       delay: 1000
     }, bTrigger);
 
-    // Give the poller time to pick up on the target elements.
-    jasmine.clock().tick(10000);
+    __tickGlobalPoll();
 
     Simulate.mouseenter(aElement);
     Simulate.mouseenter(bElement);
@@ -240,8 +237,7 @@ describe('hover event type', function() {
     }, bTrigger);
 
 
-    // Give the poller time to pick up on the target elements.
-    jasmine.clock().tick(10000);
+    __tickGlobalPoll();
 
     Simulate.mouseenter(aElement);
     Simulate.mouseenter(bElement);
@@ -304,8 +300,7 @@ describe('hover event type', function() {
       delay: 1000
     }, a2Trigger);
 
-    // Give the poller time to pick up on the target elements.
-    jasmine.clock().tick(10000);
+    __tickGlobalPoll();
 
     Simulate.mouseenter(aElement);
 
@@ -359,8 +354,7 @@ describe('hover event type', function() {
       delay: 2000
     }, a2Trigger);
 
-    // Give the poller time to pick up on the target elements.
-    jasmine.clock().tick(10000);
+    __tickGlobalPoll();
 
     Simulate.mouseenter(aElement);
 
@@ -408,8 +402,7 @@ describe('hover event type', function() {
       }
     }, bTrigger);
 
-    // Give the poller time to pick up on the target elements.
-    jasmine.clock().tick(10000);
+    __tickGlobalPoll();
 
     Simulate.mouseenter(bElement);
 
@@ -426,8 +419,7 @@ describe('hover event type', function() {
       }
     }, bTrigger);
 
-    // Give the poller time to pick up on the target elements.
-    jasmine.clock().tick(10000);
+    __tickGlobalPoll();
 
     Simulate.mouseenter(bElement);
 

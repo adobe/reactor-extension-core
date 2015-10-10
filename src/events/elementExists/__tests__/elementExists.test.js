@@ -60,8 +60,7 @@ describe('elementExists event type', function() {
       selector: '#a'
     }, aTrigger);
 
-    // Give time for the poller to cycle.
-    jasmine.clock().tick(10000);
+    __tickGlobalPoll();
 
     assertTriggerCall({
       call: aTrigger.calls.mostRecent(),
@@ -82,8 +81,7 @@ describe('elementExists event type', function() {
       selector: '#a'
     }, a2Trigger);
 
-    // Give time for the poller to cycle.
-    jasmine.clock().tick(10000);
+    __tickGlobalPoll();
 
     expect(aTrigger.calls.count()).toEqual(1);
     expect(a2Trigger.calls.count()).toEqual(1);
@@ -99,8 +97,7 @@ describe('elementExists event type', function() {
       }
     }, trigger);
 
-    // Give time for the poller to cycle.
-    jasmine.clock().tick(10000);
+    __tickGlobalPoll();
 
     expect(trigger.calls.count()).toEqual(1);
   });
@@ -115,8 +112,7 @@ describe('elementExists event type', function() {
       }
     }, trigger);
 
-    // Give time for the poller to cycle.
-    jasmine.clock().tick(10000);
+    __tickGlobalPoll();
 
     expect(trigger.calls.count()).toEqual(0);
   });
@@ -136,8 +132,7 @@ describe('elementExists event type', function() {
       }
     }, selectorAndPropsTrigger);
 
-    // Give time for the poller to cycle.
-    jasmine.clock().tick(10000);
+    __tickGlobalPoll();
 
     expect(selectorOnlyTrigger.calls.count()).toBe(1);
     expect(selectorAndPropsTrigger.calls.count()).toBe(0);
@@ -146,8 +141,7 @@ describe('elementExists event type', function() {
     addedLaterElement.innerHTML = 'added later';
     document.body.appendChild(addedLaterElement);
 
-    // Give time for the poller to cycle.
-    jasmine.clock().tick(10000);
+    __tickGlobalPoll();
 
     expect(selectorOnlyTrigger.calls.count()).toBe(1);
     expect(selectorAndPropsTrigger.calls.count()).toBe(1);

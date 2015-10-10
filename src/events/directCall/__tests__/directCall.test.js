@@ -3,8 +3,12 @@
 describe('directCall event type', function() {
   var publicRequire = require('../../../__tests__/helpers/stubPublicRequire')();
   var delegateInjector = require('inject!../directCall');
-  var delegate = delegateInjector({
-    logger: publicRequire('logger')
+  var delegate;
+
+  beforeAll(function() {
+    delegate = delegateInjector({
+      logger: publicRequire('logger')
+    });
   });
 
   it('triggers rule when _satellite.track() is called with matching name', function() {

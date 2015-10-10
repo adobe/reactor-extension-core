@@ -63,8 +63,7 @@ describe('entersViewport event type', function() {
       selector: '#a'
     }, aTrigger);
 
-    // Give time for the poller to cycle.
-    jasmine.clock().tick(10000);
+    __tickGlobalPoll();
 
     assertTriggerCall({
       call: aTrigger.calls.mostRecent(),
@@ -85,8 +84,7 @@ describe('entersViewport event type', function() {
       selector: '#a'
     }, a2Trigger);
 
-    // Give time for the poller to cycle.
-    jasmine.clock().tick(10000);
+    __tickGlobalPoll();
 
     expect(aTrigger.calls.count()).toEqual(1);
     expect(a2Trigger.calls.count()).toEqual(1);
@@ -106,8 +104,7 @@ describe('entersViewport event type', function() {
       delay: 100000
     }, a2Trigger);
 
-    // Give time for the poller to cycle.
-    jasmine.clock().tick(50000);
+    __tickGlobalPoll();
 
     expect(aTrigger.calls.count()).toEqual(0);
     expect(a2Trigger.calls.count()).toEqual(0);
@@ -132,8 +129,7 @@ describe('entersViewport event type', function() {
       delay: 200000
     }, a2Trigger);
 
-    // Give time for the poller to cycle.
-    jasmine.clock().tick(50000);
+    __tickGlobalPoll();
 
     expect(aTrigger.calls.count()).toEqual(0);
     expect(a2Trigger.calls.count()).toEqual(0);
@@ -161,8 +157,7 @@ describe('entersViewport event type', function() {
       selector: 'div#a'
     }, a2Trigger);
 
-    // Give time for the poller to cycle.
-    jasmine.clock().tick(10000);
+    __tickGlobalPoll();
 
     expect(aTrigger.calls.count()).toEqual(1);
     expect(a2Trigger.calls.count()).toEqual(1);
@@ -178,8 +173,7 @@ describe('entersViewport event type', function() {
       }
     }, bTrigger);
 
-    // Give time for the poller to cycle.
-    jasmine.clock().tick(10000);
+    __tickGlobalPoll();
 
     expect(bTrigger.calls.count()).toEqual(1);
   });
@@ -194,8 +188,7 @@ describe('entersViewport event type', function() {
       }
     }, bTrigger);
 
-    // Give time for the poller to cycle.
-    jasmine.clock().tick(10000);
+    __tickGlobalPoll();
 
     expect(bTrigger.calls.count()).toEqual(0);
   });
@@ -254,24 +247,24 @@ describe('entersViewport event type', function() {
           delay: 200000
         }, b2Trigger);
 
-        Simulate.event(window, 'scroll');
+        __tickGlobalPoll();
 
         expect(aTrigger.calls.count()).toEqual(0);
         expect(bTrigger.calls.count()).toEqual(0);
         expect(b2Trigger.calls.count()).toEqual(0);
 
         window.scrollTo(0, 10000);
-        Simulate.event(window, 'scroll');
+        __tickGlobalPoll();
 
         expect(aTrigger.calls.count()).toEqual(1);
         expect(bTrigger.calls.count()).toEqual(0);
         expect(b2Trigger.calls.count()).toEqual(0);
 
         window.scrollTo(0, 0);
-        Simulate.event(window, 'scroll');
+        __tickGlobalPoll();
 
         window.scrollTo(0, 10000);
-        Simulate.event(window, 'scroll');
+        __tickGlobalPoll();
 
         // The first trigger should only be called the first time the element comes into view.
         expect(aTrigger.calls.count()).toEqual(1);
@@ -279,14 +272,14 @@ describe('entersViewport event type', function() {
         expect(b2Trigger.calls.count()).toEqual(0);
 
         window.scrollTo(0, 20000);
-        Simulate.event(window, 'scroll');
+        __tickGlobalPoll();
 
         expect(aTrigger.calls.count()).toEqual(1);
         expect(bTrigger.calls.count()).toEqual(0);
         expect(b2Trigger.calls.count()).toEqual(0);
 
         window.scrollTo(0, 0);
-        Simulate.event(window, 'scroll');
+        __tickGlobalPoll();
 
         // Give enough time for the configured delay time to pass. The b element rules
         // shouldn't be triggered because the b element is no longer in view.
@@ -297,9 +290,9 @@ describe('entersViewport event type', function() {
         expect(b2Trigger.calls.count()).toEqual(0);
 
         window.scrollTo(0, 20000);
-        Simulate.event(window, 'scroll');
+        __tickGlobalPoll();
 
-        // Give time for the poller to cycle and enough time for the configured delay time to
+        // Give enough time for the configured delay time to
         // pass. The second trigger should be called.
         jasmine.clock().tick(50000);
         expect(aTrigger.calls.count()).toEqual(1);
