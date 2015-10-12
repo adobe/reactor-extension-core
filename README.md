@@ -1,4 +1,4 @@
-# turbine-dtm
+# turbine-extension-dtm
 
 This is the DTM extension for Turbine. It provides the default event types, condition types, and data element types available to all DTM users.
 
