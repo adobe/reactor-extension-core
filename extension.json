@@ -4,229 +4,282 @@
   "conditionDelegates": [
     {
       "displayName": "Browser",
-      "path": "src/conditions/browser/browser.js"
+      "libPath": "conditions/browser/browser.js",
+      "viewPath": "index.html#/conditions/browser"
     },
     {
       "displayName": "Cart Amount",
-      "path": "src/conditions/cartAmount/cartAmount.js"
+      "libPath": "conditions/cartAmount/cartAmount.js",
+      "viewPath": "index.html#/conditions/cartAmount"
     },
     {
       "displayName": "Cart Item Quantity",
-      "path": "src/conditions/cartItemQuantity/cartItemQuantity.js"
+      "libPath": "conditions/cartItemQuantity/cartItemQuantity.js",
+      "viewPath": "index.html#/conditions/cartItemQuantity"
     },
     {
       "displayName": "Cookie Opt-out",
-      "path": "src/conditions/cookieOptOut/cookieOptOut.js"
+      "libPath": "conditions/cookieOptOut/cookieOptOut.js",
+      "viewPath": "index.html#/conditions/cookieOptOut"
     },
     {
       "displayName": "Custom",
-      "path": "src/conditions/custom/custom.js"
+      "libPath": "conditions/custom/custom.js",
+      "viewPath": "index.html#/conditions/custom"
     },
     {
       "displayName": "Device Type",
-      "path": "src/conditions/deviceType/deviceType.js"
+      "libPath": "conditions/deviceType/deviceType.js",
+      "viewPath": "index.html#/conditions/deviceType"
     },
     {
       "displayName": "Domain",
-      "path": "src/conditions/domain/domain.js"
+      "libPath": "conditions/domain/domain.js",
+      "viewPath": "index.html#/conditions/domain"
     },
     {
       "displayName": "Hash",
-      "path": "src/conditions/hash/hash.js"
+      "libPath": "conditions/hash/hash.js",
+      "viewPath": "index.html#/conditions/hash"
     },
     {
       "displayName": "Landing Page",
-      "path": "src/conditions/landingPage/landingPage.js"
+      "libPath": "conditions/landingPage/landingPage.js",
+      "viewPath": "index.html#/conditions/landingPage"
     },
     {
       "displayName": "Logged In",
-      "path": "src/conditions/loggedIn/loggedIn.js"
+      "libPath": "conditions/loggedIn/loggedIn.js",
+      "viewPath": "index.html#/conditions/loggedIn"
     },
     {
       "displayName": "New/Returning Visitor",
-      "path": "src/conditions/newReturning/newReturning.js"
+      "libPath": "conditions/newReturning/newReturning.js",
+      "viewPath": "index.html#/conditions/newReturning"
     },
     {
       "displayName": "Operating System",
-      "path": "src/conditions/operatingSystem/operatingSystem.js"
+      "libPath": "conditions/operatingSystem/operatingSystem.js",
+      "viewPath": "index.html#/conditions/operatingSystem"
     },
     {
       "displayName": "Page Views",
-      "path": "src/conditions/pageViews/pageViews.js"
+      "libPath": "conditions/pageViews/pageViews.js",
+      "viewPath": "index.html#/conditions/pageViews"
     },
     {
-      "displayName": "Path",
-      "path": "src/conditions/path/path.js"
+      "displayName": "libPath",
+      "libPath": "conditions/path/path.js",
+      "viewPath": "index.html#/conditions/path"
     },
     {
       "displayName": "Previous Converter",
-      "path": "src/conditions/previousConverter/previousConverter.js"
+      "libPath": "conditions/previousConverter/previousConverter.js",
+      "viewPath": "index.html#/conditions/previousConverter"
     },
     {
       "displayName": "Protocol",
-      "path": "src/conditions/protocol/protocol.js"
+      "libPath": "conditions/protocol/protocol.js",
+      "viewPath": "index.html#/conditions/protocol"
     },
     {
       "displayName": "Registered User",
-      "path": "src/conditions/registeredUser/registeredUser.js"
+      "libPath": "conditions/registeredUser/registeredUser.js",
+      "viewPath": "index.html#/conditions/registeredUser"
     },
     {
       "displayName": "Screen Resolution",
-      "path": "src/conditions/screenResolution/screenResolution.js"
+      "libPath": "conditions/screenResolution/screenResolution.js",
+      "viewPath": "index.html#/conditions/screenResolution"
     },
     {
       "displayName": "Sessions",
-      "path": "src/conditions/sessions/sessions.js"
+      "libPath": "conditions/sessions/sessions.js",
+      "viewPath": "index.html#/conditions/sessions"
     },
     {
       "displayName": "Subdomain",
-      "path": "src/conditions/subdomain/subdomain.js"
+      "libPath": "conditions/subdomain/subdomain.js",
+      "viewPath": "index.html#/conditions/subdomain"
     },
     {
       "displayName": "Time On Site",
-      "path": "src/conditions/timeOnSite/timeOnSite.js"
+      "libPath": "conditions/timeOnSite/timeOnSite.js",
+      "viewPath": "index.html#/conditions/timeOnSite"
     },
     {
       "displayName": "Traffic Source",
-      "path": "src/conditions/trafficSource/trafficSource.js"
+      "libPath": "conditions/trafficSource/trafficSource.js",
+      "viewPath": "index.html#/conditions/trafficSource"
     },
     {
       "displayName": "URL Parameter",
-      "path": "src/conditions/urlParameter/urlParameter.js"
+      "libPath": "conditions/urlParameter/urlParameter.js",
+      "viewPath": "index.html#/conditions/urlParameter"
     },
     {
       "displayName": "Window Size",
-      "path": "src/conditions/windowSize/windowSize.js"
+      "libPath": "conditions/windowSize/windowSize.js",
+      "viewPath": "index.html#/conditions/windowSize"
     }
   ],
   "eventDelegates": [
     {
       "displayName": "Click",
-      "path": "src/events/click/click.js"
+      "libPath": "events/click/click.js",
+      "viewPath": "index.html#/events/click"
     },
     {
       "displayName": "Direct Call",
-      "path": "src/events/directCall/directCall.js"
+      "libPath": "events/directCall/directCall.js",
+      "viewPath": "index.html#/events/directCall"
     },
     {
       "displayName": "DOM Ready",
-      "path": "src/events/domReady/domReady.js"
+      "libPath": "events/domReady/domReady.js",
+      "viewPath": "index.html#/events/domReady"
     },
     {
       "displayName": "Element Exists",
-      "path": "src/events/elementExists/elementExists.js"
+      "libPath": "events/elementExists/elementExists.js",
+      "viewPath": "index.html#/events/elementExists"
     },
     {
       "displayName": "Enters Viewport",
-      "path": "src/events/entersViewport/entersViewport.js"
+      "libPath": "events/entersViewport/entersViewport.js",
+      "viewPath": "index.html#/events/entersViewport"
     },
     {
       "displayName": "Hover",
-      "path": "src/events/hover/hover.js"
+      "libPath": "events/hover/hover.js",
+      "viewPath": "index.html#/events/hover"
     },
     {
       "displayName": "On Load",
-      "path": "src/events/onload/onload.js"
+      "libPath": "events/onload/onload.js",
+      "viewPath": "index.html#/events/onload"
     },
     {
       "displayName": "Page Bottom",
-      "path": "src/events/pageBottom/pageBottom.js"
+      "libPath": "events/pageBottom/pageBottom.js",
+      "viewPath": "index.html#/events/pageBottom"
     },
     {
       "displayName": "Page Top",
-      "path": "src/events/pageTop/pageTop.js"
+      "libPath": "events/pageTop/pageTop.js",
+      "viewPath": "index.html#/events/pageTop"
     },
     {
       "displayName": "Keypress",
-      "path": "src/events/keypress/keypress.js"
+      "libPath": "events/keypress/keypress.js",
+      "viewPath": "index.html#/events/keypress"
     },
     {
       "displayName": "Focus",
-      "path": "src/events/focus/focus.js"
+      "libPath": "events/focus/focus.js",
+      "viewPath": "index.html#/events/focus"
     },
     {
       "displayName": "Blur",
-      "path": "src/events/blur/blur.js"
+      "libPath": "events/blur/blur.js",
+      "viewPath": "index.html#/events/blur"
     },
     {
       "displayName": "Submit",
-      "path": "src/events/submit/submit.js"
+      "libPath": "events/submit/submit.js",
+      "viewPath": "index.html#/events/submit"
     },
     {
       "displayName": "Play",
-      "path": "src/events/play/play.js"
+      "libPath": "events/play/play.js",
+      "viewPath": "index.html#/events/play"
     },
     {
       "displayName": "Pause",
-      "path": "src/events/pause/pause.js"
+      "libPath": "events/pause/pause.js",
+      "viewPath": "index.html#/events/pause"
     },
     {
       "displayName": "Ended",
-      "path": "src/events/ended/ended.js"
+      "libPath": "events/ended/ended.js",
+      "viewPath": "index.html#/events/ended"
     },
     {
       "displayName": "Volume Change",
-      "path": "src/events/volumechange/volumechange.js"
+      "libPath": "events/volumechange/volumechange.js",
+      "viewPath": "index.html#/events/volumechange"
     },
     {
       "displayName": "Stalled",
-      "path": "src/events/stalled/stalled.js"
+      "libPath": "events/stalled/stalled.js",
+      "viewPath": "index.html#/events/stalled"
     },
     {
       "displayName": "Loaded Data",
-      "path": "src/events/loadeddata/loadeddata.js"
+      "libPath": "events/loadeddata/loadeddata.js",
+      "viewPath": "index.html#/events/loadeddata"
     },
     {
       "displayName": "Time Played",
-      "path": "src/events/timePlayed/timePlayed.js"
+      "libPath": "events/timePlayed/timePlayed.js",
+      "viewPath": "index.html#/events/timePlayed"
     },
     {
       "displayName": "Orientation Change",
-      "path": "src/events/orientationchange/orientationchange.js"
+      "libPath": "events/orientationchange/orientationchange.js",
+      "viewPath": "index.html#/events/orientationchange"
     },
     {
       "displayName": "Zoom Change",
-      "path": "src/events/zoomchange/zoomchange.js"
+      "libPath": "events/zoomchange/zoomchange.js",
+      "viewPath": "index.html#/events/zoomchange"
     }
   ],
   "dataElementDelegates": [
     {
       "displayName": "Cookie",
-      "path": "src/dataElements/cookie/cookie.js"
+      "libPath": "dataElements/cookie/cookie.js",
+      "viewPath": "index.html#/dataElements/cookie"
     },
     {
       "displayName": "Custom",
-      "path": "src/dataElements/custom/custom.js"
+      "libPath": "dataElements/custom/custom.js",
+      "viewPath": "index.html#/dataElements/cookie"
     },
     {
       "displayName": "DOM Attribute",
-      "path": "src/dataElements/dom/dom.js"
+      "libPath": "dataElements/dom/dom.js",
+      "viewPath": "index.html#/dataElements/dom"
     },
     {
       "displayName": "Querystring Parameter",
-      "path": "src/dataElements/queryParam/queryParam.js"
+      "libPath": "dataElements/queryParam/queryParam.js",
+      "viewPath": "index.html#/dataElements/queryParam"
     },
     {
       "displayName": "Variable",
-      "path": "src/dataElements/variable/variable.js"
+      "libPath": "dataElements/variable/variable.js",
+      "viewPath": "index.html#/dataElements/variable"
     }
   ],
   "resources": [
     {
       "name": "visitorTracking",
-      "path": "src/resources/visitorTracking/visitorTracking.js"
+      "libPath": "resources/visitorTracking/visitorTracking.js"
     },
     {
       "name": "compareNumbers",
-      "path": "src/resources/compareNumbers/compareNumbers.js"
+      "libPath": "resources/compareNumbers/compareNumbers.js"
     },
     {
       "name": "createBubbly",
-      "path": "src/resources/createBubbly/createBubbly.js"
+      "libPath": "resources/createBubbly/createBubbly.js"
     },
     {
       "name": "matchesProperties",
-      "path": "src/resources/matchesProperties/matchesProperties.js"
+      "libPath": "resources/matchesProperties/matchesProperties.js"
     }
-  ]
+  ],
+  "viewBasePath": "dist",
+  "libBasePath": "src/lib"
 }

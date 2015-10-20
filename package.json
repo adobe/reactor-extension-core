@@ -12,10 +12,14 @@
     "dtm"
   ],
   "devDependencies": {
+    "babel-loader": "^5.3.2",
     "gulp": "^3.9.0",
+    "react": "^0.14.0",
+    "react-dom": "^0.14.0",
     "turbine": "git+ssh://git@git.corp.adobe.com:Activation/turbine.git",
-    "turbine-gulp-builder": "git+ssh://git@git.corp.adobe.com:Activation/turbine-gulp-builder.git",
-    "turbine-gulp-testrunner": "git+ssh://git@git.corp.adobe.com:Activation/turbine-gulp-testrunner.git"
+    "turbine-gulp-sandbox": "git+ssh://git@git.corp.adobe.com:Activation/turbine-gulp-sandbox.git",
+    "turbine-gulp-testrunner": "git+ssh://git@git.corp.adobe.com:Activation/turbine-gulp-testrunner.git",
+    "webpack-stream": "^2.1.1"
   },
   "author": "Adobe",
   "dependencies": {}
