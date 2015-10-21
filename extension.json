@@ -68,7 +68,7 @@
       "viewPath": "index.html#/conditions/pageViews"
     },
     {
-      "displayName": "libPath",
+      "displayName": "Path",
       "libPath": "conditions/path/path.js",
       "viewPath": "index.html#/conditions/path"
     },
