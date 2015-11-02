@@ -4,7 +4,7 @@
   "description": "DTM extension for Turbine",
   "repository": {
     "type": "git",
-    "url": "git@git.corp.adobe.com:Activation/turbine-extension-dtm.git"
+    "url": "git@git.corp.adobe.com:reactor/turbine-extension-dtm.git"
   },
   "keywords": [
     "turbine",
@@ -16,9 +16,9 @@
     "gulp": "^3.9.0",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
-    "turbine": "git+ssh://git@git.corp.adobe.com:Activation/turbine.git",
-    "turbine-gulp-sandbox": "git+ssh://git@git.corp.adobe.com:Activation/turbine-gulp-sandbox.git",
-    "turbine-gulp-testrunner": "git+ssh://git@git.corp.adobe.com:Activation/turbine-gulp-testrunner.git",
+    "turbine": "git+ssh://git@git.corp.adobe.com:reactor/turbine.git",
+    "turbine-gulp-sandbox": "git+ssh://git@git.corp.adobe.com:reactor/turbine-gulp-sandbox.git",
+    "turbine-gulp-testrunner": "git+ssh://git@git.corp.adobe.com:reactor/turbine-gulp-testrunner.git",
     "webpack-stream": "^2.1.1"
   },
   "author": "Adobe",
