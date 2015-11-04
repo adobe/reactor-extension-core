@@ -1,8 +1,9 @@
 'use strict';
 describe('pageBottom event type', function() {
-  var delegate;
+  var publicRequire = require('../../../__tests__/helpers/stubPublicRequire')();
   var documentSpy;
   var injector;
+
 
   beforeEach(function() {
     documentSpy = jasmine.createSpyObj('document', ['addEventListener']);
@@ -11,15 +12,25 @@ describe('pageBottom event type', function() {
     injector = require('inject!../pageBottom');
   });
 
-  it('triggers rule when _satellite.pageBottom() is called', function() {
-    delegate = injector({
-      document: documentSpy
+  var createDelegate = function() {
+    return injector({
+      document: documentSpy,
+      once: publicRequire('once')
     });
+  };
+
+  it('triggers rule when _satellite.pageBottom() is called but not more than once', function() {
+    var delegate = createDelegate();
 
     var trigger = jasmine.createSpy();
     delegate({}, trigger);
     expect(trigger.calls.count()).toBe(0);
 
+    _satellite.pageBottom();
+
+    expect(trigger.calls.count()).toBe(1);
+
+    // It shouldn't run rules again if we call pageBottom() more than once.
     _satellite.pageBottom();
 
     expect(trigger.calls.count()).toBe(1);
@@ -36,9 +47,7 @@ describe('pageBottom event type', function() {
       triggerPageBottomCallback = callback;
     });
 
-    delegate = injector({
-      document: documentSpy
-    });
+    var delegate = createDelegate();
 
     var trigger = jasmine.createSpy();
 

@@ -1,6 +1,7 @@
 'use strict';
 
 var document = require('document');
+var once = require('once');
 
 /**
  * All trigger methods registered for this event type.
@@ -8,27 +9,18 @@ var document = require('document');
  */
 var triggers = [];
 
-/**
- * Whether _satellite.pageBottom has been called.
- * @type {boolean}
- */
-var called = false;
-
 window._satellite = window._satellite || {};
 
-var triggerPageBottom = function() {
-  if (!called) {
-    var pseudoEvent = {
-      type: 'pagebottom',
-      target: document.location
-    };
+var triggerPageBottom = once(function() {
+  var pseudoEvent = {
+    type: 'pagebottom',
+    target: document.location
+  };
 
-    triggers.forEach(function(trigger) {
-      trigger(pseudoEvent, document.location);
-    });
-  }
-  called = true;
-};
+  triggers.forEach(function(trigger) {
+    trigger(pseudoEvent, document.location);
+  });
+});
 
 /**
  * Public function intended to be called by the user at the bottom of the page.
