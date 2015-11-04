@@ -7,7 +7,7 @@ describe('pageBottom event type', function() {
 
   beforeEach(function() {
     documentSpy = jasmine.createSpyObj('document', ['addEventListener']);
-    documentSpy.location = "http://somelocation.com";
+    documentSpy.location = 'http://somelocation.com';
 
     injector = require('inject!../pageBottom');
   });
@@ -37,8 +37,8 @@ describe('pageBottom event type', function() {
 
     var call = trigger.calls.mostRecent();
     expect(call.args[0].type).toBe('pagebottom');
-    expect(call.args[0].target).toBe("http://somelocation.com");
-    expect(call.args[1]).toBe("http://somelocation.com");
+    expect(call.args[0].target).toBe('http://somelocation.com');
+    expect(call.args[1]).toBe('http://somelocation.com');
   });
 
   it('triggers rule on DOMContentLoaded if _satellite.pageBottom() is not called', function() {
@@ -60,7 +60,7 @@ describe('pageBottom event type', function() {
 
     var call = trigger.calls.mostRecent();
     expect(call.args[0].type).toBe('pagebottom');
-    expect(call.args[0].target).toBe("http://somelocation.com");
-    expect(call.args[1]).toBe("http://somelocation.com");
+    expect(call.args[0].target).toBe('http://somelocation.com');
+    expect(call.args[1]).toBe('http://somelocation.com');
   });
 }); 

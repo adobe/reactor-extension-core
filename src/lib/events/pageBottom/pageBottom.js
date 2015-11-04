@@ -31,7 +31,7 @@ window._satellite.pageBottom = triggerPageBottom;
  * Trigger it on DOMContent loaded in case someone didn't add _satellite.pageBottom at the end of
  * the page. pageBottom will only be triggered only once even if it's called multiple times/
  */
-document.addEventListener("DOMContentLoaded", triggerPageBottom);
+document.addEventListener('DOMContentLoaded', triggerPageBottom);
 
 /**
  * Page top event. This event occurs as soon as the user calls _satellite.pageBottom() (which is
