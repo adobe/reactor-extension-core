@@ -1,35 +1,37 @@
 'use strict';
 
+var document = require('document');
+var once = require('once');
+
 /**
  * All trigger methods registered for this event type.
  * @type {ruleTrigger[]}
  */
 var triggers = [];
 
-/**
- * Whether _satellite.pageBottom has been called.
- * @type {boolean}
- */
-var called = false;
-
 window._satellite = window._satellite || {};
+
+var triggerPageBottom = once(function() {
+  var pseudoEvent = {
+    type: 'pagebottom',
+    target: document.location
+  };
+
+  triggers.forEach(function(trigger) {
+    trigger(pseudoEvent, document.location);
+  });
+});
 
 /**
  * Public function intended to be called by the user at the bottom of the page.
  */
-window._satellite.pageBottom = function() {
-  if (!called) {
-    var pseudoEvent = {
-      type: 'pagebottom',
-      target: document.location
-    };
+window._satellite.pageBottom = triggerPageBottom;
 
-    triggers.forEach(function(trigger) {
-      trigger(pseudoEvent, document.location);
-    });
-  }
-  called = true;
-};
+/**
+ * Trigger it on DOMContent loaded in case someone didn't add _satellite.pageBottom at the end of
+ * the page. pageBottom will only be triggered only once even if it's called multiple times/
+ */
+document.addEventListener('DOMContentLoaded', triggerPageBottom);
 
 /**
  * Page top event. This event occurs as soon as the user calls _satellite.pageBottom() (which is
