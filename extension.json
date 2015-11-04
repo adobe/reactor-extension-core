@@ -38,9 +38,14 @@
       "viewPath": "index.html#/conditions/domain"
     },
     {
-      "displayName": "Hash",
-      "libPath": "conditions/hash/hash.js",
-      "viewPath": "index.html#/conditions/hash"
+      "displayName": "Hash Does Not Match",
+      "libPath": "conditions/hashDoesNotMatch/hashDoesNotMatch.js",
+      "viewPath": "index.html#/conditions/hashDoesNotMatch"
+    },
+    {
+      "displayName": "Hash Matches",
+      "libPath": "conditions/hashMatches/hashMatches.js",
+      "viewPath": "index.html#/conditions/hashMatches"
     },
     {
       "displayName": "Landing Page",
@@ -68,9 +73,14 @@
       "viewPath": "index.html#/conditions/pageViews"
     },
     {
-      "displayName": "Path",
-      "libPath": "conditions/path/path.js",
-      "viewPath": "index.html#/conditions/path"
+      "displayName": "Path Does Not Match",
+      "libPath": "conditions/pathDoesNotMatch/pathDoesNotMatch.js",
+      "viewPath": "index.html#/conditions/pathDoesNotMatch"
+    },
+    {
+      "displayName": "Path Matches",
+      "libPath": "conditions/pathMatches/pathMatches.js",
+      "viewPath": "index.html#/conditions/pathMatches"
     },
     {
       "displayName": "Previous Converter",
@@ -98,9 +108,14 @@
       "viewPath": "index.html#/conditions/sessions"
     },
     {
-      "displayName": "Subdomain",
-      "libPath": "conditions/subdomain/subdomain.js",
-      "viewPath": "index.html#/conditions/subdomain"
+      "displayName": "Subdomain Does Not Match",
+      "libPath": "conditions/subdomainDoesNotMatch/subdomainDoesNotMatch.js",
+      "viewPath": "index.html#/conditions/subdomainDoesNotMatch"
+    },
+    {
+      "displayName": "Subdomain Matches",
+      "libPath": "conditions/subdomainMatches/subdomainMatches.js",
+      "viewPath": "index.html#/conditions/subdomainMatches"
     },
     {
       "displayName": "Time On Site",
