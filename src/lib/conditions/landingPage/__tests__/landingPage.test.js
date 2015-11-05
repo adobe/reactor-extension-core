@@ -17,30 +17,31 @@ var conditionDelegate = conditionDelegateInjector({
   resourceProvider: publicRequire('resourceProvider')
 });
 
-var getConfig = function(page) {
+var getConfig = function(page, pageIsRegex) {
   return {
-    page: page
+    page: page,
+    pageIsRegex: pageIsRegex
   };
 };
 
 describe('landing page condition delegate', function() {
   it('returns true when the landing page matches a string', function() {
-    var config = getConfig('http://landingpage.com/test.html');
+    var config = getConfig('http://landingpage.com/test.html', false);
     expect(conditionDelegate(config)).toBe(true);
   });
 
   it('returns false when the landing page does not match a string', function() {
-    var config = getConfig('http://foo.com/bar.html');
+    var config = getConfig('http://foo.com/bar.html', false);
     expect(conditionDelegate(config)).toBe(false);
   });
 
   it('returns true when the landing page matches a regex', function() {
-    var config = getConfig(/landingpage\.com\/t.st/i);
+    var config = getConfig('landingpage\\.com\\/t.st', true);
     expect(conditionDelegate(config)).toBe(true);
   });
 
   it('returns false when the landing page does not match a regex', function() {
-    var config = getConfig(/f.o/i);
+    var config = getConfig('f.o', true);
     expect(conditionDelegate(config)).toBe(false);
   });
 });

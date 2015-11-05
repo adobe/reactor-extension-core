@@ -16,22 +16,60 @@ var conditionDelegate = conditionDelegateInjector({
 
 describe('path matches condition delegate', function() {
   it('returns true when the path matches an acceptable string', function() {
-    var config = { paths: ['snowcones.html', '/foo/bar.html?mmm=bacon'] };
+    var config = {
+      paths: [
+        {
+          value: 'snowcones.html',
+        },
+        {
+          value: '/foo/bar.html?mmm=bacon'
+        }
+      ]
+    };
     expect(conditionDelegate(config)).toBe(true);
   });
 
   it('returns false when the path does not match an acceptable string', function() {
-    var config = { paths: ['snowcones.html', 'hotdogs.html?mmm=bacon'] };
+    var config = {
+      paths: [
+        {
+          value: 'snowcones.html',
+        },
+        {
+          value: 'hotdogs.html?mmm=bacon'
+        }
+      ]
+    };
     expect(conditionDelegate(config)).toBe(false);
   });
 
   it('returns true when the path matches an acceptable regex', function() {
-    var config = { paths: ['snowcones.html', /\/foo\/bar.*/i] };
+    var config = {
+      paths: [
+        {
+          value: 'snowcones.html',
+        },
+        {
+          value: '\\/foo\\/bar.*',
+          valueIsRegex: true
+        }
+      ]
+    };
     expect(conditionDelegate(config)).toBe(true);
   });
 
   it('returns false when the path does not match an acceptable regex', function() {
-    var config = { paths: ['snowcones.html', /\/index.*/i] };
+    var config = {
+      paths: [
+        {
+          value: 'snowcones.html'
+        },
+        {
+          value: '/index.*',
+          valueIsRegex: true
+        }
+      ]
+    };
     expect(conditionDelegate(config)).toBe(false);
   });
 });

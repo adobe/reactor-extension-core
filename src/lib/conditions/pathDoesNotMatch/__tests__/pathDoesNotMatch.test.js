@@ -26,12 +26,12 @@ describe('path does not match condition delegate', function() {
   });
 
   it('returns true when the path does not match an unacceptable regex', function() {
-    var config = { path: /\/index.*/i };
+    var config = { path: '\\/index.*', pathIsRegex: true };
     expect(conditionDelegate(config)).toBe(true);
   });
 
   it('returns false when the path matches an unacceptable regex', function() {
-    var config = { path: /\/foo\/bar.*/i };
+    var config = { path: '\\/foo\\/bar.*', pathIsRegex: true };
     expect(conditionDelegate(config)).toBe(false);
   });
 });

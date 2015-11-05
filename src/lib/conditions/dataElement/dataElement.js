@@ -8,8 +8,11 @@ var textMatch = require('textMatch');
  * @param {Object} config Condition config.
  * @param {number} config.name The name of the data element.
  * @param {string} config.value An acceptable data element value.
+ * @param {boolean} [config.valueIsRegex=false] Whether <code>config.value</code> is intended to be
+ * a regular expression.
  * @returns {boolean}
  */
 module.exports = function(config) {
-  return textMatch(_satellite.getVar(config.name), config.value);
+  var acceptableValue = config.valueIsRegex ? new RegExp(config.value, 'i') : config.value;
+  return textMatch(_satellite.getVar(config.name), acceptableValue);
 };

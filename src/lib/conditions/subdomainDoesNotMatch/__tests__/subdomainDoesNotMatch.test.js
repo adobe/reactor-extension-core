@@ -25,12 +25,12 @@ describe('subdomain does not match condition delegate', function() {
   });
 
   it('returns true when the subdomain does not match an unacceptable regex', function() {
-    var config = { subdomain: /my\.yahoo\.com/i };
+    var config = { subdomain: 'my\\.yahoo\\.com', subdomainIsRegex: true };
     expect(conditionDelegate(config)).toBe(true);
   });
 
   it('returns false when the subdomain matches an unacceptable regex', function() {
-    var config = { subdomain: /f.o\.adobe\.com/i };
+    var config = { subdomain: 'f.o\\.adobe\\.com', subdomainIsRegex: true };
     expect(conditionDelegate(config)).toBe(false);
   });
 });

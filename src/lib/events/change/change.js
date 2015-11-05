@@ -11,8 +11,10 @@ document.addEventListener('change', bubbly.evaluateEvent, true);
  * @param {string} [config.selector] The CSS selector for elements the rule is targeting.
  * @param {Object} [config.elementProperties] Property names and values the element must have in
  * order for the rule to fire.
- * @param {string|RegExp} [config.value] What the new value must be for the rule
+ * @param {string} [config.value] What the new value must be for the rule
  * to fire.
+ * @param {boolean} [config.valueIsRegex] Whether <code>config.value</code> is intended to be
+ * a regular expression.
  * @param {boolean} [config.bubbleFireIfParent=false] Whether the rule should fire if
  * the event originated from a descendant element.
  * @param {boolean} [config.bubbleFireIfChildFired=false] Whether the rule should fire
@@ -22,9 +24,9 @@ document.addEventListener('change', bubbly.evaluateEvent, true);
  * @param {ruleTrigger} trigger The trigger callback.
  */
 module.exports = function(config, trigger) {
-  var matchValue = config.value;
+  var acceptableValue = config.valueIsRegex ? new RegExp(config.value) : config.value;
   bubbly.addListener(config, function(event, relatedElement) {
-    if (matchValue === undefined || textMatch(event.target.value, matchValue)) {
+    if (acceptableValue === undefined || textMatch(event.target.value, acceptableValue)) {
       trigger(event, relatedElement);
     } else {
       return false;

@@ -28,12 +28,12 @@ describe('hash does not match condition delegate', function() {
     });
 
     it('returns true when the hash does not match an unacceptable regex', function() {
-      var config = { hash: /#g.o/i };
+      var config = { hash: '#g.o', hashIsRegex: true };
       expect(conditionDelegate(config)).toBe(true);
     });
 
     it('returns false when the hash matches an unacceptable regex', function() {
-      var config = { hash: /#hash.est/i };
+      var config = { hash: '#hash.est', hashIsRegex: true };
       expect(conditionDelegate(config)).toBe(false);
     });
   });

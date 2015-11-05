@@ -17,30 +17,31 @@ var conditionDelegate = conditionDelegateInjector({
   resourceProvider: publicRequire('resourceProvider')
 });
 
-var getConfig = function(source) {
+var getConfig = function(source, sourceIsRegex) {
   return {
-    source: source
+    source: source,
+    sourceIsRegex: sourceIsRegex
   };
 };
 
 describe('traffic source condition delegate', function() {
   it('returns true when the traffic source matches a string', function() {
-    var config = getConfig('http://trafficsource.com');
+    var config = getConfig('http://trafficsource.com', false);
     expect(conditionDelegate(config)).toBe(true);
   });
 
   it('returns false when the traffic source does not match a string', function() {
-    var config = getConfig('http://foo.com');
+    var config = getConfig('http://foo.com', false);
     expect(conditionDelegate(config)).toBe(false);
   });
 
   it('returns true when the traffic source matches a regex', function() {
-    var config = getConfig(/traffic.ource/i);
+    var config = getConfig('traffic.ource', true);
     expect(conditionDelegate(config)).toBe(true);
   });
 
   it('returns false when the traffic source does not match a regex', function() {
-    var config = getConfig(['http://foo.com', /my\.yahoo\.com/i]);
+    var config = getConfig('my\\.yahoo\\.com', true);
     expect(conditionDelegate(config)).toBe(false);
   });
 });

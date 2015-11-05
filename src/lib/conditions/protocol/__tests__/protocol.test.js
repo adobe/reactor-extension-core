@@ -10,12 +10,12 @@ var getConfig = function(protocols) {
 
 describe('protocol condition delegate', function() {
   it('returns true when the browser protocol matches', function() {
-    var config = getConfig([/bogus:/i, /http:/i]);
+    var config = getConfig(['bogus:', 'http:']);
     expect(conditionDelegate(config)).toBe(true);
   });
 
   it('returns false when the browser protocol does not match', function() {
-    var config = getConfig([/bogus:/i, /foo:/i]);
+    var config = getConfig(['bogus:', 'foo:']);
     expect(conditionDelegate(config)).toBe(false);
   });
 });
