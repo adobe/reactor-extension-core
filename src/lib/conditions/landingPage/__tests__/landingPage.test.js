@@ -17,30 +17,30 @@ var conditionDelegate = conditionDelegateInjector({
   resourceProvider: publicRequire('resourceProvider')
 });
 
-var getConfig = function(pages) {
+var getConfig = function(page) {
   return {
-    pages: pages
+    page: page
   };
 };
 
 describe('landing page condition delegate', function() {
-  it('returns true when the landing page matches one of the string options', function() {
-    var config = getConfig(['http://foo.com/bar.html', 'http://landingpage.com/test.html']);
+  it('returns true when the landing page matches a string', function() {
+    var config = getConfig('http://landingpage.com/test.html');
     expect(conditionDelegate(config)).toBe(true);
   });
 
-  it('returns false when the landing page does not match one of the string options', function() {
-    var config = getConfig(['http://foo.com/bar.html', 'http://bar.com/foo.html']);
+  it('returns false when the landing page does not match a string', function() {
+    var config = getConfig('http://foo.com/bar.html');
     expect(conditionDelegate(config)).toBe(false);
   });
 
-  it('returns true when the landing page matches one of the regex options', function() {
-    var config = getConfig(['http://foo.com/bar.html', /landingpage\.com\/t.st/i]);
+  it('returns true when the landing page matches a regex', function() {
+    var config = getConfig(/landingpage\.com\/t.st/i);
     expect(conditionDelegate(config)).toBe(true);
   });
 
-  it('returns false when the landing page does not match one of the regex options', function() {
-    var config = getConfig(['http://foo.com/bar.html', /f.o/i]);
+  it('returns false when the landing page does not match a regex', function() {
+    var config = getConfig(/f.o/i);
     expect(conditionDelegate(config)).toBe(false);
   });
 });

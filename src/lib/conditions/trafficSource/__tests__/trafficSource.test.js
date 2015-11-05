@@ -17,29 +17,29 @@ var conditionDelegate = conditionDelegateInjector({
   resourceProvider: publicRequire('resourceProvider')
 });
 
-var getConfig = function(sources) {
+var getConfig = function(source) {
   return {
-    sources: sources
+    source: source
   };
 };
 
 describe('traffic source condition delegate', function() {
-  it('returns true when the traffic source matches one of the string options', function() {
-    var config = getConfig(['http://foo.com', 'http://trafficsource.com']);
+  it('returns true when the traffic source matches a string', function() {
+    var config = getConfig('http://trafficsource.com');
     expect(conditionDelegate(config)).toBe(true);
   });
 
-  it('returns false when the traffic source does not match one of the string options', function() {
-    var config = getConfig(['http://foo.com', 'http://bar.com']);
+  it('returns false when the traffic source does not match a string', function() {
+    var config = getConfig('http://foo.com');
     expect(conditionDelegate(config)).toBe(false);
   });
 
-  it('returns true when the traffic source matches a regex options', function() {
-    var config = getConfig(['http://foo.com', /traffic.ource/i]);
+  it('returns true when the traffic source matches a regex', function() {
+    var config = getConfig(/traffic.ource/i);
     expect(conditionDelegate(config)).toBe(true);
   });
 
-  it('returns false when the traffic source does not match the regex option', function() {
+  it('returns false when the traffic source does not match a regex', function() {
     var config = getConfig(['http://foo.com', /my\.yahoo\.com/i]);
     expect(conditionDelegate(config)).toBe(false);
   });
