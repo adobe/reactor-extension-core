@@ -49,7 +49,7 @@ describe('subdomain matches condition delegate', function() {
           value: 'basketball.espn.com'
         },
         {
-          value: 'f.o\\.adobe\\.com',
+          value: 'f.o\\.Adobe\\.com',
           valueIsRegex: true
         }
       ]

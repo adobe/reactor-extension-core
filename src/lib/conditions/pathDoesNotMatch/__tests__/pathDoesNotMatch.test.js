@@ -31,7 +31,7 @@ describe('path does not match condition delegate', function() {
   });
 
   it('returns false when the path matches an unacceptable regex', function() {
-    var config = { path: '\\/foo\\/bar.*', pathIsRegex: true };
+    var config = { path: '\\/Foo\\/bar.*', pathIsRegex: true };
     expect(conditionDelegate(config)).toBe(false);
   });
 });

@@ -19,7 +19,7 @@ var getConfig = function(domains) {
 
 describe('domain condition delegate', function() {
   it('returns true when the domain matches', function() {
-    var config = getConfig(['example\.com$', 'adobe\.com$']);
+    var config = getConfig(['example\.com$', 'Adobe\.com$']);
     expect(conditionDelegate(config)).toBe(true);
   });
 

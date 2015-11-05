@@ -33,7 +33,7 @@ describe('hash does not match condition delegate', function() {
     });
 
     it('returns false when the hash matches an unacceptable regex', function() {
-      var config = { hash: '#hash.est', hashIsRegex: true };
+      var config = { hash: '#Hash.est', hashIsRegex: true };
       expect(conditionDelegate(config)).toBe(false);
     });
   });

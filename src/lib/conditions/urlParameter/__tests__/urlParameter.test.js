@@ -28,7 +28,7 @@ describe('url parameter condition delegate', function() {
   });
 
   it('returns true when value matches using regex', function() {
-    var config = getConfig('testParam', '^f[ojd]o$', true);
+    var config = getConfig('testParam', '^F[ojd]o$', true);
     expect(conditionDelegate(config)).toBe(true);
   });
 

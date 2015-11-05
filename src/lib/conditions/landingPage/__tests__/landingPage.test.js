@@ -36,7 +36,7 @@ describe('landing page condition delegate', function() {
   });
 
   it('returns true when the landing page matches a regex', function() {
-    var config = getConfig('landingpage\\.com\\/t.st', true);
+    var config = getConfig('Landingpage\\.com\\/t.st', true);
     expect(conditionDelegate(config)).toBe(true);
   });
 

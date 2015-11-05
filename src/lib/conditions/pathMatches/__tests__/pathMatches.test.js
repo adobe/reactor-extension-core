@@ -50,7 +50,7 @@ describe('path matches condition delegate', function() {
           value: 'snowcones.html',
         },
         {
-          value: '\\/foo\\/bar.*',
+          value: '\\/Foo\\/bar.*',
           valueIsRegex: true
         }
       ]

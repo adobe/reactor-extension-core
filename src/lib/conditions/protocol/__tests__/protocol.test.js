@@ -10,7 +10,7 @@ var getConfig = function(protocols) {
 
 describe('protocol condition delegate', function() {
   it('returns true when the browser protocol matches', function() {
-    var config = getConfig(['bogus:', 'http:']);
+    var config = getConfig(['bogus:', 'Http:']);
     expect(conditionDelegate(config)).toBe(true);
   });
 

@@ -80,7 +80,7 @@ describe('change event type', function() {
 
       delegate({
         selector: '#outer',
-        value: '^f',
+        value: '^F',
         valueIsRegex: true,
         bubbleFireIfParent: true
       }, trigger);

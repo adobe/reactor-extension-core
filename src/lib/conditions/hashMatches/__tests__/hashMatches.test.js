@@ -51,7 +51,7 @@ describe('hash matches condition delegate', function() {
           value: '#foo'
         },
         {
-          value: 'has.test',
+          value: 'Has.test',
           valueIsRegex: true
         }
       ]

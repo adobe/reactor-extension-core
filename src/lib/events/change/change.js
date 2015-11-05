@@ -24,7 +24,7 @@ document.addEventListener('change', bubbly.evaluateEvent, true);
  * @param {ruleTrigger} trigger The trigger callback.
  */
 module.exports = function(config, trigger) {
-  var acceptableValue = config.valueIsRegex ? new RegExp(config.value) : config.value;
+  var acceptableValue = config.valueIsRegex ? new RegExp(config.value, 'i') : config.value;
   bubbly.addListener(config, function(event, relatedElement) {
     if (acceptableValue === undefined || textMatch(event.target.value, acceptableValue)) {
       trigger(event, relatedElement);

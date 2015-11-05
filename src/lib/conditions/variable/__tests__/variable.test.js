@@ -32,7 +32,7 @@ describe('variable condition delegate', function() {
   });
 
   it('returns true when the variable matches the regex value', function() {
-    var config = { name: 'test', value: 'f.o', valueIsRegex: true };
+    var config = { name: 'test', value: 'F.o', valueIsRegex: true };
     expect(conditionDelegate(config)).toBe(true);
   });
 

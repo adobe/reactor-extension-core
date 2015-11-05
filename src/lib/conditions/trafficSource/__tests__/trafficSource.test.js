@@ -36,7 +36,7 @@ describe('traffic source condition delegate', function() {
   });
 
   it('returns true when the traffic source matches a regex', function() {
-    var config = getConfig('traffic.ource', true);
+    var config = getConfig('Traffic.ource', true);
     expect(conditionDelegate(config)).toBe(true);
   });
 

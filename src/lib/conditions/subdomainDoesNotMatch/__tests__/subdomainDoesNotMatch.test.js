@@ -30,7 +30,7 @@ describe('subdomain does not match condition delegate', function() {
   });
 
   it('returns false when the subdomain matches an unacceptable regex', function() {
-    var config = { subdomain: 'f.o\\.adobe\\.com', subdomainIsRegex: true };
+    var config = { subdomain: 'f.o\\.Adobe\\.com', subdomainIsRegex: true };
     expect(conditionDelegate(config)).toBe(false);
   });
 });
