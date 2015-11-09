@@ -80,7 +80,7 @@ describe('change event type', function() {
 
       delegate({
         selector: '#outer',
-        value: /^f/,
+        value: /^f/i,
         bubbleFireIfParent: true
       }, trigger);
 
@@ -101,7 +101,7 @@ describe('change event type', function() {
 
       delegate({
         selector: '#outer',
-        value: /^f/,
+        value: /^f/i,
         bubbleFireIfParent: true
       }, trigger);
 
