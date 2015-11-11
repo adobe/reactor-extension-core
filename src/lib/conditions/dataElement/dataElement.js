@@ -7,7 +7,7 @@ var textMatch = require('textMatch');
  * an acceptable value.
  * @param {Object} config Condition config.
  * @param {number} config.name The name of the data element.
- * @param {Number} config.value An acceptable data element value.
+ * @param {string} config.value An acceptable data element value.
  * @returns {boolean}
  */
 module.exports = function(config) {

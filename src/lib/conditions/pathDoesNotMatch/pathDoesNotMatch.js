@@ -6,7 +6,7 @@ var document = require('document');
 /**
  * Path condition. Determines if the actual path does not match a path pattern.
  * @param {Object} config Condition config.
- * @param {(RegEx|string)[]} [config.path] An unacceptable path.
+ * @param {(RegEx|string)} config.path An unacceptable path.
  * @returns {boolean}
  */
 module.exports = function(config) {

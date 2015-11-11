@@ -7,7 +7,7 @@ var document = require('document');
  * Subdomain condition. Determines if the actual subdomain matches at least one acceptable
  * subdomain.
  * @param {Object} config Condition config.
- * @param {(RegEx|string)[]} [config.subdomains] Acceptable subdomains.
+ * @param {(RegEx|string)[]} config.subdomains Acceptable subdomains.
  * @returns {boolean}
  */
 module.exports = function(config) {
