@@ -27,7 +27,7 @@ var visitorTrackingInjector = require('inject!../visitorTracking');
 
 
 var getVisitorTracking = function(trackVisitor) {
-  var mockProperty = {
+  var mockPropertyConfig = {
     trackVisitor: trackVisitor
   };
 
@@ -36,7 +36,7 @@ var getVisitorTracking = function(trackVisitor) {
     setCookie: mockSetCookie,
     document: mockDocument,
     window: mockWindow,
-    property: mockProperty
+    propertyConfig: mockPropertyConfig
   });
 };
 

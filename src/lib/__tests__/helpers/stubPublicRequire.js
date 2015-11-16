@@ -8,7 +8,7 @@
  * @param [config]
  * @param {Object} [config.property] Property configuration.
  * @param {Object} [config.resourceStubs] Resource stubs. The key is the qualified ID
- * (dtm/fooResource) and the value is the resource that should be provided when requested.
+ * (dtm.fooResource) and the value is the resource that should be provided when requested.
  * @returns {Function}
  */
 module.exports = function(config) {
@@ -19,15 +19,16 @@ module.exports = function(config) {
     require('inject?./state!../../../../node_modules/turbine/src/publicRequire');
   publicRequire = publicRequireInjector({
     './state': {
-      getResource: function(resourceId) {
-        if (config && config.resourceStubs && config.resourceStubs[resourceId]) {
-          return config.resourceStubs[resourceId];
+      getResource: function(extensionId, resourceId) {
+        var uniqueId = extensionId + '.' + resourceId;
+        if (config && config.resourceStubs && config.resourceStubs[uniqueId]) {
+          return config.resourceStubs[uniqueId];
         } else {
-          return resources[resourceId];
+          return resources[uniqueId];
         }
       },
       getPropertyConfig: function() {
-        return config && config.property ? config.property : {};
+        return config && config.propertyConfig ? config.propertyConfig : {};
       }
     }
   });
@@ -37,7 +38,7 @@ module.exports = function(config) {
   var matchesProperties = matchesPropertiesInjector({
     textMatch: publicRequire('textMatch')
   });
-  resources['dtm/matchesProperties'] = matchesProperties;
+  resources['dtm.matchesProperties'] = matchesProperties;
 
   var createBubblyInjector = require('inject!../../resources/createBubbly/createBubbly');
   var createBubbly = createBubblyInjector({
@@ -45,10 +46,10 @@ module.exports = function(config) {
     matchesSelector: publicRequire('matchesSelector'),
     resourceProvider: publicRequire('resourceProvider')
   });
-  resources['dtm/createBubbly'] = createBubbly;
+  resources['dtm.createBubbly'] = createBubbly;
 
   var compareNumbers = require('../../resources/compareNumbers/compareNumbers');
-  resources['dtm/compareNumbers'] = compareNumbers;
+  resources['dtm.compareNumbers'] = compareNumbers;
 
   var visitorTrackingInjector =
     require('inject!../../resources/visitorTracking/visitorTracking');
@@ -57,9 +58,9 @@ module.exports = function(config) {
     'setCookie': publicRequire('setCookie'),
     'document': publicRequire('document'),
     'window': publicRequire('window'),
-    'property': publicRequire('property')
+    'propertyConfig': publicRequire('propertyConfig')
   });
-  resources['dtm/visitorTracking'] = visitorTracking;
+  resources['dtm.visitorTracking'] = visitorTracking;
 
   return publicRequire;
 };

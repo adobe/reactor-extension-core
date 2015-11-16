@@ -4,7 +4,7 @@ var getCookie = require('getCookie');
 var setCookie = require('setCookie');
 var document = require('document');
 var window = require('window');
-var property = require('property');
+var propertyConfig = require('propertyConfig');
 
 var key = function(name) {
   return '_sdsat_' + name;
@@ -94,7 +94,7 @@ var throwDisabledError = function() {
   throw new Error('Visitor tracking not enabled.');
 };
 
-var trackingEnabled = property.trackVisitor;
+var trackingEnabled = propertyConfig.trackVisitor;
 
 if (trackingEnabled) {
   trackVisitor();

@@ -1,7 +1,7 @@
 'use strict';
 
 var getCookie = require('getCookie');
-var property = require('property');
+var propertyConfig = require('propertyConfig');
 
 /**
  * Cookie opt-out condition. Determines whether the user has chosen to accept cookies.
@@ -16,7 +16,7 @@ module.exports = function(config) {
   // TODO: In the previous engine we were always using the "sat_track" cookie name which seemed
   // like a bug (https://jira.corp.adobe.com/browse/DTM-6611).
   // Is this the right thing to be doing now?
-  var cookieName = property.euCookieName === undefined ? 'sat_track' : property.euCookieName;
+  var cookieName = propertyConfig.euCookieName === undefined ? 'sat_track' : propertyConfig.euCookieName;
   return getCookie(cookieName) === (config.acceptsCookies ? 'true' : 'false');
 };
 
