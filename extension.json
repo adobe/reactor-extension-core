@@ -1,7 +1,7 @@
 {
   "name": "dtm",
   "displayName": "DTM",
-  "conditionDelegates": [
+  "conditions": [
     {
       "displayName": "Browser",
       "libPath": "conditions/browser/browser.js",
@@ -138,7 +138,7 @@
       "viewPath": "index.html#/conditions/windowSize"
     }
   ],
-  "eventDelegates": [
+  "events": [
     {
       "displayName": "Click",
       "libPath": "events/click/click.js",
@@ -250,7 +250,7 @@
       "viewPath": "index.html#/events/zoomchange"
     }
   ],
-  "dataElementDelegates": [
+  "dataElements": [
     {
       "displayName": "Cookie",
       "libPath": "dataElements/cookie/cookie.js",
