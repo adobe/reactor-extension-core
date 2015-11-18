@@ -2,6 +2,7 @@
 
 var gulp = require('gulp');
 var webpack = require('webpack-stream');
+var path = require('path');
 
 require('turbine-gulp-testrunner')(gulp);
 
@@ -19,7 +20,13 @@ var webpackConfig = {
     ]
   },
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['', '.js', '.jsx', 'styl']
+  },
+  stylus: {
+    use: [require('nib')()],
+    import: [
+      path.resolve('./node_modules/nib/lib/nib/index')
+    ]
   }
 };
 
@@ -37,7 +44,7 @@ gulp.task('copyHTML', function() {
 
 // Rename once turbine-gulp-builder has namespaced tasks
 gulp.task('watch', function() {
-  gulp.watch('src/view/**/*.jsx', ['buildJS']);
+  gulp.watch('src/view/**/*', ['buildJS']);
   gulp.watch('src/view/**/*.html', ['copyHTML']);
 });
 
@@ -46,4 +53,3 @@ gulp.task('buildView', ['buildJS', 'copyHTML', 'watch']);
 require('turbine-gulp-sandbox')(gulp, {
   buildViewTask: 'buildView'
 });
-
