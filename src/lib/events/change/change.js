@@ -8,7 +8,7 @@ document.addEventListener('change', bubbly.evaluateEvent, true);
 /**
  * The change event. This event occurs when a change to an element's value is committed by the user.
  * @param {Object} config The event config object.
- * @param {string} config.selector The CSS selector for elements the rule is targeting.
+ * @param {string} [config.selector] The CSS selector for elements the rule is targeting.
  * @param {Object} [config.elementProperties] Property names and values the element must have in
  * order for the rule to fire.
  * @param {string|RegExp} [config.value] What the new value must be for the rule

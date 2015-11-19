@@ -326,7 +326,6 @@ describe('createBubbly', function() {
     var callback = jasmine.createSpy();
 
     bubbly.addListener({
-      selector: '#c',
       elementProperties: {
         innerHTML: 'C'
       }
@@ -344,7 +343,6 @@ describe('createBubbly', function() {
     var callback = jasmine.createSpy();
 
     bubbly.addListener({
-      selector: '#c',
       elementProperties: {
         innerHTML: 'no match'
       }
@@ -355,5 +353,33 @@ describe('createBubbly', function() {
     });
 
     expect(callback.calls.count()).toBe(0);
+  });
+
+  describe('when no element refinements are specified', function() {
+    it('calls the callback once if the target is a nested element', function() {
+      var bubbly = createBubbly();
+      var callback = jasmine.createSpy();
+
+      bubbly.addListener({}, callback);
+
+      bubbly.evaluateEvent({
+        target: cElement
+      });
+
+      expect(callback.calls.count()).toBe(1);
+    });
+
+    it('calls the callback once if the target is document', function() {
+      var bubbly = createBubbly();
+      var callback = jasmine.createSpy();
+
+      bubbly.addListener({}, callback);
+
+      bubbly.evaluateEvent({
+        target: document
+      });
+
+      expect(callback.calls.count()).toBe(1);
+    });
   });
 });

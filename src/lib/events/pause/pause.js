@@ -7,7 +7,7 @@ document.addEventListener('pause', bubbly.evaluateEvent, true);
 /**
  * The pause event. This event occurs when playback has been paused.
  * @param {Object} config The event config object.
- * @param {string} config.selector The CSS selector for elements the rule is targeting.
+ * @param {string} [config.selector] The CSS selector for elements the rule is targeting.
  * @param {Object} [config.elementProperties] Property names and values the element must have in
  * order for the rule to fire.
  * @param {boolean} [config.bubbleFireIfParent=false] Whether the rule should fire if

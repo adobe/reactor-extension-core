@@ -7,8 +7,8 @@ var typesWatched = [];
 /**
  * The custom event. When an event is seen with the specified type, the rule will be executed.
  * @param {Object} config The event config object.
- * @param {string} config.selector The CSS selector for elements the rule is targeting.
  * @param {string} config.type The custom event type.
+ * @param {string} [config.selector] The CSS selector for elements the rule is targeting.
  * @param {Object} [config.elementProperties] Property names and values the element must have in
  * order for the rule to fire.
  * @param {boolean} [config.bubbleFireIfParent=false] Whether the rule should fire if

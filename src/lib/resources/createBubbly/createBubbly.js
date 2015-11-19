@@ -82,11 +82,20 @@ module.exports = function() {
             continue;
           }
 
-          if (!matchesSelector(node, listener.config.selector)) {
+          // If the user didn't specify a selector or elementProperties then they want the
+          // rule to run whenever the event occurs on any element. They don't intend for the
+          // rule to run for every node in the element hierarchy though.
+          if (!listener.config.selector && !listener.config.elementProperties &&
+              node !== event.target) {
             continue;
           }
 
-          if (!matchesProperties(node, listener.config.elementProperties)) {
+          if (listener.config.selector && !matchesSelector(node, listener.config.selector)) {
+            continue;
+          }
+
+          if (listener.config.elementProperties &&
+              !matchesProperties(node, listener.config.elementProperties)) {
             continue;
           }
 
