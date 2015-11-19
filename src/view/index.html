@@ -1,32 +1,12 @@
 <!DOCTYPE html>
-<html>
   <head lang="en">
     <meta charset="UTF-8">
     <title></title>
+    <link rel="stylesheet" href="//assets.adobedtm.com/activation/reactor/iframe/0.0.1/css/iframe.min.css">
   </head>
-  <body>
+  <body class="coral--light">
     <div id="content"></div>
-    <script src="/includes/jschannel.js"></script>
-    <script src="/includes/extensionBridge.contentWindow.js"></script>
+    <script src="//assets.adobedtm.com/activation/reactor/iframe/0.0.1/js/iframe.min.js"></script>
     <script src="view.js"></script>
-    <script>
-      // Temporary while we're getting iframe communication figured out.
-      var currentConfig = {
-        name: 'The Serbs'
-      };
-
-      extensionBridge.validate = function() {
-        return Math.random() > .5;
-      };
-
-      extensionBridge.getConfig = function() {
-        return currentConfig;
-      };
-
-      extensionBridge.setConfig = function(config) {
-        currentConfig = config;
-        document.getElementById('content').innerHTML = JSON.stringify(config);
-      };
-    </script>
   </body>
 </html>

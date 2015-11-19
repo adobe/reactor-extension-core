@@ -11,6 +11,16 @@
     "extension",
     "dtm"
   ],
+  "dependencies": {
+    "coralui-support-react": "git+ssh://git@git.corp.adobe.com:Coral/coralui-support-react.git#ed743c461fa7732b15aa88ace8eb0f5b13365e6d",
+    "css-loader": "^0.22.0",
+    "history": "^1.13.0",
+    "import-glob-loader": "^1.1.0",
+    "nib": "^1.1.0",
+    "react-router": "^1.0.0",
+    "style-loader": "^0.13.0",
+    "stylus-loader": "^1.4.2"
+  },
   "devDependencies": {
     "babel-loader": "^5.3.2",
     "gulp": "^3.9.0",
@@ -21,6 +31,5 @@
     "turbine-gulp-testrunner": "git+ssh://git@git.corp.adobe.com:reactor/turbine-gulp-testrunner.git",
     "webpack-stream": "^2.1.1"
   },
-  "author": "Adobe",
-  "dependencies": {}
+  "author": "Adobe"
 }

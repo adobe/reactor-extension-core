@@ -1,11 +1,23 @@
-'use strict'
-var React = require('react')
-var ReactDOM = require('react-dom');
+'use strict';
+import React from 'react';
+import { Router, Route } from 'react-router';
+import ReactDOM from 'react-dom';
+import Click from './events/click';
+import 'style!css?sourceMap!stylus!import-glob!./style.pattern';
+import {config} from './store/config';
 
-var HelloMessage = React.createClass({
-  render: function() {
-    return <div>Hello World!</div>;
-  }
-});
+// temporary
+//config.elementProperties = {
+//  foo: /b\/a\.r/i,
+//  bing: 'baz'
+//};
+//setInterval(function() {
+//  console.log(config);
+//}, 1000);
 
-ReactDOM.render(<HelloMessage/>, document.getElementById('content'));
+
+ReactDOM.render((
+  <Router>
+    <Route path="/events/click" component={Click}/>
+  </Router>
+), document.getElementById('content'));
