@@ -4,20 +4,43 @@ import { Router, Route } from 'react-router';
 import ReactDOM from 'react-dom';
 import Click from './events/click';
 import 'style!css?sourceMap!stylus!import-glob!./style.pattern';
-import {config} from './store/config';
+import store from './store';
 
 // temporary
-//config.elementProperties = {
-//  foo: /b\/a\.r/i,
-//  bing: 'baz'
+//var xyz = {
+//  elementProperties: {
+//    foo: /b\/a\.r/i,
+//    bing: 'baz'
+//  }
 //};
 //setInterval(function() {
 //  console.log(config);
 //}, 1000);
 
+var renderAll = function() {
+  ReactDOM.render((
+    <Router>
+      <Route path="/events/click" component={Click}/>
+    </Router>
+  ), document.getElementById('content'));
+};
 
-ReactDOM.render((
-  <Router>
-    <Route path="/events/click" component={Click}/>
-  </Router>
-), document.getElementById('content'));
+extensionBridge.setConfig = function(config) {
+  store.config = config;
+  renderAll();
+};
+
+extensionBridge.getConfig = function() {
+  return store.config;
+};
+
+renderAll();
+
+//setTimeout(function() {
+//  extensionBridge.setConfig({
+//    delayLinkActivation: true,
+//    elementProperties: {
+//      foo: 'bar'
+//    }
+//  });
+//}, 3000);

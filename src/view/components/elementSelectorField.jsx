@@ -1,6 +1,6 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
-import {config} from '../store/config';
+import {config} from '../store';
 
 export default React.createClass({
   onSelectorChange: function(event) {

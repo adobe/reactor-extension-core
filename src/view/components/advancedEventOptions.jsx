@@ -1,7 +1,7 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
 import DisclosureButton from './disclosureButton';
-import {config} from '../store/config';
+import {config} from '../store';
 
 export default React.createClass({
   getInitialState: function() {

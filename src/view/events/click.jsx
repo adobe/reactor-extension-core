@@ -3,7 +3,7 @@ import ElementSelectorField from '../components/elementSelectorField';
 import ElementPropertiesEditor from '../components/elementPropertiesEditor';
 import Coral from 'coralui-support-react';
 import AdvancedEventOptions from '../components/advancedEventOptions';
-import {config} from '../store/config';
+import {config} from '../store';
 
 export default React.createClass({
   onDelayLinkActivationChange: function(event) {

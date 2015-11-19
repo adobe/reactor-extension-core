@@ -1,7 +1,7 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
 import ElementPropertyEditor from '../components/elementPropertyEditor';
-import {config} from '../store/config';
+import {config} from '../store';
 
 export default React.createClass({
   itemIdIncrementor: 0,
