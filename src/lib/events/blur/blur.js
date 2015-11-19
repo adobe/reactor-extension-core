@@ -7,7 +7,7 @@ document.addEventListener('blur', bubbly.evaluateEvent, true);
 /**
  * The blur event. This event occurs when an element has lost focus.
  * @param {Object} config The event config object.
- * @param {string} config.selector The CSS selector for elements the rule is targeting.
+ * @param {string} [config.selector] The CSS selector for elements the rule is targeting.
  * @param {Object} [config.elementProperties] Property names and values the element must have in
  * order for the rule to fire.
  * @param {boolean} [config.bubbleFireIfParent=false] Whether the rule should fire if

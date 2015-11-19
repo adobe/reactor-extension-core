@@ -63,7 +63,7 @@ document.addEventListener('timeupdate', handleTimeUpdate, true);
  * The time played event. This event occurs when the media has been played for a specified amount
  * of time.
  * @param {Object} config The event config object.
- * @param {string} config.selector The CSS selector for elements the rule is targeting.
+ * @param {string} [config.selector] The CSS selector for elements the rule is targeting.
  * @param {number} config.amount The amount of time the media must be played before
  * this event is fired. This value may either be number of seconds (20 for 20 seconds) or a
  * percent value (20 for 20%).
