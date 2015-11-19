@@ -12,7 +12,7 @@
     "dtm"
   ],
   "dependencies": {
-    "coralui-support-react": "git+ssh://git@git.corp.adobe.com:Coral/coralui-support-react.git#ed743c461fa7732b15aa88ace8eb0f5b13365e6d",
+    "coralui-support-react": "git+ssh://git@git.corp.adobe.com:Coral/coralui-support-react.git#2.2.0",
     "css-loader": "^0.22.0",
     "history": "^1.13.0",
     "import-glob-loader": "^1.1.0",
