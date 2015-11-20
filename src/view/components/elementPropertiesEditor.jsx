@@ -2,9 +2,11 @@ import React from 'react';
 import Coral from 'coralui-support-react';
 import ElementPropertyEditor from '../components/elementPropertyEditor';
 import store from '../store';
+import ConfigComponentMixin from '../mixins/configComponentMixin';
 
 export default React.createClass({
   itemIdIncrementor: 0,
+  mixins: [ConfigComponentMixin],
 
   getInitialState: function() {
     return {
@@ -14,20 +16,11 @@ export default React.createClass({
   },
 
   componentWillMount: function() {
-    store.register(this.onStoreUpdate);
     this.buildItemsList(this.state.config.elementProperties);
   },
 
-  componentWillUnmount: function() {
-    store.unregister(this.onStoreUpdate);
-  },
-
-  onStoreUpdate: function(config) {
+  onAfterStoreUpdate: function(config) {
     this.buildItemsList(config.elementProperties);
-
-    this.setState({
-      config: config
-    });
   },
 
   buildItemsList: function(newItems) {

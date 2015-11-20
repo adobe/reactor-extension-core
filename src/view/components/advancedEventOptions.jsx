@@ -2,8 +2,11 @@ import React from 'react';
 import Coral from 'coralui-support-react';
 import DisclosureButton from './disclosureButton';
 import store from '../store';
+import ConfigComponentMixin from '../mixins/configComponentMixin';
 
 export default React.createClass({
+  mixins: [ConfigComponentMixin],
+
   getInitialState: function() {
     return {
       config: store.getConfig(),
@@ -12,8 +15,6 @@ export default React.createClass({
   },
 
   componentWillMount: function() {
-    store.register(this.onStoreUpdate);
-
     if (!this.state.config.hasOwnProperty('bubbleFireIfParent')) {
       this.state.config.bubbleFireIfParent = true;
     }
@@ -21,16 +22,6 @@ export default React.createClass({
     if (!this.state.config.hasOwnProperty('bubbleFireIfChildFired')) {
       this.state.config.bubbleFireIfChildFired = true;
     }
-  },
-
-  componentWillUnmount: function() {
-    store.unregister(this.onStoreUpdate);
-  },
-
-  onStoreUpdate: function(config) {
-    this.setState({
-      config: config
-    });
   },
 
   setExpanded: function(value) {

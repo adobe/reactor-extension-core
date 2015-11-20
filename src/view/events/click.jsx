@@ -4,26 +4,15 @@ import ElementPropertiesEditor from '../components/elementPropertiesEditor';
 import Coral from 'coralui-support-react';
 import AdvancedEventOptions from '../components/advancedEventOptions';
 import store from '../store';
+import ConfigComponentMixin from '../mixins/configComponentMixin';
 
 export default React.createClass({
+  mixins: [ConfigComponentMixin],
+
   getInitialState: function() {
     return {
       config: store.getConfig()
     };
-  },
-
-  componentWillMount: function() {
-    store.register(this.onStoreUpdate);
-  },
-
-  componentWillUnmount: function() {
-    store.unregister(this.onStoreUpdate);
-  },
-
-  onStoreUpdate: function(config) {
-    this.setState({
-      config: config
-    });
   },
 
   onDelayLinkActivationChange: function(event) {
