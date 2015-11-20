@@ -149,8 +149,7 @@ describe('click event type', function() {
       expect(defaultPrevented).toBe(false);
     });
 
-    it('does not delay navigation if the link has target=_top and is not within an ' +
-        'iframe', function() {
+    it('delays navigation if the link has target=_top and is not within an iframe', function() {
       link.setAttribute('target', '_top');
 
       delegate({
