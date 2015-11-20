@@ -5,6 +5,7 @@ export default React.createClass({
   onClick: function() {
     this.props.setSelected(!this.props.selected);
   },
+
   render: function() {
     var iconClass = this.props.selected ? 'chevronUp' : 'chevronDown';
 

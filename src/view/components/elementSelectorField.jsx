@@ -1,11 +1,22 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
-import {config} from '../store';
+import store from '../store';
+import ConfigComponentMixin from '../mixins/configComponentMixin';
 
 export default React.createClass({
-  onSelectorChange: function(event) {
-    config.selector = event.target.value;
+  mixins: [ConfigComponentMixin],
+
+  getInitialState: function() {
+    return {
+      config: store.getConfig()
+    };
   },
+
+  handleChange: function(event) {
+    this.state.config.selector = event.target.value;
+    this.forceUpdate();
+  },
+
   render: function() {
     return (
       <label>
@@ -13,8 +24,8 @@ export default React.createClass({
         <Coral.Textfield
           placeholder="CSS Selector"
           className="u-gapRight"
-          defaultValue={config.selector}
-          coral-onChange={this.onSelectorChange}/>
+          value={this.state.config.selector}
+          onChange={this.handleChange}/>
       </label>
     );
   }

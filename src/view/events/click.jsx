@@ -3,12 +3,22 @@ import ElementSelectorField from '../components/elementSelectorField';
 import ElementPropertiesEditor from '../components/elementPropertiesEditor';
 import Coral from 'coralui-support-react';
 import AdvancedEventOptions from '../components/advancedEventOptions';
-import {config} from '../store';
+import store from '../store';
+import ConfigComponentMixin from '../mixins/configComponentMixin';
 
 export default React.createClass({
-  onDelayLinkActivationChange: function(event) {
-    config.delayLinkActivation = event.target.checked;
+  mixins: [ConfigComponentMixin],
+
+  getInitialState: function() {
+    return {
+      config: store.getConfig()
+    };
   },
+
+  onDelayLinkActivationChange: function(event) {
+    this.state.config.delayLinkActivation = event.target.checked || null;
+  },
+
   render: function() {
     return (
       <div>
@@ -18,7 +28,7 @@ export default React.createClass({
         <Coral.Checkbox
           class="u-block"
           coral-onChange={this.onDelayLinkActivationChange}
-          checked={config.delayLinkActivation ? true : null}>If the element is a link, delay navigation until rule runs</Coral.Checkbox>
+          checked={this.state.config.delayLinkActivation}>If the element is a link, delay navigation until rule runs</Coral.Checkbox>
         <AdvancedEventOptions/>
       </div>
     );

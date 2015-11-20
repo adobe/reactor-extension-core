@@ -17,24 +17,17 @@ import store from './store';
 //  console.log(config);
 //}, 1000);
 
-var renderAll = function() {
-  ReactDOM.render((
-    <Router>
-      <Route path="/events/click" component={Click}/>
-    </Router>
-  ), document.getElementById('content'));
-};
-
 extensionBridge.setConfig = function(config) {
-  store.config = config;
-  renderAll();
+  store.setConfig(config);
 };
 
-extensionBridge.getConfig = function() {
-  return store.config;
-};
+extensionBridge.getConfig = store.getConfig;
 
-renderAll();
+ReactDOM.render((
+  <Router>
+    <Route path="/events/click" component={Click}/>
+  </Router>
+), document.getElementById('content'));
 
 //setTimeout(function() {
 //  extensionBridge.setConfig({
