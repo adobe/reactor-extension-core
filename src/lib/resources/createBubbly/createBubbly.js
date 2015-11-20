@@ -15,7 +15,7 @@ module.exports = function() {
   // bubbly may process an event. No instance of bubbly should process an event more than once.
   var dataStash = createDataStash('bubbly');
 
-  return {
+  var bubbly = {
     /**
      * Register a config object that should be evaluated for an event to determine if a rule
      * should be executed. If it should be executed, the callback function will be called.
@@ -125,4 +125,12 @@ module.exports = function() {
       eventDataStash.processed = true;
     }
   };
+
+  if (ENV_TEST) {
+    bubbly.reset = function() {
+      listeners = [];
+    };
+  }
+
+  return bubbly;
 };

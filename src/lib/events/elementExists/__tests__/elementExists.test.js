@@ -145,5 +145,7 @@ describe('elementExists event type', function() {
 
     expect(selectorOnlyTrigger.calls.count()).toBe(1);
     expect(selectorAndPropsTrigger.calls.count()).toBe(1);
+
+    document.body.removeChild(addedLaterElement);
   });
 });
