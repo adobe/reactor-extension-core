@@ -1,33 +1,52 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
 import ElementPropertyEditor from '../components/elementPropertyEditor';
-import {config} from '../store';
+import store from '../store';
 
 export default React.createClass({
   itemIdIncrementor: 0,
+
   getInitialState: function() {
     return {
-      expanded: config.hasOwnProperty('elementProperties')
-    }
+      config: store.getConfig(),
+      expanded: false
+    };
   },
+
   componentWillMount: function() {
+    store.register(this.onStoreUpdate);
+    this.buildItemsList(this.state.config.elementProperties);
+  },
+
+  componentWillUnmount: function() {
+    store.unregister(this.onStoreUpdate);
+  },
+
+  onStoreUpdate: function(config) {
+    this.buildItemsList(config.elementProperties);
+
+    this.setState({
+      config: config
+    });
+  },
+
+  buildItemsList: function(newItems) {
     var items = [];
 
-    for (var property in config.elementProperties) {
+    for (var property in newItems) {
       items.push({
         id: this.itemIdIncrementor++,
         property: property,
-        value: config.elementProperties[property]
+        value: newItems[property]
       })
     }
 
     this.items = items;
 
     // Always keep one row showing.
-    if (!this.items.length) {
-      this.add();
-    }
+    this.add();
   },
+
   saveItems: function(items) {
     var propertyValueMap = {};
     items.forEach(function(item) {
@@ -37,13 +56,14 @@ export default React.createClass({
     });
 
     if (Object.keys(propertyValueMap).length) {
-      config.elementProperties = propertyValueMap;
+      this.state.config.elementProperties = propertyValueMap;
     } else {
-      delete config.elementProperties;
+      delete this.state.config.elementProperties;
     }
 
     this.forceUpdate();
   },
+
   add: function() {
     this.items.push({
       id: this.itemIdIncrementor++,
@@ -52,14 +72,17 @@ export default React.createClass({
     });
     this.saveItems(this.items);
   },
+
   setProperty: function(currentItem, property) {
     currentItem.property = property;
     this.saveItems(this.items);
   },
+
   setValue: function(currentItem, value) {
     currentItem.value = value;
     this.saveItems(this.items);
   },
+
   remove: function(item) {
     var index = this.items.indexOf(item);
     if (index !== -1) {
@@ -67,12 +90,14 @@ export default React.createClass({
     }
     this.saveItems(this.items);
   },
+
   toggleProperties: function(event) {
     this.saveItems(event.target.checked ? this.items : []);
     this.setState({
       expanded: event.target.checked
     });
   },
+
   render: function() {
     var propertiesEditor;
 

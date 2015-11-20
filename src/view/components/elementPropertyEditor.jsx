@@ -7,15 +7,19 @@ export default React.createClass({
   getPropertyFromDOM: function() {
     return this.refs.propertyField.getDOMNode().value;
   },
+
   getValueFromDOM: function() {
     return this.refs.valueField.getDOMNode().value;
   },
+
   remove: function() {
     this.props.remove();
   },
+
   onPropertyBlur: function(event) {
     this.props.setProperty(event.target.value);
   },
+
   onValueBlur: function(event) {
     var value = event.target.value;
 
@@ -26,6 +30,7 @@ export default React.createClass({
 
     this.props.setValue(value);
   },
+
   setIsRegex: function(isRegex) {
     var value = getPatternIfRegex(this.props.value);
 
@@ -35,6 +40,7 @@ export default React.createClass({
 
     this.props.setValue(value);
   },
+
   render: function() {
     var displayValue = getPatternIfRegex(this.props.value);
 
