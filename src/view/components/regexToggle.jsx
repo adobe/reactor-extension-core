@@ -16,11 +16,6 @@ export default React.createClass({
 
   render: function() {
     var isValueRegex = this.props.value instanceof RegExp;
-    var testRegexButton;
-
-    if (isValueRegex) {
-      testRegexButton = <button className="u-buttonReset coral-Link" onClick={this.onTestRegex}>Test Regex</button>;
-    }
 
     return (
       <div className="u-inlineBlock">
@@ -30,7 +25,10 @@ export default React.createClass({
             checked={isValueRegex ? true : null}
             coral-onChange={this.onToggleChange}/>
           <span className="u-gapRight">Regex</span>
-          {testRegexButton}
+          <button
+            className="u-buttonReset coral-Link"
+            onClick={this.onTestRegex}
+            style={{ visibility: isValueRegex ? 'visible' : 'hidden' }}>Test</button>
         </label>
       </div>
     );

@@ -49,9 +49,9 @@ export default React.createClass({
     if (this.props.removable) {
       removeButton = (
         <Coral.Button
-          class="u-gapLeft"
-          icon="delete"
-          iconsize="S"
+          variant="quiet"
+          icon="close"
+          iconsize="XS"
           onClick={this.remove}/>
       );
     }

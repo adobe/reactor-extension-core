@@ -7,10 +7,13 @@ export default React.createClass({
   },
 
   render: function() {
-    var iconClass = this.props.selected ? 'chevronUp' : 'chevronDown';
+    var iconClass = this.props.selected ? 'chevronDown' : 'chevronRight';
 
     return (
-      <button className="u-buttonReset" onClick={this.onClick}>{this.props.label}<Coral.Icon class="DisclosureButton-icon" icon={iconClass}/></button>
+      <button className="u-buttonReset" onClick={this.onClick}>
+        {this.props.label}
+        <Coral.Icon class="DisclosureButton-icon" icon={iconClass}/>
+      </button>
     );
   }
 });
