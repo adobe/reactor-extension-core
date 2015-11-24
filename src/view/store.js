@@ -7,7 +7,6 @@ module.exports = {
   },
 
   unregister: function(listener) {
-    console.log(listeners.indexOf(listener));
     listeners.splice(listeners.indexOf(listener), 1);
   },
 

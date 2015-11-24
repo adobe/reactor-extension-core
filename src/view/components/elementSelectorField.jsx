@@ -20,7 +20,7 @@ export default React.createClass({
   render: function() {
     return (
       <label>
-        <span className="ElementSelectorField-label">on element matching</span>
+        <span className="ElementSelectorField-label">matching</span>
         <Coral.Textfield
           placeholder="CSS Selector"
           className="u-gapRight"

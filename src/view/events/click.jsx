@@ -1,10 +1,9 @@
 import React from 'react';
-import ElementSelectorField from '../components/elementSelectorField';
-import ElementPropertiesEditor from '../components/elementPropertiesEditor';
 import Coral from 'coralui-support-react';
 import AdvancedEventOptions from '../components/advancedEventOptions';
 import store from '../store';
 import ConfigComponentMixin from '../mixins/configComponentMixin';
+import ElementFilter from '../components/elementFilter';
 
 export default React.createClass({
   mixins: [ConfigComponentMixin],
@@ -23,8 +22,7 @@ export default React.createClass({
     return (
       <div>
         <span className="eventNameLabel u-gapRight">Click:</span>
-        <ElementSelectorField/>
-        <ElementPropertiesEditor/>
+        <ElementFilter/>
         <Coral.Checkbox
           class="u-block"
           coral-onChange={this.onDelayLinkActivationChange}
