@@ -29,15 +29,12 @@ ReactDOM.render((
   </Router>
 ), document.getElementById('content'));
 
-store.setConfig({
-  selector: 'a'
-});
 
 //setTimeout(function() {
-//  extensionBridge.setConfig({
-//    delayLinkActivation: true,
+//  store.setConfig({
+//    selector: 'a',
 //    elementProperties: {
-//      foo: 'bar'
+//      'innerHTML': 'woot'
 //    }
 //  });
 //}, 3000);

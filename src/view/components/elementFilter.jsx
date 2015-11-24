@@ -9,36 +9,24 @@ export default React.createClass({
   mixins: [ConfigComponentMixin],
 
   getInitialState: function() {
-    var config = store.getConfig();
-
-    console.log(config.selector);
-
     return {
-      config: config,
-      showFilter: config.selector || config.elementProperties
-    };
+      showFilter: false
+    }
   },
 
-  onAfterStoreUpdate: function(config) {
+  onStoreUpdate: function() {
     this.setState({
-      config: this.state.config,
-      showFilter: config.selector || config.elementProperties
+      showFilter: this.config.selector || this.config.elementProperties
     });
-  },
-
-  validate: function() {
-    console.log('validate');
   },
 
   onSpecificityChange: function(event) {
     this.setState({
-      config: this.state.config,
       showFilter: event.target.value === 'true'
     });
   },
 
   render: function() {
-    console.log('render');
     var filterOptions;
 
     if (this.state.showFilter) {

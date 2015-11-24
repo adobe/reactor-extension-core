@@ -8,29 +8,19 @@ export default React.createClass({
   itemIdIncrementor: 0,
   mixins: [ConfigComponentMixin],
 
-  getInitialState: function() {
-    return {
-      config: store.getConfig(),
-      expanded: false
-    };
+  onStoreUpdate: function() {
+    this.buildItemsList();
   },
 
-  componentWillMount: function() {
-    this.buildItemsList(this.state.config.elementProperties);
-  },
-
-  onAfterStoreUpdate: function(config) {
-    this.buildItemsList(config.elementProperties);
-  },
-
-  buildItemsList: function(newItems) {
+  buildItemsList: function() {
+    var updatedElementProperties = this.config.elementProperties;
     var items = [];
 
-    for (var property in newItems) {
+    for (var property in updatedElementProperties) {
       items.push({
         id: this.itemIdIncrementor++,
         property: property,
-        value: newItems[property]
+        value: updatedElementProperties[property]
       })
     }
 
@@ -49,9 +39,9 @@ export default React.createClass({
     });
 
     if (Object.keys(propertyValueMap).length) {
-      this.state.config.elementProperties = propertyValueMap;
+      this.config.elementProperties = propertyValueMap;
     } else {
-      delete this.state.config.elementProperties;
+      delete this.config.elementProperties;
     }
 
     this.forceUpdate();
@@ -84,41 +74,22 @@ export default React.createClass({
     this.saveItems(this.items);
   },
 
-  toggleProperties: function(event) {
-    this.saveItems(event.target.checked ? this.items : []);
-    this.setState({
-      expanded: event.target.checked
-    });
-  },
-
   render: function() {
-    var propertiesEditor;
-
-    if (this.state.expanded) {
-      propertiesEditor = (
-        <div>
-          {this.items.map(function(item) {
-            return <ElementPropertyEditor
-              key={item.id}
-              property={item.property}
-              value={item.value}
-              setProperty={this.setProperty.bind(null, item)}
-              setValue={this.setValue.bind(null, item)}
-              remove={this.remove.bind(null, item)}
-              removable={this.items.length > 1}
-              />
-          }.bind(this))}
-          <Coral.Button onClick={this.add}>Add</Coral.Button>
-        </div>
-      );
-    }
-
     return (
       <div>
-        <Coral.Checkbox
-          checked={this.state.expanded ? true : null}
-          coral-onChange={this.toggleProperties}>And with the following property values…</Coral.Checkbox>
-        {propertiesEditor}
+        <span className="u-italic">and having the following property values:</span>
+        {this.items.map(function(item) {
+          return <ElementPropertyEditor
+            key={item.id}
+            property={item.property}
+            value={item.value}
+            setProperty={this.setProperty.bind(null, item)}
+            setValue={this.setValue.bind(null, item)}
+            remove={this.remove.bind(null, item)}
+            removable={this.items.length > 1}
+            />
+        }.bind(this))}
+        <Coral.Button onClick={this.add}>Add</Coral.Button>
       </div>
     );
   }

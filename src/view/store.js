@@ -3,11 +3,18 @@ var config = {};
 
 module.exports = {
   register: function(listener) {
-    listeners.push(listener);
+    if (listeners.indexOf(listener) === -1) {
+      listeners.push(listener);
+      listener(config);
+    }
   },
 
   unregister: function(listener) {
-    listeners.splice(listeners.indexOf(listener), 1);
+    var index = listeners.indexOf(listener);
+
+    if (index !== -1) {
+      listeners.splice(index, 1);
+    }
   },
 
   getConfig: function() {

@@ -6,25 +6,19 @@ import ConfigComponentMixin from '../mixins/configComponentMixin';
 export default React.createClass({
   mixins: [ConfigComponentMixin],
 
-  getInitialState: function() {
-    return {
-      config: store.getConfig()
-    };
-  },
-
   handleChange: function(event) {
-    this.state.config.selector = event.target.value;
+    this.config.selector = event.target.value;
     this.forceUpdate();
   },
 
   render: function() {
     return (
       <label>
-        <span className="ElementSelectorField-label">matching</span>
+        <span className="u-italic u-gapRight">matching the CSS selector</span>
         <Coral.Textfield
           placeholder="CSS Selector"
           className="u-gapRight"
-          value={this.state.config.selector}
+          value={this.config.selector}
           onChange={this.handleChange}/>
       </label>
     );

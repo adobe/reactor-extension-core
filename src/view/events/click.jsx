@@ -8,14 +8,8 @@ import ElementFilter from '../components/elementFilter';
 export default React.createClass({
   mixins: [ConfigComponentMixin],
 
-  getInitialState: function() {
-    return {
-      config: store.getConfig()
-    };
-  },
-
   onDelayLinkActivationChange: function(event) {
-    this.state.config.delayLinkActivation = event.target.checked || null;
+    this.config.delayLinkActivation = event.target.checked || null;
   },
 
   render: function() {
@@ -26,7 +20,7 @@ export default React.createClass({
         <Coral.Checkbox
           class="u-block"
           coral-onChange={this.onDelayLinkActivationChange}
-          checked={this.state.config.delayLinkActivation}>If the element is a link, delay navigation until rule runs</Coral.Checkbox>
+          checked={this.config.delayLinkActivation}>If the element is a link, delay navigation until rule runs</Coral.Checkbox>
         <AdvancedEventOptions/>
       </div>
     );
