@@ -5,6 +5,8 @@ import ReactDOM from 'react-dom';
 import Click from './events/click';
 import 'style!css?sourceMap!stylus!import-glob!./style.pattern';
 import store from './store';
+import {init} from './actions';
+import Immutable from 'immutable';
 
 // temporary
 //var xyz = {
@@ -17,12 +19,20 @@ import store from './store';
 //  console.log(config);
 //}, 1000);
 
-extensionBridge.setConfig = function(config) {
-  store.setConfig(config);
-};
+init.push(Immutable.fromJS({
+  elementSelector: 'woot',
+  elementProperties: {
+    foo: 'bar',
+    goo: /shoe/i
+  }
+}));
 
-extensionBridge.getConfig = store.getConfig;
-
+//extensionBridge.setConfig = function(config) {
+//  store.setConfig(config);
+//};
+//
+//extensionBridge.getConfig = store.getConfig;
+//
 ReactDOM.render((
   <Router>
     <Route path="/events/click" component={Click}/>

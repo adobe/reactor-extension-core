@@ -4,20 +4,12 @@ import RegexToggle from './regexToggle';
 import getPatternIfRegex from '../utils/getPatternIfRegex';
 
 export default React.createClass({
-  getPropertyFromDOM: function() {
-    return this.refs.propertyField.getDOMNode().value;
-  },
-
-  getValueFromDOM: function() {
-    return this.refs.valueField.getDOMNode().value;
-  },
-
   remove: function() {
     this.props.remove();
   },
 
-  onPropertyBlur: function(event) {
-    this.props.setProperty(event.target.value);
+  onNameBlur: function(event) {
+    this.props.setName(event.target.value);
   },
 
   onValueBlur: function(event) {
@@ -59,11 +51,11 @@ export default React.createClass({
     return (
       <div className="u-gapBottom">
         <Coral.Textfield 
-          ref="propertyField"
+          ref="nameField"
           class="u-gapRight"
           placeholder="Property" 
-          defaultValue={this.props.property}
-          onBlur={this.onPropertyBlur}/>
+          defaultValue={this.props.name}
+          onBlur={this.onNameBlur}/>
         <span className="u-gapRight">=</span>
         <Coral.Textfield 
           ref="valueField"

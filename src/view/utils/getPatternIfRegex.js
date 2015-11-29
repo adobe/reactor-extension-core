@@ -6,7 +6,7 @@
  * @param {*} value A value which may or may not be a regular expression.
  * @returns {String}
  */
-module.exports = function(value) {
+module.exports = (value) => {
   if (value instanceof RegExp) {
     var match = value.toString().match(new RegExp('^/(.*?)/[gimy]*$'));
     var pattern = match ? match[1] : '';

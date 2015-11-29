@@ -2,7 +2,7 @@ import React from 'react';
 import Coral from 'coralui-support-react';
 
 export default React.createClass({
-  onClick: function() {
+  onClick: () => {
     this.props.setSelected(!this.props.selected);
   },
 

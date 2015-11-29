@@ -1,15 +1,37 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
 import AdvancedEventOptions from '../components/advancedEventOptions';
-import store from '../store';
-import ConfigComponentMixin from '../mixins/configComponentMixin';
+import {stateStream} from '../store';
 import ElementFilter from '../components/elementFilter';
+import {setConfigParts} from '../actions';
+import Immutable from 'immutable';
 
 export default React.createClass({
-  mixins: [ConfigComponentMixin],
+  getInitialState: function() {
+    return {
+      delayLinkActivation: false
+    }
+  },
+
+  componentDidMount: function() {
+    this.unsub = stateStream
+      .filterByChanges('config.delayLinkActivation')
+      .map((state) => {
+        return {
+          delayLinkActivation: state.get('config').get('delayLinkActivation')
+        };
+      })
+      .assign(this, 'setState');
+  },
+
+  componentWillUnmount: function() {
+    this.unsub();
+  },
 
   onDelayLinkActivationChange: function(event) {
-    this.config.delayLinkActivation = event.target.checked || null;
+    setConfigParts.push({
+      'delayLinkActivation': event.target.checked
+    });
   },
 
   render: function() {
@@ -20,7 +42,7 @@ export default React.createClass({
         <Coral.Checkbox
           class="u-block"
           coral-onChange={this.onDelayLinkActivationChange}
-          checked={this.config.delayLinkActivation}>If the element is a link, delay navigation until rule runs</Coral.Checkbox>
+          checked={this.state.delayLinkActivation ? true : null}>If the element is a link, delay navigation until rule runs</Coral.Checkbox>
         <AdvancedEventOptions/>
       </div>
     );

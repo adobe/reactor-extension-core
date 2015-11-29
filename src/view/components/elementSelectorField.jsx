@@ -1,14 +1,35 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
-import store from '../store';
-import ConfigComponentMixin from '../mixins/configComponentMixin';
+import {stateStream} from '../store';
+import {setConfigParts} from '../actions';
 
 export default React.createClass({
-  mixins: [ConfigComponentMixin],
+  getInitialState: function() {
+    return {
+      elementSelector: ''
+    }
+  },
+
+  componentDidMount: function() {
+    this.unsub = stateStream
+      .filterByChanges('config.elementSelector')
+      .map((state) => {
+        return {
+          elementSelector: state.get('config').get('elementSelector')
+        };
+      })
+      .assign(this, 'setState');
+  },
+
+  componentWillUnmount: function() {
+    this.unsub();
+  },
+
 
   handleChange: function(event) {
-    this.config.selector = event.target.value;
-    this.forceUpdate();
+    setConfigParts.push({
+      'elementSelector': event.target.value
+    });
   },
 
   render: function() {
@@ -18,7 +39,7 @@ export default React.createClass({
         <Coral.Textfield
           placeholder="CSS Selector"
           className="u-gapRight"
-          value={this.config.selector}
+          value={this.state.elementSelector}
           onChange={this.handleChange}/>
       </label>
     );

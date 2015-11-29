@@ -12,9 +12,11 @@
     "dtm"
   ],
   "dependencies": {
+    "baconjs": "^0.7.82",
     "coralui-support-react": "git+ssh://git@git.corp.adobe.com:Coral/coralui-support-react.git#2.2.0",
     "css-loader": "^0.22.0",
     "history": "^1.13.0",
+    "immutable": "^3.7.5",
     "import-glob-loader": "^1.1.0",
     "nib": "^1.1.0",
     "react-router": "^1.0.0",

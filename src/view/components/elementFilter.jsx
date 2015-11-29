@@ -2,34 +2,39 @@ import React from 'react';
 import Coral from 'coralui-support-react';
 import ElementSelectorField from '../components/elementSelectorField';
 import ElementPropertiesEditor from '../components/elementPropertiesEditor';
-import ConfigComponentMixin from '../mixins/configComponentMixin';
-import store from '../store';
+import {stateStream} from '../store';
+import {setShowElementFilterFields} from '../actions';
 
 export default React.createClass({
-  mixins: [ConfigComponentMixin],
-
   getInitialState: function() {
     return {
-      showFilter: false
+      showElementFilterFields: false
     }
   },
 
-  onStoreUpdate: function() {
-    this.setState({
-      showFilter: this.config.selector || this.config.elementProperties
-    });
+  componentDidMount: function() {
+    this.unsub = stateStream
+      .filterByChanges('showElementFilterFields')
+      .map((state) => {
+        return {
+          showElementFilterFields: state.get('showElementFilterFields')
+        };
+      })
+      .assign(this, 'setState');
+  },
+
+  componentWillUnmount: function() {
+    this.unsub();
   },
 
   onSpecificityChange: function(event) {
-    this.setState({
-      showFilter: event.target.value === 'true'
-    });
+    setShowElementFilterFields.push(event.target.value === 'true');
   },
 
   render: function() {
     var filterOptions;
 
-    if (this.state.showFilter) {
+    if (this.state.showElementFilterFields) {
       filterOptions = (
         <div>
           <ElementSelectorField/>
@@ -44,14 +49,14 @@ export default React.createClass({
         <Coral.Radio
             name="filter"
             value="true"
-            checked={this.state.showFilter ? true : null}
+            checked={this.state.showElementFilterFields ? true : null}
             coral-onChange={this.onSpecificityChange}>
           specific elements
         </Coral.Radio>
         <Coral.Radio
             name="filter"
             value="false"
-            checked={!this.state.showFilter ? true : null}
+            checked={!this.state.showElementFilterFields ? true : null}
             coral-onChange={this.onSpecificityChange}>
           any element
         </Coral.Radio>

@@ -1,12 +1,10 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
 import DisclosureButton from './disclosureButton';
-import store from '../store';
-import ConfigComponentMixin from '../mixins/configComponentMixin';
+import {stateStream} from '../store';
+import {setConfigParts, deleteConfigParts} from '../actions';
 
 export default React.createClass({
-  mixins: [ConfigComponentMixin],
-
   getInitialState: function() {
     return {
       expanded: false
@@ -14,13 +12,20 @@ export default React.createClass({
   },
 
   componentWillMount: function() {
-    if (!this.config.hasOwnProperty('bubbleFireIfParent')) {
-      this.config.bubbleFireIfParent = true;
-    }
-
-    if (!this.config.hasOwnProperty('bubbleFireIfChildFired')) {
-      this.config.bubbleFireIfChildFired = true;
-    }
+    this.unsub = stateStream
+      .filterByChanges([
+        'bubbleFireIfParent',
+        'bubbleFireIfChildFired',
+        'bubbleStop'
+      ])
+      .map((state) => {
+        return {
+          bubbleFireIfParent: state.bubbleFireIfParent,
+          bubbleFireIfChildFired: state.bubbleFireIfChildFired,
+          bubbleStop: state.bubbleStop
+        };
+      })
+      .assign(this, 'setState');
   },
 
   setExpanded: function(value) {
@@ -30,15 +35,39 @@ export default React.createClass({
   },
 
   setBubbleFireIfParent: function(event) {
-    this.config.bubbleFireIfParent = event.target.checked || null;
+    if (event.target.checked) {
+      setConfigParts.push({
+        bubbleFireIfParent: true
+      })
+    } else {
+      deleteConfigParts.push([
+        'bubbleFireIfParent'
+      ]);
+    }
   },
 
   setBubbleFireIfChildFired: function(event) {
-    this.config.bubbleFireIfChildFired = event.target.checked || null;
+    if (event.target.checked) {
+      setConfigParts.push({
+        bubbleFireIfChildFired: true
+      })
+    } else {
+      deleteConfigParts.push([
+        'bubbleFireIfChildFired'
+      ]);
+    }
   },
 
   setBubbleStop: function(event) {
-    this.config.bubbleStop = event.target.checked || null;
+    if (event.target.checked) {
+      setConfigParts.push({
+        bubbleStop: true
+      })
+    } else {
+      deleteConfigParts.push([
+        'bubbleStop'
+      ]);
+    }
   },
 
   render: function() {
@@ -49,15 +78,15 @@ export default React.createClass({
         <div>
           <Coral.Checkbox
             class="u-block"
-            checked={this.config.bubbleFireIfParent}
+            checked={this.state.bubbleFireIfParent}
             coral-onChange={this.setBubbleFireIfParent}>Run this rule even when the event originates from a descendant element</Coral.Checkbox>
           <Coral.Checkbox
             class="u-block"
-            checked={this.config.bubbleFireIfChildFired}
+            checked={this.state.bubbleFireIfChildFired}
             coral-onChange={this.setBubbleFireIfChildFired}>Allow this rule to run even if the event already triggered a rule targeting a descendant element</Coral.Checkbox>
           <Coral.Checkbox
             class="u-block"
-            checked={this.config.bubbleStop}
+            checked={this.state.bubbleStop}
             coral-onChange={this.setBubbleStop}>After the rule runs, prevent the event from triggering rules targeting ancestor elements</Coral.Checkbox>
         </div>
       );
