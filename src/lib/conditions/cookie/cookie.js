@@ -8,7 +8,7 @@ var getCookie = require('getCookie');
  * @param {Object} config Condition config.
  * @param {string} config.name The name of the cookie.
  * @param {string} config.value An acceptable cookie value.
- * @param {boolean} [config.valueIsRegex] Whether <code>config.value</code> is intended to be
+ * @param {boolean} [config.valueIsRegex=false] Whether <code>config.value</code> is intended to be
  * a regular expression.
  * @returns {boolean}
  */

@@ -8,8 +8,8 @@ var visitorTracking = require('resourceProvider').get('dtm', 'visitorTracking');
  * source.
  * @param {Object} config Condition config.
  * @param {string} config.source An acceptable traffic source.
- * @param {boolean} [config.sourceIsRegex] Whether <code>config.source</code> is intended to be
- * a regular expression.
+ * @param {boolean} [config.sourceIsRegex=false] Whether <code>config.source</code> is intended to
+ * be a regular expression.
  * @returns {boolean}
  */
 module.exports = function(config) {

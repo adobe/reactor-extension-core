@@ -13,7 +13,7 @@ document.addEventListener('change', bubbly.evaluateEvent, true);
  * order for the rule to fire.
  * @param {string} [config.value] What the new value must be for the rule
  * to fire.
- * @param {boolean} [config.valueIsRegex] Whether <code>config.value</code> is intended to be
+ * @param {boolean} [config.valueIsRegex=false] Whether <code>config.value</code> is intended to be
  * a regular expression.
  * @param {boolean} [config.bubbleFireIfParent=false] Whether the rule should fire if
  * the event originated from a descendant element.

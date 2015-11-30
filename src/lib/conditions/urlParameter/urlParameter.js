@@ -9,7 +9,7 @@ var getQueryParam = require('getQueryParam');
  * @param {Object} config Condition config.
  * @param {string} config.name The name of the querystring parameter.
  * @param {string} config.value An acceptable querystring parameter value.
- * @param {boolean} [config.valueIsRegex] Whether <code>config.value</code> is intended to be
+ * @param {boolean} [config.valueIsRegex=false] Whether <code>config.value</code> is intended to be
  * a regular expression.
  * @returns {boolean}
  */
