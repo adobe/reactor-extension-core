@@ -2,9 +2,9 @@ import React from 'react';
 import Coral from 'coralui-support-react';
 import ElementPropertyEditor from '../components/elementPropertyEditor';
 import {stateStream} from '../store';
-import {setConfigParts} from '../actions';
 import createID from '../utils/createID';
-import {List, Map} from 'immutable'
+import {List, Map} from 'immutable';
+import actions from '../actions/elementPropertiesActions';
 
 export default React.createClass({
   itemIdIncrementor: 0,
@@ -16,8 +16,7 @@ export default React.createClass({
   },
 
   componentDidMount: function() {
-    this.unsub = stateStream
-      .filterByChanges('config.elementProperties')
+    this.unsubscribe = stateStream
       .map(function(state) {
         return {
           elementProperties: state.get('config').get('elementProperties')
@@ -27,55 +26,46 @@ export default React.createClass({
   },
 
   componentWillUnmount: function() {
-    this.unsub();
-  },
-
-  save: function(elementProperties) {
-    setConfigParts.push({
-      elementProperties
-    });
+    this.unsubscribe();
   },
 
   add: function() {
-    let elementProperties = this.state.elementProperties.push(Map({
-      id: createID(),
+    actions.add.push({
       name: '',
       value: ''
-    }));
-    this.save(elementProperties);
-  },
-
-  setName: function(index, name) {
-    let elementProperties = this.state.elementProperties.update(index, function(elementProperty) {
-      return elementProperty.set('name', name);
     });
-    this.save(elementProperties);
   },
 
-  setValue: function(index, value) {
-    let elementProperties = this.state.elementProperties.update(index, function(elementProperty) {
-      return elementProperty.set('value', value);
+  setName: function(elementProperty, name) {
+    actions.setName.push({
+      elementProperty,
+      name
     });
-    this.save(elementProperties);
   },
 
-  remove: function(index) {
-    let elementProperties = this.state.elementProperties.delete(index);
-    this.save(elementProperties);
+  setValue: function(elementProperty, value) {
+    actions.setValue.push({
+      elementProperty,
+      value
+    });
+  },
+
+  remove: function(elementProperty) {
+    actions.remove.push(elementProperty);
   },
 
   render: function() {
     return (
       <div>
         <span className="u-italic">and having the following property values</span>
-        {this.state.elementProperties.map((property, index) => {
+        {this.state.elementProperties.map(property => {
           return <ElementPropertyEditor
             key={property.get('id')}
             name={property.get('name')}
             value={property.get('value')}
-            setName={this.setName.bind(null, index)}
-            setValue={this.setValue.bind(null, index)}
-            remove={this.remove.bind(null, index)}
+            setName={this.setName.bind(null, property)}
+            setValue={this.setValue.bind(null, property)}
+            remove={this.remove.bind(null, property)}
             removable={this.state.elementProperties.size > 1}
             />
         })}

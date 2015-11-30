@@ -3,7 +3,7 @@ import Coral from 'coralui-support-react';
 import AdvancedEventOptions from '../components/advancedEventOptions';
 import {stateStream} from '../store';
 import ElementFilter from '../components/elementFilter';
-import {setConfigParts} from '../actions';
+import actions from '../actions/clickActions';
 import Immutable from 'immutable';
 
 export default React.createClass({
@@ -14,9 +14,8 @@ export default React.createClass({
   },
 
   componentDidMount: function() {
-    this.unsub = stateStream
-      .filterByChanges('config.delayLinkActivation')
-      .map((state) => {
+    this.unsubscribe = stateStream
+      .map(state => {
         return {
           delayLinkActivation: state.get('config').get('delayLinkActivation')
         };
@@ -25,13 +24,11 @@ export default React.createClass({
   },
 
   componentWillUnmount: function() {
-    this.unsub();
+    this.unsubscribe();
   },
 
   onDelayLinkActivationChange: function(event) {
-    setConfigParts.push({
-      'delayLinkActivation': event.target.checked
-    });
+    actions.setDelayLinkActivation.push(event.target.checked);
   },
 
   render: function() {

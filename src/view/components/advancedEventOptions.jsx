@@ -2,7 +2,7 @@ import React from 'react';
 import Coral from 'coralui-support-react';
 import DisclosureButton from './disclosureButton';
 import {stateStream} from '../store';
-import {setConfigParts, deleteConfigParts} from '../actions';
+import actions from '../actions/bubbleActions';
 
 export default React.createClass({
   getInitialState: function() {
@@ -12,20 +12,19 @@ export default React.createClass({
   },
 
   componentWillMount: function() {
-    this.unsub = stateStream
-      .filterByChanges([
-        'bubbleFireIfParent',
-        'bubbleFireIfChildFired',
-        'bubbleStop'
-      ])
-      .map((state) => {
+    this.unsubscribe = stateStream
+      .map(state => {
         return {
-          bubbleFireIfParent: state.bubbleFireIfParent,
-          bubbleFireIfChildFired: state.bubbleFireIfChildFired,
-          bubbleStop: state.bubbleStop
+          bubbleFireIfParent: state.get('config').get('bubbleFireIfParent'),
+          bubbleFireIfChildFired: state.get('config').get('bubbleFireIfChildFired'),
+          bubbleStop: state.get('config').get('bubbleStop')
         };
       })
       .assign(this, 'setState');
+  },
+
+  componentWillUnmount: function() {
+    this.unsubscribe();
   },
 
   setExpanded: function(value) {
@@ -35,39 +34,15 @@ export default React.createClass({
   },
 
   setBubbleFireIfParent: function(event) {
-    if (event.target.checked) {
-      setConfigParts.push({
-        bubbleFireIfParent: true
-      })
-    } else {
-      deleteConfigParts.push([
-        'bubbleFireIfParent'
-      ]);
-    }
+    actions.setBubbleFireIfParent.push(event.target.checked);
   },
 
   setBubbleFireIfChildFired: function(event) {
-    if (event.target.checked) {
-      setConfigParts.push({
-        bubbleFireIfChildFired: true
-      })
-    } else {
-      deleteConfigParts.push([
-        'bubbleFireIfChildFired'
-      ]);
-    }
+    actions.setBubbleFireIfChildFired.push(event.target.checked);
   },
 
   setBubbleStop: function(event) {
-    if (event.target.checked) {
-      setConfigParts.push({
-        bubbleStop: true
-      })
-    } else {
-      deleteConfigParts.push([
-        'bubbleStop'
-      ]);
-    }
+    actions.setBubbleStop.push(event.target.checked);
   },
 
   render: function() {

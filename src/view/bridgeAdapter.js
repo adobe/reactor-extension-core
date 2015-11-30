@@ -1,16 +1,23 @@
 'use strict';
-import {stateStream} from './store';
+import Bacon from 'baconjs';
+import {stateUpdate, stateStream} from './store';
 import Immutable from 'immutable';
-import {replaceState} from './actions';
 import createID from './utils/createID';
 
-var latestState;
-stateStream.onValue((state) => {
+let latestState;
+stateStream.onValue(state => {
   latestState = state;
 });
 
-var getConfig = () => {
-  let state = Immutable.toJS(latestState);
+// While we could put this in an action file, completely replacing the state should probably
+// be limited to this adapter only.
+let replaceState = new Bacon.Bus();
+stateUpdate.plug(replaceState.map(state => {
+  return () => state;
+}));
+
+let getConfig = () => {
+  let state = latestState.toJS();
   let config = state.config || {};
 
   let elementPropertiesObjects = config.elementProperties;
@@ -33,8 +40,16 @@ var getConfig = () => {
   return config;
 };
 
-var setConfig = (config) => {
-  let showElementFilterFields = config.elementSelector || config.elementProperties;
+let setConfig = config => {
+  let isNewConfig = config === undefined;
+
+  config = config || {};
+
+  let showElementFilterFields = Boolean(
+      isNewConfig ||
+      config.elementSelector ||
+      config.elementProperties
+    );
 
   let elementPropertiesMap = config.elementProperties;
   let elementPropertiesObjects = [];
@@ -57,7 +72,7 @@ var setConfig = (config) => {
 
   config.elementProperties = elementPropertiesObjects;
 
-  var state = Immutable.Map({
+  let state = Immutable.Map({
     config: Immutable.fromJS(config),
     showElementFilterFields: showElementFilterFields
   });
@@ -65,24 +80,8 @@ var setConfig = (config) => {
   replaceState.push(state);
 };
 
-// temporary
-//var xyz = {
-//  elementProperties: {
-//    foo: /b\/a\.r/i,
-//    bing: 'baz'
-//  }
-//};
-//setInterval(function() {
-//  console.log(config);
-//}, 1000);
-
-setConfig({
-  elementSelector: 'woot',
-  elementProperties: {
-    foo: 'bar',
-    goo: /shoe/i
-  }
-});
+// Initialize assuming we're creating a new config.
+setConfig();
 
 export default (extensionBridge) => {
   extensionBridge.getConfig = getConfig;

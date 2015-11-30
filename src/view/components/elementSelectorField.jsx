@@ -1,7 +1,7 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
 import {stateStream} from '../store';
-import {setConfigParts} from '../actions';
+import actions from '../actions/elementSelectorActions';
 
 export default React.createClass({
   getInitialState: function() {
@@ -11,9 +11,8 @@ export default React.createClass({
   },
 
   componentDidMount: function() {
-    this.unsub = stateStream
-      .filterByChanges('config.elementSelector')
-      .map((state) => {
+    this.unsubscribe = stateStream
+      .map(state => {
         return {
           elementSelector: state.get('config').get('elementSelector')
         };
@@ -22,14 +21,11 @@ export default React.createClass({
   },
 
   componentWillUnmount: function() {
-    this.unsub();
+    this.unsubscribe();
   },
 
-
   handleChange: function(event) {
-    setConfigParts.push({
-      'elementSelector': event.target.value
-    });
+    actions.setElementSelector.push(event.target.value);
   },
 
   render: function() {

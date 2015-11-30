@@ -3,7 +3,7 @@ import Coral from 'coralui-support-react';
 import ElementSelectorField from '../components/elementSelectorField';
 import ElementPropertiesEditor from '../components/elementPropertiesEditor';
 import {stateStream} from '../store';
-import {setShowElementFilterFields} from '../actions';
+import actions from '../actions/elementFilterActions';
 
 export default React.createClass({
   getInitialState: function() {
@@ -13,9 +13,8 @@ export default React.createClass({
   },
 
   componentDidMount: function() {
-    this.unsub = stateStream
-      .filterByChanges('showElementFilterFields')
-      .map((state) => {
+    this.unsubscribe = stateStream
+      .map(state => {
         return {
           showElementFilterFields: state.get('showElementFilterFields')
         };
@@ -24,11 +23,11 @@ export default React.createClass({
   },
 
   componentWillUnmount: function() {
-    this.unsub();
+    this.unsubscribe();
   },
 
   onSpecificityChange: function(event) {
-    setShowElementFilterFields.push(event.target.value === 'true');
+    actions.setShowElementFilterFields.push(event.target.value === 'true');
   },
 
   render: function() {
