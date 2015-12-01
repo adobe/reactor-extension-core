@@ -126,11 +126,13 @@ module.exports = function() {
     }
   };
 
-  if (ENV_TEST) {
-    bubbly.reset = function() {
-      listeners = [];
-    };
-  }
+  /**
+   * @private
+   * Clears all listeners. This should only be used in tests.
+   */
+  bubbly.__reset = function() {
+    listeners = [];
+  };
 
   return bubbly;
 };
