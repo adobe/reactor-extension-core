@@ -168,9 +168,10 @@ describe('entersViewport event type', function() {
 
     delegate({
       selector: '#b',
-      elementProperties: {
-        innerHTML: 'b'
-      }
+      elementProperties: [{
+        name: 'innerHTML',
+        value: 'b'
+      }]
     }, bTrigger);
 
     __tickGlobalPoll();
@@ -183,9 +184,10 @@ describe('entersViewport event type', function() {
 
     delegate({
       selector: '#b',
-      elementProperties: {
-        innerHTML: 'no match'
-      }
+      elementProperties: [{
+        name: 'innerHTML',
+        value: 'no match'
+      }]
     }, bTrigger);
 
     __tickGlobalPoll();

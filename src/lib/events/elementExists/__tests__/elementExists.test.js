@@ -92,9 +92,10 @@ describe('elementExists event type', function() {
 
     delegate({
       selector: '#b',
-      elementProperties: {
-        'innerHTML': 'b'
-      }
+      elementProperties: [{
+        name: 'innerHTML',
+        value: 'b'
+      }]
     }, trigger);
 
     __tickGlobalPoll();
@@ -107,9 +108,10 @@ describe('elementExists event type', function() {
 
     delegate({
       selector: '#b',
-      elementProperties: {
-        'innerHTML': 'no match'
-      }
+      elementProperties: [{
+        name: 'innerHTML',
+        value: 'no match'
+      }]
     }, trigger);
 
     __tickGlobalPoll();
@@ -127,9 +129,10 @@ describe('elementExists event type', function() {
 
     delegate({
       selector: 'div',
-      elementProperties: {
-        'innerHTML': 'added later'
-      }
+      elementProperties: [{
+        name: 'innerHTML',
+        value: 'added later'
+      }]
     }, selectorAndPropsTrigger);
 
     __tickGlobalPoll();

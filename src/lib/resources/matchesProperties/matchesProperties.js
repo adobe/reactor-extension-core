@@ -17,21 +17,20 @@ var getElementProperty = function(element, property) {
  * If the element doesn't have the property, the element's attribute with the same name will be
  * evaluated if it exists.
  * @param {HTMLElement} element The element to match against.
- * @param {Object} properties The criteria of properties to match again. The key is the property
- * name and the value is the property value.
+ * @param {Object[]} properties The criteria of properties to match again.
+ * @param {string} config.properties[].name The property name.
+ * @param {string} config.properties[].value The property value.
+ * @param {boolean} [config.properties[].valueIsRegex=false] Whether <code>value</code> on the
+ * object instance is intended to be a regular expression.
  * @returns {boolean} Whether the element matches the criteria.
  */
 module.exports = function(element, properties) {
   if (properties) {
-    var propertyNames = Object.keys(properties);
-    for (var i = 0; i < propertyNames.length; i++) {
-      var propertyName = propertyNames[i];
-      var criterionValue = properties[propertyName];
-      var actualValue = getElementProperty(element, propertyName);
-      if (!textMatch(actualValue, criterionValue)) {
-        return false;
-      }
-    }
+    return properties.every(function(property) {
+      var actualValue = getElementProperty(element, property.name);
+      var criterionValue = property.valueIsRegex ? new RegExp(property.value, 'i') : property.value;
+      return textMatch(actualValue, criterionValue);
+    });
   }
   return true;
 };
