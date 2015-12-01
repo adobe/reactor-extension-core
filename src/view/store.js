@@ -1,25 +1,20 @@
-var listeners = [];
-var config = {};
+'use strict';
+import Bacon from 'baconjs';
+import {Map} from 'immutable';
 
-module.exports = {
-  register: function(listener) {
-    listeners.push(listener);
-  },
+let stateUpdate = new Bacon.Bus();
 
-  unregister: function(listener) {
-    console.log(listeners.indexOf(listener));
-    listeners.splice(listeners.indexOf(listener), 1);
-  },
+let initialState = Map();
 
-  getConfig: function() {
-    return config;
-  },
+let stateStream = stateUpdate.scan(initialState, (previousState, operation) => {
+  return operation(previousState);
+}).toProperty();
 
-  setConfig: function(newConfig) {
-    config = newConfig;
+// bacon streams do not actually do anything until there is a subscription.
+// thus we need to add a subscription to get state up and running.
+stateStream.onValue((value) => { console.log(value.toJSON()); });
 
-    listeners.forEach(function(listener) {
-      listener(config);
-    }, this);
-  }
+export default {
+  stateUpdate,
+  stateStream
 };

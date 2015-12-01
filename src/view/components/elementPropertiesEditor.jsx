@@ -1,124 +1,75 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
 import ElementPropertyEditor from '../components/elementPropertyEditor';
-import store from '../store';
-import ConfigComponentMixin from '../mixins/configComponentMixin';
+import {stateStream} from '../store';
+import createID from '../utils/createID';
+import {List, Map} from 'immutable';
+import actions from '../actions/elementPropertiesActions';
 
 export default React.createClass({
   itemIdIncrementor: 0,
-  mixins: [ConfigComponentMixin],
 
   getInitialState: function() {
     return {
-      config: store.getConfig(),
-      expanded: false
+      elementProperties: List()
     };
   },
 
-  componentWillMount: function() {
-    this.buildItemsList(this.state.config.elementProperties);
-  },
-
-  onAfterStoreUpdate: function(config) {
-    this.buildItemsList(config.elementProperties);
-  },
-
-  buildItemsList: function(newItems) {
-    var items = [];
-
-    for (var property in newItems) {
-      items.push({
-        id: this.itemIdIncrementor++,
-        property: property,
-        value: newItems[property]
+  componentDidMount: function() {
+    this.unsubscribe = stateStream
+      .map(function(state) {
+        return {
+          elementProperties: state.get('config').get('elementProperties')
+        };
       })
-    }
-
-    this.items = items;
-
-    // Always keep one row showing.
-    this.add();
+      .assign(this, 'setState');
   },
 
-  saveItems: function(items) {
-    var propertyValueMap = {};
-    items.forEach(function(item) {
-      if (item.hasOwnProperty('property') && item.property.trim().length) {
-        propertyValueMap[item.property] = item.value;
-      }
-    });
-
-    if (Object.keys(propertyValueMap).length) {
-      this.state.config.elementProperties = propertyValueMap;
-    } else {
-      delete this.state.config.elementProperties;
-    }
-
-    this.forceUpdate();
+  componentWillUnmount: function() {
+    this.unsubscribe();
   },
 
   add: function() {
-    this.items.push({
-      id: this.itemIdIncrementor++,
-      property: '',
+    actions.add.push({
+      name: '',
       value: ''
     });
-    this.saveItems(this.items);
   },
 
-  setProperty: function(currentItem, property) {
-    currentItem.property = property;
-    this.saveItems(this.items);
-  },
-
-  setValue: function(currentItem, value) {
-    currentItem.value = value;
-    this.saveItems(this.items);
-  },
-
-  remove: function(item) {
-    var index = this.items.indexOf(item);
-    if (index !== -1) {
-      this.items.splice(index, 1);
-    }
-    this.saveItems(this.items);
-  },
-
-  toggleProperties: function(event) {
-    this.saveItems(event.target.checked ? this.items : []);
-    this.setState({
-      expanded: event.target.checked
+  setName: function(elementProperty, name) {
+    actions.setName.push({
+      elementProperty,
+      name
     });
+  },
+
+  setValue: function(elementProperty, value) {
+    actions.setValue.push({
+      elementProperty,
+      value
+    });
+  },
+
+  remove: function(elementProperty) {
+    actions.remove.push(elementProperty);
   },
 
   render: function() {
-    var propertiesEditor;
-
-    if (this.state.expanded) {
-      propertiesEditor = (
-        <div>
-          {this.items.map(function(item) {
-            return <ElementPropertyEditor
-              key={item.id}
-              property={item.property}
-              value={item.value}
-              setProperty={this.setProperty.bind(null, item)}
-              setValue={this.setValue.bind(null, item)}
-              remove={this.remove.bind(null, item)}
-              removable={this.items.length > 1}
-              />
-          }.bind(this))}
-          <Coral.Button onClick={this.add}>Add</Coral.Button>
-        </div>
-      );
-    }
-
     return (
       <div>
-        <Coral.Checkbox
-          checked={this.state.expanded ? true : null}
-          coral-onChange={this.toggleProperties}>And with the following property values…</Coral.Checkbox>
-        {propertiesEditor}
+        <span className="u-italic">and having the following property values</span>
+        {this.state.elementProperties.map(property => {
+          return <ElementPropertyEditor
+            key={property.get('id')}
+            name={property.get('name')}
+            value={property.get('value')}
+            setName={this.setName.bind(null, property)}
+            setValue={this.setValue.bind(null, property)}
+            remove={this.remove.bind(null, property)}
+            removable={this.state.elementProperties.size > 1}
+            />
+        })}
+        <Coral.Button onClick={this.add}>Add</Coral.Button>
       </div>
     );
   }
