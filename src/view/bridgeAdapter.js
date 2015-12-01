@@ -1,6 +1,7 @@
 'use strict';
 import Bacon from 'baconjs';
-import {stateUpdate, stateStream} from './store';
+import {stateStream} from './store';
+import actions from './actions/bridgeAdapterActions';
 import Immutable from 'immutable';
 import createID from './utils/createID';
 
@@ -8,13 +9,6 @@ let latestState;
 stateStream.onValue(state => {
   latestState = state;
 });
-
-// While we could put this in an action file, completely replacing the state should probably
-// be limited to this adapter only.
-let replaceState = new Bacon.Bus();
-stateUpdate.plug(replaceState.map(state => {
-  return () => state;
-}));
 
 let getConfig = () => {
   let state = latestState.toJS();
@@ -77,7 +71,7 @@ let setConfig = config => {
     showElementFilterFields: showElementFilterFields
   });
 
-  replaceState.push(state);
+  actions.replaceState.push(state);
 };
 
 // Initialize assuming we're creating a new config.

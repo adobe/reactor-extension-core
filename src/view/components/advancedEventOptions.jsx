@@ -14,10 +14,11 @@ export default React.createClass({
   componentWillMount: function() {
     this.unsubscribe = stateStream
       .map(state => {
+        var config = state.get('config');
         return {
-          bubbleFireIfParent: state.get('config').get('bubbleFireIfParent'),
-          bubbleFireIfChildFired: state.get('config').get('bubbleFireIfChildFired'),
-          bubbleStop: state.get('config').get('bubbleStop')
+          bubbleFireIfParent: config.get('bubbleFireIfParent'),
+          bubbleFireIfChildFired: config.get('bubbleFireIfChildFired'),
+          bubbleStop: config.get('bubbleStop')
         };
       })
       .assign(this, 'setState');
