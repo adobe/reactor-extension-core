@@ -1,6 +1,159 @@
 {
   "name": "dtm",
   "displayName": "DTM",
+  "events": [
+    {
+      "displayName": "Click",
+      "libPath": "events/click/click.js",
+      "viewPath": "index.html#/events/click",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "elementSelector": {
+            "type": "string",
+            "minLength": 1
+          },
+          "elementProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "value": {
+                  "type": "string"
+                },
+                "valueIsRegex": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["name", "value"]
+            }
+          },
+          "bubbleFireIfParent": {
+            "type": "boolean"
+          },
+          "bubbleFireIfChildFired": {
+            "type": "boolean"
+          },
+          "bubbleStop": {
+            "type": "boolean"
+          },
+          "delayLinkActivation": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    {
+      "displayName": "Direct Call",
+      "libPath": "events/directCall/directCall.js",
+      "viewPath": "index.html#/events/directCall"
+    },
+    {
+      "displayName": "DOM Ready",
+      "libPath": "events/domReady/domReady.js",
+      "viewPath": "index.html#/events/domReady"
+    },
+    {
+      "displayName": "Element Exists",
+      "libPath": "events/elementExists/elementExists.js",
+      "viewPath": "index.html#/events/elementExists"
+    },
+    {
+      "displayName": "Enters Viewport",
+      "libPath": "events/entersViewport/entersViewport.js",
+      "viewPath": "index.html#/events/entersViewport"
+    },
+    {
+      "displayName": "Hover",
+      "libPath": "events/hover/hover.js",
+      "viewPath": "index.html#/events/hover"
+    },
+    {
+      "displayName": "On Load",
+      "libPath": "events/onload/onload.js",
+      "viewPath": "index.html#/events/onload"
+    },
+    {
+      "displayName": "Page Bottom",
+      "libPath": "events/pageBottom/pageBottom.js",
+      "viewPath": "index.html#/events/pageBottom"
+    },
+    {
+      "displayName": "Page Top",
+      "libPath": "events/pageTop/pageTop.js",
+      "viewPath": "index.html#/events/pageTop"
+    },
+    {
+      "displayName": "Keypress",
+      "libPath": "events/keypress/keypress.js",
+      "viewPath": "index.html#/events/keypress"
+    },
+    {
+      "displayName": "Focus",
+      "libPath": "events/focus/focus.js",
+      "viewPath": "index.html#/events/focus"
+    },
+    {
+      "displayName": "Blur",
+      "libPath": "events/blur/blur.js",
+      "viewPath": "index.html#/events/blur"
+    },
+    {
+      "displayName": "Submit",
+      "libPath": "events/submit/submit.js",
+      "viewPath": "index.html#/events/submit"
+    },
+    {
+      "displayName": "Play",
+      "libPath": "events/play/play.js",
+      "viewPath": "index.html#/events/play"
+    },
+    {
+      "displayName": "Pause",
+      "libPath": "events/pause/pause.js",
+      "viewPath": "index.html#/events/pause"
+    },
+    {
+      "displayName": "Ended",
+      "libPath": "events/ended/ended.js",
+      "viewPath": "index.html#/events/ended"
+    },
+    {
+      "displayName": "Volume Change",
+      "libPath": "events/volumechange/volumechange.js",
+      "viewPath": "index.html#/events/volumechange"
+    },
+    {
+      "displayName": "Stalled",
+      "libPath": "events/stalled/stalled.js",
+      "viewPath": "index.html#/events/stalled"
+    },
+    {
+      "displayName": "Loaded Data",
+      "libPath": "events/loadeddata/loadeddata.js",
+      "viewPath": "index.html#/events/loadeddata"
+    },
+    {
+      "displayName": "Time Played",
+      "libPath": "events/timePlayed/timePlayed.js",
+      "viewPath": "index.html#/events/timePlayed"
+    },
+    {
+      "displayName": "Orientation Change",
+      "libPath": "events/orientationchange/orientationchange.js",
+      "viewPath": "index.html#/events/orientationchange"
+    },
+    {
+      "displayName": "Zoom Change",
+      "libPath": "events/zoomchange/zoomchange.js",
+      "viewPath": "index.html#/events/zoomchange"
+    }
+  ],
   "conditions": [
     {
       "displayName": "Browser",
@@ -136,118 +289,6 @@
       "displayName": "Window Size",
       "libPath": "conditions/windowSize/windowSize.js",
       "viewPath": "index.html#/conditions/windowSize"
-    }
-  ],
-  "events": [
-    {
-      "displayName": "Click",
-      "libPath": "events/click/click.js",
-      "viewPath": "index.html#/events/click"
-    },
-    {
-      "displayName": "Direct Call",
-      "libPath": "events/directCall/directCall.js",
-      "viewPath": "index.html#/events/directCall"
-    },
-    {
-      "displayName": "DOM Ready",
-      "libPath": "events/domReady/domReady.js",
-      "viewPath": "index.html#/events/domReady"
-    },
-    {
-      "displayName": "Element Exists",
-      "libPath": "events/elementExists/elementExists.js",
-      "viewPath": "index.html#/events/elementExists"
-    },
-    {
-      "displayName": "Enters Viewport",
-      "libPath": "events/entersViewport/entersViewport.js",
-      "viewPath": "index.html#/events/entersViewport"
-    },
-    {
-      "displayName": "Hover",
-      "libPath": "events/hover/hover.js",
-      "viewPath": "index.html#/events/hover"
-    },
-    {
-      "displayName": "On Load",
-      "libPath": "events/onload/onload.js",
-      "viewPath": "index.html#/events/onload"
-    },
-    {
-      "displayName": "Page Bottom",
-      "libPath": "events/pageBottom/pageBottom.js",
-      "viewPath": "index.html#/events/pageBottom"
-    },
-    {
-      "displayName": "Page Top",
-      "libPath": "events/pageTop/pageTop.js",
-      "viewPath": "index.html#/events/pageTop"
-    },
-    {
-      "displayName": "Keypress",
-      "libPath": "events/keypress/keypress.js",
-      "viewPath": "index.html#/events/keypress"
-    },
-    {
-      "displayName": "Focus",
-      "libPath": "events/focus/focus.js",
-      "viewPath": "index.html#/events/focus"
-    },
-    {
-      "displayName": "Blur",
-      "libPath": "events/blur/blur.js",
-      "viewPath": "index.html#/events/blur"
-    },
-    {
-      "displayName": "Submit",
-      "libPath": "events/submit/submit.js",
-      "viewPath": "index.html#/events/submit"
-    },
-    {
-      "displayName": "Play",
-      "libPath": "events/play/play.js",
-      "viewPath": "index.html#/events/play"
-    },
-    {
-      "displayName": "Pause",
-      "libPath": "events/pause/pause.js",
-      "viewPath": "index.html#/events/pause"
-    },
-    {
-      "displayName": "Ended",
-      "libPath": "events/ended/ended.js",
-      "viewPath": "index.html#/events/ended"
-    },
-    {
-      "displayName": "Volume Change",
-      "libPath": "events/volumechange/volumechange.js",
-      "viewPath": "index.html#/events/volumechange"
-    },
-    {
-      "displayName": "Stalled",
-      "libPath": "events/stalled/stalled.js",
-      "viewPath": "index.html#/events/stalled"
-    },
-    {
-      "displayName": "Loaded Data",
-      "libPath": "events/loadeddata/loadeddata.js",
-      "viewPath": "index.html#/events/loadeddata"
-    },
-    {
-      "displayName": "Time Played",
-      "libPath": "events/timePlayed/timePlayed.js",
-      "viewPath": "index.html#/events/timePlayed"
-    },
-    {
-      "displayName": "Orientation Change",
-      "libPath": "events/orientationchange/orientationchange.js",
-      "viewPath": "index.html#/events/orientationchange"
-    },
-    {
-      "displayName": "Zoom Change",
-      "libPath": "events/zoomchange/zoomchange.js",
-      "viewPath": "index.html#/events/zoomchange"
     }
   ],
   "dataElements": [

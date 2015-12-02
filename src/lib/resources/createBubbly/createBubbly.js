@@ -77,6 +77,8 @@ module.exports = function() {
         // Just because this could be processed a lot, we'll use a for loop instead of forEach.
         for (var i = 0; i < listeners.length; i++) {
           var listener = listeners[i];
+          var selector = listener.config.selector;
+          var elementProperties = listener.config.elementProperties;
 
           if (!listener.config.bubbleFireIfChildFired && childHasTriggeredRule) {
             continue;
@@ -89,17 +91,16 @@ module.exports = function() {
           // If the user didn't specify a selector or elementProperties then they want the
           // rule to run whenever the event occurs on any element. They don't intend for the
           // rule to run for every node in the element hierarchy though.
-          if (!listener.config.selector && !listener.config.elementProperties &&
-              node !== event.target) {
+          if (node !== event.target && !selector &&
+              (!elementProperties || !Object.keys(elementProperties).length)) {
             continue;
           }
 
-          if (listener.config.selector && !matchesSelector(node, listener.config.selector)) {
+          if (selector && !matchesSelector(node, selector)) {
             continue;
           }
 
-          if (listener.config.elementProperties &&
-              !matchesProperties(node, listener.config.elementProperties)) {
+          if (elementProperties && !matchesProperties(node, elementProperties)) {
             continue;
           }
 
