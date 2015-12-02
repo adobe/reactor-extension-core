@@ -1,41 +1,25 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
 import RegexToggle from './regexToggle';
-import getPatternIfRegex from '../utils/getPatternIfRegex';
 
 export default React.createClass({
   remove: function() {
     this.props.remove();
   },
 
-  onNameBlur: function(event) {
+  onNameChange: function(event) {
     this.props.setName(event.target.value);
   },
 
-  onValueBlur: function(event) {
-    var value = event.target.value;
-
-    // If the curernt value is regex, make the new value regex.
-    if (this.props.value instanceof RegExp) {
-      value = new RegExp(value, 'i');
-    }
-
-    this.props.setValue(value);
+  onValueChange: function(event) {
+    this.props.setValue(event.target.value);
   },
 
-  setIsRegex: function(isRegex) {
-    var value = getPatternIfRegex(this.props.value);
-
-    if (isRegex) {
-      value = new RegExp(value, 'i');
-    }
-
-    this.props.setValue(value);
+  setValueIsRegex: function(isRegex) {
+    this.props.setValueIsRegex(isRegex);
   },
 
   render: function() {
-    var displayValue = getPatternIfRegex(this.props.value);
-
     var removeButton;
 
     if (this.props.removable) {
@@ -54,19 +38,20 @@ export default React.createClass({
           ref="nameField"
           class="u-gapRight"
           placeholder="Property" 
-          defaultValue={this.props.name}
-          onBlur={this.onNameBlur}/>
+          value={this.props.name}
+          onChange={this.onNameChange}/>
         <span className="u-gapRight">=</span>
         <Coral.Textfield 
           ref="valueField"
           class="u-gapRight"
           placeholder="Value" 
-          defaultValue={displayValue}
-          onBlur={this.onValueBlur}/>
-        <RegexToggle
-          setValue={this.props.setValue}
           value={this.props.value}
-          setIsRegex={this.setIsRegex}/>
+          onChange={this.onValueChange}/>
+        <RegexToggle
+          value={this.props.value}
+          valueIsRegex={this.props.valueIsRegex}
+          setValue={this.props.setValue}
+          setValueIsRegex={this.setValueIsRegex}/>
         {removeButton}
       </div>
     )

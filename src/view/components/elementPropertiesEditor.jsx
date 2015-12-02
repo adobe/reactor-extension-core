@@ -50,6 +50,13 @@ export default React.createClass({
     });
   },
 
+  setValueIsRegex: function(elementProperty, valueIsRegex) {
+    actions.setValueIsRegex.push({
+      elementProperty,
+      valueIsRegex
+    });
+  },
+
   remove: function(elementProperty) {
     actions.remove.push(elementProperty);
   },
@@ -63,8 +70,10 @@ export default React.createClass({
             key={property.get('id')}
             name={property.get('name')}
             value={property.get('value')}
+            valueIsRegex={property.get('valueIsRegex')}
             setName={this.setName.bind(null, property)}
             setValue={this.setValue.bind(null, property)}
+            setValueIsRegex={this.setValueIsRegex.bind(null, property)}
             remove={this.remove.bind(null, property)}
             removable={this.state.elementProperties.size > 1}
             />
