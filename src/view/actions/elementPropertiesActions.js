@@ -59,9 +59,18 @@ stateUpdate.plug(setValue.map(event => {
   return state => replaceElementProperty(state, elementProperty);
 }));
 
+let setValueIsRegex = new Bacon.Bus();
+stateUpdate.plug(setValueIsRegex.map(event => {
+  let elementProperty = event.valueIsRegex ?
+    event.elementProperty.set('valueIsRegex', event.valueIsRegex) :
+    event.elementProperty.delete('valueIsRegex');
+  return state => replaceElementProperty(state, elementProperty);
+}));
+
 export default {
   add,
   remove,
   setName,
-  setValue
+  setValue,
+  setValueIsRegex
 };

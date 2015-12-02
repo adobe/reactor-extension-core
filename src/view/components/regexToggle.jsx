@@ -1,34 +1,28 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
-import getPatternIfRegex from '../utils/getPatternIfRegex';
-
 export default React.createClass({
   onToggleChange: function(event) {
-    this.props.setIsRegex(event.target.checked);
+    this.props.setValueIsRegex(event.target.checked);
   },
 
   onTestRegex: function() {
-    // TODO: This is just for testing. Update once a regex tester is in place.
-    var patternString = getPatternIfRegex(this.props.value);
-    patternString += ' (edited)';
-    this.props.setValue(new RegExp(patternString, 'i'));
+    // TODO: This updated value is just for testing. Update once a regex tester is in place.
+    this.props.setValue(this.props.value + ' (edited)');
   },
 
   render: function() {
-    var isValueRegex = this.props.value instanceof RegExp;
-
     return (
       <div className="u-inlineBlock">
         <label>
           <Coral.Switch
             class="u-gapRight"
-            checked={isValueRegex ? true : null}
+            checked={this.props.valueIsRegex ? true : null}
             coral-onChange={this.onToggleChange}/>
           <span className="u-gapRight">Regex</span>
           <button
             className="u-buttonReset coral-Link"
             onClick={this.onTestRegex}
-            style={{ visibility: isValueRegex ? 'visible' : 'hidden' }}>Test</button>
+            style={{ visibility: this.props.valueIsRegex ? 'visible' : 'hidden' }}>Test</button>
         </label>
       </div>
     );
