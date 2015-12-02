@@ -34,15 +34,33 @@ module.exports = function(delegate, type) {
     Simulate[type](innerElement, 'A');
   };
 
-  it('triggers rule when event occurs', function() {
+  it('triggers rule when event occurs with no element refinements', function() {
+    var trigger = jasmine.createSpy();
+
+    delegate({
+      bubbleFireIfParent: true,
+      bubbleFireIfChildFired: true
+    }, trigger);
+
+    simulateEvent();
+
+    expect(trigger.calls.count()).toBe(1);
+
+    assertTriggerCall({
+      call: trigger.calls.mostRecent(),
+      type: type,
+      target: innerElement,
+      relatedElement: innerElement
+    });
+  });
+
+  it('triggers rule when selector matches', function() {
     var trigger = jasmine.createSpy();
 
     delegate({
       selector: '#outer',
-      elementProperties: {
-        title: 'outer container'
-      },
-      bubbleFireIfParent: true
+      bubbleFireIfParent: true,
+      bubbleFireIfChildFired: true
     }, trigger);
 
     simulateEvent();
@@ -62,10 +80,8 @@ module.exports = function(delegate, type) {
 
     delegate({
       selector: '#mismatch',
-      elementProperties: {
-        title: 'outer container'
-      },
-      bubbleFireIfParent: true
+      bubbleFireIfParent: true,
+      bubbleFireIfChildFired: true
     }, trigger);
 
     simulateEvent();
@@ -73,15 +89,40 @@ module.exports = function(delegate, type) {
     expect(trigger.calls.count()).toBe(0);
   });
 
+  it('triggers rule when elementProperties matches', function() {
+    var trigger = jasmine.createSpy();
+
+    delegate({
+      elementProperties: [{
+        name: 'title',
+        value: 'outer container'
+      }],
+      bubbleFireIfParent: true,
+      bubbleFireIfChildFired: true
+    }, trigger);
+
+    simulateEvent();
+
+    expect(trigger.calls.count()).toBe(1);
+
+    assertTriggerCall({
+      call: trigger.calls.mostRecent(),
+      type: type,
+      target: innerElement,
+      relatedElement: outerElement
+    });
+  });
+
   it('does not trigger rule when elementProperties does not match', function() {
     var trigger = jasmine.createSpy();
 
     delegate({
-      selector: '#outer',
-      elementProperties: {
-        title: 'mismatch container'
-      },
-      bubbleFireIfParent: true
+      elementProperties: [{
+        name: 'title',
+        value: 'mismatch container'
+      }],
+      bubbleFireIfParent: true,
+      bubbleFireIfChildFired: true
     }, trigger);
 
     simulateEvent();

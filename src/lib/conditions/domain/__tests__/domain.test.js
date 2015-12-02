@@ -19,12 +19,12 @@ var getConfig = function(domains) {
 
 describe('domain condition delegate', function() {
   it('returns true when the domain matches', function() {
-    var config = getConfig([/example\.com$/i, /adobe\.com$/i]);
+    var config = getConfig(['example\.com$', 'Adobe\.com$']);
     expect(conditionDelegate(config)).toBe(true);
   });
 
   it('returns false when the domain does not match', function() {
-    var config = getConfig([/example\.com$/i, /yahoo\.com$/i]);
+    var config = getConfig(['example\.com$', 'yahoo\.com$']);
     expect(conditionDelegate(config)).toBe(false);
   });
 });

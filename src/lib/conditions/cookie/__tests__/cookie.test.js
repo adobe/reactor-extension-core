@@ -22,12 +22,12 @@ describe('cookie condition delegate', function() {
   });
 
   it('returns true when the cookie matches the regex value', function() {
-    var config = { name: 'test', value: /f.o/i };
+    var config = { name: 'test', value: 'F.o', valueIsRegex: true };
     expect(conditionDelegate(config)).toBe(true);
   });
 
   it('returns false when the cookie does not match the regex value', function() {
-    var config = { name: 'test', value: /g.o/i };
+    var config = { name: 'test', value: 'g.o', valueIsRegex: true };
     expect(conditionDelegate(config)).toBe(false);
   });
 });

@@ -397,9 +397,10 @@ describe('hover event type', function() {
 
     delegate({
       selector: '#b',
-      elementProperties: {
-        innerHTML: 'b'
-      }
+      elementProperties: [{
+        name: 'innerHTML',
+        value: 'b'
+      }]
     }, bTrigger);
 
     __tickGlobalPoll();
@@ -414,9 +415,10 @@ describe('hover event type', function() {
 
     delegate({
       selector: '#b',
-      elementProperties: {
-        innerHTML: 'd'
-      }
+      elementProperties: [{
+        name: 'innerHTML',
+        value: 'd'
+      }]
     }, bTrigger);
 
     __tickGlobalPoll();

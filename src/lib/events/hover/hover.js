@@ -67,8 +67,12 @@ var watchElement = function(element, trackedDelays) {
  * @param {Object} config The event config object.
  * @param {string} config.selector The CSS selector for elements the rule is
  * targeting.
- * @param {Object} [config.elementProperties] Property names and values the element must have in
- * order for the rule to fire.
+ * @param {Object[]} [config.elementProperties] Property values the element must have in order
+ * for the rule to fire.
+ * @param {string} config.elementProperties[].name The property name.
+ * @param {string} config.elementProperties[].value The property value.
+ * @param {boolean} [config.elementProperties[].valueIsRegex=false] Whether <code>value</code>
+ * on the object instance is intended to be a regular expression.
  * @param {Number} [config.delay] The number of milliseconds the pointer must be on
  * top of the element before declaring that a hover has occurred.
  * @param {boolean} [config.bubbleFireIfParent=false] Whether the rule should fire

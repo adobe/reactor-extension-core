@@ -20,9 +20,13 @@ module.exports = function() {
      * Register a config object that should be evaluated for an event to determine if a rule
      * should be executed. If it should be executed, the callback function will be called.
      * @param {Object} config The event config object.
-     * @param {string} selector The selector the rule is matching on.
-     * @param {Object} [elementProperties] Property names and values the element must have in order
+     * @param {string} [config.selector] The selector the rule is matching on.
+     * @param {Object[]} [config.elementProperties] Property values the element must have in order
      * for the rule to fire.
+     * @param {string} config.elementProperties[].name The property name.
+     * @param {string} config.elementProperties[].value The property value.
+     * @param {boolean} [config.elementProperties[].valueIsRegex=false] Whether <code>value</code>
+     * on the object instance is intended to be a regular expression.
      * @param {boolean} [config.bubbleFireIfParent=false] Whether the rule should fire if the
      * event originated from a descendant element.
      * @param {boolean} [config.bubbleFireIfChildFired=false] Whether the rule should fire if the

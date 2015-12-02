@@ -45,7 +45,8 @@ describe('change event type', function() {
       delegate({
         selector: '#outer',
         value: 'foo',
-        bubbleFireIfParent: true
+        bubbleFireIfParent: true,
+        bubbleFireIfChildFired: true
       }, trigger);
 
       innerElement.value = 'foo';
@@ -66,7 +67,8 @@ describe('change event type', function() {
       delegate({
         selector: '#outer',
         value: 'foo',
-        bubbleFireIfParent: true
+        bubbleFireIfParent: true,
+        bubbleFireIfChildFired: true
       }, trigger);
 
       innerElement.value = 'bar';
@@ -80,8 +82,10 @@ describe('change event type', function() {
 
       delegate({
         selector: '#outer',
-        value: /^f/i,
-        bubbleFireIfParent: true
+        value: '^F',
+        valueIsRegex: true,
+        bubbleFireIfParent: true,
+        bubbleFireIfChildFired: true
       }, trigger);
 
       innerElement.value = 'foo';
@@ -101,8 +105,10 @@ describe('change event type', function() {
 
       delegate({
         selector: '#outer',
-        value: /^f/i,
-        bubbleFireIfParent: true
+        value: '^f',
+        valueIsRegex: true,
+        bubbleFireIfParent: true,
+        bubbleFireIfChildFired: true
       }, trigger);
 
       innerElement.value = 'bar';

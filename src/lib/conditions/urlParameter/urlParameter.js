@@ -8,10 +8,13 @@ var getQueryParam = require('getQueryParam');
  * matches the acceptable name and value.
  * @param {Object} config Condition config.
  * @param {string} config.name The name of the querystring parameter.
- * @param {string} config.value The value of the querystring parameter.
+ * @param {string} config.value An acceptable querystring parameter value.
+ * @param {boolean} [config.valueIsRegex=false] Whether <code>config.value</code> is intended to be
+ * a regular expression.
  * @returns {boolean}
  */
 module.exports = function(config) {
-  return textMatch(getQueryParam(config.name), config.value);
+  var acceptableValue = config.valueIsRegex ? new RegExp(config.value, 'i') : config.value;
+  return textMatch(getQueryParam(config.name), acceptableValue);
 };
 

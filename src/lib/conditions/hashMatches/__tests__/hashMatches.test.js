@@ -17,22 +17,60 @@ describe('hash matches condition delegate', function() {
   });
 
   it('returns true when the hash matches an acceptable string', function() {
-    var config = { hashes: ['#foo', '#hashtest'] };
+    var config = {
+      hashes: [
+        {
+          value: '#foo'
+        },
+        {
+          value: '#hashtest'
+        }
+      ]
+    };
     expect(conditionDelegate(config)).toBe(true);
   });
 
   it('returns false when the hash does not match an acceptable string', function() {
-    var config = { hashes: ['#foo', '#goo'] };
+    var config = {
+      hashes: [
+        {
+          value: '#foo'
+        },
+        {
+          value: '#goo'
+        }
+      ]
+    };
     expect(conditionDelegate(config)).toBe(false);
   });
 
   it('returns true when the hash matches an acceptable regex', function() {
-    var config = { hashes: ['#foo', /has.test/i] };
+    var config = {
+      hashes: [
+        {
+          value: '#foo'
+        },
+        {
+          value: 'Has.test',
+          valueIsRegex: true
+        }
+      ]
+    };
     expect(conditionDelegate(config)).toBe(true);
   });
 
   it('returns false when the hash does not match an acceptable regex', function() {
-    var config = { hashes: ['#foo', /#g.o/i] };
+    var config = {
+      hashes: [
+        {
+          value: '#foo'
+        },
+        {
+          value: '#g.o',
+          valueIsRegex: true
+        }
+      ]
+    };
     expect(conditionDelegate(config)).toBe(false);
   });
 });

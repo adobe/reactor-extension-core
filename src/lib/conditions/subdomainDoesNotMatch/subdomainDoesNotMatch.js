@@ -6,11 +6,15 @@ var document = require('document');
 /**
  * Subdomain condition. Determines if the actual subdomain does not match an unacceptable subdomain.
  * @param {Object} config Condition config.
- * @param {(RegEx|string)} config.subdomain An unacceptable subdomain.
+ * @param {string} config.subdomain An unacceptable subdomain.
+ * @param {boolean} [config.subdomainIsRegex=false] Whether <code>config.subdomain</code> is
+ * intended to be a regular expression.
  * @returns {boolean}
  */
 module.exports = function(config) {
   var subdomain = document.location.hostname;
-  return !textMatch(subdomain, config.subdomain);
+  var unacceptableSubdomain = config.subdomainIsRegex ?
+    new RegExp(config.subdomain, 'i') : config.subdomain;
+  return !textMatch(subdomain, unacceptableSubdomain);
 };
 

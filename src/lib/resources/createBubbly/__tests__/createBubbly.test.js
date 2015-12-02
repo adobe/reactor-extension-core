@@ -321,14 +321,15 @@ describe('createBubbly', function() {
     expect(bCallback.calls.count()).toBe(1);
   });
 
-  it('calls the callback when the element matches elementProperties', function() {
+  it('calls the callback when the element matches elementProperties w/ string value', function() {
     var bubbly = createBubbly();
     var callback = jasmine.createSpy();
 
     bubbly.addListener({
-      elementProperties: {
-        innerHTML: 'C'
-      }
+      elementProperties: [{
+        name: 'innerHTML',
+        value: 'C'
+      }]
     }, callback);
 
     bubbly.evaluateEvent({
@@ -338,14 +339,55 @@ describe('createBubbly', function() {
     expect(callback.calls.count()).toBe(1);
   });
 
-  it('does not call the callback when the element does not match elementProperties', function() {
+  it('does not call the callback when the element does not match elementProperties ' +
+      'w/ string value', function() {
     var bubbly = createBubbly();
     var callback = jasmine.createSpy();
 
     bubbly.addListener({
-      elementProperties: {
-        innerHTML: 'no match'
-      }
+      elementProperties: [{
+        name: 'innerHTML',
+        value: 'no match'
+      }]
+    }, callback);
+
+    bubbly.evaluateEvent({
+      target: cElement
+    });
+
+    expect(callback.calls.count()).toBe(0);
+  });
+
+  it('calls the callback when the element matches elementProperties w/ regex value', function() {
+    var bubbly = createBubbly();
+    var callback = jasmine.createSpy();
+
+    bubbly.addListener({
+      elementProperties: [{
+        name: 'innerHTML',
+        value: '\\w',
+        valueIsRegex: true
+      }]
+    }, callback);
+
+    bubbly.evaluateEvent({
+      target: cElement
+    });
+
+    expect(callback.calls.count()).toBe(1);
+  });
+
+  it('does not call the callback when the element does not match elementProperties ' +
+      'w/ regex value', function() {
+    var bubbly = createBubbly();
+    var callback = jasmine.createSpy();
+
+    bubbly.addListener({
+      elementProperties: [{
+        name: 'innerHTML',
+        value: '\\d',
+        valueIsRegex: true
+      }]
     }, callback);
 
     bubbly.evaluateEvent({
