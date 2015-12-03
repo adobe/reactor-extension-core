@@ -61,14 +61,14 @@ describe('hover event type', function() {
     var bTrigger = jasmine.createSpy();
 
     delegate({
-      selector: '#a',
+      elementSelector: '#a',
       bubbleFireIfParent: true,
       bubbleFireIfChildFired: true,
       bubbleStop: false
     }, aTrigger);
 
     delegate({
-      selector: '#b',
+      elementSelector: '#b',
       bubbleFireIfParent: true,
       bubbleFireIfChildFired: true,
       bubbleStop: false
@@ -114,14 +114,14 @@ describe('hover event type', function() {
     var a2Trigger = jasmine.createSpy();
 
     delegate({
-      selector: '#a',
+      elementSelector: '#a',
       bubbleFireIfParent: true,
       bubbleFireIfChildFired: true,
       bubbleStop: false
     }, aTrigger);
 
     delegate({
-      selector: '#a',
+      elementSelector: '#a',
       bubbleFireIfParent: true,
       bubbleFireIfChildFired: true,
       bubbleStop: false
@@ -155,7 +155,7 @@ describe('hover event type', function() {
     var bTrigger = jasmine.createSpy();
 
     delegate({
-      selector: '#a',
+      elementSelector: '#a',
       bubbleFireIfParent: true,
       bubbleFireIfChildFired: true,
       bubbleStop: false,
@@ -163,7 +163,7 @@ describe('hover event type', function() {
     }, aTrigger);
 
     delegate({
-      selector: '#b',
+      elementSelector: '#b',
       bubbleFireIfParent: true,
       bubbleFireIfChildFired: true,
       bubbleStop: false,
@@ -221,7 +221,7 @@ describe('hover event type', function() {
     var bTrigger = jasmine.createSpy();
 
     delegate({
-      selector: '#a',
+      elementSelector: '#a',
       bubbleFireIfParent: true,
       bubbleFireIfChildFired: true,
       bubbleStop: false,
@@ -229,7 +229,7 @@ describe('hover event type', function() {
     }, aTrigger);
 
     delegate({
-      selector: '#b',
+      elementSelector: '#b',
       bubbleFireIfParent: true,
       bubbleFireIfChildFired: true,
       bubbleStop: false,
@@ -285,7 +285,7 @@ describe('hover event type', function() {
     var a2Trigger = jasmine.createSpy();
 
     delegate({
-      selector: '#a',
+      elementSelector: '#a',
       bubbleFireIfParent: true,
       bubbleFireIfChildFired: true,
       bubbleStop: false,
@@ -293,7 +293,7 @@ describe('hover event type', function() {
     }, aTrigger);
 
     delegate({
-      selector: '#a',
+      elementSelector: '#a',
       bubbleFireIfParent: true,
       bubbleFireIfChildFired: true,
       bubbleStop: false,
@@ -339,7 +339,7 @@ describe('hover event type', function() {
     var a2Trigger = jasmine.createSpy();
 
     delegate({
-      selector: '#a',
+      elementSelector: '#a',
       bubbleFireIfParent: true,
       bubbleFireIfChildFired: true,
       bubbleStop: false,
@@ -347,7 +347,7 @@ describe('hover event type', function() {
     }, aTrigger);
 
     delegate({
-      selector: '#a',
+      elementSelector: '#a',
       bubbleFireIfParent: true,
       bubbleFireIfChildFired: true,
       bubbleStop: false,
@@ -396,7 +396,7 @@ describe('hover event type', function() {
     var bTrigger = jasmine.createSpy();
 
     delegate({
-      selector: '#b',
+      elementSelector: '#b',
       elementProperties: [{
         name: 'innerHTML',
         value: 'b'
@@ -414,7 +414,7 @@ describe('hover event type', function() {
     var bTrigger = jasmine.createSpy();
 
     delegate({
-      selector: '#b',
+      elementSelector: '#b',
       elementProperties: [{
         name: 'innerHTML',
         value: 'd'

@@ -46,7 +46,8 @@ poll('element exists event delegate', function() {
  * Element exists event. This event occurs when an element has been added to the DOM. The rule
  * should only run once per targeted element.
  * @param {Object} config The event config object.
- * @param {string} config.selector The CSS selector for elements the rule is targeting.
+ * @param {string} config.elementSelector The CSS selector the element must match in order for
+ * the rule to fire.
  * @param {Object[]} [config.elementProperties] Property values the element must have in order
  * for the rule to fire.
  * @param {string} config.elementProperties[].name The property name.
@@ -56,10 +57,10 @@ poll('element exists event delegate', function() {
  * @param {ruleTrigger} trigger The trigger callback.
  */
 module.exports = function(config, trigger) {
-  var listeners = listenersBySelector[config.selector];
+  var listeners = listenersBySelector[config.elementSelector];
 
   if (!listeners) {
-    listeners = listenersBySelector[config.selector] = [];
+    listeners = listenersBySelector[config.elementSelector] = [];
   }
 
   listeners.push({

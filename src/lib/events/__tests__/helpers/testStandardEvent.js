@@ -54,11 +54,11 @@ module.exports = function(delegate, type) {
     });
   });
 
-  it('triggers rule when selector matches', function() {
+  it('triggers rule when elementSelector matches', function() {
     var trigger = jasmine.createSpy();
 
     delegate({
-      selector: '#outer',
+      elementSelector: '#outer',
       bubbleFireIfParent: true,
       bubbleFireIfChildFired: true
     }, trigger);
@@ -75,11 +75,11 @@ module.exports = function(delegate, type) {
     });
   });
 
-  it('does not trigger rule when selector does not match', function() {
+  it('does not trigger rule when elementSelector does not match', function() {
     var trigger = jasmine.createSpy();
 
     delegate({
-      selector: '#mismatch',
+      elementSelector: '#mismatch',
       bubbleFireIfParent: true,
       bubbleFireIfChildFired: true
     }, trigger);

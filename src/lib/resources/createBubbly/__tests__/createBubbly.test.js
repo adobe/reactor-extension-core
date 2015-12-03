@@ -55,21 +55,21 @@ describe('createBubbly', function() {
       var cCallback = jasmine.createSpy();
 
       bubbly.addListener({
-        selector: '#a',
+        elementSelector: '#a',
         bubbleFireIfParent: true,
         bubbleFireIfChildFired: true,
         bubbleStop: false
       }, aCallback);
 
       bubbly.addListener({
-        selector: '#b',
+        elementSelector: '#b',
         bubbleFireIfParent: options.bubbleFireIfParent,
         bubbleFireIfChildFired: options.bubbleFireIfChildFired,
         bubbleStop: options.bubbleStop
       }, bCallback);
 
       bubbly.addListener({
-        selector: '#c',
+        elementSelector: '#c',
         bubbleFireIfParent: true,
         bubbleFireIfChildFired: true,
         bubbleStop: false
@@ -296,7 +296,7 @@ describe('createBubbly', function() {
     var bCallback = jasmine.createSpy().and.returnValue(false);
 
     bubbly.addListener({
-      selector: '#a',
+      elementSelector: '#a',
       bubbleFireIfParent: true,
       // This would typically prevent aCallback from being executed, but since the bCallback
       // returned false that means b's rule didn't execute, which allows a's rule to execute.
@@ -305,7 +305,7 @@ describe('createBubbly', function() {
     }, aCallback);
 
     bubbly.addListener({
-      selector: '#b',
+      elementSelector: '#b',
       bubbleFireIfParent: true,
       bubbleFireIfChildFired: true,
       // This would typically prevent aCallback from being executed, but since the bCallback

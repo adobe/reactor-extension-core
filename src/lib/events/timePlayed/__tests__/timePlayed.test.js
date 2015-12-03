@@ -59,7 +59,7 @@ describe('timePlayed event type', function() {
     var a2Trigger = jasmine.createSpy();
 
     delegate({
-      selector: '#a',
+      elementSelector: '#a',
       amount: 5,
       unit: 'second',
       bubbleFireIfParent: true,
@@ -68,7 +68,7 @@ describe('timePlayed event type', function() {
     }, aTrigger);
 
     delegate({
-      selector: '#a',
+      elementSelector: '#a',
       amount: 5,
       unit: 'second',
       bubbleFireIfParent: true,
@@ -127,7 +127,7 @@ describe('timePlayed event type', function() {
     var bTrigger = jasmine.createSpy();
 
     delegate({
-      selector: '#a',
+      elementSelector: '#a',
       amount: 5,
       unit: 'second',
       bubbleFireIfParent: true,
@@ -136,7 +136,7 @@ describe('timePlayed event type', function() {
     }, aTrigger);
 
     delegate({
-      selector: '#b',
+      elementSelector: '#b',
       amount: 5,
       unit: 'second',
       bubbleFireIfParent: true,
@@ -195,7 +195,7 @@ describe('timePlayed event type', function() {
     var bTrigger = jasmine.createSpy();
 
     delegate({
-      selector: '#a',
+      elementSelector: '#a',
       amount: 5,
       unit: 'second',
       bubbleFireIfParent: true,
@@ -204,7 +204,7 @@ describe('timePlayed event type', function() {
     }, aTrigger);
 
     delegate({
-      selector: '#b',
+      elementSelector: '#b',
       amount: 10,
       unit: 'second',
       bubbleFireIfParent: true,
@@ -270,7 +270,7 @@ describe('timePlayed event type', function() {
     var a2Trigger = jasmine.createSpy();
 
     delegate({
-      selector: '#a',
+      elementSelector: '#a',
       amount: 5,
       unit: 'second',
       bubbleFireIfParent: true,
@@ -279,7 +279,7 @@ describe('timePlayed event type', function() {
     }, aTrigger);
 
     delegate({
-      selector: '#a',
+      elementSelector: '#a',
       amount: 10,
       unit: 'second',
       bubbleFireIfParent: true,
@@ -345,7 +345,7 @@ describe('timePlayed event type', function() {
     var bTrigger = jasmine.createSpy();
 
     delegate({
-      selector: '#a',
+      elementSelector: '#a',
       amount: 5,
       unit: 'percent',
       bubbleFireIfParent: true,
@@ -354,7 +354,7 @@ describe('timePlayed event type', function() {
     }, aTrigger);
 
     delegate({
-      selector: '#b',
+      elementSelector: '#b',
       amount: 10,
       unit: 'percent',
       bubbleFireIfParent: true,
@@ -420,7 +420,7 @@ describe('timePlayed event type', function() {
     var a2Trigger = jasmine.createSpy();
 
     delegate({
-      selector: '#a',
+      elementSelector: '#a',
       amount: 5,
       unit: 'second',
       bubbleFireIfParent: true,
@@ -429,7 +429,7 @@ describe('timePlayed event type', function() {
     }, aTrigger);
 
     delegate({
-      selector: '#a',
+      elementSelector: '#a',
       amount: 5,
       unit: 'percent',
       bubbleFireIfParent: true,

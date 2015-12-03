@@ -19,8 +19,8 @@ describe('dom data element delegate', function() {
 
   it('should return the text value of the first matching element', function() {
     var config = {
-      selector: '#domDataElement',
-      property: 'text'
+      elementSelector: '#domDataElement',
+      elementProperty: 'text'
     };
 
     expect(dataElementDelegate(config)).toBe('Foo Content');
@@ -28,8 +28,8 @@ describe('dom data element delegate', function() {
 
   it('should return an attribute of the first matching element', function() {
     var config = {
-      selector: '#domDataElement',
-      property: 'data-cake'
+      elementSelector: '#domDataElement',
+      elementProperty: 'data-cake'
     };
 
     expect(dataElementDelegate(config)).toBe('delish');

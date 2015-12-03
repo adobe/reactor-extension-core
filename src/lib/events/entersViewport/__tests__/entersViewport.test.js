@@ -60,7 +60,7 @@ describe('entersViewport event type', function() {
     var aTrigger = jasmine.createSpy();
 
     delegate({
-      selector: '#a'
+      elementSelector: '#a'
     }, aTrigger);
 
     __tickGlobalPoll();
@@ -77,11 +77,11 @@ describe('entersViewport event type', function() {
     var a2Trigger = jasmine.createSpy();
 
     delegate({
-      selector: '#a'
+      elementSelector: '#a'
     }, aTrigger);
 
     delegate({
-      selector: '#a'
+      elementSelector: '#a'
     }, a2Trigger);
 
     __tickGlobalPoll();
@@ -95,12 +95,12 @@ describe('entersViewport event type', function() {
     var a2Trigger = jasmine.createSpy();
 
     delegate({
-      selector: '#a',
+      elementSelector: '#a',
       delay: 100000
     }, aTrigger);
 
     delegate({
-      selector: '#a',
+      elementSelector: '#a',
       delay: 100000
     }, a2Trigger);
 
@@ -120,12 +120,12 @@ describe('entersViewport event type', function() {
     var a2Trigger = jasmine.createSpy();
 
     delegate({
-      selector: '#a',
+      elementSelector: '#a',
       delay: 100000
     }, aTrigger);
 
     delegate({
-      selector: '#a',
+      elementSelector: '#a',
       delay: 200000
     }, a2Trigger);
 
@@ -150,11 +150,11 @@ describe('entersViewport event type', function() {
     var a2Trigger = jasmine.createSpy();
 
     delegate({
-      selector: '#a'
+      elementSelector: '#a'
     }, aTrigger);
 
     delegate({
-      selector: 'div#a'
+      elementSelector: 'div#a'
     }, a2Trigger);
 
     __tickGlobalPoll();
@@ -167,7 +167,7 @@ describe('entersViewport event type', function() {
     var bTrigger = jasmine.createSpy();
 
     delegate({
-      selector: '#b',
+      elementSelector: '#b',
       elementProperties: [{
         name: 'innerHTML',
         value: 'b'
@@ -183,7 +183,7 @@ describe('entersViewport event type', function() {
     var bTrigger = jasmine.createSpy();
 
     delegate({
-      selector: '#b',
+      elementSelector: '#b',
       elementProperties: [{
         name: 'innerHTML',
         value: 'no match'
@@ -210,7 +210,7 @@ describe('entersViewport event type', function() {
         var aTrigger = jasmine.createSpy();
 
         delegate({
-          selector: '#a'
+          elementSelector: '#a'
         }, aTrigger);
 
         Simulate.event(window, 'scroll');
@@ -236,16 +236,16 @@ describe('entersViewport event type', function() {
         var b2Trigger = jasmine.createSpy();
 
         delegate({
-          selector: '#a'
+          elementSelector: '#a'
         }, aTrigger);
 
         delegate({
-          selector: '#b',
+          elementSelector: '#b',
           delay: 50000
         }, bTrigger);
 
         delegate({
-          selector: '#b',
+          elementSelector: '#b',
           delay: 200000
         }, b2Trigger);
 

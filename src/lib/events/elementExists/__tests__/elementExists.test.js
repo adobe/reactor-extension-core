@@ -57,7 +57,7 @@ describe('elementExists event type', function() {
     var aTrigger = jasmine.createSpy();
 
     delegate({
-      selector: '#a'
+      elementSelector: '#a'
     }, aTrigger);
 
     __tickGlobalPoll();
@@ -74,11 +74,11 @@ describe('elementExists event type', function() {
     var a2Trigger = jasmine.createSpy();
 
     delegate({
-      selector: '#a'
+      elementSelector: '#a'
     }, aTrigger);
 
     delegate({
-      selector: '#a'
+      elementSelector: '#a'
     }, a2Trigger);
 
     __tickGlobalPoll();
@@ -91,7 +91,7 @@ describe('elementExists event type', function() {
     var trigger = jasmine.createSpy();
 
     delegate({
-      selector: '#b',
+      elementSelector: '#b',
       elementProperties: [{
         name: 'innerHTML',
         value: 'b'
@@ -107,7 +107,7 @@ describe('elementExists event type', function() {
     var trigger = jasmine.createSpy();
 
     delegate({
-      selector: '#b',
+      elementSelector: '#b',
       elementProperties: [{
         name: 'innerHTML',
         value: 'no match'
@@ -124,11 +124,11 @@ describe('elementExists event type', function() {
     var selectorAndPropsTrigger = jasmine.createSpy();
 
     delegate({
-      selector: 'div'
+      elementSelector: 'div'
     }, selectorOnlyTrigger);
 
     delegate({
-      selector: 'div',
+      elementSelector: 'div',
       elementProperties: [{
         name: 'innerHTML',
         value: 'added later'
