@@ -14,7 +14,7 @@ let stateStream = stateUpdate.scan(initialState, (previousState, operation) => {
 // thus we need to add a subscription to get state up and running.
 stateStream.onValue((value) => { console.log(value.toJSON()); });
 
-export default {
+export {
   stateUpdate,
   stateStream
 };
