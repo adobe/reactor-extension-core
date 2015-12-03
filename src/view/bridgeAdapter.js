@@ -111,10 +111,36 @@ let setConfig = config => {
   actions.replaceState.push(Immutable.fromJS(state));
 };
 
+let createValidator = validateAgainstSchema => {
+  return schema => {
+    var errors = {};
+    var config = getConfig();
+    var schemaValidationResult = validateAgainstSchema(config, schema);
+
+
+    if (!schemaValidationResult.result) {
+      errors.schemaErrors = schemaValidationResult.errors;
+    }
+
+    if (latestState.get('showElementFilterFields') &&
+        !config.elementSelector &&
+        !config.elementProperties) {
+      errors.elementFilterShownWithoutInput = true;
+    }
+
+    errors = Immutable.Map(errors);
+
+    actions.setValidationErrors.push(errors);
+
+    return !Boolean(errors.size);
+  };
+};
+
 // Initialize assuming we're creating a new config.
 setConfig();
 
 export default (extensionBridge) => {
   extensionBridge.getConfig = getConfig;
   extensionBridge.setConfig = setConfig;
+  extensionBridge.validate = createValidator(extensionBridge.validateAgainstSchema);
 };

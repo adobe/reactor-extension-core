@@ -13,7 +13,7 @@
   ],
   "dependencies": {
     "baconjs": "^0.7.82",
-    "coralui-support-react": "git+ssh://git@git.corp.adobe.com:Coral/coralui-support-react.git#2.2.0",
+    "coralui-support-react": "git+ssh://git@git.corp.adobe.com:Coral/coralui-support-react.git",
     "css-loader": "^0.22.0",
     "history": "^1.13.0",
     "immutable": "^3.7.5",

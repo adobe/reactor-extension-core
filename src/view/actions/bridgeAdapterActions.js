@@ -6,6 +6,14 @@ stateUpdate.plug(replaceState.map(state => {
   return () => state;
 }));
 
+let setValidationErrors = new Bacon.Bus();
+stateUpdate.plug(setValidationErrors.map(errors => {
+  return state => {
+    return state.set('validationErrors', errors);
+  };
+}));
+
 export default {
-  replaceState
+  replaceState,
+  setValidationErrors
 };
