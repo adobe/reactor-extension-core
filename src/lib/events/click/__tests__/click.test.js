@@ -59,7 +59,7 @@ describe('click event type', function() {
 
       // Without resetting between tests, the delegate would continue watching for and taking
       // action on click events from prior tests.
-      delegate.reset();
+      delegate.__reset();
     });
 
     it('delays navigation by the default delay', function() {

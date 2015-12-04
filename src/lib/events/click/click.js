@@ -81,6 +81,8 @@ module.exports = function(config, trigger) {
   });
 };
 
-if (ENV_TEST) {
-  module.exports.reset = bubbly.reset;
-}
+/**
+ * @private
+ * Clears all listeners. This should only be used in tests.
+ */
+module.exports.__reset = bubbly.__reset;
