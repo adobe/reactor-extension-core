@@ -2,6 +2,7 @@
 
 var gulp = require('gulp');
 var webpack = require('webpack-stream');
+var sourcemaps = require('gulp-sourcemaps');
 var path = require('path');
 
 require('turbine-gulp-testrunner')(gulp);
@@ -10,12 +11,16 @@ var webpackConfig = {
   output: {
     filename: 'view.js'
   },
+  devtool: '#source-map',
   module: {
     loaders: [
       {
         test: /\.(js|jsx)$/,
         exclude: /(node_modules|__tests__)/,
-        loader: 'babel'
+        loader: 'babel-loader',
+        query: {
+          presets: ['react', 'es2015']
+        }
       }
     ]
   },
@@ -32,7 +37,9 @@ var webpackConfig = {
 
 gulp.task('buildJS', function() {
   return gulp.src('src/view/index.jsx')
+    .pipe(sourcemaps.init())
     .pipe(webpack(webpackConfig))
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest('dist'));
 });
 
