@@ -1,9 +1,8 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
 import ElementPropertyEditor from '../components/elementPropertyEditor';
-import {stateStream} from '../store';
-import createID from '../utils/createID';
-import {List, Map} from 'immutable';
+import { stateStream } from '../store';
+import { List } from 'immutable';
 import actions from '../actions/elementPropertiesActions';
 
 export default React.createClass({
@@ -19,7 +18,7 @@ export default React.createClass({
     this.unsubscribe = stateStream
       .map(function(state) {
         return {
-          elementProperties: state.get('config').get('elementProperties')
+          elementProperties: state.get('elementProperties')
         };
       })
       .assign(this, 'setState');
@@ -37,34 +36,39 @@ export default React.createClass({
   },
 
   setName: function(elementProperty, name) {
-    actions.setName.push({
+    actions.edit.push({
       elementProperty,
-      name
+      props: {
+        name
+      }
     });
   },
 
   setValue: function(elementProperty, value) {
-    actions.setValue.push({
+    actions.edit.push({
       elementProperty,
-      value
+      props: {
+        value
+      }
     });
   },
 
   setValueIsRegex: function(elementProperty, valueIsRegex) {
-    actions.setValueIsRegex.push({
+    actions.edit.push({
       elementProperty,
-      valueIsRegex
+      props: {
+        valueIsRegex
+      }
     });
   },
 
   remove: function(elementProperty) {
     actions.remove.push(elementProperty);
   },
-
+  
   render: function() {
     return (
       <div>
-        <span className="u-italic">and having the following property values</span>
         {this.state.elementProperties.map(property => {
           return <ElementPropertyEditor
             key={property.get('id')}

@@ -1,19 +1,17 @@
 import Bacon from 'baconjs';
-import {stateUpdate} from '../store';
+import { stateUpdate } from '../store';
 
-let replaceState = new Bacon.Bus();
-stateUpdate.plug(replaceState.map(state => {
-  return () => state;
+let config = new Bacon.Bus();
+stateUpdate.plug(config.map(event => {
+  return state => event.reducer(state, event.config, event.isNewConfig);
 }));
 
-let setValidationErrors = new Bacon.Bus();
-stateUpdate.plug(setValidationErrors.map(errors => {
-  return state => {
-    return state.set('validationErrors', errors);
-  };
+let validate = new Bacon.Bus();
+stateUpdate.plug(validate.map((event) => {
+  return state => event.reducer(state);
 }));
 
 export default {
-  replaceState,
-  setValidationErrors
+  config,
+  validate
 };

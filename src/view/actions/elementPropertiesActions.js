@@ -1,6 +1,6 @@
 import Bacon from 'baconjs';
-import {stateUpdate} from '../store';
-import {Map} from 'immutable';
+import { stateUpdate } from '../store';
+import { Map } from 'immutable';
 import createID from '../utils/createID';
 
 let getIndex = (elementProperties, elementProperty) => {
@@ -8,7 +8,7 @@ let getIndex = (elementProperties, elementProperty) => {
 };
 
 let replaceElementProperty = (state, elementProperty) => {
-  return state.updateIn(['config', 'elementProperties'], elementProperties => {
+  return state.update('elementProperties', elementProperties => {
     let index = getIndex(elementProperties, elementProperty);
 
     if (index !== -1) {
@@ -22,7 +22,7 @@ let replaceElementProperty = (state, elementProperty) => {
 let add = new Bacon.Bus();
 stateUpdate.plug(add.map(event => {
   return state => {
-    return state.updateIn(['config', 'elementProperties'], elementProperties => {
+    return state.update('elementProperties', elementProperties => {
       return elementProperties.push(Map({
         id: event.id || createID(),
         name: event.name,
@@ -35,7 +35,7 @@ stateUpdate.plug(add.map(event => {
 let remove = new Bacon.Bus();
 stateUpdate.plug(remove.map(elementProperty => {
   return state => {
-    return state.updateIn(['config', 'elementProperties'], elementProperties => {
+    return state.update('elementProperties', elementProperties => {
       let index = getIndex(elementProperties, elementProperty);
 
       if (index !== -1) {
@@ -47,30 +47,14 @@ stateUpdate.plug(remove.map(elementProperty => {
   }
 }));
 
-let setName = new Bacon.Bus();
-stateUpdate.plug(setName.map(event => {
-  let elementProperty = event.elementProperty.set('name', event.name);
-  return state => replaceElementProperty(state, elementProperty);
-}));
-
-let setValue = new Bacon.Bus();
-stateUpdate.plug(setValue.map(event => {
-  let elementProperty = event.elementProperty.set('value', event.value);
-  return state => replaceElementProperty(state, elementProperty);
-}));
-
-let setValueIsRegex = new Bacon.Bus();
-stateUpdate.plug(setValueIsRegex.map(event => {
-  let elementProperty = event.valueIsRegex ?
-    event.elementProperty.set('valueIsRegex', event.valueIsRegex) :
-    event.elementProperty.delete('valueIsRegex');
+let edit = new Bacon.Bus();
+stateUpdate.plug(edit.map(event => {
+  let elementProperty = event.elementProperty.merge(event.props);
   return state => replaceElementProperty(state, elementProperty);
 }));
 
 export default {
   add,
   remove,
-  setName,
-  setValue,
-  setValueIsRegex
+  edit
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
 import AdvancedEventOptions from '../components/advancedEventOptions';
-import {stateStream} from '../store';
+import { stateStream } from '../store';
 import ElementFilter from '../components/elementFilter';
 import actions from '../actions/clickActions';
 import Immutable from 'immutable';
@@ -17,7 +17,7 @@ export default React.createClass({
     this.unsubscribe = stateStream
       .map(state => {
         return {
-          delayLinkActivation: state.get('config').get('delayLinkActivation')
+          delayLinkActivation: state.get('delayLinkActivation')
         };
       })
       .assign(this, 'setState');
@@ -28,7 +28,7 @@ export default React.createClass({
   },
 
   onDelayLinkActivationChange: function(event) {
-    actions.setDelayLinkActivation.push(event.target.checked);
+    actions.delayLinkActivation.push(event.target.checked);
   },
 
   render: function() {

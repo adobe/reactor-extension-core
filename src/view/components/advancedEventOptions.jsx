@@ -1,7 +1,7 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
 import DisclosureButton from './disclosureButton';
-import {stateStream} from '../store';
+import { stateStream } from '../store';
 import actions from '../actions/bubbleActions';
 
 export default React.createClass({
@@ -14,11 +14,10 @@ export default React.createClass({
   componentWillMount: function() {
     this.unsubscribe = stateStream
       .map(state => {
-        var config = state.get('config');
         return {
-          bubbleFireIfParent: config.get('bubbleFireIfParent'),
-          bubbleFireIfChildFired: config.get('bubbleFireIfChildFired'),
-          bubbleStop: config.get('bubbleStop')
+          bubbleFireIfParent: state.get('bubbleFireIfParent'),
+          bubbleFireIfChildFired: state.get('bubbleFireIfChildFired'),
+          bubbleStop: state.get('bubbleStop')
         };
       })
       .assign(this, 'setState');
@@ -35,15 +34,15 @@ export default React.createClass({
   },
 
   setBubbleFireIfParent: function(event) {
-    actions.setBubbleFireIfParent.push(event.target.checked);
+    actions.bubbleFireIfParent.push(event.target.checked);
   },
 
   setBubbleFireIfChildFired: function(event) {
-    actions.setBubbleFireIfChildFired.push(event.target.checked);
+    actions.bubbleFireIfChildFired.push(event.target.checked);
   },
 
   setBubbleStop: function(event) {
-    actions.setBubbleStop.push(event.target.checked);
+    actions.bubbleStop.push(event.target.checked);
   },
 
   render: function() {
@@ -54,15 +53,15 @@ export default React.createClass({
         <div>
           <Coral.Checkbox
             class="u-block"
-            checked={this.state.bubbleFireIfParent}
+            checked={this.state.bubbleFireIfParent ? true : null}
             coral-onChange={this.setBubbleFireIfParent}>Run this rule even when the event originates from a descendant element</Coral.Checkbox>
           <Coral.Checkbox
             class="u-block"
-            checked={this.state.bubbleFireIfChildFired}
+            checked={this.state.bubbleFireIfChildFired ? true : null}
             coral-onChange={this.setBubbleFireIfChildFired}>Allow this rule to run even if the event already triggered a rule targeting a descendant element</Coral.Checkbox>
           <Coral.Checkbox
             class="u-block"
-            checked={this.state.bubbleStop}
+            checked={this.state.bubbleStop ? true : null}
             coral-onChange={this.setBubbleStop}>After the rule runs, prevent the event from triggering rules targeting ancestor elements</Coral.Checkbox>
         </div>
       );

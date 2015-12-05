@@ -1,17 +1,11 @@
 import Bacon from 'baconjs';
-import {stateUpdate} from '../store';
+import { stateUpdate } from '../store';
 
-let setDelayLinkActivation = new Bacon.Bus();
-stateUpdate.plug(setDelayLinkActivation.map(enabled => {
-  return state => {
-    return state.update('config', config => {
-      return enabled ?
-        config.set('delayLinkActivation', true) :
-        config.delete('delayLinkActivation');
-    });
-  };
+let delayLinkActivation = new Bacon.Bus();
+stateUpdate.plug(delayLinkActivation.map(enabled => {
+  return state => state.set('delayLinkActivation', enabled);
 }));
 
 export default {
-  setDelayLinkActivation
+  delayLinkActivation
 };

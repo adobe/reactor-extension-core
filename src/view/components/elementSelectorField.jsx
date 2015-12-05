@@ -1,6 +1,6 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
-import {stateStream} from '../store';
+import { stateStream } from '../store';
 import actions from '../actions/elementSelectorActions';
 import ValidationWrapper from './validationWrapper';
 
@@ -15,9 +15,8 @@ export default React.createClass({
     this.unsubscribe = stateStream
       .map(state => {
         return {
-          elementSelector: state.get('config').get('elementSelector'),
-          elementFilterShownWithoutInput:
-            state.getIn(['validationErrors', 'elementFilterShownWithoutInput'])
+          elementSelector: state.get('elementSelector'),
+          selectorInvalid: state.getIn(['errors', 'selectorInvalid'])
         };
       })
       .assign(this, 'setState');
@@ -28,20 +27,19 @@ export default React.createClass({
   },
 
   handleChange: function(event) {
-    actions.setElementSelector.push(event.target.value);
+    actions.elementSelector.push(event.target.value);
   },
 
   render: function() {
     let error;
 
-    if (this.state.elementFilterShownWithoutInput) {
-      error = 'Please specify a selector or property value. ' +
-        'Alternatively, choose to target any element.';
+    if (this.state.selectorInvalid) {
+      error = 'Please specify a selector. Alternatively, choose to target any element above.';
     }
 
     return (
       <label>
-        <span className="u-italic u-gapRight">matching the CSS selector</span>
+        <span className="u-gapRight">matching the CSS selector</span>
         <ValidationWrapper error={error}>
           <Coral.Textfield
             placeholder="CSS Selector"

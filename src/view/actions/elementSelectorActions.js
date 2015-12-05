@@ -1,17 +1,11 @@
 import Bacon from 'baconjs';
-import {stateUpdate} from '../store';
+import { stateUpdate } from '../store';
 
-let setElementSelector = new Bacon.Bus();
-stateUpdate.plug(setElementSelector.map(elementSelector => {
-  return state => {
-    return state.update('config', config => {
-      return elementSelector ?
-        config.set('elementSelector', elementSelector) :
-        config.delete('elementSelector');
-    });
-  };
+let elementSelector = new Bacon.Bus();
+stateUpdate.plug(elementSelector.map(elementSelector => {
+  return state => state.set('elementSelector', elementSelector);
 }));
 
 export default {
-  setElementSelector
+  elementSelector
 };

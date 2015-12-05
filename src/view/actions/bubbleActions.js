@@ -1,41 +1,23 @@
 import Bacon from 'baconjs';
-import {stateUpdate} from '../store';
+import { stateUpdate } from '../store';
 
-let setBubbleFireIfParent = new Bacon.Bus();
-stateUpdate.plug(setBubbleFireIfParent.map(enabled => {
-  return state => {
-    return state.update('config', config => {
-      return enabled ?
-        config.set('bubbleFireIfParent', true) :
-        config.delete('bubbleFireIfParent');
-    });
-  };
+let bubbleFireIfParent = new Bacon.Bus();
+stateUpdate.plug(bubbleFireIfParent.map(enabled => {
+  return state => state.set('bubbleFireIfParent', enabled);
 }));
 
-let setBubbleFireIfChildFired = new Bacon.Bus();
-stateUpdate.plug(setBubbleFireIfChildFired.map(enabled => {
-  return state => {
-    return state.update('config', config => {
-      return enabled ?
-        config.set('bubbleFireIfChildFired', true) :
-        config.delete('bubbleFireIfChildFired');
-    });
-  };
+let bubbleFireIfChildFired = new Bacon.Bus();
+stateUpdate.plug(bubbleFireIfChildFired.map(enabled => {
+  return state => state.set('bubbleFireIfChildFired', enabled);
 }));
 
-let setBubbleStop = new Bacon.Bus();
-stateUpdate.plug(setBubbleStop.map(enabled => {
-  return state => {
-    return state.update('config', config => {
-      return enabled ?
-        config.set('bubbleStop', true) :
-        config.delete('bubbleStop');
-    });
-  };
+let bubbleStop = new Bacon.Bus();
+stateUpdate.plug(bubbleStop.map(enabled => {
+  return state => state.set('bubbleStop', enabled);
 }));
 
 export default {
-  setBubbleFireIfParent,
-  setBubbleFireIfChildFired,
-  setBubbleStop
+  bubbleFireIfParent,
+  bubbleFireIfChildFired,
+  bubbleStop
 };
