@@ -12,7 +12,7 @@
     "dtm"
   ],
   "dependencies": {
-    "coralui-support-react": "git+ssh://git@git.corp.adobe.com:Coral/coralui-support-react.git",
+    "coralui-support-react": "git+ssh://git@git.corp.adobe.com:Coral/coralui-support-react#a74ae737f50c38bd4002d9ebea90cf023dcb79e6",
     "css-loader": "^0.22.0",
     "gleedux": "git+https://github.com/Aaronius/gleedux.git",
     "history": "^1.13.0",
@@ -21,7 +21,6 @@
     "nib": "^1.1.0",
     "react-router": "^1.0.0",
     "rx": "^4.0.7",
-    "rx-react": "^0.3.0",
     "style-loader": "^0.13.0",
     "stylus-loader": "^1.4.2"
   },
