@@ -1,10 +1,10 @@
-import Bacon from 'baconjs';
-import { stateUpdate } from '../store';
+import Rx from 'rx';
+import store from '../store';
 
-let elementSelector = new Bacon.Bus();
-stateUpdate.plug(elementSelector.map(elementSelector => {
+let elementSelector = new Rx.Subject();
+elementSelector.map(elementSelector => {
   return state => state.set('elementSelector', elementSelector);
-}));
+}).subscribe(store);
 
 export default {
   elementSelector

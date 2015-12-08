@@ -1,15 +1,15 @@
-import Bacon from 'baconjs';
-import { stateUpdate } from '../store';
+import Rx from 'rx';
+import store from '../store';
 
-let showSpecificElementsFilter = new Bacon.Bus();
-stateUpdate.plug(showSpecificElementsFilter.map(show => {
+let showSpecificElementsFilter = new Rx.Subject();
+showSpecificElementsFilter.map(show => {
   return (state) => state.set('showSpecificElementsFilter', show);
-}));
+}).subscribe(store);
 
-let showElementPropertiesFilter = new Bacon.Bus();
-stateUpdate.plug(showElementPropertiesFilter.map(show => {
+let showElementPropertiesFilter = new Rx.Subject();
+showElementPropertiesFilter.map(show => {
   return (state) => state.set('showElementPropertiesFilter', show);
-}));
+}).subscribe(store);
 
 export default {
   showSpecificElementsFilter,

@@ -1,7 +1,7 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
 import AdvancedEventOptions from '../components/advancedEventOptions';
-import { stateStream } from '../store';
+import store from '../store';
 import ElementFilter from '../components/elementFilter';
 import actions from '../actions/clickActions';
 import Immutable from 'immutable';
@@ -14,21 +14,21 @@ export default React.createClass({
   },
 
   componentDidMount: function() {
-    this.unsubscribe = stateStream
+    this.disposable = store
       .map(state => {
         return {
           delayLinkActivation: state.get('delayLinkActivation')
         };
       })
-      .assign(this, 'setState');
+      .subscribe(state => this.setState(state));
   },
 
   componentWillUnmount: function() {
-    this.unsubscribe();
+    this.disposable.dispose();
   },
 
   onDelayLinkActivationChange: function(event) {
-    actions.delayLinkActivation.push(event.target.checked);
+    actions.delayLinkActivation.onNext(event.target.checked);
   },
 
   render: function() {

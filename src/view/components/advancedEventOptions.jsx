@@ -1,7 +1,7 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
 import DisclosureButton from './disclosureButton';
-import { stateStream } from '../store';
+import store from '../store';
 import actions from '../actions/bubbleActions';
 
 export default React.createClass({
@@ -12,7 +12,7 @@ export default React.createClass({
   },
 
   componentWillMount: function() {
-    this.unsubscribe = stateStream
+    this.disposable = store
       .map(state => {
         return {
           bubbleFireIfParent: state.get('bubbleFireIfParent'),
@@ -20,11 +20,11 @@ export default React.createClass({
           bubbleStop: state.get('bubbleStop')
         };
       })
-      .assign(this, 'setState');
+      .subscribe(state => this.setState(state));
   },
 
   componentWillUnmount: function() {
-    this.unsubscribe();
+    this.disposable.dispose();
   },
 
   setExpanded: function(value) {
@@ -34,15 +34,15 @@ export default React.createClass({
   },
 
   setBubbleFireIfParent: function(event) {
-    actions.bubbleFireIfParent.push(event.target.checked);
+    actions.bubbleFireIfParent.onNext(event.target.checked);
   },
 
   setBubbleFireIfChildFired: function(event) {
-    actions.bubbleFireIfChildFired.push(event.target.checked);
+    actions.bubbleFireIfChildFired.onNext(event.target.checked);
   },
 
   setBubbleStop: function(event) {
-    actions.bubbleStop.push(event.target.checked);
+    actions.bubbleStop.onNext(event.target.checked);
   },
 
   render: function() {

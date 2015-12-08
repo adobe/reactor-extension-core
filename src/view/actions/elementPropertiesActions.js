@@ -1,5 +1,5 @@
-import Bacon from 'baconjs';
-import { stateUpdate } from '../store';
+import Rx from 'rx';
+import store from '../store';
 import { Map } from 'immutable';
 import createID from '../utils/createID';
 
@@ -19,8 +19,8 @@ let replaceElementProperty = (state, elementProperty) => {
   });
 };
 
-let add = new Bacon.Bus();
-stateUpdate.plug(add.map(event => {
+let add = new Rx.Subject();
+add.map(event => {
   return state => {
     return state.update('elementProperties', elementProperties => {
       return elementProperties.push(Map({
@@ -30,10 +30,10 @@ stateUpdate.plug(add.map(event => {
       }));
     });
   };
-}));
+}).subscribe(store);
 
-let remove = new Bacon.Bus();
-stateUpdate.plug(remove.map(elementProperty => {
+let remove = new Rx.Subject();
+remove.map(elementProperty => {
   return state => {
     return state.update('elementProperties', elementProperties => {
       let index = getIndex(elementProperties, elementProperty);
@@ -45,13 +45,13 @@ stateUpdate.plug(remove.map(elementProperty => {
       return elementProperties;
     });
   }
-}));
+}).subscribe(store);
 
-let edit = new Bacon.Bus();
-stateUpdate.plug(edit.map(event => {
+let edit = new Rx.Subject();
+edit.map(event => {
   let elementProperty = event.elementProperty.merge(event.props);
   return state => replaceElementProperty(state, elementProperty);
-}));
+}).subscribe(store);
 
 export default {
   add,

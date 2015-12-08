@@ -1,20 +1,20 @@
-import Bacon from 'baconjs';
-import { stateUpdate } from '../store';
+import Rx from 'rx';
+import store from '../store';
 
-let bubbleFireIfParent = new Bacon.Bus();
-stateUpdate.plug(bubbleFireIfParent.map(enabled => {
+let bubbleFireIfParent = new Rx.Subject();
+bubbleFireIfParent.map(enabled => {
   return state => state.set('bubbleFireIfParent', enabled);
-}));
+}).subscribe(store);
 
-let bubbleFireIfChildFired = new Bacon.Bus();
-stateUpdate.plug(bubbleFireIfChildFired.map(enabled => {
+let bubbleFireIfChildFired = new Rx.Subject();
+bubbleFireIfChildFired.map(enabled => {
   return state => state.set('bubbleFireIfChildFired', enabled);
-}));
+}).subscribe(store);
 
-let bubbleStop = new Bacon.Bus();
-stateUpdate.plug(bubbleStop.map(enabled => {
+let bubbleStop = new Rx.Subject();
+bubbleStop.map(enabled => {
   return state => state.set('bubbleStop', enabled);
-}));
+}).subscribe(store);
 
 export default {
   bubbleFireIfParent,

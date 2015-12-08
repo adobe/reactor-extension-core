@@ -1,17 +1,16 @@
 'use strict';
-import Bacon from 'baconjs';
-import { getState } from './store';
+import store from './store';
 import actions from './actions/bridgeAdapterActions';
 import Immutable from 'immutable';
 import createID from './utils/createID';
 import clickReducerSet from './bridgeReducerSets/clickReducerSet';
 
 let getConfig = () => {
-  return clickReducerSet.stateToConfig({}, getState());
+  return clickReducerSet.stateToConfig({}, store.getValue());
 };
 
 let setConfig = config => {
-  actions.config.push({
+  actions.config.onNext({
     config: config || {},
     isNewConfig: config === undefined,
     reducer: clickReducerSet.configToState
@@ -19,11 +18,11 @@ let setConfig = config => {
 };
 
 let validate = () => {
-  actions.validate.push({
+  actions.validate.onNext({
     reducer: clickReducerSet.validate
   });
 
-  return !getState().get('errors').some(value => value);
+  return !store.getValue().get('errors').some(value => value);
 };
 
 // Initialize assuming we're creating a new config.

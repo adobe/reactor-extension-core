@@ -1,7 +1,7 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
 import ElementPropertyEditor from '../components/elementPropertyEditor';
-import { stateStream } from '../store';
+import store from '../store';
 import { List } from 'immutable';
 import actions from '../actions/elementPropertiesActions';
 
@@ -15,28 +15,28 @@ export default React.createClass({
   },
 
   componentDidMount: function() {
-    this.unsubscribe = stateStream
+    this.disposable = store
       .map(function(state) {
         return {
           elementProperties: state.get('elementProperties')
         };
       })
-      .assign(this, 'setState');
+      .subscribe(state => this.setState(state));
   },
 
   componentWillUnmount: function() {
-    this.unsubscribe();
+    this.disposable.dispose();
   },
 
   add: function() {
-    actions.add.push({
+    actions.add.onNext({
       name: '',
       value: ''
     });
   },
 
   setName: function(elementProperty, name) {
-    actions.edit.push({
+    actions.edit.onNext({
       elementProperty,
       props: {
         name
@@ -45,7 +45,7 @@ export default React.createClass({
   },
 
   setValue: function(elementProperty, value) {
-    actions.edit.push({
+    actions.edit.onNext({
       elementProperty,
       props: {
         value
@@ -54,7 +54,7 @@ export default React.createClass({
   },
 
   setValueIsRegex: function(elementProperty, valueIsRegex) {
-    actions.edit.push({
+    actions.edit.onNext({
       elementProperty,
       props: {
         valueIsRegex
@@ -63,7 +63,7 @@ export default React.createClass({
   },
 
   remove: function(elementProperty) {
-    actions.remove.push(elementProperty);
+    actions.remove.onNext(elementProperty);
   },
   
   render: function() {

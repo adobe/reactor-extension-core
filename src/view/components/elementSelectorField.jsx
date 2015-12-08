@@ -1,6 +1,6 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
-import { stateStream } from '../store';
+import store from '../store';
 import actions from '../actions/elementSelectorActions';
 import ValidationWrapper from './validationWrapper';
 
@@ -12,22 +12,22 @@ export default React.createClass({
   },
 
   componentDidMount: function() {
-    this.unsubscribe = stateStream
+    this.disposable = store
       .map(state => {
         return {
           elementSelector: state.get('elementSelector'),
           selectorInvalid: state.getIn(['errors', 'selectorInvalid'])
         };
       })
-      .assign(this, 'setState');
+      .subscribe(state => this.setState(state));
   },
 
   componentWillUnmount: function() {
-    this.unsubscribe();
+    this.disposable.dispose();
   },
 
   handleChange: function(event) {
-    actions.elementSelector.push(event.target.value);
+    actions.elementSelector.onNext(event.target.value);
   },
 
   render: function() {

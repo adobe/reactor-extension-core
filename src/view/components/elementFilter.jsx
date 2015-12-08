@@ -2,7 +2,7 @@ import React from 'react';
 import Coral from 'coralui-support-react';
 import ElementSelectorField from '../components/elementSelectorField';
 import ElementPropertiesEditor from '../components/elementPropertiesEditor';
-import { stateStream } from '../store';
+import store from '../store';
 import actions from '../actions/elementFilterActions';
 
 export default React.createClass({
@@ -13,26 +13,26 @@ export default React.createClass({
   },
 
   componentDidMount: function() {
-    this.unsubscribe = stateStream
+    this.disposable = store
       .map(state => {
         return {
           showSpecificElementsFilter: state.get('showSpecificElementsFilter'),
           showElementPropertiesFilter: state.get('showElementPropertiesFilter')
         };
       })
-      .assign(this, 'setState');
+      .subscribe(state => this.setState(state));
   },
 
   componentWillUnmount: function() {
-    this.unsubscribe();
+    this.disposable.dispose();
   },
 
   onSpecificityChange: function(event) {
-    actions.showSpecificElementsFilter.push(event.target.value === 'true');
+    actions.showSpecificElementsFilter.onNext(event.target.value === 'true');
   },
 
   setShowElementPropertiesFilter: function(event) {
-    actions.showElementPropertiesFilter.push(event.target.checked);
+    actions.showElementPropertiesFilter.onNext(event.target.checked);
   },
 
   render: function() {

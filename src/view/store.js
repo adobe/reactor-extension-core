@@ -1,26 +1,9 @@
 'use strict';
-import Bacon from 'baconjs';
 import { Map } from 'immutable';
+import { applyMiddleware, createStore } from 'gleedux';
+import logger from './middleware/logger';
 
-let stateUpdate = new Bacon.Bus();
+let createStoreWithMiddleware = applyMiddleware(logger)(createStore);
+let initialState = Map();
 
-let latestState = Map();
-
-let stateStream = stateUpdate.scan(latestState, (previousState, operation) => {
-  return operation(previousState);
-}).toProperty();
-
-// bacon streams do not actually do anything until there is a subscription.
-// thus we need to add a subscription to get state up and running.
-stateStream.onValue(value => {
-  latestState = value;
-  console.log(value.toJSON());
-});
-
-let getState = () => latestState;
-
-export {
-  stateUpdate,
-  stateStream,
-  getState
-};
+export default createStoreWithMiddleware(initialState);
