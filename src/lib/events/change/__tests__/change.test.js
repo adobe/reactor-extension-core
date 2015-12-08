@@ -43,7 +43,7 @@ describe('change event type', function() {
       var trigger = jasmine.createSpy();
 
       delegate({
-        selector: '#outer',
+        elementSelector: '#outer',
         value: 'foo',
         bubbleFireIfParent: true,
         bubbleFireIfChildFired: true
@@ -65,7 +65,7 @@ describe('change event type', function() {
       var trigger = jasmine.createSpy();
 
       delegate({
-        selector: '#outer',
+        elementSelector: '#outer',
         value: 'foo',
         bubbleFireIfParent: true,
         bubbleFireIfChildFired: true
@@ -81,7 +81,7 @@ describe('change event type', function() {
       var trigger = jasmine.createSpy();
 
       delegate({
-        selector: '#outer',
+        elementSelector: '#outer',
         value: '^F',
         valueIsRegex: true,
         bubbleFireIfParent: true,
@@ -104,7 +104,7 @@ describe('change event type', function() {
       var trigger = jasmine.createSpy();
 
       delegate({
-        selector: '#outer',
+        elementSelector: '#outer',
         value: '^f',
         valueIsRegex: true,
         bubbleFireIfParent: true,

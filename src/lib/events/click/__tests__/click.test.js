@@ -93,7 +93,7 @@ describe('click event type', function() {
 
     it('does not delay navigation if no related rule runs', function() {
       delegate({
-        selector: 'h2',
+        elementSelector: 'h2',
         delayLinkActivation: true
       }, function() {});
 

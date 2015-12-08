@@ -265,7 +265,8 @@ poll('enters viewport event delegate', checkForElementsInViewport);
  * Enters viewport event. This event occurs when an element has entered the viewport. The rule
  * should only run once per targeted element.
  * @param {Object} config The event config object.
- * @param {string} config.selector The CSS selector for elements the rule is
+ * @param {string} config.elementSelector The CSS selector the element must match in order for
+ * the rule to fire.
  * targeting.
  * @param {Object[]} [config.elementProperties] Property values the element must have in order
  * for the rule to fire.
@@ -278,10 +279,10 @@ poll('enters viewport event delegate', checkForElementsInViewport);
  * @param {ruleTrigger} trigger The trigger callback.
  */
 module.exports = function(config, trigger) {
-  var listeners = listenersBySelector[config.selector];
+  var listeners = listenersBySelector[config.elementSelector];
 
   if (!listeners) {
-    listeners = listenersBySelector[config.selector] = [];
+    listeners = listenersBySelector[config.elementSelector] = [];
   }
 
   listeners.push({

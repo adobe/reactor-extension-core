@@ -44,7 +44,7 @@ describe('custom event type', function() {
     var trigger = jasmine.createSpy();
 
     delegate({
-      selector: '#outer',
+      elementSelector: '#outer',
       type: CUSTOM_EVENT_TYPE,
       bubbleFireIfParent: true
     }, trigger);

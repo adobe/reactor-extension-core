@@ -20,7 +20,8 @@ module.exports = function() {
      * Register a config object that should be evaluated for an event to determine if a rule
      * should be executed. If it should be executed, the callback function will be called.
      * @param {Object} config The event config object.
-     * @param {string} [config.selector] The selector the rule is matching on.
+     * @param {string} [config.elementSelector] The CSS selector the element must match in order for
+     * the rule to fire.
      * @param {Object[]} [config.elementProperties] Property values the element must have in order
      * for the rule to fire.
      * @param {string} config.elementProperties[].name The property name.
@@ -77,7 +78,7 @@ module.exports = function() {
         // Just because this could be processed a lot, we'll use a for loop instead of forEach.
         for (var i = 0; i < listeners.length; i++) {
           var listener = listeners[i];
-          var selector = listener.config.selector;
+          var elementSelector = listener.config.elementSelector;
           var elementProperties = listener.config.elementProperties;
 
           if (!listener.config.bubbleFireIfChildFired && childHasTriggeredRule) {
@@ -88,15 +89,15 @@ module.exports = function() {
             continue;
           }
 
-          // If the user didn't specify a selector or elementProperties then they want the
+          // If the user didn't specify elementSelector or elementProperties then they want the
           // rule to run whenever the event occurs on any element. They don't intend for the
           // rule to run for every node in the element hierarchy though.
-          if (node !== event.target && !selector &&
+          if (node !== event.target && !elementSelector &&
               (!elementProperties || !Object.keys(elementProperties).length)) {
             continue;
           }
 
-          if (selector && !matchesSelector(node, selector)) {
+          if (elementSelector && !matchesSelector(node, elementSelector)) {
             continue;
           }
 

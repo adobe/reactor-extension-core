@@ -44,7 +44,8 @@ document.addEventListener('click', bubbly.evaluateEvent, true);
 /**
  * The click event. This event occurs when a user has clicked an element.
  * @param {Object} config The event config object.
- * @param {string} [config.selector] The CSS selector for elements the rule is targeting.
+ * @param {string} [config.elementSelector] The CSS selector the element must match in order for
+ * the rule to fire.
  * @param {Object[]} [config.elementProperties] Property values the element must have in order
  * for the rule to fire.
  * @param {string} config.elementProperties[].name The property name.
