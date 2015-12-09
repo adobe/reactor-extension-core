@@ -1,23 +1,6 @@
-import Rx from 'rx';
-import store from '../store';
+import Actions from '../constants/actions';
+import { createAction } from 'redux-actions';
 
-let bubbleFireIfParent = new Rx.Subject();
-bubbleFireIfParent.map(enabled => {
-  return state => state.set('bubbleFireIfParent', enabled);
-}).subscribe(store);
-
-let bubbleFireIfChildFired = new Rx.Subject();
-bubbleFireIfChildFired.map(enabled => {
-  return state => state.set('bubbleFireIfChildFired', enabled);
-}).subscribe(store);
-
-let bubbleStop = new Rx.Subject();
-bubbleStop.map(enabled => {
-  return state => state.set('bubbleStop', enabled);
-}).subscribe(store);
-
-export default {
-  bubbleFireIfParent,
-  bubbleFireIfChildFired,
-  bubbleStop
-};
+export let setBubbleFireIfParent = createAction(Actions.SET_BUBBLE_FIRE_IF_PARENT);
+export let setBubbleFireIfChildFired = createAction(Actions.SET_BUBBLE_FIRE_IF_CHILD_FIRED);
+export let setBubbleStop = createAction(Actions.SET_BUBBLE_STOP);

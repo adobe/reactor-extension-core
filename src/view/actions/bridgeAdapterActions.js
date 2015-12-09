@@ -1,17 +1,5 @@
-import Redux from 'rx';
-import store from '../store';
+import Actions from '../constants/actions';
+import { createAction } from 'redux-actions';
 
-let config = new Rx.Subject();
-config.map(event => {
-  return state => event.reducer(state, event.config, event.isNewConfig);
-}).subscribe(store);
-
-let validate = new Rx.Subject();
-validate.map((event) => {
-  return state => event.reducer(state);
-}).subscribe(store);
-
-export default {
-  config,
-  validate
-};
+export let setConfig = createAction(Actions.SET_CONFIG);
+export let validate = createAction(Actions.VALIDATE);

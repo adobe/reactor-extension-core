@@ -1,5 +1,5 @@
-let configToState = (state, config) => {
-  return state.set('delayLinkActivation', Boolean(config.delayLinkActivation));
+let configToState = (state, action) => {
+  return state.set('delayLinkActivation', Boolean(action.payload.config.delayLinkActivation));
 };
 
 let stateToConfig = (config, state) => {

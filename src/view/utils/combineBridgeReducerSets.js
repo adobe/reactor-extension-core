@@ -1,4 +1,4 @@
-import combineReducers from './combineReducers';
+import reduceReducers from 'reduce-reducers';
 
 export default (...reducerSets) => {
   let configToStateReducers = [];
@@ -20,8 +20,8 @@ export default (...reducerSets) => {
   });
 
   return {
-    configToState: combineReducers.apply(null, configToStateReducers),
-    stateToConfig: combineReducers.apply(null, stateToConfigReducers),
-    validate: combineReducers.apply(null, validateReducers)
+    configToState: reduceReducers.apply(null, configToStateReducers),
+    stateToConfig: reduceReducers.apply(null, stateToConfigReducers),
+    validate: reduceReducers.apply(null, validateReducers)
   };
 };

@@ -1,25 +1,26 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
 import RegexToggle from './regexToggle';
+import { connect } from 'react-redux';
 
-export default React.createClass({
-  remove: function() {
+export default class ElementPropertyEditor extends React.Component {
+  remove = () => {
     this.props.remove();
-  },
+  };
 
-  onNameChange: function(event) {
+  onNameChange = event => {
     this.props.setName(event.target.value);
-  },
+  };
 
-  onValueChange: function(event) {
+  onValueChange = event => {
     this.props.setValue(event.target.value);
-  },
+  };
 
-  setValueIsRegex: function(isRegex) {
+  setValueIsRegex = isRegex => {
     this.props.setValueIsRegex(isRegex);
-  },
+  };
 
-  render: function() {
+  render() {
     var removeButton;
 
     if (this.props.removable) {
@@ -56,4 +57,4 @@ export default React.createClass({
       </div>
     )
   }
-});
+}

@@ -1,17 +1,12 @@
-import Rx from 'rx';
-import store from '../store';
+import Actions from '../constants/actions';
+import { createAction } from 'redux-actions';
 
-let showSpecificElementsFilter = new Rx.Subject();
-showSpecificElementsFilter.map(show => {
-  return (state) => state.set('showSpecificElementsFilter', show);
-}).subscribe(store);
+export let setShowSpecificElementsFilter = createAction(Actions.SET_SHOW_SPECIFIC_ELEMENTS_FILTER);
+export let setShowElementPropertiesFilter = createAction(Actions.SET_SHOW_ELEMENT_PROPERTIES_FILTER);
 
-let showElementPropertiesFilter = new Rx.Subject();
-showElementPropertiesFilter.map(show => {
-  return (state) => state.set('showElementPropertiesFilter', show);
-}).subscribe(store);
+export let setElementSelector = createAction(Actions.SET_ELEMENT_SELECTOR);
 
-export default {
-  showSpecificElementsFilter,
-  showElementPropertiesFilter
-};
+export let addElementProperty = createAction(Actions.ADD_ELEMENT_PROPERTY);
+export let removeElementProperty = createAction(Actions.REMOVE_ELEMENT_PROPERTY);
+export let editElementProperty = createAction(Actions.EDIT_ELEMENT_PROPERTY);
+

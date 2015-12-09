@@ -1,7 +1,8 @@
 import createID from '../../utils/createID';
 import Immutable from 'immutable';
 
-let configToState = (state, config, isNewConfig) => {
+let configToState = (state, action) => {
+  let { config, isNewConfig } = action.payload;
   return state.withMutations(state => {
     state.set('showSpecificElementsFilter',
       Boolean(isNewConfig || config.elementSelector || config.elementProperties));

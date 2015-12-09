@@ -1,39 +1,22 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
-import store from '../store';
-import actions from '../actions/elementSelectorActions';
+import { setElementSelector } from '../actions/elementFilterActions';
 import ValidationWrapper from './validationWrapper';
+import { connect } from 'react-redux';
 
-export default React.createClass({
-  getInitialState: function() {
-    return {
-      elementSelector: ''
-    }
-  },
+@connect(state => ({
+  elementSelector: state.get('elementSelector'),
+  selectorInvalid: state.getIn(['errors', 'selectorInvalid'])
+}))
+export default class ElementSelectorField extends React.Component {
+  handleChange = event => {
+    this.props.dispatch(setElementSelector(event.target.value));
+  };
 
-  componentDidMount: function() {
-    this.disposable = store
-      .map(state => {
-        return {
-          elementSelector: state.get('elementSelector'),
-          selectorInvalid: state.getIn(['errors', 'selectorInvalid'])
-        };
-      })
-      .subscribe(state => this.setState(state));
-  },
-
-  componentWillUnmount: function() {
-    this.disposable.dispose();
-  },
-
-  handleChange: function(event) {
-    actions.elementSelector.onNext(event.target.value);
-  },
-
-  render: function() {
+  render() {
     let error;
 
-    if (this.state.selectorInvalid) {
+    if (this.props.selectorInvalid) {
       error = 'Please specify a selector. Alternatively, choose to target any element above.';
     }
 
@@ -43,10 +26,10 @@ export default React.createClass({
         <ValidationWrapper error={error}>
           <Coral.Textfield
             placeholder="CSS Selector"
-            value={this.state.elementSelector}
+            value={this.props.elementSelector}
             onChange={this.handleChange}/>
         </ValidationWrapper>
       </label>
     );
   }
-});
+}

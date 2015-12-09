@@ -1,12 +1,12 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
 
-export default React.createClass({
-  onClick: function() {
+export default class DisclosureButton extends React.Component {
+  onClick = event => {
     this.props.setSelected(!this.props.selected);
-  },
+  };
 
-  render: function() {
+  render() {
     var iconClass = this.props.selected ? 'chevronDown' : 'chevronRight';
 
     return (
@@ -16,4 +16,4 @@ export default React.createClass({
       </button>
     );
   }
-});
+}

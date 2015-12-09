@@ -1,35 +1,24 @@
 'use strict';
-import store from './store';
-import actions from './actions/bridgeAdapterActions';
-import Immutable from 'immutable';
-import createID from './utils/createID';
+import { setConfig, validate } from './actions/bridgeAdapterActions';
 import clickReducerSet from './bridgeReducerSets/clickReducerSet';
 
-let getConfig = () => {
-  return clickReducerSet.stateToConfig({}, store.getValue());
-};
+export default (extensionBridge, store) => {
+  extensionBridge.getConfig = () => {
+    return clickReducerSet.stateToConfig({}, store.getState());
+  };
 
-let setConfig = config => {
-  actions.config.onNext({
-    config: config || {},
-    isNewConfig: config === undefined,
-    reducer: clickReducerSet.configToState
-  });
-};
+  extensionBridge.setConfig = config => {
+    store.dispatch(setConfig({
+      config: config || {},
+      isNewConfig: config === undefined
+    }));
+  };
 
-let validate = () => {
-  actions.validate.onNext({
-    reducer: clickReducerSet.validate
-  });
+  extensionBridge.validate = () => {
+    store.dispatch(validate());
+    return !store.getState().get('errors').some(value => value);
+  };
 
-  return !store.getValue().get('errors').some(value => value);
-};
-
-// Initialize assuming we're creating a new config.
-setConfig();
-
-export default (extensionBridge) => {
-  extensionBridge.getConfig = getConfig;
-  extensionBridge.setConfig = setConfig;
-  extensionBridge.validate = validate;
+  // Initialize assuming we're creating a new config.
+  extensionBridge.setConfig();
 };

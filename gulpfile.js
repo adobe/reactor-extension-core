@@ -19,7 +19,8 @@ var webpackConfig = {
         exclude: /(node_modules|__tests__)/,
         loader: 'babel-loader',
         query: {
-          presets: ['react', 'es2015']
+          presets: ['react', 'es2015', 'stage-0'],
+          plugins: ['transform-decorators-legacy']
         }
       }
     ]

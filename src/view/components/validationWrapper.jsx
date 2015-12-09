@@ -2,31 +2,35 @@ import React from 'react';
 import Coral from 'coralui-support-react';
 import ErrorIcon from './errorIcon';
 
-export default React.createClass({
-  getInitialState: function() {
-    return {
+export default class ValidationWrapper extends React.Component {
+  constructor() {
+    super();
+    this.state = {
       openTooltip: false
     }
-  },
-  onFocus: function() {
+  }
+
+  onFocus = () => {
     this.setState({
       openTooltip: true
     });
-  },
-  onBlur: function() {
+  };
+
+  onBlur = () => {
     this.setState({
       openTooltip: false
     });
-  },
-  render: function() {
+  };
+
+  render() {
     let invalidIcon;
 
     if (this.props.error) {
-      invalidIcon = <ErrorIcon message={this.props.error} openTooltip={this.state.openTooltip}/>;
+      invalidIcon = <ErrorIcon message={this.props.error} openTooltip={this.props.openTooltip}/>;
     }
 
     let children = React.Children.map(this.props.children, child => {
-      return React.cloneElement(child, { invalid: this.props.error ? true : null })
+      return React.cloneElement(child, { invalid: this.props.error })
     });
 
     return (
@@ -36,4 +40,4 @@ export default React.createClass({
       </div>
     );
   }
-});
+}

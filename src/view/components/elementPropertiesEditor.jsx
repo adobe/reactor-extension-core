@@ -1,75 +1,60 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
 import ElementPropertyEditor from '../components/elementPropertyEditor';
-import store from '../store';
 import { List } from 'immutable';
-import actions from '../actions/elementPropertiesActions';
+import { 
+  addElementProperty, 
+  editElementProperty, 
+  removeElementProperty 
+} from '../actions/elementFilterActions';
+import { connect } from 'react-redux';
 
-export default React.createClass({
-  itemIdIncrementor: 0,
-
-  getInitialState: function() {
-    return {
-      elementProperties: List()
-    };
-  },
-
-  componentDidMount: function() {
-    this.disposable = store
-      .map(function(state) {
-        return {
-          elementProperties: state.get('elementProperties')
-        };
-      })
-      .subscribe(state => this.setState(state));
-  },
-
-  componentWillUnmount: function() {
-    this.disposable.dispose();
-  },
-
-  add: function() {
-    actions.add.onNext({
+@connect(state => ({
+  elementProperties: state.get('elementProperties')
+}))
+export default class ElementPropertiesEditor extends React.Component {
+  add = () => {
+    this.props.dispatch(addElementProperty({
       name: '',
       value: ''
-    });
-  },
+    }));
+  };
 
-  setName: function(elementProperty, name) {
-    actions.edit.onNext({
+  setName = (elementProperty, name) => {
+    this.props.dispatch(editElementProperty({
       elementProperty,
       props: {
         name
       }
-    });
-  },
+    }));
+  };
 
-  setValue: function(elementProperty, value) {
-    actions.edit.onNext({
+  setValue = (elementProperty, value) => {
+    this.props.dispatch(editElementProperty({
       elementProperty,
       props: {
         value
       }
-    });
-  },
+    }));
+  };
 
-  setValueIsRegex: function(elementProperty, valueIsRegex) {
-    actions.edit.onNext({
+  setValueIsRegex = (elementProperty, valueIsRegex) => {
+    this.props.dispatch(editElementProperty({
       elementProperty,
       props: {
         valueIsRegex
       }
-    });
-  },
+    }));
+  };
 
-  remove: function(elementProperty) {
-    actions.remove.onNext(elementProperty);
-  },
+  remove = elementProperty => {
+    this.props.dispatch(removeElementProperty(elementProperty));
+  };
   
-  render: function() {
+  render() {
     return (
       <div>
-        {this.state.elementProperties.map(property => {
+        {this.props.elementProperties.map(property => {
           return <ElementPropertyEditor
             key={property.get('id')}
             name={property.get('name')}
@@ -79,11 +64,11 @@ export default React.createClass({
             setValue={this.setValue.bind(null, property)}
             setValueIsRegex={this.setValueIsRegex.bind(null, property)}
             remove={this.remove.bind(null, property)}
-            removable={this.state.elementProperties.size > 1}
+            removable={this.props.elementProperties.size > 1}
             />
         })}
         <Coral.Button onClick={this.add}>Add</Coral.Button>
       </div>
     );
   }
-});
+}
