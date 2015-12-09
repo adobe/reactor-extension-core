@@ -8,11 +8,12 @@ import {
 } from '../actions/elementFilterActions';
 import { connect } from 'react-redux';
 
-@connect(state => ({
+let mapStateToProps = state => ({
   showSpecificElementsFilter: state.get('showSpecificElementsFilter'),
   showElementPropertiesFilter: state.get('showElementPropertiesFilter')
-}))
-export default class ElementFilter extends React.Component {
+});
+
+class ElementFilter extends React.Component {
   onSpecificityChange = event => {
     this.props.dispatch(setShowSpecificElementsFilter(event.target.value === 'true'));
   };
@@ -55,3 +56,5 @@ export default class ElementFilter extends React.Component {
     );
   }
 }
+
+export default connect(mapStateToProps)(ElementFilter);

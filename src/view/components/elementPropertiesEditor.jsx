@@ -9,10 +9,11 @@ import {
 } from '../actions/elementFilterActions';
 import { connect } from 'react-redux';
 
-@connect(state => ({
+let mapStateToProps = state => ({
   elementProperties: state.get('elementProperties')
-}))
-export default class ElementPropertiesEditor extends React.Component {
+});
+
+class ElementPropertiesEditor extends React.Component {
   add = () => {
     this.props.dispatch(addElementProperty({
       name: '',
@@ -72,3 +73,5 @@ export default class ElementPropertiesEditor extends React.Component {
     );
   }
 }
+
+export default connect(mapStateToProps)(ElementPropertiesEditor)

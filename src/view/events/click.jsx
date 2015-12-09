@@ -5,8 +5,11 @@ import ElementFilter from '../components/elementFilter';
 import { connect } from 'react-redux';
 import { setDelayLinkActivation } from '../actions/delayLinkActivationActions';
 
-@connect(state => ({ delayLinkActivation: state.get('delayLinkActivation') }))
-export default class Click extends React.Component {
+let mapStateToProps = state => ({
+  delayLinkActivation: state.get('delayLinkActivation')
+});
+
+class Click extends React.Component {
   onDelayLinkActivationChange = event => {
     this.props.dispatch(setDelayLinkActivation(event.target.checked));
   };
@@ -25,3 +28,5 @@ export default class Click extends React.Component {
     );
   }
 }
+
+export default connect(mapStateToProps)(Click);

@@ -8,12 +8,13 @@ import {
 } from '../actions/bubbleActions';
 import { connect } from 'react-redux';
 
-@connect(state => ({
+let mapStateToProps = state => ({
   bubbleFireIfParent: state.get('bubbleFireIfParent'),
   bubbleFireIfChildFired: state.get('bubbleFireIfChildFired'),
   bubbleStop: state.get('bubbleStop')
-}))
-export default class AdvancedEventOptions extends React.Component {
+});
+
+class AdvancedEventOptions extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -74,3 +75,5 @@ export default class AdvancedEventOptions extends React.Component {
     );
   }
 }
+
+export default connect(mapStateToProps)(AdvancedEventOptions);
