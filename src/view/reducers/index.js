@@ -4,22 +4,6 @@ import createID from '../utils/createID';
 import clickReducerSet from '../bridgeReducerSets/clickReducerSet';
 import { Map } from 'immutable';
 
-let getElementPropertyIndex = (elementProperties, elementProperty) => {
-  return elementProperties.findIndex(item => item.get('id') === elementProperty.get('id'));
-};
-
-let replaceElementProperty = (state, elementProperty) => {
-  return state.update('elementProperties', elementProperties => {
-    let index = getElementPropertyIndex(elementProperties, elementProperty);
-
-    if (index !== -1) {
-      elementProperties = elementProperties.set(index, elementProperty);
-    }
-
-    return elementProperties;
-  });
-};
-
 export default handleActions({
   [Actions.SET_CONFIG]: (state, action) => {
     return clickReducerSet.configToState(state, action);
@@ -37,28 +21,20 @@ export default handleActions({
     return state.set('elementSelector', action.payload);
   },
   [Actions.ADD_ELEMENT_PROPERTY]: (state, action) => {
-    return state.update('elementProperties', elementProperties => {
-      return elementProperties.push(Map({
-        id: action.payload.id || createID(),
-        name: action.payload.name,
-        value: action.payload.value
-      }));
-    });
+    let id = action.payload.id || createID();
+    return state.setIn(['elementProperties', id], Map({
+      id,
+      name: action.payload.name,
+      value: action.payload.value
+    }));
   },
   [Actions.REMOVE_ELEMENT_PROPERTY]: (state, action) => {
-    return state.update('elementProperties', elementProperties => {
-      let index = getElementPropertyIndex(elementProperties, action.payload);
-
-      if (index !== -1) {
-        elementProperties = elementProperties.delete(index);
-      }
-
-      return elementProperties;
-    });
+    return state.deleteIn(['elementProperties', action.payload]);
   },
   [Actions.EDIT_ELEMENT_PROPERTY]: (state, action) => {
-    let elementProperty = action.payload.elementProperty.merge(action.payload.props);
-    return replaceElementProperty(state, elementProperty);
+    return state.updateIn(['elementProperties', action.payload.id], elementProperty => {
+      return elementProperty.merge(action.payload);
+    });
   },
   [Actions.SET_DELAY_LINK_ACTIVATION]: (state, action) => {
     return state.set('delayLinkActivation', action.payload);

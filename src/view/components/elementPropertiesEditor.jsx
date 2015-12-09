@@ -21,53 +21,48 @@ class ElementPropertiesEditor extends React.Component {
     }));
   };
 
-  setName = (elementProperty, name) => {
+  setName = (id, name) => {
     this.props.dispatch(editElementProperty({
-      elementProperty,
-      props: {
-        name
-      }
+      id,
+      name
     }));
   };
 
-  setValue = (elementProperty, value) => {
+  setValue = (id, value) => {
     this.props.dispatch(editElementProperty({
-      elementProperty,
-      props: {
-        value
-      }
+      id,
+      value
     }));
   };
 
-  setValueIsRegex = (elementProperty, valueIsRegex) => {
+  setValueIsRegex = (id, valueIsRegex) => {
     this.props.dispatch(editElementProperty({
-      elementProperty,
-      props: {
-        valueIsRegex
-      }
+      id,
+      valueIsRegex
     }));
   };
 
-  remove = elementProperty => {
-    this.props.dispatch(removeElementProperty(elementProperty));
+  remove = id => {
+    this.props.dispatch(removeElementProperty(id));
   };
   
   render() {
     return (
       <div>
-        {this.props.elementProperties.map(property => {
+        {this.props.elementProperties.valueSeq().map((property) => {
+          let id = property.get('id');
           return <ElementPropertyEditor
-            key={property.get('id')}
+            key={id}
             name={property.get('name')}
             value={property.get('value')}
             valueIsRegex={property.get('valueIsRegex')}
-            setName={this.setName.bind(null, property)}
-            setValue={this.setValue.bind(null, property)}
-            setValueIsRegex={this.setValueIsRegex.bind(null, property)}
-            remove={this.remove.bind(null, property)}
+            setName={this.setName.bind(null, id)}
+            setValue={this.setValue.bind(null, id)}
+            setValueIsRegex={this.setValueIsRegex.bind(null, id)}
+            remove={this.remove.bind(null, id)}
             removable={this.props.elementProperties.size > 1}
             />
-        })}
+        }).toSeq()}
         <Coral.Button onClick={this.add}>Add</Coral.Button>
       </div>
     );

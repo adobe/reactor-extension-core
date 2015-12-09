@@ -11,21 +11,25 @@ let configToState = (state, action) => {
 
     var elementProperties = config.elementProperties || [];
 
+    var elementPropertiesByID = elementProperties.reduce((indexedById, elementProperty) => {
+      let id = createID();
+      elementProperty.id = id;
+      indexedById[id] = elementProperty;
+      return indexedById;
+    }, {});
+
     // Make sure there's always at least one element property. This is just so the view
     // always shows at least one row.
     if (!elementProperties.length) {
-      elementProperties.push({
+      let id = createID();
+      elementPropertiesByID[id] = {
+        id: id,
         name: '',
         value: ''
-      });
+      };
     }
 
-    // Each element property needs an ID so it can be used as a key when rendering each property.
-    elementProperties.forEach(elementProperty => {
-      elementProperty.id = createID();
-    });
-
-    state.set('elementProperties', Immutable.fromJS(elementProperties));
+    state.set('elementProperties', Immutable.fromJS(elementPropertiesByID));
   });
 };
 
@@ -38,23 +42,13 @@ let stateToConfig = (config, state) => {
     }
 
     if (state.get('showElementPropertiesFilter')) {
-      var elementProperties = state.get('elementProperties');
+      let elementPropertiesByID = state.get('elementProperties');
 
-      if (elementProperties) {
-        elementProperties = elementProperties.toJS();
-
-        for (var i = elementProperties.length - 1; i >= 0; i--) {
-          var elementProperty = elementProperties[i];
-          // If the element property has a name, we'll keep it around. If it doesn't, then the object
-          // is not purposeful and we can remove it.
-          if (elementProperty.name) {
-            // Delete the ID generated on ingress since it was only used for
-            // view rendering purposes.
-            delete elementProperty.id;
-          } else {
-            elementProperties.splice(i, 1);
-          }
-        }
+      if (elementPropertiesByID) {
+        let elementProperties = elementPropertiesByID
+          .filter(elementProperty => elementProperty.get('name'))
+          .map(elementProperty => elementProperty.delete('id'))
+          .toArray();
 
         if (elementProperties.length) {
           config.elementProperties = elementProperties;
