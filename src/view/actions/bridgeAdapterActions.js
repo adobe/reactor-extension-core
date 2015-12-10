@@ -4,8 +4,10 @@ import clickReducerSet from '../bridgeReducerSets/clickReducerSet';
 const SET_CONFIG = 'SET_CONFIG';
 const VALIDATE = 'VALIDATE';
 
-export let setConfig = createAction(SET_CONFIG);
-export let validate = createAction(VALIDATE);
+export let actionCreators = {
+  setConfig: createAction(SET_CONFIG),
+  validate: createAction(VALIDATE)
+};
 
 export default handleActions({
   [SET_CONFIG]: (state, action) => {

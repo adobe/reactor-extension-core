@@ -2,10 +2,7 @@ import React from 'react';
 import Coral from 'coralui-support-react';
 import ElementSelectorField from '../components/elementSelectorField';
 import ElementPropertiesEditor from '../components/elementPropertiesEditor';
-import {
-  setShowSpecificElementsFilter,
-  setShowElementPropertiesFilter
-} from '../actions/elementFilterActions';
+import { actionCreators } from '../actions/elementFilterActions';
 import { connect } from 'react-redux';
 
 let mapStateToProps = state => ({
@@ -15,11 +12,13 @@ let mapStateToProps = state => ({
 
 class ElementFilter extends React.Component {
   onSpecificityChange = event => {
-    this.props.dispatch(setShowSpecificElementsFilter(event.target.value === 'true'));
+    let action = actionCreators.setShowSpecificElementsFilter(event.target.value === 'true');
+    this.props.dispatch(action);
   };
 
   onShowElementPropertiesChange = event => {
-    this.props.dispatch(setShowElementPropertiesFilter(event.target.checked));
+    let action = actionCreators.setShowElementPropertiesFilter(event.target.checked)
+    this.props.dispatch(action);
   };
 
   render() {

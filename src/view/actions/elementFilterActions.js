@@ -9,12 +9,14 @@ const ADD_ELEMENT_PROPERTY = 'ADD_ELEMENT_PROPERTY';
 const REMOVE_ELEMENT_PROPERTY = 'REMOVE_ELEMENT_PROPERTY';
 const EDIT_ELEMENT_PROPERTY = 'EDIT_ELEMENT_PROPERTY';
 
-export let setShowSpecificElementsFilter = createAction(SET_SHOW_SPECIFIC_ELEMENTS_FILTER);
-export let setShowElementPropertiesFilter = createAction(SET_SHOW_ELEMENT_PROPERTIES_FILTER);
-export let setElementSelector = createAction(SET_ELEMENT_SELECTOR);
-export let addElementProperty = createAction(ADD_ELEMENT_PROPERTY);
-export let removeElementProperty = createAction(REMOVE_ELEMENT_PROPERTY);
-export let editElementProperty = createAction(EDIT_ELEMENT_PROPERTY);
+export let actionCreators = {
+  setShowSpecificElementsFilter: createAction(SET_SHOW_SPECIFIC_ELEMENTS_FILTER),
+  setShowElementPropertiesFilter: createAction(SET_SHOW_ELEMENT_PROPERTIES_FILTER),
+  setElementSelector: createAction(SET_ELEMENT_SELECTOR),
+  addElementProperty: createAction(ADD_ELEMENT_PROPERTY),
+  removeElementProperty: createAction(REMOVE_ELEMENT_PROPERTY),
+  editElementProperty: createAction(EDIT_ELEMENT_PROPERTY)
+};
 
 export default handleActions({
   [SET_SHOW_SPECIFIC_ELEMENTS_FILTER]: (state, action) => {

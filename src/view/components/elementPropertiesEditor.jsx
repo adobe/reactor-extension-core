@@ -2,11 +2,7 @@ import React from 'react';
 import Coral from 'coralui-support-react';
 import ElementPropertyEditor from '../components/elementPropertyEditor';
 import { List } from 'immutable';
-import { 
-  addElementProperty, 
-  editElementProperty, 
-  removeElementProperty 
-} from '../actions/elementFilterActions';
+import { actionCreators } from '../actions/elementFilterActions';
 import { connect } from 'react-redux';
 
 let mapStateToProps = state => ({
@@ -15,35 +11,35 @@ let mapStateToProps = state => ({
 
 class ElementPropertiesEditor extends React.Component {
   add = () => {
-    this.props.dispatch(addElementProperty({
+    this.props.dispatch(actionCreators.addElementProperty({
       name: '',
       value: ''
     }));
   };
 
   setName = (id, name) => {
-    this.props.dispatch(editElementProperty({
+    this.props.dispatch(actionCreators.editElementProperty({
       id,
       name
     }));
   };
 
   setValue = (id, value) => {
-    this.props.dispatch(editElementProperty({
+    this.props.dispatch(actionCreators.editElementProperty({
       id,
       value
     }));
   };
 
   setValueIsRegex = (id, valueIsRegex) => {
-    this.props.dispatch(editElementProperty({
+    this.props.dispatch(actionCreators.editElementProperty({
       id,
       valueIsRegex
     }));
   };
 
   remove = id => {
-    this.props.dispatch(removeElementProperty(id));
+    this.props.dispatch(actionCreators.removeElementProperty(id));
   };
   
   render() {

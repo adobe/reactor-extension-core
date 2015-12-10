@@ -1,5 +1,5 @@
 'use strict';
-import { setConfig, validate } from './actions/bridgeAdapterActions';
+import { actionCreators } from './actions/bridgeAdapterActions';
 import clickReducerSet from './bridgeReducerSets/clickReducerSet';
 
 export default (extensionBridge, store) => {
@@ -8,14 +8,14 @@ export default (extensionBridge, store) => {
   };
 
   extensionBridge.setConfig = config => {
-    store.dispatch(setConfig({
+    store.dispatch(actionCreators.setConfig({
       config: config || {},
       isNewConfig: config === undefined
     }));
   };
 
   extensionBridge.validate = () => {
-    store.dispatch(validate());
+    store.dispatch(actionCreators.validate());
     return !store.getState().get('errors').some(value => value);
   };
 

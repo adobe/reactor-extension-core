@@ -3,7 +3,7 @@ import Coral from 'coralui-support-react';
 import AdvancedEventOptions from '../components/advancedEventOptions';
 import ElementFilter from '../components/elementFilter';
 import { connect } from 'react-redux';
-import { setDelayLinkActivation } from '../actions/delayLinkActivationActions';
+import { actionCreators } from '../actions/delayLinkActivationActions';
 
 let mapStateToProps = state => ({
   delayLinkActivation: state.get('delayLinkActivation')
@@ -11,7 +11,7 @@ let mapStateToProps = state => ({
 
 class Click extends React.Component {
   onDelayLinkActivationChange = event => {
-    this.props.dispatch(setDelayLinkActivation(event.target.checked));
+    this.props.dispatch(actionCreators.setDelayLinkActivation(event.target.checked));
   };
 
   render() {
