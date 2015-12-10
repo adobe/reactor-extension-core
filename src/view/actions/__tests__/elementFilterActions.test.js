@@ -1,32 +1,25 @@
 import { Map, fromJS } from 'immutable';
 import testBooleanAction from './helpers/testBooleanAction';
 import testStringAction from './helpers/testStringAction';
-import reducer, {
-  setShowSpecificElementsFilter,
-  setShowElementPropertiesFilter,
-  setElementSelector,
-  addElementProperty,
-  removeElementProperty,
-  editElementProperty
-} from '../elementFilterActions';
+import reducer, { actionCreators } from '../elementFilterActions';
 
 describe('element filter actions', () => {
   it('sets showSpecificElementsFilter', () => {
-    testBooleanAction(reducer, setShowSpecificElementsFilter, 'showSpecificElementsFilter');
+    testBooleanAction(reducer, actionCreators.setShowSpecificElementsFilter, 'showSpecificElementsFilter');
   });
 
   it('sets showSpecificElementsFilter', () => {
-    testBooleanAction(reducer, setShowElementPropertiesFilter, 'showElementPropertiesFilter');
+    testBooleanAction(reducer, actionCreators.setShowElementPropertiesFilter, 'showElementPropertiesFilter');
   });
 
   it('sets elementSelector', () => {
-    testStringAction(reducer, setElementSelector, 'elementSelector');
+    testStringAction(reducer, actionCreators.setElementSelector, 'elementSelector');
   });
 
   it('adds an element property', () => {
     let state = Map();
 
-    let action = addElementProperty({
+    let action = actionCreators.addElementProperty({
       name: 'innerHTML',
       value: 'foo'
     });
@@ -60,7 +53,7 @@ describe('element filter actions', () => {
       }
     });
 
-    let action = removeElementProperty('abc');
+    let action = actionCreators.removeElementProperty('abc');
 
     state = reducer(state, action);
 
@@ -85,7 +78,7 @@ describe('element filter actions', () => {
       }
     });
 
-    let action = editElementProperty({
+    let action = actionCreators.editElementProperty({
       id: 'def',
       value: 'changedValue'
     });
