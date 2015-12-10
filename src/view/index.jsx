@@ -4,6 +4,7 @@ import React from 'react';
 import { Router, Route } from 'react-router';
 import ReactDOM from 'react-dom';
 import Click from './events/click';
+import Blur from './events/blur';
 import bridgeAdapter from './bridgeAdapter';
 import { applyMiddleware, createStore, compose } from 'redux';
 import { Provider } from 'react-redux';
@@ -23,6 +24,7 @@ ReactDOM.render((
     <Provider store={store}>
       <Router>
         <Route path="/events/click" component={Click}/>
+        <Route path="/events/blur" component={Blur}/>
       </Router>
     </Provider>
   </div>

@@ -17,7 +17,7 @@ class Click extends React.Component {
   render() {
     return (
       <div>
-        <span className="eventNameLabel u-gapRight">Click:</span>
+        <h3 className="coral-Heading coral-Heading--3">Click:</h3>
         <ElementFilter/>
         <Coral.Checkbox
           class="u-block"
