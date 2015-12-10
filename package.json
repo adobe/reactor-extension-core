@@ -17,7 +17,6 @@
     "history": "^1.13.0",
     "immutable": "^3.7.5",
     "import-glob-loader": "^1.1.0",
-    "keymirror": "^0.1.1",
     "nib": "^1.1.0",
     "react-redux": "^4.0.0",
     "react-router": "^1.0.0",

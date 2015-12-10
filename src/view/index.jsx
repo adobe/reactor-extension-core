@@ -8,7 +8,7 @@ import bridgeAdapter from './bridgeAdapter';
 import { applyMiddleware, createStore, compose } from 'redux';
 import { Provider } from 'react-redux';
 import { Map } from 'immutable';
-import reducer from './reducers/index';
+import reducer from './actions/index';
 
 const finalCreateStore = compose(
   window.devToolsExtension ? window.devToolsExtension() : f => f
