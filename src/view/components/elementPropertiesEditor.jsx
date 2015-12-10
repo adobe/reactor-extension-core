@@ -1,85 +1,72 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
 import ElementPropertyEditor from '../components/elementPropertyEditor';
-import {stateStream} from '../store';
-import createID from '../utils/createID';
-import {List, Map} from 'immutable';
-import actions from '../actions/elementPropertiesActions';
+import { List } from 'immutable';
+import { 
+  addElementProperty, 
+  editElementProperty, 
+  removeElementProperty 
+} from '../actions/elementFilterActions';
+import { connect } from 'react-redux';
 
-export default React.createClass({
-  itemIdIncrementor: 0,
+let mapStateToProps = state => ({
+  elementProperties: state.get('elementProperties')
+});
 
-  getInitialState: function() {
-    return {
-      elementProperties: List()
-    };
-  },
-
-  componentDidMount: function() {
-    this.unsubscribe = stateStream
-      .map(function(state) {
-        return {
-          elementProperties: state.get('config').get('elementProperties')
-        };
-      })
-      .assign(this, 'setState');
-  },
-
-  componentWillUnmount: function() {
-    this.unsubscribe();
-  },
-
-  add: function() {
-    actions.add.push({
+class ElementPropertiesEditor extends React.Component {
+  add = () => {
+    this.props.dispatch(addElementProperty({
       name: '',
       value: ''
-    });
-  },
+    }));
+  };
 
-  setName: function(elementProperty, name) {
-    actions.setName.push({
-      elementProperty,
+  setName = (id, name) => {
+    this.props.dispatch(editElementProperty({
+      id,
       name
-    });
-  },
+    }));
+  };
 
-  setValue: function(elementProperty, value) {
-    actions.setValue.push({
-      elementProperty,
+  setValue = (id, value) => {
+    this.props.dispatch(editElementProperty({
+      id,
       value
-    });
-  },
+    }));
+  };
 
-  setValueIsRegex: function(elementProperty, valueIsRegex) {
-    actions.setValueIsRegex.push({
-      elementProperty,
+  setValueIsRegex = (id, valueIsRegex) => {
+    this.props.dispatch(editElementProperty({
+      id,
       valueIsRegex
-    });
-  },
+    }));
+  };
 
-  remove: function(elementProperty) {
-    actions.remove.push(elementProperty);
-  },
-
-  render: function() {
+  remove = id => {
+    this.props.dispatch(removeElementProperty(id));
+  };
+  
+  render() {
     return (
       <div>
-        <span className="u-italic">and having the following property values</span>
-        {this.state.elementProperties.map(property => {
+        {this.props.elementProperties.valueSeq().map((property) => {
+          let id = property.get('id');
           return <ElementPropertyEditor
-            key={property.get('id')}
+            key={id}
             name={property.get('name')}
             value={property.get('value')}
             valueIsRegex={property.get('valueIsRegex')}
-            setName={this.setName.bind(null, property)}
-            setValue={this.setValue.bind(null, property)}
-            setValueIsRegex={this.setValueIsRegex.bind(null, property)}
-            remove={this.remove.bind(null, property)}
-            removable={this.state.elementProperties.size > 1}
+            setName={this.setName.bind(null, id)}
+            setValue={this.setValue.bind(null, id)}
+            setValueIsRegex={this.setValueIsRegex.bind(null, id)}
+            remove={this.remove.bind(null, id)}
+            removable={this.props.elementProperties.size > 1}
             />
-        })}
+        }).toSeq()}
         <Coral.Button onClick={this.add}>Add</Coral.Button>
       </div>
     );
   }
-});
+}
+
+export default connect(mapStateToProps)(ElementPropertiesEditor)

@@ -1,43 +1,38 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
-import {stateStream} from '../store';
-import actions from '../actions/elementSelectorActions';
+import { setElementSelector } from '../actions/elementFilterActions';
+import ValidationWrapper from './validationWrapper';
+import { connect } from 'react-redux';
 
-export default React.createClass({
-  getInitialState: function() {
-    return {
-      elementSelector: ''
+let mapStateToProps = state => ({
+  elementSelector: state.get('elementSelector'),
+  selectorInvalid: state.getIn(['errors', 'selectorInvalid'])
+});
+
+class ElementSelectorField extends React.Component {
+  handleChange = event => {
+    this.props.dispatch(setElementSelector(event.target.value));
+  };
+
+  render() {
+    let error;
+
+    if (this.props.selectorInvalid) {
+      error = 'Please specify a selector. Alternatively, choose to target any element above.';
     }
-  },
 
-  componentDidMount: function() {
-    this.unsubscribe = stateStream
-      .map(state => {
-        return {
-          elementSelector: state.get('config').get('elementSelector')
-        };
-      })
-      .assign(this, 'setState');
-  },
-
-  componentWillUnmount: function() {
-    this.unsubscribe();
-  },
-
-  handleChange: function(event) {
-    actions.setElementSelector.push(event.target.value);
-  },
-
-  render: function() {
     return (
       <label>
-        <span className="u-italic u-gapRight">matching the CSS selector</span>
-        <Coral.Textfield
-          placeholder="CSS Selector"
-          className="u-gapRight"
-          value={this.state.elementSelector}
-          onChange={this.handleChange}/>
+        <span className="u-gapRight">matching the CSS selector</span>
+        <ValidationWrapper error={error}>
+          <Coral.Textfield
+            placeholder="CSS Selector"
+            value={this.props.elementSelector}
+            onChange={this.handleChange}/>
+        </ValidationWrapper>
       </label>
     );
   }
-});
+}
+
+export default connect(mapStateToProps)(ElementSelectorField);

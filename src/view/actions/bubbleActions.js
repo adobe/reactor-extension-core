@@ -1,41 +1,21 @@
-import Bacon from 'baconjs';
-import {stateUpdate} from '../store';
+import { createAction, handleActions } from 'redux-actions';
 
-let setBubbleFireIfParent = new Bacon.Bus();
-stateUpdate.plug(setBubbleFireIfParent.map(enabled => {
-  return state => {
-    return state.update('config', config => {
-      return enabled ?
-        config.set('bubbleFireIfParent', true) :
-        config.delete('bubbleFireIfParent');
-    });
-  };
-}));
+const SET_BUBBLE_FIRE_IF_PARENT = 'SET_BUBBLE_FIRE_IF_PARENT';
+const SET_BUBBLE_FIRE_IF_CHILD_FIRED = 'SET_BUBBLE_FIRE_IF_CHILD_FIRED';
+const SET_BUBBLE_STOP = 'SET_BUBBLE_STOP';
 
-let setBubbleFireIfChildFired = new Bacon.Bus();
-stateUpdate.plug(setBubbleFireIfChildFired.map(enabled => {
-  return state => {
-    return state.update('config', config => {
-      return enabled ?
-        config.set('bubbleFireIfChildFired', true) :
-        config.delete('bubbleFireIfChildFired');
-    });
-  };
-}));
+export let setBubbleFireIfParent = createAction(SET_BUBBLE_FIRE_IF_PARENT);
+export let setBubbleFireIfChildFired = createAction(SET_BUBBLE_FIRE_IF_CHILD_FIRED);
+export let setBubbleStop = createAction(SET_BUBBLE_STOP);
 
-let setBubbleStop = new Bacon.Bus();
-stateUpdate.plug(setBubbleStop.map(enabled => {
-  return state => {
-    return state.update('config', config => {
-      return enabled ?
-        config.set('bubbleStop', true) :
-        config.delete('bubbleStop');
-    });
-  };
-}));
-
-export default {
-  setBubbleFireIfParent,
-  setBubbleFireIfChildFired,
-  setBubbleStop
-};
+export default handleActions({
+  [SET_BUBBLE_FIRE_IF_PARENT]: (state, action) => {
+    return state.set('bubbleFireIfParent', action.payload);
+  },
+  [SET_BUBBLE_FIRE_IF_CHILD_FIRED]: (state, action) => {
+    return state.set('bubbleFireIfChildFired', action.payload);
+  },
+  [SET_BUBBLE_STOP]: (state, action) => {
+    return state.set('bubbleStop', action.payload);
+  }
+});

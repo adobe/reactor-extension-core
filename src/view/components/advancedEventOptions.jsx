@@ -1,52 +1,46 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
 import DisclosureButton from './disclosureButton';
-import {stateStream} from '../store';
-import actions from '../actions/bubbleActions';
+import {
+  setBubbleFireIfParent,
+  setBubbleFireIfChildFired,
+  setBubbleStop
+} from '../actions/bubbleActions';
+import { connect } from 'react-redux';
 
-export default React.createClass({
-  getInitialState: function() {
-    return {
+let mapStateToProps = state => ({
+  bubbleFireIfParent: state.get('bubbleFireIfParent'),
+  bubbleFireIfChildFired: state.get('bubbleFireIfChildFired'),
+  bubbleStop: state.get('bubbleStop')
+});
+
+class AdvancedEventOptions extends React.Component {
+  constructor() {
+    super();
+    this.state = {
       expanded: false
-    };
-  },
+    }
+  }
 
-  componentWillMount: function() {
-    this.unsubscribe = stateStream
-      .map(state => {
-        var config = state.get('config');
-        return {
-          bubbleFireIfParent: config.get('bubbleFireIfParent'),
-          bubbleFireIfChildFired: config.get('bubbleFireIfChildFired'),
-          bubbleStop: config.get('bubbleStop')
-        };
-      })
-      .assign(this, 'setState');
-  },
-
-  componentWillUnmount: function() {
-    this.unsubscribe();
-  },
-
-  setExpanded: function(value) {
+  setExpanded = value => {
     this.setState({
       expanded: value
     });
-  },
+  };
 
-  setBubbleFireIfParent: function(event) {
-    actions.setBubbleFireIfParent.push(event.target.checked);
-  },
+  setBubbleFireIfParent = event => {
+    this.props.dispatch(setBubbleFireIfParent(event.target.checked));
+  };
 
-  setBubbleFireIfChildFired: function(event) {
-    actions.setBubbleFireIfChildFired.push(event.target.checked);
-  },
+  setBubbleFireIfChildFired = event => {
+    this.props.dispatch(setBubbleFireIfChildFired(event.target.checked));
+  };
 
-  setBubbleStop: function(event) {
-    actions.setBubbleStop.push(event.target.checked);
-  },
+  setBubbleStop = event => {
+    this.props.dispatch(setBubbleStop(event.target.checked));
+  };
 
-  render: function() {
+  render() {
     var advancedPanel;
 
     if (this.state.expanded) {
@@ -54,15 +48,15 @@ export default React.createClass({
         <div>
           <Coral.Checkbox
             class="u-block"
-            checked={this.state.bubbleFireIfParent}
+            checked={this.props.bubbleFireIfParent}
             coral-onChange={this.setBubbleFireIfParent}>Run this rule even when the event originates from a descendant element</Coral.Checkbox>
           <Coral.Checkbox
             class="u-block"
-            checked={this.state.bubbleFireIfChildFired}
+            checked={this.props.bubbleFireIfChildFired}
             coral-onChange={this.setBubbleFireIfChildFired}>Allow this rule to run even if the event already triggered a rule targeting a descendant element</Coral.Checkbox>
           <Coral.Checkbox
             class="u-block"
-            checked={this.state.bubbleStop}
+            checked={this.props.bubbleStop}
             coral-onChange={this.setBubbleStop}>After the rule runs, prevent the event from triggering rules targeting ancestor elements</Coral.Checkbox>
         </div>
       );
@@ -80,4 +74,6 @@ export default React.createClass({
       </div>
     );
   }
-});
+}
+
+export default connect(mapStateToProps)(AdvancedEventOptions);

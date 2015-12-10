@@ -1,11 +1,17 @@
-import Bacon from 'baconjs';
-import {stateUpdate} from '../store';
+import { createAction, handleActions } from 'redux-actions';
+import clickReducerSet from '../bridgeReducerSets/clickReducerSet';
 
-let replaceState = new Bacon.Bus();
-stateUpdate.plug(replaceState.map(state => {
-  return () => state;
-}));
+const SET_CONFIG = 'SET_CONFIG';
+const VALIDATE = 'VALIDATE';
 
-export default {
-  replaceState
-};
+export let setConfig = createAction(SET_CONFIG);
+export let validate = createAction(VALIDATE);
+
+export default handleActions({
+  [SET_CONFIG]: (state, action) => {
+    return clickReducerSet.configToState(state, action);
+  },
+  [VALIDATE]: (state, action) => {
+    return clickReducerSet.validate(state, action);
+  }
+});

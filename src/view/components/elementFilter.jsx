@@ -2,65 +2,59 @@ import React from 'react';
 import Coral from 'coralui-support-react';
 import ElementSelectorField from '../components/elementSelectorField';
 import ElementPropertiesEditor from '../components/elementPropertiesEditor';
-import {stateStream} from '../store';
-import actions from '../actions/elementFilterActions';
+import {
+  setShowSpecificElementsFilter,
+  setShowElementPropertiesFilter
+} from '../actions/elementFilterActions';
+import { connect } from 'react-redux';
 
-export default React.createClass({
-  getInitialState: function() {
-    return {
-      showElementFilterFields: false
-    }
-  },
+let mapStateToProps = state => ({
+  showSpecificElementsFilter: state.get('showSpecificElementsFilter'),
+  showElementPropertiesFilter: state.get('showElementPropertiesFilter')
+});
 
-  componentDidMount: function() {
-    this.unsubscribe = stateStream
-      .map(state => {
-        return {
-          showElementFilterFields: state.get('showElementFilterFields')
-        };
-      })
-      .assign(this, 'setState');
-  },
+class ElementFilter extends React.Component {
+  onSpecificityChange = event => {
+    this.props.dispatch(setShowSpecificElementsFilter(event.target.value === 'true'));
+  };
 
-  componentWillUnmount: function() {
-    this.unsubscribe();
-  },
+  onShowElementPropertiesChange = event => {
+    this.props.dispatch(setShowElementPropertiesFilter(event.target.checked));
+  };
 
-  onSpecificityChange: function(event) {
-    actions.setShowElementFilterFields.push(event.target.value === 'true');
-  },
-
-  render: function() {
-    var filterOptions;
-
-    if (this.state.showElementFilterFields) {
-      filterOptions = (
-        <div>
-          <ElementSelectorField/>
-          <ElementPropertiesEditor/>
-        </div>
-      );
-    }
-
+  render() {
     return (
       <div>
         <span className="u-gapRight">On</span>
         <Coral.Radio
             name="filter"
             value="true"
-            checked={this.state.showElementFilterFields ? true : null}
+            checked={this.props.showSpecificElementsFilter}
             coral-onChange={this.onSpecificityChange}>
           specific elements
         </Coral.Radio>
         <Coral.Radio
             name="filter"
             value="false"
-            checked={!this.state.showElementFilterFields ? true : null}
+            checked={!this.props.showSpecificElementsFilter}
             coral-onChange={this.onSpecificityChange}>
           any element
         </Coral.Radio>
-        {filterOptions}
+        {
+          this.props.showSpecificElementsFilter ?
+            <div>
+              <ElementSelectorField/>
+              <div>
+                <Coral.Checkbox
+                  checked={this.props.showElementPropertiesFilter}
+                  coral-onChange={this.onShowElementPropertiesChange}>and having certain property values...</Coral.Checkbox>
+                { this.props.showElementPropertiesFilter ? <ElementPropertiesEditor/> : null }
+              </div>
+            </div> : null
+        }
       </div>
     );
   }
-})
+}
+
+export default connect(mapStateToProps)(ElementFilter);
