@@ -17,7 +17,7 @@ class Click extends React.Component {
   render() {
     return (
       <div>
-        <h3 class="coral-Heading coral-Heading--3">Click:</h3>
+        <h3 className="coral-Heading coral-Heading--3">Click:</h3>
         <ElementFilter/>
         <Coral.Checkbox
           class="u-block"
