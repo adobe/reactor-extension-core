@@ -11,7 +11,7 @@ class Blur extends React.Component {
   render() {
     return (
       <div>
-        <h3 class="coral-Heading coral-Heading--3">Blur:</h3>
+        <h3 className="coral-Heading coral-Heading--3">Blur:</h3>
         <ElementFilter/>
         <AdvancedEventOptions/>
       </div>

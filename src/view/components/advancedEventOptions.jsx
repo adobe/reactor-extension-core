@@ -46,7 +46,7 @@ class AdvancedEventOptions extends React.Component {
     if (this.state.expanded) {
       advancedPanel = (
         <div>
-          <h4 class="coral-Heading coral-Heading--4">Bubbling</h4>
+          <h4 className="coral-Heading coral-Heading--4">Bubbling</h4>
 
           <Coral.Checkbox
             class="u-block"
