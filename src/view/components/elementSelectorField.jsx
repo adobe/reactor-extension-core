@@ -1,6 +1,6 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
-import { setElementSelector } from '../actions/elementFilterActions';
+import { actionCreators } from '../actions/elementFilterActions';
 import ValidationWrapper from './validationWrapper';
 import { connect } from 'react-redux';
 
@@ -11,7 +11,7 @@ let mapStateToProps = state => ({
 
 class ElementSelectorField extends React.Component {
   handleChange = event => {
-    this.props.dispatch(setElementSelector(event.target.value));
+    this.props.dispatch(actionCreators.setElementSelector(event.target.value));
   };
 
   render() {

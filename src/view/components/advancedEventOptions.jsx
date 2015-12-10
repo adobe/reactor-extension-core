@@ -1,11 +1,7 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
 import DisclosureButton from './disclosureButton';
-import {
-  setBubbleFireIfParent,
-  setBubbleFireIfChildFired,
-  setBubbleStop
-} from '../actions/bubbleActions';
+import { actionCreators } from '../actions/bubbleActions';
 import { connect } from 'react-redux';
 
 let mapStateToProps = state => ({
@@ -29,15 +25,15 @@ class AdvancedEventOptions extends React.Component {
   };
 
   setBubbleFireIfParent = event => {
-    this.props.dispatch(setBubbleFireIfParent(event.target.checked));
+    this.props.dispatch(actionCreators.setBubbleFireIfParent(event.target.checked));
   };
 
   setBubbleFireIfChildFired = event => {
-    this.props.dispatch(setBubbleFireIfChildFired(event.target.checked));
+    this.props.dispatch(actionCreators.setBubbleFireIfChildFired(event.target.checked));
   };
 
   setBubbleStop = event => {
-    this.props.dispatch(setBubbleStop(event.target.checked));
+    this.props.dispatch(actionCreators.setBubbleStop(event.target.checked));
   };
 
   render() {

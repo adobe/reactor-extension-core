@@ -4,9 +4,11 @@ const SET_BUBBLE_FIRE_IF_PARENT = 'SET_BUBBLE_FIRE_IF_PARENT';
 const SET_BUBBLE_FIRE_IF_CHILD_FIRED = 'SET_BUBBLE_FIRE_IF_CHILD_FIRED';
 const SET_BUBBLE_STOP = 'SET_BUBBLE_STOP';
 
-export let setBubbleFireIfParent = createAction(SET_BUBBLE_FIRE_IF_PARENT);
-export let setBubbleFireIfChildFired = createAction(SET_BUBBLE_FIRE_IF_CHILD_FIRED);
-export let setBubbleStop = createAction(SET_BUBBLE_STOP);
+export let actionCreators = {
+  setBubbleFireIfParent: createAction(SET_BUBBLE_FIRE_IF_PARENT),
+  setBubbleFireIfChildFired: createAction(SET_BUBBLE_FIRE_IF_CHILD_FIRED),
+  setBubbleStop: createAction(SET_BUBBLE_STOP)
+};
 
 export default handleActions({
   [SET_BUBBLE_FIRE_IF_PARENT]: (state, action) => {
