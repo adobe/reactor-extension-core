@@ -1,5 +1,5 @@
 'use strict';
-import 'style!css?sourceMap!stylus!import-glob!./style.pattern';
+import './style.pattern';
 import React from 'react';
 import { Router, Route } from 'react-router';
 import ReactDOM from 'react-dom';
