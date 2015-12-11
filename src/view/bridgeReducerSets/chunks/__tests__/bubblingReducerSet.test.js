@@ -45,11 +45,11 @@ describe('configToState', () => {
       expect(state.get('bubbleFireIfParent')).toBe(false);
     });
 
-    it('sets bubbleFireIfParent to to the value from config', () => {
+    it('sets bubbleFireIfParent to the value from config', () => {
       expect(state.get('bubbleFireIfChildFired')).toBe(false);
     });
 
-    it('sets bubbleFireIfParent to to the value from config', () => {
+    it('sets bubbleFireIfParent to the value from config', () => {
       expect(state.get('bubbleStop')).toBe(true);
     });
   });
