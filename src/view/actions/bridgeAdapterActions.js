@@ -1,5 +1,5 @@
 import { createAction, handleActions } from 'redux-actions';
-import clickReducerSet from '../bridgeReducerSets/clickReducerSet';
+import { bridgeAdapterReducer } from '../bridgeAdapter';
 
 const SET_CONFIG = 'SET_CONFIG';
 const VALIDATE = 'VALIDATE';
@@ -11,9 +11,9 @@ export let actionCreators = {
 
 export default handleActions({
   [SET_CONFIG]: (state, action) => {
-    return clickReducerSet.configToState(state, action);
+    return bridgeAdapterReducer.configToState(state, action);
   },
   [VALIDATE]: (state, action) => {
-    return clickReducerSet.validate(state, action);
+    return bridgeAdapterReducer.validate(state, action);
   }
 });
