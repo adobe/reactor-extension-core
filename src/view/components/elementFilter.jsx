@@ -5,19 +5,19 @@ import ElementPropertiesEditor from '../components/elementPropertiesEditor';
 import { actionCreators } from '../actions/elementFilterActions';
 import { connect } from 'react-redux';
 
-let mapStateToProps = state => ({
+export let mapStateToProps = state => ({
   showSpecificElementsFilter: state.get('showSpecificElementsFilter'),
   showElementPropertiesFilter: state.get('showElementPropertiesFilter')
 });
 
-class ElementFilter extends React.Component {
-  onSpecificityChange = event => {
+export class ElementFilter extends React.Component {
+  setShowSpecificElementsFilter = event => {
     let action = actionCreators.setShowSpecificElementsFilter(event.target.value === 'true');
     this.props.dispatch(action);
   };
 
-  onShowElementPropertiesChange = event => {
-    let action = actionCreators.setShowElementPropertiesFilter(event.target.checked)
+  setShowElementPropertiesFilter = event => {
+    let action = actionCreators.setShowElementPropertiesFilter(event.target.checked);
     this.props.dispatch(action);
   };
 
@@ -29,25 +29,25 @@ class ElementFilter extends React.Component {
             name="filter"
             value="true"
             checked={this.props.showSpecificElementsFilter}
-            coral-onChange={this.onSpecificityChange}>
+            coral-onChange={this.setShowSpecificElementsFilter}>
           specific elements
         </Coral.Radio>
         <Coral.Radio
             name="filter"
             value="false"
             checked={!this.props.showSpecificElementsFilter}
-            coral-onChange={this.onSpecificityChange}>
+            coral-onChange={this.setShowSpecificElementsFilter}>
           any element
         </Coral.Radio>
         {
           this.props.showSpecificElementsFilter ?
-            <div>
+            <div ref="specificElementFields">
               <ElementSelectorField/>
               <div>
                 <Coral.Checkbox
                   checked={this.props.showElementPropertiesFilter}
-                  coral-onChange={this.onShowElementPropertiesChange}>and having certain property values...</Coral.Checkbox>
-                { this.props.showElementPropertiesFilter ? <ElementPropertiesEditor/> : null }
+                  coral-onChange={this.setShowElementPropertiesFilter}>and having certain property values...</Coral.Checkbox>
+                { this.props.showElementPropertiesFilter ? <ElementPropertiesEditor ref="elementPropertiesEditor"/> : null }
               </div>
             </div> : null
         }
@@ -56,4 +56,4 @@ class ElementFilter extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(ElementFilter);
+export default connect(mapStateToProps, null, null, { withRef: true })(ElementFilter);

@@ -26,11 +26,11 @@ export default class ValidationWrapper extends React.Component {
     let invalidIcon;
 
     if (this.props.error) {
-      invalidIcon = <ErrorIcon message={this.props.error} openTooltip={this.props.openTooltip}/>;
+      invalidIcon = <ErrorIcon message={this.props.error} openTooltip={this.state.openTooltip}/>;
     }
 
     let children = React.Children.map(this.props.children, child => {
-      return React.cloneElement(child, { invalid: this.props.error })
+      return React.cloneElement(child, { invalid: Boolean(this.props.error) })
     });
 
     return (

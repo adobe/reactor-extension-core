@@ -26,6 +26,7 @@ export default class ElementPropertyEditor extends React.Component {
     if (this.props.removable) {
       removeButton = (
         <Coral.Button
+          ref="removeButton"
           variant="quiet"
           icon="close"
           iconsize="XS"
@@ -36,15 +37,13 @@ export default class ElementPropertyEditor extends React.Component {
     return (
       <div className="u-gapBottom">
         <Coral.Textfield 
-          ref="nameField"
-          class="u-gapRight"
+          className="u-gapRight"
           placeholder="Property" 
           value={this.props.name}
           onChange={this.onNameChange}/>
         <span className="u-gapRight">=</span>
         <Coral.Textfield 
-          ref="valueField"
-          class="u-gapRight"
+          className="u-gapRight"
           placeholder="Value" 
           value={this.props.value}
           onChange={this.onValueChange}/>

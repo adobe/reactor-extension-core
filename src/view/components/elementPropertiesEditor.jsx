@@ -5,11 +5,11 @@ import { List } from 'immutable';
 import { actionCreators } from '../actions/elementFilterActions';
 import { connect } from 'react-redux';
 
-let mapStateToProps = state => ({
+export let mapStateToProps = state => ({
   elementProperties: state.get('elementProperties')
 });
 
-class ElementPropertiesEditor extends React.Component {
+export class ElementPropertiesEditor extends React.Component {
   add = () => {
     this.props.dispatch(actionCreators.addElementProperty({
       name: '',
@@ -59,7 +59,7 @@ class ElementPropertiesEditor extends React.Component {
             removable={this.props.elementProperties.size > 1}
             />
         }).toSeq()}
-        <Coral.Button onClick={this.add}>Add</Coral.Button>
+        <Coral.Button ref="addButton" onClick={this.add}>Add</Coral.Button>
       </div>
     );
   }

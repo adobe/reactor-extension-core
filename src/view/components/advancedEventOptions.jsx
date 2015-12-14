@@ -4,13 +4,13 @@ import DisclosureButton from './disclosureButton';
 import { actionCreators } from '../actions/bubbleActions';
 import { connect } from 'react-redux';
 
-let mapStateToProps = state => ({
+export let mapStateToProps = state => ({
   bubbleFireIfParent: state.get('bubbleFireIfParent'),
   bubbleFireIfChildFired: state.get('bubbleFireIfChildFired'),
   bubbleStop: state.get('bubbleStop')
 });
 
-class AdvancedEventOptions extends React.Component {
+export class AdvancedEventOptions extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -45,15 +45,15 @@ class AdvancedEventOptions extends React.Component {
           <h4 className="coral-Heading coral-Heading--4">Bubbling</h4>
 
           <Coral.Checkbox
-            class="u-block"
+            className="u-block"
             checked={this.props.bubbleFireIfParent}
             coral-onChange={this.setBubbleFireIfParent}>Run this rule even when the event originates from a descendant element</Coral.Checkbox>
           <Coral.Checkbox
-            class="u-block"
+            className="u-block"
             checked={this.props.bubbleFireIfChildFired}
             coral-onChange={this.setBubbleFireIfChildFired}>Allow this rule to run even if the event already triggered a rule targeting a descendant element</Coral.Checkbox>
           <Coral.Checkbox
-            class="u-block"
+            className="u-block"
             checked={this.props.bubbleStop}
             coral-onChange={this.setBubbleStop}>After the rule runs, prevent the event from triggering rules targeting ancestor elements</Coral.Checkbox>
         </div>
@@ -61,7 +61,7 @@ class AdvancedEventOptions extends React.Component {
     }
 
     return (
-      <div>
+      <div ref="niner">
         <div className="AdvancedEventOptions-disclosureButtonContainer">
           <DisclosureButton
             label="Advanced"
