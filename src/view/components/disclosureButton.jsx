@@ -12,7 +12,7 @@ export default class DisclosureButton extends React.Component {
     return (
       <button className="u-buttonReset" onClick={this.onClick}>
         {this.props.label}
-        <Coral.Icon class="DisclosureButton-icon" icon={iconClass}/>
+        <Coral.Icon className="DisclosureButton-icon" icon={iconClass}/>
       </button>
     );
   }

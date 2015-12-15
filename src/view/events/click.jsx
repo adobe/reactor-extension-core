@@ -5,11 +5,11 @@ import ElementFilter from '../components/elementFilter';
 import { connect } from 'react-redux';
 import { actionCreators } from '../actions/delayLinkActivationActions';
 
-let mapStateToProps = state => ({
+export let mapStateToProps = state => ({
   delayLinkActivation: state.get('delayLinkActivation')
 });
 
-class Click extends React.Component {
+export class Click extends React.Component {
   onDelayLinkActivationChange = event => {
     this.props.dispatch(actionCreators.setDelayLinkActivation(event.target.checked));
   };
@@ -21,7 +21,7 @@ class Click extends React.Component {
         <ElementFilter/>
         <Coral.Checkbox
           class="u-block"
-          coral-onChange={this.onDelayLinkActivationChange}
+          onChange={this.onDelayLinkActivationChange}
           checked={this.props.delayLinkActivation}>If the element is a link, delay navigation until rule runs</Coral.Checkbox>
         <AdvancedEventOptions/>
       </div>

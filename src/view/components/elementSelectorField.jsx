@@ -4,12 +4,12 @@ import { actionCreators } from '../actions/elementFilterActions';
 import ValidationWrapper from './validationWrapper';
 import { connect } from 'react-redux';
 
-let mapStateToProps = state => ({
+export let mapStateToProps = state => ({
   elementSelector: state.get('elementSelector'),
   selectorInvalid: state.getIn(['errors', 'selectorInvalid'])
 });
 
-class ElementSelectorField extends React.Component {
+export class ElementSelectorField extends React.Component {
   handleChange = event => {
     this.props.dispatch(actionCreators.setElementSelector(event.target.value));
   };
