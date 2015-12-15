@@ -12,7 +12,7 @@ describe('click view', () => {
 
   let render = props => {
     return TestUtils.renderIntoDocument(
-      <Click foo='bar' {...props} />
+      <Click {...props} />
     );
   };
 
