@@ -47,15 +47,15 @@ export class AdvancedEventOptions extends React.Component {
           <Coral.Checkbox
             className="u-block"
             checked={this.props.bubbleFireIfParent}
-            coral-onChange={this.setBubbleFireIfParent}>Run this rule even when the event originates from a descendant element</Coral.Checkbox>
+            onChange={this.setBubbleFireIfParent}>Run this rule even when the event originates from a descendant element</Coral.Checkbox>
           <Coral.Checkbox
             className="u-block"
             checked={this.props.bubbleFireIfChildFired}
-            coral-onChange={this.setBubbleFireIfChildFired}>Allow this rule to run even if the event already triggered a rule targeting a descendant element</Coral.Checkbox>
+            onChange={this.setBubbleFireIfChildFired}>Allow this rule to run even if the event already triggered a rule targeting a descendant element</Coral.Checkbox>
           <Coral.Checkbox
             className="u-block"
             checked={this.props.bubbleStop}
-            coral-onChange={this.setBubbleStop}>After the rule runs, prevent the event from triggering rules targeting ancestor elements</Coral.Checkbox>
+            onChange={this.setBubbleStop}>After the rule runs, prevent the event from triggering rules targeting ancestor elements</Coral.Checkbox>
         </div>
       );
     }

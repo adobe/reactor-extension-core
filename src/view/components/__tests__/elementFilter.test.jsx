@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Coral from 'coralui-support-react';
 import TestUtils from 'react-addons-test-utils';
 import { fromJS } from 'immutable';
@@ -94,7 +95,7 @@ describe('element filter', () => {
       dispatch
     }));
 
-    specificElementsRadio.props['coral-onChange']({
+    TestUtils.Simulate.change(ReactDOM.findDOMNode(specificElementsRadio), {
       target: {
         value: 'true'
       }
@@ -109,7 +110,7 @@ describe('element filter', () => {
       dispatch
     }));
 
-    anyElementRadio.props['coral-onChange']({
+    TestUtils.Simulate.change(ReactDOM.findDOMNode(anyElementRadio), {
       target: {
         value: 'false'
       }

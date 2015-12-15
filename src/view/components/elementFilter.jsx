@@ -29,14 +29,14 @@ export class ElementFilter extends React.Component {
             name="filter"
             value="true"
             checked={this.props.showSpecificElementsFilter}
-            coral-onChange={this.setShowSpecificElementsFilter}>
+            onChange={this.setShowSpecificElementsFilter}>
           specific elements
         </Coral.Radio>
         <Coral.Radio
             name="filter"
             value="false"
             checked={!this.props.showSpecificElementsFilter}
-            coral-onChange={this.setShowSpecificElementsFilter}>
+            onChange={this.setShowSpecificElementsFilter}>
           any element
         </Coral.Radio>
         {
@@ -46,7 +46,7 @@ export class ElementFilter extends React.Component {
               <div>
                 <Coral.Checkbox
                   checked={this.props.showElementPropertiesFilter}
-                  coral-onChange={this.setShowElementPropertiesFilter}>and having certain property values...</Coral.Checkbox>
+                  onChange={this.setShowElementPropertiesFilter}>and having certain property values...</Coral.Checkbox>
                 { this.props.showElementPropertiesFilter ? <ElementPropertiesEditor ref="elementPropertiesEditor"/> : null }
               </div>
             </div> : null

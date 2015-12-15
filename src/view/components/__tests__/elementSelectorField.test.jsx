@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import TestUtils from 'react-addons-test-utils';
 import Coral from 'coralui-support-react';
 import ValidationWrapper from '../validationWrapper';
@@ -46,7 +47,7 @@ describe('element selector field', () => {
       dispatch
     }));
 
-    field.props.onChange({
+    TestUtils.Simulate.change(ReactDOM.findDOMNode(field), {
       target: {
         value: 'foo'
       }

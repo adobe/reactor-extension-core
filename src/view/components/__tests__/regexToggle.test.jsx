@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Coral from 'coralui-support-react';
 import TestUtils from 'react-addons-test-utils';
 import RegexToggle from '../regexToggle';
@@ -58,9 +59,9 @@ describe('regex toggle', () => {
       setValueIsRegex
     }));
 
-    let onChange = switchComponent.props['coral-onChange'];
+    let node = ReactDOM.findDOMNode(switchComponent);
 
-    onChange({
+    TestUtils.Simulate.change(node, {
       target: {
         checked: true
       }
@@ -68,7 +69,7 @@ describe('regex toggle', () => {
 
     expect(setValueIsRegex).toHaveBeenCalledWith(true);
 
-    onChange({
+    TestUtils.Simulate.change(node, {
       target: {
         checked: false
       }

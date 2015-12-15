@@ -26,12 +26,15 @@ var webpackConfig = {
       {
         test: /\.pattern$/,
         include: /src\/view/,
-        loader: 'style!css?stylus!import-glob'
+        loader: 'style-loader!css-loader?sourceMap!stylus-loader!import-glob-loader'
       }
     ]
   },
   resolve: {
-    extensions: ['', '.js', '.jsx', 'styl']
+    extensions: ['', '.js', '.jsx', 'styl'],
+    // Needed when npm-linking projects like coralui-support-react
+    // https://github.com/webpack/webpack/issues/784
+    fallback: path.join(__dirname, 'node_modules')
   },
   stylus: {
     use: [require('nib')()],

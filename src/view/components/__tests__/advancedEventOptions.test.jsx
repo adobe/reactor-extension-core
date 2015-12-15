@@ -80,9 +80,10 @@ describe('advanced event options', () => {
       });
 
       let { bubbleFireIfParentCheckbox } = getParts(component);
-      let onChange = bubbleFireIfParentCheckbox.props['coral-onChange'];
 
-      onChange({
+      let node = ReactDOM.findDOMNode(bubbleFireIfParentCheckbox);
+
+      TestUtils.Simulate.change(node, {
         target: {
           checked: true
         }
@@ -90,7 +91,7 @@ describe('advanced event options', () => {
 
       expect(dispatch).toHaveBeenCalledWith(actionCreators.setBubbleFireIfParent(true));
 
-      onChange({
+      TestUtils.Simulate.change(node, {
         target: {
           checked: false
         }
@@ -124,9 +125,10 @@ describe('advanced event options', () => {
       });
 
       let { bubbleFireIfChildFiredCheckbox } = getParts(component);
-      let onChange = bubbleFireIfChildFiredCheckbox.props['coral-onChange'];
 
-      onChange({
+      let node = ReactDOM.findDOMNode(bubbleFireIfChildFiredCheckbox);
+
+      TestUtils.Simulate.change(node, {
         target: {
           checked: true
         }
@@ -134,7 +136,7 @@ describe('advanced event options', () => {
 
       expect(dispatch).toHaveBeenCalledWith(actionCreators.setBubbleFireIfChildFired(true));
 
-      onChange({
+      TestUtils.Simulate.change(node, {
         target: {
           checked: false
         }
@@ -168,9 +170,10 @@ describe('advanced event options', () => {
       });
 
       let { bubbleStopCheckbox } = getParts(component);
-      let onChange = bubbleStopCheckbox.props['coral-onChange'];
 
-      onChange({
+      let node = ReactDOM.findDOMNode(bubbleStopCheckbox);
+
+      TestUtils.Simulate.change(node, {
         target: {
           checked: true
         }
@@ -178,7 +181,7 @@ describe('advanced event options', () => {
 
       expect(dispatch).toHaveBeenCalledWith(actionCreators.setBubbleStop(true));
 
-      onChange({
+      TestUtils.Simulate.change(node, {
         target: {
           checked: false
         }
