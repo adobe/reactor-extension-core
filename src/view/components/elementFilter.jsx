@@ -56,4 +56,4 @@ export class ElementFilter extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, null, null, { withRef: true })(ElementFilter);
+export default connect(mapStateToProps)(ElementFilter);
