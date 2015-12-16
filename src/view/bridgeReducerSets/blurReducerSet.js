@@ -1,6 +1,6 @@
 import combineBridgeReducerSets from '../utils/combineBridgeReducerSets';
-import elementFilterReducerSet from './chunks/elementFilterReducerSet';
-import bubblingReducerSet from './chunks/bubblingReducerSet';
+import elementFilterReducerSet from './common/elementFilterReducerSet';
+import bubblingReducerSet from './common/bubblingReducerSet';
 
 export default combineBridgeReducerSets(
   elementFilterReducerSet,

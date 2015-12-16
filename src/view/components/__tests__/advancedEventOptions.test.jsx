@@ -4,7 +4,7 @@ import Coral from 'coralui-support-react';
 import TestUtils from 'react-addons-test-utils';
 import { mapStateToProps, AdvancedEventOptions } from '../advancedEventOptions';
 import DisclosureButton from '../disclosureButton';
-import { actionCreators } from '../../actions/bubbleActions';
+import { actionCreators } from '../../actions/common/bubbleActions';
 import { fromJS } from 'immutable';
 
 describe('advanced event options', () => {

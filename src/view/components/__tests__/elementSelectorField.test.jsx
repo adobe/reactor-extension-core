@@ -5,7 +5,7 @@ import Coral from 'coralui-support-react';
 import ValidationWrapper from '../validationWrapper';
 import { mapStateToProps, ElementSelectorField } from '../elementSelectorField';
 import { fromJS } from 'immutable';
-import { actionCreators } from '../../actions/elementFilterActions';
+import { actionCreators } from '../../actions/common/elementFilterActions';
 
 describe('element selector field', () => {
   let render = props => {

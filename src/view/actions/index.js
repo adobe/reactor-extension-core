@@ -1,12 +1,18 @@
 import reducerReducers from 'reduce-reducers';
-import bridgeAdapterActions from './bridgeAdapterActions';
-import bubbleActions from './bubbleActions';
-import delayLinkActivationActions from './delayLinkActivationActions';
-import elementFilterActions from './elementFilterActions';
+
+// Common
+import bridgeAdapterActions from './common/bridgeAdapterActions';
+import bubbleActions from './common/bubbleActions';
+import elementFilterActions from './common/elementFilterActions';
+
+// View-specific
+import clickActions from './clickActions';
+import cookieActions from './cookieActions';
 
 export default reducerReducers(
   bridgeAdapterActions,
   bubbleActions,
-  delayLinkActivationActions,
-  elementFilterActions
+  elementFilterActions,
+  clickActions,
+  cookieActions
 );

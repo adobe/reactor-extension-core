@@ -1,4 +1,4 @@
-import testBooleanAction from './helpers/testBooleanAction';
+import testBooleanAction from '../../__tests__/helpers/testBooleanAction';
 import reducer, { actionCreators } from '../bubbleActions';
 
 describe('bubble actions', () => {

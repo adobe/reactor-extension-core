@@ -1,6 +1,6 @@
 import { Map, fromJS } from 'immutable';
-import testBooleanAction from './helpers/testBooleanAction';
-import testStringAction from './helpers/testStringAction';
+import testBooleanAction from '../../__tests__/helpers/testBooleanAction';
+import testStringAction from '../../__tests__/helpers/testStringAction';
 import reducer, { actionCreators } from '../elementFilterActions';
 
 describe('element filter actions', () => {

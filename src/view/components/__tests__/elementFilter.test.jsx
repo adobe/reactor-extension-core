@@ -4,7 +4,7 @@ import Coral from 'coralui-support-react';
 import TestUtils from 'react-addons-test-utils';
 import { fromJS } from 'immutable';
 import MockComponent from './helpers/mockComponent';
-import { actionCreators } from '../../actions/elementFilterActions';
+import { actionCreators } from '../../actions/common/elementFilterActions';
 import { mapStateToProps } from '../elementFilter';
 
 describe('element filter', () => {

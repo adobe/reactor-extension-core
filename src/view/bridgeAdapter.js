@@ -1,5 +1,5 @@
 'use strict';
-import { actionCreators } from './actions/bridgeAdapterActions';
+import { actionCreators } from './actions/common/bridgeAdapterActions';
 
 export let bridgeAdapterReducer = null;
 export let setBridgeAdapterReducer = (nextState) => {

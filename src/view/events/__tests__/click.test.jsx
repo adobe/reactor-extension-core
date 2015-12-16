@@ -4,7 +4,7 @@ import Coral from 'coralui-support-react';
 import TestUtils from 'react-addons-test-utils';
 import { mapStateToProps } from '../click';
 import { fromJS } from 'immutable';
-import { actionCreators } from '../../actions/delayLinkActivationActions';
+import { actionCreators } from '../../actions/clickActions';
 import MockComponent from '../../components/__tests__/helpers/mockComponent';
 
 describe('click view', () => {

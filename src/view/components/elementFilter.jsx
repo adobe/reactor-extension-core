@@ -2,7 +2,7 @@ import React from 'react';
 import Coral from 'coralui-support-react';
 import ElementSelectorField from '../components/elementSelectorField';
 import ElementPropertiesEditor from '../components/elementPropertiesEditor';
-import { actionCreators } from '../actions/elementFilterActions';
+import { actionCreators } from '../actions/common/elementFilterActions';
 import { connect } from 'react-redux';
 
 export let mapStateToProps = state => ({

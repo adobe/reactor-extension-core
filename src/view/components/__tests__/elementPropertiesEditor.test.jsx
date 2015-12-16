@@ -5,7 +5,7 @@ import TestUtils from 'react-addons-test-utils';
 import { Map, List } from 'immutable';
 import { mapStateToProps, ElementPropertiesEditor } from '../elementPropertiesEditor';
 import ElementPropertyEditor from '../elementPropertyEditor';
-import { actionCreators } from '../../actions/elementFilterActions';
+import { actionCreators } from '../../actions/common/elementFilterActions';
 
 describe('element properties editor', () => {
   let render = props => {

@@ -22,6 +22,18 @@ export default class ValidationWrapper extends React.Component {
     });
   };
 
+  recursiveCloneWithInvalidProp(children) {
+    return React.Children.map(children, child => {
+      if (React.isValidElement(child)) {
+        let childProps = { invalid: Boolean(this.props.error) };
+        childProps.children = this.recursiveCloneWithInvalidProp(child.props.children);
+        return React.cloneElement(child, childProps);
+      } else {
+        return child;
+      }
+    })
+  }
+
   render() {
     let invalidIcon;
 
@@ -29,9 +41,7 @@ export default class ValidationWrapper extends React.Component {
       invalidIcon = <ErrorIcon message={this.props.error} openTooltip={this.state.openTooltip}/>;
     }
 
-    let children = React.Children.map(this.props.children, child => {
-      return React.cloneElement(child, { invalid: Boolean(this.props.error) })
-    });
+    let children = this.recursiveCloneWithInvalidProp(this.props.children);
 
     return (
       <div className="ValidationWrapper" onFocus={this.onFocus} onBlur={this.onBlur}>

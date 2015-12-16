@@ -1,6 +1,6 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
-import { actionCreators } from '../actions/elementFilterActions';
+import { actionCreators } from '../actions/common/elementFilterActions';
 import ValidationWrapper from './validationWrapper';
 import { connect } from 'react-redux';
 
@@ -22,15 +22,14 @@ export class ElementSelectorField extends React.Component {
     }
 
     return (
-      <label>
-        <span className="u-gapRight">matching the CSS selector</span>
-        <ValidationWrapper error={error}>
+      <ValidationWrapper error={error}>
+        <label>
+          <span className="u-gapRight">matching the CSS selector</span>
           <Coral.Textfield
-            placeholder="CSS Selector"
             value={this.props.elementSelector}
             onChange={this.handleChange}/>
-        </ValidationWrapper>
-      </label>
+        </label>
+      </ValidationWrapper>
     );
   }
 }

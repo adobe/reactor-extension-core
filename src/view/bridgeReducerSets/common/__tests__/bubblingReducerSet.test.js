@@ -1,9 +1,8 @@
-import getConfigFromStoreState from './helpers/getConfigFromStoreState';
-import bublingReducerSet from '../bubblingReducerSet';
-import {actionCreators} from '../../../actions/bridgeAdapterActions';
-import { Map } from 'immutable';
+import bubblingReducerSet from '../bubblingReducerSet';
+import {actionCreators} from '../../../actions/common/bridgeAdapterActions';
+import { Map, fromJS } from 'immutable';
 
-let { configToState, stateToConfig } = bublingReducerSet;
+let { configToState, stateToConfig } = bubblingReducerSet;
 
 describe('configToState', () => {
   describe('for a new config', () => {
@@ -58,37 +57,43 @@ describe('configToState', () => {
 describe('stateToConfig', () => {
   it('should return a config having bubbleFireIfParent: true ' +
     'when state contains bubbleFireIfParent: true', () => {
-      var config = getConfigFromStoreState({bubbleFireIfParent: true}, stateToConfig);
+      let config = {};
+      stateToConfig(config, fromJS({ bubbleFireIfParent: true }));
       expect(config.bubbleFireIfParent).toBe(true);
   });
 
   it('should return a config without bubbleFireIfParent ' +
     'when state contains bubbleFireIfParent: false', () => {
-    var config = getConfigFromStoreState({bubbleFireIfParent: false}, stateToConfig);
+    let config = {};
+    stateToConfig(config, fromJS({ bubbleFireIfParent: false }));
     expect(config.bubbleFireIfParent).toBeUndefined();
   });
 
   it('should return a config having bubbleFireIfChildFired: true ' +
     'when state contains bubbleFireIfChildFired: true', () => {
-    var config = getConfigFromStoreState({bubbleFireIfChildFired: true}, stateToConfig);
+    let config = {};
+    stateToConfig(config, fromJS({ bubbleFireIfChildFired: true }));
     expect(config.bubbleFireIfChildFired).toBe(true);
   });
 
   it('should return a config without bubbleFireIfChildFired ' +
     'when state contains bubbleFireIfChildFired: false', () => {
-    var config = getConfigFromStoreState({bubbleFireIfChildFired: false}, stateToConfig);
+    let config = {};
+    stateToConfig(config, fromJS({ bubbleFireIfChildFired: false }));
     expect(config.bubbleFireIfChildFired).toBeUndefined();
   });
 
   it('should return a config having bubbleStop: true ' +
     'when state contains bubbleStop: true', () => {
-    var config = getConfigFromStoreState({bubbleStop: true}, stateToConfig);
+    let config = {};
+    stateToConfig(config, fromJS({ bubbleStop: true }));
     expect(config.bubbleStop).toBe(true);
   });
 
   it('should return a config without bubbleStop ' +
     'when state contains bubbleStop: false', () => {
-    var config = getConfigFromStoreState({bubbleStop: false}, stateToConfig);
+    let config = {};
+    stateToConfig(config, fromJS({ bubbleStop: false }));
     expect(config.bubbleStop).toBeUndefined();
   });
 });

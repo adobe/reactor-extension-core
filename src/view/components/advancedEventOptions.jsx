@@ -1,7 +1,7 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
 import DisclosureButton from './disclosureButton';
-import { actionCreators } from '../actions/bubbleActions';
+import { actionCreators } from '../actions/common/bubbleActions';
 import { connect } from 'react-redux';
 
 export let mapStateToProps = state => ({

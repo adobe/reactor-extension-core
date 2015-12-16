@@ -2,7 +2,7 @@ import React from 'react';
 import Coral from 'coralui-support-react';
 import ElementPropertyEditor from '../components/elementPropertyEditor';
 import { List } from 'immutable';
-import { actionCreators } from '../actions/elementFilterActions';
+import { actionCreators } from '../actions/common/elementFilterActions';
 import { connect } from 'react-redux';
 
 export let mapStateToProps = state => ({

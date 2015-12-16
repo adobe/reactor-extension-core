@@ -1,7 +1,7 @@
 import testBooleanAction from './helpers/testBooleanAction';
-import reducer, { actionCreators } from '../delayLinkActivationActions';
+import reducer, { actionCreators } from '../clickActions';
 
-describe('delay link activation actions', () => {
+describe('click actions', () => {
   it('sets delayLinkActivation', () => {
     testBooleanAction(reducer, actionCreators.setDelayLinkActivation, 'delayLinkActivation');
   });
