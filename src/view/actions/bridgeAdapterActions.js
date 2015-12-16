@@ -1,8 +1,8 @@
 import { createAction, handleActions } from 'redux-actions';
 import { bridgeAdapterReducer } from '../bridgeAdapter';
 
-const SET_CONFIG = 'SET_CONFIG';
-const VALIDATE = 'VALIDATE';
+const SET_CONFIG = 'bridgeAdapter/SET_CONFIG';
+const VALIDATE = 'bridgeAdapter/VALIDATE';
 
 export let actionCreators = {
   setConfig: createAction(SET_CONFIG),

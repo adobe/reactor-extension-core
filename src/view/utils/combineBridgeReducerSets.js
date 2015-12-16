@@ -1,5 +1,11 @@
 import reduceReducers from 'reduce-reducers';
 
+/**
+ * Given multiple reducer sets, returns a combined reducer set that, when called, executes the
+ * corresponding method of all the child reducer sets.
+ * @param {...Object} reducerSets
+ * @returns {{configToState: Function, stateToConfig: Function, validate: Function}}
+ */
 export default (...reducerSets) => {
   let configToStateReducers = [];
   let stateToConfigReducers = [];
