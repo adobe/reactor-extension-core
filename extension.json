@@ -333,7 +333,17 @@
     {
       "displayName": "Cookie",
       "libPath": "dataElements/cookie/cookie.js",
-      "viewPath": "index.html#/dataElements/cookie"
+      "viewPath": "index.html#/dataElements/cookie",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
     },
     {
       "displayName": "Custom",
