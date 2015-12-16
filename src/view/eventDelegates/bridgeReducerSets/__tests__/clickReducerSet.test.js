@@ -1,5 +1,5 @@
 import clickReducerSet from '../clickReducerSet';
-import {actionCreators} from '../../../actions/bridgeAdapterActions';
+import { actionCreators } from '../../../actions/bridgeAdapterActions';
 import { Map, fromJS } from 'immutable';
 
 let { configToState, stateToConfig } = clickReducerSet;
@@ -57,14 +57,14 @@ describe('click reducer set', () => {
     it('should return a config having delayLinkActivation: true ' +
       'when state contains delayLinkActivation: true', () => {
         let config = {};
-        stateToConfig(config, fromJS({ delayLinkActivation: true }));
+        config = stateToConfig(config, fromJS({ delayLinkActivation: true }));
         expect(config.delayLinkActivation).toBe(true);
     });
 
     it('should return a config without delayLinkActivation ' +
       'when state contains delayLinkActivation: false', () => {
       let config = {};
-      stateToConfig(config, fromJS({ delayLinkActivation: false }));
+      config = stateToConfig(config, fromJS({ delayLinkActivation: false }));
       expect(config.delayLinkActivation).toBeUndefined();
     });
   });

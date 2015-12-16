@@ -1,7 +1,6 @@
-import getConfigFromStoreState from './helpers/getConfigFromStoreState';
 import elementFilterReducerSet from '../elementFilterReducerSet';
-import {actionCreators} from '../../../actions/bridgeAdapterActions';
-import Immutable, { Map } from 'immutable';
+import { actionCreators } from '../../../../actions/bridgeAdapterActions';
+import { Map, fromJS } from 'immutable';
 
 let { configToState, stateToConfig } = elementFilterReducerSet;
 
@@ -93,39 +92,55 @@ describe('configToState', () => {
 describe('stateToConfig', () => {
   it('should return a config having selector ' +
     'when state contains showSpecificElementsFilter: true', () => {
-    var config = getConfigFromStoreState({
+    let config = {};
+    config = stateToConfig(config, fromJS({
       showSpecificElementsFilter: true,
       elementSelector: 'a'
-    }, stateToConfig);
+    }));
     expect(config.elementSelector).toBe('a');
   });
 
   it('should return a config without selector ' +
     'when state contains showSpecificElementsFilter: false', () => {
-    var config = getConfigFromStoreState({
+    let config = {};
+    config = stateToConfig(config, fromJS({
       showSpecificElementsFilter: false,
       elementSelector: 'a'
-    }, stateToConfig);
+    }));
     expect(config.elementSelector).toBeUndefined();
   });
 
   it('should return a config having elementProperties ' +
     'when state contains showSpecificElementsFilter: true', () => {
-    var config = getConfigFromStoreState({
+    let config = {};
+    config = stateToConfig(config, fromJS({
       showSpecificElementsFilter: true,
       showElementPropertiesFilter: true,
-      elementProperties: Immutable.fromJS({id: {id: 'id', name: 'name', value: 'value'}})
-    }, stateToConfig);
+      elementProperties: {
+        abc: {
+          id: 'abc',
+          name: 'name',
+          value: 'value'
+        }
+      }
+    }));
     expect(config.elementProperties[0].toJS()).toEqual({value: 'value', name: 'name'});
   });
 
   it('should return a config without elementProperties ' +
     'when state contains showSpecificElementsFilter: false', () => {
-    var config = getConfigFromStoreState({
+    let config = {};
+    config = stateToConfig(config, fromJS({
       showSpecificElementsFilter: false,
       showElementPropertiesFilter: true,
-      elementProperties: Immutable.fromJS({id: {id: 'id', name: 'name', value: 'value'}})
-    }, stateToConfig);
+      elementProperties: {
+        abc: {
+          id: 'abc',
+          name: 'name',
+          value: 'value'
+        }
+      }
+    }));
     expect(config.elementProperties).toBeUndefined();
   });
 });
