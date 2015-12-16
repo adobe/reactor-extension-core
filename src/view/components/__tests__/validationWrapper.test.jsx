@@ -4,7 +4,7 @@ import Coral from 'coralui-support-react';
 import TestUtils from 'react-addons-test-utils';
 import ValidationWrapper from '../validationWrapper';
 import ErrorIcon from '../errorIcon';
-import MockComponent from './helpers/mockComponent';
+import MockComponent from '../../__tests__/helpers/mockComponent';
 
 describe('validation wrapper', () => {
   let getParts = component => {
