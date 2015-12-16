@@ -31,7 +31,7 @@ describe('configToState', () => {
       }));
     });
 
-    it('sets delayLinkActivation to to the value from config', () => {
+    it('sets delayLinkActivation to the value from config', () => {
       expect(state.get('delayLinkActivation')).toBe(true);
     });
   });
