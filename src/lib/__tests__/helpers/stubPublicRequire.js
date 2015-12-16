@@ -34,13 +34,13 @@ module.exports = function(config) {
   });
 
   var matchesPropertiesInjector =
-    require('inject!../../resources/matchesProperties/matchesProperties');
+    require('inject!../../resources/matchesProperties');
   var matchesProperties = matchesPropertiesInjector({
     textMatch: publicRequire('textMatch')
   });
   resources['dtm.matchesProperties'] = matchesProperties;
 
-  var createBubblyInjector = require('inject!../../resources/createBubbly/createBubbly');
+  var createBubblyInjector = require('inject!../../resources/createBubbly');
   var createBubbly = createBubblyInjector({
     createDataStash: publicRequire('createDataStash'),
     matchesSelector: publicRequire('matchesSelector'),
@@ -48,11 +48,11 @@ module.exports = function(config) {
   });
   resources['dtm.createBubbly'] = createBubbly;
 
-  var compareNumbers = require('../../resources/compareNumbers/compareNumbers');
+  var compareNumbers = require('../../resources/compareNumbers');
   resources['dtm.compareNumbers'] = compareNumbers;
 
   var visitorTrackingInjector =
-    require('inject!../../resources/visitorTracking/visitorTracking');
+    require('inject!../../resources/visitorTracking');
   var visitorTracking = visitorTrackingInjector({
     'getCookie': publicRequire('getCookie'),
     'setCookie': publicRequire('setCookie'),
