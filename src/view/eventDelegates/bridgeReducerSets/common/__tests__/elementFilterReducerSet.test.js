@@ -21,7 +21,7 @@ describe('element filter reducer set', () => {
         expect(state.get('showElementPropertiesFilter')).toBe(false);
       });
 
-      it('sets elementSelector to false', () => {
+      it('sets elementSelector to undefined', () => {
         expect(state.get('elementSelector')).toBeUndefined();
       });
 
@@ -29,6 +29,7 @@ describe('element filter reducer set', () => {
         expect(state.get('elementProperties').count()).toBe(1);
         expect(state.get('elementProperties').first().get('name')).toBe('');
         expect(state.get('elementProperties').first().get('value')).toBe('');
+        expect(state.get('elementProperties').first().get('id')).toEqual(jasmine.any(String));
       });
     });
 
@@ -43,7 +44,8 @@ describe('element filter reducer set', () => {
               value: 'value'
             },{
               name: 'other name',
-              value: 'other value'
+              value: 'other value',
+              valueIsRegex: true
             }]
           },
           isNewConfig: false
@@ -67,8 +69,8 @@ describe('element filter reducer set', () => {
         expect(state.get('elementProperties').first().get('name')).toBe('name');
         expect(state.get('elementProperties').first().get('value')).toBe('value');
 
-        expect(state.get('elementProperties').last().get('name')).toBe('other name');
         expect(state.get('elementProperties').last().get('value')).toBe('other value');
+        expect(state.get('elementProperties').last().get('valueIsRegex')).toBe(true);
       });
     });
 
@@ -109,6 +111,23 @@ describe('element filter reducer set', () => {
       expect(config.elementSelector).toBeUndefined();
     });
 
+    it('should return a config without elementProperties ' +
+      'when state contains showSpecificElementsFilter: false', () => {
+      let config = {};
+      config = stateToConfig(config, fromJS({
+        showSpecificElementsFilter: false,
+        showElementPropertiesFilter: true,
+        elementProperties: {
+          abc: {
+            id: 'abc',
+            name: 'name',
+            value: 'value'
+          }
+        }
+      }));
+      expect(config.elementProperties).toBeUndefined();
+    });
+
     it('should return a config having elementProperties ' +
       'when state contains showSpecificElementsFilter: true', () => {
       let config = {};
@@ -127,11 +146,11 @@ describe('element filter reducer set', () => {
     });
 
     it('should return a config without elementProperties ' +
-      'when state contains showSpecificElementsFilter: false', () => {
+      'when state contains showElementPropertiesFilter: false', () => {
       let config = {};
       config = stateToConfig(config, fromJS({
-        showSpecificElementsFilter: false,
-        showElementPropertiesFilter: true,
+        showSpecificElementsFilter: true,
+        showElementPropertiesFilter: false,
         elementProperties: {
           abc: {
             id: 'abc',
