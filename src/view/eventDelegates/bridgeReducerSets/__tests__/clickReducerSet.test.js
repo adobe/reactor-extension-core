@@ -1,8 +1,6 @@
-import clickReducerSet from '../clickReducerSet';
+import { configToState, stateToConfig } from '../clickReducerSet';
 import { actionCreators } from '../../../actions/bridgeAdapterActions';
 import { Map, fromJS } from 'immutable';
-
-let { configToState, stateToConfig } = clickReducerSet;
 
 describe('click reducer set', () => {
   describe('configToState', () => {

@@ -1,8 +1,8 @@
 import { createAction, handleActions } from 'redux-actions';
 
-const SET_BUBBLE_FIRE_IF_PARENT = 'bubble/SET_BUBBLE_FIRE_IF_PARENT';
-const SET_BUBBLE_FIRE_IF_CHILD_FIRED = 'bubble/SET_BUBBLE_FIRE_IF_CHILD_FIRED';
-const SET_BUBBLE_STOP = 'bubble/SET_BUBBLE_STOP';
+const SET_BUBBLE_FIRE_IF_PARENT = 'eventDelegates/bubble/SET_BUBBLE_FIRE_IF_PARENT';
+const SET_BUBBLE_FIRE_IF_CHILD_FIRED = 'eventDelegates/bubble/SET_BUBBLE_FIRE_IF_CHILD_FIRED';
+const SET_BUBBLE_STOP = 'eventDelegates/bubble/SET_BUBBLE_STOP';
 
 export let actionCreators = {
   setBubbleFireIfParent: createAction(SET_BUBBLE_FIRE_IF_PARENT),

@@ -1,7 +1,7 @@
 import createID from '../../../utils/createID';
 import Immutable from 'immutable';
 
-let configToState = (state, action) => {
+export let configToState = (state, action) => {
   let { config, isNewConfig } = action.payload;
   return state.withMutations(state => {
     state.set('showSpecificElementsFilter',
@@ -33,7 +33,7 @@ let configToState = (state, action) => {
   });
 };
 
-let stateToConfig = (config, state) => {
+export let stateToConfig = (config, state) => {
   if (state.get('showSpecificElementsFilter')) {
     var elementSelector = state.get('elementSelector');
 
@@ -60,7 +60,7 @@ let stateToConfig = (config, state) => {
   return config;
 };
 
-let validate = state => {
+export let validate = state => {
   let selectorInvalid = Boolean(
     state.get('showSpecificElementsFilter') && !state.get('elementSelector')
   );
