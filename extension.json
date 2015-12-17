@@ -348,7 +348,7 @@
     },
     {
       "displayName": "Custom",
-      "libPath": "dataElementDelegates/custom/custom.js",
+      "libPath": "dataElementDelegates/custom.js",
       "viewPath": "index.html#/dataElements/custom",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
