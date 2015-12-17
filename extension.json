@@ -4,7 +4,7 @@
   "events": [
     {
       "displayName": "Click",
-      "libPath": "events/click/click.js",
+      "libPath": "eventDelegates/click.js",
       "viewPath": "index.html#/events/click",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -50,57 +50,57 @@
     },
     {
       "displayName": "Direct Call",
-      "libPath": "events/directCall/directCall.js",
+      "libPath": "eventDelegates/directCall.js",
       "viewPath": "index.html#/events/directCall"
     },
     {
       "displayName": "DOM Ready",
-      "libPath": "events/domReady/domReady.js",
+      "libPath": "eventDelegates/domReady.js",
       "viewPath": "index.html#/events/domReady"
     },
     {
       "displayName": "Element Exists",
-      "libPath": "events/elementExists/elementExists.js",
+      "libPath": "eventDelegates/elementExists.js",
       "viewPath": "index.html#/events/elementExists"
     },
     {
       "displayName": "Enters Viewport",
-      "libPath": "events/entersViewport/entersViewport.js",
+      "libPath": "eventDelegates/entersViewport.js",
       "viewPath": "index.html#/events/entersViewport"
     },
     {
       "displayName": "Hover",
-      "libPath": "events/hover/hover.js",
+      "libPath": "eventDelegates/hover.js",
       "viewPath": "index.html#/events/hover"
     },
     {
       "displayName": "On Load",
-      "libPath": "events/onload/onload.js",
+      "libPath": "eventDelegates/onload.js",
       "viewPath": "index.html#/events/onload"
     },
     {
       "displayName": "Page Bottom",
-      "libPath": "events/pageBottom/pageBottom.js",
+      "libPath": "eventDelegates/pageBottom.js",
       "viewPath": "index.html#/events/pageBottom"
     },
     {
       "displayName": "Page Top",
-      "libPath": "events/pageTop/pageTop.js",
+      "libPath": "eventDelegates/pageTop.js",
       "viewPath": "index.html#/events/pageTop"
     },
     {
       "displayName": "Keypress",
-      "libPath": "events/keypress/keypress.js",
+      "libPath": "eventDelegates/keypress.js",
       "viewPath": "index.html#/events/keypress"
     },
     {
       "displayName": "Focus",
-      "libPath": "events/focus/focus.js",
+      "libPath": "eventDelegates/focus.js",
       "viewPath": "index.html#/events/focus"
     },
     {
       "displayName": "Blur",
-      "libPath": "events/blur/blur.js",
+      "libPath": "eventDelegates/blur.js",
       "viewPath": "index.html#/events/blur",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -143,196 +143,196 @@
     },
     {
       "displayName": "Submit",
-      "libPath": "events/submit/submit.js",
+      "libPath": "eventDelegates/submit.js",
       "viewPath": "index.html#/events/submit"
     },
     {
       "displayName": "Play",
-      "libPath": "events/play/play.js",
+      "libPath": "eventDelegates/play.js",
       "viewPath": "index.html#/events/play"
     },
     {
       "displayName": "Pause",
-      "libPath": "events/pause/pause.js",
+      "libPath": "eventDelegates/pause.js",
       "viewPath": "index.html#/events/pause"
     },
     {
       "displayName": "Ended",
-      "libPath": "events/ended/ended.js",
+      "libPath": "eventDelegates/ended.js",
       "viewPath": "index.html#/events/ended"
     },
     {
       "displayName": "Volume Change",
-      "libPath": "events/volumechange/volumechange.js",
+      "libPath": "eventDelegates/volumechange.js",
       "viewPath": "index.html#/events/volumechange"
     },
     {
       "displayName": "Stalled",
-      "libPath": "events/stalled/stalled.js",
+      "libPath": "eventDelegates/stalled.js",
       "viewPath": "index.html#/events/stalled"
     },
     {
       "displayName": "Loaded Data",
-      "libPath": "events/loadeddata/loadeddata.js",
+      "libPath": "eventDelegates/loadeddata.js",
       "viewPath": "index.html#/events/loadeddata"
     },
     {
       "displayName": "Time Played",
-      "libPath": "events/timePlayed/timePlayed.js",
+      "libPath": "eventDelegates/timePlayed.js",
       "viewPath": "index.html#/events/timePlayed"
     },
     {
       "displayName": "Orientation Change",
-      "libPath": "events/orientationchange/orientationchange.js",
+      "libPath": "eventDelegates/orientationchange.js",
       "viewPath": "index.html#/events/orientationchange"
     },
     {
       "displayName": "Zoom Change",
-      "libPath": "events/zoomchange/zoomchange.js",
+      "libPath": "eventDelegates/zoomchange.js",
       "viewPath": "index.html#/events/zoomchange"
     }
   ],
   "conditions": [
     {
       "displayName": "Browser",
-      "libPath": "conditions/browser/browser.js",
+      "libPath": "conditionDelegates/browser.js",
       "viewPath": "index.html#/conditions/browser"
     },
     {
       "displayName": "Cart Amount",
-      "libPath": "conditions/cartAmount/cartAmount.js",
+      "libPath": "conditionDelegates/cartAmount.js",
       "viewPath": "index.html#/conditions/cartAmount"
     },
     {
       "displayName": "Cart Item Quantity",
-      "libPath": "conditions/cartItemQuantity/cartItemQuantity.js",
+      "libPath": "conditionDelegates/cartItemQuantity.js",
       "viewPath": "index.html#/conditions/cartItemQuantity"
     },
     {
       "displayName": "Cookie Opt-out",
-      "libPath": "conditions/cookieOptOut/cookieOptOut.js",
+      "libPath": "conditionDelegates/cookieOptOut.js",
       "viewPath": "index.html#/conditions/cookieOptOut"
     },
     {
       "displayName": "Custom",
-      "libPath": "conditions/custom/custom.js",
+      "libPath": "conditionDelegates/custom.js",
       "viewPath": "index.html#/conditions/custom"
     },
     {
       "displayName": "Device Type",
-      "libPath": "conditions/deviceType/deviceType.js",
+      "libPath": "conditionDelegates/deviceType.js",
       "viewPath": "index.html#/conditions/deviceType"
     },
     {
       "displayName": "Domain",
-      "libPath": "conditions/domain/domain.js",
+      "libPath": "conditionDelegates/domain.js",
       "viewPath": "index.html#/conditions/domain"
     },
     {
       "displayName": "Hash Does Not Match",
-      "libPath": "conditions/hashDoesNotMatch/hashDoesNotMatch.js",
+      "libPath": "conditionDelegates/hashDoesNotMatch.js",
       "viewPath": "index.html#/conditions/hashDoesNotMatch"
     },
     {
       "displayName": "Hash Matches",
-      "libPath": "conditions/hashMatches/hashMatches.js",
+      "libPath": "conditionDelegates/hashMatches.js",
       "viewPath": "index.html#/conditions/hashMatches"
     },
     {
       "displayName": "Landing Page",
-      "libPath": "conditions/landingPage/landingPage.js",
+      "libPath": "conditionDelegates/landingPage.js",
       "viewPath": "index.html#/conditions/landingPage"
     },
     {
       "displayName": "Logged In",
-      "libPath": "conditions/loggedIn/loggedIn.js",
+      "libPath": "conditionDelegates/loggedIn.js",
       "viewPath": "index.html#/conditions/loggedIn"
     },
     {
       "displayName": "New/Returning Visitor",
-      "libPath": "conditions/newReturning/newReturning.js",
+      "libPath": "conditionDelegates/newReturning.js",
       "viewPath": "index.html#/conditions/newReturning"
     },
     {
       "displayName": "Operating System",
-      "libPath": "conditions/operatingSystem/operatingSystem.js",
+      "libPath": "conditionDelegates/operatingSystem.js",
       "viewPath": "index.html#/conditions/operatingSystem"
     },
     {
       "displayName": "Page Views",
-      "libPath": "conditions/pageViews/pageViews.js",
+      "libPath": "conditionDelegates/pageViews.js",
       "viewPath": "index.html#/conditions/pageViews"
     },
     {
       "displayName": "Path Does Not Match",
-      "libPath": "conditions/pathDoesNotMatch/pathDoesNotMatch.js",
+      "libPath": "conditionDelegates/pathDoesNotMatch.js",
       "viewPath": "index.html#/conditions/pathDoesNotMatch"
     },
     {
       "displayName": "Path Matches",
-      "libPath": "conditions/pathMatches/pathMatches.js",
+      "libPath": "conditionDelegates/pathMatches.js",
       "viewPath": "index.html#/conditions/pathMatches"
     },
     {
       "displayName": "Previous Converter",
-      "libPath": "conditions/previousConverter/previousConverter.js",
+      "libPath": "conditionDelegates/previousConverter.js",
       "viewPath": "index.html#/conditions/previousConverter"
     },
     {
       "displayName": "Protocol",
-      "libPath": "conditions/protocol/protocol.js",
+      "libPath": "conditionDelegates/protocol.js",
       "viewPath": "index.html#/conditions/protocol"
     },
     {
       "displayName": "Registered User",
-      "libPath": "conditions/registeredUser/registeredUser.js",
+      "libPath": "conditionDelegates/registeredUser.js",
       "viewPath": "index.html#/conditions/registeredUser"
     },
     {
       "displayName": "Screen Resolution",
-      "libPath": "conditions/screenResolution/screenResolution.js",
+      "libPath": "conditionDelegates/screenResolution.js",
       "viewPath": "index.html#/conditions/screenResolution"
     },
     {
       "displayName": "Sessions",
-      "libPath": "conditions/sessions/sessions.js",
+      "libPath": "conditionDelegates/sessions.js",
       "viewPath": "index.html#/conditions/sessions"
     },
     {
       "displayName": "Subdomain Does Not Match",
-      "libPath": "conditions/subdomainDoesNotMatch/subdomainDoesNotMatch.js",
+      "libPath": "conditionDelegates/subdomainDoesNotMatch.js",
       "viewPath": "index.html#/conditions/subdomainDoesNotMatch"
     },
     {
       "displayName": "Subdomain Matches",
-      "libPath": "conditions/subdomainMatches/subdomainMatches.js",
+      "libPath": "conditionDelegates/subdomainMatches.js",
       "viewPath": "index.html#/conditions/subdomainMatches"
     },
     {
       "displayName": "Time On Site",
-      "libPath": "conditions/timeOnSite/timeOnSite.js",
+      "libPath": "conditionDelegates/timeOnSite.js",
       "viewPath": "index.html#/conditions/timeOnSite"
     },
     {
       "displayName": "Traffic Source",
-      "libPath": "conditions/trafficSource/trafficSource.js",
+      "libPath": "conditionDelegates/trafficSource.js",
       "viewPath": "index.html#/conditions/trafficSource"
     },
     {
       "displayName": "URL Parameter",
-      "libPath": "conditions/urlParameter/urlParameter.js",
+      "libPath": "conditionDelegates/urlParameter.js",
       "viewPath": "index.html#/conditions/urlParameter"
     },
     {
       "displayName": "Window Size",
-      "libPath": "conditions/windowSize/windowSize.js",
+      "libPath": "conditionDelegates/windowSize.js",
       "viewPath": "index.html#/conditions/windowSize"
     }
   ],
   "dataElements": [
     {
       "displayName": "Cookie",
-      "libPath": "dataElements/cookie/cookie.js",
+      "libPath": "dataElementDelegates/cookie.js",
       "viewPath": "index.html#/dataElements/cookie",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -347,41 +347,41 @@
     },
     {
       "displayName": "Custom",
-      "libPath": "dataElements/custom/custom.js",
+      "libPath": "dataElementDelegates/custom.js",
       "viewPath": "index.html#/dataElements/cookie"
     },
     {
       "displayName": "DOM Attribute",
-      "libPath": "dataElements/dom/dom.js",
+      "libPath": "dataElementDelegates/dom.js",
       "viewPath": "index.html#/dataElements/dom"
     },
     {
       "displayName": "Querystring Parameter",
-      "libPath": "dataElements/queryParam/queryParam.js",
+      "libPath": "dataElementDelegates/queryParam.js",
       "viewPath": "index.html#/dataElements/queryParam"
     },
     {
       "displayName": "Variable",
-      "libPath": "dataElements/variable/variable.js",
+      "libPath": "dataElementDelegates/variable.js",
       "viewPath": "index.html#/dataElements/variable"
     }
   ],
   "resources": [
     {
       "name": "visitorTracking",
-      "libPath": "resources/visitorTracking/visitorTracking.js"
+      "libPath": "resources/visitorTracking.js"
     },
     {
       "name": "compareNumbers",
-      "libPath": "resources/compareNumbers/compareNumbers.js"
+      "libPath": "resources/compareNumbers.js"
     },
     {
       "name": "createBubbly",
-      "libPath": "resources/createBubbly/createBubbly.js"
+      "libPath": "resources/createBubbly.js"
     },
     {
       "name": "matchesProperties",
-      "libPath": "resources/matchesProperties/matchesProperties.js"
+      "libPath": "resources/matchesProperties.js"
     }
   ],
   "viewBasePath": "dist",
