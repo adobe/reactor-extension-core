@@ -5,14 +5,18 @@ import bridgeAdapterActions from './bridgeAdapterActions';
 import bubbleActions from '../eventDelegates/actions/common/bubbleActions';
 import elementFilterActions from '../eventDelegates/actions/common/elementFilterActions';
 
-// View-specific
-import clickActions from '../eventDelegates/actions/clickActions';
-import cookieActions from '../dataElementDelegates/actions/cookieActions';
+// Events
+import clickEventActions from '../eventDelegates/actions/clickActions';
+
+// Data Elements
+import cookieDataElementActions from '../dataElementDelegates/actions/cookieActions';
+import customDataElementActions from '../dataElementDelegates/actions/customActions';
 
 export default reducerReducers(
   bridgeAdapterActions,
   bubbleActions,
   elementFilterActions,
-  clickActions,
-  cookieActions
+  clickEventActions,
+  cookieDataElementActions,
+  customDataElementActions
 );

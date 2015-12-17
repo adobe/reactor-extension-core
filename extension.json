@@ -342,13 +342,33 @@
             "type": "string",
             "minLength": 1
           }
-        }
+        },
+        "required": ["name"]
       }
     },
     {
       "displayName": "Custom",
-      "libPath": "dataElementDelegates/custom.js",
-      "viewPath": "index.html#/dataElements/cookie"
+      "libPath": "dataElementDelegates/custom/custom.js",
+      "viewPath": "index.html#/dataElements/custom",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "script": {
+            "type": "string"
+          },
+          "__rawScripts": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["script"]
+            },
+            "minItems": 1,
+            "maxItems": 1
+          }
+        },
+        "required": ["script", "__rawScripts"]
+      }
     },
     {
       "displayName": "DOM Attribute",

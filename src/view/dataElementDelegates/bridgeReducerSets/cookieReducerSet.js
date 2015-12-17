@@ -1,14 +1,14 @@
-let configToState = (state, action) => {
+export let configToState = (state, action) => {
   let { config } = action.payload;
   return state.set('name', config.name || '');
 };
 
-let stateToConfig = (config, state) => {
+export let stateToConfig = (config, state) => {
   config.name = state.get('name');
   return config;
 };
 
-let validate = state => {
+export let validate = state => {
   let nameInvalid = !state.get('name').length;
   return state.setIn(['errors', 'nameInvalid'], nameInvalid);
 };

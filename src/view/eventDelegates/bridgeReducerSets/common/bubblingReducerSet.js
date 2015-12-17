@@ -1,4 +1,4 @@
-let configToState = (state, action) => {
+export let configToState = (state, action) => {
   let { config, isNewConfig } = action.payload;
   return state.withMutations(state => {
     state.set('bubbleFireIfParent', Boolean(isNewConfig || config.bubbleFireIfParent));
@@ -7,7 +7,7 @@ let configToState = (state, action) => {
   });
 };
 
-let stateToConfig = (config, state) => {
+export let stateToConfig = (config, state) => {
   if (state.get('bubbleFireIfParent')) {
     config.bubbleFireIfParent = true;
   }
