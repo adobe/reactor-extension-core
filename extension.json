@@ -409,7 +409,18 @@
     {
       "displayName": "JavaScript Variable",
       "libPath": "dataElementDelegates/variable.js",
-      "viewPath": "index.html#/dataElements/variable"
+      "viewPath": "index.html#/dataElements/variable",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": ["path"]
+      }
     }
   ],
   "resources": [
