@@ -1,6 +1,5 @@
 export let configToState = (state, action) => {
-  let { config } = action.payload;
-  return state.set('name', config.name || '');
+  return state.merge(action.payload.config);
 };
 
 export let stateToConfig = (config, state) => {
@@ -9,8 +8,7 @@ export let stateToConfig = (config, state) => {
 };
 
 export let validate = state => {
-  let nameInvalid = !state.get('name').length;
-  return state.setIn(['errors', 'nameInvalid'], nameInvalid);
+  return state.setIn(['errors', 'nameInvalid'], !state.get('name'));
 };
 
 export default {

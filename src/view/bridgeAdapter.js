@@ -23,6 +23,7 @@ export default (extensionBridge, store) => {
 
   extensionBridge.validate = () => {
     store.dispatch(actionCreators.validate());
-    return !store.getState().get('errors').some(value => value);
+    let errors = store.getState().get('errors');
+    return !errors || !errors.some(value => value);
   };
 };

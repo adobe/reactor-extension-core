@@ -23,8 +23,10 @@ describe('custom reducer set', () => {
         script: 'foo'
       }));
 
-      expect(config.script).toBe('foo');
-      expect(config.__rawScripts).toEqual([ 'script' ]);
+      expect(config).toEqual({
+        script: 'foo',
+        __rawScripts: ['script']
+      });
     });
   });
 });

@@ -1,5 +1,13 @@
 'use strict';
 
+/**
+ * The dom data element.
+ * @param {Object} config The data element config object.
+ * @param {string} config.elementSelector The CSS selector for a DOM element.
+ * @param {string} config.elementProperty The name of the property or attribute of the DOM
+ * element.
+ * @returns {string}
+ */
 module.exports = function(config) {
   var elements = document.querySelectorAll(config.elementSelector);
   if (elements.length > 0) {

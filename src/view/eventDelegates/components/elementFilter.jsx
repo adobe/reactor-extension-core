@@ -24,7 +24,7 @@ export class ElementFilter extends React.Component {
   render() {
     return (
       <div>
-        <span className="u-gapRight">On</span>
+        <span className="u-label">On</span>
         <Coral.Radio
             name="filter"
             value="true"

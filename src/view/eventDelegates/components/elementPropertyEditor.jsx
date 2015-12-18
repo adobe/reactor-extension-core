@@ -41,7 +41,7 @@ export default class ElementPropertyEditor extends React.Component {
           placeholder="Property" 
           value={this.props.name}
           onChange={this.onNameChange}/>
-        <span className="u-gapRight">=</span>
+        <span className="u-label">=</span>
         <Coral.Textfield 
           className="u-gapRight"
           placeholder="Value" 

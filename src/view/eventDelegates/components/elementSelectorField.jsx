@@ -24,7 +24,7 @@ export class ElementSelectorField extends React.Component {
     return (
       <ValidationWrapper error={error}>
         <label>
-          <span className="u-gapRight">matching the CSS selector</span>
+          <span className="u-label">matching the CSS selector</span>
           <Coral.Textfield
             value={this.props.elementSelector}
             onChange={this.handleChange}/>

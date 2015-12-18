@@ -15,6 +15,9 @@ import cookieDataElementReducerSet from './dataElementDelegates/bridgeReducerSet
 import CustomDataElement from './dataElementDelegates/custom';
 import customDataElementReducerSet from './dataElementDelegates/bridgeReducerSets/customReducerSet';
 
+import DOMDataElement from './dataElementDelegates/dom';
+import domDataElementReducerSet from './dataElementDelegates/bridgeReducerSets/domReducerSet';
+
 import { setBridgeAdapterReducer } from './bridgeAdapter';
 
 export default (
@@ -23,5 +26,6 @@ export default (
     <Route path="/events/blur" component={BlurEvent} reducer={blurEventReducerSet} onEnter={setBridgeAdapterReducer}/>
     <Route path="/dataElements/cookie" component={CookieDataElement} reducer={cookieDataElementReducerSet} onEnter={setBridgeAdapterReducer}/>
     <Route path="/dataElements/custom" component={CustomDataElement} reducer={customDataElementReducerSet} onEnter={setBridgeAdapterReducer}/>
+    <Route path="/dataElements/dom" component={DOMDataElement} reducer={domDataElementReducerSet} onEnter={setBridgeAdapterReducer}/>
   </Router>
 );
