@@ -7,10 +7,27 @@ import { fromJS } from 'immutable';
 import { actionCreators } from '../actions/domActions';
 
 describe('dom view', () => {
+  const MOCK_ELEMENT_PROPERTY_PRESETS = [
+    {
+      value: 'preset',
+      label: 'my preset'
+    },
+    {
+      value: 'custom',
+      label: 'other attribute'
+    }
+  ];
+
   let render = props => {
     // Dispatch is sometimes needed by this component in componentWillMount regardless of whether
     // we're testing dispatch calls.
-    props.dispatch = props.dispatch || function() {};
+    if (!props.dispatch) {
+      props.dispatch = function() {};
+    }
+
+    if (!props.elementPropertyPresets) {
+      props.elementPropertyPresets = fromJS(MOCK_ELEMENT_PROPERTY_PRESETS);
+    }
 
     return TestUtils.renderIntoDocument(
       <DOM {...props} />
@@ -21,15 +38,17 @@ describe('dom view', () => {
     let textfields = TestUtils.scryRenderedComponentsWithType(component, Coral.Textfield)
     return {
       elementSelectorField: textfields[0],
-      elementPropertySelect: TestUtils.findRenderedComponentWithType(component, Coral.Select),
-      otherElementPropertyField: textfields.length > 1 ? textfields[1] : null
+      elementPropertyPresetSelect: TestUtils.findRenderedComponentWithType(component, Coral.Select),
+      customElementPropertyField: textfields.length > 1 ? textfields[1] : null
     };
   };
 
   it('maps state to props', () => {
     let props = mapStateToProps(fromJS({
       elementSelector: 'foo',
-      elementProperty: 'innerHTML',
+      selectedElementPropertyPreset: 'innerHTML',
+      customElementProperty: 'foo',
+      elementPropertyPresets: MOCK_ELEMENT_PROPERTY_PRESETS,
       errors: {
         elementSelectorInvalid: true,
         elementPropertyInvalid: true
@@ -38,7 +57,9 @@ describe('dom view', () => {
 
     expect(props).toEqual({
       elementSelector: 'foo',
-      elementProperty: 'innerHTML',
+      selectedElementPropertyPreset: 'innerHTML',
+      customElementProperty: 'foo',
+      elementPropertyPresets: jasmine.any(Object),
       elementSelectorInvalid: true,
       elementPropertyInvalid: true
     });
@@ -69,76 +90,55 @@ describe('dom view', () => {
     });
   });
 
-  describe('element property select', () => {
-    it('is set with property value', () => {
-      let { elementPropertySelect } = getParts(render({
-        elementProperty: 'innerHTML'
+  describe('element property preset select', () => {
+    it('is set with selected element property preset', () => {
+      let { elementPropertyPresetSelect } = getParts(render({
+        selectedElementPropertyPreset: 'innerHTML'
       }));
 
-      expect(elementPropertySelect.props.value).toBe('innerHTML');
+      expect(elementPropertyPresetSelect.props.value).toBe('innerHTML');
     });
 
-    it('is set to "other" when property does not match a preset', () => {
-      let { elementPropertySelect } = getParts(render({
-        elementProperty: 'foo'
-      }));
-
-      expect(elementPropertySelect.props.value).toBe('other');
-    });
-
-    it('dispatches an action on value change when a preset option is selected', () => {
+    it('dispatches an action on value change', () => {
       let dispatch = jasmine.createSpy();
-      let { elementPropertySelect } = getParts(render({
+      let { elementPropertyPresetSelect } = getParts(render({
         dispatch
       }));
 
-      TestUtils.Simulate.change(ReactDOM.findDOMNode(elementPropertySelect), {
+      TestUtils.Simulate.change(ReactDOM.findDOMNode(elementPropertyPresetSelect), {
         target: {
           value: 'innerHTML'
         }
       });
 
-      expect(dispatch).toHaveBeenCalledWith(actionCreators.setElementProperty('innerHTML'));
-    });
-
-    it('dispatches an action on value change when a non-preset option is selected', () => {
-      let dispatch = jasmine.createSpy();
-      let { elementPropertySelect } = getParts(render({
-        dispatch
-      }));
-
-      TestUtils.Simulate.change(ReactDOM.findDOMNode(elementPropertySelect), {
-        target: {
-          value: 'other'
-        }
-      });
-
-      expect(dispatch).toHaveBeenCalledWith(actionCreators.setElementProperty(''));
+      expect(dispatch).toHaveBeenCalledWith(actionCreators.setSelectedElementPropertyPreset('innerHTML'));
     });
   });
 
-  describe('element property "other" field', () => {
-    it('is set with property value when it is a non-preset', () => {
-      let { otherElementPropertyField } = getParts(render({
-        elementProperty: 'foo'
+  describe('custom element property field', () => {
+    it('is set with custom element property value', () => {
+      let { customElementPropertyField } = getParts(render({
+        selectedElementPropertyPreset: 'custom',
+        customElementProperty: 'foo'
       }));
 
-      expect(otherElementPropertyField.props.value).toBe('foo');
+      expect(customElementPropertyField.props.value).toBe('foo');
     });
 
     it('dispatches an action on value change', () => {
       let dispatch = jasmine.createSpy();
-      let { otherElementPropertyField } = getParts(render({
-        dispatch
+      let { customElementPropertyField } = getParts(render({
+        dispatch,
+        selectedElementPropertyPreset: 'custom'
       }));
 
-      TestUtils.Simulate.change(ReactDOM.findDOMNode(otherElementPropertyField), {
+      TestUtils.Simulate.change(ReactDOM.findDOMNode(customElementPropertyField), {
         target: {
           value: 'goose'
         }
       });
 
-      expect(dispatch).toHaveBeenCalledWith(actionCreators.setElementProperty('goose'));
+      expect(dispatch).toHaveBeenCalledWith(actionCreators.setCustomElementProperty('goose'));
     });
   })
 });

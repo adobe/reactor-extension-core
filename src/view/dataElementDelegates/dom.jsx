@@ -6,44 +6,24 @@ import ValidationWrapper from '../components/validationWrapper';
 
 export let mapStateToProps = state => ({
   elementSelector: state.get('elementSelector'),
+  selectedElementPropertyPreset: state.get('selectedElementPropertyPreset'),
+  customElementProperty: state.get('customElementProperty'),
+  elementPropertyPresets: state.get('elementPropertyPresets'),
   elementSelectorInvalid: state.getIn(['errors', 'elementSelectorInvalid']),
-  elementProperty: state.get('elementProperty'),
   elementPropertyInvalid: state.getIn(['errors', 'elementPropertyInvalid'])
 });
 
 export class DOM extends React.Component {
-  optionsMap = {
-    id: 'id',
-    href: 'href',
-    class: 'class',
-    src: 'src',
-    alt: 'alt',
-    innerHTML: 'HTML',
-    text: 'text',
-    name: 'name',
-    value: 'value',
-    type: 'type',
-    other: 'other attribute'
-  };
-
-  componentWillMount() {
-    if (this.props.elementProperty === undefined) {
-      this.props.dispatch(actionCreators.setElementProperty('id'));
-    }
-  }
-
   onElementSelectorChange = event => {
     this.props.dispatch(actionCreators.setElementSelector(event.target.value));
   };
 
-  onElementPropertyChange = event => {
-    let selectedValue = event.target.value;
-    let elementProperty = selectedValue === 'other' ? '' : selectedValue;
-    this.props.dispatch(actionCreators.setElementProperty(elementProperty));
+  onElementPropertyPresetChange = event => {
+    this.props.dispatch(actionCreators.setSelectedElementPropertyPreset(event.target.value));
   };
 
-  onOtherElementPropertyChange = event => {
-    this.props.dispatch(actionCreators.setElementProperty(event.target.value));
+  onCustomElementPropertyChange = event => {
+    this.props.dispatch(actionCreators.setCustomElementProperty(event.target.value));
   };
 
   render() {
@@ -58,35 +38,42 @@ export class DOM extends React.Component {
       elementPropertyError = 'Please specify an element property';
     }
 
-    let values = Object.keys(this.optionsMap);
-    let selectedValueIndex = values.indexOf(this.props.elementProperty);
-    let selectedValue = selectedValueIndex !== -1 ? values[selectedValueIndex] : 'other';
-
     return (
       <div>
         <div className="u-gapBottom">
           <ValidationWrapper error={elementSelectorError}>
             <label>
               <span className="u-label">From the DOM element matching the CSS Selector</span>
-              <Coral.Textfield value={this.props.elementSelector} onChange={this.onElementSelectorChange}/>
+              <Coral.Textfield
+                value={this.props.elementSelector}
+                onChange={this.onElementSelectorChange}/>
             </label>
           </ValidationWrapper>
         </div>
         <div>
           <label>
-            <span className="u-label">Return the value of</span>
-            <Coral.Select value={selectedValue} onChange={this.onElementPropertyChange} className="u-gapRight">
+            <span className="u-label">Use the value of</span>
+            <Coral.Select
+              value={this.props.selectedElementPropertyPreset}
+              onChange={this.onElementPropertyPresetChange}
+              className="u-gapRight">
               {
-                Object.keys(this.optionsMap).map(value => {
-                  return <Coral.Select.Item key={value} value={value}>{this.optionsMap[value]}</Coral.Select.Item>;
+                this.props.elementPropertyPresets.valueSeq().map(preset => {
+                  return (
+                    <Coral.Select.Item key={preset.get('value')} value={preset.get('value')}>
+                      {preset.get('label')}
+                    </Coral.Select.Item>
+                  );
                 })
               }
             </Coral.Select>
           </label>
           {
-            (selectedValue === 'other') ?
+            (this.props.selectedElementPropertyPreset === 'custom') ?
             <ValidationWrapper error={elementPropertyError}>
-              <Coral.Textfield value={this.props.elementProperty} onChange={this.onOtherElementPropertyChange}/>
+              <Coral.Textfield
+                value={this.props.customElementProperty}
+                onChange={this.onCustomElementPropertyChange}/>
             </ValidationWrapper>
             : null
           }
