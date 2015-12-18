@@ -12,6 +12,7 @@ import clickEventActions from '../eventDelegates/actions/clickActions';
 import cookieDataElementActions from '../dataElementDelegates/actions/cookieActions';
 import customDataElementActions from '../dataElementDelegates/actions/customActions';
 import domDataElementActions from '../dataElementDelegates/actions/domActions';
+import queryParamDataElementActions from '../dataElementDelegates/actions/queryParamActions';
 
 export default reducerReducers(
   bridgeAdapterActions,
@@ -20,5 +21,6 @@ export default reducerReducers(
   clickEventActions,
   cookieDataElementActions,
   customDataElementActions,
-  domDataElementActions
+  domDataElementActions,
+  queryParamDataElementActions
 );
