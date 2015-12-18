@@ -4,8 +4,23 @@ var gulp = require('gulp');
 var webpack = require('webpack-stream');
 var sourcemaps = require('gulp-sourcemaps');
 var path = require('path');
+var plumber = require('gulp-plumber');
+var notify = require('gulp-notify');
 
 require('turbine-gulp-testrunner')(gulp);
+
+// Shows an growl notification saying that building failed and then logs the error to the console.
+var errorAlert = function(error){
+  notify.onError({
+    title: "Build Error",
+    message: "Check your terminal",
+    sound: "Sosumi"
+  })(error);
+
+  console.log(error.toString());
+
+  this.emit("end");
+};
 
 var webpackConfig = {
   output: {
@@ -46,6 +61,8 @@ var webpackConfig = {
 
 gulp.task('buildJS', function() {
   return gulp.src('src/view/index.jsx')
+    // Allows building to fail without breaking file watchers, etc.
+    .pipe(plumber({ errorHandler: errorAlert }))
     .pipe(sourcemaps.init())
     .pipe(webpack(webpackConfig))
     .pipe(sourcemaps.write())

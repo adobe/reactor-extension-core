@@ -1,6 +1,5 @@
 export let configToState = (state, action) => {
-  let { config } = action.payload;
-  return state.set('script', config.script || '');
+  return state.merge(action.payload.config);
 };
 
 export let stateToConfig = (config, state) => {

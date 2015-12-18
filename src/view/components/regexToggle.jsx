@@ -19,7 +19,7 @@ export default class RegexToggle extends React.Component {
             className="u-gapRight"
             checked={this.props.valueIsRegex}
             onChange={this.onToggleChange}/>
-          <span className="u-gapRight">Regex</span>
+          <span className="u-label">Regex</span>
           <button
             className="u-buttonReset coral-Link"
             onClick={this.onTestRegex}

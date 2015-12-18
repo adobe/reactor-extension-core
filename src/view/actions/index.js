@@ -11,6 +11,7 @@ import clickEventActions from '../eventDelegates/actions/clickActions';
 // Data Elements
 import cookieDataElementActions from '../dataElementDelegates/actions/cookieActions';
 import customDataElementActions from '../dataElementDelegates/actions/customActions';
+import domDataElementActions from '../dataElementDelegates/actions/domActions';
 
 export default reducerReducers(
   bridgeAdapterActions,
@@ -18,5 +19,6 @@ export default reducerReducers(
   elementFilterActions,
   clickEventActions,
   cookieDataElementActions,
-  customDataElementActions
+  customDataElementActions,
+  domDataElementActions
 );

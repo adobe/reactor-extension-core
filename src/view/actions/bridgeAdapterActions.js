@@ -14,6 +14,7 @@ export default handleActions({
     return bridgeAdapterReducer.configToState(state, action);
   },
   [VALIDATE]: (state, action) => {
-    return bridgeAdapterReducer.validate(state, action);
+    let validate = bridgeAdapterReducer.validate || (() => state);
+    return validate(state, action);
   }
 });

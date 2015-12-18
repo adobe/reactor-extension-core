@@ -25,7 +25,7 @@ export class Cookie extends React.Component {
       <div>
         <ValidationWrapper error={error}>
           <label>
-            <span className="u-gapRight">Cookie Name:</span>
+            <span className="u-label">Cookie Name:</span>
             <Coral.Textfield
               value={this.props.name}
               onChange={this.onNameChange}/>

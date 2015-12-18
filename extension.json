@@ -373,7 +373,22 @@
     {
       "displayName": "DOM Attribute",
       "libPath": "dataElementDelegates/dom.js",
-      "viewPath": "index.html#/dataElements/dom"
+      "viewPath": "index.html#/dataElements/dom",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "elementSelector": {
+            "type": "string",
+            "minLength": 1
+          },
+          "elementProperty": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": ["elementSelector", "elementProperty"]
+      }
     },
     {
       "displayName": "Querystring Parameter",
