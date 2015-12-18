@@ -9,7 +9,7 @@ var notify = require('gulp-notify');
 
 require('turbine-gulp-testrunner')(gulp);
 
-// Shows an growl notification saying that building failed.
+// Shows an growl notification saying that building failed and then logs the error to the console.
 var errorAlert = function(error){
   notify.onError({
     title: "Build Error",
