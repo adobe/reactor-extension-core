@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { actionCreators } from './actions/browserActions'
 
 export let mapStateToProps = state => ({
-  browsers: state.get('browsers') || []
+  browsers: state.get('browsers')
 });
 
 const BROWSERS = [
