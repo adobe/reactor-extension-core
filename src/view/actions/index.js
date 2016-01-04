@@ -13,6 +13,7 @@ import browserConditionActions from '../conditionDelegates/actions/browserAction
 import cookieConditionActions from '../conditionDelegates/actions/cookieActions';
 import cookieOptOutConditionActions from '../conditionDelegates/actions/cookieOptOutActions';
 import customConditionActions from '../conditionDelegates/actions/customActions';
+import deviceTypeConditionActions from '../conditionDelegates/actions/deviceTypeActions';
 
 // Data Elements
 import cookieDataElementActions from '../dataElementDelegates/actions/cookieActions';
@@ -30,6 +31,7 @@ export default reducerReducers(
   cookieConditionActions,
   cookieOptOutConditionActions,
   customConditionActions,
+  deviceTypeConditionActions,
   cookieDataElementActions,
   customDataElementActions,
   domDataElementActions,

@@ -299,7 +299,30 @@
     {
       "displayName": "Device Type",
       "libPath": "conditionDelegates/deviceType.js",
-      "viewPath": "index.html#/conditions/deviceType"
+      "viewPath": "index.html#/conditions/deviceType",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "deviceTypes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Desktop",
+                "iPhone",
+                "iPad",
+                "iPod",
+                "Nokia",
+                "Windows Phone",
+                "Blackberry",
+                "Android"
+              ]
+            }
+          }
+        },
+        "required": ["deviceTypes"]
+      }
     },
     {
       "displayName": "Domain",

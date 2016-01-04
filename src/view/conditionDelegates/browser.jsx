@@ -1,7 +1,8 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
 import { connect } from 'react-redux';
-import { actionCreators } from './actions/browserActions'
+import { actionCreators } from './actions/browserActions';
+import CheckboxList from '../components/checkboxList';
 
 export let mapStateToProps = state => ({
   browsers: state.get('browsers')
@@ -21,43 +22,23 @@ const BROWSERS = [
 ];
 
 export class Browser extends React.Component {
-  onChange = event => {
-    let browser = event.target.value;
-    let selectedBrowsers = this.props.browsers;
-    let index = selectedBrowsers.indexOf(browser);
+  select = browser => {
+    let browsers = this.props.browsers.push(browser);
+    this.props.dispatch(actionCreators.setBrowsers(browsers));
+  };
 
-    if (event.target.checked) {
-      if (index === -1) {
-        selectedBrowsers = selectedBrowsers.push(browser);
-      }
-    } else {
-      if (index !== -1) {
-        selectedBrowsers = selectedBrowsers.delete(index);
-      }
-    }
-
-    this.props.dispatch(actionCreators.setBrowsers(selectedBrowsers));
+  deselect = browser => {
+    let index = this.props.browsers.indexOf(browser);
+    let browsers = this.props.browsers.delete(index);
+    this.props.dispatch(actionCreators.setBrowsers(browsers));
   };
 
   render() {
-    let browserOptions = BROWSERS.map(browser => {
-      return (
-        <li key={browser}>
-          <Coral.Checkbox
-            value={browser}
-            checked={this.props.browsers.indexOf(browser) !== -1}
-            onChange={this.onChange}>
-            {browser}
-          </Coral.Checkbox>
-        </li>
-      );
-    });
-
-    return (
-      <ul className="BrowserCondition-browserOptionList">
-        {browserOptions}
-      </ul>
-    );
+    return <CheckboxList
+      items={BROWSERS}
+      selectedValues={this.props.browsers}
+      select={this.select}
+      deselect={this.deselect}/>
   }
 }
 

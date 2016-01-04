@@ -21,6 +21,9 @@ import cookieOptOutConditionReducerSet from './conditionDelegates/bridgeReducerS
 import CustomCondition from './conditionDelegates/custom';
 import customConditionReducerSet from './conditionDelegates/bridgeReducerSets/customReducerSet';
 
+import DeviceTypeCondition from './conditionDelegates/deviceType';
+import deviceTypeConditionReducerSet from './conditionDelegates/bridgeReducerSets/deviceTypeReducerSet';
+
 // Data Elements
 import CookieDataElement from './dataElementDelegates/cookie';
 import cookieDataElementReducerSet from './dataElementDelegates/bridgeReducerSets/cookieReducerSet';
@@ -47,6 +50,7 @@ export default (
     <Route path="/conditions/cookie" component={CookieCondition} reducer={cookieConditionReducerSet} onEnter={setBridgeAdapterReducer}/>
     <Route path="/conditions/cookieOptOut" component={CookieOptOutCondition} reducer={cookieOptOutConditionReducerSet} onEnter={setBridgeAdapterReducer}/>
     <Route path="/conditions/custom" component={CustomCondition} reducer={customConditionReducerSet} onEnter={setBridgeAdapterReducer}/>
+    <Route path="/conditions/deviceType" component={DeviceTypeCondition} reducer={deviceTypeConditionReducerSet} onEnter={setBridgeAdapterReducer}/>
     <Route path="/dataElements/cookie" component={CookieDataElement} reducer={cookieDataElementReducerSet} onEnter={setBridgeAdapterReducer}/>
     <Route path="/dataElements/custom" component={CustomDataElement} reducer={customDataElementReducerSet} onEnter={setBridgeAdapterReducer}/>
     <Route path="/dataElements/dom" component={DOMDataElement} reducer={domDataElementReducerSet} onEnter={setBridgeAdapterReducer}/>
