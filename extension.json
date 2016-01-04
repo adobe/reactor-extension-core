@@ -234,6 +234,29 @@
       "viewPath": "index.html#/conditions/cartItemQuantity"
     },
     {
+      "displayName": "Cookie",
+      "libPath": "conditionDelegates/cookie.js",
+      "viewPath": "index.html#/conditions/cookie",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "value": {
+            "type": "string",
+            "minLength": 1
+          },
+          "valueIsRegex": {
+            "type": "boolean"
+          }
+        },
+        "required": ["name", "value"]
+      }
+    },
+    {
       "displayName": "Cookie Opt-out",
       "libPath": "conditionDelegates/cookieOptOut.js",
       "viewPath": "index.html#/conditions/cookieOptOut"

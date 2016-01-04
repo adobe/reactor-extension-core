@@ -10,6 +10,7 @@ import clickEventActions from '../eventDelegates/actions/clickActions';
 
 // Conditions
 import browserConditionActions from '../conditionDelegates/actions/browserActions';
+import cookieConditionActions from '../conditionDelegates/actions/cookieActions';
 
 // Data Elements
 import cookieDataElementActions from '../dataElementDelegates/actions/cookieActions';
@@ -24,6 +25,7 @@ export default reducerReducers(
   elementFilterActions,
   clickEventActions,
   browserConditionActions,
+  cookieConditionActions,
   cookieDataElementActions,
   customDataElementActions,
   domDataElementActions,

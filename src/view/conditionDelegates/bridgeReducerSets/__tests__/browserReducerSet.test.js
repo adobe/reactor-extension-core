@@ -1,4 +1,4 @@
-import { configToState, stateToConfig, validate } from '../browserReducerSet';
+import { configToState, stateToConfig } from '../browserReducerSet';
 import { actionCreators } from '../../../actions/bridgeAdapterActions';
 import { Map, fromJS } from 'immutable';
 
