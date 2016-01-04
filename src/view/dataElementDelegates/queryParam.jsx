@@ -23,7 +23,7 @@ export class QueryParam extends React.Component {
     let error;
 
     if (this.props.nameInvalid) {
-      error = 'Please specify a querystring parameter name.';
+      error = 'Please specify a query string parameter name.';
     }
 
     return (
