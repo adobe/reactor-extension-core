@@ -1,6 +1,8 @@
 {
   "name": "dtm",
   "displayName": "DTM",
+  "viewBasePath": "dist",
+  "libBasePath": "src/lib",
   "events": [
     {
       "displayName": "Click",
@@ -516,7 +518,5 @@
       "name": "matchesProperties",
       "libPath": "resources/matchesProperties.js"
     }
-  ],
-  "viewBasePath": "dist",
-  "libBasePath": "src/lib"
+  ]
 }
