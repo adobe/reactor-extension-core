@@ -196,7 +196,32 @@
     {
       "displayName": "Browser",
       "libPath": "conditionDelegates/browser.js",
-      "viewPath": "index.html#/conditions/browser"
+      "viewPath": "index.html#/conditions/browser",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "browsers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Chrome",
+                "Firefox",
+                "IE",
+                "Safari",
+                "Opera",
+                "Mobile Safari",
+                "IE Mobile",
+                "Opera Mini",
+                "Opera Mobile",
+                "OmniWeb"
+              ]
+            }
+          }
+        },
+        "required": ["browsers"]
+      }
     },
     {
       "displayName": "Cart Amount",

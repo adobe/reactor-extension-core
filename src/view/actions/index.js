@@ -8,6 +8,9 @@ import elementFilterActions from '../eventDelegates/actions/common/elementFilter
 // Events
 import clickEventActions from '../eventDelegates/actions/clickActions';
 
+// Conditions
+import browserConditionActions from '../conditionDelegates/actions/browserActions';
+
 // Data Elements
 import cookieDataElementActions from '../dataElementDelegates/actions/cookieActions';
 import customDataElementActions from '../dataElementDelegates/actions/customActions';
@@ -20,6 +23,7 @@ export default reducerReducers(
   bubbleActions,
   elementFilterActions,
   clickEventActions,
+  browserConditionActions,
   cookieDataElementActions,
   customDataElementActions,
   domDataElementActions,
