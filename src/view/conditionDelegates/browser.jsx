@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { actionCreators } from './actions/browserActions'
 
 export let mapStateToProps = state => ({
-  browsers: state.get('browsers')
+  browsers: state.get('browsers') || []
 });
 
 const BROWSERS = [
@@ -21,7 +21,7 @@ const BROWSERS = [
 ];
 
 export class Browser extends React.Component {
-  setSelected = event => {
+  onChange = event => {
     let browser = event.target.value;
     let selectedBrowsers = this.props.browsers;
     let index = selectedBrowsers.indexOf(browser);
@@ -46,7 +46,7 @@ export class Browser extends React.Component {
           <Coral.Checkbox
             value={browser}
             checked={this.props.browsers.indexOf(browser) !== -1}
-            onChange={this.setSelected}>
+            onChange={this.onChange}>
             {browser}
           </Coral.Checkbox>
         </li>

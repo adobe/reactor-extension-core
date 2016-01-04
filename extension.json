@@ -259,7 +259,16 @@
     {
       "displayName": "Cookie Opt-out",
       "libPath": "conditionDelegates/cookieOptOut.js",
-      "viewPath": "index.html#/conditions/cookieOptOut"
+      "viewPath": "index.html#/conditions/cookieOptOut",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "acceptsCookies": {
+            "type": "boolean"
+          }
+        }
+      }
     },
     {
       "displayName": "Custom",
