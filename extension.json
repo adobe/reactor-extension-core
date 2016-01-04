@@ -347,7 +347,7 @@
       }
     },
     {
-      "displayName": "Custom",
+      "displayName": "Custom Script",
       "libPath": "dataElementDelegates/custom.js",
       "viewPath": "index.html#/dataElements/custom",
       "schema": {
@@ -391,14 +391,36 @@
       }
     },
     {
-      "displayName": "Querystring Parameter",
+      "displayName": "URL Querystring Parameter",
       "libPath": "dataElementDelegates/queryParam.js",
-      "viewPath": "index.html#/dataElements/queryParam"
+      "viewPath": "index.html#/dataElements/queryParam",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": ["name"]
+      }
     },
     {
-      "displayName": "Variable",
+      "displayName": "JavaScript Variable",
       "libPath": "dataElementDelegates/variable.js",
-      "viewPath": "index.html#/dataElements/variable"
+      "viewPath": "index.html#/dataElements/variable",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": ["path"]
+      }
     }
   ],
   "resources": [

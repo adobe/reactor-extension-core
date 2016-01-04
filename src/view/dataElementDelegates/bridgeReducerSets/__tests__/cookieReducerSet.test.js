@@ -2,7 +2,7 @@ import { configToState, stateToConfig, validate } from '../cookieReducerSet';
 import { actionCreators } from '../../../actions/bridgeAdapterActions';
 import { Map, fromJS } from 'immutable';
 
-describe('custom reducer set', () => {
+describe('cookie reducer set', () => {
   describe('configToState', () => {
     it('converts config to state', () => {
       let state = configToState(Map(), actionCreators.setConfig({

@@ -9,7 +9,7 @@ describe('queryParam data element delegate', function() {
   it('should return a query parameter value', function() {
     var config = {
       name: 'foo',
-      ignoreCase: true
+      caseInsensitive: true
     };
 
     var value = dataElementDelegate(config);

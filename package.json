@@ -12,6 +12,7 @@
     "dtm"
   ],
   "dependencies": {
+    "classnames": "^2.2.1",
     "coralui-support-react": "git+ssh://git@git.corp.adobe.com:Coral/coralui-support-react",
     "css-loader": "^0.22.0",
     "gulp-notify": "^2.2.0",

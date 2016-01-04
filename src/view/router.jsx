@@ -18,6 +18,12 @@ import customDataElementReducerSet from './dataElementDelegates/bridgeReducerSet
 import DOMDataElement from './dataElementDelegates/dom';
 import domDataElementReducerSet from './dataElementDelegates/bridgeReducerSets/domReducerSet';
 
+import QueryParamDataElement from './dataElementDelegates/queryParam';
+import queryParamDataElementReducerSet from './dataElementDelegates/bridgeReducerSets/queryParamReducerSet';
+
+import VariableDataElement from './dataElementDelegates/variable';
+import variableDataElementReducerSet from './dataElementDelegates/bridgeReducerSets/variableReducerSet';
+
 import { setBridgeAdapterReducer } from './bridgeAdapter';
 
 export default (
@@ -27,5 +33,7 @@ export default (
     <Route path="/dataElements/cookie" component={CookieDataElement} reducer={cookieDataElementReducerSet} onEnter={setBridgeAdapterReducer}/>
     <Route path="/dataElements/custom" component={CustomDataElement} reducer={customDataElementReducerSet} onEnter={setBridgeAdapterReducer}/>
     <Route path="/dataElements/dom" component={DOMDataElement} reducer={domDataElementReducerSet} onEnter={setBridgeAdapterReducer}/>
+    <Route path="/dataElements/queryParam" component={QueryParamDataElement} reducer={queryParamDataElementReducerSet} onEnter={setBridgeAdapterReducer}/>
+    <Route path="/dataElements/variable" component={VariableDataElement} reducer={variableDataElementReducerSet} onEnter={setBridgeAdapterReducer}/>
   </Router>
 );

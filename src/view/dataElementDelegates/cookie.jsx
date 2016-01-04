@@ -22,16 +22,14 @@ export class Cookie extends React.Component {
     }
 
     return (
-      <div>
-        <ValidationWrapper error={error}>
-          <label>
-            <span className="u-label">Cookie Name:</span>
-            <Coral.Textfield
-              value={this.props.name}
-              onChange={this.onNameChange}/>
-          </label>
-        </ValidationWrapper>
-      </div>
+      <ValidationWrapper error={error}>
+        <label>
+          <span className="u-label">Cookie Name:</span>
+          <Coral.Textfield
+            value={this.props.name}
+            onChange={this.onNameChange}/>
+        </label>
+      </ValidationWrapper>
     );
   }
 }

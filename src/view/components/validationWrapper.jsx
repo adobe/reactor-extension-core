@@ -1,5 +1,6 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
+import classNames from 'classnames';
 import ErrorIcon from './errorIcon';
 
 export default class ValidationWrapper extends React.Component {
@@ -44,7 +45,9 @@ export default class ValidationWrapper extends React.Component {
     let children = this.recursiveCloneWithInvalidProp(this.props.children);
 
     return (
-      <div className="ValidationWrapper" onFocus={this.onFocus} onBlur={this.onBlur}>
+      <div className={classNames(this.props.className, 'ValidationWrapper')}
+        onFocus={this.onFocus}
+        onBlur={this.onBlur}>
         {children}
         {invalidIcon}
       </div>
