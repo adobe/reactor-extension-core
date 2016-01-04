@@ -12,6 +12,7 @@ import clickEventActions from '../eventDelegates/actions/clickActions';
 import browserConditionActions from '../conditionDelegates/actions/browserActions';
 import cookieConditionActions from '../conditionDelegates/actions/cookieActions';
 import cookieOptOutConditionActions from '../conditionDelegates/actions/cookieOptOutActions';
+import customConditionActions from '../conditionDelegates/actions/customActions';
 
 // Data Elements
 import cookieDataElementActions from '../dataElementDelegates/actions/cookieActions';
@@ -28,6 +29,7 @@ export default reducerReducers(
   browserConditionActions,
   cookieConditionActions,
   cookieOptOutConditionActions,
+  customConditionActions,
   cookieDataElementActions,
   customDataElementActions,
   domDataElementActions,
