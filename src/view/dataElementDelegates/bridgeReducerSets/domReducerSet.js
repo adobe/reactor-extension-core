@@ -72,18 +72,21 @@ export let configToState = (state, action) => {
 };
 
 export let stateToConfig = (config, state) => {
-  config.elementSelector = state.get('elementSelector');
-
   let selectedElementPropertyPreset = state.get('selectedElementPropertyPreset');
   let customElementProperty = state.get('customElementProperty');
+  let elementProperty;
 
   if (selectedElementPropertyPreset === 'custom') {
-    config.elementProperty = customElementProperty;
+    elementProperty = customElementProperty;
   } else {
-    config.elementProperty = selectedElementPropertyPreset;
+    elementProperty = selectedElementPropertyPreset;
   }
 
-  return config;
+  return {
+    ...config,
+    elementSelector: state.get('elementSelector'),
+    elementProperty
+  };
 };
 
 export let validate = state => {

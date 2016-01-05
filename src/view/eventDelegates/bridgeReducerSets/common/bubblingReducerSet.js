@@ -8,6 +8,10 @@ export let configToState = (state, action) => {
 };
 
 export let stateToConfig = (config, state) => {
+  config = {
+    ...config
+  };
+
   if (state.get('bubbleFireIfParent')) {
     config.bubbleFireIfParent = true;
   }

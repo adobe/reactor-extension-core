@@ -3,11 +3,13 @@ export let configToState = (state, action) => {
 };
 
 export let stateToConfig = (config, state) => {
-  config.script = state.get('script');
-  // Important. This is to let the library emitter know that it should convert our
-  // script string to an actual function.
-  config.__rawScripts = [ 'script' ];
-  return config;
+  return {
+    ...config,
+    script: state.get('script'),
+    // Important. This is to let the library emitter know that it should convert our
+    // script string to an actual function.
+    __rawScripts: ['script']
+  };
 };
 
 export default {

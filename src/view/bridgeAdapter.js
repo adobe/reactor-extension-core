@@ -11,7 +11,19 @@ export let setBridgeAdapterReducer = (nextState) => {
 
 export default (extensionBridge, store) => {
   extensionBridge.getConfig = () => {
-    return bridgeAdapterReducer.stateToConfig({}, store.getState());
+    let config = {};
+
+    if (bridgeAdapterReducer.stateToConfig) {
+      let reducedConfig = bridgeAdapterReducer.stateToConfig(config, store.getState());
+
+      if (config === reducedConfig) {
+        throw new Error('Bridge adapter reducer stateToConfig must return a new config object.');
+      }
+
+      config = reducedConfig;
+    }
+
+    return config;
   };
 
   extensionBridge.setConfig = config => {
