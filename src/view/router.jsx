@@ -5,6 +5,9 @@ import { Router, Route } from 'react-router';
 import ClickEvent from './eventDelegates/click';
 import clickEventReducerSet from './eventDelegates/bridgeReducerSets/clickReducerSet';
 
+import DirectCallEvent from './eventDelegates/directCall';
+import directCallEventReducerSet from './eventDelegates/bridgeReducerSets/directCallReducerSet';
+
 import BlurEvent from './eventDelegates/blur';
 import blurEventReducerSet from './eventDelegates/bridgeReducerSets/blurReducerSet';
 
@@ -29,6 +32,7 @@ import { setBridgeAdapterReducer } from './bridgeAdapter';
 export default (
   <Router>
     <Route path="/events/click" component={ClickEvent} reducer={clickEventReducerSet} onEnter={setBridgeAdapterReducer}/>
+    <Route path="/events/directCall" component={DirectCallEvent} reducer={directCallEventReducerSet} onEnter={setBridgeAdapterReducer}/>
     <Route path="/events/blur" component={BlurEvent} reducer={blurEventReducerSet} onEnter={setBridgeAdapterReducer}/>
     <Route path="/dataElements/cookie" component={CookieDataElement} reducer={cookieDataElementReducerSet} onEnter={setBridgeAdapterReducer}/>
     <Route path="/dataElements/custom" component={CustomDataElement} reducer={customDataElementReducerSet} onEnter={setBridgeAdapterReducer}/>

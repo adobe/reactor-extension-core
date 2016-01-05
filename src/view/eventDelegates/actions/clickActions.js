@@ -1,6 +1,6 @@
 import { createAction, handleActions } from 'redux-actions';
 
-const SET_DELAY_LINK_ACTIVATION = 'click/SET_DELAY_LINK_ACTIVATION';
+const SET_DELAY_LINK_ACTIVATION = 'eventDelegates/click/SET_DELAY_LINK_ACTIVATION';
 
 export let actionCreators = {
   setDelayLinkActivation: createAction(SET_DELAY_LINK_ACTIVATION)

@@ -51,7 +51,18 @@
     {
       "displayName": "Direct Call",
       "libPath": "eventDelegates/directCall.js",
-      "viewPath": "index.html#/events/directCall"
+      "viewPath": "index.html#/events/directCall",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": ["name"]
+      }
     },
     {
       "displayName": "DOM Ready",
