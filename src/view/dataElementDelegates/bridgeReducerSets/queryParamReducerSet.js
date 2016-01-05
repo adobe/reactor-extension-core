@@ -7,9 +7,11 @@ export let configToState = (state, action) => {
 };
 
 export let stateToConfig = (config, state) => {
-  config.name = state.get('name');
-  config.caseInsensitive = state.get('caseInsensitive');
-  return config;
+  return {
+    ...config,
+    name: state.get('name'),
+    caseInsensitive: state.get('caseInsensitive')
+  };
 };
 
 export let validate = state => {

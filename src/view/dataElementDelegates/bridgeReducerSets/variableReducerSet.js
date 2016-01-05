@@ -3,8 +3,10 @@ export let configToState = (state, action) => {
 };
 
 export let stateToConfig = (config, state) => {
-  config.path = state.get('path');
-  return config;
+  return {
+    ...config,
+    path: state.get('path')
+  };
 };
 
 export let validate = state => {

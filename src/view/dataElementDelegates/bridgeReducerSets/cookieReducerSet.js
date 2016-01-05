@@ -3,8 +3,10 @@ export let configToState = (state, action) => {
 };
 
 export let stateToConfig = (config, state) => {
-  config.name = state.get('name');
-  return config;
+  return {
+    ...config,
+    name: state.get('name')
+  };
 };
 
 export let validate = state => {
