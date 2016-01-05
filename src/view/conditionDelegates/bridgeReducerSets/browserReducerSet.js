@@ -5,8 +5,10 @@ export let configToState = (state, action) => {
 };
 
 export let stateToConfig = (config, state) => {
-  config.browsers = state.get('browsers').toJS();
-  return config;
+  return {
+    ...config,
+    browsers: state.get('browsers').toJS()
+  };
 };
 
 export default {

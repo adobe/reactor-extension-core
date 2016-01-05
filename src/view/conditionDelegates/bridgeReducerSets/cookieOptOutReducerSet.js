@@ -3,8 +3,10 @@ export let configToState = (state, action) => {
 };
 
 export let stateToConfig = (config, state) => {
-  config.acceptsCookies = state.get('acceptsCookies');
-  return config;
+  return {
+    ...config,
+    acceptsCookies: state.get('acceptsCookies')
+  };
 };
 
 export default {

@@ -5,10 +5,12 @@ export let configToState = (state, action) => {
 };
 
 export let stateToConfig = (config, state) => {
-  config.name = state.get('name');
-  config.value = state.get('value');
-  config.valueIsRegex = state.get('valueIsRegex');
-  return config;
+  return {
+    ...config,
+    name: state.get('name'),
+    value: state.get('value'),
+    valueIsRegex: state.get('valueIsRegex')
+  };
 };
 
 export let validate = state => {

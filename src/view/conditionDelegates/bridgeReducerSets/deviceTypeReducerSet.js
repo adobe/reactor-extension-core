@@ -5,8 +5,10 @@ export let configToState = (state, action) => {
 };
 
 export let stateToConfig = (config, state) => {
-  config.deviceTypes = state.get('deviceTypes').toJS();
-  return config;
+  return {
+    ...config,
+    deviceTypes: state.get('deviceTypes').toJS()
+  };
 };
 
 export default {
