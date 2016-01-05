@@ -9,6 +9,13 @@ import elementFilterActions from '../eventDelegates/actions/common/elementFilter
 import clickEventActions from '../eventDelegates/actions/clickActions';
 import directCallEventActions from '../eventDelegates/actions/directCallActions';
 
+// Conditions
+import browserConditionActions from '../conditionDelegates/actions/browserActions';
+import cookieConditionActions from '../conditionDelegates/actions/cookieActions';
+import cookieOptOutConditionActions from '../conditionDelegates/actions/cookieOptOutActions';
+import customConditionActions from '../conditionDelegates/actions/customActions';
+import deviceTypeConditionActions from '../conditionDelegates/actions/deviceTypeActions';
+
 // Data Elements
 import cookieDataElementActions from '../dataElementDelegates/actions/cookieActions';
 import customDataElementActions from '../dataElementDelegates/actions/customActions';
@@ -22,6 +29,11 @@ export default reducerReducers(
   elementFilterActions,
   clickEventActions,
   directCallEventActions,
+  browserConditionActions,
+  cookieConditionActions,
+  cookieOptOutConditionActions,
+  customConditionActions,
+  deviceTypeConditionActions,
   cookieDataElementActions,
   customDataElementActions,
   domDataElementActions,

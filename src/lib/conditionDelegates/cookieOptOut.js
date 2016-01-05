@@ -13,10 +13,9 @@ var propertyConfig = require('propertyConfig');
  * @returns {boolean}
  */
 module.exports = function(config) {
-  // TODO: In the previous engine we were always using the "sat_track" cookie name which seemed
-  // like a bug (https://jira.corp.adobe.com/browse/DTM-6611).
-  // Is this the right thing to be doing now?
-  var cookieName = propertyConfig.euCookieName === undefined ? 'sat_track' : propertyConfig.euCookieName;
+  var cookieName = propertyConfig.euCookieName === undefined ?
+    'sat_track' :
+    propertyConfig.euCookieName;
   return getCookie(cookieName) === (config.acceptsCookies ? 'true' : 'false');
 };
 

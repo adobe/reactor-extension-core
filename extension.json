@@ -1,6 +1,8 @@
 {
   "name": "dtm",
   "displayName": "DTM",
+  "viewBasePath": "dist",
+  "libBasePath": "src/lib",
   "events": [
     {
       "displayName": "Click",
@@ -207,7 +209,32 @@
     {
       "displayName": "Browser",
       "libPath": "conditionDelegates/browser.js",
-      "viewPath": "index.html#/conditions/browser"
+      "viewPath": "index.html#/conditions/browser",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "browsers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Chrome",
+                "Firefox",
+                "IE",
+                "Safari",
+                "Opera",
+                "Mobile Safari",
+                "IE Mobile",
+                "Opera Mini",
+                "Opera Mobile",
+                "OmniWeb"
+              ]
+            }
+          }
+        },
+        "required": ["browsers"]
+      }
     },
     {
       "displayName": "Cart Amount",
@@ -220,19 +247,93 @@
       "viewPath": "index.html#/conditions/cartItemQuantity"
     },
     {
-      "displayName": "Cookie Opt-out",
-      "libPath": "conditionDelegates/cookieOptOut.js",
-      "viewPath": "index.html#/conditions/cookieOptOut"
+      "displayName": "Cookie",
+      "libPath": "conditionDelegates/cookie.js",
+      "viewPath": "index.html#/conditions/cookie",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "value": {
+            "type": "string",
+            "minLength": 1
+          },
+          "valueIsRegex": {
+            "type": "boolean"
+          }
+        },
+        "required": ["name", "value"]
+      }
     },
     {
-      "displayName": "Custom",
+      "displayName": "Cookie Opt-out",
+      "libPath": "conditionDelegates/cookieOptOut.js",
+      "viewPath": "index.html#/conditions/cookieOptOut",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "acceptsCookies": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    {
+      "displayName": "Custom Script",
       "libPath": "conditionDelegates/custom.js",
-      "viewPath": "index.html#/conditions/custom"
+      "viewPath": "index.html#/conditions/custom",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "script": {
+            "type": "string"
+          },
+          "__rawScripts": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["script"]
+            },
+            "minItems": 1,
+            "maxItems": 1
+          }
+        },
+        "required": ["script", "__rawScripts"]
+      }
     },
     {
       "displayName": "Device Type",
       "libPath": "conditionDelegates/deviceType.js",
-      "viewPath": "index.html#/conditions/deviceType"
+      "viewPath": "index.html#/conditions/deviceType",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "deviceTypes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Desktop",
+                "iPhone",
+                "iPad",
+                "iPod",
+                "Nokia",
+                "Windows Phone",
+                "Blackberry",
+                "Android"
+              ]
+            }
+          }
+        },
+        "required": ["deviceTypes"]
+      }
     },
     {
       "displayName": "Domain",
@@ -451,7 +552,5 @@
       "name": "matchesProperties",
       "libPath": "resources/matchesProperties.js"
     }
-  ],
-  "viewBasePath": "dist",
-  "libBasePath": "src/lib"
+  ]
 }
