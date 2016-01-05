@@ -2,15 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Coral from 'coralui-support-react';
 import TestUtils from 'react-addons-test-utils';
-import { mapStateToProps, Browser } from '../browser';
+import { mapStateToProps, Domain } from '../domain';
 import { fromJS, List } from 'immutable';
-import { actionCreators } from '../actions/browserActions';
+import { actionCreators } from '../actions/domainActions';
 import CheckboxList from '../../components/checkboxList';
 
-describe('browser view', () => {
+describe('domain view', () => {
   let render = props => {
     return TestUtils.renderIntoDocument(
-      <Browser {...props} />
+      <Domain {...props} />
     );
   };
 
@@ -22,22 +22,26 @@ describe('browser view', () => {
 
   it('maps state to props', () => {
     let props = mapStateToProps(fromJS({
-      browsers: ['Chrome', 'IE']
+      selectedDomains: ['foo'],
+      availableDomains: ['foo', 'bar']
     }));
 
-    expect(props.browsers.toJS()).toEqual(['Chrome', 'IE']);
+    expect(props.selectedDomains.toJS()).toEqual(['foo']);
+    expect(props.availableDomains.toJS()).toEqual(['foo', 'bar']);
   });
 
   describe('checkbox list', () => {
     it('is provided a list of items', () => {
-      let { checkboxList } = getParts(render());
+      let { checkboxList } = getParts(render({
+        availableDomains: List(['foo', 'bar'])
+      }));
 
-      expect(checkboxList.props.items.length).toBeGreaterThan(0);
+      expect(checkboxList.props.items.toJS()).toEqual(['foo', 'bar']);
     });
 
     it('is provided selected values', () => {
       let { checkboxList } = getParts(render({
-        browsers: List(['foo', 'bar'])
+        selectedDomains: List(['foo', 'bar'])
       }));
 
       expect(checkboxList.props.selectedValues.toJS()).toEqual(['foo', 'bar']);
@@ -51,7 +55,7 @@ describe('browser view', () => {
 
       checkboxList.props.select('foo');
 
-      expect(dispatch).toHaveBeenCalledWith(actionCreators.selectBrowser('foo'));
+      expect(dispatch).toHaveBeenCalledWith(actionCreators.selectDomain('foo'));
     });
 
     it('dispatches an action when an item is deselected', () => {
@@ -62,7 +66,7 @@ describe('browser view', () => {
 
       checkboxList.props.deselect('foo');
 
-      expect(dispatch).toHaveBeenCalledWith(actionCreators.deselectBrowser('foo'));
+      expect(dispatch).toHaveBeenCalledWith(actionCreators.deselectDomain('foo'));
     });
   });
 });

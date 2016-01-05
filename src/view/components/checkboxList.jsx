@@ -19,8 +19,10 @@ export default class CheckboxList extends React.Component {
   };
 
   render() {
-    let options = this.props.items.map(item => {
-      let selectedValues = this.props.selectedValues || [];
+    let items = this.props.items || [];
+    let selectedValues = this.props.selectedValues || [];
+
+    let options = items.map(item => {
       let value;
       let label;
 

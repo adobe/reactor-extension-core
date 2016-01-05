@@ -38,6 +38,10 @@ export class DOM extends React.Component {
       elementPropertyError = 'Please specify an element property';
     }
 
+    let elementPresets = this.props.elementPropertyPresets ?
+      this.props.elementPropertyPresets.valueSeq() : // React will complain without valueSeq()
+      [];
+
     return (
       <div>
         <div className="u-gapBottom">
@@ -58,7 +62,7 @@ export class DOM extends React.Component {
               onChange={this.onElementPropertyPresetChange}
               className="u-gapRight">
               {
-                this.props.elementPropertyPresets.valueSeq().map(preset => {
+                elementPresets.map(preset => {
                   return (
                     <Coral.Select.Item key={preset.get('value')} value={preset.get('value')}>
                       {preset.get('label')}

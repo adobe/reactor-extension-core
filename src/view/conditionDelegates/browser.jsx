@@ -22,16 +22,9 @@ const BROWSERS = [
 ];
 
 export class Browser extends React.Component {
-  select = browser => {
-    let browsers = this.props.browsers.push(browser);
-    this.props.dispatch(actionCreators.setBrowsers(browsers));
-  };
+  select = browser => this.props.dispatch(actionCreators.selectBrowser(browser));
 
-  deselect = browser => {
-    let index = this.props.browsers.indexOf(browser);
-    let browsers = this.props.browsers.delete(index);
-    this.props.dispatch(actionCreators.setBrowsers(browsers));
-  };
+  deselect = browser => this.props.dispatch(actionCreators.deselectBrowser(browser));
 
   render() {
     return <CheckboxList
