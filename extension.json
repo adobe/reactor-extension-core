@@ -308,6 +308,11 @@
       }
     },
     {
+      "displayName": "Data Element",
+      "libPath": "conditionDelegates/dataElement.js",
+      "viewPath": "index.html#/conditions/dataElement"
+    },
+    {
       "displayName": "Device Type",
       "libPath": "conditionDelegates/deviceType.js",
       "viewPath": "index.html#/conditions/deviceType",
