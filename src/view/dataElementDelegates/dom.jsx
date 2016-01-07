@@ -27,6 +27,24 @@ export class DOM extends React.Component {
   };
 
   render() {
+    // It would porbably make sense to not return here but just create an empty Select with no
+    // options if this.props.elementPropertyPresets isn't defined.
+    // In the case of the DOM condition view, this doesn't function properly because of how React
+    // and CoralUI interact. If this.props.elementPropertyPresets were empty, the Select component
+    // would first render with no options. Once legit info comes from the parent window, the bridge
+    // reducer is run and the state would be populated with real options to be displayed in the
+    // Select component. Unfortunately, using the "value" property on Coral.Select to set the selected
+    // option won't work on the second React render because the options aren't added as children
+    // until after the property is set. CoralUI will ignore the attempt to set the "value" property
+    // because it will see the value as invalid. We could set the "selected" property on the option
+    // that should be selected, but React tries to set the property on the option before it is added
+    // to the parent. CoralUI has a restriction that doesn't allow a consumer to set an option as
+    // selected before it has been added to the parent. This is logged here:
+    // https://jira.corp.adobe.com/browse/CUI-3389
+    if (!this.props.elementPropertyPresets) {
+      return <div></div>;
+    }
+
     let elementSelectorError;
     let elementPropertyError;
 
@@ -37,10 +55,6 @@ export class DOM extends React.Component {
     if (this.props.elementPropertyInvalid) {
       elementPropertyError = 'Please specify an element property';
     }
-
-    let elementPresets = this.props.elementPropertyPresets ?
-      this.props.elementPropertyPresets.valueSeq() : // React will complain without valueSeq()
-      [];
 
     return (
       <div>
@@ -62,7 +76,7 @@ export class DOM extends React.Component {
               onChange={this.onElementPropertyPresetChange}
               className="u-gapRight">
               {
-                elementPresets.map(preset => {
+                this.props.elementPropertyPresets.map(preset => {
                   return (
                     <Coral.Select.Item key={preset.get('value')} value={preset.get('value')}>
                       {preset.get('label')}
