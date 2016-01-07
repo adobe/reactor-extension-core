@@ -343,7 +343,20 @@
     {
       "displayName": "Domain",
       "libPath": "conditionDelegates/domain.js",
-      "viewPath": "index.html#/conditions/domain"
+      "viewPath": "index.html#/conditions/domain",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "domains": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": ["domains"]
+      }
     },
     {
       "displayName": "Hash Does Not Match",

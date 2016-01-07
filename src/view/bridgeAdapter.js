@@ -4,12 +4,17 @@ import { actionCreators } from './actions/bridgeAdapterActions';
 export let bridgeAdapterReducer = null;
 export let setBridgeAdapterReducer = (nextState) => {
   bridgeAdapterReducer = nextState.routes[0].reducer;
-
-  // Initialize assuming we're creating a new config.
-  extensionBridge.setConfig();
 };
 
 export default (extensionBridge, store) => {
+  extensionBridge.init = options => {
+    store.dispatch(actionCreators.setConfig({
+      ...options,
+      config: options.config || {},
+      isNewConfig: !options.config
+    }));
+  };
+
   extensionBridge.getConfig = () => {
     let config = {};
 
@@ -24,13 +29,6 @@ export default (extensionBridge, store) => {
     }
 
     return config;
-  };
-
-  extensionBridge.setConfig = config => {
-    store.dispatch(actionCreators.setConfig({
-      config: config || {},
-      isNewConfig: config === undefined
-    }));
   };
 
   extensionBridge.validate = () => {

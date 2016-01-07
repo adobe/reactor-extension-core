@@ -1,13 +1,27 @@
 import { createAction, handleActions } from 'redux-actions';
 
-const SET_BROWSERS = 'conditionDelegates/browser/SET_BROWSERS';
+const SELECT_BROWSER = 'conditionDelegates/browser/SELECT_BROWSER';
+const DESELECT_BROWSER = 'conditionDelegates/browser/DESELECT_BROWSER';
 
 export let actionCreators = {
-  setBrowsers: createAction(SET_BROWSERS)
+  selectBrowser: createAction(SELECT_BROWSER),
+  deselectBrowser: createAction(DESELECT_BROWSER)
 };
 
 export default handleActions({
-  [SET_BROWSERS]: (state, action) => {
-    return state.set('browsers', action.payload);
+  [SELECT_BROWSER]: (state, action) => {
+    return state.update('browsers', browsers => {
+      return browsers.indexOf(action.payload) === -1 ?
+        browsers.push(action.payload) :
+        browsers;
+    });
+  },
+  [DESELECT_BROWSER]: (state, action) => {
+    return state.update('browsers', browsers => {
+      let index = browsers.indexOf(action.payload);
+      return index !== -1 ?
+        browsers.splice(index, 1) :
+        browsers;
+    });
   }
 });
