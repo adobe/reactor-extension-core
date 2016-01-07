@@ -45,7 +45,7 @@ describe('browser reducer set', () => {
         name: ''
       }));
 
-      expect(state.getIn(['errors', 'nameInvalid'])).toBe(true);
+      expect(state.getIn(['errors', 'nameIsEmpty'])).toBe(true);
     });
 
     it('fails if the cookie value is empty', () => {
@@ -53,7 +53,7 @@ describe('browser reducer set', () => {
         value: ''
       }));
 
-      expect(state.getIn(['errors', 'valueInvalid'])).toBe(true);
+      expect(state.getIn(['errors', 'valueIsEmpty'])).toBe(true);
     });
   });
 });

@@ -25,14 +25,14 @@ describe('cookie view', () => {
       name: 'foo',
       caseInsensitive: true,
       errors: {
-        nameInvalid: true
+        nameIsEmpty: true
       }
     }));
 
     expect(props).toEqual({
       name: 'foo',
       caseInsensitive: true,
-      nameInvalid: true
+      nameIsEmpty: true
     });
   });
 

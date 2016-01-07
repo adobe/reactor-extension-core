@@ -91,11 +91,11 @@ export let stateToConfig = (config, state) => {
 
 export let validate = state => {
   return state.withMutations(state => {
-    state.setIn(['errors', 'elementSelectorInvalid'], !state.get('elementSelector'));
+    state.setIn(['errors', 'elementSelectorIsEmpty'], !state.get('elementSelector'));
 
-    let elementPropertyInvalid = state.get('selectedElementPropertyPreset') === 'custom' &&
+    let elementPropertyIsEmpty = state.get('selectedElementPropertyPreset') === 'custom' &&
       !state.get('customElementProperty');
-    state.setIn(['errors', 'elementPropertyInvalid'], elementPropertyInvalid);
+    state.setIn(['errors', 'elementPropertyIsEmpty'], elementPropertyIsEmpty);
   });
 };
 

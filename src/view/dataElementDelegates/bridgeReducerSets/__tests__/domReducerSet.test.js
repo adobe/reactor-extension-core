@@ -75,7 +75,7 @@ describe('dom reducer set', () => {
         elementSelector: ''
       }));
 
-      expect(state.getIn(['errors', 'elementSelectorInvalid'])).toBe(true);
+      expect(state.getIn(['errors', 'elementSelectorIsEmpty'])).toBe(true);
     });
 
     it('fails if a custom property is empty', () => {
@@ -84,7 +84,7 @@ describe('dom reducer set', () => {
         customElementProperty: ''
       }));
 
-      expect(state.getIn(['errors', 'elementPropertyInvalid'])).toBe(true);
+      expect(state.getIn(['errors', 'elementPropertyIsEmpty'])).toBe(true);
     });
 
     it('does not fail if a preset property is selected and the custom property is empty', () => {
@@ -93,7 +93,7 @@ describe('dom reducer set', () => {
         customElementProperty: ''
       }));
 
-      expect(state.getIn(['errors', 'elementPropertyInvalid'])).toBe(false);
+      expect(state.getIn(['errors', 'elementPropertyIsEmpty'])).toBe(false);
     });
   })
 

@@ -10,7 +10,7 @@ export let stateToConfig = (config, state) => {
 };
 
 export let validate = state => {
-  return state.setIn(['errors', 'pathInvalid'], !state.get('path'));
+  return state.setIn(['errors', 'pathIsEmpty'], !state.get('path'));
 };
 
 export default {

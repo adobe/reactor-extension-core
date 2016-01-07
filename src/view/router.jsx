@@ -15,6 +15,9 @@ import blurEventReducerSet from './eventDelegates/bridgeReducerSets/blurReducerS
 import BrowserCondition from './conditionDelegates/browser';
 import browserConditionReducerSet from './conditionDelegates/bridgeReducerSets/browserReducerSet';
 
+import CartAmountCondition from './conditionDelegates/cartAmount';
+import cartAmountConditionReducerSet from './conditionDelegates/bridgeReducerSets/cartAmountReducerSet';
+
 import CookieCondition from './conditionDelegates/cookie';
 import cookieConditionReducerSet from './conditionDelegates/bridgeReducerSets/cookieReducerSet';
 
@@ -54,6 +57,7 @@ export default (
     <Route path="/events/directCall" component={DirectCallEvent} reducer={directCallEventReducerSet} onEnter={setBridgeAdapterReducer}/>
     <Route path="/events/blur" component={BlurEvent} reducer={blurEventReducerSet} onEnter={setBridgeAdapterReducer}/>
     <Route path="/conditions/browser" component={BrowserCondition} reducer={browserConditionReducerSet} onEnter={setBridgeAdapterReducer}/>
+    <Route path="/conditions/cartAmount" component={CartAmountCondition} reducer={cartAmountConditionReducerSet} onEnter={setBridgeAdapterReducer}/>
     <Route path="/conditions/cookie" component={CookieCondition} reducer={cookieConditionReducerSet} onEnter={setBridgeAdapterReducer}/>
     <Route path="/conditions/cookieOptOut" component={CookieOptOutCondition} reducer={cookieOptOutConditionReducerSet} onEnter={setBridgeAdapterReducer}/>
     <Route path="/conditions/custom" component={CustomCondition} reducer={customConditionReducerSet} onEnter={setBridgeAdapterReducer}/>

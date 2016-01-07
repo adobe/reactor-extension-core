@@ -9,8 +9,8 @@ export let mapStateToProps = state => ({
   selectedElementPropertyPreset: state.get('selectedElementPropertyPreset'),
   customElementProperty: state.get('customElementProperty'),
   elementPropertyPresets: state.get('elementPropertyPresets'),
-  elementSelectorInvalid: state.getIn(['errors', 'elementSelectorInvalid']),
-  elementPropertyInvalid: state.getIn(['errors', 'elementPropertyInvalid'])
+  elementSelectorIsEmpty: state.getIn(['errors', 'elementSelectorIsEmpty']),
+  elementPropertyIsEmpty: state.getIn(['errors', 'elementPropertyIsEmpty'])
 });
 
 export class DOM extends React.Component {
@@ -48,11 +48,11 @@ export class DOM extends React.Component {
     let elementSelectorError;
     let elementPropertyError;
 
-    if (this.props.elementSelectorInvalid) {
+    if (this.props.elementSelectorIsEmpty) {
       elementSelectorError = 'Please specify a CSS selector.';
     }
 
-    if (this.props.elementPropertyInvalid) {
+    if (this.props.elementPropertyIsEmpty) {
       elementPropertyError = 'Please specify an element property';
     }
 

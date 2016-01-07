@@ -23,13 +23,13 @@ describe('variable view', () => {
     let props = mapStateToProps(fromJS({
       path: 'foo',
       errors: {
-        pathInvalid: true
+        pathIsEmpty: true
       }
     }));
 
     expect(props).toEqual({
       path: 'foo',
-      pathInvalid: true
+      pathIsEmpty: true
     });
   });
 

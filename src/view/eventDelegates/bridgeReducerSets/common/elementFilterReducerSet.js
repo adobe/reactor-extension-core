@@ -65,11 +65,11 @@ export let stateToConfig = (config, state) => {
 };
 
 export let validate = state => {
-  let selectorInvalid = Boolean(
+  let selectorIsEmpty = Boolean(
     state.get('showSpecificElementsFilter') && !state.get('elementSelector')
   );
 
-  return state.setIn(['errors', 'selectorInvalid'], selectorInvalid);
+  return state.setIn(['errors', 'selectorIsEmpty'], selectorIsEmpty);
 };
 
 export default {
