@@ -13,7 +13,7 @@
   ],
   "dependencies": {
     "classnames": "^2.2.1",
-    "coralui-support-react": "git+ssh://git@git.corp.adobe.com:Coral/coralui-support-react",
+    "coralui-support-react": "git+https://fcf1e02afcceac6505ac6b6a43c26061c0b9bcaa:x-oauth-basic@git.corp.adobe.com:Coral/coralui-support-react",
     "css-loader": "^0.22.0",
     "gulp-notify": "^2.2.0",
     "gulp-plumber": "^1.0.1",
@@ -40,9 +40,9 @@
     "react": "^0.14.0",
     "react-addons-test-utils": "^0.14.3",
     "react-dom": "^0.14.0",
-    "turbine": "git+ssh://git@git.corp.adobe.com:reactor/turbine.git",
-    "turbine-gulp-sandbox": "git+ssh://git@git.corp.adobe.com:reactor/turbine-gulp-sandbox.git",
-    "turbine-gulp-testrunner": "git+ssh://git@git.corp.adobe.com:reactor/turbine-gulp-testrunner.git",
+    "turbine": "git+https://fcf1e02afcceac6505ac6b6a43c26061c0b9bcaa:x-oauth-basic@git.corp.adobe.com:reactor/turbine.git",
+    "turbine-gulp-sandbox": "git+https://fcf1e02afcceac6505ac6b6a43c26061c0b9bcaa:x-oauth-basic@git.corp.adobe.com:reactor/turbine-gulp-sandbox.git",
+    "turbine-gulp-testrunner": "git+https://fcf1e02afcceac6505ac6b6a43c26061c0b9bcaa:x-oauth-basic@git.corp.adobe.com:reactor/turbine-gulp-testrunner.git",
     "webpack-stream": "^2.3.0"
   },
   "author": "Adobe"
