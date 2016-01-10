@@ -1,31 +1,76 @@
 import React from 'react';
-import Coral from 'coralui-support-react';
-import AdvancedEventOptions from './components/advancedEventOptions';
-import ElementFilter from './components/elementFilter';
-import { connect } from 'react-redux';
-import { actionCreators } from './actions/clickActions';
+import Coral from '../reduxFormCoralUI';
+import ElementFilter, {
+  fields as elementFilterFields,
+  reducers as elementFilterReducers
+} from './components/elementFilter';
+import AdvancedEventOptions, {
+  fields as advancedEventOptionsFields,
+  reducers as advancedEventOptionsReducers
+} from './components/advancedEventOptions';
+import extensionReduxForm from '../extensionReduxForm';
+import reduceReducers from 'reduce-reducers';
 
-export let mapStateToProps = state => ({
-  delayLinkActivation: state.get('delayLinkActivation')
-});
+const fields = [
+  'delayLinkActivation'
+]
+.concat(elementFilterFields)
+.concat(advancedEventOptionsFields);
 
 export class Click extends React.Component {
-  onDelayLinkActivationChange = event => {
-    this.props.dispatch(actionCreators.setDelayLinkActivation(event.target.checked));
-  };
-
   render() {
+    const {
+      fields: {
+        delayLinkActivation
+      }
+    } = this.props;
+
     return (
       <div>
-        <ElementFilter/>
+        <ElementFilter {...this.props.fields}/>
         <Coral.Checkbox
           class="u-block"
-          onChange={this.onDelayLinkActivationChange}
-          checked={this.props.delayLinkActivation}>If the element is a link, delay navigation until rule runs</Coral.Checkbox>
-        <AdvancedEventOptions/>
+          {...delayLinkActivation}>
+          If the element is a link, delay navigation until rule runs
+        </Coral.Checkbox>
+        <AdvancedEventOptions {...this.props.fields}/>
       </div>
     );
   }
 }
 
-export default connect(mapStateToProps)(Click);
+let validate = values => elementFilterReducers.validate({}, values);
+
+export default extensionReduxForm({
+  fields,
+  validate
+})(Click);
+
+export let reducers = {
+  toValues: reduceReducers(
+    elementFilterReducers.toValues,
+    advancedEventOptionsReducers.toValues,
+    (values, options) => {
+      const { delayLinkActivation } = options.config;
+      return {
+        ...values,
+        delayLinkActivation
+      };
+    }
+  ),
+  toConfig: reduceReducers(
+    elementFilterReducers.toConfig,
+    advancedEventOptionsReducers.toConfig,
+    (config, values) => {
+      config = {
+        ...config
+      };
+
+      if (values.delayLinkActivation) {
+        config.delayLinkActivation = true;
+      }
+
+      return config;
+    }
+  )
+};

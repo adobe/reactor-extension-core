@@ -1,20 +1,21 @@
 import { createAction, handleActions } from 'redux-actions';
-import { bridgeAdapterReducer } from '../bridgeAdapter';
+import { bridgeAdapterReducers } from '../bridgeAdapter';
 
 const SET_CONFIG = 'bridgeAdapter/SET_CONFIG';
-const VALIDATE = 'bridgeAdapter/VALIDATE';
 
 export let actionCreators = {
-  setConfig: createAction(SET_CONFIG),
-  validate: createAction(VALIDATE)
+  setConfig: createAction(SET_CONFIG)
 };
 
 export default handleActions({
   [SET_CONFIG]: (state, action) => {
-    return bridgeAdapterReducer.configToState(state, action);
-  },
-  [VALIDATE]: (state, action) => {
-    let validate = bridgeAdapterReducer.validate || (() => state);
-    return validate(state, action);
+    const initialValues = bridgeAdapterReducers.toValues({}, action.payload);
+    state = {
+      ...state,
+      initialValues
+    };
+    // Clear any previously held form values.
+    delete state.form.default;
+    return state;
   }
 });

@@ -1,9 +1,11 @@
 'use strict';
 import { actionCreators } from './actions/bridgeAdapterActions';
+import { handleSubmit } from './extensionReduxForm';
+import { getValues } from 'redux-form';
 
-export let bridgeAdapterReducer = null;
-export let setBridgeAdapterReducer = (nextState) => {
-  bridgeAdapterReducer = nextState.routes[0].reducer;
+export let bridgeAdapterReducers = null;
+export let setBridgeAdapterReducers = (nextState) => {
+  bridgeAdapterReducers = nextState.routes[0].reducers;
 };
 
 export default (extensionBridge, store) => {
@@ -11,29 +13,26 @@ export default (extensionBridge, store) => {
     store.dispatch(actionCreators.setConfig({
       ...options,
       config: options.config || {},
-      isNewConfig: !options.config
+      configIsNew: !options.config
     }));
   };
 
   extensionBridge.getConfig = () => {
     let config = {};
 
-    if (bridgeAdapterReducer.stateToConfig) {
-      let reducedConfig = bridgeAdapterReducer.stateToConfig(config, store.getState());
-
-      if (config === reducedConfig) {
-        throw new Error('Bridge adapter reducer stateToConfig must return a new config object.');
-      }
-
-      config = reducedConfig;
+    if (bridgeAdapterReducers.toConfig) {
+      const values = getValues(store.getState().form.default);
+      config = bridgeAdapterReducers.toConfig(config, values);
     }
 
     return config;
   };
 
   extensionBridge.validate = () => {
-    store.dispatch(actionCreators.validate());
-    let errors = store.getState().get('errors');
-    return !errors || !errors.some(value => value);
+    let valid = false;
+    // handleSubmit comes from redux-form. The function passed in will only be called if the
+    // form passes validation.
+    handleSubmit(() => valid = true)();
+    return valid;
   };
 };

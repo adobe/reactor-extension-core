@@ -1,53 +1,60 @@
 import React from 'react';
-import Coral from 'coralui-support-react';
+import Coral from '../../reduxFormCoralUI';
 import ElementSelectorField from './elementSelectorField';
 import ElementPropertiesEditor from './elementPropertiesEditor';
-import { actionCreators } from '../actions/common/elementFilterActions';
-import { connect } from 'react-redux';
+import createID from '../../utils/createID';
 
-export let mapStateToProps = state => ({
-  showSpecificElementsFilter: state.get('showSpecificElementsFilter'),
-  showElementPropertiesFilter: state.get('showElementPropertiesFilter')
-});
+export let fields = [
+  'showSpecificElementsFilter',
+  'showElementPropertiesFilter',
+  'elementSelector',
+  'elementProperties[].id',
+  'elementProperties[].name',
+  'elementProperties[].value',
+  'elementProperties[].valueIsRegex'
+];
 
-export class ElementFilter extends React.Component {
-  setShowSpecificElementsFilter = event => {
-    let action = actionCreators.setShowSpecificElementsFilter(event.target.value === 'true');
-    this.props.dispatch(action);
-  };
-
-  setShowElementPropertiesFilter = event => {
-    let action = actionCreators.setShowElementPropertiesFilter(event.target.checked);
-    this.props.dispatch(action);
-  };
+export default class ElementFilter extends React.Component {
 
   render() {
+    const {
+      showSpecificElementsFilter,
+      showElementPropertiesFilter,
+      elementSelector,
+      elementProperties
+    } = this.props;
+
     return (
       <div>
         <span className="u-label">On</span>
         <Coral.Radio
             name="filter"
             value="true"
-            checked={this.props.showSpecificElementsFilter}
-            onChange={this.setShowSpecificElementsFilter}>
+            checked={showSpecificElementsFilter.checked}
+            onChange={event => showSpecificElementsFilter.onChange(true)}>
           specific elements
         </Coral.Radio>
         <Coral.Radio
             name="filter"
             value="false"
-            checked={!this.props.showSpecificElementsFilter}
-            onChange={this.setShowSpecificElementsFilter}>
+            checked={!showSpecificElementsFilter.checked}
+            onChange={event => showSpecificElementsFilter.onChange(false)}>
           any element
         </Coral.Radio>
         {
-          this.props.showSpecificElementsFilter ?
+          showSpecificElementsFilter.value ?
             <div ref="specificElementFields">
-              <ElementSelectorField/>
+              <ElementSelectorField elementSelector={elementSelector}/>
               <div>
-                <Coral.Checkbox
-                  checked={this.props.showElementPropertiesFilter}
-                  onChange={this.setShowElementPropertiesFilter}>and having certain property values...</Coral.Checkbox>
-                { this.props.showElementPropertiesFilter ? <ElementPropertiesEditor ref="elementPropertiesEditor"/> : null }
+                <Coral.Checkbox {...showElementPropertiesFilter}>
+                  and having certain property values...
+                </Coral.Checkbox>
+                {
+                  showElementPropertiesFilter.value ?
+                  <ElementPropertiesEditor
+                    ref="elementPropertiesEditor"
+                    elementProperties={elementProperties}/> : null
+                }
               </div>
             </div> : null
         }
@@ -56,4 +63,91 @@ export class ElementFilter extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(ElementFilter);
+export let reducers = {
+  toValues: (values, options) => {
+    values = {
+      ...values
+    };
+    
+    const { config, configIsNew } = options;
+
+    values.showSpecificElementsFilter =
+      Boolean(configIsNew || config.elementSelector || config.elementProperties);
+    values.showElementPropertiesFilter = Boolean(config.elementProperties);
+    values.elementSelector = config.elementSelector;
+
+    var elementProperties = config.elementProperties || [];
+
+    // Make sure there's always at least one element property. This is just so the view
+    // always shows at least one row.
+    if (!elementProperties.length) {
+      elementProperties.push({
+        name: '',
+        value: ''
+      });
+    }
+
+    elementProperties.forEach(elementProperty => elementProperty.id = createID());
+
+    values.elementProperties = elementProperties;
+
+    return values;
+  },
+  toConfig: (config, values) => {
+    config = {
+      ...config
+    };
+
+    let {
+      showSpecificElementsFilter,
+      showElementPropertiesFilter,
+      elementSelector,
+      elementProperties
+    } = values;
+
+    if (showSpecificElementsFilter) {
+      if (elementSelector) {
+        config.elementSelector = elementSelector;
+      }
+
+      if (showElementPropertiesFilter) {
+        if (elementProperties) {
+          elementProperties = elementProperties.filter(elementProperty => {
+            return elementProperty.name;
+          }).map(elementProperty => {
+            const { name, value, valueIsRegex } = elementProperty;
+
+            elementProperty = {
+              name,
+              value
+            };
+
+            if (valueIsRegex) {
+              elementProperty.valueIsRegex = true;
+            }
+
+            return elementProperty;
+          });
+
+          if (elementProperties.length) {
+            config.elementProperties = elementProperties;
+          }
+        }
+      }
+    }
+
+    return config;
+  },
+  validate: (errors, values) => {
+    errors = {
+      ...errors
+    };
+
+    if (values.showSpecificElementsFilter && !values.elementSelector) {
+      errors.elementSelector = 'Please specify a selector. ' +
+      'Alternatively, choose to target any element above.'
+    }
+
+    return errors;
+  }
+};

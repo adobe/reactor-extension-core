@@ -1,16 +1,14 @@
 import React from 'react';
-import Coral from 'coralui-support-react';
+import Coral from '../../reduxFormCoralUI';
 import DisclosureButton from '../../components/disclosureButton';
-import { actionCreators } from '../actions/common/bubbleActions';
-import { connect } from 'react-redux';
 
-export let mapStateToProps = state => ({
-  bubbleFireIfParent: state.get('bubbleFireIfParent'),
-  bubbleFireIfChildFired: state.get('bubbleFireIfChildFired'),
-  bubbleStop: state.get('bubbleStop')
-});
+export let fields = [
+  'bubbleFireIfParent',
+  'bubbleFireIfChildFired',
+  'bubbleStop'
+];
 
-export class AdvancedEventOptions extends React.Component {
+export default class AdvancedEventOptions extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -23,20 +21,9 @@ export class AdvancedEventOptions extends React.Component {
       expanded: value
     });
   };
-
-  setBubbleFireIfParent = event => {
-    this.props.dispatch(actionCreators.setBubbleFireIfParent(event.target.checked));
-  };
-
-  setBubbleFireIfChildFired = event => {
-    this.props.dispatch(actionCreators.setBubbleFireIfChildFired(event.target.checked));
-  };
-
-  setBubbleStop = event => {
-    this.props.dispatch(actionCreators.setBubbleStop(event.target.checked));
-  };
-
   render() {
+    const { bubbleFireIfParent, bubbleFireIfChildFired, bubbleStop } = this.props;
+
     var advancedPanel;
 
     if (this.state.expanded) {
@@ -46,16 +33,13 @@ export class AdvancedEventOptions extends React.Component {
 
           <Coral.Checkbox
             className="u-block"
-            checked={this.props.bubbleFireIfParent}
-            onChange={this.setBubbleFireIfParent}>Run this rule even when the event originates from a descendant element</Coral.Checkbox>
+            {...bubbleFireIfParent}>Run this rule even when the event originates from a descendant element</Coral.Checkbox>
           <Coral.Checkbox
             className="u-block"
-            checked={this.props.bubbleFireIfChildFired}
-            onChange={this.setBubbleFireIfChildFired}>Allow this rule to run even if the event already triggered a rule targeting a descendant element</Coral.Checkbox>
+            {...bubbleFireIfChildFired}>Allow this rule to run even if the event already triggered a rule targeting a descendant element</Coral.Checkbox>
           <Coral.Checkbox
             className="u-block"
-            checked={this.props.bubbleStop}
-            onChange={this.setBubbleStop}>After the rule runs, prevent the event from triggering rules targeting ancestor elements</Coral.Checkbox>
+            {...bubbleStop}>After the rule runs, prevent the event from triggering rules targeting ancestor elements</Coral.Checkbox>
         </div>
       );
     }
@@ -74,4 +58,35 @@ export class AdvancedEventOptions extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(AdvancedEventOptions);
+export let reducers = {
+  toValues: (values, options) => {
+    const { bubbleFireIfParent, bubbleFireIfChildFired, bubbleStop } = options.config;
+    return {
+      ...values,
+      bubbleFireIfParent,
+      bubbleFireIfChildFired,
+      bubbleStop
+    };
+  },
+  toConfig: (config, values) => {
+    config = {
+      ...config
+    };
+
+    const { bubbleFireIfParent, bubbleFireIfChildFired, bubbleStop } = values;
+
+    if (bubbleFireIfParent) {
+      config.bubbleFireIfParent = true;
+    }
+
+    if (bubbleFireIfChildFired) {
+      config.bubbleFireIfChildFired = true;
+    }
+
+    if (bubbleStop) {
+      config.bubbleStop = true;
+    }
+
+    return config;
+  }
+};
