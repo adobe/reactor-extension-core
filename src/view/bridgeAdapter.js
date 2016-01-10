@@ -2,38 +2,49 @@
 import { actionCreators } from './actions/bridgeAdapterActions';
 import { handleSubmit } from './extensionReduxForm';
 import { getValues } from 'redux-form';
+import reduceReducers from 'reduce-reducers';
 
 export let bridgeAdapterReducers = null;
+
+/**
+ * Assigns everything inside config to values.
+ */
+const toValuesBaseReducer = (values, options) => {
+  const { config } = options;
+  return {
+    ...values,
+    ...config
+  };
+};
+
+/**
+ * Assigns everything inside values to config.
+ */
+const toConfigBaseReducer = (config, values) => {
+  return {
+    ...config,
+    ...values
+  };
+};
+
 export let setBridgeAdapterReducers = (nextState) => {
   const reducersFromRoute = nextState.routes[0].reducers || {};
 
+  const toValuesReducers = [ toValuesBaseReducer ];
+
+  if (reducersFromRoute.toValues) {
+    toValuesReducers.push(reducersFromRoute.toValues);
+  }
+
+  const toConfigReducers = [ toConfigBaseReducer ];
+
+  if (reducersFromRoute.toConfig) {
+    toConfigReducers.push(reducersFromRoute.toConfig);
+  }
+
   bridgeAdapterReducers = {
-    toValues: (values, options) => {
-      const { config } = options;
-
-      values = {
-        ...values,
-        ...config
-      };
-
-      if (reducersFromRoute.toValues) {
-        values = reducersFromRoute.toValues(values, options);
-      }
-
-      return values;
-    },
-    toConfig: (config, values) => {
-      config = {
-        ...config,
-        ...values
-      };
-
-      if (reducersFromRoute.toConfig) {
-        config = reducersFromRoute.toConfig(config, values);
-      }
-
-      return config;
-    }
+    toValues: reduceReducers.apply(null, toValuesReducers),
+    toConfig: reduceReducers.apply(null, toConfigReducers)
   };
 };
 

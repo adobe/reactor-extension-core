@@ -11,6 +11,7 @@ export default handleActions({
   [SET_CONFIG]: (state, action) => {
     const initialValues = bridgeAdapterReducers.toValues({}, action.payload);
 
+    // redux-form will use initialValues to update the form.
     state = {
       ...state,
       initialValues
