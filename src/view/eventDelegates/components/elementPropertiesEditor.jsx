@@ -1,5 +1,5 @@
 import React from 'react';
-import Coral from 'coralui-support-react';
+import Coral from '../../reduxFormCoralUI';
 import ElementPropertyEditor from './elementPropertyEditor';
 import createID from '../../utils/createID';
 

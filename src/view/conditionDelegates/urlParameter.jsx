@@ -1,5 +1,5 @@
 import React from 'react';
-import Coral from 'coralui-support-react';
+import Coral from '../reduxFormCoralUI';
 import RegexToggle from '../components/regexToggle';
 import ValidationWrapper from '../components/validationWrapper';
 import extensionReduxForm from '../extensionReduxForm';
