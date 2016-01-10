@@ -15,8 +15,8 @@ export let stateToConfig = (config, state) => {
 
 export let validate = state => {
   return state.withMutations(state => {
-    state.setIn(['errors', 'nameInvalid'], !state.get('name'));
-    state.setIn(['errors', 'valueInvalid'], !state.get('value'));
+    state.setIn(['errors', 'nameIsEmpty'], !state.get('name'));
+    state.setIn(['errors', 'valueIsEmpty'], !state.get('value'));
   });
 };
 

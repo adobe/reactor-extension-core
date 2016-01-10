@@ -1,19 +1,18 @@
 import { Map, fromJS } from 'immutable';
-import testBooleanAction from '../../../../__tests__/helpers/testBooleanAction';
-import testStringAction from '../../../../__tests__/helpers/testStringAction';
+import testPassThroughAction from '../../../../__tests__/helpers/testPassThroughAction';
 import reducer, { actionCreators } from '../elementFilterActions';
 
 describe('element filter actions', () => {
   it('sets showSpecificElementsFilter', () => {
-    testBooleanAction(reducer, actionCreators.setShowSpecificElementsFilter, 'showSpecificElementsFilter');
+    testPassThroughAction(reducer, actionCreators.setShowSpecificElementsFilter, 'showSpecificElementsFilter');
   });
 
   it('sets showSpecificElementsFilter', () => {
-    testBooleanAction(reducer, actionCreators.setShowElementPropertiesFilter, 'showElementPropertiesFilter');
+    testPassThroughAction(reducer, actionCreators.setShowElementPropertiesFilter, 'showElementPropertiesFilter');
   });
 
   it('sets elementSelector', () => {
-    testStringAction(reducer, actionCreators.setElementSelector, 'elementSelector');
+    testPassThroughAction(reducer, actionCreators.setElementSelector, 'elementSelector');
   });
 
   it('adds an element property', () => {

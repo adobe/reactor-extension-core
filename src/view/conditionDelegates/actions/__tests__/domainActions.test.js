@@ -1,4 +1,3 @@
-import testListAction from '../../../__tests__/helpers/testListAction';
 import reducer, { actionCreators } from '../domainActions';
 import { Map, List } from 'immutable';
 

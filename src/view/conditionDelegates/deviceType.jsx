@@ -20,16 +20,9 @@ const DEVICE_TYPES = [
 ];
 
 export class DeviceType extends React.Component {
-  select = deviceType => {
-    let deviceTypes = this.props.deviceTypes.push(deviceType);
-    this.props.dispatch(actionCreators.setDeviceTypes(deviceTypes));
-  };
+  select = deviceType => this.props.dispatch(actionCreators.selectDeviceType(deviceType));
 
-  deselect = deviceType => {
-    let index = this.props.deviceTypes.indexOf(deviceType);
-    let deviceTypes = this.props.deviceTypes.delete(index);
-    this.props.dispatch(actionCreators.setDeviceTypes(deviceTypes));
-  };
+  deselect = deviceType => this.props.dispatch(actionCreators.deselectDeviceType(deviceType));
 
   render() {
     return <CheckboxList

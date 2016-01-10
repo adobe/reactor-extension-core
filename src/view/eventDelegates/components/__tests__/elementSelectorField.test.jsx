@@ -23,13 +23,13 @@ describe('element selector field', () => {
     let props = mapStateToProps(fromJS({
       elementSelector: 'foo',
       errors: {
-        selectorInvalid: true
+        selectorIsEmpty: true
       }
     }));
 
     expect(props).toEqual({
       elementSelector: 'foo',
-      selectorInvalid: true
+      selectorIsEmpty: true
     });
   });
 
@@ -58,7 +58,7 @@ describe('element selector field', () => {
 
   it('displays an invalid selector error', () => {
     let { validationWrapper } = getParts(render({
-      selectorInvalid: true
+      selectorIsEmpty: true
     }));
 
     expect(validationWrapper.props.error).toBeDefined();

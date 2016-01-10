@@ -53,7 +53,7 @@ describe('query param reducer set', () => {
         name: ''
       }));
 
-      expect(state.getIn(['errors', 'nameInvalid'])).toBe(true);
+      expect(state.getIn(['errors', 'nameIsEmpty'])).toBe(true);
     });
   })
 

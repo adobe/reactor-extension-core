@@ -15,7 +15,7 @@ export let stateToConfig = (config, state) => {
 };
 
 export let validate = state => {
-  return state.setIn(['errors', 'nameInvalid'], !state.get('name'));
+  return state.setIn(['errors', 'nameIsEmpty'], !state.get('name'));
 };
 
 export default {

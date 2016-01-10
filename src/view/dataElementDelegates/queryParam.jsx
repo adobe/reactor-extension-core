@@ -7,7 +7,7 @@ import ValidationWrapper from '../components/validationWrapper';
 export let mapStateToProps = state => ({
   name: state.get('name'),
   caseInsensitive: state.get('caseInsensitive'),
-  nameInvalid: state.getIn(['errors', 'nameInvalid'])
+  nameIsEmpty: state.getIn(['errors', 'nameIsEmpty'])
 });
 
 export class QueryParam extends React.Component {
@@ -22,7 +22,7 @@ export class QueryParam extends React.Component {
   render() {
     let error;
 
-    if (this.props.nameInvalid) {
+    if (this.props.nameIsEmpty) {
       error = 'Please specify a query string parameter name.';
     }
 

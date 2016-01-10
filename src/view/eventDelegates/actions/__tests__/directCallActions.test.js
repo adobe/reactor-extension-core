@@ -1,8 +1,8 @@
-import testStringAction from '../../../__tests__/helpers/testStringAction';
+import testPassThroughAction from '../../../__tests__/helpers/testPassThroughAction';
 import reducer, { actionCreators } from '../directCallActions';
 
 describe('direct call actions', () => {
   it('sets name', () => {
-    testStringAction(reducer, actionCreators.setName, 'name');
+    testPassThroughAction(reducer, actionCreators.setName, 'name');
   });
 });

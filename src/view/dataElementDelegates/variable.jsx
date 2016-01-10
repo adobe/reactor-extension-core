@@ -6,7 +6,7 @@ import ValidationWrapper from '../components/validationWrapper';
 
 export let mapStateToProps = state => ({
   path: state.get('path'),
-  pathInvalid: state.getIn(['errors', 'pathInvalid'])
+  pathIsEmpty: state.getIn(['errors', 'pathIsEmpty'])
 });
 
 export class Variable extends React.Component {
@@ -17,7 +17,7 @@ export class Variable extends React.Component {
   render() {
     let error;
 
-    if (this.props.pathInvalid) {
+    if (this.props.pathIsEmpty) {
       error = 'Please specify a variable path.';
     }
 

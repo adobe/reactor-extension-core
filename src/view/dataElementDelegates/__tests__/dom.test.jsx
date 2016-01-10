@@ -50,8 +50,8 @@ describe('dom view', () => {
       customElementProperty: 'foo',
       elementPropertyPresets: MOCK_ELEMENT_PROPERTY_PRESETS,
       errors: {
-        elementSelectorInvalid: true,
-        elementPropertyInvalid: true
+        elementSelectorIsEmpty: true,
+        elementPropertyIsEmpty: true
       }
     }));
 
@@ -60,8 +60,8 @@ describe('dom view', () => {
       selectedElementPropertyPreset: 'innerHTML',
       customElementProperty: 'foo',
       elementPropertyPresets: jasmine.any(Object),
-      elementSelectorInvalid: true,
-      elementPropertyInvalid: true
+      elementSelectorIsEmpty: true,
+      elementPropertyIsEmpty: true
     });
   });
 

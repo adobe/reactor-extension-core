@@ -46,33 +46,23 @@ describe('device type view', () => {
     it('dispatches an action when an item is selected', () => {
       let dispatch = jasmine.createSpy();
       let { checkboxList } = getParts(render({
-        deviceTypes: List(),
         dispatch
       }));
 
       checkboxList.props.select('foo');
 
-      let matchAction = actionCreators.setDeviceTypes(List(['foo']));
-
-      let action = dispatch.calls.argsFor(0)[0];
-      expect(action.type).toEqual(matchAction.type);
-      expect(action.payload.toJS()).toEqual(matchAction.payload.toJS());
+      expect(dispatch).toHaveBeenCalledWith(actionCreators.selectDeviceType('foo'));
     });
 
     it('dispatches an action when an item is deselected', () => {
       let dispatch = jasmine.createSpy();
       let { checkboxList } = getParts(render({
-        deviceTypes: List(['foo', 'bar']),
         dispatch
       }));
 
       checkboxList.props.deselect('foo');
 
-      let matchAction = actionCreators.setDeviceTypes(List(['bar']));
-
-      let action = dispatch.calls.argsFor(0)[0];
-      expect(action.type).toEqual(matchAction.type);
-      expect(action.payload.toJS()).toEqual(matchAction.payload.toJS());
+      expect(dispatch).toHaveBeenCalledWith(actionCreators.deselectDeviceType('foo'));
     });
   });
 });

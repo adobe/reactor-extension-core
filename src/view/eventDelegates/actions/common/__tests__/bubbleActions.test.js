@@ -1,16 +1,16 @@
-import testBooleanAction from '../../../../__tests__/helpers/testBooleanAction';
+import testPassThroughAction from '../../../../__tests__/helpers/testPassThroughAction';
 import reducer, { actionCreators } from '../bubbleActions';
 
 describe('bubble actions', () => {
   it('sets bubbleFireIfParent', () => {
-    testBooleanAction(reducer, actionCreators.setBubbleFireIfParent, 'bubbleFireIfParent');
+    testPassThroughAction(reducer, actionCreators.setBubbleFireIfParent, 'bubbleFireIfParent');
   });
 
   it('sets bubbleFireIfChildFired', () => {
-    testBooleanAction(reducer, actionCreators.setBubbleFireIfChildFired, 'bubbleFireIfChildFired');
+    testPassThroughAction(reducer, actionCreators.setBubbleFireIfChildFired, 'bubbleFireIfChildFired');
   });
 
   it('sets bubbleStop', () => {
-    testBooleanAction(reducer, actionCreators.setBubbleStop, 'bubbleStop');
+    testPassThroughAction(reducer, actionCreators.setBubbleStop, 'bubbleStop');
   });
 });

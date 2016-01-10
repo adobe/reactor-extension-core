@@ -1,17 +1,16 @@
-import testStringAction from '../../../__tests__/helpers/testStringAction';
-import testBooleanAction from '../../../__tests__/helpers/testBooleanAction';
+import testPassThroughAction from '../../../__tests__/helpers/testPassThroughAction';
 import reducer, { actionCreators } from '../cookieActions';
 
 describe('cookie actions', () => {
   it('sets name', () => {
-    testStringAction(reducer, actionCreators.setName, 'name');
+    testPassThroughAction(reducer, actionCreators.setName, 'name');
   });
 
   it('sets value', () => {
-    testStringAction(reducer, actionCreators.setValue, 'value');
+    testPassThroughAction(reducer, actionCreators.setValue, 'value');
   });
 
   it('sets valueIsRegex', () => {
-    testBooleanAction(reducer, actionCreators.setValueIsRegex, 'valueIsRegex');
+    testPassThroughAction(reducer, actionCreators.setValueIsRegex, 'valueIsRegex');
   });
 });

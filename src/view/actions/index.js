@@ -11,6 +11,7 @@ import directCallEventActions from '../eventDelegates/actions/directCallActions'
 
 // Conditions
 import browserConditionActions from '../conditionDelegates/actions/browserActions';
+import cartAmountConditionActions from '../conditionDelegates/actions/cartAmountActions';
 import cookieConditionActions from '../conditionDelegates/actions/cookieActions';
 import cookieOptOutConditionActions from '../conditionDelegates/actions/cookieOptOutActions';
 import customConditionActions from '../conditionDelegates/actions/customActions';
@@ -31,6 +32,7 @@ export default reducerReducers(
   clickEventActions,
   directCallEventActions,
   browserConditionActions,
+  cartAmountConditionActions,
   cookieConditionActions,
   cookieOptOutConditionActions,
   customConditionActions,

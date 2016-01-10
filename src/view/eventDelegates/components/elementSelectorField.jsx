@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 export let mapStateToProps = state => ({
   elementSelector: state.get('elementSelector'),
-  selectorInvalid: state.getIn(['errors', 'selectorInvalid'])
+  selectorIsEmpty: state.getIn(['errors', 'selectorIsEmpty'])
 });
 
 export class ElementSelectorField extends React.Component {
@@ -17,7 +17,7 @@ export class ElementSelectorField extends React.Component {
   render() {
     let error;
 
-    if (this.props.selectorInvalid) {
+    if (this.props.selectorIsEmpty) {
       error = 'Please specify a selector. Alternatively, choose to target any element above.';
     }
 

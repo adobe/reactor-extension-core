@@ -23,13 +23,13 @@ describe('direct call view', () => {
     let props = mapStateToProps(fromJS({
       name: 'foo',
       errors: {
-        nameInvalid: true
+        nameIsEmpty: true
       }
     }));
 
     expect(props).toEqual({
       name: 'foo',
-      nameInvalid: true
+      nameIsEmpty: true
     });
   });
 

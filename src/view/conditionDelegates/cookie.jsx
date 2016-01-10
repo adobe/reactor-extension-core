@@ -7,9 +7,9 @@ import ValidationWrapper from '../components/validationWrapper';
 
 export let mapStateToProps = state => ({
   name: state.get('name'),
-  nameInvalid: state.getIn(['errors', 'nameInvalid']),
+  nameIsEmpty: state.getIn(['errors', 'nameIsEmpty']),
   value: state.get('value'),
-  valueInvalid: state.getIn(['errors', 'valueInvalid']),
+  valueIsEmpty: state.getIn(['errors', 'valueIsEmpty']),
   valueIsRegex: state.get('valueIsRegex')
 });
 
@@ -38,11 +38,11 @@ export class Cookie extends React.Component {
     let nameError;
     let valueError;
 
-    if (this.props.nameInvalid) {
+    if (this.props.nameIsEmpty) {
       nameError = 'Please specify a cookie name.';
     }
 
-    if (this.props.valueInvalid) {
+    if (this.props.valueIsEmpty) {
       valueError = 'Please specify a cookie value.';
     }
 

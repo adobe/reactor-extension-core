@@ -29,16 +29,16 @@ describe('cookie view', () => {
       value: 'bar',
       valueIsRegex: true,
       errors: {
-        nameInvalid: true,
-        valueInvalid: true
+        nameIsEmpty: true,
+        valueIsEmpty: true
       }
     }));
 
     expect(props.name).toBe('foo');
     expect(props.value).toBe('bar');
     expect(props.valueIsRegex).toBe(true);
-    expect(props.nameInvalid).toBe(true);
-    expect(props.valueInvalid).toBe(true);
+    expect(props.nameIsEmpty).toBe(true);
+    expect(props.valueIsEmpty).toBe(true);
   });
 
   describe('name field', () => {

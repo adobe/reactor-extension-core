@@ -1,16 +1,16 @@
-import testStringAction from '../../../__tests__/helpers/testStringAction';
+import testPassThroughAction from '../../../__tests__/helpers/testPassThroughAction';
 import reducer, { actionCreators } from '../domActions';
 
 describe('dom actions', () => {
   it('sets element selector', () => {
-    testStringAction(reducer, actionCreators.setElementSelector, 'elementSelector');
+    testPassThroughAction(reducer, actionCreators.setElementSelector, 'elementSelector');
   });
 
   it('sets selected element property preset', () => {
-    testStringAction(reducer, actionCreators.setSelectedElementPropertyPreset, 'selectedElementPropertyPreset');
+    testPassThroughAction(reducer, actionCreators.setSelectedElementPropertyPreset, 'selectedElementPropertyPreset');
   });
 
   it('sets custom element property', () => {
-    testStringAction(reducer, actionCreators.setCustomElementProperty, 'customElementProperty');
+    testPassThroughAction(reducer, actionCreators.setCustomElementProperty, 'customElementProperty');
   });
 });
