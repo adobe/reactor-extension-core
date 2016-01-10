@@ -2,6 +2,10 @@ import React from 'react';
 import Coral from 'coralui-support-react';
 import ValidationWrapper from '../../components/validationWrapper';
 
+export const fields = [
+  'elementSelector'
+];
+
 export default class ElementSelectorField extends React.Component {
   render() {
     const { elementSelector } = this.props;
@@ -17,13 +21,26 @@ export default class ElementSelectorField extends React.Component {
   }
 }
 
-export let validate = values => {
-  const errors = {};
+export let reducers = {
+  toValues: (values, options) => {
+    const { elementSelector } = options.config;
 
-  if (!values.elementSelector) {
-    errors.elementSelector = 'Please specify a selector. ' +
-      'Alternatively, choose to target any element above.';
+    return {
+      ...values,
+      elementSelector
+    };
+  },
+  toConfig: (config, values) => {
+    config = {
+      ...config
+    };
+
+    let { elementSelector } = values;
+
+    if (elementSelector) {
+      config.elementSelector = elementSelector;
+    }
+
+    return config;
   }
-
-  return errors;
 };

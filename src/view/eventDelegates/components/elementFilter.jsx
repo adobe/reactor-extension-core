@@ -1,18 +1,21 @@
 import React from 'react';
 import Coral from '../../reduxFormCoralUI';
-import ElementSelectorField from './elementSelectorField';
-import ElementPropertiesEditor from './elementPropertiesEditor';
-import createID from '../../utils/createID';
+import ElementSelectorField, {
+  fields as elementSelectorFieldFields,
+  reducers as elementSelectorFieldReducers
+} from './elementSelectorField';
+import ElementPropertiesEditor, {
+  fields as elementPropertiesEditorFields,
+  reducers as elementPropertiesEditorReducers
+} from './elementPropertiesEditor';
+import reduceReducers from 'reduce-reducers';
 
-export let fields = [
+export const fields = [
   'showSpecificElementsFilter',
-  'showElementPropertiesFilter',
-  'elementSelector',
-  'elementProperties[].id',
-  'elementProperties[].name',
-  'elementProperties[].value',
-  'elementProperties[].valueIsRegex'
-];
+  'showElementPropertiesFilter'
+]
+.concat(elementSelectorFieldFields)
+.concat(elementPropertiesEditorFields);
 
 export default class ElementFilter extends React.Component {
 
@@ -64,80 +67,40 @@ export default class ElementFilter extends React.Component {
 }
 
 export let reducers = {
-  toValues: (values, options) => {
-    values = {
-      ...values
-    };
-    
-    const { config, configIsNew } = options;
+  toValues: reduceReducers(
+    elementPropertiesEditorReducers.toValues,
+    elementSelectorFieldReducers.toValues,
+    (values, options) => {
+      const { config: { elementSelector, elementProperties }, configIsNew } = options;
 
-    values.showSpecificElementsFilter =
-      Boolean(configIsNew || config.elementSelector || config.elementProperties);
-    values.showElementPropertiesFilter = Boolean(config.elementProperties);
-    values.elementSelector = config.elementSelector;
-
-    var elementProperties = config.elementProperties || [];
-
-    // Make sure there's always at least one element property. This is just so the view
-    // always shows at least one row.
-    if (!elementProperties.length) {
-      elementProperties.push({
-        name: '',
-        value: ''
-      });
-    }
-
-    elementProperties.forEach(elementProperty => elementProperty.id = createID());
-
-    values.elementProperties = elementProperties;
-
-    return values;
-  },
-  toConfig: (config, values) => {
-    config = {
-      ...config
-    };
-
-    let {
-      showSpecificElementsFilter,
-      showElementPropertiesFilter,
-      elementSelector,
-      elementProperties
-    } = values;
-
-    if (showSpecificElementsFilter) {
-      if (elementSelector) {
-        config.elementSelector = elementSelector;
-      }
-
-      if (showElementPropertiesFilter) {
-        if (elementProperties) {
-          elementProperties = elementProperties.filter(elementProperty => {
-            return elementProperty.name;
-          }).map(elementProperty => {
-            const { name, value, valueIsRegex } = elementProperty;
-
-            elementProperty = {
-              name,
-              value
-            };
-
-            if (valueIsRegex) {
-              elementProperty.valueIsRegex = true;
-            }
-
-            return elementProperty;
-          });
-
-          if (elementProperties.length) {
-            config.elementProperties = elementProperties;
-          }
-        }
+      return {
+        ...values,
+        showSpecificElementsFilter: Boolean(configIsNew || elementSelector || elementProperties),
+        showElementPropertiesFilter: Boolean(elementProperties)
       }
     }
+  ),
+  toConfig: reduceReducers(
+    elementPropertiesEditorReducers.toConfig,
+    elementSelectorFieldReducers.toConfig,
+    (config, values) => {
+      config = {
+        ...config
+      };
 
-    return config;
-  },
+      let { showSpecificElementsFilter, showElementPropertiesFilter } = values;
+
+      if (!showSpecificElementsFilter) {
+        delete config.elementSelector;
+      }
+
+      if (!showSpecificElementsFilter || !showElementPropertiesFilter) {
+        delete config.elementProperties;
+      }
+
+      return config;
+    }
+  ),
   validate: (errors, values) => {
     errors = {
       ...errors

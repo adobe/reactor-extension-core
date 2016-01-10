@@ -19,11 +19,7 @@ const fields = [
 
 export class Click extends React.Component {
   render() {
-    const {
-      fields: {
-        delayLinkActivation
-      }
-    } = this.props;
+    const { fields: { delayLinkActivation } } = this.props;
 
     return (
       <div>
