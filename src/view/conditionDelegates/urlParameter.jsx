@@ -48,21 +48,3 @@ export default extensionReduxForm({
   fields,
   validate
 })(URLParameter);
-
-export let reducers = {
-  toValues: (values, options) => {
-    const { config } = options;
-    return {
-      ...values,
-      ...config
-    };
-  },
-  toConfig: (config, values) => {
-    return {
-      ...config,
-      ...values
-    };
-  }
-}
-
-

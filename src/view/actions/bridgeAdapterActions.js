@@ -10,10 +10,12 @@ export let actionCreators = {
 export default handleActions({
   [SET_CONFIG]: (state, action) => {
     const initialValues = bridgeAdapterReducers.toValues({}, action.payload);
+
     state = {
       ...state,
       initialValues
     };
+
     // Clear any previously held form values.
     delete state.form.default;
     return state;

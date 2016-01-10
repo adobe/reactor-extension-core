@@ -5,7 +5,26 @@ import { getValues } from 'redux-form';
 
 export let bridgeAdapterReducers = null;
 export let setBridgeAdapterReducers = (nextState) => {
-  bridgeAdapterReducers = nextState.routes[0].reducers;
+  bridgeAdapterReducers = nextState.routes[0].reducers || {};
+
+  if (!bridgeAdapterReducers.toConfig) {
+    bridgeAdapterReducers.toConfig = (config, values) => {
+      return {
+        ...config,
+        ...values
+      };
+    };
+  }
+
+  if (!bridgeAdapterReducers.toValues) {
+    bridgeAdapterReducers.toValues = (values, options) => {
+      const { config } = options;
+      return {
+        ...values,
+        ...config
+      };
+    };
+  }
 };
 
 export default (extensionBridge, store) => {
@@ -18,14 +37,8 @@ export default (extensionBridge, store) => {
   };
 
   extensionBridge.getConfig = () => {
-    let config = {};
-
-    if (bridgeAdapterReducers.toConfig) {
-      const values = getValues(store.getState().form.default);
-      config = bridgeAdapterReducers.toConfig(config, values);
-    }
-
-    return config;
+    const values = getValues(store.getState().form.default);
+    return bridgeAdapterReducers.toConfig({}, values);
   };
 
   extensionBridge.validate = () => {
