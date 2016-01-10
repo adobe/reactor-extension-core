@@ -20,27 +20,3 @@ export default class ElementSelectorField extends React.Component {
     );
   }
 }
-
-export let reducers = {
-  toValues: (values, options) => {
-    const { elementSelector } = options.config;
-
-    return {
-      ...values,
-      elementSelector
-    };
-  },
-  toConfig: (config, values) => {
-    config = {
-      ...config
-    };
-
-    let { elementSelector } = values;
-
-    if (elementSelector) {
-      config.elementSelector = elementSelector;
-    }
-
-    return config;
-  }
-};

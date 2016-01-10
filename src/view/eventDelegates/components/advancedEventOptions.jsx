@@ -57,36 +57,3 @@ export default class AdvancedEventOptions extends React.Component {
     );
   }
 }
-
-export let reducers = {
-  toValues: (values, options) => {
-    const { bubbleFireIfParent, bubbleFireIfChildFired, bubbleStop } = options.config;
-    return {
-      ...values,
-      bubbleFireIfParent,
-      bubbleFireIfChildFired,
-      bubbleStop
-    };
-  },
-  toConfig: (config, values) => {
-    config = {
-      ...config
-    };
-
-    const { bubbleFireIfParent, bubbleFireIfChildFired, bubbleStop } = values;
-
-    if (bubbleFireIfParent) {
-      config.bubbleFireIfParent = true;
-    }
-
-    if (bubbleFireIfChildFired) {
-      config.bubbleFireIfChildFired = true;
-    }
-
-    if (bubbleStop) {
-      config.bubbleStop = true;
-    }
-
-    return config;
-  }
-};

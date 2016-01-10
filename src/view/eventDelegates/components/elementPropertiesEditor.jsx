@@ -44,10 +44,6 @@ export default class ElementPropertiesEditor extends React.Component {
 
 export let reducers = {
   toValues: (values, options) => {
-    values = {
-      ...values
-    };
-
     const { config } = options;
 
     var elementProperties = config.elementProperties || [];
@@ -64,38 +60,35 @@ export let reducers = {
     // ID used as a key when rendering each item.
     elementProperties.forEach(elementProperty => elementProperty.id = createID());
 
-    values.elementProperties = elementProperties;
-
-    return values;
+    return {
+      ...values,
+      elementProperties
+    };
   },
   toConfig: (config, values) => {
     config = {
       ...config
     };
 
-    let {
-      elementProperties
-    } = values;
+    let { elementProperties } = values;
 
     elementProperties = elementProperties.filter(elementProperty => {
       return elementProperty.name;
     }).map(elementProperty => {
-      const { name, value, valueIsRegex } = elementProperty;
-
       elementProperty = {
-        name,
-        value
+        ...elementProperty
       };
 
-      if (valueIsRegex) {
-        elementProperty.valueIsRegex = true;
-      }
+      // ID is only used for view rendering.
+      delete elementProperty.id;
 
       return elementProperty;
     });
 
     if (elementProperties.length) {
       config.elementProperties = elementProperties;
+    } else {
+      delete config.elementProperties;
     }
 
     return config;

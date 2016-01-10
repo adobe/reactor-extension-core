@@ -5,8 +5,7 @@ import ElementFilter, {
   reducers as elementFilterReducers
 } from './components/elementFilter';
 import AdvancedEventOptions, {
-  fields as advancedEventOptionsFields,
-  reducers as advancedEventOptionsReducers
+  fields as advancedEventOptionsFields
 } from './components/advancedEventOptions';
 import extensionReduxForm from '../extensionReduxForm';
 import reduceReducers from 'reduce-reducers';
@@ -42,31 +41,4 @@ export default extensionReduxForm({
   validate
 })(Click);
 
-export let reducers = {
-  toValues: reduceReducers(
-    elementFilterReducers.toValues,
-    advancedEventOptionsReducers.toValues,
-    (values, options) => {
-      const { delayLinkActivation } = options.config;
-      return {
-        ...values,
-        delayLinkActivation
-      };
-    }
-  ),
-  toConfig: reduceReducers(
-    elementFilterReducers.toConfig,
-    advancedEventOptionsReducers.toConfig,
-    (config, values) => {
-      config = {
-        ...config
-      };
-
-      if (values.delayLinkActivation) {
-        config.delayLinkActivation = true;
-      }
-
-      return config;
-    }
-  )
-};
+export let reducers = elementFilterReducers;

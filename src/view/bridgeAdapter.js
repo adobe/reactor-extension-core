@@ -5,26 +5,36 @@ import { getValues } from 'redux-form';
 
 export let bridgeAdapterReducers = null;
 export let setBridgeAdapterReducers = (nextState) => {
-  bridgeAdapterReducers = nextState.routes[0].reducers || {};
+  const reducersFromRoute = nextState.routes[0].reducers || {};
 
-  if (!bridgeAdapterReducers.toConfig) {
-    bridgeAdapterReducers.toConfig = (config, values) => {
-      return {
-        ...config,
-        ...values
-      };
-    };
-  }
-
-  if (!bridgeAdapterReducers.toValues) {
-    bridgeAdapterReducers.toValues = (values, options) => {
+  bridgeAdapterReducers = {
+    toValues: (values, options) => {
       const { config } = options;
-      return {
+
+      values = {
         ...values,
         ...config
       };
-    };
-  }
+
+      if (reducersFromRoute.toValues) {
+        values = reducersFromRoute.toValues(values, options);
+      }
+
+      return values;
+    },
+    toConfig: (config, values) => {
+      config = {
+        ...config,
+        ...values
+      };
+
+      if (reducersFromRoute.toConfig) {
+        config = reducersFromRoute.toConfig(config, values);
+      }
+
+      return config;
+    }
+  };
 };
 
 export default (extensionBridge, store) => {

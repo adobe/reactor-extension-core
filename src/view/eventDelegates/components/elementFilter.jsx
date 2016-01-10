@@ -1,8 +1,7 @@
 import React from 'react';
 import Coral from '../../reduxFormCoralUI';
 import ElementSelectorField, {
-  fields as elementSelectorFieldFields,
-  reducers as elementSelectorFieldReducers
+  fields as elementSelectorFieldFields
 } from './elementSelectorField';
 import ElementPropertiesEditor, {
   fields as elementPropertiesEditorFields,
@@ -69,7 +68,6 @@ export default class ElementFilter extends React.Component {
 export let reducers = {
   toValues: reduceReducers(
     elementPropertiesEditorReducers.toValues,
-    elementSelectorFieldReducers.toValues,
     (values, options) => {
       const { config: { elementSelector, elementProperties }, configIsNew } = options;
 
@@ -77,12 +75,11 @@ export let reducers = {
         ...values,
         showSpecificElementsFilter: Boolean(configIsNew || elementSelector || elementProperties),
         showElementPropertiesFilter: Boolean(elementProperties)
-      }
+      };
     }
   ),
   toConfig: reduceReducers(
     elementPropertiesEditorReducers.toConfig,
-    elementSelectorFieldReducers.toConfig,
     (config, values) => {
       config = {
         ...config
@@ -97,6 +94,9 @@ export let reducers = {
       if (!showSpecificElementsFilter || !showElementPropertiesFilter) {
         delete config.elementProperties;
       }
+
+      delete config.showSpecificElementsFilter;
+      delete config.showElementPropertiesFilter;
 
       return config;
     }
