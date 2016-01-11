@@ -7,7 +7,7 @@ const fields = ['name'];
 
 export class Cookie extends React.Component {
   render() {
-    const { fields: { name } } = this.props;
+    const name = this.props.fields.name;
 
     return (
       <ValidationWrapper error={name.touched && name.error}>
@@ -20,7 +20,7 @@ export class Cookie extends React.Component {
   }
 }
 
-let validate = values => {
+const validate = values => {
   const errors = {};
 
   if (!values.name) {
