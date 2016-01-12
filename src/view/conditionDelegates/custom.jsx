@@ -1,24 +1,42 @@
 import React from 'react';
-import Coral from 'coralui-support-react';
-import { connect } from 'react-redux';
-import { actionCreators } from './actions/customActions';
-
-export let mapStateToProps = state => ({
-  script: state.get('script')
-});
+import Coral from '../reduxFormCoralUI';
+import ValidationWrapper from '../components/validationWrapper';
+import ErrorIcon from '../components/errorIcon';
+import extensionViewReduxForm from '../extensionViewReduxForm';
 
 export class Custom extends React.Component {
   onOpenEditor = () => {
-    window.extensionBridge.openCodeEditor(this.props.script, script => {
-      this.props.dispatch(actionCreators.setScript(script));
-    });
+    let scriptField = this.props.fields.script;
+    window.extensionBridge.openCodeEditor(scriptField.value, scriptField.onChange);
   };
 
   render() {
+    let script = this.props.fields.script;
+
     return (
-      <Coral.Button icon="code" onClick={this.onOpenEditor}>Open Editor</Coral.Button>
+      <div>
+        <Coral.Button icon="code" onClick={this.onOpenEditor}>Open Editor</Coral.Button>
+        {script.touched && script.error ?
+          <ErrorIcon message={script.error}/> : null
+        }
+      </div>
     );
   }
 }
 
-export default connect(mapStateToProps)(Custom);
+const fields = ['script'];
+
+const validate = values => {
+  const errors = {};
+
+  if (!values.script) {
+    errors.script = 'Please provide custom script.';
+  }
+
+  return errors;
+};
+
+export default extensionViewReduxForm({
+  fields,
+  validate
+})(Custom);

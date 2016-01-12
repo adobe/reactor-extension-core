@@ -23,7 +23,7 @@ import CookieCondition from './conditionDelegates/cookie';
 //import CookieOptOutCondition from './conditionDelegates/cookieOptOut';
 //import cookieOptOutConditionReducerSet from './conditionDelegates/bridgeReducerSets/cookieOptOutReducerSet';
 //
-//import CustomCondition from './conditionDelegates/custom';
+import CustomCondition from './conditionDelegates/custom';
 //import customConditionReducerSet from './conditionDelegates/bridgeReducerSets/customReducerSet';
 //
 //import DeviceTypeCondition from './conditionDelegates/deviceType';
@@ -57,6 +57,7 @@ export default (
     <Route path="/events/click" component={ClickEvent} reducers={clickEventReducers} onEnter={setBridgeAdapterReducers}/>
     <Route path="/conditions/cartAmount" component={CartAmountCondition} reducers={cartAmountConditionReducers} onEnter={setBridgeAdapterReducers}/>
     <Route path="/conditions/cookie" component={CookieCondition} onEnter={setBridgeAdapterReducers}/>
+    <Route path="/conditions/custom" component={CustomCondition} onEnter={setBridgeAdapterReducers}/>
     <Route path="/conditions/urlParameter" component={URLParameterCondition} onEnter={setBridgeAdapterReducers}/>
     <Route path="/dataElements/cookie" component={CookieDataElement} onEnter={setBridgeAdapterReducers}/>
     <Route path="/dataElements/custom" component={CustomDataElement} onEnter={setBridgeAdapterReducers}/>
@@ -67,7 +68,6 @@ export default (
     {/*<Route path="/events/directCall" component={DirectCallEvent} reducers={directCallEventReducerSet} onEnter={setBridgeAdapterReducers}/>
     <Route path="/events/blur" component={BlurEvent} reducers={blurEventReducerSet} onEnter={setBridgeAdapterReducers}/>
     <Route path="/conditions/cookieOptOut" component={CookieOptOutCondition} reducers={cookieOptOutConditionReducerSet} onEnter={setBridgeAdapterReducers}/>
-    <Route path="/conditions/custom" component={CustomCondition} reducers={customConditionReducerSet} onEnter={setBridgeAdapterReducers}/>
     <Route path="/conditions/deviceType" component={DeviceTypeCondition} reducers={deviceTypeConditionReducerSet} onEnter={setBridgeAdapterReducers}/>
     <Route path="/conditions/domain" component={DomainCondition} reducers={domainConditionReducerSet} onEnter={setBridgeAdapterReducers}/>
     <Route path="/conditions/urlParameter" component={URLParameterCondition} reducers={urlParameterReducerSet} onEnter={setBridgeAdapterReducers}/>
