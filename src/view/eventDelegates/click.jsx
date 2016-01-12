@@ -10,15 +10,9 @@ import AdvancedEventOptions, {
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import reduceReducers from 'reduce-reducers';
 
-const fields = [
-  'delayLinkActivation'
-]
-.concat(elementFilterFields)
-.concat(advancedEventOptionsFields);
-
 export class Click extends React.Component {
   render() {
-    const { fields: { delayLinkActivation } } = this.props;
+    const { delayLinkActivation } = this.props.fields;
 
     return (
       <div>
@@ -33,6 +27,12 @@ export class Click extends React.Component {
     );
   }
 }
+
+const fields = [
+  'delayLinkActivation'
+]
+.concat(elementFilterFields)
+.concat(advancedEventOptionsFields);
 
 let validate = values => elementFilterReducers.validate({}, values);
 

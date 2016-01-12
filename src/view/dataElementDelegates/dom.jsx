@@ -50,13 +50,6 @@ const elementPropertyPresets = [
   }
 ];
 
-const fields = [
-  'elementSelector',
-  'selectedElementPropertyPreset',
-  'customElementProperty',
-  'elementPropertyPresets'
-];
-
 export class DOM extends React.Component {
   render() {
     const {
@@ -104,6 +97,13 @@ export class DOM extends React.Component {
     );
   }
 }
+
+const fields = [
+  'elementSelector',
+  'selectedElementPropertyPreset',
+  'customElementProperty',
+  'elementPropertyPresets'
+];
 
 const validate = values => {
   const errors = {};

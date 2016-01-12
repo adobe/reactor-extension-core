@@ -4,8 +4,6 @@ import ValidationWrapper from '../components/validationWrapper';
 import ErrorIcon from '../components/errorIcon';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
-const fields = ['script'];
-
 export class Custom extends React.Component {
   onOpenEditor = () => {
     let scriptField = this.props.fields.script;
@@ -25,6 +23,8 @@ export class Custom extends React.Component {
     );
   }
 }
+
+const fields = ['script'];
 
 const validate = values => {
   const errors = {};

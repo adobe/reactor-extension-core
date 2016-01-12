@@ -4,11 +4,9 @@ import RegexToggle from '../components/regexToggle';
 import ValidationWrapper from '../components/validationWrapper';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
-const fields = ['name', 'value', 'valueIsRegex'];
-
 export class URLParameter extends React.Component {
   render() {
-    const { fields: { name, value, valueIsRegex } } = this.props;
+    const { name, value, valueIsRegex } = this.props.fields;
 
     return (
       <div>
@@ -29,6 +27,8 @@ export class URLParameter extends React.Component {
     );
   }
 }
+
+const fields = ['name', 'value', 'valueIsRegex'];
 
 let validate = values => {
   const errors = {};

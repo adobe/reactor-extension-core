@@ -1,44 +1,21 @@
 import React from 'react';
-import Coral from 'coralui-support-react';
-import { connect } from 'react-redux';
-import { actionCreators } from './actions/queryParamActions';
+import Coral from '../reduxFormCoralUI';
 import ValidationWrapper from '../components/validationWrapper';
-
-export let mapStateToProps = state => ({
-  name: state.get('name'),
-  caseInsensitive: state.get('caseInsensitive'),
-  nameIsEmpty: state.getIn(['errors', 'nameIsEmpty'])
-});
+import extensionViewReduxForm from '../extensionViewReduxForm';
 
 export class QueryParam extends React.Component {
-  onNameChange = event => {
-    this.props.dispatch(actionCreators.setName(event.target.value));
-  };
-
-  onCaseInsensitiveChange = event => {
-    this.props.dispatch(actionCreators.setCaseInsensitive(event.target.checked));
-  };
-
   render() {
-    let error;
-
-    if (this.props.nameIsEmpty) {
-      error = 'Please specify a query string parameter name.';
-    }
+    const { name, caseInsensitive } = this.props.fields;
 
     return (
       <div>
-        <ValidationWrapper error={error} className="u-gapRight">
+        <ValidationWrapper error={name.touched && name.error} className="u-gapRight">
           <label>
             <span className="u-label">URL Querystring Parameter Name:</span>
-            <Coral.Textfield
-              value={this.props.name}
-              onChange={this.onNameChange}/>
+            <Coral.Textfield {...name}/>
           </label>
         </ValidationWrapper>
-        <Coral.Checkbox
-          checked={this.props.caseInsensitive}
-          onChange={this.onCaseInsensitiveChange}>
+        <Coral.Checkbox {...caseInsensitive}>
           Ignore capitalization differences
         </Coral.Checkbox>
       </div>
@@ -46,4 +23,22 @@ export class QueryParam extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(QueryParam);
+const fields = [
+  'name',
+  'caseInsensitive'
+];
+
+const validate = values => {
+  const errors = {};
+
+  if (!values.name) {
+    errors.name = 'Please specify a query string parameter name.';
+  }
+
+  return errors;
+};
+
+export default extensionViewReduxForm({
+  fields,
+  validate
+})(QueryParam);
