@@ -11,7 +11,7 @@ import ClickEvent, { reducers as clickEventReducers } from './eventDelegates/cli
 //import blurEventReducerSet from './eventDelegates/bridgeReducerSets/blurReducerSet';
 //
 //// Conditions
-//import BrowserCondition from './conditionDelegates/browser';
+import BrowserCondition from './conditionDelegates/browser';
 //import browserConditionReducerSet from './conditionDelegates/bridgeReducerSets/browserReducerSet';
 //
 //import CartAmountCondition from './conditionDelegates/cartAmount';
@@ -61,9 +61,9 @@ export default (
     <Route path="/dataElements/dom" component={DOMDataElement} reducers={domDataElementReducers} onEnter={setBridgeAdapterReducers}/>
     <Route path="/dataElements/queryParam" component={QueryParamDataElement} reducers={queryParamReducers} onEnter={setBridgeAdapterReducers}/>
     <Route path="/dataElements/variable" component={VariableDataElement} onEnter={setBridgeAdapterReducers}/>
+    <Route path="/conditions/browser" component={BrowserCondition} onEnter={setBridgeAdapterReducers}/>
     {/*<Route path="/events/directCall" component={DirectCallEvent} reducers={directCallEventReducerSet} onEnter={setBridgeAdapterReducers}/>
     <Route path="/events/blur" component={BlurEvent} reducers={blurEventReducerSet} onEnter={setBridgeAdapterReducers}/>
-    <Route path="/conditions/browser" component={BrowserCondition} reducers={browserConditionReducerSet} onEnter={setBridgeAdapterReducers}/>
     <Route path="/conditions/cartAmount" component={CartAmountCondition} reducers={cartAmountConditionReducerSet} onEnter={setBridgeAdapterReducers}/>
     <Route path="/conditions/cookie" component={CookieCondition} reducers={cookieConditionReducerSet} onEnter={setBridgeAdapterReducers}/>
     <Route path="/conditions/cookieOptOut" component={CookieOptOutCondition} reducers={cookieOptOutConditionReducerSet} onEnter={setBridgeAdapterReducers}/>
