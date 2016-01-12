@@ -44,7 +44,7 @@ poll('element exists event delegate', function() {
 
 /**
  * Element exists event. This event occurs when an element has been added to the DOM. The rule
- * should only run once per targeted element.
+ * should run no more than once.
  * @param {Object} config The event config object.
  * @param {string} config.elementSelector The CSS selector the element must match in order for
  * the rule to fire.
