@@ -1,15 +1,15 @@
 'use strict';
 import { actionCreators } from './actions/bridgeAdapterActions';
-import { handleSubmit } from './extensionReduxForm';
+import { handleSubmit } from './extensionViewReduxForm';
 import { getValues } from 'redux-form';
 import reduceReducers from 'reduce-reducers';
 
 export let bridgeAdapterReducers = null;
 
 /**
- * Assigns everything inside config to values.
+ * Assigns everything inside config to state.
  */
-const toValuesBaseReducer = (values, options) => {
+const configToStateBaseReducer = (values, options) => {
   const { config } = options;
   return {
     ...values,
@@ -18,9 +18,9 @@ const toValuesBaseReducer = (values, options) => {
 };
 
 /**
- * Assigns everything inside values to config.
+ * Assigns everything inside state to config.
  */
-const toConfigBaseReducer = (config, values) => {
+const stateToConfigReducer = (config, values) => {
   return {
     ...config,
     ...values
@@ -30,21 +30,21 @@ const toConfigBaseReducer = (config, values) => {
 export let setBridgeAdapterReducers = (nextState) => {
   const reducersFromRoute = nextState.routes[0].reducers || {};
 
-  const toValuesReducers = [ toValuesBaseReducer ];
+  const configToStateReducers = [ configToStateBaseReducer ];
 
-  if (reducersFromRoute.toValues) {
-    toValuesReducers.push(reducersFromRoute.toValues);
+  if (reducersFromRoute.configToState) {
+    configToStateReducers.push(reducersFromRoute.configToState);
   }
 
-  const toConfigReducers = [ toConfigBaseReducer ];
+  const stateToConfigReducers = [ stateToConfigReducer ];
 
-  if (reducersFromRoute.toConfig) {
-    toConfigReducers.push(reducersFromRoute.toConfig);
+  if (reducersFromRoute.stateToConfig) {
+    stateToConfigReducers.push(reducersFromRoute.stateToConfig);
   }
 
   bridgeAdapterReducers = {
-    toValues: reduceReducers.apply(null, toValuesReducers),
-    toConfig: reduceReducers.apply(null, toConfigReducers)
+    configToState: reduceReducers.apply(null, configToStateReducers),
+    stateToConfig: reduceReducers.apply(null, stateToConfigReducers)
   };
 };
 
@@ -59,7 +59,7 @@ export default (extensionBridge, store) => {
 
   extensionBridge.getConfig = () => {
     const values = getValues(store.getState().form.default);
-    return bridgeAdapterReducers.toConfig({}, values);
+    return bridgeAdapterReducers.stateToConfig({}, values);
   };
 
   extensionBridge.validate = () => {

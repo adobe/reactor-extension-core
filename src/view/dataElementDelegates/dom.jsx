@@ -1,6 +1,6 @@
 import React from 'react';
 import Coral from '../reduxFormCoralUI';
-import extensionReduxForm from '../extensionReduxForm';
+import extensionViewReduxForm from '../extensionViewReduxForm';
 import ValidationWrapper from '../components/validationWrapper';
 
 const elementPropertyPresets = [
@@ -119,13 +119,13 @@ const validate = values => {
   return errors;
 };
 
-export default extensionReduxForm({
+export default extensionViewReduxForm({
   fields,
   validate
 })(DOM);
 
 export let reducers = {
-  toValues(values, options) {
+  configToState(values, options) {
     let { elementSelector, elementProperty } = options.config;
 
     let elementPropertyIsPreset =
@@ -150,7 +150,7 @@ export let reducers = {
     }
   },
 
-  toConfig(config, values) {
+  stateToConfig(config, values) {
     let { selectedElementPropertyPreset, customElementProperty } = values;
     let elementProperty;
 

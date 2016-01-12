@@ -66,8 +66,8 @@ export default class ElementFilter extends React.Component {
 }
 
 export let reducers = {
-  toValues: reduceReducers(
-    elementPropertiesEditorReducers.toValues,
+  configToState: reduceReducers(
+    elementPropertiesEditorReducers.configToState,
     (values, options) => {
       const { config: { elementSelector, elementProperties }, configIsNew } = options;
 
@@ -78,8 +78,8 @@ export let reducers = {
       };
     }
   ),
-  toConfig: reduceReducers(
-    elementPropertiesEditorReducers.toConfig,
+  stateToConfig: reduceReducers(
+    elementPropertiesEditorReducers.stateToConfig,
     (config, values) => {
       config = {
         ...config

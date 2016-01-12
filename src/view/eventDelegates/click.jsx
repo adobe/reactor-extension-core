@@ -7,7 +7,7 @@ import ElementFilter, {
 import AdvancedEventOptions, {
   fields as advancedEventOptionsFields
 } from './components/advancedEventOptions';
-import extensionReduxForm from '../extensionReduxForm';
+import extensionViewReduxForm from '../extensionViewReduxForm';
 import reduceReducers from 'reduce-reducers';
 
 const fields = [
@@ -36,7 +36,7 @@ export class Click extends React.Component {
 
 let validate = values => elementFilterReducers.validate({}, values);
 
-export default extensionReduxForm({
+export default extensionViewReduxForm({
   fields,
   validate
 })(Click);

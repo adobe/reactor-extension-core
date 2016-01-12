@@ -43,7 +43,7 @@ export default class ElementPropertiesEditor extends React.Component {
 }
 
 export let reducers = {
-  toValues: (values, options) => {
+  configToState: (values, options) => {
     const { config } = options;
 
     var elementProperties = config.elementProperties || [];
@@ -65,7 +65,7 @@ export let reducers = {
       elementProperties
     };
   },
-  toConfig: (config, values) => {
+  stateToConfig: (config, values) => {
     config = {
       ...config
     };

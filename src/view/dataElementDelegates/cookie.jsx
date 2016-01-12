@@ -1,7 +1,7 @@
 import React from 'react';
 import Coral from '../reduxFormCoralUI';
 import ValidationWrapper from '../components/validationWrapper';
-import extensionReduxForm from '../extensionReduxForm';
+import extensionViewReduxForm from '../extensionViewReduxForm';
 
 const fields = ['name'];
 
@@ -30,7 +30,7 @@ const validate = values => {
   return errors;
 };
 
-export default extensionReduxForm({
+export default extensionViewReduxForm({
   fields,
   validate
 })(Cookie);

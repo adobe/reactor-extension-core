@@ -2,7 +2,7 @@ import React from 'react';
 import Coral from '../reduxFormCoralUI';
 import ValidationWrapper from '../components/validationWrapper';
 import ErrorIcon from '../components/errorIcon';
-import extensionReduxForm from '../extensionReduxForm';
+import extensionViewReduxForm from '../extensionViewReduxForm';
 
 const fields = ['script'];
 
@@ -14,7 +14,7 @@ export class Custom extends React.Component {
 
   render() {
     let script = this.props.fields.script;
-    console.log(script.touched, script.error);
+
     return (
       <div>
         <Coral.Button icon="code" onClick={this.onOpenEditor}>Open Editor</Coral.Button>
@@ -36,7 +36,7 @@ const validate = values => {
   return errors;
 };
 
-export default extensionReduxForm({
+export default extensionViewReduxForm({
   fields,
   validate
 })(Custom);
