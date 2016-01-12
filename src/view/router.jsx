@@ -44,7 +44,7 @@ import CustomDataElement from './dataElementDelegates/custom';
 import DOMDataElement, { reducers as domDataElementReducers } from './dataElementDelegates/dom';
 //import domDataElementReducerSet from './dataElementDelegates/bridgeReducerSets/domReducerSet';
 //
-import QueryParamDataElement from './dataElementDelegates/queryParam';
+import QueryParamDataElement, { reducers as queryParamReducers } from './dataElementDelegates/queryParam';
 //import queryParamDataElementReducerSet from './dataElementDelegates/bridgeReducerSets/queryParamReducerSet';
 //
 //import VariableDataElement from './dataElementDelegates/variable';
@@ -59,7 +59,7 @@ export default (
     <Route path="/dataElements/cookie" component={CookieDataElement} onEnter={setBridgeAdapterReducers}/>
     <Route path="/dataElements/custom" component={CustomDataElement} onEnter={setBridgeAdapterReducers}/>
     <Route path="/dataElements/dom" component={DOMDataElement} reducers={domDataElementReducers} onEnter={setBridgeAdapterReducers}/>
-    <Route path="/dataElements/queryParam" component={QueryParamDataElement} onEnter={setBridgeAdapterReducers}/>
+    <Route path="/dataElements/queryParam" component={QueryParamDataElement} reducers={queryParamReducers} onEnter={setBridgeAdapterReducers}/>
     {/*<Route path="/events/directCall" component={DirectCallEvent} reducers={directCallEventReducerSet} onEnter={setBridgeAdapterReducers}/>
     <Route path="/events/blur" component={BlurEvent} reducers={blurEventReducerSet} onEnter={setBridgeAdapterReducers}/>
     <Route path="/conditions/browser" component={BrowserCondition} reducers={browserConditionReducerSet} onEnter={setBridgeAdapterReducers}/>

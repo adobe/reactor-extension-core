@@ -42,3 +42,12 @@ export default extensionViewReduxForm({
   fields,
   validate
 })(QueryParam);
+
+export let reducers = {
+  configToState(values, options) {
+    return {
+      ...values,
+      caseInsensitive: options.configIsNew || options.config.caseInsensitive
+    };
+  }
+};
