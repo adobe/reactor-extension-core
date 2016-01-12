@@ -1,7 +1,8 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Coral from 'coralui-support-react';
 
-// CoralUI components adapted to support simple destructring of redux-form field props. With native
+// CoralUI components adapted to support simple destructuring of redux-form field props. With native
 // components, redux-form field props can be applied easily using destructuring as follows:
 // <input type="checkbox" {...showUnicorns}/>
 // In this case, showUnicorns is an object provided by redux-form with both checked and onChange
@@ -14,14 +15,63 @@ import Coral from 'coralui-support-react';
 // http://erikras.github.io/redux-form/#/faq/custom-component?_k=1yomo8
 
 class Checkbox extends React.Component {
-  onChange = event => this.props.onChange(event.target.checked);
+  onChange = event => {
+    if (this.props.onChange) {
+      this.props.onChange(event.target.checked);
+    }
+  };
 
   render() {
     return <Coral.Checkbox {...this.props} onChange={this.onChange}/>
   }
 }
 
+class Select extends React.Component {
+  onChange = event => {
+    if (this.props.onChange) {
+      this.props.onChange(event.target.value);
+    }
+  };
+
+  onBlur = event => {
+    const node = ReactDOM.findDOMNode(this);
+
+    if (document.activeElement !== node && node.contains(document.activeElement)) {
+      this.containsFocus = false;
+
+      if (this.props.onBlur) {
+        this.props.onBlur();
+      }
+    }
+  };
+
+  onFocus = event => {
+    const node = ReactDOM.findDOMNode(this);
+
+    if (!this.containsFocus &&
+        (document.activeElement === node || node.contains(document.activeElement))) {
+
+      this.containsFocus = true;
+
+      if (this.props.onFocus) {
+        this.props.onFocus();
+      }
+    }
+  };
+
+  render() {
+    return (
+      <Coral.Select {...this.props} onChange={this.onChange} onBlur={this.onBlur} onFocus={this.onFocus}>
+        {this.props.children}
+      </Coral.Select>
+    );
+  }
+}
+
+Select.Item = Coral.Select.Item;
+
 export default {
   ...Coral,
-  Checkbox
+  Checkbox,
+  Select
 };
