@@ -26,7 +26,7 @@ import CookieOptOutCondition from './conditionDelegates/cookieOptOut';
 import CustomCondition from './conditionDelegates/custom';
 //import customConditionReducerSet from './conditionDelegates/bridgeReducerSets/customReducerSet';
 //
-//import DeviceTypeCondition from './conditionDelegates/deviceType';
+import DeviceTypeCondition from './conditionDelegates/deviceType';
 //import deviceTypeConditionReducerSet from './conditionDelegates/bridgeReducerSets/deviceTypeReducerSet';
 //
 //import DomainCondition from './conditionDelegates/domain';
@@ -61,6 +61,7 @@ export default (
     <Route path="/conditions/cookie" component={CookieCondition} onEnter={setBridgeAdapterReducers}/>
     <Route path="/conditions/cookieOptOut" component={CookieOptOutCondition} onEnter={setBridgeAdapterReducers}/>
     <Route path="/conditions/custom" component={CustomCondition} onEnter={setBridgeAdapterReducers}/>
+    <Route path="/conditions/deviceType" component={DeviceTypeCondition} onEnter={setBridgeAdapterReducers}/>
     <Route path="/conditions/urlParameter" component={URLParameterCondition} onEnter={setBridgeAdapterReducers}/>
     <Route path="/dataElements/cookie" component={CookieDataElement} onEnter={setBridgeAdapterReducers}/>
     <Route path="/dataElements/custom" component={CustomDataElement} onEnter={setBridgeAdapterReducers}/>
@@ -69,7 +70,7 @@ export default (
     <Route path="/dataElements/variable" component={VariableDataElement} onEnter={setBridgeAdapterReducers}/>
     <Route path="/conditions/browser" component={BrowserCondition} onEnter={setBridgeAdapterReducers}/>
     {/*
-    <Route path="/conditions/deviceType" component={DeviceTypeCondition} reducers={deviceTypeConditionReducerSet} onEnter={setBridgeAdapterReducers}/>
+
     <Route path="/conditions/domain" component={DomainCondition} reducers={domainConditionReducerSet} onEnter={setBridgeAdapterReducers}/>
     <Route path="/conditions/urlParameter" component={URLParameterCondition} reducers={urlParameterReducerSet} onEnter={setBridgeAdapterReducers}/>
      */}
