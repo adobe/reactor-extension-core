@@ -43,8 +43,8 @@ export let setBridgeAdapterReducers = (nextState) => {
   }
 
   bridgeAdapterReducers = {
-    configToState: reduceReducers.apply(null, configToStateReducers),
-    stateToConfig: reduceReducers.apply(null, stateToConfigReducers)
+    configToState: reduceReducers(...configToStateReducers),
+    stateToConfig: reduceReducers(...stateToConfigReducers)
   };
 };
 
