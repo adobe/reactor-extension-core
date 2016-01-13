@@ -24,25 +24,30 @@ import DOMDataElement, { reducers as domDataElementReducers } from './dataElemen
 import QueryParamDataElement, { reducers as queryParamReducers } from './dataElementDelegates/queryParam';
 import VariableDataElement from './dataElementDelegates/variable';
 
+const onEnter = (nextState) => {
+  const reducersFromRoute = nextState.routes[0].reducers;
+  setBridgeAdapterReducers(reducersFromRoute);
+};
+
 export default (
   <Router>
-    <Route path="/events/blur" component={BlurEvent} reducers={blurEventReducers} onEnter={setBridgeAdapterReducers}/>
-    <Route path="/events/click" component={ClickEvent} reducers={clickEventReducers} onEnter={setBridgeAdapterReducers}/>
-    <Route path="/events/directCall" component={DirectCallEvent} onEnter={setBridgeAdapterReducers}/>
+    <Route path="/events/blur" component={BlurEvent} reducers={blurEventReducers} onEnter={onEnter}/>
+    <Route path="/events/click" component={ClickEvent} reducers={clickEventReducers} onEnter={onEnter}/>
+    <Route path="/events/directCall" component={DirectCallEvent} onEnter={onEnter}/>
 
-    <Route path="/conditions/browser" component={BrowserCondition} reducers={browserConditionReducers} onEnter={setBridgeAdapterReducers}/>
-    <Route path="/conditions/cartAmount" component={CartAmountCondition} reducers={cartAmountConditionReducers} onEnter={setBridgeAdapterReducers}/>
-    <Route path="/conditions/cookie" component={CookieCondition} onEnter={setBridgeAdapterReducers}/>
-    <Route path="/conditions/cookieOptOut" component={CookieOptOutCondition} onEnter={setBridgeAdapterReducers}/>
-    <Route path="/conditions/custom" component={CustomCondition} onEnter={setBridgeAdapterReducers}/>
-    <Route path="/conditions/deviceType" component={DeviceTypeCondition} reducers={deviceTypeConditionReducers} onEnter={setBridgeAdapterReducers}/>
-    <Route path="/conditions/domain" component={DomainCondition} reducers={domainConditionReducers} onEnter={setBridgeAdapterReducers}/>
-    <Route path="/conditions/urlParameter" component={URLParameterCondition} onEnter={setBridgeAdapterReducers}/>
+    <Route path="/conditions/browser" component={BrowserCondition} reducers={browserConditionReducers} onEnter={onEnter}/>
+    <Route path="/conditions/cartAmount" component={CartAmountCondition} reducers={cartAmountConditionReducers} onEnter={onEnter}/>
+    <Route path="/conditions/cookie" component={CookieCondition} onEnter={onEnter}/>
+    <Route path="/conditions/cookieOptOut" component={CookieOptOutCondition} onEnter={onEnter}/>
+    <Route path="/conditions/custom" component={CustomCondition} onEnter={onEnter}/>
+    <Route path="/conditions/deviceType" component={DeviceTypeCondition} reducers={deviceTypeConditionReducers} onEnter={onEnter}/>
+    <Route path="/conditions/domain" component={DomainCondition} reducers={domainConditionReducers} onEnter={onEnter}/>
+    <Route path="/conditions/urlParameter" component={URLParameterCondition} onEnter={onEnter}/>
 
-    <Route path="/dataElements/cookie" component={CookieDataElement} onEnter={setBridgeAdapterReducers}/>
-    <Route path="/dataElements/custom" component={CustomDataElement} onEnter={setBridgeAdapterReducers}/>
-    <Route path="/dataElements/dom" component={DOMDataElement} reducers={domDataElementReducers} onEnter={setBridgeAdapterReducers}/>
-    <Route path="/dataElements/queryParam" component={QueryParamDataElement} reducers={queryParamReducers} onEnter={setBridgeAdapterReducers}/>
-    <Route path="/dataElements/variable" component={VariableDataElement} onEnter={setBridgeAdapterReducers}/>
+    <Route path="/dataElements/cookie" component={CookieDataElement} onEnter={onEnter}/>
+    <Route path="/dataElements/custom" component={CustomDataElement} onEnter={onEnter}/>
+    <Route path="/dataElements/dom" component={DOMDataElement} reducers={domDataElementReducers} onEnter={onEnter}/>
+    <Route path="/dataElements/queryParam" component={QueryParamDataElement} reducers={queryParamReducers} onEnter={onEnter}/>
+    <Route path="/dataElements/variable" component={VariableDataElement} onEnter={onEnter}/>
   </Router>
 );

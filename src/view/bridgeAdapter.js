@@ -27,9 +27,7 @@ const formValuesToConfigBaseReducer = (config, values) => {
   };
 };
 
-export let setBridgeAdapterReducers = (nextState) => {
-  const reducersFromRoute = nextState.routes[0].reducers || {};
-
+export let setBridgeAdapterReducers = (reducersFromRoute = {}) => {
   const configToFormValuesReducers = [ configToFormValuesBaseReducer ];
 
   if (reducersFromRoute.configToFormValues) {
