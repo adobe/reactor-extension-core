@@ -1,21 +1,29 @@
 'use strict';
-import { actionCreators } from './actions/createBridgeAdapterActions';
+import { actionCreators } from './actions/bridgeAdapterActions';
 import { handleSubmit } from './extensionViewReduxForm';
 import { getValues } from 'redux-form';
 
-export default (getBridgeAdapterReducers, extensionBridge, store) => {
+export default (extensionBridge, store) => {
+  let _reducersForCurrentRoute;
+
   extensionBridge.init = options => {
-    store.dispatch(actionCreators.setConfig({
+    options = {
       ...options,
       config: options.config || {},
       configIsNew: !options.config
+    };
+
+    const initialValues = _reducersForCurrentRoute.configToFormValues({}, options);
+
+    store.dispatch(actionCreators.init({
+      propertyConfig: options.properyConfig,
+      initialValues
     }));
   };
 
   extensionBridge.getConfig = () => {
-    const bridgeAdapterReducers = getBridgeAdapterReducers();
     const values = getValues(store.getState().form.default);
-    return bridgeAdapterReducers.formValuesToConfig({}, values);
+    return _reducersForCurrentRoute.formValuesToConfig({}, values);
   };
 
   extensionBridge.validate = () => {
@@ -26,4 +34,7 @@ export default (getBridgeAdapterReducers, extensionBridge, store) => {
     return valid;
   };
 
+  return reducersForCurrentRoute => {
+    _reducersForCurrentRoute = reducersForCurrentRoute;
+  }
 };
