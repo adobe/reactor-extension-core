@@ -34,7 +34,7 @@ const fields = [
 .concat(elementFilterFields)
 .concat(advancedEventOptionsFields);
 
-let validate = values => elementFilterReducers.validate({}, values);
+const validate = values => elementFilterReducers.validate({}, values);
 
 export default extensionViewReduxForm({
   fields,

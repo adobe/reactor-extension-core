@@ -7,7 +7,7 @@ import ClickEvent, { reducers as clickEventReducers } from './eventDelegates/cli
 import DirectCallEvent from './eventDelegates/directCall';
 //import directCallEventReducerSet from './eventDelegates/bridgeReducerSets/directCallReducerSet';
 //
-//import BlurEvent from './eventDelegates/blur';
+import BlurEvent, { reducers as blurEventReducers } from './eventDelegates/blur';
 //import blurEventReducerSet from './eventDelegates/bridgeReducerSets/blurReducerSet';
 //
 //// Conditions
@@ -54,6 +54,7 @@ import { setBridgeAdapterReducers } from './bridgeAdapter';
 
 export default (
   <Router>
+    <Route path="/events/blur" component={BlurEvent} reducers={blurEventReducers} onEnter={setBridgeAdapterReducers}/>
     <Route path="/events/click" component={ClickEvent} reducers={clickEventReducers} onEnter={setBridgeAdapterReducers}/>
     <Route path="/events/directCall" component={DirectCallEvent} onEnter={setBridgeAdapterReducers}/>
     <Route path="/conditions/cartAmount" component={CartAmountCondition} reducers={cartAmountConditionReducers} onEnter={setBridgeAdapterReducers}/>
@@ -68,7 +69,6 @@ export default (
     <Route path="/dataElements/variable" component={VariableDataElement} onEnter={setBridgeAdapterReducers}/>
     <Route path="/conditions/browser" component={BrowserCondition} onEnter={setBridgeAdapterReducers}/>
     {/*
-    <Route path="/events/blur" component={BlurEvent} reducers={blurEventReducerSet} onEnter={setBridgeAdapterReducers}/>
     <Route path="/conditions/deviceType" component={DeviceTypeCondition} reducers={deviceTypeConditionReducerSet} onEnter={setBridgeAdapterReducers}/>
     <Route path="/conditions/domain" component={DomainCondition} reducers={domainConditionReducerSet} onEnter={setBridgeAdapterReducers}/>
     <Route path="/conditions/urlParameter" component={URLParameterCondition} reducers={urlParameterReducerSet} onEnter={setBridgeAdapterReducers}/>
