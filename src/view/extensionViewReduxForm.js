@@ -1,5 +1,6 @@
 import React from 'react';
 import { reduxForm, getValues } from 'redux-form';
+import reduceReducers from 'reduce-reducers';
 
 /**
  * The handleSubmit function for the most recently updated form. This is exposed as a workaround
@@ -15,17 +16,17 @@ export let handleSubmit;
  * @param config
  * @returns {Function}
  */
-export default config => {
+export default (config, mapStateToProps, mapDispatchToProps, mergeProps, options) => {
   const reduxFormConfig = {
     form: 'default',
     fields: config.fields,
     validate: config.validate
   };
 
-  const mapStateToProps = state => {
-    return {
-      initialValues: state.initialValues
-    };
+  const internalMapStateToProps = state => {
+    const props = mapStateToProps ? mapStateToProps(state) : {};
+    props.initialValues = state.initialValues;
+    return props;
   };
 
   return WrappedComponent => {
@@ -39,6 +40,12 @@ export default config => {
       }
     }
 
-    return reduxForm(reduxFormConfig, mapStateToProps)(ProgrammaticallySubmittableForm);
+    return reduxForm(
+      reduxFormConfig,
+      internalMapStateToProps,
+      mapDispatchToProps,
+      mergeProps,
+      options
+    )(ProgrammaticallySubmittableForm);
   }
 };

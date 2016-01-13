@@ -41,4 +41,4 @@ export default extensionViewReduxForm({
   validate
 })(Click);
 
-export let reducers = elementFilterReducers;
+export const reducers = elementFilterReducers;

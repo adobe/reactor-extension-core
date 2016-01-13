@@ -30,4 +30,4 @@ export default extensionViewReduxForm({
   validate
 })(Blur);
 
-export let reducers = elementFilterReducers;
+export const reducers = elementFilterReducers;

@@ -124,7 +124,7 @@ export default extensionViewReduxForm({
   validate
 })(DOM);
 
-export let reducers = {
+export const reducers = {
   configToState(values, options) {
     let { elementSelector, elementProperty } = options.config;
 

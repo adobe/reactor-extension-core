@@ -26,3 +26,11 @@ const fields = ['deviceTypes'];
 export default extensionViewReduxForm({
   fields
 })(DeviceType);
+
+export const reducers = {
+  stateToConfig(config, values) {
+    return {
+      deviceTypes: values.deviceTypes || [] // An array is required.
+    }
+  }
+};

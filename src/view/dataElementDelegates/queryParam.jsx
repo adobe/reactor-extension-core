@@ -43,7 +43,7 @@ export default extensionViewReduxForm({
   validate
 })(QueryParam);
 
-export let reducers = {
+export const reducers = {
   configToState(values, options) {
     return {
       ...values,

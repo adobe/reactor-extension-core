@@ -29,3 +29,11 @@ export default extensionViewReduxForm({
   fields
 })(Browser);
 
+export const reducers = {
+  stateToConfig(config, values) {
+    return {
+      browsers: values.browsers || [] // An array is required.
+    }
+  }
+};
+

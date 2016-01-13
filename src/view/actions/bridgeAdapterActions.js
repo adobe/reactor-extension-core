@@ -14,7 +14,8 @@ export default handleActions({
     // redux-form will use initialValues to update the form.
     state = {
       ...state,
-      initialValues
+      initialValues,
+      propertyConfig: action.payload.propertyConfig
     };
 
     // Clear any previously held form values.

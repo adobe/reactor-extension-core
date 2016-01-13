@@ -65,7 +65,7 @@ export default class ElementFilter extends React.Component {
   }
 }
 
-export let reducers = {
+export const reducers = {
   configToState: reduceReducers(
     elementPropertiesEditorReducers.configToState,
     (values, options) => {
