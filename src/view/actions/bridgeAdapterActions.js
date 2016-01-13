@@ -9,7 +9,7 @@ export let actionCreators = {
 
 export default handleActions({
   [SET_CONFIG]: (state, action) => {
-    const initialValues = bridgeAdapterReducers.configToState({}, action.payload);
+    const initialValues = bridgeAdapterReducers.configToFormValues({}, action.payload);
 
     // redux-form will use initialValues to update the form.
     state = {

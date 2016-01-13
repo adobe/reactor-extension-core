@@ -44,7 +44,7 @@ export default extensionViewReduxForm({
 })(QueryParam);
 
 export const reducers = {
-  configToState(values, options) {
+  configToFormValues(values, options) {
     return {
       ...values,
       caseInsensitive: options.configIsNew || options.config.caseInsensitive

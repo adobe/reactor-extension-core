@@ -26,7 +26,7 @@ export default extensionViewReduxForm(
 )(Domain);
 
 export const reducers = {
-  stateToConfig(config, values) {
+  formValuesToConfig(config, values) {
     return {
       domains: values.domains || [] // An array is required.
     }

@@ -9,7 +9,7 @@ export let bridgeAdapterReducers = null;
 /**
  * Assigns everything inside config to state.
  */
-const configToStateBaseReducer = (values, options) => {
+const configToFormValuesBaseReducer = (values, options) => {
   const { config } = options;
   return {
     ...values,
@@ -20,7 +20,7 @@ const configToStateBaseReducer = (values, options) => {
 /**
  * Assigns everything inside state to config.
  */
-const stateToConfigReducer = (config, values) => {
+const formValuesToConfigBaseReducer = (config, values) => {
   return {
     ...config,
     ...values
@@ -30,21 +30,21 @@ const stateToConfigReducer = (config, values) => {
 export let setBridgeAdapterReducers = (nextState) => {
   const reducersFromRoute = nextState.routes[0].reducers || {};
 
-  const configToStateReducers = [ configToStateBaseReducer ];
+  const configToFormValuesReducers = [ configToFormValuesBaseReducer ];
 
-  if (reducersFromRoute.configToState) {
-    configToStateReducers.push(reducersFromRoute.configToState);
+  if (reducersFromRoute.configToFormValues) {
+    configToFormValuesReducers.push(reducersFromRoute.configToFormValues);
   }
 
-  const stateToConfigReducers = [ stateToConfigReducer ];
+  const formValuesToConfigReducers = [ formValuesToConfigBaseReducer ];
 
-  if (reducersFromRoute.stateToConfig) {
-    stateToConfigReducers.push(reducersFromRoute.stateToConfig);
+  if (reducersFromRoute.formValuesToConfig) {
+    formValuesToConfigReducers.push(reducersFromRoute.formValuesToConfig);
   }
 
   bridgeAdapterReducers = {
-    configToState: reduceReducers(...configToStateReducers),
-    stateToConfig: reduceReducers(...stateToConfigReducers)
+    configToFormValues: reduceReducers(...configToFormValuesReducers),
+    formValuesToConfig: reduceReducers(...formValuesToConfigReducers)
   };
 };
 
@@ -59,7 +59,7 @@ export default (extensionBridge, store) => {
 
   extensionBridge.getConfig = () => {
     const values = getValues(store.getState().form.default);
-    return bridgeAdapterReducers.stateToConfig({}, values);
+    return bridgeAdapterReducers.formValuesToConfig({}, values);
   };
 
   extensionBridge.validate = () => {

@@ -125,7 +125,7 @@ export default extensionViewReduxForm({
 })(DOM);
 
 export const reducers = {
-  configToState(values, options) {
+  configToFormValues(values, options) {
     let { elementSelector, elementProperty } = options.config;
 
     let elementPropertyIsPreset =
@@ -150,7 +150,7 @@ export const reducers = {
     }
   },
 
-  stateToConfig(config, values) {
+  formValuesToConfig(config, values) {
     let { selectedElementPropertyPreset, customElementProperty } = values;
     let elementProperty;
 

@@ -30,7 +30,7 @@ export default extensionViewReduxForm({
 })(Browser);
 
 export const reducers = {
-  stateToConfig(config, values) {
+  formValuesToConfig(config, values) {
     return {
       browsers: values.browsers || [] // An array is required.
     }

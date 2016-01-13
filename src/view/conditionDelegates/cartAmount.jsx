@@ -73,7 +73,7 @@ export default extensionViewReduxForm({
 })(CartAmount);
 
 export const reducers = {
-  configToState(values, options) {
+  configToFormValues(values, options) {
     values = {
       ...values
     };
@@ -84,7 +84,7 @@ export const reducers = {
 
     return values;
   },
-  stateToConfig(config, values) {
+  formValuesToConfig(config, values) {
     return {
       ...config,
       amount: Number(values.amount)

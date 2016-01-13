@@ -28,7 +28,7 @@ export default extensionViewReduxForm({
 })(DeviceType);
 
 export const reducers = {
-  stateToConfig(config, values) {
+  formValuesToConfig(config, values) {
     return {
       deviceTypes: values.deviceTypes || [] // An array is required.
     }
