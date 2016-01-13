@@ -4,7 +4,7 @@ import { Router, Route } from 'react-router';
 // Events
 import ClickEvent, { reducers as clickEventReducers } from './eventDelegates/click';
 
-//import DirectCallEvent from './eventDelegates/directCall';
+import DirectCallEvent from './eventDelegates/directCall';
 //import directCallEventReducerSet from './eventDelegates/bridgeReducerSets/directCallReducerSet';
 //
 //import BlurEvent from './eventDelegates/blur';
@@ -55,6 +55,7 @@ import { setBridgeAdapterReducers } from './bridgeAdapter';
 export default (
   <Router>
     <Route path="/events/click" component={ClickEvent} reducers={clickEventReducers} onEnter={setBridgeAdapterReducers}/>
+    <Route path="/events/directCall" component={DirectCallEvent} onEnter={setBridgeAdapterReducers}/>
     <Route path="/conditions/cartAmount" component={CartAmountCondition} reducers={cartAmountConditionReducers} onEnter={setBridgeAdapterReducers}/>
     <Route path="/conditions/cookie" component={CookieCondition} onEnter={setBridgeAdapterReducers}/>
     <Route path="/conditions/cookieOptOut" component={CookieOptOutCondition} onEnter={setBridgeAdapterReducers}/>
@@ -66,7 +67,7 @@ export default (
     <Route path="/dataElements/queryParam" component={QueryParamDataElement} reducers={queryParamReducers} onEnter={setBridgeAdapterReducers}/>
     <Route path="/dataElements/variable" component={VariableDataElement} onEnter={setBridgeAdapterReducers}/>
     <Route path="/conditions/browser" component={BrowserCondition} onEnter={setBridgeAdapterReducers}/>
-    {/*<Route path="/events/directCall" component={DirectCallEvent} reducers={directCallEventReducerSet} onEnter={setBridgeAdapterReducers}/>
+    {/*
     <Route path="/events/blur" component={BlurEvent} reducers={blurEventReducerSet} onEnter={setBridgeAdapterReducers}/>
     <Route path="/conditions/deviceType" component={DeviceTypeCondition} reducers={deviceTypeConditionReducerSet} onEnter={setBridgeAdapterReducers}/>
     <Route path="/conditions/domain" component={DomainCondition} reducers={domainConditionReducerSet} onEnter={setBridgeAdapterReducers}/>
