@@ -13,11 +13,11 @@ const getParts = () => {
   };
 };
 
-describe('query param view', () => {
+describe('query parameter view', () => {
   it('checks case insensitive checkbox by default', () => {
     extensionBridge.init();
 
-    const { caseInsensitiveCheckbox} = getParts();
+    const { caseInsensitiveCheckbox } = getParts();
 
     expect(caseInsensitiveCheckbox.props.checked).toBe(true);
   });
@@ -30,7 +30,7 @@ describe('query param view', () => {
       }
     });
 
-    const { nameField, caseInsensitiveCheckbox} = getParts();
+    const { nameField, caseInsensitiveCheckbox } = getParts();
 
     expect(nameField.props.value).toBe('foo');
     expect(caseInsensitiveCheckbox.props.checked).toBe(false);
@@ -39,7 +39,7 @@ describe('query param view', () => {
   it('sets config from form values', () => {
     extensionBridge.init();
 
-    const { nameField, caseInsensitiveCheckbox} = getParts();
+    const { nameField, caseInsensitiveCheckbox } = getParts();
 
     nameField.props.onChange('foo');
     caseInsensitiveCheckbox.props.onChange(false);
@@ -55,8 +55,7 @@ describe('query param view', () => {
 
     const { nameValidationWrapper } = getParts();
 
-    extensionBridge.validate();
-
+    expect(extensionBridge.validate()).toBe(false);
     expect(nameValidationWrapper.props.error).toEqual(jasmine.any(String));
   });
 });
