@@ -5,7 +5,7 @@ import Cookie from '../cookie';
 import ValidationWrapper from '../../components/validationWrapper';
 
 const {instance, extensionBridge} = setupComponent(Cookie);
-const getParts = instance => {
+const getParts = () => {
   return {
     nameField: TestUtils.findRenderedComponentWithType(instance, Coral.Textfield),
     nameValidationWrapper: TestUtils.findRenderedComponentWithType(instance, ValidationWrapper)
@@ -20,13 +20,13 @@ describe('cookie view', () => {
       }
     });
 
-    const { nameField } = getParts(instance);
+    const { nameField } = getParts();
 
     expect(nameField.props.value).toBe('foo');
   });
 
   it('sets config from form values', () => {
-    const { nameField } = getParts(instance);
+    const { nameField } = getParts();
 
     extensionBridge.init();
     nameField.props.onChange('foo');
@@ -39,7 +39,7 @@ describe('cookie view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { nameValidationWrapper } = getParts(instance);
+    const { nameValidationWrapper } = getParts();
     expect(nameValidationWrapper.props.error).toBeDefined();
   });
 });

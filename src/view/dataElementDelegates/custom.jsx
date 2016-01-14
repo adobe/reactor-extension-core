@@ -40,3 +40,14 @@ export default extensionViewReduxForm({
   fields,
   validate
 })(Custom);
+
+export const reducers = {
+  formValuesToConfig(config, values) {
+    return {
+      ...config,
+      // Important. This is to let the library emitter know that it should convert our
+      // script string to an actual function.
+      __rawScripts: ['script']
+    }
+  }
+};
