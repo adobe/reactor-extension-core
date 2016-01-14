@@ -28,7 +28,7 @@ const formValuesToConfigBaseReducer = (config, values) => {
 export default (extensionBridge, store) => {
   let _reducersForRoute;
 
-  extensionBridge.init = options => {
+  extensionBridge.init = (options = {}) => {
     options = {
       ...options,
       config: options.config || {},
