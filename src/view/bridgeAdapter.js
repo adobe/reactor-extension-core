@@ -56,7 +56,7 @@ export default (extensionBridge, store) => {
     return valid;
   };
 
-  return reducersForRoute => {
+  return (reducersForRoute = {}) => {
     const configToFormValuesReducers = [ configToFormValuesBaseReducer ];
 
     if (reducersForRoute.configToFormValues) {
