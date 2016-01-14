@@ -3,7 +3,7 @@ import Coral from '../reduxFormCoralUI';
 import ValidationWrapper from '../components/validationWrapper';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
-export class QueryParam extends React.Component {
+export class QueryParameter extends React.Component {
   render() {
     const { name, caseInsensitive } = this.props.fields;
 
@@ -41,7 +41,7 @@ const validate = values => {
 export default extensionViewReduxForm({
   fields,
   validate
-})(QueryParam);
+})(QueryParameter);
 
 export const reducers = {
   configToFormValues(values, options) {

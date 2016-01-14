@@ -522,8 +522,8 @@
     },
     {
       "displayName": "URL Querystring Parameter",
-      "libPath": "dataElementDelegates/queryParam.js",
-      "viewPath": "index.html#/dataElements/queryParam",
+      "libPath": "dataElementDelegates/queryParameter.js",
+      "viewPath": "index.html#/dataElements/queryParameter",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",

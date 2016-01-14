@@ -50,6 +50,6 @@ describe('custom view', () => {
 
     const { errorIcon } = getParts();
 
-    expect(errorIcon.props.message).toBeDefined();
+    expect(errorIcon.props.message).toEqual(jasmine.any(String));
   });
 });

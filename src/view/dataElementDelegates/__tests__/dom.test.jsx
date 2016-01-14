@@ -18,7 +18,7 @@ const getParts = () => {
   };
 };
 
-describe('cookie view', () => {
+describe('DOM view', () => {
   it('selects ID preset for new config', () => {
     extensionBridge.init();
 
@@ -68,7 +68,7 @@ describe('cookie view', () => {
 
     const { elementSelectorValidationWrapper } = getParts();
 
-    expect(elementSelectorValidationWrapper.props.error).toBeDefined();
+    expect(elementSelectorValidationWrapper.props.error).toEqual(jasmine.any(String));
   });
 
   it('sets config from form values using element property preset', () => {
@@ -120,6 +120,6 @@ describe('cookie view', () => {
 
     const { customElementPropertyValidationWrapper } = getParts();
 
-    expect(customElementPropertyValidationWrapper.props.error).toBeDefined();
+    expect(customElementPropertyValidationWrapper.props.error).toEqual(jasmine.any(String));
   });
 });

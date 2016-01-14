@@ -40,6 +40,6 @@ describe('cookie view', () => {
     expect(extensionBridge.validate()).toBe(false);
 
     const { nameValidationWrapper } = getParts();
-    expect(nameValidationWrapper.props.error).toBeDefined();
+    expect(nameValidationWrapper.props.error).toEqual(jasmine.any(String));
   });
 });

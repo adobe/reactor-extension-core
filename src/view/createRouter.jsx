@@ -20,7 +20,7 @@ import URLParameterCondition from './conditionDelegates/urlParameter';
 import CookieDataElement from './dataElementDelegates/cookie';
 import CustomDataElement, { reducers as customDataElementReducers } from './dataElementDelegates/custom';
 import DOMDataElement, { reducers as domDataElementReducers } from './dataElementDelegates/dom';
-import QueryParamDataElement, { reducers as queryParamReducers } from './dataElementDelegates/queryParam';
+import QueryParameterDataElement, { reducers as queryParameterReducers } from './dataElementDelegates/queryParameter';
 import VariableDataElement from './dataElementDelegates/variable';
 
 export default (setBridgeReducers) => {
@@ -46,7 +46,7 @@ export default (setBridgeReducers) => {
       <Route path="/dataElements/cookie" component={CookieDataElement} onEnter={onEnter}/>
       <Route path="/dataElements/custom" component={CustomDataElement} reducers={customDataElementReducers} onEnter={onEnter}/>
       <Route path="/dataElements/dom" component={DOMDataElement} reducers={domDataElementReducers} onEnter={onEnter}/>
-      <Route path="/dataElements/queryParam" component={QueryParamDataElement} reducers={queryParamReducers} onEnter={onEnter}/>
+      <Route path="/dataElements/queryParameter" component={QueryParameterDataElement} reducers={queryParameterReducers} onEnter={onEnter}/>
       <Route path="/dataElements/variable" component={VariableDataElement} onEnter={onEnter}/>
     </Router>
   );

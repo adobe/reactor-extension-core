@@ -1,7 +1,7 @@
 'use strict';
 
 var getQueryParamSpy = jasmine.createSpy().and.returnValue('bar');
-var dataElementDelegate = require('inject!../queryParam')({
+var dataElementDelegate = require('inject!../queryParameter')({
   getQueryParam: getQueryParamSpy
 });
 
