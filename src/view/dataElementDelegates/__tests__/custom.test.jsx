@@ -43,7 +43,7 @@ describe('custom view', () => {
     delete window.extensionBridge;
   });
 
-  it('sets error if script is empty', () => {
+  it('sets errors if required values are not provided', () => {
     extensionBridge.init();
 
     expect(extensionBridge.validate()).toBe(false);

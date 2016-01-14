@@ -15,7 +15,7 @@ describe('logged in condition delegate', function() {
     });
 
     var config = {
-      dataElementName: 'foo'
+      dataElement: 'foo'
     };
 
     dataElementValue = true;

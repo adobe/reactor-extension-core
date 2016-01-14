@@ -35,7 +35,7 @@ describe('cookie view', () => {
     });
   });
 
-  it('sets error if name not provided', () => {
+  it('sets errors if required values are not provided', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 

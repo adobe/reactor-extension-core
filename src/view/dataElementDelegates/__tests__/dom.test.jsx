@@ -108,7 +108,7 @@ describe('DOM view', () => {
     });
   });
 
-  it('sets error if custom element property not provided', () => {
+  it('sets errors if required values are not provided', () => {
     extensionBridge.init({
       config: {
         elementSelector: 'foo',

@@ -37,7 +37,7 @@ describe('variable view', () => {
     });
   });
 
-  it('sets error if path not provided', () => {
+  it('sets errors if required values are not provided', () => {
     extensionBridge.init();
 
     const { pathValidationWrapper } = getParts();

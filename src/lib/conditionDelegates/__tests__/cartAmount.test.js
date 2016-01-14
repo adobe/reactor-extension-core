@@ -6,9 +6,9 @@ var conditionDelegate = conditionDelegateInjector({
   'resourceProvider': publicRequire('resourceProvider')
 });
 
-var getConfig = function(dataElementName, operator, amount) {
+var getConfig = function(dataElement, operator, amount) {
   return {
-    dataElementName: dataElementName,
+    dataElement: dataElement,
     operator: operator,
     amount: amount
   };

@@ -5,7 +5,7 @@ var compareNumbers = require('resourceProvider').get('dtm', 'compareNumbers');
 /**
  * Cart item quantity condition. Determines if the current cart item quantity matches constraints.
  * @param {Object} config Condition config.
- * @param {number} config.dataElementName The name of the data element identifying
+ * @param {number} config.dataElement The name of the data element identifying
  * the cart item quantity to compare against.
  * @param {comparisonOperator} config.operator The comparison operator to use
  * to compare the actual cart item quantity to the cart item quantity constraint.
@@ -13,7 +13,7 @@ var compareNumbers = require('resourceProvider').get('dtm', 'compareNumbers');
  * @returns {boolean}
  */
 module.exports = function(config) {
-  var quantity = Number(_satellite.getVar(config.dataElementName));
+  var quantity = Number(_satellite.getVar(config.dataElement));
 
   if (isNaN(quantity)) {
     quantity = 0;

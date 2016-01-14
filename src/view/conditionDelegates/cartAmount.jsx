@@ -5,26 +5,17 @@ import ValidationWrapper from '../components/validationWrapper';
 import DataElementNameField from './components/dataElementNameField';
 import ComparisonOperatorField from './components/comparisonOperatorField';
 
-export let mapStateToProps = state => ({
-  dataElementName: state.get('dataElementName'),
-  operator: state.get('operator'),
-  amount: state.get('amount'),
-  dataElementNameIsEmpty: state.getIn(['errors', 'dataElementNameIsEmpty']),
-  amountIsEmpty: state.getIn(['errors', 'amountIsEmpty']),
-  amountIsNaN: state.getIn(['errors', 'amountIsNaN'])
-});
-
 export class CartAmount extends React.Component {
   render() {
-    const { dataElementName, operator, amount } = this.props.fields;
+    const { dataElement, operator, amount } = this.props.fields;
 
     return (
       <div>
         <div>
-          <ValidationWrapper error={dataElementName.touched && dataElementName.error}>
+          <ValidationWrapper error={dataElement.touched && dataElement.error}>
             <label>
               <span className="u-label">The cart amount identified by the data element</span>
-              <DataElementNameField {...dataElementName}/>
+              <DataElementNameField {...dataElement}/>
             </label>
           </ValidationWrapper>
         </div>
@@ -46,7 +37,7 @@ export class CartAmount extends React.Component {
 }
 
 const fields = [
-  'dataElementName',
+  'dataElement',
   'operator',
   'amount'
 ];
@@ -54,8 +45,8 @@ const fields = [
 const validate = values => {
   const errors = {};
 
-  if (!values.dataElementName) {
-    errors.dataElementName = 'Please specify a data element.';
+  if (!values.dataElement) {
+    errors.dataElement = 'Please specify a data element.';
   }
 
   if (!values.amount) {

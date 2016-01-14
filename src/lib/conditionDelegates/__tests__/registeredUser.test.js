@@ -15,7 +15,7 @@ describe('registered user condition delegate', function() {
     });
 
     var config = {
-      dataElementName: 'foo'
+      dataElement: 'foo'
     };
 
     dataElementValue = true;
