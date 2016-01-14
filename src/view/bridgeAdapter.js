@@ -44,7 +44,7 @@ export default (extensionBridge, store) => {
   };
 
   extensionBridge.getConfig = () => {
-    const values = getValues(store.getState().form.default);
+    const values = getValues(store.getState().form.default) || {};
     return _reducersForRoute.formValuesToConfig({}, values);
   };
 
