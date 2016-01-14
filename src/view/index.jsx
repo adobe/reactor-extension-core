@@ -14,8 +14,8 @@ const finalCreateStore = compose(
 )(createStore);
 
 const store = finalCreateStore(reducer, {});
-const setReducersForCurrentRoute = bridgeAdapter(extensionBridge, store);
-const router = createRouter(setReducersForCurrentRoute);
+const setReducersForRoute = bridgeAdapter(extensionBridge, store);
+const router = createRouter(setReducersForRoute);
 
 ReactDOM.render((
   <div>

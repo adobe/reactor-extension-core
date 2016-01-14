@@ -2,9 +2,31 @@
 import { actionCreators } from './actions/bridgeAdapterActions';
 import { handleSubmit } from './extensionViewReduxForm';
 import { getValues } from 'redux-form';
+import reduceReducers from 'reduce-reducers';
+
+/**
+ * Assigns everything inside config to state.
+ */
+const configToFormValuesBaseReducer = (values, options) => {
+  const { config } = options;
+  return {
+    ...values,
+    ...config
+  };
+};
+
+/**
+ * Assigns everything inside state to config.
+ */
+const formValuesToConfigBaseReducer = (config, values) => {
+  return {
+    ...config,
+    ...values
+  };
+};
 
 export default (extensionBridge, store) => {
-  let _reducersForCurrentRoute;
+  let _reducersForRoute;
 
   extensionBridge.init = options => {
     options = {
@@ -13,7 +35,7 @@ export default (extensionBridge, store) => {
       configIsNew: !options.config
     };
 
-    const initialValues = _reducersForCurrentRoute.configToFormValues({}, options);
+    const initialValues = _reducersForRoute.configToFormValues({}, options);
 
     store.dispatch(actionCreators.init({
       propertyConfig: options.properyConfig,
@@ -23,7 +45,7 @@ export default (extensionBridge, store) => {
 
   extensionBridge.getConfig = () => {
     const values = getValues(store.getState().form.default);
-    return _reducersForCurrentRoute.formValuesToConfig({}, values);
+    return _reducersForRoute.formValuesToConfig({}, values);
   };
 
   extensionBridge.validate = () => {
@@ -34,7 +56,22 @@ export default (extensionBridge, store) => {
     return valid;
   };
 
-  return reducersForCurrentRoute => {
-    _reducersForCurrentRoute = reducersForCurrentRoute;
+  return reducersForRoute => {
+    const configToFormValuesReducers = [ configToFormValuesBaseReducer ];
+
+    if (reducersForRoute.configToFormValues) {
+      configToFormValuesReducers.push(reducersForRoute.configToFormValues);
+    }
+
+    const formValuesToConfigReducers = [ formValuesToConfigBaseReducer ];
+
+    if (reducersForRoute.formValuesToConfig) {
+      formValuesToConfigReducers.push(reducersForRoute.formValuesToConfig);
+    }
+
+    _reducersForRoute = {
+      configToFormValues: reduceReducers(...configToFormValuesReducers),
+      formValuesToConfig: reduceReducers(...formValuesToConfigReducers)
+    };
   }
 };

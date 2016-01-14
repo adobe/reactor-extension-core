@@ -1,6 +1,5 @@
 import React from 'react';
 import { Router, Route } from 'react-router';
-import createBridgeAdapterReducers from './createBridgeAdapterReducers';
 
 // Events
 import BlurEvent, { reducers as blurEventReducers } from './eventDelegates/blur';
@@ -26,8 +25,7 @@ import VariableDataElement from './dataElementDelegates/variable';
 
 export default (setBridgeReducers) => {
   const onEnter = (nextState) => {
-    const reducersFromRoute = nextState.routes[0].reducers;
-    setBridgeReducers(createBridgeAdapterReducers(reducersFromRoute));
+    setBridgeReducers(nextState.routes[0].reducers);
   };
 
   return (
