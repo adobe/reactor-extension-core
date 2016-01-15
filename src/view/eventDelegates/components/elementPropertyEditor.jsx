@@ -37,8 +37,8 @@ export default class ElementPropertyEditor extends React.Component {
         <RegexToggle
           value={value.value}
           valueIsRegex={valueIsRegex.value}
-          setValue={value.onChange}
-          setValueIsRegex={valueIsRegex.onChange}/>
+          onValueChange={value.onChange}
+          onValueIsRegexChange={valueIsRegex.onChange}/>
         {removeButton}
       </div>
     )
