@@ -3,7 +3,9 @@ import Coral from 'coralui-support-react';
 
 export default class ComparisonOperatorSelect extends React.Component {
   onChange = event => {
-    this.props.onChange(event.target.value);
+    if (this.props.onChange) {
+      this.props.onChange(event.target.value);
+    }
   };
 
   render() {
