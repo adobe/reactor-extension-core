@@ -38,7 +38,7 @@ export default (extensionBridge, store) => {
     const initialValues = _reducersForRoute.configToFormValues({}, options);
 
     store.dispatch(actionCreators.init({
-      propertyConfig: options.properyConfig,
+      propertyConfig: options.propertyConfig,
       initialValues
     }));
   };

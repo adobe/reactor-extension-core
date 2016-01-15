@@ -11,7 +11,7 @@ const getParts = () => {
   };
 };
 
-const browsers = [
+const selectedBrowsers = [
   'Chrome',
   'Safari'
 ];
@@ -20,23 +20,23 @@ describe('browser view', () => {
   it('sets form values from config', () => {
     extensionBridge.init({
       config: {
-        browsers: browsers
+        browsers: selectedBrowsers
       }
     });
 
     const { checkboxList } = getParts();
 
-    expect(checkboxList.props.value).toEqual(browsers);
+    expect(checkboxList.props.value).toEqual(selectedBrowsers);
   });
 
   it('sets config from form values', () => {
     extensionBridge.init();
 
     const { checkboxList } = getParts();
-    checkboxList.props.onChange(browsers);
+    checkboxList.props.onChange(selectedBrowsers);
 
     expect(extensionBridge.getConfig()).toEqual({
-      browsers
+      browsers: selectedBrowsers
     });
   });
 
