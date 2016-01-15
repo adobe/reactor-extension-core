@@ -30,6 +30,7 @@ export default class ElementFilter extends React.Component {
       <div>
         <span className="u-label">On</span>
         <Coral.Radio
+            ref ="specificElementsRadio"
             name="filter"
             value="true"
             checked={showSpecificElementsFilter.checked}
@@ -37,6 +38,7 @@ export default class ElementFilter extends React.Component {
           specific elements
         </Coral.Radio>
         <Coral.Radio
+            ref ="anyElementRadio"
             name="filter"
             value="false"
             checked={!showSpecificElementsFilter.checked}
@@ -48,7 +50,9 @@ export default class ElementFilter extends React.Component {
             <div ref="specificElementFields">
               <ElementSelectorField elementSelector={elementSelector}/>
               <div>
-                <Coral.Checkbox {...showElementPropertiesFilter}>
+                <Coral.Checkbox
+                  ref="showElementPropertiesCheckbox"
+                  {...showElementPropertiesFilter}>
                   and having certain property values...
                 </Coral.Checkbox>
                 {

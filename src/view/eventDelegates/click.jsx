@@ -18,7 +18,8 @@ export class Click extends React.Component {
       <div>
         <ElementFilter {...this.props.fields}/>
         <Coral.Checkbox
-          class="u-block"
+          ref="delayLinkActivationCheckbox"
+          className="u-block"
           {...delayLinkActivation}>
           If the element is a link, delay navigation until rule runs
         </Coral.Checkbox>

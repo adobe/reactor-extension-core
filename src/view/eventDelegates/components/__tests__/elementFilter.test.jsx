@@ -1,29 +1,34 @@
 import TestUtils from 'react-addons-test-utils';
-import Coral from '../../../reduxFormCoralUI';
+import testElementSelector from './elementSelector.test';
 
-const getParts = component => {
-  const radios = TestUtils.scryRenderedComponentsWithType(component, Coral.Radio);
-  return {
-    specificElementFields: component.refs.specificElementFields,
-    elementPropertiesEditor: component.refs.elementPropertiesEditor,
-    specificElementsRadio: radios[0],
-    anyElementRadio: radios[1]
-  };
-};
-
-export default (subcomponent, extensionBridge) => {
-  describe('element filter', () => {
-    describe('when selector is provided', () => {
-      it('has the specific element filed selected', () => {
+export default (instance, getParts, extensionBridge) => {
+  describe('elementFilter', () => {
+    describe('when elementSelector is provided', () => {
+      beforeEach(() => {
         extensionBridge.init({
           config: {
             elementSelector: 'div#id'
           }
         });
+      });
 
-        const { specificElementsRadio } = getParts(subcomponent);
-        expect(specificElementsRadio.props.checked).toBe(true);
+      it('has the specific element radio button selected', () => {
+        const { elementFilterComponent } = getParts(instance);
+        expect(elementFilterComponent.refs.specificElementsRadio.props.checked).toBe(true);
+      });
+    });
+
+    describe('when elementSelector is not provided', () => {
+      beforeEach(() => {
+        extensionBridge.init({config: {}});
+      });
+
+      it('has the any element radio button selected', () => {
+        const { elementFilterComponent } = getParts(instance);
+        expect(elementFilterComponent.refs.anyElementRadio.props.checked).toBe(true);
       });
     });
   });
+
+  testElementSelector(instance, getParts, extensionBridge);
 };
