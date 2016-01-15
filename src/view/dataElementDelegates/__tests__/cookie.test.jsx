@@ -26,10 +26,11 @@ describe('cookie view', () => {
   });
 
   it('sets config from form values', () => {
-    const { nameField } = getParts();
-
     extensionBridge.init();
+
+    const { nameField } = getParts();
     nameField.props.onChange('foo');
+
     expect(extensionBridge.getConfig()).toEqual({
       name: 'foo'
     });
@@ -40,6 +41,7 @@ describe('cookie view', () => {
     expect(extensionBridge.validate()).toBe(false);
 
     const { nameValidationWrapper } = getParts();
+
     expect(nameValidationWrapper.props.error).toEqual(jasmine.any(String));
   });
 });
