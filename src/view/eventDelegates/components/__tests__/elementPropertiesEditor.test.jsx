@@ -1,6 +1,17 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../../reduxFormCoralUI';
 
+const getEditorFields = (instance, getParts) => {
+  const { elementFilterComponent } = getParts(instance);
+  elementFilterComponent.refs.showElementPropertiesCheckbox.props.onChange(true);
+  const { elementPropertiesEditorComponent } = getParts(instance);
+  const fields = TestUtils.scryRenderedComponentsWithType(elementPropertiesEditorComponent, Coral.Textfield);
+  return {
+    nameField: fields[0].props,
+    valueField: fields[1].props
+  };
+};
+
 export default (instance, getParts, extensionBridge) => {
   describe('elementPropertiesEditor', () => {
     it('sets form values from config', () => {
@@ -13,29 +24,19 @@ export default (instance, getParts, extensionBridge) => {
         }
       });
 
-      const { elementPropertiesEditorComponent } = getParts(instance);
-      const fields = TestUtils.scryRenderedComponentsWithType(elementPropertiesEditorComponent, Coral.Textfield);
+      const { nameField, valueField } = getEditorFields(instance, getParts);
 
-      const name = fields[0].props.value;
-      const value = fields[1].props.value;
-
-      expect(name).toBe('someprop');
-      expect(value).toBe('somevalue');
+      expect(nameField.value).toBe('someprop');
+      expect(valueField.value).toBe('somevalue');
     });
 
     it('sets config from form values', () => {
       extensionBridge.init();
 
-      const { elementFilterComponent } = getParts(instance);
-      elementFilterComponent.refs.showElementPropertiesCheckbox.props.onChange(true);
+      const { nameField, valueField } = getEditorFields(instance, getParts);
 
-      const { elementPropertiesEditorComponent } = getParts(instance);
-      const fields = TestUtils.scryRenderedComponentsWithType(elementPropertiesEditorComponent, Coral.Textfield);
-      const name = fields[0].props;
-      const value = fields[1].props;
-
-      name.onChange('somepropset');
-      value.onChange('somevalueset');
+      nameField.onChange('somepropset');
+      valueField.onChange('somevalueset');
 
       expect(extensionBridge.getConfig()).toEqual({
         elementProperties: [{
@@ -43,6 +44,16 @@ export default (instance, getParts, extensionBridge) => {
           value: 'somevalueset'
         }]
       });
+    });
+
+    it('sets error if element property name field is empty', () => {
+      const { nameField, valueField } = getEditorFields(instance, getParts);
+
+      valueField.onChange('somevalueset');
+      expect(extensionBridge.validate()).toBe(false);
+
+      const { errorIcon } = getParts(instance);
+      expect(errorIcon.props.message).toBeDefined();
     });
   });
 };

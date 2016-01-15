@@ -1,6 +1,7 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
 import RegexToggle from '../../components/regexToggle';
+import ValidationWrapper from '../../components/validationWrapper';
 
 export default class ElementPropertyEditor extends React.Component {
   remove = () => {
@@ -25,12 +26,14 @@ export default class ElementPropertyEditor extends React.Component {
 
     return (
       <div className="u-gapBottom">
-        <Coral.Textfield 
-          className="u-gapRight"
-          placeholder="Property"
-          {...name}/>
-        <span className="u-label">=</span>
-        <Coral.Textfield 
+        <ValidationWrapper error={name.touched && name.error}>
+          <Coral.Textfield
+            className="u-gapLeft"
+            placeholder="Property"
+            {...name}/>
+        </ValidationWrapper>
+        <span className="u-label u-gapLeft">=</span>
+        <Coral.Textfield
           className="u-gapRight"
           placeholder="Value"
           {...value}/>

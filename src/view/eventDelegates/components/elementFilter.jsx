@@ -115,6 +115,19 @@ export const reducers = {
       'Alternatively, choose to target any element above.'
     }
 
+    const elementPropertiesErrors = values.elementProperties.map((item) => {
+      var result = {};
+      if (item.value && !item.name) {
+        result.name = 'Please fill in the property name.';
+      }
+
+      return result;
+    });
+
+    if (elementPropertiesErrors.some(x => x)) {
+      errors.elementProperties = elementPropertiesErrors;
+    }
+
     return errors;
   }
 };
