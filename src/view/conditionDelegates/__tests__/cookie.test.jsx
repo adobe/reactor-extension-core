@@ -43,7 +43,7 @@ describe('cookie view', () => {
 
     nameField.props.onChange('foo');
     valueField.props.onChange('bar');
-    regexToggle.props.setValueIsRegex(true);
+    regexToggle.props.onValueIsRegexChange(true);
 
     expect(extensionBridge.getConfig()).toEqual({
       name: 'foo',

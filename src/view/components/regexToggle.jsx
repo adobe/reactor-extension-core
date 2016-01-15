@@ -3,12 +3,14 @@ import Coral from 'coralui-support-react';
 
 export default class RegexToggle extends React.Component {
   onToggleChange = event => {
-    this.props.setValueIsRegex(event.target.checked);
+    this.props.onValueIsRegexChange(event.target.checked);
   };
 
   onTestRegex = () => {
-    // TODO: This updated value is just for testing. Update once a regex tester is in place.
-    this.props.setValue(this.props.value + ' (edited)');
+    window.extensionBridge.openRegexTester(
+      this.props.value,
+      this.props.onValueChange || function() {}
+    );
   };
 
   render() {

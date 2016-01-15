@@ -25,8 +25,8 @@ export class Cookie extends React.Component {
         <RegexToggle
           value={value.value}
           valueIsRegex={valueIsRegex.value}
-          setValue={value.onChange}
-          setValueIsRegex={valueIsRegex.onChange}/>
+          onValueChange={value.onChange}
+          onValueIsRegexChange={valueIsRegex.onChange}/>
       </div>
     );
   }
