@@ -1,68 +1,49 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Coral from 'coralui-support-react';
 import TestUtils from 'react-addons-test-utils';
-import { mapStateToProps, DeviceType } from '../deviceType';
-import { fromJS, List } from 'immutable';
-import { actionCreators } from '../actions/deviceTypeActions';
+import Coral from '../../reduxFormCoralUI';
+import setupComponent from '../../__tests__/helpers/setupComponent';
+import DeviceType, { reducers } from '../deviceType';
 import CheckboxList from '../../components/checkboxList';
 
+const {instance, extensionBridge} = setupComponent(DeviceType, reducers);
+const getParts = () => {
+  return {
+    checkboxList: TestUtils.findRenderedComponentWithType(instance, CheckboxList)
+  };
+};
+
+const selectedDeviceTypes = [
+  'Desktop',
+  'Android'
+];
+
 describe('device type view', () => {
-  let render = props => {
-    return TestUtils.renderIntoDocument(
-      <DeviceType {...props} />
-    );
-  };
+  it('sets form values from config', () => {
+    extensionBridge.init({
+      config: {
+        deviceTypes: selectedDeviceTypes
+      }
+    });
 
-  let getParts = component => {
-    return {
-      checkboxList: TestUtils.findRenderedComponentWithType(component, CheckboxList)
-    };
-  };
+    const { checkboxList } = getParts();
 
-  it('maps state to props', () => {
-    let props = mapStateToProps(fromJS({
-      deviceTypes: ['foo', 'bar']
-    }));
-
-    expect(props.deviceTypes.toJS()).toEqual(['foo', 'bar']);
+    expect(checkboxList.props.value).toEqual(selectedDeviceTypes);
   });
 
-  describe('checkbox list', () => {
-    it('is provided a list of items', () => {
-      let { checkboxList } = getParts(render());
+  it('sets config from form values', () => {
+    extensionBridge.init();
 
-      expect(checkboxList.props.items)
+    const { checkboxList } = getParts();
+    checkboxList.props.onChange(selectedDeviceTypes);
+
+    expect(extensionBridge.getConfig()).toEqual({
+      deviceTypes: selectedDeviceTypes
     });
+  });
 
-    it('is provided selected values', () => {
-      let { checkboxList } = getParts(render({
-        deviceTypes: List(['foo', 'bar'])
-      }));
-
-      expect(checkboxList.props.selectedValues.toJS()).toEqual(['foo', 'bar']);
-    });
-
-    it('dispatches an action when an item is selected', () => {
-      let dispatch = jasmine.createSpy();
-      let { checkboxList } = getParts(render({
-        dispatch
-      }));
-
-      checkboxList.props.select('foo');
-
-      expect(dispatch).toHaveBeenCalledWith(actionCreators.selectDeviceType('foo'));
-    });
-
-    it('dispatches an action when an item is deselected', () => {
-      let dispatch = jasmine.createSpy();
-      let { checkboxList } = getParts(render({
-        dispatch
-      }));
-
-      checkboxList.props.deselect('foo');
-
-      expect(dispatch).toHaveBeenCalledWith(actionCreators.deselectDeviceType('foo'));
+  it('sets deviceTypes to an empty array if nothing is selected', () => {
+    extensionBridge.init();
+    expect(extensionBridge.getConfig()).toEqual({
+      deviceTypes: []
     });
   });
 });

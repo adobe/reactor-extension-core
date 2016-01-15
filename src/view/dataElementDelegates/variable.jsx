@@ -1,37 +1,38 @@
 import React from 'react';
-import Coral from 'coralui-support-react';
-import { connect } from 'react-redux';
-import { actionCreators } from './actions/variableActions';
+import Coral from '../reduxFormCoralUI';
 import ValidationWrapper from '../components/validationWrapper';
-
-export let mapStateToProps = state => ({
-  path: state.get('path'),
-  pathIsEmpty: state.getIn(['errors', 'pathIsEmpty'])
-});
+import extensionViewReduxForm from '../extensionViewReduxForm';
 
 export class Variable extends React.Component {
-  onPathChange = event => {
-    this.props.dispatch(actionCreators.setPath(event.target.value));
-  };
-
   render() {
-    let error;
-
-    if (this.props.pathIsEmpty) {
-      error = 'Please specify a variable path.';
-    }
+    const { path } = this.props.fields;
 
     return (
-      <ValidationWrapper error={error}>
+      <ValidationWrapper error={path.touched && path.error}>
         <label>
           <span className="u-label">Path to variable:</span>
-          <Coral.Textfield
-            value={this.props.path}
-            onChange={this.onPathChange}/>
+          <Coral.Textfield {...path}/>
         </label>
       </ValidationWrapper>
     );
   }
 }
 
-export default connect(mapStateToProps)(Variable);
+const fields = [
+  'path'
+];
+
+const validate = values => {
+  const errors = {};
+
+  if (!values.path) {
+    errors.path = 'Please specify a variable path.';
+  }
+
+  return errors;
+};
+
+export default extensionViewReduxForm({
+  fields,
+  validate
+})(Variable);

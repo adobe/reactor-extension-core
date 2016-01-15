@@ -1,85 +1,84 @@
 import React from 'react';
-import Coral from 'coralui-support-react';
-import { connect } from 'react-redux';
-import { actionCreators } from './actions/domActions';
+import Coral from '../reduxFormCoralUI';
+import extensionViewReduxForm from '../extensionViewReduxForm';
 import ValidationWrapper from '../components/validationWrapper';
 
-export let mapStateToProps = state => ({
-  elementSelector: state.get('elementSelector'),
-  selectedElementPropertyPreset: state.get('selectedElementPropertyPreset'),
-  customElementProperty: state.get('customElementProperty'),
-  elementPropertyPresets: state.get('elementPropertyPresets'),
-  elementSelectorIsEmpty: state.getIn(['errors', 'elementSelectorIsEmpty']),
-  elementPropertyIsEmpty: state.getIn(['errors', 'elementPropertyIsEmpty'])
-});
+const elementPropertyPresets = [
+  {
+    value: 'id',
+    label: 'id'
+  },
+  {
+    value: 'href',
+    label: 'href'
+  },
+  {
+    value: 'class',
+    label: 'class'
+  },
+  {
+    value: 'src',
+    label: 'src'
+  },
+  {
+    value: 'alt',
+    label: 'alt'
+  },
+  {
+    value: 'innerHTML',
+    label: 'HTML'
+  },
+  {
+    value: 'text',
+    label: 'text'
+  },
+  {
+    value: 'name',
+    label: 'name'
+  },
+  {
+    value: 'value',
+    label: 'value'
+  },
+  {
+    value: 'type',
+    label: 'type'
+  },
+  {
+    value: 'custom',
+    label: 'other attribute'
+  }
+];
 
 export class DOM extends React.Component {
-  onElementSelectorChange = event => {
-    this.props.dispatch(actionCreators.setElementSelector(event.target.value));
-  };
-
-  onElementPropertyPresetChange = event => {
-    this.props.dispatch(actionCreators.setSelectedElementPropertyPreset(event.target.value));
-  };
-
-  onCustomElementPropertyChange = event => {
-    this.props.dispatch(actionCreators.setCustomElementProperty(event.target.value));
-  };
-
   render() {
-    // It would porbably make sense to not return here but just create an empty Select with no
-    // options if this.props.elementPropertyPresets isn't defined.
-    // In the case of the DOM condition view, this doesn't function properly because of how React
-    // and CoralUI interact. If this.props.elementPropertyPresets were empty, the Select component
-    // would first render with no options. Once legit info comes from the parent window, the bridge
-    // reducer is run and the state would be populated with real options to be displayed in the
-    // Select component. Unfortunately, using the "value" property on Coral.Select to set the selected
-    // option won't work on the second React render because the options aren't added as children
-    // until after the property is set. CoralUI will ignore the attempt to set the "value" property
-    // because it will see the value as invalid. We could set the "selected" property on the option
-    // that should be selected, but React tries to set the property on the option before it is added
-    // to the parent. CoralUI has a restriction that doesn't allow a consumer to set an option as
-    // selected before it has been added to the parent. This is logged here:
-    // https://jira.corp.adobe.com/browse/CUI-3389
-    if (!this.props.elementPropertyPresets) {
-      return <div></div>;
-    }
-
-    let elementSelectorError;
-    let elementPropertyError;
-
-    if (this.props.elementSelectorIsEmpty) {
-      elementSelectorError = 'Please specify a CSS selector.';
-    }
-
-    if (this.props.elementPropertyIsEmpty) {
-      elementPropertyError = 'Please specify an element property';
-    }
+    const {
+      fields: {
+        elementSelector,
+        selectedElementPropertyPreset,
+        customElementProperty
+      }
+    } = this.props;
 
     return (
       <div>
         <div className="u-gapBottom">
-          <ValidationWrapper error={elementSelectorError}>
+          <ValidationWrapper error={elementSelector.touched && elementSelector.error}>
             <label>
               <span className="u-label">From the DOM element matching the CSS Selector</span>
-              <Coral.Textfield
-                value={this.props.elementSelector}
-                onChange={this.onElementSelectorChange}/>
+              <Coral.Textfield {...elementSelector}/>
             </label>
           </ValidationWrapper>
         </div>
         <div>
           <label>
             <span className="u-label">Use the value of</span>
-            <Coral.Select
-              value={this.props.selectedElementPropertyPreset}
-              onChange={this.onElementPropertyPresetChange}
-              className="u-gapRight">
+            <Coral.Select {...selectedElementPropertyPreset} className="u-gapRight">
               {
-                this.props.elementPropertyPresets.map(preset => {
+                elementPropertyPresets.map(preset => {
                   return (
-                    <Coral.Select.Item key={preset.get('value')} value={preset.get('value')}>
-                      {preset.get('label')}
+                    <Coral.Select.Item key={preset.value} value={preset.value}>
+                      {preset.label}
                     </Coral.Select.Item>
                   );
                 })
@@ -87,11 +86,9 @@ export class DOM extends React.Component {
             </Coral.Select>
           </label>
           {
-            (this.props.selectedElementPropertyPreset === 'custom') ?
-            <ValidationWrapper error={elementPropertyError}>
-              <Coral.Textfield
-                value={this.props.customElementProperty}
-                onChange={this.onCustomElementPropertyChange}/>
+            (selectedElementPropertyPreset.value === 'custom') ?
+            <ValidationWrapper error={customElementProperty.touched && customElementProperty.error}>
+              <Coral.Textfield {...customElementProperty}/>
             </ValidationWrapper>
             : null
           }
@@ -101,4 +98,72 @@ export class DOM extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(DOM);
+const fields = [
+  'elementSelector',
+  'selectedElementPropertyPreset',
+  'customElementProperty',
+  'elementPropertyPresets'
+];
+
+const validate = values => {
+  const errors = {};
+
+  if (!values.elementSelector) {
+    errors.elementSelector = 'Please specify a CSS selector';
+  }
+
+  if (values.selectedElementPropertyPreset === 'custom' && !values.customElementProperty) {
+    errors.customElementProperty = 'Please specify an element property';
+  }
+
+  return errors;
+};
+
+export default extensionViewReduxForm({
+  fields,
+  validate
+})(DOM);
+
+export const reducers = {
+  configToFormValues(values, options) {
+    let { elementSelector, elementProperty } = options.config;
+
+    let elementPropertyIsPreset =
+      elementPropertyPresets.some(preset => preset.value === elementProperty);
+
+    let selectedElementPropertyPreset;
+    let customElementProperty;
+
+    if (elementProperty === undefined) {
+      selectedElementPropertyPreset = 'id';
+    } else if (elementPropertyIsPreset && elementProperty !== 'custom') {
+      selectedElementPropertyPreset = elementProperty;
+    } else {
+      selectedElementPropertyPreset = 'custom';
+      customElementProperty = elementProperty;
+    }
+
+    return {
+      elementSelector,
+      selectedElementPropertyPreset,
+      customElementProperty
+    }
+  },
+
+  formValuesToConfig(config, values) {
+    let { selectedElementPropertyPreset, customElementProperty } = values;
+    let elementProperty;
+
+    if (selectedElementPropertyPreset === 'custom') {
+      elementProperty = customElementProperty;
+    } else {
+      elementProperty = selectedElementPropertyPreset;
+    }
+
+    return {
+      elementSelector: values.elementSelector,
+      elementProperty
+    };
+  }
+};
+

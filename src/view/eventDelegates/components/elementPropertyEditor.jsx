@@ -1,29 +1,18 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
 import RegexToggle from '../../components/regexToggle';
-import { connect } from 'react-redux';
 
 export default class ElementPropertyEditor extends React.Component {
   remove = () => {
     this.props.remove();
   };
 
-  onNameChange = event => {
-    this.props.setName(event.target.value);
-  };
-
-  onValueChange = event => {
-    this.props.setValue(event.target.value);
-  };
-
-  setValueIsRegex = isRegex => {
-    this.props.setValueIsRegex(isRegex);
-  };
-
   render() {
+    const { name, value, valueIsRegex, removable } = this.props;
+
     var removeButton;
 
-    if (this.props.removable) {
+    if (removable) {
       removeButton = (
         <Coral.Button
           ref="removeButton"
@@ -38,20 +27,18 @@ export default class ElementPropertyEditor extends React.Component {
       <div className="u-gapBottom">
         <Coral.Textfield 
           className="u-gapRight"
-          placeholder="Property" 
-          value={this.props.name}
-          onChange={this.onNameChange}/>
+          placeholder="Property"
+          {...name}/>
         <span className="u-label">=</span>
         <Coral.Textfield 
           className="u-gapRight"
-          placeholder="Value" 
-          value={this.props.value}
-          onChange={this.onValueChange}/>
+          placeholder="Value"
+          {...value}/>
         <RegexToggle
-          value={this.props.value}
-          valueIsRegex={this.props.valueIsRegex}
-          setValue={this.props.setValue}
-          setValueIsRegex={this.setValueIsRegex}/>
+          value={value.value}
+          valueIsRegex={valueIsRegex.value}
+          setValue={value.onChange}
+          setValueIsRegex={valueIsRegex.onChange}/>
         {removeButton}
       </div>
     )

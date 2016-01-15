@@ -1,53 +1,66 @@
 import React from 'react';
-import Coral from 'coralui-support-react';
-import ElementSelectorField from './elementSelectorField';
-import ElementPropertiesEditor from './elementPropertiesEditor';
-import { actionCreators } from '../actions/common/elementFilterActions';
-import { connect } from 'react-redux';
+import Coral from '../../reduxFormCoralUI';
+import ElementSelectorField, {
+  fields as elementSelectorFieldFields
+} from './elementSelectorField';
+import ElementPropertiesEditor, {
+  fields as elementPropertiesEditorFields,
+  reducers as elementPropertiesEditorReducers
+} from './elementPropertiesEditor';
+import reduceReducers from 'reduce-reducers';
 
-export let mapStateToProps = state => ({
-  showSpecificElementsFilter: state.get('showSpecificElementsFilter'),
-  showElementPropertiesFilter: state.get('showElementPropertiesFilter')
-});
+export const fields = [
+  'showSpecificElementsFilter',
+  'showElementPropertiesFilter'
+]
+.concat(elementSelectorFieldFields)
+.concat(elementPropertiesEditorFields);
 
-export class ElementFilter extends React.Component {
-  setShowSpecificElementsFilter = event => {
-    let action = actionCreators.setShowSpecificElementsFilter(event.target.value === 'true');
-    this.props.dispatch(action);
-  };
-
-  setShowElementPropertiesFilter = event => {
-    let action = actionCreators.setShowElementPropertiesFilter(event.target.checked);
-    this.props.dispatch(action);
-  };
+export default class ElementFilter extends React.Component {
 
   render() {
+    const {
+      showSpecificElementsFilter,
+      showElementPropertiesFilter,
+      elementSelector,
+      elementProperties
+    } = this.props;
+
     return (
       <div>
         <span className="u-label">On</span>
         <Coral.Radio
+            ref ="specificElementsRadio"
             name="filter"
             value="true"
-            checked={this.props.showSpecificElementsFilter}
-            onChange={this.setShowSpecificElementsFilter}>
+            checked={showSpecificElementsFilter.checked}
+            onChange={event => showSpecificElementsFilter.onChange(true)}>
           specific elements
         </Coral.Radio>
         <Coral.Radio
+            ref ="anyElementRadio"
             name="filter"
             value="false"
-            checked={!this.props.showSpecificElementsFilter}
-            onChange={this.setShowSpecificElementsFilter}>
+            checked={!showSpecificElementsFilter.checked}
+            onChange={event => showSpecificElementsFilter.onChange(false)}>
           any element
         </Coral.Radio>
         {
-          this.props.showSpecificElementsFilter ?
+          showSpecificElementsFilter.value ?
             <div ref="specificElementFields">
-              <ElementSelectorField/>
+              <ElementSelectorField elementSelector={elementSelector}/>
               <div>
                 <Coral.Checkbox
-                  checked={this.props.showElementPropertiesFilter}
-                  onChange={this.setShowElementPropertiesFilter}>and having certain property values...</Coral.Checkbox>
-                { this.props.showElementPropertiesFilter ? <ElementPropertiesEditor ref="elementPropertiesEditor"/> : null }
+                  ref="showElementPropertiesCheckbox"
+                  {...showElementPropertiesFilter}>
+                  and having certain property values...
+                </Coral.Checkbox>
+                {
+                  showElementPropertiesFilter.value ?
+                  <ElementPropertiesEditor
+                    ref="elementPropertiesEditor"
+                    elementProperties={elementProperties}/> : null
+                }
               </div>
             </div> : null
         }
@@ -56,4 +69,52 @@ export class ElementFilter extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(ElementFilter);
+export const reducers = {
+  configToFormValues: reduceReducers(
+    elementPropertiesEditorReducers.configToFormValues,
+    (values, options) => {
+      const { config: { elementSelector, elementProperties }, configIsNew } = options;
+
+      return {
+        ...values,
+        showSpecificElementsFilter: Boolean(configIsNew || elementSelector || elementProperties),
+        showElementPropertiesFilter: Boolean(elementProperties)
+      };
+    }
+  ),
+  formValuesToConfig: reduceReducers(
+    elementPropertiesEditorReducers.formValuesToConfig,
+    (config, values) => {
+      config = {
+        ...config
+      };
+
+      let { showSpecificElementsFilter, showElementPropertiesFilter } = values;
+
+      if (!showSpecificElementsFilter) {
+        delete config.elementSelector;
+      }
+
+      if (!showSpecificElementsFilter || !showElementPropertiesFilter) {
+        delete config.elementProperties;
+      }
+
+      delete config.showSpecificElementsFilter;
+      delete config.showElementPropertiesFilter;
+
+      return config;
+    }
+  ),
+  validate: (errors, values) => {
+    errors = {
+      ...errors
+    };
+
+    if (values.showSpecificElementsFilter && !values.elementSelector) {
+      errors.elementSelector = 'Please specify a selector. ' +
+      'Alternatively, choose to target any element above.'
+    }
+
+    return errors;
+  }
+};

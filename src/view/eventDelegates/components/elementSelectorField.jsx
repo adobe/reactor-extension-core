@@ -1,37 +1,22 @@
 import React from 'react';
-import Coral from 'coralui-support-react';
-import { actionCreators } from '../actions/common/elementFilterActions';
+import Coral from '../../reduxFormCoralUI';
 import ValidationWrapper from '../../components/validationWrapper';
-import { connect } from 'react-redux';
 
-export let mapStateToProps = state => ({
-  elementSelector: state.get('elementSelector'),
-  selectorIsEmpty: state.getIn(['errors', 'selectorIsEmpty'])
-});
+export const fields = [
+  'elementSelector'
+];
 
-export class ElementSelectorField extends React.Component {
-  handleChange = event => {
-    this.props.dispatch(actionCreators.setElementSelector(event.target.value));
-  };
-
+export default class ElementSelectorField extends React.Component {
   render() {
-    let error;
-
-    if (this.props.selectorIsEmpty) {
-      error = 'Please specify a selector. Alternatively, choose to target any element above.';
-    }
+    const { elementSelector } = this.props;
 
     return (
-      <ValidationWrapper error={error}>
+      <ValidationWrapper error={elementSelector.touched && elementSelector.error}>
         <label>
           <span className="u-label">matching the CSS selector</span>
-          <Coral.Textfield
-            value={this.props.elementSelector}
-            onChange={this.handleChange}/>
+          <Coral.Textfield ref="elementSelectorField" {...elementSelector}/>
         </label>
       </ValidationWrapper>
     );
   }
 }
-
-export default connect(mapStateToProps)(ElementSelectorField);

@@ -1,31 +1,45 @@
 import React from 'react';
-import Coral from 'coralui-support-react';
-import AdvancedEventOptions from './components/advancedEventOptions';
-import ElementFilter from './components/elementFilter';
-import { connect } from 'react-redux';
-import { actionCreators } from './actions/clickActions';
-
-export let mapStateToProps = state => ({
-  delayLinkActivation: state.get('delayLinkActivation')
-});
+import Coral from '../reduxFormCoralUI';
+import ElementFilter, {
+  fields as elementFilterFields,
+  reducers as elementFilterReducers
+} from './components/elementFilter';
+import AdvancedEventOptions, {
+  fields as advancedEventOptionsFields
+} from './components/advancedEventOptions';
+import extensionViewReduxForm from '../extensionViewReduxForm';
+import reduceReducers from 'reduce-reducers';
 
 export class Click extends React.Component {
-  onDelayLinkActivationChange = event => {
-    this.props.dispatch(actionCreators.setDelayLinkActivation(event.target.checked));
-  };
-
   render() {
+    const { delayLinkActivation } = this.props.fields;
+
     return (
       <div>
-        <ElementFilter/>
+        <ElementFilter {...this.props.fields}/>
         <Coral.Checkbox
-          class="u-block"
-          onChange={this.onDelayLinkActivationChange}
-          checked={this.props.delayLinkActivation}>If the element is a link, delay navigation until rule runs</Coral.Checkbox>
-        <AdvancedEventOptions/>
+          ref="delayLinkActivationCheckbox"
+          className="u-block"
+          {...delayLinkActivation}>
+          If the element is a link, delay navigation until rule runs
+        </Coral.Checkbox>
+        <AdvancedEventOptions {...this.props.fields}/>
       </div>
     );
   }
 }
 
-export default connect(mapStateToProps)(Click);
+const fields = [
+  'delayLinkActivation'
+]
+.concat(elementFilterFields)
+.concat(advancedEventOptionsFields);
+
+const validate = values => elementFilterReducers.validate({}, values);
+
+export default extensionViewReduxForm({
+  fields,
+  validate
+})(Click);
+
+export const reducers = elementFilterReducers;

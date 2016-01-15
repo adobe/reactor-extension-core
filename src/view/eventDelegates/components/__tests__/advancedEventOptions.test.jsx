@@ -1,193 +1,44 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Coral from 'coralui-support-react';
 import TestUtils from 'react-addons-test-utils';
-import { mapStateToProps, AdvancedEventOptions } from '../advancedEventOptions';
-import DisclosureButton from '../../../components/disclosureButton';
-import { actionCreators } from '../../actions/common/bubbleActions';
-import { fromJS } from 'immutable';
 
-describe('advanced event options', () => {
-  let render = props => {
-    return TestUtils.renderIntoDocument(
-      <AdvancedEventOptions {...props} />
-    );
-  };
-
-  let getParts = component => {
-    let checkboxes = TestUtils.scryRenderedComponentsWithType(component, Coral.Checkbox);
-    return {
-      toggleButton: TestUtils.findRenderedComponentWithType(component, DisclosureButton),
-      bubbleFireIfParentCheckbox: checkboxes[0],
-      bubbleFireIfChildFiredCheckbox: checkboxes[1],
-      bubbleStopCheckbox: checkboxes[2],
-      checkboxes
-    }
-  };
-
-  it('maps state to props', () => {
-    let props = mapStateToProps(fromJS({
-      bubbleFireIfParent: true,
-      bubbleFireIfChildFired: true,
-      bubbleStop: true
-    }));
-
-    expect(props).toEqual({
-      bubbleFireIfParent: true,
-      bubbleFireIfChildFired: true,
-      bubbleStop: true
-    });
-  });
-
-  it('toggles the advanced panel when the disclosure button is clicked', () => {
-    let component = render();
-    let { checkboxes, toggleButton } = getParts(component);
-
-    expect(checkboxes.length).toBe(0);
-
-    toggleButton.props.setSelected(true);
-    checkboxes = getParts(component).checkboxes;
-
-    expect(checkboxes.length).toBe(3);
-
-    toggleButton.props.setSelected(false);
-    checkboxes = getParts(component).checkboxes;
-
-    expect(checkboxes.length).toBe(0);
-  });
-
-  describe('bubbleFireIfParent checkbox', () => {
-    it('is checked when bubbleFireIfParent=true', () => {
-      let component = render({
-        bubbleFireIfParent: true
-      });
-
-      component.setState({
-        expanded: true
-      });
-
-      let { bubbleFireIfParentCheckbox } = getParts(component);
-
-      expect(bubbleFireIfParentCheckbox.props.checked).toBe(true);
+export default (instance, getParts, extensionBridge) => {
+  describe('advancedEventOptions', () => {
+    beforeEach(() => {
+      const { advancedEventOptionsComponent } = getParts(instance);
+      advancedEventOptionsComponent.setState({expanded: true});
     });
 
-    it('dispatches action when clicked', () => {
-      let dispatch = jasmine.createSpy();
-      let component = render({ dispatch });
+    it('sets form values from config', () => {
+        extensionBridge.init({
+          config: {
+            bubbleFireIfParent: true,
+            bubbleStop: true,
+            bubbleFireIfChildFired: true
+          }
+        });
 
-      component.setState({
-        expanded: true
-      });
+        const { advancedEventOptionsComponent } = getParts(instance);
+        const refs = advancedEventOptionsComponent.refs;
 
-      let { bubbleFireIfParentCheckbox } = getParts(component);
-
-      let node = ReactDOM.findDOMNode(bubbleFireIfParentCheckbox);
-
-      TestUtils.Simulate.change(node, {
-        target: {
-          checked: true
-        }
-      });
-
-      expect(dispatch).toHaveBeenCalledWith(actionCreators.setBubbleFireIfParent(true));
-
-      TestUtils.Simulate.change(node, {
-        target: {
-          checked: false
-        }
-      });
-
-      expect(dispatch).toHaveBeenCalledWith(actionCreators.setBubbleFireIfParent(false));
+        expect(refs.bubbleFireIfParentCheckbox.props.checked).toBe(true);
+        expect(refs.bubbleFireIfChildFiredCheckbox.props.checked).toBe(true);
+        expect(refs.bubbleStopCheckbox.props.checked).toBe(true);
     });
-  });
 
-  describe('bubbleFireIfChildFired checkbox', () => {
-    it('is checked when bubbleFireIfChildFired=true', () => {
-      let component = render({
+    it('sets config from form values', () => {
+      extensionBridge.init();
+
+      const { advancedEventOptionsComponent } = getParts(instance);
+      const refs = advancedEventOptionsComponent.refs;
+
+      refs.bubbleFireIfParentCheckbox.props.onChange(true);
+      refs.bubbleFireIfChildFiredCheckbox.props.onChange(true);
+      refs.bubbleStopCheckbox.props.onChange(true);
+
+      expect(extensionBridge.getConfig()).toEqual({
+        bubbleFireIfParent: true,
+        bubbleStop: true,
         bubbleFireIfChildFired: true
       });
-
-      component.setState({
-        expanded: true
-      });
-
-      let { bubbleFireIfChildFiredCheckbox } = getParts(component);
-
-      expect(bubbleFireIfChildFiredCheckbox.props.checked).toBe(true);
-    });
-
-    it('dispatches action when clicked', () => {
-      let dispatch = jasmine.createSpy();
-      let component = render({ dispatch });
-
-      component.setState({
-        expanded: true
-      });
-
-      let { bubbleFireIfChildFiredCheckbox } = getParts(component);
-
-      let node = ReactDOM.findDOMNode(bubbleFireIfChildFiredCheckbox);
-
-      TestUtils.Simulate.change(node, {
-        target: {
-          checked: true
-        }
-      });
-
-      expect(dispatch).toHaveBeenCalledWith(actionCreators.setBubbleFireIfChildFired(true));
-
-      TestUtils.Simulate.change(node, {
-        target: {
-          checked: false
-        }
-      });
-
-      expect(dispatch).toHaveBeenCalledWith(actionCreators.setBubbleFireIfChildFired(false));
     });
   });
-
-  describe('bubbleStop checkbox', () => {
-    it('is checked when bubbleStop=true', () => {
-      let component = render({
-        bubbleStop: true
-      });
-
-      component.setState({
-        expanded: true
-      });
-
-      let { bubbleStopCheckbox } = getParts(component);
-
-      expect(bubbleStopCheckbox.props.checked).toBe(true);
-    });
-
-    it('dispatches action when clicked', () => {
-      let dispatch = jasmine.createSpy();
-      let component = render({ dispatch });
-
-      component.setState({
-        expanded: true
-      });
-
-      let { bubbleStopCheckbox } = getParts(component);
-
-      let node = ReactDOM.findDOMNode(bubbleStopCheckbox);
-
-      TestUtils.Simulate.change(node, {
-        target: {
-          checked: true
-        }
-      });
-
-      expect(dispatch).toHaveBeenCalledWith(actionCreators.setBubbleStop(true));
-
-      TestUtils.Simulate.change(node, {
-        target: {
-          checked: false
-        }
-      });
-
-      expect(dispatch).toHaveBeenCalledWith(actionCreators.setBubbleStop(false));
-    });
-  });
-});
+};

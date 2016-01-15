@@ -1,121 +1,34 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Coral from 'coralui-support-react';
 import TestUtils from 'react-addons-test-utils';
-import { fromJS } from 'immutable';
-import MockComponent from '../../../__tests__/helpers/mockComponent';
-import { actionCreators } from '../../actions/common/elementFilterActions';
-import { mapStateToProps } from '../elementFilter';
+import testElementSelector from './elementSelector.test';
 
-describe('element filter', () => {
-  let ElementFilter;
+export default (instance, getParts, extensionBridge) => {
+  describe('elementFilter', () => {
+    describe('when elementSelector is provided', () => {
+      beforeEach(() => {
+        extensionBridge.init({
+          config: {
+            elementSelector: 'div#id'
+          }
+        });
+      });
 
-  let render = props => {
-    return TestUtils.renderIntoDocument(<ElementFilter {...props} />);
-  };
+      it('has the specific element radio button selected', () => {
+        const { elementFilterComponent } = getParts(instance);
+        expect(elementFilterComponent.refs.specificElementsRadio.props.checked).toBe(true);
+      });
+    });
 
-  let getParts = component => {
-    let radios = TestUtils.scryRenderedComponentsWithType(component, Coral.Radio);
-    return {
-      specificElementFields: component.refs.specificElementFields,
-      elementPropertiesEditor: component.refs.elementPropertiesEditor,
-      specificElementsRadio: radios[0],
-      anyElementRadio: radios[1]
-    };
-  };
+    describe('when elementSelector is not provided', () => {
+      beforeEach(() => {
+        extensionBridge.init({config: {}});
+      });
 
-  beforeAll(() => {
-    let elementFilterInjector = require('inject?' +
-        './elementSelectorField&' +
-        './elementPropertiesEditor' +
-        '!../elementFilter');
-    ElementFilter = elementFilterInjector({
-      './elementSelectorField': MockComponent,
-      './elementPropertiesEditor': MockComponent
-    }).ElementFilter;
-  });
-
-  it('maps state to props', () => {
-    let props = mapStateToProps(fromJS({
-      showSpecificElementsFilter: true,
-      showElementPropertiesFilter: true
-    }));
-
-    expect(props).toEqual({
-      showSpecificElementsFilter: true,
-      showElementPropertiesFilter: true
+      it('has the any element radio button selected', () => {
+        const { elementFilterComponent } = getParts(instance);
+        expect(elementFilterComponent.refs.anyElementRadio.props.checked).toBe(true);
+      });
     });
   });
 
-  it('shows filter fields when showSpecificElementsFilter=true', () => {
-    let { specificElementFields } = getParts(render({
-      showSpecificElementsFilter: true
-    }));
-
-    expect(specificElementFields).toBeDefined();
-  });
-
-  it('does not show filter fields when showSpecificElementsFilter=false', () => {
-    let { specificElementFields } = getParts(render());
-
-    expect(specificElementFields).toBeUndefined();
-  });
-
-  it('shows element property fields when showElementPropertiesFilter=true', () => {
-    let { elementPropertiesEditor } = getParts(render({
-      showSpecificElementsFilter: true,
-      showElementPropertiesFilter: true
-    }));
-
-    expect(elementPropertiesEditor).toBeDefined();
-  });
-
-  it('does not show element property fields when showElementPropertiesFilter=false', () => {
-    let { elementPropertiesEditor } = getParts(render({
-      showSpecificElementsFilter: true,
-      showElementPropertiesFilter: false
-    }));
-
-    expect(elementPropertiesEditor).toBeUndefined();
-  });
-
-  it('does not show element property fields when showSpecificElementsFilter=false and' +
-    'showElementPropertiesFilter=true', () => {
-    let { elementPropertiesEditor } = getParts(render({
-      showSpecificElementsFilter: false,
-      showElementPropertiesFilter: true
-    }));
-
-    expect(elementPropertiesEditor).toBeUndefined();
-  });
-
-  it('dispatches action when "specific elements" radio is selected', () => {
-    let dispatch = jasmine.createSpy();
-    let { specificElementsRadio } = getParts(render({
-      dispatch
-    }));
-
-    TestUtils.Simulate.change(ReactDOM.findDOMNode(specificElementsRadio), {
-      target: {
-        value: 'true'
-      }
-    });
-
-    expect(dispatch).toHaveBeenCalledWith(actionCreators.setShowSpecificElementsFilter(true));
-  });
-
-  it('dispatches action when "any element" radio is selected', () => {
-    let dispatch = jasmine.createSpy();
-    let { anyElementRadio } = getParts(render({
-      dispatch
-    }));
-
-    TestUtils.Simulate.change(ReactDOM.findDOMNode(anyElementRadio), {
-      target: {
-        value: 'false'
-      }
-    });
-
-    expect(dispatch).toHaveBeenCalledWith(actionCreators.setShowSpecificElementsFilter(false));
-  });
-});
+  testElementSelector(instance, getParts, extensionBridge);
+};

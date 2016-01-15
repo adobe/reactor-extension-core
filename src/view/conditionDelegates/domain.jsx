@@ -1,27 +1,34 @@
 import React from 'react';
-import Coral from 'coralui-support-react';
-import { connect } from 'react-redux';
-import { actionCreators } from './actions/domainActions';
+import Coral from '../reduxFormCoralUI';
 import CheckboxList from '../components/checkboxList';
-import { List } from 'immutable';
-
-export let mapStateToProps = state => ({
-  availableDomains: state.get('availableDomains'),
-  selectedDomains: state.get('selectedDomains')
-});
+import extensionViewReduxForm from '../extensionViewReduxForm';
 
 export class Domain extends React.Component {
-  select = domain => this.props.dispatch(actionCreators.selectDomain(domain));
-
-  deselect = domain => this.props.dispatch(actionCreators.deselectDomain(domain));
-
   render() {
-    return <CheckboxList
-      items={this.props.availableDomains}
-      selectedValues={this.props.selectedDomains}
-      select={this.select}
-      deselect={this.deselect}/>
+    const { domains } = this.props.fields;
+    return <CheckboxList options={this.props.domainOptions} {...domains}/>
   }
 }
 
-export default connect(mapStateToProps)(Domain);
+const fields = ['domains'];
+
+const stateToProps = state => {
+  return {
+    domainOptions: state.propertyConfig ? state.propertyConfig.domainList : []
+  };
+};
+
+export default extensionViewReduxForm(
+  {
+    fields
+  },
+  stateToProps
+)(Domain);
+
+export const reducers = {
+  formValuesToConfig(config, values) {
+    return {
+      domains: values.domains || [] // An array is required.
+    }
+  }
+};

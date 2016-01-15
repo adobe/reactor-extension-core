@@ -1,39 +1,77 @@
 'use strict';
 import { actionCreators } from './actions/bridgeAdapterActions';
+import { handleSubmit } from './extensionViewReduxForm';
+import { getValues } from 'redux-form';
+import reduceReducers from 'reduce-reducers';
 
-export let bridgeAdapterReducer = null;
-export let setBridgeAdapterReducer = (nextState) => {
-  bridgeAdapterReducer = nextState.routes[0].reducer;
+/**
+ * Assigns everything inside config to state.
+ */
+const configToFormValuesBaseReducer = (values, options) => {
+  const { config } = options;
+  return {
+    ...values,
+    ...config
+  };
+};
+
+/**
+ * Assigns everything inside state to config.
+ */
+const formValuesToConfigBaseReducer = (config, values) => {
+  return {
+    ...config,
+    ...values
+  };
 };
 
 export default (extensionBridge, store) => {
-  extensionBridge.init = options => {
-    store.dispatch(actionCreators.setConfig({
+  let _reducersForRoute;
+
+  extensionBridge.init = (options = {}) => {
+    options = {
       ...options,
       config: options.config || {},
-      isNewConfig: !options.config
+      configIsNew: !options.config
+    };
+
+    const initialValues = _reducersForRoute.configToFormValues({}, options);
+
+    store.dispatch(actionCreators.init({
+      propertyConfig: options.propertyConfig,
+      initialValues
     }));
   };
 
   extensionBridge.getConfig = () => {
-    let config = {};
-
-    if (bridgeAdapterReducer.stateToConfig) {
-      let reducedConfig = bridgeAdapterReducer.stateToConfig(config, store.getState());
-
-      if (config === reducedConfig) {
-        throw new Error('Bridge adapter reducer stateToConfig must return a new config object.');
-      }
-
-      config = reducedConfig;
-    }
-
-    return config;
+    const values = getValues(store.getState().form.default) || {};
+    return _reducersForRoute.formValuesToConfig({}, values);
   };
 
   extensionBridge.validate = () => {
-    store.dispatch(actionCreators.validate());
-    let errors = store.getState().get('errors');
-    return !errors || !errors.some(value => value);
+    let valid = false;
+    // handleSubmit comes from redux-form. The function passed in will only be called if the
+    // form passes validation.
+    handleSubmit(() => valid = true)();
+    return valid;
   };
+
+  return (reducersForRoute = {}) => {
+    const configToFormValuesReducers = [ configToFormValuesBaseReducer ];
+
+    if (reducersForRoute.configToFormValues) {
+      configToFormValuesReducers.push(reducersForRoute.configToFormValues);
+    }
+
+    const formValuesToConfigReducers = [ formValuesToConfigBaseReducer ];
+
+    if (reducersForRoute.formValuesToConfig) {
+      formValuesToConfigReducers.push(reducersForRoute.formValuesToConfig);
+    }
+
+    _reducersForRoute = {
+      configToFormValues: reduceReducers(...configToFormValuesReducers),
+      formValuesToConfig: reduceReducers(...formValuesToConfigReducers)
+    };
+  }
 };

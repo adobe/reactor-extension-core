@@ -1,60 +1,48 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Coral from 'coralui-support-react';
 import TestUtils from 'react-addons-test-utils';
-import { fromJS } from 'immutable';
-import { mapStateToProps, Variable } from '../variable';
-import { actionCreators } from '../actions/variableActions';
+import Coral from '../../reduxFormCoralUI';
+import setupComponent from '../../__tests__/helpers/setupComponent';
+import Variable from '../variable';
+import ValidationWrapper from '../../components/validationWrapper';
+
+const {instance, extensionBridge} = setupComponent(Variable);
+const getParts = () => {
+  return {
+    pathField: TestUtils.findRenderedComponentWithType(instance, Coral.Textfield),
+    pathValidationWrapper: TestUtils.findRenderedComponentWithType(instance, ValidationWrapper)
+  };
+};
 
 describe('variable view', () => {
-  let render = props => {
-    return TestUtils.renderIntoDocument(
-      <Variable {...props} />
-    );
-  };
-
-  let getParts = component => {
-    return {
-      pathField: TestUtils.findRenderedComponentWithType(component, Coral.Textfield)
-    };
-  };
-
-  it('maps state to props', () => {
-    let props = mapStateToProps(fromJS({
-      path: 'foo',
-      errors: {
-        pathIsEmpty: true
+  it('sets form values from config', () => {
+    extensionBridge.init({
+      config: {
+        path: 'foo'
       }
-    }));
+    });
 
-    expect(props).toEqual({
-      path: 'foo',
-      pathIsEmpty: true
+    const { pathField } = getParts();
+
+    expect(pathField.props.value).toBe('foo');
+  });
+
+  it('sets config from form values', () => {
+    extensionBridge.init();
+
+    const { pathField } = getParts();
+
+    pathField.props.onChange('foo');
+
+    expect(extensionBridge.getConfig()).toEqual({
+      path: 'foo'
     });
   });
 
-  describe('path field', () => {
-    it('is set with path prop value', () => {
-      let { pathField } = getParts(render({
-        path: 'foo'
-      }));
+  it('sets errors if required values are not provided', () => {
+    extensionBridge.init();
 
-      expect(pathField.props.value).toBe('foo');
-    });
+    const { pathValidationWrapper } = getParts();
 
-    it('dispatches an action on value change', () => {
-      let dispatch = jasmine.createSpy();
-      let { pathField } = getParts(render({
-        dispatch
-      }));
-
-      TestUtils.Simulate.change(ReactDOM.findDOMNode(pathField), {
-        target: {
-          value: 'foo'
-        }
-      });
-
-      expect(dispatch).toHaveBeenCalledWith(actionCreators.setPath('foo'));
-    });
+    expect(extensionBridge.validate()).toBe(false);
+    expect(pathValidationWrapper.props.error).toEqual(jasmine.any(String));
   });
 });

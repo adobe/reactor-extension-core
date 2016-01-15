@@ -1,68 +1,49 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Coral from 'coralui-support-react';
 import TestUtils from 'react-addons-test-utils';
-import { mapStateToProps, Browser } from '../browser';
-import { fromJS, List } from 'immutable';
-import { actionCreators } from '../actions/browserActions';
+import Coral from '../../reduxFormCoralUI';
+import setupComponent from '../../__tests__/helpers/setupComponent';
+import Browser, { reducers } from '../browser';
 import CheckboxList from '../../components/checkboxList';
 
+const {instance, extensionBridge} = setupComponent(Browser, reducers);
+const getParts = () => {
+  return {
+    checkboxList: TestUtils.findRenderedComponentWithType(instance, CheckboxList)
+  };
+};
+
+const selectedBrowsers = [
+  'Chrome',
+  'Safari'
+];
+
 describe('browser view', () => {
-  let render = props => {
-    return TestUtils.renderIntoDocument(
-      <Browser {...props} />
-    );
-  };
+  it('sets form values from config', () => {
+    extensionBridge.init({
+      config: {
+        browsers: selectedBrowsers
+      }
+    });
 
-  let getParts = component => {
-    return {
-      checkboxList: TestUtils.findRenderedComponentWithType(component, CheckboxList)
-    };
-  };
+    const { checkboxList } = getParts();
 
-  it('maps state to props', () => {
-    let props = mapStateToProps(fromJS({
-      browsers: ['Chrome', 'IE']
-    }));
-
-    expect(props.browsers.toJS()).toEqual(['Chrome', 'IE']);
+    expect(checkboxList.props.value).toEqual(selectedBrowsers);
   });
 
-  describe('checkbox list', () => {
-    it('is provided a list of items', () => {
-      let { checkboxList } = getParts(render());
+  it('sets config from form values', () => {
+    extensionBridge.init();
 
-      expect(checkboxList.props.items.length).toBeGreaterThan(0);
+    const { checkboxList } = getParts();
+    checkboxList.props.onChange(selectedBrowsers);
+
+    expect(extensionBridge.getConfig()).toEqual({
+      browsers: selectedBrowsers
     });
+  });
 
-    it('is provided selected values', () => {
-      let { checkboxList } = getParts(render({
-        browsers: List(['foo', 'bar'])
-      }));
-
-      expect(checkboxList.props.selectedValues.toJS()).toEqual(['foo', 'bar']);
-    });
-
-    it('dispatches an action when an item is selected', () => {
-      let dispatch = jasmine.createSpy();
-      let { checkboxList } = getParts(render({
-        dispatch
-      }));
-
-      checkboxList.props.select('foo');
-
-      expect(dispatch).toHaveBeenCalledWith(actionCreators.selectBrowser('foo'));
-    });
-
-    it('dispatches an action when an item is deselected', () => {
-      let dispatch = jasmine.createSpy();
-      let { checkboxList } = getParts(render({
-        dispatch
-      }));
-
-      checkboxList.props.deselect('foo');
-
-      expect(dispatch).toHaveBeenCalledWith(actionCreators.deselectBrowser('foo'));
+  it('sets browsers to an empty array if nothing is selected', () => {
+    extensionBridge.init();
+    expect(extensionBridge.getConfig()).toEqual({
+      browsers: []
     });
   });
 });

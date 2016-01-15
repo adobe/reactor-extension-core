@@ -1,68 +1,96 @@
 import React from 'react';
-import Coral from 'coralui-support-react';
+import Coral from '../../reduxFormCoralUI';
 import ElementPropertyEditor from './elementPropertyEditor';
-import { List } from 'immutable';
-import { actionCreators } from '../actions/common/elementFilterActions';
-import { connect } from 'react-redux';
+import createID from '../../utils/createID';
 
-export let mapStateToProps = state => ({
-  elementProperties: state.get('elementProperties')
-});
+export const fields = [
+  'elementProperties[].id',
+  'elementProperties[].name',
+  'elementProperties[].value',
+  'elementProperties[].valueIsRegex'
+];
 
-export class ElementPropertiesEditor extends React.Component {
-  add = () => {
-    this.props.dispatch(actionCreators.addElementProperty({
+export default class ElementPropertiesEditor extends React.Component {
+  add = event => {
+    this.props.elementProperties.addField({
+      id: createID(),
       name: '',
       value: ''
-    }));
+    });
   };
 
-  setName = (id, name) => {
-    this.props.dispatch(actionCreators.editElementProperty({
-      id,
-      name
-    }));
+  remove = index => {
+    this.props.elementProperties.removeField(index);
   };
 
-  setValue = (id, value) => {
-    this.props.dispatch(actionCreators.editElementProperty({
-      id,
-      value
-    }));
-  };
-
-  setValueIsRegex = (id, valueIsRegex) => {
-    this.props.dispatch(actionCreators.editElementProperty({
-      id,
-      valueIsRegex
-    }));
-  };
-
-  remove = id => {
-    this.props.dispatch(actionCreators.removeElementProperty(id));
-  };
-  
   render() {
+    const { elementProperties } = this.props;
+
     return (
       <div>
-        {this.props.elementProperties.valueSeq().map((property) => {
-          let id = property.get('id');
+        {elementProperties.map((elementProperty, index) => {
           return <ElementPropertyEditor
-            key={id}
-            name={property.get('name')}
-            value={property.get('value')}
-            valueIsRegex={property.get('valueIsRegex')}
-            setName={this.setName.bind(null, id)}
-            setValue={this.setValue.bind(null, id)}
-            setValueIsRegex={this.setValueIsRegex.bind(null, id)}
-            remove={this.remove.bind(null, id)}
-            removable={this.props.elementProperties.size > 1}
+            key={elementProperty.id.value}
+            {...elementProperty}
+            remove={this.remove.bind(null, index)}
+            removable={elementProperties.length > 1}
             />
-        }).toSeq()}
+        })}
         <Coral.Button ref="addButton" onClick={this.add}>Add</Coral.Button>
       </div>
     );
   }
 }
 
-export default connect(mapStateToProps)(ElementPropertiesEditor)
+export const reducers = {
+  configToFormValues(values, options) {
+    const { config } = options;
+
+    var elementProperties = config.elementProperties || [];
+
+    // Make sure there's always at least one element property. This is just so the view
+    // always shows at least one row.
+    if (!elementProperties.length) {
+      elementProperties.push({
+        name: '',
+        value: ''
+      });
+    }
+
+    // ID used as a key when rendering each item.
+    elementProperties.forEach(elementProperty => elementProperty.id = createID());
+
+    return {
+      ...values,
+      elementProperties
+    };
+  },
+  formValuesToConfig(config, values) {
+    config = {
+      ...config
+    };
+
+    let { elementProperties } = values;
+
+    elementProperties = elementProperties.filter(elementProperty => {
+      return elementProperty.name;
+    }).map(elementProperty => {
+      elementProperty = {
+        ...elementProperty
+      };
+
+      // ID is only used for view rendering.
+      delete elementProperty.id;
+
+      return elementProperty;
+    });
+
+    if (elementProperties.length) {
+      config.elementProperties = elementProperties;
+    } else {
+      delete config.elementProperties;
+    }
+
+    return config;
+  }
+};

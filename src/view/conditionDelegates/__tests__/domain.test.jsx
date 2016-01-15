@@ -1,72 +1,57 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Coral from 'coralui-support-react';
 import TestUtils from 'react-addons-test-utils';
-import { mapStateToProps, Domain } from '../domain';
-import { fromJS, List } from 'immutable';
-import { actionCreators } from '../actions/domainActions';
+import Coral from '../../reduxFormCoralUI';
+import setupComponent from '../../__tests__/helpers/setupComponent';
+import Domain, { reducers } from '../domain';
 import CheckboxList from '../../components/checkboxList';
 
+const {instance, extensionBridge} = setupComponent(Domain, reducers);
+const getParts = () => {
+  return {
+    checkboxList: TestUtils.findRenderedComponentWithType(instance, CheckboxList)
+  };
+};
+
+const domains = [
+  'adobe.com',
+  'example.com'
+];
+
+const selectedDomains = [
+  'adobe.com'
+];
+
 describe('domain view', () => {
-  let render = props => {
-    return TestUtils.renderIntoDocument(
-      <Domain {...props} />
-    );
-  };
+  it('sets form values from config', () => {
+    extensionBridge.init({
+      config: {
+        domains: selectedDomains
+      },
+      propertyConfig: {
+        domainList: domains
+      }
+    });
 
-  let getParts = component => {
-    return {
-      checkboxList: TestUtils.findRenderedComponentWithType(component, CheckboxList)
-    };
-  };
+    const { checkboxList } = getParts();
 
-  it('maps state to props', () => {
-    let props = mapStateToProps(fromJS({
-      selectedDomains: ['foo'],
-      availableDomains: ['foo', 'bar']
-    }));
-
-    expect(props.selectedDomains.toJS()).toEqual(['foo']);
-    expect(props.availableDomains.toJS()).toEqual(['foo', 'bar']);
+    expect(checkboxList.props.options).toEqual(domains);
+    expect(checkboxList.props.value).toEqual(selectedDomains);
   });
 
-  describe('checkbox list', () => {
-    it('is provided a list of items', () => {
-      let { checkboxList } = getParts(render({
-        availableDomains: List(['foo', 'bar'])
-      }));
+  it('sets config from form values', () => {
+    extensionBridge.init();
 
-      expect(checkboxList.props.items.toJS()).toEqual(['foo', 'bar']);
+    const { checkboxList } = getParts();
+    checkboxList.props.onChange(selectedDomains);
+
+    expect(extensionBridge.getConfig()).toEqual({
+      domains: selectedDomains
     });
+  });
 
-    it('is provided selected values', () => {
-      let { checkboxList } = getParts(render({
-        selectedDomains: List(['foo', 'bar'])
-      }));
-
-      expect(checkboxList.props.selectedValues.toJS()).toEqual(['foo', 'bar']);
-    });
-
-    it('dispatches an action when an item is selected', () => {
-      let dispatch = jasmine.createSpy();
-      let { checkboxList } = getParts(render({
-        dispatch
-      }));
-
-      checkboxList.props.select('foo');
-
-      expect(dispatch).toHaveBeenCalledWith(actionCreators.selectDomain('foo'));
-    });
-
-    it('dispatches an action when an item is deselected', () => {
-      let dispatch = jasmine.createSpy();
-      let { checkboxList } = getParts(render({
-        dispatch
-      }));
-
-      checkboxList.props.deselect('foo');
-
-      expect(dispatch).toHaveBeenCalledWith(actionCreators.deselectDomain('foo'));
+  it('sets domains to an empty array if nothing is selected', () => {
+    extensionBridge.init();
+    expect(extensionBridge.getConfig()).toEqual({
+      domains: []
     });
   });
 });

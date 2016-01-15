@@ -1,26 +1,22 @@
 import React from 'react';
 import Coral from '../reduxFormCoralUI';
-import extensionViewReduxForm from '../extensionViewReduxForm';
 import RegexToggle from '../components/regexToggle';
 import ValidationWrapper from '../components/validationWrapper';
+import extensionViewReduxForm from '../extensionViewReduxForm';
 
-export class Cookie extends React.Component {
+export class URLParameter extends React.Component {
   render() {
     const { name, value, valueIsRegex } = this.props.fields;
 
     return (
       <div>
         <ValidationWrapper className="u-gapRight" error={name.touched && name.error}>
-          <label>
-            <span className="u-label">Cookie Name:</span>
-            <Coral.Textfield {...name}/>
-          </label>
+          <span className="u-label">URL Parameter Name:</span>
+          <Coral.Textfield {...name}/>
         </ValidationWrapper>
         <ValidationWrapper className="u-gapRight" error={value.touched && value.error}>
-          <label>
-            <span className="u-label">Cookie Value:</span>
-            <Coral.Textfield {...value}/>
-          </label>
+          <span className="u-label">URL Parameter Value:</span>
+          <Coral.Textfield {...value}/>
         </ValidationWrapper>
         <RegexToggle
           value={value.value}
@@ -32,21 +28,17 @@ export class Cookie extends React.Component {
   }
 }
 
-const fields = [
-  'name',
-  'value',
-  'valueIsRegex'
-];
+const fields = ['name', 'value', 'valueIsRegex'];
 
-const validate = values => {
+let validate = values => {
   const errors = {};
 
   if (!values.name) {
-    errors.name = 'Please specify a cookie name.';
+    errors.name = 'Please enter a URL parameter name.';
   }
 
   if (!values.value) {
-    errors.value = 'Please specify a cookie value.';
+    errors.value = 'Please enter a URL parameter value.';
   }
 
   return errors;
@@ -55,4 +47,4 @@ const validate = values => {
 export default extensionViewReduxForm({
   fields,
   validate
-})(Cookie);
+})(URLParameter);

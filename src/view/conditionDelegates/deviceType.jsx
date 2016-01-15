@@ -1,14 +1,9 @@
 import React from 'react';
-import Coral from 'coralui-support-react';
-import { connect } from 'react-redux';
-import { actionCreators } from './actions/deviceTypeActions'
+import Coral from '../reduxFormCoralUI';
 import CheckboxList from '../components/checkboxList';
+import extensionViewReduxForm from '../extensionViewReduxForm';
 
-export let mapStateToProps = state => ({
-  deviceTypes: state.get('deviceTypes')
-});
-
-const DEVICE_TYPES = [
+const deviceTypeOptions = [
   'Desktop',
   'iPhone',
   'iPad',
@@ -20,17 +15,22 @@ const DEVICE_TYPES = [
 ];
 
 export class DeviceType extends React.Component {
-  select = deviceType => this.props.dispatch(actionCreators.selectDeviceType(deviceType));
-
-  deselect = deviceType => this.props.dispatch(actionCreators.deselectDeviceType(deviceType));
-
   render() {
-    return <CheckboxList
-      items={DEVICE_TYPES}
-      selectedValues={this.props.deviceTypes}
-      select={this.select}
-      deselect={this.deselect}/>
+    const { deviceTypes } = this.props.fields;
+    return <CheckboxList options={deviceTypeOptions} {...deviceTypes}/>
   }
 }
 
-export default connect(mapStateToProps)(DeviceType);
+const fields = ['deviceTypes'];
+
+export default extensionViewReduxForm({
+  fields
+})(DeviceType);
+
+export const reducers = {
+  formValuesToConfig(config, values) {
+    return {
+      deviceTypes: values.deviceTypes || [] // An array is required.
+    }
+  }
+};

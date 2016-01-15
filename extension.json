@@ -239,7 +239,29 @@
     {
       "displayName": "Cart Amount",
       "libPath": "conditionDelegates/cartAmount.js",
-      "viewPath": "index.html#/conditions/cartAmount"
+      "viewPath": "index.html#/conditions/cartAmount",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "dataElement": {
+            "type": "string",
+            "minLength": 1
+          },
+          "operator": {
+            "type": "string",
+            "enum": [
+              ">",
+              "=",
+              "<"
+            ]
+          },
+          "amount": {
+            "type": "number"
+          }
+        },
+        "required": ["dataElement", "operator", "amount"]
+      }
     },
     {
       "displayName": "Cart Item Quantity",
@@ -522,8 +544,8 @@
     },
     {
       "displayName": "URL Querystring Parameter",
-      "libPath": "dataElementDelegates/queryParam.js",
-      "viewPath": "index.html#/dataElements/queryParam",
+      "libPath": "dataElementDelegates/queryParameter.js",
+      "viewPath": "index.html#/dataElements/queryParameter",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",

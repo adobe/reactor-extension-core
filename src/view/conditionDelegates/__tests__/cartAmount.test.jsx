@@ -1,114 +1,85 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Coral from 'coralui-support-react';
 import TestUtils from 'react-addons-test-utils';
-import { mapStateToProps, CartAmount } from '../cartAmount';
-import { fromJS } from 'immutable';
-import { actionCreators } from '../actions/cartAmountActions';
-import DataElementNameField from '../components/dataElementNameField';
+import Coral from '../../reduxFormCoralUI';
+import setupComponent from '../../__tests__/helpers/setupComponent';
+import CartAmount, { reducers } from '../cartAmount';
+import ValidationWrapper from '../../components/validationWrapper';
+import dataElementNameField from '../components/dataElementNameField';
 import ComparisonOperatorField from '../components/comparisonOperatorField';
 
+const {instance, extensionBridge} = setupComponent(CartAmount, reducers);
+const getParts = () => {
+  const validationWrappers = TestUtils.scryRenderedComponentsWithType(instance, ValidationWrapper);
+  return {
+    dataElementField: TestUtils.findRenderedComponentWithType(instance, dataElementNameField),
+    dataElementValidationWrapper: validationWrappers[0],
+    operatorField: TestUtils.findRenderedComponentWithType(instance, ComparisonOperatorField),
+    amountField: TestUtils.scryRenderedComponentsWithType(instance, Coral.Textfield)[1],
+    amountValidationWrapper: validationWrappers[1]
+  };
+};
+
 describe('cart amount view', () => {
-  let render = props => {
-    return TestUtils.renderIntoDocument(
-      <CartAmount {...props} />
-    );
-  };
+  it('sets operator to greater than by default', () => {
+    extensionBridge.init();
 
-  let getParts = component => {
-    return {
-      dataElementNameField: TestUtils.findRenderedComponentWithType(component, DataElementNameField),
-      operatorField: TestUtils.findRenderedComponentWithType(component, ComparisonOperatorField),
-      amountField: TestUtils.scryRenderedComponentsWithType(component, Coral.Textfield)[1]
-    };
-  };
+    const { operatorField } = getParts();
 
-  it('maps state to props', () => {
-    let props = mapStateToProps(fromJS({
-      dataElementName: 'foo',
-      operator: '>',
-      amount: 123,
-      errors: {
-        dataElementNameIsEmpty: true,
-        amountIsEmpty: true,
-        amountIsNaN: true
+    expect(operatorField.props.value).toBe('>');
+  });
+
+  it('sets form values from config', () => {
+    extensionBridge.init({
+      config: {
+        dataElement: 'foo',
+        operator: '=',
+        amount: 12.50
       }
-    }));
-
-    expect(props).toEqual({
-      dataElementName: 'foo',
-      operator: '>',
-      amount: 123,
-      dataElementNameIsEmpty: true,
-      amountIsEmpty: true,
-      amountIsNaN: true
-    })
-  });
-
-  describe('data element name field', () => {
-    it('is set with name prop value', () => {
-      let { dataElementNameField } = getParts(render({
-        dataElementName: 'foo'
-      }));
-
-      expect(dataElementNameField.props.value).toBe('foo');
     });
 
-    it('dispatches an action on value change', () => {
-      let dispatch = jasmine.createSpy();
-      let { dataElementNameField } = getParts(render({
-        dispatch
-      }));
+    const { dataElementField, operatorField, amountField } = getParts();
 
-      dataElementNameField.props.onChange('foo');
+    expect(dataElementField.props.value).toBe('foo');
+    expect(operatorField.props.value).toBe('=');
+    expect(amountField.props.value).toBe(12.50);
+  });
 
-      expect(dispatch).toHaveBeenCalledWith(actionCreators.setDataElementName('foo'));
+  it('sets config from form values', () => {
+    extensionBridge.init();
+
+    const { dataElementField, operatorField, amountField } = getParts();
+
+    dataElementField.props.onChange('foo');
+    operatorField.props.onChange('=');
+    amountField.props.onChange('12.50');
+
+    expect(extensionBridge.getConfig()).toEqual({
+      dataElement: 'foo',
+      operator: '=',
+      amount: 12.50
     });
   });
 
-  describe('operator field', () => {
-    it('is set with operator prop value', () => {
-      let { operatorField } = getParts(render({
-        operator: '<'
-      }));
+  it('sets errors if required values are not provided', () => {
+    extensionBridge.init();
+    expect(extensionBridge.validate()).toBe(false);
 
-      expect(operatorField.props.value).toBe('<');
-    });
+    const {
+      dataElementValidationWrapper,
+      amountValidationWrapper
+    } = getParts();
 
-    it('dispatches an action on value change', () => {
-      let dispatch = jasmine.createSpy();
-      let { operatorField } = getParts(render({
-        dispatch
-      }));
-
-      operatorField.props.onChange('<');
-
-      expect(dispatch).toHaveBeenCalledWith(actionCreators.setOperator('<'));
-    });
+    expect(dataElementValidationWrapper.props.error).toEqual(jasmine.any(String));
+    expect(amountValidationWrapper.props.error).toEqual(jasmine.any(String));
   });
 
-  describe('amount field', () => {
-    it('is set with amount value', () => {
-      let { amountField } = getParts(render({
-        amount: 123
-      }));
+  it('sets error if amount value is not a number', () => {
+    extensionBridge.init();
+    expect(extensionBridge.validate()).toBe(false);
 
-      expect(amountField.props.value).toBe(123);
-    });
+    const { amountField, amountValidationWrapper } = getParts();
 
-    it('dispatches an action on value change', () => {
-      let dispatch = jasmine.createSpy();
-      let { amountField } = getParts(render({
-        dispatch
-      }));
+    amountField.props.onChange('12.abc');
 
-      TestUtils.Simulate.change(ReactDOM.findDOMNode(amountField), {
-        target: {
-          value: '123'
-        }
-      });
-
-      expect(dispatch).toHaveBeenCalledWith(actionCreators.setAmount('123'));
-    });
+    expect(amountValidationWrapper.props.error).toEqual(jasmine.any(String));
   });
 });

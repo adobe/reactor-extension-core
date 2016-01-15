@@ -1,57 +1,55 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Coral from 'coralui-support-react';
 import TestUtils from 'react-addons-test-utils';
-import { mapStateToProps, Custom } from '../custom';
-import { fromJS } from 'immutable';
-import { actionCreators } from '../actions/customActions';
+import Coral from '../../reduxFormCoralUI';
+import setupComponent from '../../__tests__/helpers/setupComponent';
+import Custom, { reducers } from '../custom';
+import ErrorIcon from '../../components/errorIcon';
+
+const {instance, extensionBridge} = setupComponent(Custom, reducers);
+const getParts = () => {
+  let errorIcons = TestUtils.scryRenderedComponentsWithType(instance, ErrorIcon);
+
+  return {
+    button: TestUtils.findRenderedComponentWithType(instance, Coral.Button),
+    errorIcon: errorIcons.length ? errorIcons[0] : null
+  };
+};
 
 describe('custom view', () => {
-  let render = props => {
-    return TestUtils.renderIntoDocument(
-      <Custom {...props} />
-    );
-  };
-
-  let getParts = component => {
-    return {
-      openEditorButton: TestUtils.findRenderedComponentWithType(component, Coral.Button)
-    };
-  };
-
-  it('maps state to props', () => {
-    let props = mapStateToProps(fromJS({
-      script: 'foo'
-    }));
-
-    expect(props).toEqual({
-      script: 'foo'
+  it('opens code editor with script value when button is clicked and stores result', () => {
+    extensionBridge.init({
+      config: {
+        script: 'foo'
+      }
     });
+
+    window.extensionBridge = {
+      openCodeEditor: jasmine.createSpy().and.callFake((script, callback) => {
+        callback('bar');
+      })
+    };
+
+    const { button } = getParts();
+
+    button.props.onClick();
+
+    expect(window.extensionBridge.openCodeEditor)
+      .toHaveBeenCalledWith('foo', jasmine.any(Function));
+    expect(extensionBridge.validate()).toBe(true);
+    expect(extensionBridge.getConfig()).toEqual({
+      script: 'bar',
+      __rawScripts: ['script']
+    });
+
+    delete window.extensionBridge;
   });
 
-  describe('script button', () => {
-    beforeAll(function() {
-      window.extensionBridge = {
-        openCodeEditor: (code, callback) => {
-          callback(code + ' (edited)');
-        }
-      };
-    });
+  it('sets errors if required values are not provided', () => {
+    extensionBridge.init();
 
-    afterAll(function() {
-      delete window.extensionBridge;
-    });
+    expect(extensionBridge.validate()).toBe(false);
 
-    it('opens the code editor and triggers action with edited code', () => {
-      let dispatch = jasmine.createSpy();
-      let { openEditorButton } = getParts(render({
-        dispatch,
-        script: 'foo'
-      }));
+    const { errorIcon } = getParts();
 
-      TestUtils.Simulate.click(ReactDOM.findDOMNode(openEditorButton));
-
-      expect(dispatch).toHaveBeenCalledWith(actionCreators.setScript('foo (edited)'));
-    });
+    expect(errorIcon.props.message).toEqual(jasmine.any(String));
   });
 });

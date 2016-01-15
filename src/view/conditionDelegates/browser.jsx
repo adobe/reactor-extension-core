@@ -1,14 +1,9 @@
 import React from 'react';
-import Coral from 'coralui-support-react';
-import { connect } from 'react-redux';
-import { actionCreators } from './actions/browserActions';
+import Coral from '../reduxFormCoralUI';
 import CheckboxList from '../components/checkboxList';
+import extensionViewReduxForm from '../extensionViewReduxForm';
 
-export let mapStateToProps = state => ({
-  browsers: state.get('browsers')
-});
-
-const BROWSERS = [
+const browserOptions = [
   'Chrome',
   'Firefox',
   'IE',
@@ -22,17 +17,23 @@ const BROWSERS = [
 ];
 
 export class Browser extends React.Component {
-  select = browser => this.props.dispatch(actionCreators.selectBrowser(browser));
-
-  deselect = browser => this.props.dispatch(actionCreators.deselectBrowser(browser));
-
   render() {
-    return <CheckboxList
-      items={BROWSERS}
-      selectedValues={this.props.browsers}
-      select={this.select}
-      deselect={this.deselect}/>
+    const { browsers } = this.props.fields;
+    return <CheckboxList options={browserOptions} {...browsers}/>
   }
 }
 
-export default connect(mapStateToProps)(Browser);
+const fields = ['browsers'];
+
+export default extensionViewReduxForm({
+  fields
+})(Browser);
+
+export const reducers = {
+  formValuesToConfig(config, values) {
+    return {
+      browsers: values.browsers || [] // An array is required.
+    }
+  }
+};
+

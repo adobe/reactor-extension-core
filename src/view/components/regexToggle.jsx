@@ -6,10 +6,10 @@ export default class RegexToggle extends React.Component {
     this.props.setValueIsRegex(event.target.checked);
   };
 
-  onTestRegex() {
+  onTestRegex = () => {
     // TODO: This updated value is just for testing. Update once a regex tester is in place.
     this.props.setValue(this.props.value + ' (edited)');
-  }
+  };
 
   render() {
     return (

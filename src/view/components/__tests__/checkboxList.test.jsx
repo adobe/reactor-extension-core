@@ -1,72 +1,120 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import Coral from 'coralui-support-react';
 import TestUtils from 'react-addons-test-utils';
 import CheckboxList from '../checkboxList';
-import Coral from 'coralui-support-react';
 
-describe('disclosure button', () => {
-  let render = props => {
-    return TestUtils.renderIntoDocument(<CheckboxList {...props} />);
+const render = props => {
+  return TestUtils.renderIntoDocument(<CheckboxList {...props}/>);
+};
+
+const getParts = instance => {
+  return {
+    checkboxes: TestUtils.scryRenderedComponentsWithType(instance, Coral.Checkbox)
   };
+};
 
-  let getParts = component => {
-    return {
-      checkboxes: TestUtils.scryRenderedComponentsWithType(component, Coral.Checkbox)
-    };
-  };
+const stringOptions = [
+  'a',
+  'b',
+  'c'
+];
 
-  it('displays a checkbox for each item', () => {
-    let { checkboxes } = getParts(render({
-      items: [
-        'foo',
-        'bar'
-      ]
+const objectOptions = [
+  {
+    value: 'a',
+    label: 'A'
+  },
+  {
+    value: 'b',
+    label: 'B'
+  },
+  {
+    value: 'c',
+    label: 'C'
+  }
+];
+
+describe('checkbox list', () => {
+  it('creates checkboxes from string options', () => {
+    const { checkboxes } = getParts(render({
+      options: stringOptions
     }));
 
-    expect(checkboxes.length).toBe(2);
+    const renderedValues = checkboxes.map(checkbox => {
+      return checkbox.props.value;
+    });
+
+    const renderedLabels = checkboxes.map(checkbox => {
+      return checkbox.props.children;
+    });
+
+    expect(renderedValues).toEqual(stringOptions);
+    expect(renderedLabels).toEqual(stringOptions);
   });
 
-  it('calls select when a checkbox is selected', () => {
-    let select = jasmine.createSpy();
-    let { checkboxes } = getParts(render({
-      items: [
-        'foo',
-        'bar'
-      ],
-      select
+  it('creates checkboxes from object options', () => {
+    const { checkboxes } = getParts(render({
+      options: objectOptions
     }));
 
-    TestUtils.Simulate.change(ReactDOM.findDOMNode(checkboxes[1]), {
+    const renderedValues = checkboxes.map(checkbox => {
+      return checkbox.props.value;
+    });
+
+    const renderedLabels = checkboxes.map(checkbox => {
+      return checkbox.props.children;
+    });
+
+    expect(renderedValues).toEqual(['a', 'b', 'c']);
+    expect(renderedLabels).toEqual(['A', 'B', 'C']);
+  });
+
+  it('checks checkboxes based on value', () => {
+    const { checkboxes } = getParts(render({
+      options: stringOptions,
+      value: ['b']
+    }));
+
+    expect(checkboxes[1].props.checked).toBe(true);
+  });
+
+  it('calls onChange when a checkbox is checked', () => {
+    const onChange = jasmine.createSpy();
+    const { checkboxes } = getParts(render({
+      options: stringOptions,
+      value: ['b'],
+      onChange
+    }));
+
+    const testCheckbox = checkboxes[2];
+
+    testCheckbox.props.onChange({
       target: {
-        value: 'bar',
+        value: testCheckbox.props.value,
         checked: true
       }
     });
 
-    expect(select).toHaveBeenCalledWith('bar');
+    expect(onChange).toHaveBeenCalledWith(['b', 'c']);
   });
 
-  it('calls deselect when a checkbox is deselected', () => {
-    let deselect = jasmine.createSpy();
-    let { checkboxes } = getParts(render({
-      items: [
-        'foo',
-        'bar'
-      ],
-      selectedValues: [
-        'foo',
-        'bar'
-      ],
-      deselect
+  it('calls onChange when a checkbox is unchecked', () => {
+    const onChange = jasmine.createSpy();
+    const { checkboxes } = getParts(render({
+      options: stringOptions,
+      value: ['b', 'c'],
+      onChange
     }));
 
-    TestUtils.Simulate.change(ReactDOM.findDOMNode(checkboxes[1]), {
+    const testCheckbox = checkboxes[2];
+
+    testCheckbox.props.onChange({
       target: {
-        value: 'bar',
+        value: testCheckbox.props.value,
         checked: false
       }
     });
 
-    expect(deselect).toHaveBeenCalledWith('bar');
-  });
+    expect(onChange).toHaveBeenCalledWith(['b']);
+  })
 });

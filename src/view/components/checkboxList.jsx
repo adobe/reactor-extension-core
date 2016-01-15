@@ -3,42 +3,40 @@ import Coral from 'coralui-support-react';
 
 export default class CheckboxList extends React.Component {
   onChange = event => {
-    let value = event.target.value;
-    let selectedValues = this.props.selectedValues || [];
-    let index = selectedValues.indexOf(value);
+    const checkboxValue = event.target.value;
+    const value = this.props.value ? this.props.value.slice() : [];
 
     if (event.target.checked) {
-      if (index === -1) {
-        this.props.select(value);
-      }
+      value.push(checkboxValue);
     } else {
-      if (index !== -1) {
-        this.props.deselect(value);
-      }
+      const index = value.indexOf(checkboxValue);
+      value.splice(index, 1);
+    }
+
+    if (this.props.onChange) {
+      this.props.onChange(value);
     }
   };
 
   render() {
-    let items = this.props.items || [];
-    let selectedValues = this.props.selectedValues || [];
-
-    let options = items.map(item => {
+    let options = this.props.options || [];
+    options = options.map(option => {
       let value;
       let label;
 
-      if (typeof item === 'string') {
-        value = item;
-        label = item;
+      if (typeof option === 'string') {
+        value = option;
+        label = option;
       } else {
-        value = item.value;
-        label = item.label;
+        value = option.value;
+        label = option.label;
       }
 
       return (
         <li key={value}>
           <Coral.Checkbox
             value={value}
-            checked={selectedValues.indexOf(value) !== -1}
+            checked={this.props.value && this.props.value.indexOf(value) > -1}
             onChange={this.onChange}>
             {label}
           </Coral.Checkbox>

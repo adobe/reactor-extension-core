@@ -1,37 +1,36 @@
 import React from 'react';
-import Coral from 'coralui-support-react';
-import { connect } from 'react-redux';
-import { actionCreators } from './actions/cookieActions';
+import Coral from '../reduxFormCoralUI';
 import ValidationWrapper from '../components/validationWrapper';
-
-export let mapStateToProps = state => ({
-  name: state.get('name'),
-  nameIsEmpty: state.getIn(['errors', 'nameIsEmpty'])
-});
+import extensionViewReduxForm from '../extensionViewReduxForm';
 
 export class Cookie extends React.Component {
-  onNameChange = event => {
-    this.props.dispatch(actionCreators.setName(event.target.value));
-  };
-
   render() {
-    let error;
-
-    if (this.props.nameIsEmpty) {
-      error = 'Please specify a cookie name.';
-    }
+    const name = this.props.fields.name;
 
     return (
-      <ValidationWrapper error={error}>
+      <ValidationWrapper error={name.touched && name.error}>
         <label>
           <span className="u-label">Cookie Name:</span>
-          <Coral.Textfield
-            value={this.props.name}
-            onChange={this.onNameChange}/>
+          <Coral.Textfield {...name}/>
         </label>
       </ValidationWrapper>
     );
   }
 }
 
-export default connect(mapStateToProps)(Cookie);
+const fields = ['name'];
+
+const validate = values => {
+  const errors = {};
+
+  if (!values.name) {
+    errors.name = 'Please specify a cookie name.';
+  }
+
+  return errors;
+};
+
+export default extensionViewReduxForm({
+  fields,
+  validate
+})(Cookie);
