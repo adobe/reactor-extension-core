@@ -16,9 +16,9 @@ export default class AdvancedEventOptions extends React.Component {
     }
   }
 
-  setExpanded = value => {
+  toggleSelected = () => {
     this.setState({
-      expanded: value
+      expanded: !this.state.expanded
     });
   };
   render() {
@@ -54,7 +54,7 @@ export default class AdvancedEventOptions extends React.Component {
             ref="disclosureButton"
             label="Advanced"
             selected={this.state.expanded}
-            setSelected={this.setExpanded}/>
+            onClick={this.toggleSelected}/>
         </div>
         {advancedPanel}
       </div>
