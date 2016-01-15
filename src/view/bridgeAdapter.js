@@ -44,8 +44,14 @@ export default (extensionBridge, store) => {
   };
 
   extensionBridge.getConfig = () => {
-    const values = getValues(store.getState().form.default) || {};
-    return _reducersForRoute.formValuesToConfig({}, values);
+    let config = {};
+
+    if (extensionBridge.validate()) {
+      const values = getValues(store.getState().form.default) || {};
+      config = _reducersForRoute.formValuesToConfig({}, values);
+    }
+
+    return config;
   };
 
   extensionBridge.validate = () => {
