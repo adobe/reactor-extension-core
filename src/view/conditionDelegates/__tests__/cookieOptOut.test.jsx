@@ -1,9 +1,9 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../reduxFormCoralUI';
-import setupComponent from '../../__tests__/helpers/setupComponent';
+import setUpComponent from '../../__tests__/helpers/setUpComponent';
 import CookieOptOut from '../cookieOptOut';
 
-const {instance, extensionBridge} = setupComponent(CookieOptOut);
+const { instance, extensionBridge } = setUpComponent(CookieOptOut);
 const getParts = () => {
   return {
     checkbox: TestUtils.findRenderedComponentWithType(instance, Coral.Checkbox)

@@ -6,12 +6,12 @@ import ElementSelectorField from '../components/elementSelectorField';
 import ElementPropertiesEditor from '../components/elementPropertiesEditor';
 import AdvancedEventOptions from '../components/advancedEventOptions';
 import ElementFilter from '../components/elementFilter';
-import setupComponent from '../../__tests__/helpers/setupComponent';
+import setUpComponent from '../../__tests__/helpers/setUpComponent';
 import testElementFilter from '../components/__tests__/elementFilter.test';
 import testAdvancedOptions from '../components/__tests__/advancedEventOptions.test';
 import testElementPropertiesEditor from '../components/__tests__/elementPropertiesEditor.test';
 
-const { instance, extensionBridge } = setupComponent(BlurProviderComponent, blurEventReducers);
+const { instance, extensionBridge } = setUpComponent(BlurProviderComponent, blurEventReducers);
 const getParts = (instance) => {
   const errorIcons = TestUtils.scryRenderedComponentsWithType(instance, ErrorIcon);
 

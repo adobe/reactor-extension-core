@@ -1,10 +1,10 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../reduxFormCoralUI';
-import setupComponent from '../../__tests__/helpers/setupComponent';
+import setUpComponent from '../../__tests__/helpers/setUpComponent';
 import Cookie from '../cookie';
 import ValidationWrapper from '../../components/validationWrapper';
 
-const {instance, extensionBridge} = setupComponent(Cookie);
+const { instance, extensionBridge } = setUpComponent(Cookie);
 const getParts = () => {
   return {
     nameField: TestUtils.findRenderedComponentWithType(instance, Coral.Textfield),
