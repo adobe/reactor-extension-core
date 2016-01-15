@@ -1,0 +1,49 @@
+import TestUtils from 'react-addons-test-utils';
+import Coral from '../../reduxFormCoralUI';
+import setupComponent from '../../__tests__/helpers/setupComponent';
+import DeviceType, { reducers } from '../deviceType';
+import CheckboxList from '../../components/checkboxList';
+
+const {instance, extensionBridge} = setupComponent(DeviceType, reducers);
+const getParts = () => {
+  return {
+    checkboxList: TestUtils.findRenderedComponentWithType(instance, CheckboxList)
+  };
+};
+
+const deviceTypes = [
+  'Desktop',
+  'Android'
+];
+
+describe('device type view', () => {
+  it('sets form values from config', () => {
+    extensionBridge.init({
+      config: {
+        deviceTypes: deviceTypes
+      }
+    });
+
+    const { checkboxList } = getParts();
+
+    expect(checkboxList.props.value).toEqual(deviceTypes);
+  });
+
+  it('sets config from form values', () => {
+    extensionBridge.init();
+
+    const { checkboxList } = getParts();
+    checkboxList.props.onChange(deviceTypes);
+
+    expect(extensionBridge.getConfig()).toEqual({
+      deviceTypes
+    });
+  });
+
+  it('sets deviceTypes to an empty array if nothing is selected', () => {
+    extensionBridge.init();
+    expect(extensionBridge.getConfig()).toEqual({
+      deviceTypes: []
+    });
+  });
+});
