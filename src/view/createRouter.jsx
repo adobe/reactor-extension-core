@@ -13,6 +13,7 @@ import CartItemQuantityCondition, { reducers as cartItemQuantityConditionReducer
 import CookieCondition from './conditionDelegates/cookie';
 import CookieOptOutCondition from './conditionDelegates/cookieOptOut';
 import CustomCondition, { reducers as customConditionReducers } from './conditionDelegates/custom';
+import DataElementCondition from './conditionDelegates/dataElement';
 import DeviceTypeCondition, { reducers as deviceTypeConditionReducers } from './conditionDelegates/deviceType';
 import DomainCondition, { reducers as domainConditionReducers } from './conditionDelegates/domain';
 import URLParameterCondition from './conditionDelegates/urlParameter';
@@ -41,6 +42,7 @@ export default (setBridgeReducers) => {
       <Route path="/conditions/cookie" component={CookieCondition} onEnter={onEnter}/>
       <Route path="/conditions/cookieOptOut" component={CookieOptOutCondition} onEnter={onEnter}/>
       <Route path="/conditions/custom" component={CustomCondition} reducers={customConditionReducers} onEnter={onEnter}/>
+      <Route path="/conditions/dataElement" component={DataElementCondition} onEnter={onEnter}/>
       <Route path="/conditions/deviceType" component={DeviceTypeCondition} reducers={deviceTypeConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/domain" component={DomainCondition} reducers={domainConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/urlParameter" component={URLParameterCondition} onEnter={onEnter}/>

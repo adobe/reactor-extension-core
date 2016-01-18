@@ -354,7 +354,24 @@
     {
       "displayName": "Data Element",
       "libPath": "conditionDelegates/dataElement.js",
-      "viewPath": "index.html#/conditions/dataElement"
+      "viewPath": "index.html#/conditions/dataElement",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "dataElement": {
+            "type": "string",
+            "minLength": 1
+          },
+          "value": {
+            "type": "string"
+          },
+          "valueIsRegex": {
+            "type": "boolean"
+          }
+        },
+        "required": ["dataElement", "value"]
+      }
     },
     {
       "displayName": "Device Type",
