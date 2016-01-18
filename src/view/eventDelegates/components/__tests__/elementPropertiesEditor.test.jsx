@@ -1,5 +1,53 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../../reduxFormCoralUI';
+import ElementPropertyEditor from '../../components/elementPropertyEditor';
+
+const makeEditorVisible = (instance, getParts) => {
+  const { elementFilterComponent } = getParts(instance);
+  elementFilterComponent.refs.showElementPropertiesCheckbox.props.onChange(true);
+};
+
+const getEditorFields = (instance, getParts) => {
+  makeEditorVisible(instance, getParts);
+
+  const { elementPropertiesEditorComponent } = getParts(instance);
+  const fields =
+    TestUtils.scryRenderedComponentsWithType(elementPropertiesEditorComponent, Coral.Textfield);
+
+  return {
+    nameField: fields[0].props,
+    valueField: fields[1].props
+  };
+};
+
+const clickRemoveButtonOnFirstRow = (instance, getParts) => {
+  const { elementPropertiesEditorComponent } = getParts(instance);
+
+  const editorRows = TestUtils.scryRenderedComponentsWithType(
+    elementPropertiesEditorComponent,
+    ElementPropertyEditor
+  );
+
+  const firstRowRemoveButton = editorRows[0].refs.removeButton;
+  firstRowRemoveButton.props.onClick();
+};
+
+const countEditorRows = (instance, getParts) => {
+  const { elementPropertiesEditorComponent } = getParts(instance);
+  const fields =
+    TestUtils.scryRenderedComponentsWithType(elementPropertiesEditorComponent, Coral.Textfield);
+
+  // Two inputs for each visible row.
+  return fields.length / 2;
+};
+
+const clickAddButton = (instance, getParts) => {
+  const { elementPropertiesEditorComponent } = getParts(instance);
+
+  const addButton = elementPropertiesEditorComponent.refs.addButton;
+  addButton.props.onClick();
+};
+
 
 export default (instance, getParts, extensionBridge) => {
   describe('elementPropertiesEditor', () => {
@@ -13,29 +61,19 @@ export default (instance, getParts, extensionBridge) => {
         }
       });
 
-      const { elementPropertiesEditorComponent } = getParts(instance);
-      const fields = TestUtils.scryRenderedComponentsWithType(elementPropertiesEditorComponent, Coral.Textfield);
+      const { nameField, valueField } = getEditorFields(instance, getParts);
 
-      const name = fields[0].props.value;
-      const value = fields[1].props.value;
-
-      expect(name).toBe('someprop');
-      expect(value).toBe('somevalue');
+      expect(nameField.value).toBe('someprop');
+      expect(valueField.value).toBe('somevalue');
     });
 
     it('sets config from form values', () => {
       extensionBridge.init();
 
-      const { elementFilterComponent } = getParts(instance);
-      elementFilterComponent.refs.showElementPropertiesCheckbox.props.onChange(true);
+      const { nameField, valueField } = getEditorFields(instance, getParts);
 
-      const { elementPropertiesEditorComponent } = getParts(instance);
-      const fields = TestUtils.scryRenderedComponentsWithType(elementPropertiesEditorComponent, Coral.Textfield);
-      const name = fields[0].props;
-      const value = fields[1].props;
-
-      name.onChange('somepropset');
-      value.onChange('somevalueset');
+      nameField.onChange('somepropset');
+      valueField.onChange('somevalueset');
 
       expect(extensionBridge.getConfig()).toEqual({
         elementProperties: [{
@@ -43,6 +81,36 @@ export default (instance, getParts, extensionBridge) => {
           value: 'somevalueset'
         }]
       });
+    });
+
+    it('sets error if element property name field is empty', () => {
+      extensionBridge.init();
+
+      const { valueField } = getEditorFields(instance, getParts);
+
+      valueField.onChange('somevalueset');
+      expect(extensionBridge.validate()).toBe(false);
+
+      const { errorIcon } = getParts(instance);
+      expect(errorIcon.props.message).toBeDefined();
+    });
+
+    it('creates a new row when the add button is clicked', () => {
+      extensionBridge.init();
+      makeEditorVisible(instance, getParts);
+      clickAddButton(instance, getParts);
+
+      // First row is visible by default.
+      expect(countEditorRows(instance, getParts)).toBe(2);
+    });
+
+    it('deletes a row when delete button is clicked', () => {
+      extensionBridge.init();
+      makeEditorVisible(instance, getParts);
+      clickAddButton(instance, getParts);
+      clickRemoveButtonOnFirstRow(instance, getParts);
+
+      expect(countEditorRows(instance, getParts)).toBe(1);
     });
   });
 };

@@ -1,10 +1,15 @@
 import TestUtils from 'react-addons-test-utils';
 
 export default (instance, getParts, extensionBridge) => {
+  let { advancedEventOptionsComponent } = getParts(instance);
+
   describe('advancedEventOptions', () => {
     beforeEach(() => {
-      const { advancedEventOptionsComponent } = getParts(instance);
-      advancedEventOptionsComponent.setState({expanded: true});
+      advancedEventOptionsComponent.toggleSelected();
+    });
+
+    afterEach(() => {
+      advancedEventOptionsComponent.toggleSelected();
     });
 
     it('sets form values from config', () => {
@@ -16,7 +21,6 @@ export default (instance, getParts, extensionBridge) => {
           }
         });
 
-        const { advancedEventOptionsComponent } = getParts(instance);
         const refs = advancedEventOptionsComponent.refs;
 
         expect(refs.bubbleFireIfParentCheckbox.props.checked).toBe(true);
@@ -27,7 +31,6 @@ export default (instance, getParts, extensionBridge) => {
     it('sets config from form values', () => {
       extensionBridge.init();
 
-      const { advancedEventOptionsComponent } = getParts(instance);
       const refs = advancedEventOptionsComponent.refs;
 
       refs.bubbleFireIfParentCheckbox.props.onChange(true);
