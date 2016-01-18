@@ -1,12 +1,12 @@
 'use strict';
 
-var conditionDelegateInjector = require('inject!../hashMatches');
+var conditionDelegateInjector = require('inject!../hash');
 var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
 var conditionDelegate = conditionDelegateInjector({
   textMatch: publicRequire('textMatch')
 });
 
-describe('hash matches condition delegate', function() {
+describe('hash condition delegate', function() {
 
   beforeAll(function() {
     document.location.hash = 'hashtest';

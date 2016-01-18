@@ -420,14 +420,9 @@
       }
     },
     {
-      "displayName": "Hash Does Not Match",
-      "libPath": "conditionDelegates/hashDoesNotMatch.js",
-      "viewPath": "index.html#/conditions/hashDoesNotMatch"
-    },
-    {
-      "displayName": "Hash Matches",
-      "libPath": "conditionDelegates/hashMatches.js",
-      "viewPath": "index.html#/conditions/hashMatches"
+      "displayName": "Hash",
+      "libPath": "conditionDelegates/hash.js",
+      "viewPath": "index.html#/conditions/hash"
     },
     {
       "displayName": "Landing Page",
@@ -455,14 +450,33 @@
       "viewPath": "index.html#/conditions/pageViews"
     },
     {
-      "displayName": "Path Does Not Match",
-      "libPath": "conditionDelegates/pathDoesNotMatch.js",
-      "viewPath": "index.html#/conditions/pathDoesNotMatch"
-    },
-    {
-      "displayName": "Path Matches",
-      "libPath": "conditionDelegates/pathMatches.js",
-      "viewPath": "index.html#/conditions/pathMatches"
+      "displayName": "Path",
+      "libPath": "conditionDelegates/path.js",
+      "viewPath": "index.html#/conditions/path",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "paths": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "valueIsRegex": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["value"]
+            },
+            "minItems": 1
+          }
+        },
+        "required": ["paths"]
+      }
     },
     {
       "displayName": "Previous Converter",
@@ -490,14 +504,9 @@
       "viewPath": "index.html#/conditions/sessions"
     },
     {
-      "displayName": "Subdomain Does Not Match",
-      "libPath": "conditionDelegates/subdomainDoesNotMatch.js",
-      "viewPath": "index.html#/conditions/subdomainDoesNotMatch"
-    },
-    {
-      "displayName": "Subdomain Matches",
-      "libPath": "conditionDelegates/subdomainMatches.js",
-      "viewPath": "index.html#/conditions/subdomainMatches"
+      "displayName": "Subdomain",
+      "libPath": "conditionDelegates/subdomain.js",
+      "viewPath": "index.html#/conditions/subdomain"
     },
     {
       "displayName": "Time On Site",

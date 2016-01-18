@@ -6,14 +6,14 @@ var mockDocument = {
   }
 };
 
-var conditionDelegateInjector = require('inject!../subdomainMatches');
+var conditionDelegateInjector = require('inject!../subdomain');
 var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
 var conditionDelegate = conditionDelegateInjector({
   textMatch: publicRequire('textMatch'),
   document: mockDocument
 });
 
-describe('subdomain matches condition delegate', function() {
+describe('subdomain condition delegate', function() {
   it('returns true when the subdomain matches an acceptable string', function() {
     var config = {
       subdomains: [
