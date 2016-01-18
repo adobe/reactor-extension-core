@@ -9,6 +9,7 @@ import DirectCallEvent from './eventDelegates/directCall';
 // Conditions
 import BrowserCondition, { reducers as browserConditionReducers } from './conditionDelegates/browser';
 import CartAmountCondition, { reducers as cartAmountConditionReducers } from './conditionDelegates/cartAmount';
+import CartItemQuantityCondition, { reducers as cartItemQuantityConditionReducers } from './conditionDelegates/cartItemQuantity';
 import CookieCondition from './conditionDelegates/cookie';
 import CookieOptOutCondition from './conditionDelegates/cookieOptOut';
 import CustomCondition, { reducers as customConditionReducers } from './conditionDelegates/custom';
@@ -36,6 +37,7 @@ export default (setBridgeReducers) => {
 
       <Route path="/conditions/browser" component={BrowserCondition} reducers={browserConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/cartAmount" component={CartAmountCondition} reducers={cartAmountConditionReducers} onEnter={onEnter}/>
+      <Route path="/conditions/cartItemQuantity" component={CartItemQuantityCondition} reducers={cartItemQuantityConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/cookie" component={CookieCondition} onEnter={onEnter}/>
       <Route path="/conditions/cookieOptOut" component={CookieOptOutCondition} onEnter={onEnter}/>
       <Route path="/conditions/custom" component={CustomCondition} reducers={customConditionReducers} onEnter={onEnter}/>

@@ -266,7 +266,29 @@
     {
       "displayName": "Cart Item Quantity",
       "libPath": "conditionDelegates/cartItemQuantity.js",
-      "viewPath": "index.html#/conditions/cartItemQuantity"
+      "viewPath": "index.html#/conditions/cartItemQuantity",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "dataElement": {
+            "type": "string",
+            "minLength": 1
+          },
+          "operator": {
+            "type": "string",
+            "enum": [
+              ">",
+              "=",
+              "<"
+            ]
+          },
+          "quantity": {
+            "type": "number"
+          }
+        },
+        "required": ["dataElement", "operator", "quantity"]
+      }
     },
     {
       "displayName": "Cookie",
