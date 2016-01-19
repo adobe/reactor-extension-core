@@ -69,7 +69,8 @@
     {
       "displayName": "DOM Ready",
       "libPath": "eventDelegates/domReady.js",
-      "viewPath": "index.html#/events/domReady"
+      "viewPath": "index.html#/events/domReady",
+      "schema": {}
     },
     {
       "displayName": "Element Exists",
