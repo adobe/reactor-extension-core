@@ -7,6 +7,7 @@ var path = require('path');
 var plumber = require('gulp-plumber');
 var notify = require('gulp-notify');
 
+require('turbine-gulp-packager')(gulp);
 require('turbine-gulp-testrunner')(gulp);
 
 // Shows an growl notification saying that building failed and then logs the error to the console.
