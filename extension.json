@@ -452,7 +452,21 @@
     {
       "displayName": "Landing Page",
       "libPath": "conditionDelegates/landingPage.js",
-      "viewPath": "index.html#/conditions/landingPage"
+      "viewPath": "index.html#/conditions/landingPage",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "string",
+            "minLength": 1
+          },
+          "pageIsRegex": {
+            "type": "boolean"
+          }
+        },
+        "required": ["page"]
+      }
     },
     {
       "displayName": "Logged In",
