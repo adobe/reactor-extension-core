@@ -1,5 +1,6 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
+import classNames from 'classnames';
 
 export default class RegexToggle extends React.Component {
   onToggleChange = event => {
@@ -15,7 +16,7 @@ export default class RegexToggle extends React.Component {
 
   render() {
     return (
-      <div className="u-inlineBlock">
+      <div className={classNames(this.props.className, 'u-inlineBlock')}>
         <label>
           <Coral.Switch
             className="u-gapRight"

@@ -7,14 +7,14 @@ var mockDocument = {
   }
 };
 
-var conditionDelegateInjector = require('inject!../pathMatches');
+var conditionDelegateInjector = require('inject!../path');
 var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
 var conditionDelegate = conditionDelegateInjector({
   textMatch: publicRequire('textMatch'),
   document: mockDocument
 });
 
-describe('path matches condition delegate', function() {
+describe('path condition delegate', function() {
   it('returns true when the path matches an acceptable string', function() {
     var config = {
       paths: [
