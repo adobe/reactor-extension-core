@@ -1,5 +1,6 @@
 import React from 'react';
 import NoConfig from '../components/noConfig';
+import extensionViewReduxForm from '../extensionViewReduxForm';
 
 export class DomReady extends React.Component {
   render() {
@@ -9,4 +10,8 @@ export class DomReady extends React.Component {
   }
 }
 
-export default DomReady
+const fields = [];
+
+export default extensionViewReduxForm({
+  fields
+})(DomReady);
