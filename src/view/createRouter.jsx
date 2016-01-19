@@ -17,6 +17,7 @@ import CustomCondition, { reducers as customConditionReducers } from './conditio
 import DataElementCondition from './conditionDelegates/dataElement';
 import DeviceTypeCondition, { reducers as deviceTypeConditionReducers } from './conditionDelegates/deviceType';
 import DomainCondition, { reducers as domainConditionReducers } from './conditionDelegates/domain';
+import HashCondition, { reducers as hashConditionReducers } from './conditionDelegates/hash';
 import PathCondition, { reducers as pathConditionReducers } from './conditionDelegates/path';
 import URLParameterCondition from './conditionDelegates/urlParameter';
 
@@ -48,6 +49,7 @@ export default (setBridgeReducers) => {
       <Route path="/conditions/dataElement" component={DataElementCondition} onEnter={onEnter}/>
       <Route path="/conditions/deviceType" component={DeviceTypeCondition} reducers={deviceTypeConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/domain" component={DomainCondition} reducers={domainConditionReducers} onEnter={onEnter}/>
+      <Route path="/conditions/hash" component={HashCondition} reducers={hashConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/path" component={PathCondition} reducers={pathConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/urlParameter" component={URLParameterCondition} onEnter={onEnter}/>
 

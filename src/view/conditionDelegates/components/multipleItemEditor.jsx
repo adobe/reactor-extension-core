@@ -15,29 +15,33 @@ export default class MultipleItemEditor extends React.Component {
               <Coral.Button
                 ref={'removeButton' + i}
                 className="u-gapLeft"
-                icon="delete"
-                iconsize="S"
+                icon="close"
+                iconsize="XS"
                 variant="quiet"
-                onClick={onRemoveItem.bind(this, i)}/> :
-              null
-          }
-          {
-            i === items.length - 1 ?
-              <Coral.Button
-                ref="addButton"
-                className="u-gapLeft"
-                icon="addCircle"
-                iconsize="S"
-                variant="quiet"
-                onClick={onAddItem}>
-                Add Pattern
-              </Coral.Button> :
+                onClick={onRemoveItem.bind(this, i)}>
+                Remove Pattern
+              </Coral.Button>:
               null
           }
         </div>
       );
     });
 
-    return <div>{rows}</div>;
+    return (
+      <div>
+        {rows}
+        <div>
+          <Coral.Button
+            ref="addButton"
+            className="u-gapTop"
+            icon="addCircle"
+            iconsize="S"
+            variant="quiet"
+            onClick={onAddItem}>
+            Add Pattern
+          </Coral.Button>
+        </div>
+      </div>
+    );
   }
 }

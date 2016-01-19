@@ -423,7 +423,31 @@
     {
       "displayName": "Hash",
       "libPath": "conditionDelegates/hash.js",
-      "viewPath": "index.html#/conditions/hash"
+      "viewPath": "index.html#/conditions/hash",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "hashes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "valueIsRegex": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["value"]
+            },
+            "minItems": 1
+          }
+        },
+        "required": ["hashes"]
+      }
     },
     {
       "displayName": "Landing Page",
