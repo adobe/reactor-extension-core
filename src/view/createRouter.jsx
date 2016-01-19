@@ -5,6 +5,7 @@ import { Router, Route } from 'react-router';
 import BlurEvent, { reducers as blurEventReducers } from './eventDelegates/blur';
 import ClickEvent, { reducers as clickEventReducers } from './eventDelegates/click';
 import DirectCallEvent from './eventDelegates/directCall';
+import DomReadyEvent from './eventDelegates/domReady';
 
 // Conditions
 import BrowserCondition, { reducers as browserConditionReducers } from './conditionDelegates/browser';
@@ -34,6 +35,7 @@ export default (setBridgeReducers) => {
       <Route path="/events/blur" component={BlurEvent} reducers={blurEventReducers} onEnter={onEnter}/>
       <Route path="/events/click" component={ClickEvent} reducers={clickEventReducers} onEnter={onEnter}/>
       <Route path="/events/directCall" component={DirectCallEvent} onEnter={onEnter}/>
+      <Route path="/events/domready" component={DomReadyEvent} onEnter={onEnter}/>
 
       <Route path="/conditions/browser" component={BrowserCondition} reducers={browserConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/cartAmount" component={CartAmountCondition} reducers={cartAmountConditionReducers} onEnter={onEnter}/>
