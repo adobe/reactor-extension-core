@@ -10,8 +10,8 @@ const { instance, extensionBridge } = setUpComponent(DataElement);
 const getParts = () => {
   const validationWrappers = TestUtils.scryRenderedComponentsWithType(instance, ValidationWrapper);
   return {
-    dataElementField: TestUtils.findRenderedComponentWithType(instance, DataElementNameField),
-    dataElementValidationWrapper: validationWrappers[0],
+    nameField: TestUtils.findRenderedComponentWithType(instance, DataElementNameField),
+    nameValidationWrapper: validationWrappers[0],
     valueField: TestUtils.scryRenderedComponentsWithType(instance, Coral.Textfield)[1],
     valueValidationWrapper: validationWrappers[1],
     regexToggle: TestUtils.findRenderedComponentWithType(instance, RegexToggle)
@@ -22,15 +22,15 @@ describe('data element view', () => {
   it('sets form values from config', () => {
     extensionBridge.init({
       config: {
-        dataElement: 'foo',
+        name: 'foo',
         value: 'bar',
         valueIsRegex: true
       }
     });
 
-    const { dataElementField, valueField, regexToggle } = getParts();
+    const { nameField, valueField, regexToggle } = getParts();
 
-    expect(dataElementField.props.value).toBe('foo');
+    expect(nameField.props.value).toBe('foo');
     expect(valueField.props.value).toBe('bar');
     expect(regexToggle.props.value).toBe('bar');
     expect(regexToggle.props.valueIsRegex).toBe(true);
@@ -39,14 +39,14 @@ describe('data element view', () => {
   it('sets config from form values', () => {
     extensionBridge.init();
 
-    const { dataElementField, valueField, regexToggle } = getParts();
+    const { nameField, valueField, regexToggle } = getParts();
 
-    dataElementField.props.onChange('foo');
+    nameField.props.onChange('foo');
     valueField.props.onChange('bar');
     regexToggle.props.onValueIsRegexChange(true);
 
     expect(extensionBridge.getConfig()).toEqual({
-      dataElement: 'foo',
+      name: 'foo',
       value: 'bar',
       valueIsRegex: true
     });
@@ -57,11 +57,11 @@ describe('data element view', () => {
     expect(extensionBridge.validate()).toBe(false);
 
     const {
-      dataElementValidationWrapper,
+      nameValidationWrapper,
       valueValidationWrapper
     } = getParts();
 
-    expect(dataElementValidationWrapper.props.error).toEqual(jasmine.any(String));
+    expect(nameValidationWrapper.props.error).toEqual(jasmine.any(String));
     expect(valueValidationWrapper.props.error).toEqual(jasmine.any(String));
   });
 });
