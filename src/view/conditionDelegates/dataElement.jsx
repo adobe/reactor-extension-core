@@ -9,8 +9,6 @@ export class DataElement extends React.Component {
   render() {
     const { name, value, valueIsRegex } = this.props.fields;
 
-    console.log(name, valueIsRegex);
-
     return (
       <div>
         <ValidationWrapper className="u-gapRight" error={name.touched && name.error}>
