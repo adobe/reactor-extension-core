@@ -8,7 +8,7 @@ var plumber = require('gulp-plumber');
 var notify = require('gulp-notify');
 
 require('turbine-gulp-packager')(gulp, {
-  buildViewTask: 'buildView'
+  dependencyTasks: ['buildView']
 });
 require('turbine-gulp-testrunner')(gulp);
 
@@ -87,5 +87,5 @@ gulp.task('watch', function() {
 gulp.task('buildView', ['buildJS', 'copyHTML']);
 
 require('turbine-gulp-sandbox')(gulp, {
-  buildViewTask: 'buildView'
+  dependencyTasks: ['buildView', 'watch']
 });
