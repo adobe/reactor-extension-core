@@ -7,14 +7,14 @@ import RegexToggle from '../components/regexToggle';
 
 export class DataElement extends React.Component {
   render() {
-    const { dataElement, value, valueIsRegex } = this.props.fields;
+    const { name, value, valueIsRegex } = this.props.fields;
 
     return (
       <div>
-        <ValidationWrapper className="u-gapRight" error={dataElement.touched && dataElement.error}>
+        <ValidationWrapper className="u-gapRight" error={name.touched && name.error}>
           <label>
             <span className="u-label">Data element name</span>
-            <DataElementNameField {...dataElement}/>
+            <DataElementNameField {...name}/>
           </label>
         </ValidationWrapper>
         <ValidationWrapper className="u-gapRight" error={value.touched && value.error}>
@@ -34,7 +34,7 @@ export class DataElement extends React.Component {
 }
 
 const fields = [
-  'dataElement',
+  'name',
   'value',
   'valueIsRegex'
 ];
@@ -42,8 +42,8 @@ const fields = [
 const validate = values => {
   const errors = {};
 
-  if (!values.dataElement) {
-    errors.dataElement = 'Please specify a data element.';
+  if (!values.name) {
+    errors.name = 'Please specify a data element.';
   }
 
   if (!values.value) {

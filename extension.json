@@ -361,7 +361,7 @@
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
         "properties": {
-          "dataElement": {
+          "name": {
             "type": "string",
             "minLength": 1
           },
@@ -372,7 +372,7 @@
             "type": "boolean"
           }
         },
-        "required": ["dataElement", "value"]
+        "required": ["name", "value"]
       }
     },
     {
