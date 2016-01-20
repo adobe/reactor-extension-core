@@ -42,7 +42,7 @@ export default (extensionBridge, store) => {
       initialValues
     }));
 
-    store.dispatch(reset());
+    store.dispatch(reset('default'));
   };
 
   extensionBridge.getConfig = () => {
