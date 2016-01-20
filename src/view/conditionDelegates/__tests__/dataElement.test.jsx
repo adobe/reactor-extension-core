@@ -3,14 +3,14 @@ import Coral from '../../reduxFormCoralUI';
 import setUpComponent from '../../__tests__/helpers/setUpComponent';
 import DataElement from '../dataElement';
 import ValidationWrapper from '../../components/validationWrapper';
-import dataElementNameField from '../components/dataElementNameField';
+import DataElementNameField from '../components/dataElementNameField';
 import RegexToggle from '../../components/regexToggle';
 
 const { instance, extensionBridge } = setUpComponent(DataElement);
 const getParts = () => {
   const validationWrappers = TestUtils.scryRenderedComponentsWithType(instance, ValidationWrapper);
   return {
-    dataElementField: TestUtils.findRenderedComponentWithType(instance, dataElementNameField),
+    dataElementField: TestUtils.findRenderedComponentWithType(instance, DataElementNameField),
     dataElementValidationWrapper: validationWrappers[0],
     valueField: TestUtils.scryRenderedComponentsWithType(instance, Coral.Textfield)[1],
     valueValidationWrapper: validationWrappers[1],
