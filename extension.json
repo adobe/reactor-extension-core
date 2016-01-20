@@ -471,7 +471,18 @@
     {
       "displayName": "Logged In",
       "libPath": "conditionDelegates/loggedIn.js",
-      "viewPath": "index.html#/conditions/loggedIn"
+      "viewPath": "index.html#/conditions/loggedIn",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "dataElement": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": ["dataElement"]
+      }
     },
     {
       "displayName": "New/Returning Visitor",

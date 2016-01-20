@@ -19,6 +19,7 @@ import DeviceTypeCondition, { reducers as deviceTypeConditionReducers } from './
 import DomainCondition, { reducers as domainConditionReducers } from './conditionDelegates/domain';
 import HashCondition, { reducers as hashConditionReducers } from './conditionDelegates/hash';
 import LandingPageCondition from './conditionDelegates/landingPage';
+import LoggedInCondition from './conditionDelegates/loggedIn';
 import PathCondition, { reducers as pathConditionReducers } from './conditionDelegates/path';
 import URLParameterCondition from './conditionDelegates/urlParameter';
 
@@ -52,6 +53,7 @@ export default (setBridgeReducers) => {
       <Route path="/conditions/domain" component={DomainCondition} reducers={domainConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/hash" component={HashCondition} reducers={hashConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/landingPage" component={LandingPageCondition} onEnter={onEnter}/>
+      <Route path="/conditions/loggedIn" component={LoggedInCondition} onEnter={onEnter}/>
       <Route path="/conditions/path" component={PathCondition} reducers={pathConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/urlParameter" component={URLParameterCondition} onEnter={onEnter}/>
 
