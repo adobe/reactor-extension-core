@@ -337,20 +337,21 @@
         "type": "object",
         "properties": {
           "script": {
-            "type": "string"
-          },
-          "__rawScripts": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": ["script"]
-            },
-            "minItems": 1,
-            "maxItems": 1
+            "type": "string",
+            "minLength": 1
           }
         },
-        "required": ["script", "__rawScripts"]
-      }
+        "required": ["script"]
+      },
+      "functionize": [
+        {
+          "path": "script",
+          "params": [
+            "event",
+            "target"
+          ]
+        }
+      ]
     },
     {
       "displayName": "Data Element",
@@ -605,20 +606,17 @@
         "type": "object",
         "properties": {
           "script": {
-            "type": "string"
-          },
-          "__rawScripts": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": ["script"]
-            },
-            "minItems": 1,
-            "maxItems": 1
+            "type": "string",
+            "minLength": 1
           }
         },
-        "required": ["script", "__rawScripts"]
-      }
+        "required": ["script"]
+      },
+      "functionize": [
+        {
+          "path": "script"
+        }
+      ]
     },
     {
       "displayName": "DOM Attribute",

@@ -1,10 +1,10 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../reduxFormCoralUI';
 import setUpComponent from '../../__tests__/helpers/setUpComponent';
-import Custom, { reducers } from '../custom';
+import Custom from '../custom';
 import ErrorIcon from '../../components/errorIcon';
 
-const { instance, extensionBridge } = setUpComponent(Custom, reducers);
+const { instance, extensionBridge } = setUpComponent(Custom);
 const getParts = () => {
   let errorIcons = TestUtils.scryRenderedComponentsWithType(instance, ErrorIcon);
 
@@ -36,8 +36,7 @@ describe('custom view', () => {
       .toHaveBeenCalledWith('foo', jasmine.any(Function));
     expect(extensionBridge.validate()).toBe(true);
     expect(extensionBridge.getConfig()).toEqual({
-      script: 'bar',
-      __rawScripts: ['script']
+      script: 'bar'
     });
 
     delete window.extensionBridge;
