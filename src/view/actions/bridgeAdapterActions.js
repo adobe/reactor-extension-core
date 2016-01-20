@@ -11,6 +11,7 @@ export default handleActions({
     const { payload } = action;
 
     return {
+      ...state,
       ...payload
     };
   }

@@ -1,7 +1,7 @@
 'use strict';
 import { actionCreators } from './actions/bridgeAdapterActions';
 import { handleSubmit } from './extensionViewReduxForm';
-import { getValues } from 'redux-form';
+import { getValues, reset } from 'redux-form';
 import reduceReducers from 'reduce-reducers';
 
 /**
@@ -41,6 +41,8 @@ export default (extensionBridge, store) => {
       propertyConfig: options.propertyConfig,
       initialValues
     }));
+
+    store.dispatch(reset());
   };
 
   extensionBridge.getConfig = () => {
