@@ -25,6 +25,8 @@ export default (config, mapStateToProps, mapDispatchToProps, mergeProps, options
 
   const internalMapStateToProps = state => {
     const props = mapStateToProps ? mapStateToProps(state) : {};
+    // redux-form picks up initial form values from props.initialValues. We need to copy
+    // initialValues from the state.
     props.initialValues = state.initialValues;
     return props;
   };

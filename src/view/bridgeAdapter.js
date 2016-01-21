@@ -1,7 +1,7 @@
 'use strict';
 import { actionCreators } from './actions/bridgeAdapterActions';
 import { handleSubmit } from './extensionViewReduxForm';
-import { getValues } from 'redux-form';
+import { getValues, reset } from 'redux-form';
 import reduceReducers from 'reduce-reducers';
 
 /**
@@ -39,8 +39,15 @@ export default (extensionBridge, store) => {
 
     store.dispatch(actionCreators.init({
       propertyConfig: options.propertyConfig,
+
+      // initialValues will get set on the state and eventually picked up by redux-form.
+      // See extensionViewReduxForm for how they get from the state into redux-form.
       initialValues
     }));
+
+    // Tell redux-form to reset our form to the initialValues provided above. This dispatch
+    // must come after the above dispatch.
+    store.dispatch(reset('default'));
   };
 
   extensionBridge.getConfig = () => {
