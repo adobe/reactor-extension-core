@@ -612,7 +612,18 @@
     {
       "displayName": "Registered User",
       "libPath": "conditionDelegates/registeredUser.js",
-      "viewPath": "index.html#/conditions/registeredUser"
+      "viewPath": "index.html#/conditions/registeredUser",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "dataElement": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": ["dataElement"]
+      }
     },
     {
       "displayName": "Screen Resolution",
