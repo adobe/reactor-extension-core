@@ -2,7 +2,7 @@ import React from 'react';
 import Coral from '../reduxFormCoralUI';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
-export class CookieOptOut extends React.Component {
+export class NewReturning extends React.Component {
   render() {
     const { visitorType } = this.props.fields;
 
@@ -31,7 +31,7 @@ const fields = [
 
 export default extensionViewReduxForm({
   fields
-})(CookieOptOut);
+})(NewReturning);
 
 export const reducers = {
   configToFormValues(values, options) {
