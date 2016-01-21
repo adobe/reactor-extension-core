@@ -20,6 +20,7 @@ import DomainCondition, { reducers as domainConditionReducers } from './conditio
 import HashCondition, { reducers as hashConditionReducers } from './conditionDelegates/hash';
 import LandingPageCondition from './conditionDelegates/landingPage';
 import LoggedInCondition from './conditionDelegates/loggedIn';
+import NewReturningCondition, { reducers as newReturningConditionReducers } from './conditionDelegates/newReturning';
 import PathCondition, { reducers as pathConditionReducers } from './conditionDelegates/path';
 import URLParameterCondition from './conditionDelegates/urlParameter';
 
@@ -54,6 +55,7 @@ export default (setBridgeReducers) => {
       <Route path="/conditions/hash" component={HashCondition} reducers={hashConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/landingPage" component={LandingPageCondition} onEnter={onEnter}/>
       <Route path="/conditions/loggedIn" component={LoggedInCondition} onEnter={onEnter}/>
+      <Route path="/conditions/newReturning" component={NewReturningCondition} reducers={newReturningConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/path" component={PathCondition} reducers={pathConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/urlParameter" component={URLParameterCondition} onEnter={onEnter}/>
 

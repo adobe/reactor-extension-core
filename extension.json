@@ -488,7 +488,17 @@
     {
       "displayName": "New/Returning Visitor",
       "libPath": "conditionDelegates/newReturning.js",
-      "viewPath": "index.html#/conditions/newReturning"
+      "viewPath": "index.html#/conditions/newReturning",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "isNewVisitor": {
+            "type": "boolean"
+          }
+        },
+        "required": ["isNewVisitor"]
+      }
     },
     {
       "displayName": "Operating System",

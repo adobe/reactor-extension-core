@@ -12,14 +12,14 @@ var conditionDelegate = conditionDelegateInjector({
   resourceProvider: publicRequire('resourceProvider')
 });
 
-var getConfig = function(isNew) {
+var getConfig = function(isNewVisitor) {
   return {
-    isNew: isNew
+    isNewVisitor: isNewVisitor
   };
 };
 
 describe('new vs. returning condition delegate', function() {
-  it('returns true when isNew = true and the visitor is new', function() {
+  it('returns true when isNewVisitor = true and the visitor is new', function() {
     mockVisitorTracking.getIsNewVisitor = function() {
       return true;
     };
@@ -28,7 +28,7 @@ describe('new vs. returning condition delegate', function() {
     expect(conditionDelegate(config)).toBe(true);
   });
 
-  it('returns true when isNew = false and the visitor is returning', function() {
+  it('returns true when isNewVisitor = false and the visitor is returning', function() {
     mockVisitorTracking.getIsNewVisitor = function() {
       return false;
     };
@@ -37,7 +37,7 @@ describe('new vs. returning condition delegate', function() {
     expect(conditionDelegate(config)).toBe(true);
   });
 
-  it('returns false when isNew = false and the visitor is new', function() {
+  it('returns false when isNewVisitor = false and the visitor is new', function() {
     mockVisitorTracking.getIsNewVisitor = function() {
       return true;
     };
@@ -46,7 +46,7 @@ describe('new vs. returning condition delegate', function() {
     expect(conditionDelegate(config)).toBe(false);
   });
 
-  it('returns false when isNew = true and the visitor is returning', function() {
+  it('returns false when isNewVisitor = true and the visitor is returning', function() {
     mockVisitorTracking.getIsNewVisitor = function() {
       return false;
     };
