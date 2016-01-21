@@ -24,6 +24,7 @@ import NewReturningCondition, { reducers as newReturningConditionReducers } from
 import OperatingSystemCondition, { reducers as operatingSystemConditionReducers } from './conditionDelegates/operatingSystem';
 import PageViewsCondition, { reducers as pageViewsConditionReducers } from './conditionDelegates/pageViews';
 import PathCondition, { reducers as pathConditionReducers } from './conditionDelegates/path';
+import PreviousConverterCondition from './conditionDelegates/previousConverter';
 import URLParameterCondition from './conditionDelegates/urlParameter';
 
 // Data Elements
@@ -61,6 +62,7 @@ export default (setBridgeReducers) => {
       <Route path="/conditions/operatingSystem" component={OperatingSystemCondition} reducers={operatingSystemConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/pageViews" component={PageViewsCondition} reducers={pageViewsConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/path" component={PathCondition} reducers={pathConditionReducers} onEnter={onEnter}/>
+      <Route path="/conditions/previousConverter" component={PreviousConverterCondition} onEnter={onEnter}/>
       <Route path="/conditions/urlParameter" component={URLParameterCondition} onEnter={onEnter}/>
 
       <Route path="/dataElements/cookie" component={CookieDataElement} onEnter={onEnter}/>

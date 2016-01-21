@@ -591,7 +591,18 @@
     {
       "displayName": "Previous Converter",
       "libPath": "conditionDelegates/previousConverter.js",
-      "viewPath": "index.html#/conditions/previousConverter"
+      "viewPath": "index.html#/conditions/previousConverter",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "dataElement": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": ["dataElement"]
+      }
     },
     {
       "displayName": "Protocol",
