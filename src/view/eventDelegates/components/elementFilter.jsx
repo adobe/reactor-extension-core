@@ -10,7 +10,7 @@ import ElementPropertiesEditor, {
 import reduceReducers from 'reduce-reducers';
 
 export const fields = [
-  'showSpecificElementsFilter',
+  'elementSpecificity',
   'showElementPropertiesFilter'
 ]
 .concat(elementSelectorFieldFields)
@@ -20,7 +20,7 @@ export default class ElementFilter extends React.Component {
 
   render() {
     const {
-      showSpecificElementsFilter,
+      elementSpecificity,
       showElementPropertiesFilter,
       elementSelector,
       elementProperties
@@ -31,22 +31,20 @@ export default class ElementFilter extends React.Component {
         <span className="u-label">On</span>
         <Coral.Radio
             ref ="specificElementsRadio"
-            name="filter"
-            value="true"
-            checked={showSpecificElementsFilter.checked}
-            onChange={event => showSpecificElementsFilter.onChange(true)}>
+            {...elementSpecificity}
+            value="specific"
+            checked={elementSpecificity.value === 'specific'}>
           specific elements
         </Coral.Radio>
         <Coral.Radio
             ref ="anyElementRadio"
-            name="filter"
-            value="false"
-            checked={!showSpecificElementsFilter.checked}
-            onChange={event => showSpecificElementsFilter.onChange(false)}>
+            {...elementSpecificity}
+            value="any"
+            checked={elementSpecificity.value === 'any'}>
           any element
         </Coral.Radio>
         {
-          showSpecificElementsFilter.value ?
+          elementSpecificity.value === 'specific' ?
             <div ref="specificElementFields">
               <ElementSelectorField elementSelector={elementSelector}/>
               <div>
@@ -77,7 +75,8 @@ export const reducers = {
 
       return {
         ...values,
-        showSpecificElementsFilter: Boolean(configIsNew || elementSelector || elementProperties),
+        elementSpecificity: configIsNew || elementSelector || elementProperties ?
+          'specific' : 'any',
         showElementPropertiesFilter: Boolean(elementProperties)
       };
     }
@@ -89,17 +88,17 @@ export const reducers = {
         ...config
       };
 
-      let { showSpecificElementsFilter, showElementPropertiesFilter } = values;
+      let { elementSpecificity, showElementPropertiesFilter } = values;
 
-      if (!showSpecificElementsFilter) {
+      if (elementSpecificity === 'any') {
         delete config.elementSelector;
       }
 
-      if (!showSpecificElementsFilter || !showElementPropertiesFilter) {
+      if (elementSpecificity === 'any' || !showElementPropertiesFilter) {
         delete config.elementProperties;
       }
 
-      delete config.showSpecificElementsFilter;
+      delete config.elementSpecificity;
       delete config.showElementPropertiesFilter;
 
       return config;
@@ -110,7 +109,7 @@ export const reducers = {
       ...errors
     };
 
-    if (values.showSpecificElementsFilter && !values.elementSelector) {
+    if (values.elementSpecificity === 'specific' && !values.elementSelector) {
       errors.elementSelector = 'Please specify a selector. ' +
       'Alternatively, choose to target any element above.'
     }
