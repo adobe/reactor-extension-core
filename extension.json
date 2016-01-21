@@ -503,7 +503,31 @@
     {
       "displayName": "Operating System",
       "libPath": "conditionDelegates/operatingSystem.js",
-      "viewPath": "index.html#/conditions/operatingSystem"
+      "viewPath": "index.html#/conditions/operatingSystem",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "operatingSystems": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Windows",
+                "MacOS",
+                "Linux",
+                "Unix",
+                "Blackberry",
+                "iOS",
+                "Android",
+                "Symbian OS",
+                "Maemo"
+              ]
+            }
+          }
+        },
+        "required": ["operatingSystems"]
+      }
     },
     {
       "displayName": "Page Views",
