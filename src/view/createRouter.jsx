@@ -22,6 +22,7 @@ import LandingPageCondition from './conditionDelegates/landingPage';
 import LoggedInCondition from './conditionDelegates/loggedIn';
 import NewReturningCondition, { reducers as newReturningConditionReducers } from './conditionDelegates/newReturning';
 import OperatingSystemCondition, { reducers as operatingSystemConditionReducers } from './conditionDelegates/operatingSystem';
+import PageViewsCondition, { reducers as pageViewsConditionReducers } from './conditionDelegates/pageViews';
 import PathCondition, { reducers as pathConditionReducers } from './conditionDelegates/path';
 import URLParameterCondition from './conditionDelegates/urlParameter';
 
@@ -58,6 +59,7 @@ export default (setBridgeReducers) => {
       <Route path="/conditions/loggedIn" component={LoggedInCondition} onEnter={onEnter}/>
       <Route path="/conditions/newReturning" component={NewReturningCondition} reducers={newReturningConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/operatingSystem" component={OperatingSystemCondition} reducers={operatingSystemConditionReducers} onEnter={onEnter}/>
+      <Route path="/conditions/pageViews" component={PageViewsCondition} reducers={pageViewsConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/path" component={PathCondition} reducers={pathConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/urlParameter" component={URLParameterCondition} onEnter={onEnter}/>
 
