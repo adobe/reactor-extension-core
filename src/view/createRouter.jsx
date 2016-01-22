@@ -2,13 +2,22 @@ import React from 'react';
 import { Router, Route } from 'react-router';
 
 // Events
-import BlurEvent, { reducers as blurEventReducers } from './eventDelegates/blur';
 import ClickEvent, { reducers as clickEventReducers } from './eventDelegates/click';
 import DirectCallEvent from './eventDelegates/directCall';
 import DomReadyEvent from './eventDelegates/domReady';
+import ElementExistsEvent, { reducers as elementExistsEventReducers } from './eventDelegates/blur';
 import PageTopEvent from './eventDelegates/pageTop';
 import PageBottomEvent from './eventDelegates/pageBottom';
 import OnLoadEvent from './eventDelegates/onLoad';
+import KeyPressEvent, { reducers as keyPressEventReducers } from './eventDelegates/keyPress';
+import FocusEvent, { reducers as focusEventReducers } from './eventDelegates/focus';
+import BlurEvent, { reducers as blurEventReducers } from './eventDelegates/blur';
+import SubmitEvent, { reducers as submitEventReducers } from './eventDelegates/submit';
+import PlayEvent, { reducers as playEventReducers } from './eventDelegates/play';
+import PauseEvent, { reducers as pauseEventReducers } from './eventDelegates/pause';
+import EndedEvent, { reducers as endedEventReducers } from './eventDelegates/ended';
+import StalledEvent, { reducers as stalledEventReducers } from './eventDelegates/stalled';
+import LoadedDataEvent, { reducers as loadedDataEventReducers } from './eventDelegates/loadedData';
 
 // Conditions
 import BrowserCondition, { reducers as browserConditionReducers } from './conditionDelegates/browser';
@@ -45,13 +54,22 @@ export default (setBridgeReducers) => {
 
   return (
     <Router>
-      <Route path="/events/blur" component={BlurEvent} reducers={blurEventReducers} onEnter={onEnter}/>
       <Route path="/events/click" component={ClickEvent} reducers={clickEventReducers} onEnter={onEnter}/>
       <Route path="/events/directCall" component={DirectCallEvent} onEnter={onEnter}/>
       <Route path="/events/domReady" component={DomReadyEvent} onEnter={onEnter}/>
+      <Route path="/events/elementExists" component={ElementExistsEvent} reducers={elementExistsEventReducers} onEnter={onEnter}/>
       <Route path="/events/pageTop" component={PageTopEvent} onEnter={onEnter}/>
       <Route path="/events/pageBottom" component={PageBottomEvent} onEnter={onEnter}/>
       <Route path="/events/onLoad" component={OnLoadEvent} onEnter={onEnter}/>
+      <Route path="/events/keyPress" component={KeyPressEvent} reducers={keyPressEventReducers} onEnter={onEnter}/>
+      <Route path="/events/focus" component={FocusEvent} reducers={focusEventReducers} onEnter={onEnter}/>
+      <Route path="/events/blur" component={BlurEvent} reducers={blurEventReducers} onEnter={onEnter}/>
+      <Route path="/events/submit" component={SubmitEvent} reducers={submitEventReducers} onEnter={onEnter}/>
+      <Route path="/events/play" component={PlayEvent} reducers={playEventReducers} onEnter={onEnter}/>
+      <Route path="/events/pause" component={PauseEvent} reducers={pauseEventReducers} onEnter={onEnter}/>
+      <Route path="/events/ended" component={EndedEvent} reducers={endedEventReducers} onEnter={onEnter}/>
+      <Route path="/events/stalled" component={StalledEvent} reducers={stalledEventReducers} onEnter={onEnter}/>
+      <Route path="/events/loadedData" component={LoadedDataEvent} reducers={loadedDataEventReducers} onEnter={onEnter}/>
 
       <Route path="/conditions/browser" component={BrowserCondition} reducers={browserConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/cartAmount" component={CartAmountCondition} reducers={cartAmountConditionReducers} onEnter={onEnter}/>
