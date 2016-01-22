@@ -49,10 +49,8 @@ const validate = values => {
     errors.dataElement = 'Please specify a data element.';
   }
 
-  if (!values.quantity) {
-    errors.quantity = 'Please specify a cart item quantity';
-  } else if (isNaN(values.quantity)) {
-    errors.quantity = 'Please specify a number for the cart item quantity';
+  if (!values.quantity || isNaN(values.quantity)) {
+    errors.quantity = 'Please specify a number for the cart item quantity.';
   }
 
   return errors;
@@ -65,15 +63,10 @@ export default extensionViewReduxForm({
 
 export const reducers = {
   configToFormValues(values, options) {
-    values = {
-      ...values
+    return {
+      ...values,
+      operator: options.config.operator || '>'
     };
-
-    if (!options.config.operator) {
-      values.operator = '>'
-    }
-
-    return values;
   },
   formValuesToConfig(config, values) {
     return {

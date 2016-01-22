@@ -47,7 +47,7 @@ const validate = values => {
   }
 
   if (!values.value) {
-    errors.value = 'Please specify a value';
+    errors.value = 'Please specify a value.';
   }
 
   return errors;
