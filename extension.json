@@ -607,7 +607,21 @@
     {
       "displayName": "Protocol",
       "libPath": "conditionDelegates/protocol.js",
-      "viewPath": "index.html#/conditions/protocol"
+      "viewPath": "index.html#/conditions/protocol",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "protocol": {
+            "type": "string",
+            "enum": [
+              "http:",
+              "https:"
+            ]
+          }
+        },
+        "required": ["protocol"]
+      }
     },
     {
       "displayName": "Registered User",
