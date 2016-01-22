@@ -21,7 +21,11 @@ import HashCondition, { reducers as hashConditionReducers } from './conditionDel
 import LandingPageCondition from './conditionDelegates/landingPage';
 import LoggedInCondition from './conditionDelegates/loggedIn';
 import NewReturningCondition, { reducers as newReturningConditionReducers } from './conditionDelegates/newReturning';
+import OperatingSystemCondition, { reducers as operatingSystemConditionReducers } from './conditionDelegates/operatingSystem';
+import PageViewsCondition, { reducers as pageViewsConditionReducers } from './conditionDelegates/pageViews';
 import PathCondition, { reducers as pathConditionReducers } from './conditionDelegates/path';
+import PreviousConverterCondition from './conditionDelegates/previousConverter';
+import RegisteredUserCondition from './conditionDelegates/registeredUser';
 import URLParameterCondition from './conditionDelegates/urlParameter';
 
 // Data Elements
@@ -56,7 +60,11 @@ export default (setBridgeReducers) => {
       <Route path="/conditions/landingPage" component={LandingPageCondition} onEnter={onEnter}/>
       <Route path="/conditions/loggedIn" component={LoggedInCondition} onEnter={onEnter}/>
       <Route path="/conditions/newReturning" component={NewReturningCondition} reducers={newReturningConditionReducers} onEnter={onEnter}/>
+      <Route path="/conditions/operatingSystem" component={OperatingSystemCondition} reducers={operatingSystemConditionReducers} onEnter={onEnter}/>
+      <Route path="/conditions/pageViews" component={PageViewsCondition} reducers={pageViewsConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/path" component={PathCondition} reducers={pathConditionReducers} onEnter={onEnter}/>
+      <Route path="/conditions/previousConverter" component={PreviousConverterCondition} onEnter={onEnter}/>
+      <Route path="/conditions/registeredUser" component={RegisteredUserCondition} onEnter={onEnter}/>
       <Route path="/conditions/urlParameter" component={URLParameterCondition} onEnter={onEnter}/>
 
       <Route path="/dataElements/cookie" component={CookieDataElement} onEnter={onEnter}/>

@@ -503,12 +503,61 @@
     {
       "displayName": "Operating System",
       "libPath": "conditionDelegates/operatingSystem.js",
-      "viewPath": "index.html#/conditions/operatingSystem"
+      "viewPath": "index.html#/conditions/operatingSystem",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "operatingSystems": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "Windows",
+                "MacOS",
+                "Linux",
+                "Unix",
+                "Blackberry",
+                "iOS",
+                "Android",
+                "Symbian OS",
+                "Maemo"
+              ]
+            }
+          }
+        },
+        "required": ["operatingSystems"]
+      }
     },
     {
       "displayName": "Page Views",
       "libPath": "conditionDelegates/pageViews.js",
-      "viewPath": "index.html#/conditions/pageViews"
+      "viewPath": "index.html#/conditions/pageViews",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "operator": {
+            "type": "string",
+            "enum": [
+              ">",
+              "=",
+              "<"
+            ]
+          },
+          "count": {
+            "type": "number"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "lifetime",
+              "session"
+            ]
+          }
+        },
+        "required": ["operator", "count", "duration"]
+      }
     },
     {
       "displayName": "Path",
@@ -542,7 +591,18 @@
     {
       "displayName": "Previous Converter",
       "libPath": "conditionDelegates/previousConverter.js",
-      "viewPath": "index.html#/conditions/previousConverter"
+      "viewPath": "index.html#/conditions/previousConverter",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "dataElement": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": ["dataElement"]
+      }
     },
     {
       "displayName": "Protocol",
@@ -552,7 +612,18 @@
     {
       "displayName": "Registered User",
       "libPath": "conditionDelegates/registeredUser.js",
-      "viewPath": "index.html#/conditions/registeredUser"
+      "viewPath": "index.html#/conditions/registeredUser",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "dataElement": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": ["dataElement"]
+      }
     },
     {
       "displayName": "Screen Resolution",
