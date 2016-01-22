@@ -63,15 +63,10 @@ export default extensionViewReduxForm({
 
 export const reducers = {
   configToFormValues(values, options) {
-    values = {
-      ...values
+    return {
+      ...values,
+      operator: options.config.operator || '>'
     };
-
-    if (!options.config.operator) {
-      values.operator = '>'
-    }
-
-    return values;
   },
   formValuesToConfig(config, values) {
     return {

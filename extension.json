@@ -676,7 +676,25 @@
     {
       "displayName": "Sessions",
       "libPath": "conditionDelegates/sessions.js",
-      "viewPath": "index.html#/conditions/sessions"
+      "viewPath": "index.html#/conditions/sessions",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "operator": {
+            "type": "string",
+            "enum": [
+              ">",
+              "=",
+              "<"
+            ]
+          },
+          "count": {
+            "type": "number"
+          }
+        },
+        "required": ["operator", "count"]
+      }
     },
     {
       "displayName": "Subdomain",

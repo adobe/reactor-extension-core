@@ -31,6 +31,7 @@ import PreviousConverterCondition from './conditionDelegates/previousConverter';
 import ProtocolCondition, { reducers as protocolReducers } from './conditionDelegates/protocol';
 import RegisteredUserCondition from './conditionDelegates/registeredUser';
 import ScreenResolutionCondition, { reducers as screenResolutionConditionReducers } from './conditionDelegates/screenResolution';
+import SessionsCondition, { reducers as sessionsConditionReducers } from './conditionDelegates/sessions';
 import URLParameterCondition from './conditionDelegates/urlParameter';
 
 // Data Elements
@@ -75,6 +76,7 @@ export default (setBridgeReducers) => {
       <Route path="/conditions/protocol" component={ProtocolCondition} reducers={protocolReducers} onEnter={onEnter}/>
       <Route path="/conditions/registeredUser" component={RegisteredUserCondition} onEnter={onEnter}/>
       <Route path="/conditions/screenResolution" component={ScreenResolutionCondition} reducers={screenResolutionConditionReducers} onEnter={onEnter}/>
+      <Route path="/conditions/sessions" component={SessionsCondition} reducers={sessionsConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/urlParameter" component={URLParameterCondition} onEnter={onEnter}/>
 
       <Route path="/dataElements/cookie" component={CookieDataElement} onEnter={onEnter}/>

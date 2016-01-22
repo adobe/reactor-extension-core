@@ -2,32 +2,23 @@ import React from 'react';
 import Coral from '../reduxFormCoralUI';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import ValidationWrapper from '../components/validationWrapper';
-import DataElementNameField from './components/dataElementNameField';
 import ComparisonOperatorField from './components/comparisonOperatorField';
 
-export class CartAmount extends React.Component {
+export class Sessions extends React.Component {
   render() {
-    const { dataElement, operator, amount } = this.props.fields;
+    const { operator, count } = this.props.fields;
 
     return (
       <div>
         <div>
-          <ValidationWrapper error={dataElement.touched && dataElement.error}>
-            <label>
-              <span className="u-label">The cart amount identified by the data element</span>
-              <DataElementNameField {...dataElement}/>
-            </label>
-          </ValidationWrapper>
-        </div>
-        <div className="u-gapTop">
           <label className="u-gapRight">
-            <span className="u-label">is</span>
+            <span className="u-label">The user's number of sessions is</span>
             <ComparisonOperatorField {...operator}/>
           </label>
-          <ValidationWrapper error={amount.touched && amount.error}>
+          <ValidationWrapper error={count.touched && count.error}>
             <label>
               <span className="u-label">the value</span>
-              <Coral.Textfield {...amount}/>
+              <Coral.Textfield {...count}/>
             </label>
           </ValidationWrapper>
         </div>
@@ -37,20 +28,15 @@ export class CartAmount extends React.Component {
 }
 
 const fields = [
-  'dataElement',
   'operator',
-  'amount'
+  'count'
 ];
 
 const validate = values => {
   const errors = {};
 
-  if (!values.dataElement) {
-    errors.dataElement = 'Please specify a data element.';
-  }
-
-  if (!values.amount || isNaN(values.amount)) {
-    errors.amount = 'Please specify a number for the cart amount';
+  if (!values.count || isNaN(values.count)) {
+    errors.count = 'Please specify a number of sessions.';
   }
 
   return errors;
@@ -59,7 +45,7 @@ const validate = values => {
 export default extensionViewReduxForm({
   fields,
   validate
-})(CartAmount);
+})(Sessions);
 
 export const reducers = {
   configToFormValues(values, options) {
@@ -71,7 +57,7 @@ export const reducers = {
   formValuesToConfig(config, values) {
     return {
       ...config,
-      amount: Number(values.amount)
+      count: Number(values.count)
     };
   }
 };

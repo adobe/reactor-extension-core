@@ -2,7 +2,6 @@ import React from 'react';
 import Coral from '../reduxFormCoralUI';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import ValidationWrapper from '../components/validationWrapper';
-import DataElementNameField from './components/dataElementNameField';
 import ComparisonOperatorField from './components/comparisonOperatorField';
 
 export class PageViews extends React.Component {
@@ -13,7 +12,7 @@ export class PageViews extends React.Component {
       <div>
         <div>
           <label className="u-gapRight">
-            <span className="u-label">The user's number of page views are</span>
+            <span className="u-label">The user's number of page views is</span>
             <ComparisonOperatorField {...operator}/>
           </label>
           <ValidationWrapper error={count.touched && count.error}>
@@ -65,19 +64,11 @@ export default extensionViewReduxForm({
 
 export const reducers = {
   configToFormValues(values, options) {
-    values = {
-      ...values
+    return {
+      ...values,
+      operator: options.config.operator || '>',
+      duration: options.config.duration || 'lifetime'
     };
-
-    if (!options.config.operator) {
-      values.operator = '>'
-    }
-
-    if (!options.config.duration) {
-      values.duration = 'lifetime';
-    }
-
-    return values;
   },
   formValuesToConfig(config, values) {
     return {
