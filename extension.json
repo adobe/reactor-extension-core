@@ -628,7 +628,36 @@
     {
       "displayName": "Screen Resolution",
       "libPath": "conditionDelegates/screenResolution.js",
-      "viewPath": "index.html#/conditions/screenResolution"
+      "viewPath": "index.html#/conditions/screenResolution",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "widthOperator": {
+            "type": "string",
+            "enum": [
+              ">",
+              "=",
+              "<"
+            ]
+          },
+          "width": {
+            "type": "number"
+          },
+          "heightOperator": {
+            "type": "string",
+            "enum": [
+              ">",
+              "=",
+              "<"
+            ]
+          },
+          "height": {
+            "type": "number"
+          }
+        },
+        "required": ["widthOperator", "width", "heightOperator", "height"]
+      }
     },
     {
       "displayName": "Sessions",

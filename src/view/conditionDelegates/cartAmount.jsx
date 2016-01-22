@@ -49,9 +49,7 @@ const validate = values => {
     errors.dataElement = 'Please specify a data element.';
   }
 
-  if (!values.amount) {
-    errors.amount = 'Please specify a cart amount';
-  } else if (isNaN(values.amount)) {
+  if (!values.amount || isNaN(values.amount)) {
     errors.amount = 'Please specify a number for the cart amount';
   }
 

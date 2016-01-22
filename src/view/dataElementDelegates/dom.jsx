@@ -109,11 +109,11 @@ const validate = values => {
   const errors = {};
 
   if (!values.elementSelector) {
-    errors.elementSelector = 'Please specify a CSS selector';
+    errors.elementSelector = 'Please specify a CSS selector.';
   }
 
   if (values.selectedElementPropertyPreset === 'custom' && !values.customElementProperty) {
-    errors.customElementProperty = 'Please specify an element property';
+    errors.customElementProperty = 'Please specify an element property.';
   }
 
   return errors;

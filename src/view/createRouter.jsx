@@ -29,6 +29,7 @@ import PageViewsCondition, { reducers as pageViewsConditionReducers } from './co
 import PathCondition, { reducers as pathConditionReducers } from './conditionDelegates/path';
 import PreviousConverterCondition from './conditionDelegates/previousConverter';
 import RegisteredUserCondition from './conditionDelegates/registeredUser';
+import ScreenResolutionCondition, { reducers as screenResolutionConditionReducers } from './conditionDelegates/screenResolution';
 import URLParameterCondition from './conditionDelegates/urlParameter';
 
 // Data Elements
@@ -71,6 +72,7 @@ export default (setBridgeReducers) => {
       <Route path="/conditions/path" component={PathCondition} reducers={pathConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/previousConverter" component={PreviousConverterCondition} onEnter={onEnter}/>
       <Route path="/conditions/registeredUser" component={RegisteredUserCondition} onEnter={onEnter}/>
+      <Route path="/conditions/screenResolution" component={ScreenResolutionCondition} reducers={screenResolutionConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/urlParameter" component={URLParameterCondition} onEnter={onEnter}/>
 
       <Route path="/dataElements/cookie" component={CookieDataElement} onEnter={onEnter}/>
