@@ -6,6 +6,9 @@ import BlurEvent, { reducers as blurEventReducers } from './eventDelegates/blur'
 import ClickEvent, { reducers as clickEventReducers } from './eventDelegates/click';
 import DirectCallEvent from './eventDelegates/directCall';
 import DomReadyEvent from './eventDelegates/domReady';
+import PageTopEvent from './eventDelegates/pageTop';
+import PageBottomEvent from './eventDelegates/pageBottom';
+import OnLoadEvent from './eventDelegates/onLoad';
 
 // Conditions
 import BrowserCondition, { reducers as browserConditionReducers } from './conditionDelegates/browser';
@@ -41,7 +44,10 @@ export default (setBridgeReducers) => {
       <Route path="/events/blur" component={BlurEvent} reducers={blurEventReducers} onEnter={onEnter}/>
       <Route path="/events/click" component={ClickEvent} reducers={clickEventReducers} onEnter={onEnter}/>
       <Route path="/events/directCall" component={DirectCallEvent} onEnter={onEnter}/>
-      <Route path="/events/domready" component={DomReadyEvent} onEnter={onEnter}/>
+      <Route path="/events/domReady" component={DomReadyEvent} onEnter={onEnter}/>
+      <Route path="/events/pageTop" component={PageTopEvent} onEnter={onEnter}/>
+      <Route path="/events/pageBottom" component={PageBottomEvent} onEnter={onEnter}/>
+      <Route path="/events/onLoad" component={OnLoadEvent} onEnter={onEnter}/>
 
       <Route path="/conditions/browser" component={BrowserCondition} reducers={browserConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/cartAmount" component={CartAmountCondition} reducers={cartAmountConditionReducers} onEnter={onEnter}/>
