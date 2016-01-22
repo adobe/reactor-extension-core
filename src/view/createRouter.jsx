@@ -18,6 +18,8 @@ import PauseEvent, { reducers as pauseEventReducers } from './eventDelegates/pau
 import EndedEvent, { reducers as endedEventReducers } from './eventDelegates/ended';
 import StalledEvent, { reducers as stalledEventReducers } from './eventDelegates/stalled';
 import LoadedDataEvent, { reducers as loadedDataEventReducers } from './eventDelegates/loadedData';
+import OrientationChangeEvent from './eventDelegates/orientationChange';
+import ZoomChangeEvent from './eventDelegates/zoomChange';
 
 // Conditions
 import BrowserCondition, { reducers as browserConditionReducers } from './conditionDelegates/browser';
@@ -73,6 +75,8 @@ export default (setBridgeReducers) => {
       <Route path="/events/ended" component={EndedEvent} reducers={endedEventReducers} onEnter={onEnter}/>
       <Route path="/events/stalled" component={StalledEvent} reducers={stalledEventReducers} onEnter={onEnter}/>
       <Route path="/events/loadedData" component={LoadedDataEvent} reducers={loadedDataEventReducers} onEnter={onEnter}/>
+      <Route path="/events/orientationChange" component={OrientationChangeEvent} onEnter={onEnter}/>
+      <Route path="/events/zoomChange" component={ZoomChangeEvent} onEnter={onEnter}/>
 
       <Route path="/conditions/browser" component={BrowserCondition} reducers={browserConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/cartAmount" component={CartAmountCondition} reducers={cartAmountConditionReducers} onEnter={onEnter}/>
