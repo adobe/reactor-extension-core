@@ -543,12 +543,14 @@
     {
       "displayName": "Orientation Change",
       "libPath": "eventDelegates/orientationchange.js",
-      "viewPath": "index.html#/events/orientationchange"
+      "viewPath": "index.html#/events/orientationChange",
+      "schema": {}
     },
     {
       "displayName": "Zoom Change",
       "libPath": "eventDelegates/zoomchange.js",
-      "viewPath": "index.html#/events/zoomchange"
+      "viewPath": "index.html#/events/zoomChange",
+      "schema": {}
     }
   ],
   "conditions": [
