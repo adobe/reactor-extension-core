@@ -4,7 +4,7 @@ var getCookie = require('getCookie');
 var setCookie = require('setCookie');
 var document = require('document');
 var window = require('window');
-var propertyConfig = require('propertyConfig');
+var logger = require('logger');
 
 var key = function(name) {
   return '_sdsat_' + name;
@@ -90,18 +90,29 @@ var trackVisitor = function() {
   trackTrafficSource();
 };
 
-var throwDisabledError = function() {
-  throw new Error('Visitor tracking not enabled.');
+var enabled = false;
+
+/**
+ * Enables visitor tracking. To be consistent with prior library versions, visitor tracking should
+ * only be enabled (run) if a rule for the property is configured with a condition that needs it.
+ * This is primarily to avoid unnecessary cookie storage. Each condition that requires visitor
+ * tracking to run must call this function to ensure visitor tracking will run.
+ */
+var enable = function() {
+  if (!enabled) {
+    enabled = true;
+    trackVisitor();
+  }
 };
 
-var trackingEnabled = propertyConfig.trackVisitor;
-
-if (trackingEnabled) {
-  trackVisitor();
-}
-
 var wrapForEnablement = function(fn) {
-  return trackingEnabled ? fn : throwDisabledError;
+  return function() {
+    if (!enabled) {
+      logger.error('Visitor tracking not enabled. Data may be inaccurate.');
+    }
+
+    return fn.apply(this, arguments);
+  };
 };
 
 module.exports = {
@@ -113,5 +124,5 @@ module.exports = {
   getSessionPageViewCount: wrapForEnablement(getSessionPageViewCount),
   getTrafficSource: wrapForEnablement(getTrafficSource),
   getIsNewVisitor: wrapForEnablement(getIsNewVisitor),
-  trackingEnabled: trackingEnabled
+  enable: enable
 };

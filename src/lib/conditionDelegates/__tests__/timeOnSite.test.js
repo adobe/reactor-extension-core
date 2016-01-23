@@ -3,7 +3,8 @@
 var mockVisitorTracking = {
   getMinutesOnSite: function() {
     return 5;
-  }
+  },
+  enable: jasmine.createSpy()
 };
 
 var conditionDelegateInjector = require('inject!../timeOnSite');
@@ -24,6 +25,10 @@ var getConfig = function(minutes, operator) {
 };
 
 describe('time on site condition delegate', function() {
+  it('calls visitorTracking.enable', function() {
+    expect(mockVisitorTracking.enable).toHaveBeenCalled();
+  });
+
   it('returns true when number of minutes is above "greater than" constraint', function() {
     var config = getConfig(4, '>');
     expect(conditionDelegate(config)).toBe(true);

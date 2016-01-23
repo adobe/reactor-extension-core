@@ -3,7 +3,8 @@
 var mockVisitorTracking = {
   getSessionCount: function() {
     return 5;
-  }
+  },
+  enable: jasmine.createSpy()
 };
 
 var conditionDelegateInjector = require('inject!../sessions');
@@ -24,6 +25,10 @@ var getConfig = function(count, operator) {
 };
 
 describe('sessions condition delegate', function() {
+  it('calls visitorTracking.enable', function() {
+    expect(mockVisitorTracking.enable).toHaveBeenCalled();
+  });
+
   it('returns true when number of sessions is above "greater than" constraint', function() {
     var config = getConfig(4, '>');
     expect(conditionDelegate(config)).toBe(true);

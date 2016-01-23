@@ -23,21 +23,27 @@ var mockWindow = {
   }
 };
 
+var mockLogger = {
+  error: jasmine.createSpy()
+};
+
 var visitorTrackingInjector = require('inject!../visitorTracking');
 
 
-var getVisitorTracking = function(trackVisitor) {
-  var mockPropertyConfig = {
-    trackVisitor: trackVisitor
-  };
-
-  return visitorTrackingInjector({
+var getVisitorTracking = function(enableTracking) {
+  var visitorTracking = visitorTrackingInjector({
     getCookie: mockGetCookie,
     setCookie: mockSetCookie,
     document: mockDocument,
     window: mockWindow,
-    propertyConfig: mockPropertyConfig
+    logger: mockLogger
   });
+
+  if (enableTracking) {
+    visitorTracking.enable();
+  }
+
+  return visitorTracking;
 };
 
 var key = function(name) {
@@ -167,15 +173,12 @@ describe('visitor tracking', function() {
     expect(visitorTracking.getIsNewVisitor()).toBe(false);
   });
 
-  it('reflects whether tracking is enabled', function() {
-    var visitorTracking = getVisitorTracking(true);
-    expect(visitorTracking.trackingEnabled).toBe(true);
-    visitorTracking = getVisitorTracking(false);
-    expect(visitorTracking.trackingEnabled).toBe(false);
-  });
+  it('logs an error when calling a method and visitor tracking is disabled', function() {
+    mockLogger.error.calls.reset();
 
-  it('throws an error when calling a method and visitor tracking is disabled', function() {
     var visitorTracking = getVisitorTracking(false);
-    expect(visitorTracking.getLandingPage).toThrowError('Visitor tracking not enabled.');
+    visitorTracking.getLandingPage();
+
+    expect(mockLogger.error).toHaveBeenCalledWith(jasmine.any(String));
   });
 });
