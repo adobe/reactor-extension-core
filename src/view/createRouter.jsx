@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Route } from 'react-router';
+import { Router, Route, hashHistory } from 'react-router';
 
 // Events
 import ClickEvent, { reducers as clickEventReducers } from './eventDelegates/click';
@@ -58,7 +58,7 @@ export default (setBridgeReducers) => {
   };
 
   return (
-    <Router>
+    <Router history={hashHistory}>
       <Route path="/events/click" component={ClickEvent} reducers={clickEventReducers} onEnter={onEnter}/>
       <Route path="/events/directCall" component={DirectCallEvent} onEnter={onEnter}/>
       <Route path="/events/domReady" component={DomReadyEvent} onEnter={onEnter}/>
