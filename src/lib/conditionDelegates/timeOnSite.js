@@ -4,6 +4,11 @@ var resourceProvider = require('resourceProvider');
 var visitorTracking = resourceProvider.get('dtm', 'visitorTracking');
 var compareNumbers = resourceProvider.get('dtm', 'compareNumbers');
 
+// Visitor tracking should only run (be enabled) when a rule for the property contains a condition
+// that needs it. The line below will be included in the emitted library if a rule requires this
+// condition and it will be run regardless of whether the condition ever gets evaluated.
+visitorTracking.enable();
+
 /**
  * Time on site condition. Determines if the user has been on the site for a certain amount
  * of time.

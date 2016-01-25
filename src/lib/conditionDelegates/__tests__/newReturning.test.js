@@ -1,6 +1,8 @@
 'use strict';
 
-var mockVisitorTracking = {};
+var mockVisitorTracking = {
+  enable: jasmine.createSpy()
+};
 
 var conditionDelegateInjector = require('inject!../newReturning');
 var publicRequire = require('../../__tests__/helpers/stubPublicRequire')({
@@ -19,6 +21,10 @@ var getConfig = function(isNewVisitor) {
 };
 
 describe('new vs. returning condition delegate', function() {
+  it('calls visitorTracking.enable', function() {
+    expect(mockVisitorTracking.enable).toHaveBeenCalled();
+  });
+
   it('returns true when isNewVisitor = true and the visitor is new', function() {
     mockVisitorTracking.getIsNewVisitor = function() {
       return true;
