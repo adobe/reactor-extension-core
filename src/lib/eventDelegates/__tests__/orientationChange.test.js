@@ -33,7 +33,7 @@ describe('orientationchange event type', function() {
   };
 
   beforeAll(function() {
-    var delegateInjector = require('inject!../orientationchange');
+    var delegateInjector = require('inject!../orientationChange');
     delegate = delegateInjector({
       window: mockWindow
     });

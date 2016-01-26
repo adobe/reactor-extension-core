@@ -1,12 +1,12 @@
 'use strict';
 
-describe('keypress event type', function() {
+describe('volumechange event type', function() {
   var testStandardEvent = require('./helpers/testStandardEvent');
   var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
-  var delegateInjector = require('inject!../keypress');
+  var delegateInjector = require('inject!../volumeChange');
   var delegate = delegateInjector({
     resourceProvider: publicRequire('resourceProvider')
   });
 
-  testStandardEvent(delegate, 'keypress');
+  testStandardEvent(delegate, 'volumechange');
 });

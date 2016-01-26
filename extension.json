@@ -209,8 +209,8 @@
     },
     {
       "displayName": "On Load",
-      "libPath": "eventDelegates/onload.js",
-      "viewPath": "index.html#/events/onload",
+      "libPath": "eventDelegates/onLoad.js",
+      "viewPath": "index.html#/events/onLoad",
       "schema": {}
     },
     {
@@ -226,9 +226,9 @@
       "schema": {}
     },
     {
-      "displayName": "Keypress",
-      "libPath": "eventDelegates/keypress.js",
-      "viewPath": "index.html#/events/keypress",
+      "displayName": "Key Press",
+      "libPath": "eventDelegates/keyPress.js",
+      "viewPath": "index.html#/events/keyPress",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
@@ -528,8 +528,8 @@
     },
     {
       "displayName": "Media Volume Change",
-      "libPath": "eventDelegates/volumechange.js",
-      "viewPath": "index.html#/events/volumechange",
+      "libPath": "eventDelegates/volumeChange.js",
+      "viewPath": "index.html#/events/volumeChange",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
@@ -614,7 +614,7 @@
     },
     {
       "displayName": "Media Loaded Data",
-      "libPath": "eventDelegates/loadeddata.js",
+      "libPath": "eventDelegates/loadedData.js",
       "viewPath": "index.html#/events/loadedData",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -662,13 +662,13 @@
     },
     {
       "displayName": "Orientation Change",
-      "libPath": "eventDelegates/orientationchange.js",
+      "libPath": "eventDelegates/orientationChange.js",
       "viewPath": "index.html#/events/orientationChange",
       "schema": {}
     },
     {
       "displayName": "Zoom Change",
-      "libPath": "eventDelegates/zoomchange.js",
+      "libPath": "eventDelegates/zoomChange.js",
       "viewPath": "index.html#/events/zoomChange",
       "schema": {}
     }
