@@ -5,6 +5,8 @@ import { Router, Route, hashHistory } from 'react-router';
 import ClickEvent, { reducers as clickEventReducers } from './eventDelegates/click';
 import DirectCallEvent from './eventDelegates/directCall';
 import DomReadyEvent from './eventDelegates/domReady';
+import EntersViewportEvent, { reducers as entersViewportEventReducers } from './eventDelegates/entersViewport';
+import HoverEvent, { reducers as hoverEventReducers } from './eventDelegates/hover';
 import ElementExistsEvent, { reducers as elementExistsEventReducers } from './eventDelegates/blur';
 import PageTopEvent from './eventDelegates/pageTop';
 import PageBottomEvent from './eventDelegates/pageBottom';
@@ -16,6 +18,7 @@ import SubmitEvent, { reducers as submitEventReducers } from './eventDelegates/s
 import PlayEvent, { reducers as playEventReducers } from './eventDelegates/play';
 import PauseEvent, { reducers as pauseEventReducers } from './eventDelegates/pause';
 import EndedEvent, { reducers as endedEventReducers } from './eventDelegates/ended';
+import VolumeChangeEvent, { reducers as volumeChangeEventReducers } from './eventDelegates/volumeChange';
 import StalledEvent, { reducers as stalledEventReducers } from './eventDelegates/stalled';
 import LoadedDataEvent, { reducers as loadedDataEventReducers } from './eventDelegates/loadedData';
 import OrientationChangeEvent from './eventDelegates/orientationChange';
@@ -63,6 +66,8 @@ export default (setBridgeReducers) => {
       <Route path="/events/directCall" component={DirectCallEvent} onEnter={onEnter}/>
       <Route path="/events/domReady" component={DomReadyEvent} onEnter={onEnter}/>
       <Route path="/events/elementExists" component={ElementExistsEvent} reducers={elementExistsEventReducers} onEnter={onEnter}/>
+      <Route path="/events/entersViewport" component={EntersViewportEvent} reducers={entersViewportEventReducers} onEnter={onEnter}/>
+      <Route path="/events/hover" component={HoverEvent} reducers={hoverEventReducers} onEnter={onEnter}/>
       <Route path="/events/pageTop" component={PageTopEvent} onEnter={onEnter}/>
       <Route path="/events/pageBottom" component={PageBottomEvent} onEnter={onEnter}/>
       <Route path="/events/onLoad" component={OnLoadEvent} onEnter={onEnter}/>
@@ -73,6 +78,7 @@ export default (setBridgeReducers) => {
       <Route path="/events/play" component={PlayEvent} reducers={playEventReducers} onEnter={onEnter}/>
       <Route path="/events/pause" component={PauseEvent} reducers={pauseEventReducers} onEnter={onEnter}/>
       <Route path="/events/ended" component={EndedEvent} reducers={endedEventReducers} onEnter={onEnter}/>
+      <Route path="/events/volumeChange" component={VolumeChangeEvent} reducers={volumeChangeEventReducers} onEnter={onEnter}/>
       <Route path="/events/stalled" component={StalledEvent} reducers={stalledEventReducers} onEnter={onEnter}/>
       <Route path="/events/loadedData" component={LoadedDataEvent} reducers={loadedDataEventReducers} onEnter={onEnter}/>
       <Route path="/events/orientationChange" component={OrientationChangeEvent} onEnter={onEnter}/>

@@ -1,5 +1,6 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../../reduxFormCoralUI';
+import ValidationWrapper from '../../../components/validationWrapper';
 import ElementPropertyEditor from '../../components/elementPropertyEditor';
 
 const makeEditorVisible = (instance, getParts) => {
@@ -18,6 +19,17 @@ const getEditorFields = (instance, getParts) => {
     nameField: fields[0].props,
     valueField: fields[1].props
   };
+};
+
+const getValidationWrapperOnFirstRow = (instance, getParts) => {
+  const { elementPropertiesEditorComponent } = getParts(instance);
+
+  const editorRows = TestUtils.scryRenderedComponentsWithType(
+    elementPropertiesEditorComponent,
+    ElementPropertyEditor
+  );
+
+  return TestUtils.findRenderedComponentWithType(editorRows[0], ValidationWrapper);
 };
 
 const clickRemoveButtonOnFirstRow = (instance, getParts) => {
@@ -91,8 +103,8 @@ export default (instance, getParts, extensionBridge) => {
       valueField.onChange('somevalueset');
       expect(extensionBridge.validate()).toBe(false);
 
-      const { errorIcon } = getParts(instance);
-      expect(errorIcon.props.message).toBeDefined();
+      const validationWrapper = getValidationWrapperOnFirstRow(instance, getParts);
+      expect(validationWrapper.props.error).toEqual(jasmine.any(String));
     });
 
     it('creates a new row when the add button is clicked', () => {

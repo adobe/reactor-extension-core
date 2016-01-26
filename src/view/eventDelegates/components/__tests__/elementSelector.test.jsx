@@ -52,9 +52,11 @@ export default (instance, getParts, extensionBridge) => {
 
       expect(extensionBridge.validate()).toBe(false);
 
-      const { errorIcon } = getParts(instance);
+      const { elementSelectorComponent } = getParts(instance);
 
-      expect(errorIcon.props.message).toBeDefined();
+      expect(extensionBridge.validate()).toBe(false);
+      expect(elementSelectorComponent.refs.elementSelectorValidationWrapper.props.error)
+        .toEqual(jasmine.any(String));
     });
   });
 };

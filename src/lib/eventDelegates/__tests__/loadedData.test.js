@@ -1,12 +1,12 @@
 'use strict';
 
-describe('volumechange event type', function() {
+describe('loadeddata event type', function() {
   var testStandardEvent = require('./helpers/testStandardEvent');
   var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
-  var delegateInjector = require('inject!../volumechange');
+  var delegateInjector = require('inject!../loadedData');
   var delegate = delegateInjector({
     resourceProvider: publicRequire('resourceProvider')
   });
 
-  testStandardEvent(delegate, 'volumechange');
+  testStandardEvent(delegate, 'loadeddata');
 });

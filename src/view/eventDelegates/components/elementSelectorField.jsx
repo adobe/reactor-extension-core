@@ -11,7 +11,9 @@ export default class ElementSelectorField extends React.Component {
     const { elementSelector } = this.props;
 
     return (
-      <ValidationWrapper error={elementSelector.touched && elementSelector.error}>
+      <ValidationWrapper
+        ref="elementSelectorValidationWrapper"
+        error={elementSelector.touched && elementSelector.error}>
         <label>
           <span className="u-label">matching the CSS selector</span>
           <Coral.Textfield ref="elementSelectorField" {...elementSelector}/>
