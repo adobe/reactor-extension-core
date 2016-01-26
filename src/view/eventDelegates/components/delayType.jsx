@@ -60,8 +60,8 @@ export const reducers = {
   configToFormValues(values, options) {
     return {
       ...values,
-      delayType: options.config.delay ? 'delay' : 'immediately',
-      delay: options.config.delay
+      delayType: options.config.delay > 0 ? 'delay' : 'immediately',
+      delay: options.config.delay > 0 ? options.config.delay : ''
     };
   },
   formValuesToConfig(config, values) {
@@ -71,6 +71,8 @@ export const reducers = {
 
     if (values.delayType === 'delay') {
       config.delay = Number(values.delay);
+    } else {
+      delete config.delay;
     }
 
     delete config.delayType;
@@ -81,8 +83,9 @@ export const reducers = {
       ...errors
     };
 
-    if ((values.delayType === 'delay' && !values.delay) || isNaN(values.delay)) {
-      errors.delay = 'Please specify a number';
+    if (values.delayType === 'delay'
+      && (!values.delay || isNaN(values.delay) || values.delay < 1)) {
+      errors.delay = 'Please specify a positive number';
     }
 
     return errors;

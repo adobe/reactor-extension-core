@@ -33,11 +33,22 @@ export default (instance, getParts, extensionBridge) => {
       });
     });
 
+    it('sets config without delay when trigger immediately is selected and delay ' +
+      'contains a value', () => {
+        extensionBridge.init();
+
+        const { delayTypeComponent } = getParts(instance);
+        delayTypeComponent.refs.delayTextField.props.onChange(100);
+        delayTypeComponent.refs.immediatelyRadio.props.onChange('immediately');
+
+        expect(extensionBridge.getConfig().delay).toBeUndefined();
+    });
+
     it('sets error if delay radio is selected and the delay field is empty', () => {
       extensionBridge.init();
 
       const { delayTypeComponent } = getParts(instance);
-      delayTypeComponent.refs.delayRadio.props.onChange(true);
+      delayTypeComponent.refs.delayRadio.props.onChange('delay');
 
       expect(extensionBridge.validate()).toBe(false);
       expect(delayTypeComponent.refs.delayValidationWrapper.props.error)
@@ -48,6 +59,7 @@ export default (instance, getParts, extensionBridge) => {
       extensionBridge.init();
 
       const { delayTypeComponent } = getParts(instance);
+      delayTypeComponent.refs.delayRadio.props.onChange('delay');
       delayTypeComponent.refs.delayTextField.props.onChange('aaa');
 
       expect(extensionBridge.validate()).toBe(false);

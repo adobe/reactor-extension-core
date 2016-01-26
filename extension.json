@@ -156,7 +156,8 @@
             "type": "boolean"
           },
           "delay": {
-            "type": "number"
+            "type": "number",
+            "minimum": 1
           }
         }
       }
@@ -202,7 +203,8 @@
             "type": "boolean"
           },
           "delay": {
-            "type": "number"
+            "type": "number",
+            "minimum": 1
           }
         }
       }
