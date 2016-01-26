@@ -1,6 +1,5 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../../reduxFormCoralUI';
-import ErrorIcon from '../../../components/errorIcon';
 import DelayedEventProviderComponent, {reducers as delayedEventReducers }
   from '../../components/delayedEvent';
 import ElementSelectorField from '../elementSelectorField';
@@ -12,13 +11,10 @@ import setUpComponent from '../../../__tests__/helpers/setUpComponent';
 import testElementFilter from './elementFilter.test';
 import testAdvancedOptions from './advancedEventOptions.test';
 import testElementPropertiesEditor from './elementPropertiesEditor.test';
-import ValidationWrapper from '../../../components/validationWrapper';
 import testDelayType from './delayType.test';
 
 const { instance, extensionBridge } = setUpComponent(DelayedEventProviderComponent, delayedEventReducers);
 const getParts = (instance) => {
-  const errorIcons = TestUtils.scryRenderedComponentsWithType(instance, ErrorIcon);
-
   return {
     elementFilterComponent:
       TestUtils.findRenderedComponentWithType(instance, ElementFilter),
@@ -29,8 +25,7 @@ const getParts = (instance) => {
     advancedEventOptionsComponent:
       TestUtils.findRenderedComponentWithType(instance, AdvancedEventOptions),
     delayTypeComponent:
-      TestUtils.findRenderedComponentWithType(instance, DelayType),
-    errorIcon: errorIcons.length ? errorIcons[0] : null
+      TestUtils.findRenderedComponentWithType(instance, DelayType)
   };
 };
 

@@ -1,6 +1,5 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../reduxFormCoralUI';
-import ErrorIcon from '../../components/errorIcon';
 import ClickProviderComponent, {Click, reducers as clickEventReducers } from '../click';
 import ElementSelectorField from '../components/elementSelectorField';
 import ElementPropertiesEditor from '../components/elementPropertiesEditor';
@@ -13,8 +12,6 @@ import testElementPropertiesEditor from '../components/__tests__/elementProperti
 
 const { instance, extensionBridge } = setUpComponent(ClickProviderComponent, clickEventReducers);
 const getParts = (instance) => {
-  const errorIcons = TestUtils.scryRenderedComponentsWithType(instance, ErrorIcon);
-
   return {
     elementFilterComponent:
       TestUtils.findRenderedComponentWithType(instance, ElementFilter),
@@ -25,8 +22,7 @@ const getParts = (instance) => {
     clickComponent:
       TestUtils.findRenderedComponentWithType(instance, Click),
     advancedEventOptionsComponent:
-      TestUtils.findRenderedComponentWithType(instance, AdvancedEventOptions),
-    errorIcon: errorIcons.length ? errorIcons[0] : null
+      TestUtils.findRenderedComponentWithType(instance, AdvancedEventOptions)
   };
 };
 
