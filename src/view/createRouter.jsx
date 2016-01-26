@@ -18,6 +18,7 @@ import SubmitEvent, { reducers as submitEventReducers } from './eventDelegates/s
 import PlayEvent, { reducers as playEventReducers } from './eventDelegates/play';
 import PauseEvent, { reducers as pauseEventReducers } from './eventDelegates/pause';
 import EndedEvent, { reducers as endedEventReducers } from './eventDelegates/ended';
+import VolumeChangeEvent, { reducers as volumeChangeEventReducers } from './eventDelegates/volumeChange';
 import StalledEvent, { reducers as stalledEventReducers } from './eventDelegates/stalled';
 import LoadedDataEvent, { reducers as loadedDataEventReducers } from './eventDelegates/loadedData';
 import OrientationChangeEvent from './eventDelegates/orientationChange';
@@ -77,6 +78,7 @@ export default (setBridgeReducers) => {
       <Route path="/events/play" component={PlayEvent} reducers={playEventReducers} onEnter={onEnter}/>
       <Route path="/events/pause" component={PauseEvent} reducers={pauseEventReducers} onEnter={onEnter}/>
       <Route path="/events/ended" component={EndedEvent} reducers={endedEventReducers} onEnter={onEnter}/>
+      <Route path="/events/volumeChange" component={VolumeChangeEvent} reducers={volumeChangeEventReducers} onEnter={onEnter}/>
       <Route path="/events/stalled" component={StalledEvent} reducers={stalledEventReducers} onEnter={onEnter}/>
       <Route path="/events/loadedData" component={LoadedDataEvent} reducers={loadedDataEventReducers} onEnter={onEnter}/>
       <Route path="/events/orientationChange" component={OrientationChangeEvent} onEnter={onEnter}/>
