@@ -8,7 +8,6 @@ import AdvancedEventOptions, {
   fields as advancedEventOptionsFields
 } from './components/advancedEventOptions';
 import extensionViewReduxForm from '../extensionViewReduxForm';
-import reduceReducers from 'reduce-reducers';
 
 export class Click extends React.Component {
   render() {
