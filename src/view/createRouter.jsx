@@ -21,6 +21,7 @@ import EndedEvent, { reducers as endedEventReducers } from './eventDelegates/end
 import VolumeChangeEvent, { reducers as volumeChangeEventReducers } from './eventDelegates/volumeChange';
 import StalledEvent, { reducers as stalledEventReducers } from './eventDelegates/stalled';
 import LoadedDataEvent, { reducers as loadedDataEventReducers } from './eventDelegates/loadedData';
+import TimePlayedEvent, { reducers as timePlayedEventReducers } from './eventDelegates/timePlayed';
 import OrientationChangeEvent from './eventDelegates/orientationChange';
 import ZoomChangeEvent from './eventDelegates/zoomChange';
 
@@ -81,6 +82,7 @@ export default (setBridgeReducers) => {
       <Route path="/events/volumeChange" component={VolumeChangeEvent} reducers={volumeChangeEventReducers} onEnter={onEnter}/>
       <Route path="/events/stalled" component={StalledEvent} reducers={stalledEventReducers} onEnter={onEnter}/>
       <Route path="/events/loadedData" component={LoadedDataEvent} reducers={loadedDataEventReducers} onEnter={onEnter}/>
+      <Route path="/events/timePlayed" component={TimePlayedEvent} reducers={timePlayedEventReducers} onEnter={onEnter}/>
       <Route path="/events/orientationChange" component={OrientationChangeEvent} onEnter={onEnter}/>
       <Route path="/events/zoomChange" component={ZoomChangeEvent} onEnter={onEnter}/>
 
