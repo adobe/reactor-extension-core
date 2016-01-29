@@ -1221,7 +1221,31 @@
     {
       "displayName": "Subdomain",
       "libPath": "conditionDelegates/subdomain.js",
-      "viewPath": "index.html#/conditions/subdomain"
+      "viewPath": "index.html#/conditions/subdomain",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "subdomains": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "valueIsRegex": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["value"]
+            },
+            "minItems": 1
+          }
+        },
+        "required": ["subdomains"]
+      }
     },
     {
       "displayName": "Time On Site",
