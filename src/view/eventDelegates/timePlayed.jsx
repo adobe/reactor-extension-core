@@ -59,7 +59,7 @@ const validate = values => {
     ...elementFilterReducers.validate({}, values)
   };
 
-  if (isNaN(values.amount) || values.amount < 1) {
+  if (isNaN(values.amount) || values.amount <= 0) {
     errors.amount = 'Please specify a positive number';
   }
 
