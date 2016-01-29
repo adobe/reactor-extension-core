@@ -1273,7 +1273,21 @@
     {
       "displayName": "Traffic Source",
       "libPath": "conditionDelegates/trafficSource.js",
-      "viewPath": "index.html#/conditions/trafficSource"
+      "viewPath": "index.html#/conditions/trafficSource",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sourceIsRegex": {
+            "type": "boolean"
+          }
+        },
+        "required": ["source"]
+      }
     },
     {
       "displayName": "URL Parameter",
