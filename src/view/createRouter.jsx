@@ -2,26 +2,28 @@ import React from 'react';
 import { Router, Route, hashHistory } from 'react-router';
 
 // Events
+import BlurEvent, { reducers as blurEventReducers } from './eventDelegates/blur';
 import ClickEvent, { reducers as clickEventReducers } from './eventDelegates/click';
 import DirectCallEvent from './eventDelegates/directCall';
 import DomReadyEvent from './eventDelegates/domReady';
-import EntersViewportEvent, { reducers as entersViewportEventReducers } from './eventDelegates/entersViewport';
-import HoverEvent, { reducers as hoverEventReducers } from './eventDelegates/hover';
 import ElementExistsEvent, { reducers as elementExistsEventReducers } from './eventDelegates/blur';
-import PageTopEvent from './eventDelegates/pageTop';
-import PageBottomEvent from './eventDelegates/pageBottom';
-import OnLoadEvent from './eventDelegates/onLoad';
-import KeyPressEvent, { reducers as keyPressEventReducers } from './eventDelegates/keyPress';
-import FocusEvent, { reducers as focusEventReducers } from './eventDelegates/focus';
-import BlurEvent, { reducers as blurEventReducers } from './eventDelegates/blur';
-import SubmitEvent, { reducers as submitEventReducers } from './eventDelegates/submit';
-import PlayEvent, { reducers as playEventReducers } from './eventDelegates/play';
-import PauseEvent, { reducers as pauseEventReducers } from './eventDelegates/pause';
 import EndedEvent, { reducers as endedEventReducers } from './eventDelegates/ended';
-import VolumeChangeEvent, { reducers as volumeChangeEventReducers } from './eventDelegates/volumeChange';
-import StalledEvent, { reducers as stalledEventReducers } from './eventDelegates/stalled';
+import EntersViewportEvent, { reducers as entersViewportEventReducers } from './eventDelegates/entersViewport';
+import FocusEvent, { reducers as focusEventReducers } from './eventDelegates/focus';
+import HoverEvent, { reducers as hoverEventReducers } from './eventDelegates/hover';
+import KeyPressEvent, { reducers as keyPressEventReducers } from './eventDelegates/keyPress';
 import LoadedDataEvent, { reducers as loadedDataEventReducers } from './eventDelegates/loadedData';
+import LocationChangeEvent from './eventDelegates/locationChange';
+import OnLoadEvent from './eventDelegates/onLoad';
 import OrientationChangeEvent from './eventDelegates/orientationChange';
+import PageBottomEvent from './eventDelegates/pageBottom';
+import PageTopEvent from './eventDelegates/pageTop';
+import PauseEvent, { reducers as pauseEventReducers } from './eventDelegates/pause';
+import PlayEvent, { reducers as playEventReducers } from './eventDelegates/play';
+import StalledEvent, { reducers as stalledEventReducers } from './eventDelegates/stalled';
+import SubmitEvent, { reducers as submitEventReducers } from './eventDelegates/submit';
+import TimePlayedEvent, { reducers as timePlayedEventReducers } from './eventDelegates/timePlayed';
+import VolumeChangeEvent, { reducers as volumeChangeEventReducers } from './eventDelegates/volumeChange';
 import ZoomChangeEvent from './eventDelegates/zoomChange';
 
 // Conditions
@@ -47,6 +49,10 @@ import RegisteredUserCondition from './conditionDelegates/registeredUser';
 import ScreenResolutionCondition, { reducers as screenResolutionConditionReducers } from './conditionDelegates/screenResolution';
 import SessionsCondition, { reducers as sessionsConditionReducers } from './conditionDelegates/sessions';
 import URLParameterCondition from './conditionDelegates/urlParameter';
+import SubdomainCondition, { reducers as subdomainConditionReducers } from './conditionDelegates/subdomain';
+import TimeOnSiteCondition, { reducers as timeOnSiteConditionReducers } from './conditionDelegates/timeOnSite';
+import TrafficSourceCondition from './conditionDelegates/trafficSource';
+import WindowSizeCondition, { reducers as windowSizeConditionReducers } from './conditionDelegates/windowSize';
 
 // Data Elements
 import CookieDataElement from './dataElementDelegates/cookie';
@@ -68,6 +74,7 @@ export default (setBridgeReducers) => {
       <Route path="/events/elementExists" component={ElementExistsEvent} reducers={elementExistsEventReducers} onEnter={onEnter}/>
       <Route path="/events/entersViewport" component={EntersViewportEvent} reducers={entersViewportEventReducers} onEnter={onEnter}/>
       <Route path="/events/hover" component={HoverEvent} reducers={hoverEventReducers} onEnter={onEnter}/>
+      <Route path="/events/locationChange" component={LocationChangeEvent} onEnter={onEnter}/>
       <Route path="/events/pageTop" component={PageTopEvent} onEnter={onEnter}/>
       <Route path="/events/pageBottom" component={PageBottomEvent} onEnter={onEnter}/>
       <Route path="/events/onLoad" component={OnLoadEvent} onEnter={onEnter}/>
@@ -81,6 +88,7 @@ export default (setBridgeReducers) => {
       <Route path="/events/volumeChange" component={VolumeChangeEvent} reducers={volumeChangeEventReducers} onEnter={onEnter}/>
       <Route path="/events/stalled" component={StalledEvent} reducers={stalledEventReducers} onEnter={onEnter}/>
       <Route path="/events/loadedData" component={LoadedDataEvent} reducers={loadedDataEventReducers} onEnter={onEnter}/>
+      <Route path="/events/timePlayed" component={TimePlayedEvent} reducers={timePlayedEventReducers} onEnter={onEnter}/>
       <Route path="/events/orientationChange" component={OrientationChangeEvent} onEnter={onEnter}/>
       <Route path="/events/zoomChange" component={ZoomChangeEvent} onEnter={onEnter}/>
 
@@ -106,6 +114,10 @@ export default (setBridgeReducers) => {
       <Route path="/conditions/screenResolution" component={ScreenResolutionCondition} reducers={screenResolutionConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/sessions" component={SessionsCondition} reducers={sessionsConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/urlParameter" component={URLParameterCondition} onEnter={onEnter}/>
+      <Route path="/conditions/subdomain" component={SubdomainCondition} reducers={subdomainConditionReducers} onEnter={onEnter}/>
+      <Route path="/conditions/timeOnSite" component={TimeOnSiteCondition} reducers={timeOnSiteConditionReducers} onEnter={onEnter}/>
+      <Route path="/conditions/trafficSource" component={TrafficSourceCondition} onEnter={onEnter}/>
+      <Route path="/conditions/windowSize" component={WindowSizeCondition} reducers={windowSizeConditionReducers} onEnter={onEnter}/>
 
       <Route path="/dataElements/cookie" component={CookieDataElement} onEnter={onEnter}/>
       <Route path="/dataElements/custom" component={CustomDataElement} onEnter={onEnter}/>

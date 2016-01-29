@@ -41,9 +41,8 @@ export default (instance, getParts, extensionBridge) => {
         const { elementSelectorComponent } = getParts(instance);
         elementSelectorComponent.refs.elementSelectorField.props.onChange('div#some_selector');
 
-        expect(extensionBridge.getConfig()).toEqual({
-          elementSelector: 'div#some_selector'
-        });
+        const { elementSelector } = extensionBridge.getConfig();
+        expect(elementSelector).toEqual('div#some_selector');
       });
     });
 

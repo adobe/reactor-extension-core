@@ -5,6 +5,49 @@
   "libBasePath": "src/lib",
   "events": [
     {
+      "displayName": "Blur",
+      "libPath": "eventDelegates/blur.js",
+      "viewPath": "index.html#/events/blur",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "elementSelector": {
+            "type": "string",
+            "minLength": 1
+          },
+          "elementProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "value": {
+                  "type": "string"
+                },
+                "valueIsRegex": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["name", "value"]
+            }
+          },
+          "bubbleFireIfParent": {
+            "type": "boolean"
+          },
+          "bubbleFireIfChildFired": {
+            "type": "boolean"
+          },
+          "bubbleStop": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    {
       "displayName": "Click",
       "libPath": "eventDelegates/click.js",
       "viewPath": "index.html#/events/click",
@@ -116,6 +159,49 @@
       }
     },
     {
+      "displayName": "Media Ended",
+      "libPath": "eventDelegates/ended.js",
+      "viewPath": "index.html#/events/ended",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "elementSelector": {
+            "type": "string",
+            "minLength": 1
+          },
+          "elementProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "value": {
+                  "type": "string"
+                },
+                "valueIsRegex": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["name", "value"]
+            }
+          },
+          "bubbleFireIfParent": {
+            "type": "boolean"
+          },
+          "bubbleFireIfChildFired": {
+            "type": "boolean"
+          },
+          "bubbleStop": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    {
       "displayName": "Enters Viewport",
       "libPath": "eventDelegates/entersViewport.js",
       "viewPath": "index.html#/events/entersViewport",
@@ -158,6 +244,49 @@
           "delay": {
             "type": "number",
             "minimum": 1
+          }
+        }
+      }
+    },
+    {
+      "displayName": "Focus",
+      "libPath": "eventDelegates/focus.js",
+      "viewPath": "index.html#/events/focus",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "elementSelector": {
+            "type": "string",
+            "minLength": 1
+          },
+          "elementProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "value": {
+                  "type": "string"
+                },
+                "valueIsRegex": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["name", "value"]
+            }
+          },
+          "bubbleFireIfParent": {
+            "type": "boolean"
+          },
+          "bubbleFireIfChildFired": {
+            "type": "boolean"
+          },
+          "bubbleStop": {
+            "type": "boolean"
           }
         }
       }
@@ -210,371 +339,9 @@
       }
     },
     {
-      "displayName": "On Load",
-      "libPath": "eventDelegates/onLoad.js",
-      "viewPath": "index.html#/events/onLoad",
-      "schema": {}
-    },
-    {
-      "displayName": "Page Bottom",
-      "libPath": "eventDelegates/pageBottom.js",
-      "viewPath": "index.html#/events/pageBottom",
-      "schema": {}
-    },
-    {
-      "displayName": "Page Top",
-      "libPath": "eventDelegates/pageTop.js",
-      "viewPath": "index.html#/events/pageTop",
-      "schema": {}
-    },
-    {
       "displayName": "Key Press",
       "libPath": "eventDelegates/keyPress.js",
       "viewPath": "index.html#/events/keyPress",
-      "schema": {
-        "$schema": "http://json-schema.org/draft-04/schema#",
-        "type": "object",
-        "properties": {
-          "elementSelector": {
-            "type": "string",
-            "minLength": 1
-          },
-          "elementProperties": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "minLength": 1
-                },
-                "value": {
-                  "type": "string"
-                },
-                "valueIsRegex": {
-                  "type": "boolean"
-                }
-              },
-              "required": ["name", "value"]
-            }
-          },
-          "bubbleFireIfParent": {
-            "type": "boolean"
-          },
-          "bubbleFireIfChildFired": {
-            "type": "boolean"
-          },
-          "bubbleStop": {
-            "type": "boolean"
-          }
-        }
-      }
-    },
-    {
-      "displayName": "Focus",
-      "libPath": "eventDelegates/focus.js",
-      "viewPath": "index.html#/events/focus",
-      "schema": {
-        "$schema": "http://json-schema.org/draft-04/schema#",
-        "type": "object",
-        "properties": {
-          "elementSelector": {
-            "type": "string",
-            "minLength": 1
-          },
-          "elementProperties": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "minLength": 1
-                },
-                "value": {
-                  "type": "string"
-                },
-                "valueIsRegex": {
-                  "type": "boolean"
-                }
-              },
-              "required": ["name", "value"]
-            }
-          },
-          "bubbleFireIfParent": {
-            "type": "boolean"
-          },
-          "bubbleFireIfChildFired": {
-            "type": "boolean"
-          },
-          "bubbleStop": {
-            "type": "boolean"
-          }
-        }
-      }
-    },
-    {
-      "displayName": "Blur",
-      "libPath": "eventDelegates/blur.js",
-      "viewPath": "index.html#/events/blur",
-      "schema": {
-        "$schema": "http://json-schema.org/draft-04/schema#",
-        "type": "object",
-        "properties": {
-          "elementSelector": {
-            "type": "string",
-            "minLength": 1
-          },
-          "elementProperties": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "minLength": 1
-                },
-                "value": {
-                  "type": "string"
-                },
-                "valueIsRegex": {
-                  "type": "boolean"
-                }
-              },
-              "required": ["name", "value"]
-            }
-          },
-          "bubbleFireIfParent": {
-            "type": "boolean"
-          },
-          "bubbleFireIfChildFired": {
-            "type": "boolean"
-          },
-          "bubbleStop": {
-            "type": "boolean"
-          }
-        }
-      }
-    },
-    {
-      "displayName": "Submit",
-      "libPath": "eventDelegates/submit.js",
-      "viewPath": "index.html#/events/submit",
-      "schema": {
-        "$schema": "http://json-schema.org/draft-04/schema#",
-        "type": "object",
-        "properties": {
-          "elementSelector": {
-            "type": "string",
-            "minLength": 1
-          },
-          "elementProperties": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "minLength": 1
-                },
-                "value": {
-                  "type": "string"
-                },
-                "valueIsRegex": {
-                  "type": "boolean"
-                }
-              },
-              "required": ["name", "value"]
-            }
-          },
-          "bubbleFireIfParent": {
-            "type": "boolean"
-          },
-          "bubbleFireIfChildFired": {
-            "type": "boolean"
-          },
-          "bubbleStop": {
-            "type": "boolean"
-          }
-        }
-      }
-    },
-    {
-      "displayName": "Media Play",
-      "libPath": "eventDelegates/play.js",
-      "viewPath": "index.html#/events/play",
-      "schema": {
-        "$schema": "http://json-schema.org/draft-04/schema#",
-        "type": "object",
-        "properties": {
-          "elementSelector": {
-            "type": "string",
-            "minLength": 1
-          },
-          "elementProperties": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "minLength": 1
-                },
-                "value": {
-                  "type": "string"
-                },
-                "valueIsRegex": {
-                  "type": "boolean"
-                }
-              },
-              "required": ["name", "value"]
-            }
-          },
-          "bubbleFireIfParent": {
-            "type": "boolean"
-          },
-          "bubbleFireIfChildFired": {
-            "type": "boolean"
-          },
-          "bubbleStop": {
-            "type": "boolean"
-          }
-        }
-      }
-    },
-    {
-      "displayName": "Media Pause",
-      "libPath": "eventDelegates/pause.js",
-      "viewPath": "index.html#/events/pause",
-      "schema": {
-        "$schema": "http://json-schema.org/draft-04/schema#",
-        "type": "object",
-        "properties": {
-          "elementSelector": {
-            "type": "string",
-            "minLength": 1
-          },
-          "elementProperties": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "minLength": 1
-                },
-                "value": {
-                  "type": "string"
-                },
-                "valueIsRegex": {
-                  "type": "boolean"
-                }
-              },
-              "required": ["name", "value"]
-            }
-          },
-          "bubbleFireIfParent": {
-            "type": "boolean"
-          },
-          "bubbleFireIfChildFired": {
-            "type": "boolean"
-          },
-          "bubbleStop": {
-            "type": "boolean"
-          }
-        }
-      }
-    },
-    {
-      "displayName": "Media Ended",
-      "libPath": "eventDelegates/ended.js",
-      "viewPath": "index.html#/events/ended",
-      "schema": {
-        "$schema": "http://json-schema.org/draft-04/schema#",
-        "type": "object",
-        "properties": {
-          "elementSelector": {
-            "type": "string",
-            "minLength": 1
-          },
-          "elementProperties": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "minLength": 1
-                },
-                "value": {
-                  "type": "string"
-                },
-                "valueIsRegex": {
-                  "type": "boolean"
-                }
-              },
-              "required": ["name", "value"]
-            }
-          },
-          "bubbleFireIfParent": {
-            "type": "boolean"
-          },
-          "bubbleFireIfChildFired": {
-            "type": "boolean"
-          },
-          "bubbleStop": {
-            "type": "boolean"
-          }
-        }
-      }
-    },
-    {
-      "displayName": "Media Volume Change",
-      "libPath": "eventDelegates/volumeChange.js",
-      "viewPath": "index.html#/events/volumeChange",
-      "schema": {
-        "$schema": "http://json-schema.org/draft-04/schema#",
-        "type": "object",
-        "properties": {
-          "elementSelector": {
-            "type": "string",
-            "minLength": 1
-          },
-          "elementProperties": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "minLength": 1
-                },
-                "value": {
-                  "type": "string"
-                },
-                "valueIsRegex": {
-                  "type": "boolean"
-                }
-              },
-              "required": ["name", "value"]
-            }
-          },
-          "bubbleFireIfParent": {
-            "type": "boolean"
-          },
-          "bubbleFireIfChildFired": {
-            "type": "boolean"
-          },
-          "bubbleStop": {
-            "type": "boolean"
-          }
-        }
-      }
-    },
-    {
-      "displayName": "Media Stalled",
-      "libPath": "eventDelegates/stalled.js",
-      "viewPath": "index.html#/events/stalled",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
@@ -658,15 +425,301 @@
       }
     },
     {
-      "displayName": "Media Time Played",
-      "libPath": "eventDelegates/timePlayed.js",
-      "viewPath": "index.html#/events/timePlayed"
+      "displayName": "Location Change",
+      "libPath": "eventDelegates/locationChange.js",
+      "viewPath": "index.html#/events/locationChange",
+      "schema": {}
+    },
+    {
+      "displayName": "On Load",
+      "libPath": "eventDelegates/onLoad.js",
+      "viewPath": "index.html#/events/onLoad",
+      "schema": {}
     },
     {
       "displayName": "Orientation Change",
       "libPath": "eventDelegates/orientationChange.js",
       "viewPath": "index.html#/events/orientationChange",
       "schema": {}
+    },
+    {
+      "displayName": "Page Bottom",
+      "libPath": "eventDelegates/pageBottom.js",
+      "viewPath": "index.html#/events/pageBottom",
+      "schema": {}
+    },
+    {
+      "displayName": "Page Top",
+      "libPath": "eventDelegates/pageTop.js",
+      "viewPath": "index.html#/events/pageTop",
+      "schema": {}
+    },
+    {
+      "displayName": "Media Pause",
+      "libPath": "eventDelegates/pause.js",
+      "viewPath": "index.html#/events/pause",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "elementSelector": {
+            "type": "string",
+            "minLength": 1
+          },
+          "elementProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "value": {
+                  "type": "string"
+                },
+                "valueIsRegex": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["name", "value"]
+            }
+          },
+          "bubbleFireIfParent": {
+            "type": "boolean"
+          },
+          "bubbleFireIfChildFired": {
+            "type": "boolean"
+          },
+          "bubbleStop": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    {
+      "displayName": "Media Play",
+      "libPath": "eventDelegates/play.js",
+      "viewPath": "index.html#/events/play",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "elementSelector": {
+            "type": "string",
+            "minLength": 1
+          },
+          "elementProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "value": {
+                  "type": "string"
+                },
+                "valueIsRegex": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["name", "value"]
+            }
+          },
+          "bubbleFireIfParent": {
+            "type": "boolean"
+          },
+          "bubbleFireIfChildFired": {
+            "type": "boolean"
+          },
+          "bubbleStop": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    {
+      "displayName": "Media Stalled",
+      "libPath": "eventDelegates/stalled.js",
+      "viewPath": "index.html#/events/stalled",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "elementSelector": {
+            "type": "string",
+            "minLength": 1
+          },
+          "elementProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "value": {
+                  "type": "string"
+                },
+                "valueIsRegex": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["name", "value"]
+            }
+          },
+          "bubbleFireIfParent": {
+            "type": "boolean"
+          },
+          "bubbleFireIfChildFired": {
+            "type": "boolean"
+          },
+          "bubbleStop": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    {
+      "displayName": "Submit",
+      "libPath": "eventDelegates/submit.js",
+      "viewPath": "index.html#/events/submit",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "elementSelector": {
+            "type": "string",
+            "minLength": 1
+          },
+          "elementProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "value": {
+                  "type": "string"
+                },
+                "valueIsRegex": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["name", "value"]
+            }
+          },
+          "bubbleFireIfParent": {
+            "type": "boolean"
+          },
+          "bubbleFireIfChildFired": {
+            "type": "boolean"
+          },
+          "bubbleStop": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    {
+      "displayName": "Media Time Played",
+      "libPath": "eventDelegates/timePlayed.js",
+      "viewPath": "index.html#/events/timePlayed",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "elementSelector": {
+            "type": "string",
+            "minLength": 1
+          },
+          "elementProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "value": {
+                  "type": "string"
+                },
+                "valueIsRegex": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["name", "value"]
+            }
+          },
+          "bubbleFireIfParent": {
+            "type": "boolean"
+          },
+          "bubbleFireIfChildFired": {
+            "type": "boolean"
+          },
+          "bubbleStop": {
+            "type": "boolean"
+          },
+          "amount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "unit": {
+            "type": "string",
+            "enum": ["percent", "second"]
+          }
+        },
+        "required": ["amount", "unit"]
+      }
+    },
+    {
+      "displayName": "Media Volume Change",
+      "libPath": "eventDelegates/volumeChange.js",
+      "viewPath": "index.html#/events/volumeChange",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "elementSelector": {
+            "type": "string",
+            "minLength": 1
+          },
+          "elementProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "value": {
+                  "type": "string"
+                },
+                "valueIsRegex": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["name", "value"]
+            }
+          },
+          "bubbleFireIfParent": {
+            "type": "boolean"
+          },
+          "bubbleFireIfChildFired": {
+            "type": "boolean"
+          },
+          "bubbleStop": {
+            "type": "boolean"
+          }
+        }
+      }
     },
     {
       "displayName": "Zoom Change",
@@ -1168,27 +1221,130 @@
     {
       "displayName": "Subdomain",
       "libPath": "conditionDelegates/subdomain.js",
-      "viewPath": "index.html#/conditions/subdomain"
+      "viewPath": "index.html#/conditions/subdomain",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "subdomains": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "valueIsRegex": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["value"]
+            },
+            "minItems": 1
+          }
+        },
+        "required": ["subdomains"]
+      }
     },
     {
       "displayName": "Time On Site",
       "libPath": "conditionDelegates/timeOnSite.js",
-      "viewPath": "index.html#/conditions/timeOnSite"
+      "viewPath": "index.html#/conditions/timeOnSite",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "operator": {
+            "type": "string",
+            "enum": [
+              ">",
+              "=",
+              "<"
+            ]
+          },
+          "minutes": {
+            "type": "number"
+          }
+        },
+        "required": ["operator", "minutes"]
+      }
     },
     {
       "displayName": "Traffic Source",
       "libPath": "conditionDelegates/trafficSource.js",
-      "viewPath": "index.html#/conditions/trafficSource"
+      "viewPath": "index.html#/conditions/trafficSource",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sourceIsRegex": {
+            "type": "boolean"
+          }
+        },
+        "required": ["source"]
+      }
     },
     {
       "displayName": "URL Parameter",
       "libPath": "conditionDelegates/urlParameter.js",
-      "viewPath": "index.html#/conditions/urlParameter"
+      "viewPath": "index.html#/conditions/urlParameter",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "value": {
+            "type": "string",
+            "minLength": 1
+          },
+          "valueIsRegex": {
+            "type": "boolean"
+          }
+        },
+        "required": ["name", "value"]
+      }
     },
     {
       "displayName": "Window Size",
       "libPath": "conditionDelegates/windowSize.js",
-      "viewPath": "index.html#/conditions/windowSize"
+      "viewPath": "index.html#/conditions/windowSize",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "widthOperator": {
+            "type": "string",
+            "enum": [
+              ">",
+              "=",
+              "<"
+            ]
+          },
+          "width": {
+            "type": "number"
+          },
+          "heightOperator": {
+            "type": "string",
+            "enum": [
+              ">",
+              "=",
+              "<"
+            ]
+          },
+          "height": {
+            "type": "number"
+          }
+        },
+        "required": ["widthOperator", "width", "heightOperator", "height"]
+      }
     }
   ],
   "dataElements": [

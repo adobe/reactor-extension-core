@@ -87,7 +87,8 @@ export default (instance, getParts, extensionBridge) => {
       nameField.onChange('somepropset');
       valueField.onChange('somevalueset');
 
-      expect(extensionBridge.getConfig()).toEqual({
+      const { elementProperties } = extensionBridge.getConfig();
+      expect({elementProperties}).toEqual({
         elementProperties: [{
           name: 'somepropset',
           value: 'somevalueset'

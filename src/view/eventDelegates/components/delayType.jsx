@@ -84,7 +84,7 @@ export const reducers = {
     };
 
     if (values.delayType === 'delay'
-      && (!values.delay || isNaN(values.delay) || values.delay < 1)) {
+      && (isNaN(values.delay) || values.delay < 1)) {
       errors.delay = 'Please specify a positive number';
     }
 

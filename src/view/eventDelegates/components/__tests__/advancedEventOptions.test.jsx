@@ -37,7 +37,14 @@ export default (instance, getParts, extensionBridge) => {
       refs.bubbleFireIfChildFiredCheckbox.props.onChange(true);
       refs.bubbleStopCheckbox.props.onChange(true);
 
-      expect(extensionBridge.getConfig()).toEqual({
+      const { bubbleFireIfParent, bubbleStop, bubbleFireIfChildFired } =
+        extensionBridge.getConfig();
+
+      expect({
+        bubbleFireIfParent,
+        bubbleStop,
+        bubbleFireIfChildFired
+      }).toEqual({
         bubbleFireIfParent: true,
         bubbleStop: true,
         bubbleFireIfChildFired: true
