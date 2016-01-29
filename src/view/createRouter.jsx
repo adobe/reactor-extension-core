@@ -2,28 +2,28 @@ import React from 'react';
 import { Router, Route, hashHistory } from 'react-router';
 
 // Events
+import BlurEvent, { reducers as blurEventReducers } from './eventDelegates/blur';
 import ClickEvent, { reducers as clickEventReducers } from './eventDelegates/click';
 import DirectCallEvent from './eventDelegates/directCall';
 import DomReadyEvent from './eventDelegates/domReady';
 import ElementExistsEvent, { reducers as elementExistsEventReducers } from './eventDelegates/blur';
+import EndedEvent, { reducers as endedEventReducers } from './eventDelegates/ended';
 import EntersViewportEvent, { reducers as entersViewportEventReducers } from './eventDelegates/entersViewport';
+import FocusEvent, { reducers as focusEventReducers } from './eventDelegates/focus';
 import HoverEvent, { reducers as hoverEventReducers } from './eventDelegates/hover';
+import KeyPressEvent, { reducers as keyPressEventReducers } from './eventDelegates/keyPress';
+import LoadedDataEvent, { reducers as loadedDataEventReducers } from './eventDelegates/loadedData';
 import LocationChangeEvent from './eventDelegates/locationChange';
 import OnLoadEvent from './eventDelegates/onLoad';
+import OrientationChangeEvent from './eventDelegates/orientationChange';
 import PageBottomEvent from './eventDelegates/pageBottom';
 import PageTopEvent from './eventDelegates/pageTop';
-import KeyPressEvent, { reducers as keyPressEventReducers } from './eventDelegates/keyPress';
-import FocusEvent, { reducers as focusEventReducers } from './eventDelegates/focus';
-import BlurEvent, { reducers as blurEventReducers } from './eventDelegates/blur';
-import SubmitEvent, { reducers as submitEventReducers } from './eventDelegates/submit';
-import PlayEvent, { reducers as playEventReducers } from './eventDelegates/play';
 import PauseEvent, { reducers as pauseEventReducers } from './eventDelegates/pause';
-import EndedEvent, { reducers as endedEventReducers } from './eventDelegates/ended';
-import VolumeChangeEvent, { reducers as volumeChangeEventReducers } from './eventDelegates/volumeChange';
+import PlayEvent, { reducers as playEventReducers } from './eventDelegates/play';
 import StalledEvent, { reducers as stalledEventReducers } from './eventDelegates/stalled';
-import LoadedDataEvent, { reducers as loadedDataEventReducers } from './eventDelegates/loadedData';
+import SubmitEvent, { reducers as submitEventReducers } from './eventDelegates/submit';
 import TimePlayedEvent, { reducers as timePlayedEventReducers } from './eventDelegates/timePlayed';
-import OrientationChangeEvent from './eventDelegates/orientationChange';
+import VolumeChangeEvent, { reducers as volumeChangeEventReducers } from './eventDelegates/volumeChange';
 import ZoomChangeEvent from './eventDelegates/zoomChange';
 
 // Conditions
