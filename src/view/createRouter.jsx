@@ -5,12 +5,13 @@ import { Router, Route, hashHistory } from 'react-router';
 import ClickEvent, { reducers as clickEventReducers } from './eventDelegates/click';
 import DirectCallEvent from './eventDelegates/directCall';
 import DomReadyEvent from './eventDelegates/domReady';
+import ElementExistsEvent, { reducers as elementExistsEventReducers } from './eventDelegates/blur';
 import EntersViewportEvent, { reducers as entersViewportEventReducers } from './eventDelegates/entersViewport';
 import HoverEvent, { reducers as hoverEventReducers } from './eventDelegates/hover';
-import ElementExistsEvent, { reducers as elementExistsEventReducers } from './eventDelegates/blur';
-import PageTopEvent from './eventDelegates/pageTop';
-import PageBottomEvent from './eventDelegates/pageBottom';
+import LocationChangeEvent from './eventDelegates/locationChange';
 import OnLoadEvent from './eventDelegates/onLoad';
+import PageBottomEvent from './eventDelegates/pageBottom';
+import PageTopEvent from './eventDelegates/pageTop';
 import KeyPressEvent, { reducers as keyPressEventReducers } from './eventDelegates/keyPress';
 import FocusEvent, { reducers as focusEventReducers } from './eventDelegates/focus';
 import BlurEvent, { reducers as blurEventReducers } from './eventDelegates/blur';
@@ -69,6 +70,7 @@ export default (setBridgeReducers) => {
       <Route path="/events/elementExists" component={ElementExistsEvent} reducers={elementExistsEventReducers} onEnter={onEnter}/>
       <Route path="/events/entersViewport" component={EntersViewportEvent} reducers={entersViewportEventReducers} onEnter={onEnter}/>
       <Route path="/events/hover" component={HoverEvent} reducers={hoverEventReducers} onEnter={onEnter}/>
+      <Route path="/events/locationChange" component={LocationChangeEvent} onEnter={onEnter}/>
       <Route path="/events/pageTop" component={PageTopEvent} onEnter={onEnter}/>
       <Route path="/events/pageBottom" component={PageBottomEvent} onEnter={onEnter}/>
       <Route path="/events/onLoad" component={OnLoadEvent} onEnter={onEnter}/>

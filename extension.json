@@ -210,6 +210,12 @@
       }
     },
     {
+      "displayName": "Location Change",
+      "libPath": "eventDelegates/locationChange.js",
+      "viewPath": "index.html#/events/locationChange",
+      "schema": {}
+    },
+    {
       "displayName": "On Load",
       "libPath": "eventDelegates/onLoad.js",
       "viewPath": "index.html#/events/onLoad",
