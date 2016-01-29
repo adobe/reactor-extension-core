@@ -52,6 +52,7 @@ import URLParameterCondition from './conditionDelegates/urlParameter';
 import SubdomainCondition, { reducers as subdomainConditionReducers } from './conditionDelegates/subdomain';
 import TimeOnSiteCondition, { reducers as timeOnSiteConditionReducers } from './conditionDelegates/timeOnSite';
 import TrafficSourceCondition from './conditionDelegates/trafficSource';
+import WindowSizeCondition, { reducers as windowSizeConditionReducers } from './conditionDelegates/windowSize';
 
 // Data Elements
 import CookieDataElement from './dataElementDelegates/cookie';
@@ -116,6 +117,7 @@ export default (setBridgeReducers) => {
       <Route path="/conditions/subdomain" component={SubdomainCondition} reducers={subdomainConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/timeOnSite" component={TimeOnSiteCondition} reducers={timeOnSiteConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/trafficSource" component={TrafficSourceCondition} onEnter={onEnter}/>
+      <Route path="/conditions/windowSize" component={WindowSizeCondition} reducers={windowSizeConditionReducers} onEnter={onEnter}/>
 
       <Route path="/dataElements/cookie" component={CookieDataElement} onEnter={onEnter}/>
       <Route path="/dataElements/custom" component={CustomDataElement} onEnter={onEnter}/>

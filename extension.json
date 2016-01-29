@@ -1315,7 +1315,36 @@
     {
       "displayName": "Window Size",
       "libPath": "conditionDelegates/windowSize.js",
-      "viewPath": "index.html#/conditions/windowSize"
+      "viewPath": "index.html#/conditions/windowSize",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "widthOperator": {
+            "type": "string",
+            "enum": [
+              ">",
+              "=",
+              "<"
+            ]
+          },
+          "width": {
+            "type": "number"
+          },
+          "heightOperator": {
+            "type": "string",
+            "enum": [
+              ">",
+              "=",
+              "<"
+            ]
+          },
+          "height": {
+            "type": "number"
+          }
+        },
+        "required": ["widthOperator", "width", "heightOperator", "height"]
+      }
     }
   ],
   "dataElements": [
