@@ -1250,7 +1250,25 @@
     {
       "displayName": "Time On Site",
       "libPath": "conditionDelegates/timeOnSite.js",
-      "viewPath": "index.html#/conditions/timeOnSite"
+      "viewPath": "index.html#/conditions/timeOnSite",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "operator": {
+            "type": "string",
+            "enum": [
+              ">",
+              "=",
+              "<"
+            ]
+          },
+          "minutes": {
+            "type": "number"
+          }
+        },
+        "required": ["operator", "minutes"]
+      }
     },
     {
       "displayName": "Traffic Source",

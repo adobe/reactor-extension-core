@@ -50,6 +50,7 @@ import ScreenResolutionCondition, { reducers as screenResolutionConditionReducer
 import SessionsCondition, { reducers as sessionsConditionReducers } from './conditionDelegates/sessions';
 import URLParameterCondition from './conditionDelegates/urlParameter';
 import SubdomainCondition, { reducers as subdomainConditionReducers } from './conditionDelegates/subdomain';
+import TimeOnSiteCondition, { reducers as timeOnSiteConditionReducers } from './conditionDelegates/timeOnSite';
 
 // Data Elements
 import CookieDataElement from './dataElementDelegates/cookie';
@@ -112,6 +113,7 @@ export default (setBridgeReducers) => {
       <Route path="/conditions/sessions" component={SessionsCondition} reducers={sessionsConditionReducers} onEnter={onEnter}/>
       <Route path="/conditions/urlParameter" component={URLParameterCondition} onEnter={onEnter}/>
       <Route path="/conditions/subdomain" component={SubdomainCondition} reducers={subdomainConditionReducers} onEnter={onEnter}/>
+      <Route path="/conditions/timeOnSite" component={TimeOnSiteCondition} reducers={timeOnSiteConditionReducers} onEnter={onEnter}/>
 
       <Route path="/dataElements/cookie" component={CookieDataElement} onEnter={onEnter}/>
       <Route path="/dataElements/custom" component={CustomDataElement} onEnter={onEnter}/>
