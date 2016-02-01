@@ -22,6 +22,8 @@ import PauseEvent, { reducers as pauseEventReducers } from './eventDelegates/pau
 import PlayEvent, { reducers as playEventReducers } from './eventDelegates/play';
 import StalledEvent, { reducers as stalledEventReducers } from './eventDelegates/stalled';
 import SubmitEvent, { reducers as submitEventReducers } from './eventDelegates/submit';
+import TabBlurEvent from './eventDelegates/tabBlur';
+import TabFocusEvent from './eventDelegates/tabFocus';
 import TimePlayedEvent, { reducers as timePlayedEventReducers } from './eventDelegates/timePlayed';
 import VolumeChangeEvent, { reducers as volumeChangeEventReducers } from './eventDelegates/volumeChange';
 import ZoomChangeEvent from './eventDelegates/zoomChange';
@@ -68,28 +70,30 @@ export default (setBridgeReducers) => {
 
   return (
     <Router history={hashHistory}>
+      <Route path="/events/blur" component={BlurEvent} reducers={blurEventReducers} onEnter={onEnter}/>
       <Route path="/events/click" component={ClickEvent} reducers={clickEventReducers} onEnter={onEnter}/>
       <Route path="/events/directCall" component={DirectCallEvent} onEnter={onEnter}/>
       <Route path="/events/domReady" component={DomReadyEvent} onEnter={onEnter}/>
       <Route path="/events/elementExists" component={ElementExistsEvent} reducers={elementExistsEventReducers} onEnter={onEnter}/>
-      <Route path="/events/entersViewport" component={EntersViewportEvent} reducers={entersViewportEventReducers} onEnter={onEnter}/>
-      <Route path="/events/hover" component={HoverEvent} reducers={hoverEventReducers} onEnter={onEnter}/>
-      <Route path="/events/locationChange" component={LocationChangeEvent} onEnter={onEnter}/>
-      <Route path="/events/pageTop" component={PageTopEvent} onEnter={onEnter}/>
-      <Route path="/events/pageBottom" component={PageBottomEvent} onEnter={onEnter}/>
-      <Route path="/events/onLoad" component={OnLoadEvent} onEnter={onEnter}/>
-      <Route path="/events/keyPress" component={KeyPressEvent} reducers={keyPressEventReducers} onEnter={onEnter}/>
-      <Route path="/events/focus" component={FocusEvent} reducers={focusEventReducers} onEnter={onEnter}/>
-      <Route path="/events/blur" component={BlurEvent} reducers={blurEventReducers} onEnter={onEnter}/>
-      <Route path="/events/submit" component={SubmitEvent} reducers={submitEventReducers} onEnter={onEnter}/>
-      <Route path="/events/play" component={PlayEvent} reducers={playEventReducers} onEnter={onEnter}/>
-      <Route path="/events/pause" component={PauseEvent} reducers={pauseEventReducers} onEnter={onEnter}/>
       <Route path="/events/ended" component={EndedEvent} reducers={endedEventReducers} onEnter={onEnter}/>
-      <Route path="/events/volumeChange" component={VolumeChangeEvent} reducers={volumeChangeEventReducers} onEnter={onEnter}/>
-      <Route path="/events/stalled" component={StalledEvent} reducers={stalledEventReducers} onEnter={onEnter}/>
+      <Route path="/events/entersViewport" component={EntersViewportEvent} reducers={entersViewportEventReducers} onEnter={onEnter}/>
+      <Route path="/events/focus" component={FocusEvent} reducers={focusEventReducers} onEnter={onEnter}/>
+      <Route path="/events/hover" component={HoverEvent} reducers={hoverEventReducers} onEnter={onEnter}/>
+      <Route path="/events/keyPress" component={KeyPressEvent} reducers={keyPressEventReducers} onEnter={onEnter}/>
       <Route path="/events/loadedData" component={LoadedDataEvent} reducers={loadedDataEventReducers} onEnter={onEnter}/>
-      <Route path="/events/timePlayed" component={TimePlayedEvent} reducers={timePlayedEventReducers} onEnter={onEnter}/>
+      <Route path="/events/locationChange" component={LocationChangeEvent} onEnter={onEnter}/>
+      <Route path="/events/onLoad" component={OnLoadEvent} onEnter={onEnter}/>
       <Route path="/events/orientationChange" component={OrientationChangeEvent} onEnter={onEnter}/>
+      <Route path="/events/pageBottom" component={PageBottomEvent} onEnter={onEnter}/>
+      <Route path="/events/pageTop" component={PageTopEvent} onEnter={onEnter}/>
+      <Route path="/events/pause" component={PauseEvent} reducers={pauseEventReducers} onEnter={onEnter}/>
+      <Route path="/events/play" component={PlayEvent} reducers={playEventReducers} onEnter={onEnter}/>
+      <Route path="/events/stalled" component={StalledEvent} reducers={stalledEventReducers} onEnter={onEnter}/>
+      <Route path="/events/submit" component={SubmitEvent} reducers={submitEventReducers} onEnter={onEnter}/>
+      <Route path="/events/tabBlur" component={TabBlurEvent} onEnter={onEnter}/>
+      <Route path="/events/tabFocus" component={TabFocusEvent} onEnter={onEnter}/>
+      <Route path="/events/timePlayed" component={TimePlayedEvent} reducers={timePlayedEventReducers} onEnter={onEnter}/>
+      <Route path="/events/volumeChange" component={VolumeChangeEvent} reducers={volumeChangeEventReducers} onEnter={onEnter}/>
       <Route path="/events/zoomChange" component={ZoomChangeEvent} onEnter={onEnter}/>
 
       <Route path="/conditions/browser" component={BrowserCondition} reducers={browserConditionReducers} onEnter={onEnter}/>
