@@ -63,4 +63,4 @@ describe('pageBottom event type', function() {
     expect(call.args[0].target).toBe('http://somelocation.com');
     expect(call.args[1]).toBe('http://somelocation.com');
   });
-}); 
+});

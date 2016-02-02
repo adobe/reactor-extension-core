@@ -6,7 +6,7 @@ import BlurEvent, { reducers as blurEventReducers } from './eventDelegates/blur'
 import ClickEvent, { reducers as clickEventReducers } from './eventDelegates/click';
 import DirectCallEvent from './eventDelegates/directCall';
 import DomReadyEvent from './eventDelegates/domReady';
-import ElementExistsEvent, { reducers as elementExistsEventReducers } from './eventDelegates/blur';
+import ElementExistsEvent, { reducers as elementExistsEventReducers } from './eventDelegates/elementExists';
 import EndedEvent, { reducers as endedEventReducers } from './eventDelegates/ended';
 import EntersViewportEvent, { reducers as entersViewportEventReducers } from './eventDelegates/entersViewport';
 import FocusEvent, { reducers as focusEventReducers } from './eventDelegates/focus';

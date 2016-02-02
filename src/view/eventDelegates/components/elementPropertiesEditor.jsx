@@ -12,7 +12,7 @@ export const fields = [
 
 export default class ElementPropertiesEditor extends React.Component {
   add = event => {
-    this.props.elementProperties.addField({
+    this.props.fields.elementProperties.addField({
       id: createID(),
       name: '',
       value: ''
@@ -20,11 +20,11 @@ export default class ElementPropertiesEditor extends React.Component {
   };
 
   remove = index => {
-    this.props.elementProperties.removeField(index);
+    this.props.fields.elementProperties.removeField(index);
   };
 
   render() {
-    const { elementProperties } = this.props;
+    const { elementProperties } = this.props.fields;
 
     return (
       <div>

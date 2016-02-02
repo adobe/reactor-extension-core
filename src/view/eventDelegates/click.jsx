@@ -15,14 +15,14 @@ export class Click extends React.Component {
 
     return (
       <div>
-        <ElementFilter {...this.props.fields}/>
+        <ElementFilter fields={this.props.fields}/>
         <Coral.Checkbox
           ref="delayLinkActivationCheckbox"
           className="u-block"
           {...delayLinkActivation}>
           If the element is a link, delay navigation until rule runs
         </Coral.Checkbox>
-        <AdvancedEventOptions {...this.props.fields}/>
+        <AdvancedEventOptions fields={this.props.fields}/>
       </div>
     );
   }

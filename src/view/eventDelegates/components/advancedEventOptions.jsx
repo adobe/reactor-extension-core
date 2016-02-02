@@ -22,7 +22,7 @@ export default class AdvancedEventOptions extends React.Component {
     });
   };
   render() {
-    const { bubbleFireIfParent, bubbleFireIfChildFired, bubbleStop } = this.props;
+    const { bubbleFireIfParent, bubbleFireIfChildFired, bubbleStop } = this.props.fields;
 
     var advancedPanel;
 
@@ -48,7 +48,7 @@ export default class AdvancedEventOptions extends React.Component {
     }
 
     return (
-      <div ref="niner">
+      <div>
         <div className="AdvancedEventOptions-disclosureButtonContainer">
           <DisclosureButton
             ref="disclosureButton"

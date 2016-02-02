@@ -6,6 +6,7 @@ import ElementSelectorField from '../components/elementSelectorField';
 import ElementPropertiesEditor from '../components/elementPropertiesEditor';
 import AdvancedEventOptions from '../components/advancedEventOptions';
 import ElementFilter from '../components/elementFilter';
+import SpecificElements from '../components/specificElements';
 import setUpComponent from '../../__tests__/helpers/setUpComponent';
 import testElementFilter from '../components/__tests__/elementFilter.test';
 import testAdvancedOptions from '../components/__tests__/advancedEventOptions.test';
@@ -17,6 +18,8 @@ const getParts = (instance) => {
   return {
     elementFilterComponent:
       TestUtils.findRenderedComponentWithType(instance, ElementFilter),
+    specificElementsComponent:
+      TestUtils.scryRenderedComponentsWithType(instance, SpecificElements)[0],
     elementSelectorComponent:
       TestUtils.scryRenderedComponentsWithType(instance, ElementSelectorField)[0],
     elementPropertiesEditorComponent:
