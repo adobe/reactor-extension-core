@@ -7,13 +7,13 @@ import extensionViewReduxForm from '../extensionViewReduxForm';
 import reduceReducers from 'reduce-reducers';
 import SpecificElements, { fields as specificElementsFields, reducers as specificElementsReducers } from './components/specificElements';
 
-class EntersViewport extends React.Component {
+export class Hover extends React.Component {
   render() {
     return (
       <div>
-        <SpecificElements fields={this.props.fields}/>
-        <DelayType fields={this.props.fields}/>
-        <AdvancedEventOptions fields={this.props.fields}/>
+        <SpecificElements ref="specificElements" fields={this.props.fields}/>
+        <DelayType ref="delayType" fields={this.props.fields}/>
+        <AdvancedEventOptions ref="advancedEventOptions" fields={this.props.fields}/>
       </div>
     );
   }
@@ -33,7 +33,7 @@ const validate = values => validateReducer({}, values);
 export default extensionViewReduxForm({
   fields,
   validate
-})(EntersViewport);
+})(Hover);
 
 export const reducers = {
   configToFormValues: reduceReducers(

@@ -2,7 +2,11 @@ export default (instance, getParts, extensionBridge) => {
   describe('delayType', () => {
     describe('sets form values', () => {
       it('when config contains delay value', () => {
-        extensionBridge.init({config: {delay: 500}});
+        extensionBridge.init({
+          config: {
+            delay: 500
+          }
+        });
         const { delayTypeComponent } = getParts(instance);
         expect(delayTypeComponent.refs.delayRadio.props.checked).toBe(true);
         expect(delayTypeComponent.refs.delayTextField.props.value).toBe(500);

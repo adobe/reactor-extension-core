@@ -12,11 +12,11 @@ export default class ElementSelectorField extends React.Component {
 
     return (
       <ValidationWrapper
-        ref="elementSelectorValidationWrapper"
+        ref="validationWrapper"
         error={elementSelector.touched && elementSelector.error}>
         <label>
           <span className="u-label">Elements matching the CSS selector</span>
-          <Coral.Textfield ref="elementSelectorField" {...elementSelector}/>
+          <Coral.Textfield ref="textfield" {...elementSelector}/>
         </label>
       </ValidationWrapper>
     );

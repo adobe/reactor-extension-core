@@ -1,36 +1,47 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../../reduxFormCoralUI';
-import StandardEventProviderComponent, {reducers as standardEventReducers }
-  from '../../components/standardEvent';
-import ElementSelectorField from '../elementSelectorField';
-import ElementPropertiesEditor from '../elementPropertiesEditor';
-import AdvancedEventOptions from '../advancedEventOptions';
-import ElementFilter from '../elementFilter';
-import SpecificElements from '../specificElements';
+import StandardEventProvider, { StandardEvent, reducers as standardEventReducers } from '../../components/standardEvent';
 import setUpComponent from '../../../__tests__/helpers/setUpComponent';
 import testElementFilter from './elementFilter.test';
-import testAdvancedOptions from './advancedEventOptions.test';
-import testElementPropertiesEditor from './elementPropertiesEditor.test';
+import testAdvancedEventOptions from './advancedEventOptions.test';
 
-const { instance, extensionBridge } =
-  setUpComponent(StandardEventProviderComponent, standardEventReducers);
-const getParts = (instance) => {
-  return {
-    elementFilterComponent:
-      TestUtils.findRenderedComponentWithType(instance, ElementFilter),
-    specificElementsComponent:
-      TestUtils.scryRenderedComponentsWithType(instance, SpecificElements)[0],
-    elementSelectorComponent:
-      TestUtils.scryRenderedComponentsWithType(instance, ElementSelectorField)[0],
-    elementPropertiesEditorComponent:
-      TestUtils.scryRenderedComponentsWithType(instance, ElementPropertiesEditor)[0],
-    advancedEventOptionsComponent:
-      TestUtils.findRenderedComponentWithType(instance, AdvancedEventOptions)
-  };
-};
+let { instance, extensionBridge } = setUpComponent(StandardEventProvider, standardEventReducers);
+instance = TestUtils.findRenderedComponentWithType(instance, StandardEvent);
 
 describe('standard event view', () => {
-  testElementFilter(instance, getParts, extensionBridge);
-  testAdvancedOptions(instance, getParts, extensionBridge);
-  testElementPropertiesEditor(instance, getParts, extensionBridge);
+  it('sets form values from config', () => {
+    extensionBridge.init({
+      config: {
+        elementSelector: '.foo',
+        bubbleStop: true
+      }
+    });
+
+    const { elementFilter, advancedEventOptions } = instance.refs;
+
+    expect(elementFilter.props.fields.elementSelector.value).toBe('.foo');
+    expect(advancedEventOptions.props.fields.bubbleStop.value).toBe(true);
+  });
+
+  it('sets config from form values', () => {
+    extensionBridge.init();
+
+    const { elementFilter, advancedEventOptions } = instance.refs;
+
+    elementFilter.props.fields.elementSelector.onChange('.foo');
+    advancedEventOptions.props.fields.bubbleStop.onChange(true);
+
+    const { elementSelector, bubbleStop } = extensionBridge.getConfig();
+    expect(elementSelector).toBe('.foo');
+    expect(bubbleStop).toBe(true);
+  });
+
+  it('sets validation errors', () => {
+    extensionBridge.init();
+
+    const { elementFilter } = instance.refs;
+
+    expect(extensionBridge.validate()).toBe(false);
+    expect(elementFilter.props.fields.elementSelector.error).toEqual(jasmine.any(String));
+  });
 });

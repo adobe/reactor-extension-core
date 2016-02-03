@@ -36,7 +36,7 @@ export default class ElementFilter extends React.Component {
         </div>
         {
           elementSpecificity.value === 'specific' ?
-            <SpecificElements fields={this.props.fields}/> : null
+            <SpecificElements ref="specificElements" fields={this.props.fields}/> : null
         }
       </div>
     );

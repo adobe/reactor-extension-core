@@ -11,12 +11,12 @@ import DelayType, {
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import reduceReducers from 'reduce-reducers';
 
-class EntersViewport extends React.Component {
+export class EntersViewport extends React.Component {
   render() {
     return (
       <div>
-        <SpecificElements fields={this.props.fields}/>
-        <DelayType fields={this.props.fields}/>
+        <SpecificElements ref="specificElements" fields={this.props.fields}/>
+        <DelayType ref="delayType" fields={this.props.fields}/>
       </div>
     );
   }

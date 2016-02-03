@@ -6,9 +6,9 @@ import SpecificElements, {
 } from './components/specificElements';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
-class ElementExists extends React.Component {
+export class ElementExists extends React.Component {
   render() {
-    return <SpecificElements fields={this.props.fields}/>;
+    return <SpecificElements ref="specificElements" fields={this.props.fields}/>;
   }
 }
 

@@ -1,47 +1,97 @@
 import TestUtils from 'react-addons-test-utils';
-import testElementSelector from './elementSelectorField.test';
+import setUpComponent from '../../../__tests__/helpers/setUpComponent';
+import extensionViewReduxForm from '../../../extensionViewReduxForm';
+import SpecificElements, { fields, reducers } from '../specificElements';
 
-export default (instance, getParts, extensionBridge) => {
-  describe('specificElements', () => {
-    describe('when elementProperties is provided', () => {
-      beforeEach(() => {
-        extensionBridge.init({
-          config: {
-            elementSelector: 'div#id',
-            elementProperties: [
-              {
-                name: 'a',
-                value: 'b'
-              }
-            ]
+const FormComponent = extensionViewReduxForm({
+  fields,
+  validate: values => reducers.validate({}, values)
+})(SpecificElements);
+
+let { instance, extensionBridge } = setUpComponent(FormComponent, reducers);
+
+instance = TestUtils.findRenderedComponentWithType(instance, SpecificElements);
+
+describe('specificElements', () => {
+  it('updates view properly when elementProperties provided', () => {
+    extensionBridge.init({
+      config: {
+        elementSelector: '.foo',
+        elementProperties: [
+          {
+            name: 'a',
+            value: 'b'
           }
-        });
-      });
-
-      it('has the element properties checkbox selected and shows element properties editor', () => {
-        const { specificElementsComponent } = getParts(instance);
-        expect(specificElementsComponent.refs.showElementPropertiesCheckbox.props.checked)
-          .toBe(true);
-        expect(specificElementsComponent.refs.elementPropertiesEditor).toBeDefined();
-      });
+        ]
+      }
     });
 
-    describe('when elementProperties is not provided', () => {
-      beforeEach(() => {
-        extensionBridge.init({config: {
-          elementSelector: 'div#id'
-        }});
-      });
-
-      it('does not have element properties checkbox selected and ' +
-        'does not show element properties editor', () => {
-        const { specificElementsComponent } = getParts(instance);
-        expect(specificElementsComponent.refs.showElementPropertiesCheckbox.props.checked)
-          .toBe(false);
-        expect(specificElementsComponent.refs.elementPropertiesEditor).toBeUndefined();
-      });
-    });
+    const { showElementPropertiesCheckbox, elementPropertiesEditor } = instance.refs;
+    expect(showElementPropertiesCheckbox.props.checked).toBe(true);
+    expect(elementPropertiesEditor).toBeDefined();
+    expect(elementPropertiesEditor.props.fields.elementProperties).toBeDefined();
   });
 
-  testElementSelector(instance, getParts, extensionBridge);
-};
+  it('updates view properly when elementProperties not provided', () => {
+    extensionBridge.init({
+      config: {
+        elementSelector: '.foo'
+      }
+    });
+
+    const { showElementPropertiesCheckbox, elementPropertiesEditor } = instance.refs;
+    expect(showElementPropertiesCheckbox.props.checked).toBe(false);
+    expect(elementPropertiesEditor).toBeUndefined();
+  });
+
+  it('removes elementProperties from config if element properties hidden', () => {
+    extensionBridge.init({
+      config: {
+        elementSelector: '.foo',
+        elementProperties: [
+          {
+            name: 'a',
+            value: 'b'
+          }
+        ]
+      }
+    });
+
+    const { showElementPropertiesCheckbox } = instance.refs;
+
+    showElementPropertiesCheckbox.props.onChange(false);
+
+    expect(extensionBridge.getConfig().elementProperties).toBeUndefined();
+  });
+
+  it('sets error if elementSelector is not specified', () => {
+    extensionBridge.init();
+
+    expect(extensionBridge.validate()).toBe(false);
+
+    const { elementSelectorField } = instance.refs;
+
+    expect(elementSelectorField.props.fields.elementSelector.error).toEqual(jasmine.any(String));
+  });
+
+  it('removes elementProperties error if element properties not shown', () => {
+    // An element property with a value but not a name would typically create a validation error
+    // if the element properties editor were visible.
+    extensionBridge.init({
+      config: {
+        elementSelector: '.foo',
+        elementProperties: [
+          {
+            value: 'b'
+          }
+        ]
+      }
+    });
+
+    const { showElementPropertiesCheckbox } = instance.refs;
+
+    showElementPropertiesCheckbox.props.onChange(false);
+
+    expect(extensionBridge.validate()).toBe(true);
+  });
+});

@@ -21,10 +21,10 @@ export default class DelayType extends React.Component {
           <span className="u-label u-gapRight">Trigger</span>
         </label>
         <Coral.Radio
-          ref="immediatelyRadio"
+          ref="immediateRadio"
           {...delayType}
-          value="immediately"
-          checked={delayType.value === 'immediately'}>
+          value="immediate"
+          checked={delayType.value === 'immediate'}>
           immediately
         </Coral.Radio>
         <Coral.Radio
@@ -60,7 +60,7 @@ export const reducers = {
   configToFormValues(values, options) {
     return {
       ...values,
-      delayType: options.config.delay > 0 ? 'delay' : 'immediately',
+      delayType: options.config.delay > 0 ? 'delay' : 'immediate',
       delay: options.config.delay > 0 ? options.config.delay : ''
     };
   },

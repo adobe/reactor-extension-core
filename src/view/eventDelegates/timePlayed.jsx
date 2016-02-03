@@ -21,7 +21,7 @@ export class TimePlayed extends React.Component {
     const { amount, unit } = this.props.fields;
     return (
       <div>
-        <ElementFilter fields={this.props.fields}/>
+        <ElementFilter ref="elementFilter" fields={this.props.fields}/>
         <div className="u-gapTop">
           <label>
             <span className="u-label u-gapRight">Trigger when</span>
@@ -48,7 +48,7 @@ export class TimePlayed extends React.Component {
             <span className="u-label u-gapLeft">have passed</span>
           </label>
         </div>
-        <AdvancedEventOptions fields={this.props.fields}/>
+        <AdvancedEventOptions ref="advancedEventOptions" fields={this.props.fields}/>
       </div>
     );
   }
@@ -57,9 +57,7 @@ export class TimePlayed extends React.Component {
 const fields = ['amount', 'unit'].concat(elementFilterFields, advancedEventOptionsFields);
 
 const validate = values => {
-  const errors = {
-    ...elementFilterReducers.validate({}, values)
-  };
+  const errors = elementFilterReducers.validate({}, values);
 
   if (isNaN(values.amount) || values.amount <= 0) {
     errors.amount = 'Please specify a positive number';

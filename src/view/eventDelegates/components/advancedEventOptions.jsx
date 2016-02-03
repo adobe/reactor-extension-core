@@ -21,6 +21,7 @@ export default class AdvancedEventOptions extends React.Component {
       expanded: !this.state.expanded
     });
   };
+
   render() {
     const { bubbleFireIfParent, bubbleFireIfChildFired, bubbleStop } = this.props.fields;
 

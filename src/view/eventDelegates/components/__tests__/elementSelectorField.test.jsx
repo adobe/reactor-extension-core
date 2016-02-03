@@ -1,61 +1,50 @@
+import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../../reduxFormCoralUI';
+import ValidationWrapper from '../../../components/validationWrapper';
+import ElementSelectorField from '../../components/elementSelectorField';
 
-export default (instance, getParts, extensionBridge) => {
-  describe('elementSelector', () => {
-    describe('sets form values from config when `elementSelector` key is provided', () => {
-      beforeEach(() => {
-        extensionBridge.init({
-          config: {
-            elementSelector: 'div#id'
-          }
-        });
-      });
+const render = props => {
+  return TestUtils.renderIntoDocument(<ElementSelectorField {...props}/>);
+};
 
-      it('has the specific element field value set', () => {
-        const { elementSelectorComponent } = getParts(instance);
-        expect(elementSelectorComponent.refs.elementSelectorField.props.value).toBe('div#id');
-      });
+var mockProps;
+
+describe('elementSelectorField', () => {
+  beforeEach(() => {
+    mockProps = {
+      fields: {
+        elementSelector: {
+          onChange: jasmine.createSpy()
+        }
+      }
+    };
+  });
+
+  describe('textfield', () => {
+    it('receives value', () => {
+      mockProps.fields.elementSelector.value = 'foo';
+
+      const { textfield } = render(mockProps).refs;
+
+      expect(textfield.props.value).toBe('foo');
     });
 
-    describe('sets form values from config when `elementSelector` key is not provided', () => {
-      beforeEach(() => {
-        // Calling `extensionBridge.init` without any parameters renders the form which by default
-        // will containg the elementSelectorComponent. This is why we need to call here with an
-        // empty config.
-        extensionBridge.init({config: {}});
-      });
+    it('calls onChange', () => {
+      const { textfield } = render(mockProps).refs;
 
-      it('the specific element field is not visible', () => {
-        const { elementSelectorComponent } = getParts(instance);
-        expect(elementSelectorComponent).toBeUndefined();
-      });
-    });
-
-    describe('sets config from form values', () => {
-      beforeEach(() => {
-        extensionBridge.init();
-      });
-
-      it('sets elementSelector in config', () => {
-        const { elementSelectorComponent } = getParts(instance);
-        elementSelectorComponent.refs.elementSelectorField.props.onChange('div#some_selector');
-
-        const { elementSelector } = extensionBridge.getConfig();
-        expect(elementSelector).toEqual('div#some_selector');
-      });
-    });
-
-    it('sets error if element selector field is empty', () => {
-      extensionBridge.init();
-
-      expect(extensionBridge.validate()).toBe(false);
-
-      const { elementSelectorComponent } = getParts(instance);
-
-      expect(extensionBridge.validate()).toBe(false);
-      expect(elementSelectorComponent.refs.elementSelectorValidationWrapper.props.error)
-        .toEqual(jasmine.any(String));
+      textfield.props.onChange('foo');
+      expect(mockProps.fields.elementSelector.onChange).toHaveBeenCalledWith('foo');
     });
   });
-};
+
+  describe('validation wrapper', () => {
+    it('receives error', () => {
+      mockProps.fields.elementSelector.touched = true;
+      mockProps.fields.elementSelector.error = 'Test error.';
+      const { validationWrapper } = render(mockProps).refs;
+
+      expect(validationWrapper.props.error).toEqual(jasmine.any(String));
+    });
+  });
+});

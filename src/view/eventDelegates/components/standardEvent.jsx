@@ -9,12 +9,12 @@ import AdvancedEventOptions, {
 } from './advancedEventOptions';
 import extensionViewReduxForm from '../../extensionViewReduxForm';
 
-class StandardEvent extends React.Component {
+export class StandardEvent extends React.Component {
   render() {
     return (
       <div>
-        <ElementFilter fields={this.props.fields}/>
-        <AdvancedEventOptions fields={this.props.fields}/>
+        <ElementFilter ref="elementFilter" fields={this.props.fields}/>
+        <AdvancedEventOptions ref="advancedEventOptions" fields={this.props.fields}/>
       </div>
     );
   }

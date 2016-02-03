@@ -1,54 +1,66 @@
 import TestUtils from 'react-addons-test-utils';
+import setUpComponent from '../../../__tests__/helpers/setUpComponent';
+import extensionViewReduxForm from '../../../extensionViewReduxForm';
+import AdvancedEventOptions, { fields, reducers } from '../advancedEventOptions';
 
-export default (instance, getParts, extensionBridge) => {
-  let { advancedEventOptionsComponent } = getParts(instance);
+const FormComponent = extensionViewReduxForm({
+  fields
+})(AdvancedEventOptions);
 
-  describe('advancedEventOptions', () => {
-    beforeEach(() => {
-      advancedEventOptionsComponent.toggleSelected();
-    });
+let { instance, extensionBridge } = setUpComponent(FormComponent, reducers);
 
-    afterEach(() => {
-      advancedEventOptionsComponent.toggleSelected();
-    });
+instance = TestUtils.findRenderedComponentWithType(instance, AdvancedEventOptions);
 
-    it('sets form values from config', () => {
-      extensionBridge.init({
-        config: {
-          bubbleFireIfParent: true,
-          bubbleStop: true,
-          bubbleFireIfChildFired: true
-        }
-      });
+describe('advancedEventOptions', () => {
+  beforeEach(() => {
+    instance.toggleSelected();
+  });
 
-      const refs = advancedEventOptionsComponent.refs;
+  afterEach(() => {
+    instance.toggleSelected();
+  });
 
-      expect(refs.bubbleFireIfParentCheckbox.props.checked).toBe(true);
-      expect(refs.bubbleFireIfChildFiredCheckbox.props.checked).toBe(true);
-      expect(refs.bubbleStopCheckbox.props.checked).toBe(true);
-    });
-
-    it('sets config from form values', () => {
-      extensionBridge.init();
-
-      const refs = advancedEventOptionsComponent.refs;
-
-      refs.bubbleFireIfParentCheckbox.props.onChange(true);
-      refs.bubbleFireIfChildFiredCheckbox.props.onChange(true);
-      refs.bubbleStopCheckbox.props.onChange(true);
-
-      const { bubbleFireIfParent, bubbleStop, bubbleFireIfChildFired } =
-        extensionBridge.getConfig();
-
-      expect({
-        bubbleFireIfParent,
-        bubbleStop,
-        bubbleFireIfChildFired
-      }).toEqual({
+  it('sets form values from config', () => {
+    extensionBridge.init({
+      config: {
         bubbleFireIfParent: true,
         bubbleStop: true,
         bubbleFireIfChildFired: true
-      });
+      }
     });
+
+    const {
+      bubbleFireIfParentCheckbox,
+      bubbleFireIfChildFiredCheckbox,
+      bubbleStopCheckbox
+    } = instance.refs;
+
+    expect(bubbleFireIfParentCheckbox.props.checked).toBe(true);
+    expect(bubbleFireIfChildFiredCheckbox.props.checked).toBe(true);
+    expect(bubbleStopCheckbox.props.checked).toBe(true);
   });
-};
+
+  it('sets config from form values', () => {
+    extensionBridge.init();
+
+    const {
+      bubbleFireIfParentCheckbox,
+      bubbleFireIfChildFiredCheckbox,
+      bubbleStopCheckbox
+    } = instance.refs;
+
+    bubbleFireIfParentCheckbox.props.onChange(true);
+    bubbleFireIfChildFiredCheckbox.props.onChange(true);
+    bubbleStopCheckbox.props.onChange(true);
+
+    const {
+      bubbleFireIfParent,
+      bubbleStop,
+      bubbleFireIfChildFired
+    } = extensionBridge.getConfig();
+
+    expect(bubbleFireIfParent).toBe(true);
+    expect(bubbleStop).toBe(true);
+    expect(bubbleFireIfChildFired).toBe(true);
+  });
+});

@@ -23,8 +23,8 @@ export default class SpecificElements extends React.Component {
     } = this.props.fields;
 
     return (
-      <div ref="specificElementFields">
-        <ElementSelectorField fields={this.props.fields}/>
+      <div>
+        <ElementSelectorField ref="elementSelectorField" fields={this.props.fields}/>
         <div>
           <Coral.Checkbox
             ref="showElementPropertiesCheckbox"
@@ -62,9 +62,7 @@ export const reducers = {
         ...config
       };
 
-      let { showElementPropertiesFilter } = values;
-
-      if (!showElementPropertiesFilter) {
+      if (!values.showElementPropertiesFilter) {
         delete config.elementProperties;
       }
 
@@ -73,30 +71,22 @@ export const reducers = {
       return config;
     }
   ),
-  validate: (errors, values) => {
-    errors = {
-      ...errors
-    };
+  validate: reduceReducers(
+    elementPropertiesEditorReducers.validate,
+    (errors, values) => {
+      errors = {
+        ...errors
+      };
 
-    if (!values.elementSelector) {
-      errors.elementSelector = 'Please specify a CSS selector.';
-    }
-
-    if (values.showElementPropertiesFilter) {
-      const elementPropertiesErrors = values.elementProperties.map((item) => {
-        var result = {};
-        if (item.value && !item.name) {
-          result.name = 'Please fill in the property name.';
-        }
-
-        return result;
-      });
-
-      if (elementPropertiesErrors.some(x => x)) {
-        errors.elementProperties = elementPropertiesErrors;
+      if (!values.elementSelector) {
+        errors.elementSelector = 'Please specify a CSS selector.';
       }
-    }
 
-    return errors;
-  }
+      if (!values.showElementPropertiesFilter) {
+        delete errors.elementProperties;
+      }
+
+      return errors;
+    }
+  )
 };
