@@ -4,8 +4,8 @@ import ValidationWrapper from '../../../components/validationWrapper';
 import ElementPropertyEditor from '../../components/elementPropertyEditor';
 
 const makeEditorVisible = (instance, getParts) => {
-  const { elementFilterComponent } = getParts(instance);
-  elementFilterComponent.refs.showElementPropertiesCheckbox.props.onChange(true);
+  const { specificElementsComponent } = getParts(instance);
+  specificElementsComponent.refs.showElementPropertiesCheckbox.props.onChange(true);
 };
 
 const getEditorFields = (instance, getParts) => {

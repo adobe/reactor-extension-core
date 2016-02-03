@@ -145,17 +145,9 @@
               },
               "required": ["name", "value"]
             }
-          },
-          "bubbleFireIfParent": {
-            "type": "boolean"
-          },
-          "bubbleFireIfChildFired": {
-            "type": "boolean"
-          },
-          "bubbleStop": {
-            "type": "boolean"
           }
-        }
+        },
+        "required": ["elementSelector"]
       }
     },
     {
@@ -232,20 +224,12 @@
               "required": ["name", "value"]
             }
           },
-          "bubbleFireIfParent": {
-            "type": "boolean"
-          },
-          "bubbleFireIfChildFired": {
-            "type": "boolean"
-          },
-          "bubbleStop": {
-            "type": "boolean"
-          },
           "delay": {
             "type": "number",
             "minimum": 1
           }
-        }
+        },
+        "required": ["elementSelector"]
       }
     },
     {
@@ -335,7 +319,8 @@
             "type": "number",
             "minimum": 1
           }
-        }
+        },
+        "required": ["elementSelector"]
       }
     },
     {

@@ -1,66 +1,42 @@
 import React from 'react';
 import Coral from '../../reduxFormCoralUI';
-import ElementSelectorField, {
-  fields as elementSelectorFieldFields
-} from './elementSelectorField';
-import ElementPropertiesEditor, {
-  fields as elementPropertiesEditorFields,
-  reducers as elementPropertiesEditorReducers
-} from './elementPropertiesEditor';
+import SpecificElements, {
+  fields as specificElementsFields,
+  reducers as specificElementsReducers
+} from './specificElements';
 import reduceReducers from 'reduce-reducers';
 
 export const fields = [
-  'elementSpecificity',
-  'showElementPropertiesFilter'
+  'elementSpecificity'
 ]
-.concat(elementSelectorFieldFields)
-.concat(elementPropertiesEditorFields);
+.concat(specificElementsFields);
 
 export default class ElementFilter extends React.Component {
 
   render() {
-    const {
-      elementSpecificity,
-      showElementPropertiesFilter,
-      elementSelector,
-      elementProperties
-    } = this.props;
+    const { elementSpecificity } = this.props.fields;
 
     return (
       <div>
-        <span className="u-label">On</span>
-        <Coral.Radio
-            ref ="specificElementsRadio"
-            {...elementSpecificity}
-            value="specific"
-            checked={elementSpecificity.value === 'specific'}>
-          specific elements
-        </Coral.Radio>
-        <Coral.Radio
-            ref ="anyElementRadio"
-            {...elementSpecificity}
-            value="any"
-            checked={elementSpecificity.value === 'any'}>
-          any element
-        </Coral.Radio>
+        <div>
+          <Coral.Radio
+              ref="specificElementsRadio"
+              {...elementSpecificity}
+              value="specific"
+              checked={elementSpecificity.value === 'specific'}>
+            specific elements
+          </Coral.Radio>
+          <Coral.Radio
+              ref="anyElementRadio"
+              {...elementSpecificity}
+              value="any"
+              checked={elementSpecificity.value === 'any'}>
+            any element
+          </Coral.Radio>
+        </div>
         {
           elementSpecificity.value === 'specific' ?
-            <div ref="specificElementFields">
-              <ElementSelectorField elementSelector={elementSelector}/>
-              <div>
-                <Coral.Checkbox
-                  ref="showElementPropertiesCheckbox"
-                  {...showElementPropertiesFilter}>
-                  and having certain property values...
-                </Coral.Checkbox>
-                {
-                  showElementPropertiesFilter.value ?
-                  <ElementPropertiesEditor
-                    ref="elementPropertiesEditor"
-                    elementProperties={elementProperties}/> : null
-                }
-              </div>
-            </div> : null
+            <SpecificElements fields={this.props.fields}/> : null
         }
       </div>
     );
@@ -69,37 +45,32 @@ export default class ElementFilter extends React.Component {
 
 export const reducers = {
   configToFormValues: reduceReducers(
-    elementPropertiesEditorReducers.configToFormValues,
+    specificElementsReducers.configToFormValues,
     (values, options) => {
       const { config: { elementSelector, elementProperties }, configIsNew } = options;
 
       return {
         ...values,
         elementSpecificity: configIsNew || elementSelector || elementProperties ?
-          'specific' : 'any',
-        showElementPropertiesFilter: Boolean(elementProperties)
+          'specific' : 'any'
       };
     }
   ),
   formValuesToConfig: reduceReducers(
-    elementPropertiesEditorReducers.formValuesToConfig,
+    specificElementsReducers.formValuesToConfig,
     (config, values) => {
       config = {
         ...config
       };
 
-      let { elementSpecificity, showElementPropertiesFilter } = values;
+      let { elementSpecificity } = values;
 
       if (elementSpecificity === 'any') {
         delete config.elementSelector;
-      }
-
-      if (elementSpecificity === 'any' || !showElementPropertiesFilter) {
         delete config.elementProperties;
       }
 
       delete config.elementSpecificity;
-      delete config.showElementPropertiesFilter;
 
       return config;
     }
@@ -109,22 +80,8 @@ export const reducers = {
       ...errors
     };
 
-    if (values.elementSpecificity === 'specific' && !values.elementSelector) {
-      errors.elementSelector = 'Please specify a selector. ' +
-      'Alternatively, choose to target any element above.'
-    }
-
-    const elementPropertiesErrors = values.elementProperties.map((item) => {
-      var result = {};
-      if (item.value && !item.name) {
-        result.name = 'Please fill in the property name.';
-      }
-
-      return result;
-    });
-
-    if (elementPropertiesErrors.some(x => x)) {
-      errors.elementProperties = elementPropertiesErrors;
+    if (values.elementSpecificity === 'specific') {
+      errors = specificElementsReducers.validate(errors, values);
     }
 
     return errors;

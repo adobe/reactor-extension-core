@@ -13,7 +13,7 @@ export default class DelayType extends React.Component {
   };
 
   render() {
-    const { delayType, delay } = this.props;
+    const { delayType, delay } = this.props.fields;
 
     return (
       <div>

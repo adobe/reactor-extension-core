@@ -21,32 +21,34 @@ export class TimePlayed extends React.Component {
     const { amount, unit } = this.props.fields;
     return (
       <div>
-        <label>
-          <span className="u-label u-gapRight">Trigger when</span>
-        </label>
-        <ValidationWrapper
-          ref="delayValidationWrapper"
-          error={amount.touched && amount.error}>
-          <Coral.Textfield
-            ref="amountField"
-            {...amount}/>
-        </ValidationWrapper>
-        <Coral.Select
-          {...unit}
-          ref="unitSelect"
-          className="u-gapLeft">
-          <coral-select-item value={timePlayedUnit.SECOND}>
-            seconds
-          </coral-select-item>
-          <coral-select-item value={timePlayedUnit.PERCENT}>
-            %
-          </coral-select-item>
-        </Coral.Select>
-        <label>
-          <span className="u-label u-gapLeft">have passed</span>
-        </label>
-        <ElementFilter {...this.props.fields}/>
-        <AdvancedEventOptions {...this.props.fields}/>
+        <ElementFilter fields={this.props.fields}/>
+        <div className="u-gapTop">
+          <label>
+            <span className="u-label u-gapRight">Trigger when</span>
+          </label>
+          <ValidationWrapper
+            ref="delayValidationWrapper"
+            error={amount.touched && amount.error}>
+            <Coral.Textfield
+              ref="amountField"
+              {...amount}/>
+          </ValidationWrapper>
+          <Coral.Select
+            {...unit}
+            ref="unitSelect"
+            className="u-gapLeft">
+            <coral-select-item value={timePlayedUnit.SECOND}>
+              seconds
+            </coral-select-item>
+            <coral-select-item value={timePlayedUnit.PERCENT}>
+              %
+            </coral-select-item>
+          </Coral.Select>
+          <label>
+            <span className="u-label u-gapLeft">have passed</span>
+          </label>
+        </div>
+        <AdvancedEventOptions fields={this.props.fields}/>
       </div>
     );
   }

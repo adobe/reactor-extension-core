@@ -8,14 +8,14 @@ export const fields = [
 
 export default class ElementSelectorField extends React.Component {
   render() {
-    const { elementSelector } = this.props;
+    const { elementSelector } = this.props.fields;
 
     return (
       <ValidationWrapper
         ref="elementSelectorValidationWrapper"
         error={elementSelector.touched && elementSelector.error}>
         <label>
-          <span className="u-label">matching the CSS selector</span>
+          <span className="u-label">Elements matching the CSS selector</span>
           <Coral.Textfield ref="elementSelectorField" {...elementSelector}/>
         </label>
       </ValidationWrapper>

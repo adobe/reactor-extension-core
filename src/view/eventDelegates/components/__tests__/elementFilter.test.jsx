@@ -1,5 +1,5 @@
 import TestUtils from 'react-addons-test-utils';
-import testElementSelector from './elementSelector.test';
+import testSpecificElements from './specificElements.test';
 
 export default (instance, getParts, extensionBridge) => {
   describe('elementFilter', () => {
@@ -30,5 +30,5 @@ export default (instance, getParts, extensionBridge) => {
     });
   });
 
-  testElementSelector(instance, getParts, extensionBridge);
+  testSpecificElements(instance, getParts, extensionBridge);
 };

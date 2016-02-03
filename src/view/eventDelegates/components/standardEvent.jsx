@@ -8,14 +8,13 @@ import AdvancedEventOptions, {
   fields as advancedEventOptionsFields
 } from './advancedEventOptions';
 import extensionViewReduxForm from '../../extensionViewReduxForm';
-import reduceReducers from 'reduce-reducers';
 
 class StandardEvent extends React.Component {
   render() {
     return (
       <div>
-        <ElementFilter {...this.props.fields}/>
-        <AdvancedEventOptions {...this.props.fields}/>
+        <ElementFilter fields={this.props.fields}/>
+        <AdvancedEventOptions fields={this.props.fields}/>
       </div>
     );
   }
