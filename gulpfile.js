@@ -7,10 +7,10 @@ var path = require('path');
 var plumber = require('gulp-plumber');
 var notify = require('gulp-notify');
 
-require('turbine-gulp-packager')(gulp, {
+require('@reactor/turbine-gulp-packager')(gulp, {
   dependencyTasks: ['buildView']
 });
-require('turbine-gulp-testrunner')(gulp);
+require('@reactor/turbine-gulp-testrunner')(gulp);
 
 // Shows an growl notification saying that building failed and then logs the error to the console.
 var errorAlert = function(error){
@@ -86,6 +86,6 @@ gulp.task('watch', function() {
 
 gulp.task('buildView', ['buildJS', 'copyHTML']);
 
-require('turbine-gulp-sandbox')(gulp, {
+require('@reactor/turbine-gulp-sandbox')(gulp, {
   dependencyTasks: ['buildView', 'watch']
 });
