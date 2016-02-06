@@ -147,7 +147,7 @@ export const reducers = {
       elementSelector,
       selectedElementPropertyPreset,
       customElementProperty
-    }
+    };
   },
 
   formValuesToConfig(config, values) {

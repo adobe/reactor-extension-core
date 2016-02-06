@@ -9,7 +9,8 @@ const { instance, extensionBridge } = setUpComponent(PreviousConverter);
 const getParts = () => {
   return {
     dataElementField: TestUtils.findRenderedComponentWithType(instance, DataElementNameField),
-    dataElementValidationWrapper: TestUtils.findRenderedComponentWithType(instance, ValidationWrapper)
+    dataElementValidationWrapper:
+      TestUtils.findRenderedComponentWithType(instance, ValidationWrapper)
   };
 };
 

@@ -9,7 +9,7 @@ export default class DelayType extends React.Component {
   };
 
   onDelayFieldClick = () => {
-    this.refs.delayRadio.props.onChange("delay");
+    this.refs.delayRadio.props.onChange('delay');
   };
 
   render() {
@@ -47,7 +47,7 @@ export default class DelayType extends React.Component {
           <span className="u-label u-gapLeft">milliseconds</span>
         </label>
       </div>
-    )
+    );
   }
 }
 

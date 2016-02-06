@@ -21,7 +21,7 @@ export class NewReturning extends React.Component {
           Returning Visitor
         </Coral.Radio>
       </div>
-    )
+    );
   }
 }
 

@@ -25,7 +25,8 @@ const getParts = () => {
   return {
     multipleItemEditor: TestUtils.findRenderedComponentWithType(instance, MultipleItemEditor),
     subdomainFields: TestUtils.scryRenderedComponentsWithType(instance, Coral.Textfield),
-    subdomainValidationWrappers: TestUtils.scryRenderedComponentsWithType(instance, ValidationWrapper),
+    subdomainValidationWrappers:
+      TestUtils.scryRenderedComponentsWithType(instance, ValidationWrapper),
     regexToggles: TestUtils.scryRenderedComponentsWithType(instance, RegexToggle)
   };
 };

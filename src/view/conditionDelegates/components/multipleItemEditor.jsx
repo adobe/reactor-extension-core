@@ -20,8 +20,7 @@ export default class MultipleItemEditor extends React.Component {
                 variant="quiet"
                 onClick={onRemoveItem.bind(this, i)}>
                 Remove Pattern
-              </Coral.Button>:
-              null
+              </Coral.Button> : null
           }
         </div>
       );

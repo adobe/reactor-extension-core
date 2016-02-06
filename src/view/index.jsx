@@ -1,4 +1,3 @@
-'use strict';
 import './style.pattern';
 import React from 'react';
 import ReactDOM from 'react-dom';

@@ -67,8 +67,8 @@ export default (instance, getParts, extensionBridge) => {
       extensionBridge.init({
         config: {
           elementProperties:[{
-            name: "someprop",
-            value: "somevalue"
+            name: 'someprop',
+            value: 'somevalue'
           }]
         }
       });

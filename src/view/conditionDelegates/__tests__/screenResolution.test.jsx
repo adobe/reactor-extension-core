@@ -7,7 +7,8 @@ import ComparisonOperatorField from '../components/comparisonOperatorField';
 
 const { instance, extensionBridge } = setUpComponent(ScreenResolution, reducers);
 const getParts = () => {
-  const operatorFields = TestUtils.scryRenderedComponentsWithType(instance, ComparisonOperatorField);
+  const operatorFields =
+    TestUtils.scryRenderedComponentsWithType(instance, ComparisonOperatorField);
   const validationWrappers = TestUtils.scryRenderedComponentsWithType(instance, ValidationWrapper);
   const textfields = TestUtils.scryRenderedComponentsWithType(instance, Coral.Textfield);
 

@@ -21,8 +21,8 @@ export default (instance, getParts, extensionBridge) => {
     describe('sets form values from config when `elementSelector` key is not provided', () => {
       beforeEach(() => {
         // Calling `extensionBridge.init` without any parameters renders the form which by default
-        // will containg the elementSelectorComponent. This is why we need to call here with an empty
-        // config.
+        // will containg the elementSelectorComponent. This is why we need to call here with an
+        // empty config.
         extensionBridge.init({config: {}});
       });
 

@@ -8,7 +8,7 @@ var visibilityChangeListener;
 var mockDocument = {
   location: 'somelocation',
   addEventListener: function(event, listener) {
-    if (event == visibilityApiInstance.visibilityChange) {
+    if (event === visibilityApiInstance.visibilityChange) {
       visibilityChangeListener = listener;
     }
   }

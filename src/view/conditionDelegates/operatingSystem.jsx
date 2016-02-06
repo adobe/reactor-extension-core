@@ -18,7 +18,7 @@ const operatingSystemOptions = [
 export class OperatingSystem extends React.Component {
   render() {
     const { operatingSystems } = this.props.fields;
-    return <CheckboxList options={operatingSystemOptions} {...operatingSystems}/>
+    return <CheckboxList options={operatingSystemOptions} {...operatingSystems}/>;
   }
 }
 
@@ -32,7 +32,7 @@ export const reducers = {
   formValuesToConfig(config, values) {
     return {
       operatingSystems: values.operatingSystems || [] // An array is required.
-    }
+    };
   }
 };
 

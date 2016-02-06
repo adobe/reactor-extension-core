@@ -35,13 +35,13 @@ export default (instance, getParts, extensionBridge) => {
 
     it('sets config without delay when trigger immediately is selected and delay ' +
       'contains a value', () => {
-        extensionBridge.init();
+      extensionBridge.init();
 
-        const { delayTypeComponent } = getParts(instance);
-        delayTypeComponent.refs.delayTextField.props.onChange(100);
-        delayTypeComponent.refs.immediatelyRadio.props.onChange('immediately');
+      const { delayTypeComponent } = getParts(instance);
+      delayTypeComponent.refs.delayTextField.props.onChange(100);
+      delayTypeComponent.refs.immediatelyRadio.props.onChange('immediately');
 
-        expect(extensionBridge.getConfig().delay).toBeUndefined();
+      expect(extensionBridge.getConfig().delay).toBeUndefined();
     });
 
     it('sets error if delay radio is selected and the delay field is empty', () => {

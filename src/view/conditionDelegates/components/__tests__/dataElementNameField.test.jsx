@@ -19,7 +19,7 @@ describe('data element name field', () => {
   beforeEach(() => {
     window.extensionBridge = {
       openDataElementSelector: jasmine.createSpy().and.callFake(callback => callback('foo'))
-    }
+    };
   });
 
   afterEach(() => {

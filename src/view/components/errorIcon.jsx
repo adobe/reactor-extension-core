@@ -36,7 +36,9 @@ export default class ErrorIcon extends React.Component {
           offset="18"
           variant="error"
           interaction="off"
-          open={this.props.openTooltip || this.state.mouseOverIcon}>{this.props.message}</Coral.Tooltip>
+          open={this.props.openTooltip || this.state.mouseOverIcon}>
+          {this.props.message}
+        </Coral.Tooltip>
       </div>
     );
   }

@@ -22,7 +22,7 @@ class Checkbox extends React.Component {
   };
 
   render() {
-    return <Coral.Checkbox {...this.props} onChange={this.onChange}/>
+    return <Coral.Checkbox {...this.props} onChange={this.onChange}/>;
   }
 }
 
@@ -61,7 +61,11 @@ class Select extends React.Component {
 
   render() {
     return (
-      <Coral.Select {...this.props} onChange={this.onChange} onBlur={this.onBlur} onFocus={this.onFocus}>
+      <Coral.Select
+        {...this.props}
+        onChange={this.onChange}
+        onBlur={this.onBlur}
+        onFocus={this.onFocus}>
         {this.props.children}
       </Coral.Select>
     );
