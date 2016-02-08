@@ -624,6 +624,22 @@
       "schema": {}
     },
     {
+      "displayName": "Time Spent On Page",
+      "libPath": "eventDelegates/timeSpentOnPage.js",
+      "viewPath": "index.html#/events/timeSpentOnPage",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "timeOnPage": {
+            "type": "number",
+            "minimum": 1
+          }
+        },
+        "required": ["timeOnPage"]
+      }
+    },
+    {
       "displayName": "Media Time Played",
       "libPath": "eventDelegates/timePlayed.js",
       "viewPath": "index.html#/events/timePlayed",

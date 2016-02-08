@@ -26,6 +26,7 @@ import SubmitEvent from './eventDelegates/submit';
 import TabBlurEvent from './eventDelegates/tabBlur';
 import TabFocusEvent from './eventDelegates/tabFocus';
 import TimePlayedEvent from './eventDelegates/timePlayed';
+import TimeSpentOnPageEvent from './eventDelegates/timeSpentOnPage';
 import VolumeChangeEvent from './eventDelegates/volumeChange';
 import ZoomChangeEvent from './eventDelegates/zoomChange';
 
@@ -94,6 +95,7 @@ export default (setFormConfigForCurrentRoute) => {
       <Route path="/events/tabBlur" component={TabBlurEvent} onEnter={onEnter}/>
       <Route path="/events/tabFocus" component={TabFocusEvent} onEnter={onEnter}/>
       <Route path="/events/timePlayed" component={TimePlayedEvent} onEnter={onEnter}/>
+      <Route path="/events/timeSpentOnPage" component={TimeSpentOnPageEvent} onEnter={onEnter}/>
       <Route path="/events/volumeChange" component={VolumeChangeEvent} onEnter={onEnter}/>
       <Route path="/events/zoomChange" component={ZoomChangeEvent} onEnter={onEnter}/>
 
