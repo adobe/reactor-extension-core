@@ -9,7 +9,7 @@ import AdvancedEventOptions, {
 } from './components/advancedEventOptions';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
-export class Click extends React.Component {
+class Click extends React.Component {
   render() {
     const { delayLinkActivation } = this.props.fields;
 

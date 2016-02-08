@@ -16,7 +16,7 @@ const timePlayedUnit = {
   PERCENT: 'percent'
 };
 
-export class TimePlayed extends React.Component {
+class TimePlayed extends React.Component {
   render() {
     const { amount, unit } = this.props.fields;
     return (

@@ -1,11 +1,9 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../reduxFormCoralUI';
 import setUpComponent from '../../__tests__/helpers/setUpComponent';
-import ClickProviderComponent, { Click, reducers } from '../click';
+import Click, { reducers } from '../click';
 
-let { instance, extensionBridge } = setUpComponent(ClickProviderComponent, reducers);
-
-instance = TestUtils.findRenderedComponentWithType(instance, Click);
+const { instance, extensionBridge } = setUpComponent(Click, reducers);
 
 describe('click view', () => {
   it('sets form values from config', () => {

@@ -7,9 +7,7 @@ const FormComponent = extensionViewReduxForm({
   fields
 })(AdvancedEventOptions);
 
-let { instance, extensionBridge } = setUpComponent(FormComponent, reducers);
-
-instance = TestUtils.findRenderedComponentWithType(instance, AdvancedEventOptions);
+const { instance, extensionBridge } = setUpComponent(FormComponent, reducers);
 
 describe('advancedEventOptions', () => {
   beforeEach(() => {

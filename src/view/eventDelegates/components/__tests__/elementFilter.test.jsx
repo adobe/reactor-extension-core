@@ -8,9 +8,7 @@ const FormComponent = extensionViewReduxForm({
   validate: values => reducers.validate({}, values)
 })(ElementFilter);
 
-let { instance, extensionBridge } = setUpComponent(FormComponent, reducers);
-
-instance = TestUtils.findRenderedComponentWithType(instance, ElementFilter);
+const { instance, extensionBridge } = setUpComponent(FormComponent, reducers);
 
 describe('elementFilter', () => {
   it('updates view properly when elementSelector is provided', () => {

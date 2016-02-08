@@ -9,7 +9,7 @@ import AdvancedEventOptions, {
 } from './advancedEventOptions';
 import extensionViewReduxForm from '../../extensionViewReduxForm';
 
-export class StandardEvent extends React.Component {
+class StandardEvent extends React.Component {
   render() {
     return (
       <div>

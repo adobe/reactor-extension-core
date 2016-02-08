@@ -1,18 +1,10 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../reduxFormCoralUI';
-import TimePlayedProviderComponent, { TimePlayed, reducers as timePlayedEventReducers }
-  from '../timePlayed';
-import ElementSelectorField from '../components/elementSelectorField';
-import ElementPropertiesEditor from '../components/elementPropertiesEditor';
-import AdvancedEventOptions from '../components/advancedEventOptions';
-import ElementFilter from '../components/elementFilter';
-import SpecificElements from '../components/specificElements';
+import TimePlayedProviderComponent, { TimePlayed, reducers as timePlayedEventReducers } from '../timePlayed';
 import setUpComponent from '../../__tests__/helpers/setUpComponent';
 
-let { instance, extensionBridge } =
+const { instance, extensionBridge } =
   setUpComponent(TimePlayedProviderComponent, timePlayedEventReducers);
-
-instance = TestUtils.findRenderedComponentWithType(instance, TimePlayed);
 
 describe('time played view', () => {
   it('sets form values from config', () => {

@@ -11,9 +11,7 @@ const FormComponent = extensionViewReduxForm({
   validate: values => reducers.validate({}, values)
 })(ElementPropertiesEditor);
 
-let { instance, extensionBridge } = setUpComponent(FormComponent, reducers);
-
-instance = TestUtils.findRenderedComponentWithType(instance, ElementPropertiesEditor);
+const { instance, extensionBridge } = setUpComponent(FormComponent, reducers);
 
 const getParts = () => {
   const editorRows = TestUtils.scryRenderedComponentsWithType(instance, ElementPropertyEditor);

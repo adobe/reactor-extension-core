@@ -1,11 +1,9 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../reduxFormCoralUI';
 import setUpComponent from '../../__tests__/helpers/setUpComponent';
-import EntersViewportProviderComponent, { EntersViewport, reducers } from '../entersViewport';
+import EntersViewport, { reducers } from '../entersViewport';
 
-let { instance, extensionBridge } = setUpComponent(EntersViewportProviderComponent, reducers);
-
-instance = TestUtils.findRenderedComponentWithType(instance, EntersViewport);
+const { instance, extensionBridge } = setUpComponent(EntersViewport, reducers);
 
 describe('enters viewport view', () => {
   it('sets form values from config', () => {

@@ -11,7 +11,7 @@ import DelayType, {
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import reduceReducers from 'reduce-reducers';
 
-export class EntersViewport extends React.Component {
+class EntersViewport extends React.Component {
   render() {
     return (
       <div>

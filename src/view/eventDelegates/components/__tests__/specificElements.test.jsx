@@ -8,9 +8,7 @@ const FormComponent = extensionViewReduxForm({
   validate: values => reducers.validate({}, values)
 })(SpecificElements);
 
-let { instance, extensionBridge } = setUpComponent(FormComponent, reducers);
-
-instance = TestUtils.findRenderedComponentWithType(instance, SpecificElements);
+const { instance, extensionBridge } = setUpComponent(FormComponent, reducers);
 
 describe('specificElements', () => {
   it('updates view properly when elementProperties provided', () => {

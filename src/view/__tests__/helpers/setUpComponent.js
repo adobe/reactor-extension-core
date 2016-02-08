@@ -12,12 +12,20 @@ export default (Component, reducers) => {
   const setReducersForCurrentRoute = bridgeAdapter(extensionBridge, store);
   setReducersForCurrentRoute(reducers);
 
+  const providerInstance = TestUtils.renderIntoDocument(
+    <Provider store={store}>
+      <Component />
+    </Provider>
+  );
+
+  // Have to do this mess in order to get the wrapped component because redux-form doesn't
+  // expose any method for us to do so. https://github.com/erikras/redux-form/issues/202
+  const instance = TestUtils.findAllInRenderedTree(providerInstance, function(component) {
+    return component.refs && component.refs.extensionViewWrappedComponent;
+  })[0].refs.extensionViewWrappedComponent;
+
   return {
-    instance: TestUtils.renderIntoDocument(
-      <Provider store={store}>
-        <Component />
-      </Provider>
-    ),
+    instance,
     extensionBridge
   };
 };

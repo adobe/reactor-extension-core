@@ -7,7 +7,7 @@ import extensionViewReduxForm from '../extensionViewReduxForm';
 import reduceReducers from 'reduce-reducers';
 import SpecificElements, { fields as specificElementsFields, reducers as specificElementsReducers } from './components/specificElements';
 
-export class Hover extends React.Component {
+class Hover extends React.Component {
   render() {
     return (
       <div>
