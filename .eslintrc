@@ -13,7 +13,7 @@
     "space-before-blocks": [2, "always"],
     "space-infix-ops": [2, {"int32Hint": false}],
     "quotes": [1, "single", "avoid-escape"],
-    "max-len": [2, 100, 4, {"ignoreUrls": true}],
+    "max-len": [2, 100, 4, {"ignoreUrls": true, "ignorePattern": "^(\\s*(var|let|const)\\s.+=\\s*require\\s*\\()|(^\\s*import)"}],
     "eqeqeq": [2, "allow-null"],
     "strict": [2, "global"],
     "no-nested-ternary": [2],
