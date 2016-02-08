@@ -1,18 +1,11 @@
 import React from 'react';
+
+import AdvancedEventOptions, { fields as advancedEventOptionsFields } from './components/advancedEventOptions';
 import Coral from '../reduxFormCoralUI';
-import SpecificElements, {
-  fields as specificElementsFields,
-  reducers as specificElementsReducers
-} from './components/specificElements';
-import DelayType, {
-  fields as delayTypeFields,
-  reducers as delayTypeReducers
-} from './components/delayType';
-import AdvancedEventOptions, {
-  fields as advancedEventOptionsFields
-} from './components/advancedEventOptions';
+import DelayType, { fields as delayTypeFields, reducers as delayTypeReducers } from './components/delayType';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import reduceReducers from 'reduce-reducers';
+import SpecificElements, { fields as specificElementsFields, reducers as specificElementsReducers } from './components/specificElements';
 
 class EntersViewport extends React.Component {
   render() {
