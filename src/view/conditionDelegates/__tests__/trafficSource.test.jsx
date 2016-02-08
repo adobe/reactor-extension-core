@@ -1,11 +1,11 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../reduxFormCoralUI';
-import setUpComponent from '../../__tests__/helpers/setUpComponent';
+import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 import TrafficSource from '../trafficSource';
 import ValidationWrapper from '../../components/validationWrapper';
 import RegexToggle from '../../components/regexToggle';
 
-const { instance, extensionBridge } = setUpComponent(TrafficSource);
+const { instance, extensionBridge } = setUpConnectedForm(TrafficSource);
 const getParts = () => {
   return {
     sourceField: TestUtils.findRenderedComponentWithType(instance, Coral.Textfield),

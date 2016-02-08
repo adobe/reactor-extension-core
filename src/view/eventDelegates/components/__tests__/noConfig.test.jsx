@@ -1,7 +1,7 @@
-import setUpComponent from '../../../__tests__/helpers/setUpComponent';
+import setUpConnectedForm from '../../../__tests__/helpers/setUpConnectedForm';
 import NoConfig from '../noConfig';
 
-const { extensionBridge } = setUpComponent(NoConfig);
+const { extensionBridge } = setUpConnectedForm(NoConfig);
 
 describe('dom ready view', () => {
   it('sets config from form values', () => {

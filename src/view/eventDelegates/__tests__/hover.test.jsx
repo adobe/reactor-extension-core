@@ -1,9 +1,9 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../reduxFormCoralUI';
-import setUpComponent from '../../__tests__/helpers/setUpComponent';
+import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 import Hover, { reducers } from '../hover';
 
-const { instance, extensionBridge } = setUpComponent(Hover, reducers);
+const { instance, extensionBridge } = setUpConnectedForm(Hover, reducers);
 
 describe('hover view', () => {
   it('sets form values from config', () => {

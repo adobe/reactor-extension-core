@@ -1,12 +1,12 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../reduxFormCoralUI';
-import setUpComponent from '../../__tests__/helpers/setUpComponent';
+import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 import DataElement from '../dataElement';
 import ValidationWrapper from '../../components/validationWrapper';
 import DataElementNameField from '../components/dataElementNameField';
 import RegexToggle from '../../components/regexToggle';
 
-const { instance, extensionBridge } = setUpComponent(DataElement);
+const { instance, extensionBridge } = setUpConnectedForm(DataElement);
 const getParts = () => {
   const validationWrappers = TestUtils.scryRenderedComponentsWithType(instance, ValidationWrapper);
   return {

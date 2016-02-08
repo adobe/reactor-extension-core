@@ -1,9 +1,9 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../../reduxFormCoralUI';
 import StandardEvent, { reducers as standardEventReducers } from '../../components/standardEvent';
-import setUpComponent from '../../../__tests__/helpers/setUpComponent';
+import setUpConnectedForm from '../../../__tests__/helpers/setUpConnectedForm';
 
-const { instance, extensionBridge } = setUpComponent(StandardEvent, standardEventReducers);
+const { instance, extensionBridge } = setUpConnectedForm(StandardEvent, standardEventReducers);
 
 describe('standard event view', () => {
   it('sets form values from config', () => {

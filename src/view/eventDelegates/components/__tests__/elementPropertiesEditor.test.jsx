@@ -1,6 +1,6 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../../reduxFormCoralUI';
-import setUpComponent from '../../../__tests__/helpers/setUpComponent';
+import setUpConnectedForm from '../../../__tests__/helpers/setUpConnectedForm';
 import extensionViewReduxForm from '../../../extensionViewReduxForm';
 import ElementPropertyEditor from '../elementPropertyEditor';
 import ElementPropertiesEditor, { fields, reducers } from '../elementPropertiesEditor';
@@ -11,7 +11,7 @@ const FormComponent = extensionViewReduxForm({
   validate: values => reducers.validate({}, values)
 })(ElementPropertiesEditor);
 
-const { instance, extensionBridge } = setUpComponent(FormComponent, reducers);
+const { instance, extensionBridge } = setUpConnectedForm(FormComponent, reducers);
 
 const getParts = () => {
   const editorRows = TestUtils.scryRenderedComponentsWithType(instance, ElementPropertyEditor);

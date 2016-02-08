@@ -1,9 +1,9 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../reduxFormCoralUI';
-import setUpComponent from '../../__tests__/helpers/setUpComponent';
+import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 import ElementExists, { reducers } from '../elementExists';
 
-const { instance, extensionBridge } = setUpComponent(ElementExists, reducers);
+const { instance, extensionBridge } = setUpConnectedForm(ElementExists, reducers);
 
 describe('element exists view', () => {
   it('sets form values from config', () => {

@@ -1,10 +1,10 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../reduxFormCoralUI';
-import setUpComponent from '../../__tests__/helpers/setUpComponent';
+import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 import QueryParameter, { reducers } from '../queryParameter';
 import ValidationWrapper from '../../components/validationWrapper';
 
-const { instance, extensionBridge } = setUpComponent(QueryParameter, reducers);
+const { instance, extensionBridge } = setUpConnectedForm(QueryParameter, reducers);
 const getParts = () => {
   return {
     nameField: TestUtils.findRenderedComponentWithType(instance, Coral.Textfield),

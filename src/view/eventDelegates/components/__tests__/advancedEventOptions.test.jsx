@@ -1,5 +1,5 @@
 import TestUtils from 'react-addons-test-utils';
-import setUpComponent from '../../../__tests__/helpers/setUpComponent';
+import setUpConnectedForm from '../../../__tests__/helpers/setUpConnectedForm';
 import extensionViewReduxForm from '../../../extensionViewReduxForm';
 import AdvancedEventOptions, { fields, reducers } from '../advancedEventOptions';
 
@@ -7,7 +7,7 @@ const FormComponent = extensionViewReduxForm({
   fields
 })(AdvancedEventOptions);
 
-const { instance, extensionBridge } = setUpComponent(FormComponent, reducers);
+const { instance, extensionBridge } = setUpConnectedForm(FormComponent, reducers);
 
 describe('advancedEventOptions', () => {
   beforeEach(() => {

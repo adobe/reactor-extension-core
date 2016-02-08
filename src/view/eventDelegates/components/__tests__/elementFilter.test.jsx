@@ -1,5 +1,5 @@
 import TestUtils from 'react-addons-test-utils';
-import setUpComponent from '../../../__tests__/helpers/setUpComponent';
+import setUpConnectedForm from '../../../__tests__/helpers/setUpConnectedForm';
 import extensionViewReduxForm from '../../../extensionViewReduxForm';
 import ElementFilter, { fields, reducers } from '../elementFilter';
 
@@ -8,7 +8,7 @@ const FormComponent = extensionViewReduxForm({
   validate: values => reducers.validate({}, values)
 })(ElementFilter);
 
-const { instance, extensionBridge } = setUpComponent(FormComponent, reducers);
+const { instance, extensionBridge } = setUpConnectedForm(FormComponent, reducers);
 
 describe('elementFilter', () => {
   it('updates view properly when elementSelector is provided', () => {

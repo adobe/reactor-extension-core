@@ -1,5 +1,5 @@
 import TestUtils from 'react-addons-test-utils';
-import setUpComponent from '../../../__tests__/helpers/setUpComponent';
+import setUpConnectedForm from '../../../__tests__/helpers/setUpConnectedForm';
 import extensionViewReduxForm from '../../../extensionViewReduxForm';
 import SpecificElements, { fields, reducers } from '../specificElements';
 
@@ -8,7 +8,7 @@ const FormComponent = extensionViewReduxForm({
   validate: values => reducers.validate({}, values)
 })(SpecificElements);
 
-const { instance, extensionBridge } = setUpComponent(FormComponent, reducers);
+const { instance, extensionBridge } = setUpConnectedForm(FormComponent, reducers);
 
 describe('specificElements', () => {
   it('updates view properly when elementProperties provided', () => {
