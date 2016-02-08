@@ -1452,10 +1452,7 @@
     }
   ],
   "resources": [
-    {
-      "name": "visitorTracking",
-      "libPath": "resources/visitorTracking.js"
-    },
+
     {
       "name": "compareNumbers",
       "libPath": "resources/compareNumbers.js"
@@ -1471,6 +1468,14 @@
     {
       "name": "visibilityApi",
       "libPath": "resources/visibilityApi.js"
+    },
+    {
+      "name": "visitorTracking",
+      "libPath": "resources/visitorTracking.js"
+    },
+    {
+      "name": "timer",
+      "libPath": "resources/timer.js"
     }
   ]
 }
