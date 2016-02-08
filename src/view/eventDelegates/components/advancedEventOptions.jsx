@@ -13,7 +13,7 @@ export default class AdvancedEventOptions extends React.Component {
     super();
     this.state = {
       expanded: false
-    }
+    };
   }
 
   toggleSelected = () => {
@@ -34,15 +34,23 @@ export default class AdvancedEventOptions extends React.Component {
           <Coral.Checkbox
             ref="bubbleFireIfParentCheckbox"
             className="u-block"
-            {...bubbleFireIfParent}>Run this rule even when the event originates from a descendant element</Coral.Checkbox>
+            {...bubbleFireIfParent}>
+              Run this rule even when the event originates from a descendant element
+          </Coral.Checkbox>
           <Coral.Checkbox
             ref="bubbleFireIfChildFiredCheckbox"
             className="u-block"
-            {...bubbleFireIfChildFired}>Allow this rule to run even if the event already triggered a rule targeting a descendant element</Coral.Checkbox>
+            {...bubbleFireIfChildFired}>
+              Allow this rule to run even if the event already triggered a
+              rule targeting a descendant element
+          </Coral.Checkbox>
           <Coral.Checkbox
             ref="bubbleStopCheckbox"
             className="u-block"
-            {...bubbleStop}>After the rule runs, prevent the event from triggering rules targeting ancestor elements</Coral.Checkbox>
+            {...bubbleStop}>
+              After the rule runs, prevent the event from triggering rules
+              targeting ancestor elements
+          </Coral.Checkbox>
         </div>
       );
     }

@@ -8,7 +8,7 @@ export default class ValidationWrapper extends React.Component {
     super();
     this.state = {
       openTooltip: false
-    }
+    };
   }
 
   onFocus = () => {
@@ -32,7 +32,7 @@ export default class ValidationWrapper extends React.Component {
       } else {
         return child;
       }
-    })
+    });
   }
 
   render() {

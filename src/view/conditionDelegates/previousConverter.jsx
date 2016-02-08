@@ -11,7 +11,9 @@ export class PreviousConverter extends React.Component {
     return (
       <ValidationWrapper className="u-gapRight" error={dataElement.touched && dataElement.error}>
         <label>
-          <span className="u-label">Data element identifying whether the user is a previous converter:</span>
+          <span className="u-label">
+            Data element identifying whether the user is a previous converter:
+          </span>
           <DataElementNameField {...dataElement}/>
         </label>
       </ValidationWrapper>

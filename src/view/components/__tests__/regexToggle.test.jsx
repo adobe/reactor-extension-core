@@ -21,7 +21,7 @@ describe('regex toggle', () => {
       openRegexTester: jasmine.createSpy().and.callFake((value, callback) => {
         callback('bar');
       })
-    }
+    };
   });
 
   afterEach(() => {

@@ -14,6 +14,23 @@ export let handleSubmit;
 /**
  * Decorator for extension view forms. This configures the extension form for use with redux-form.
  * @param config
+ * @param mapStateToProps If specified, the component will subscribe to Redux store updates. Any
+ * time it updates, mapStateToProps will be called. Its result must be a plain object*, and it
+ * will be merged into the component’s props. If you omit it, the component will not be subscribed
+ * to the Redux store. If ownProps is specified as a second argument, its value will be the props
+ * passed to your component, and mapStateToProps will be re-invoked whenever the component receives
+ * new props.
+ * @param mapDispatchToProps If an object is passed, each function inside it will be assumed to be a
+ * Redux action creator. An object with the same function names, but bound to a Redux store, will be
+ * merged into the component’s props. If a function is passed, it will be given dispatch. It’s up to
+ * you to return an object that somehow uses dispatch to bind action creators in your own way.
+ * (Tip: you may use the bindActionCreators() helper from Redux.) If you omit it, the default
+ * implementation just injects dispatch into your component’s props. If ownProps is specified as a
+ * second argument, its value will be the props passed to your component, and mapDispatchToProps
+ * will be re-invoked whenever the component receives new props.
+ * @param mergeProps If specified, it is passed the result of mapStateToProps(),
+ * mapDispatchToProps(), and the parent props.
+ * @param options If specified, further customizes the behavior of the connector.
  * @returns {Function}
  */
 export default (config, mapStateToProps, mapDispatchToProps, mergeProps, options) => {
@@ -38,7 +55,7 @@ export default (config, mapStateToProps, mapDispatchToProps, mergeProps, options
       }
 
       render() {
-        return <WrappedComponent {...this.props}/>
+        return <WrappedComponent {...this.props}/>;
       }
     }
 
@@ -49,5 +66,5 @@ export default (config, mapStateToProps, mapDispatchToProps, mergeProps, options
       mergeProps,
       options
     )(ProgrammaticallySubmittableForm);
-  }
+  };
 };

@@ -21,7 +21,7 @@ export class Protocol extends React.Component {
           HTTPS
         </Coral.Radio>
       </div>
-    )
+    );
   }
 }
 

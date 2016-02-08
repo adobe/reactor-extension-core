@@ -13,7 +13,7 @@ module.exports = function() {
       return {
         hidden: key,
         visibilityChange: properties[key]
-      }
+      };
     }
   }
 };

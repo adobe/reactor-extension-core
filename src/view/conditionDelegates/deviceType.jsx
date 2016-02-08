@@ -17,7 +17,7 @@ const deviceTypeOptions = [
 export class DeviceType extends React.Component {
   render() {
     const { deviceTypes } = this.props.fields;
-    return <CheckboxList options={deviceTypeOptions} {...deviceTypes}/>
+    return <CheckboxList options={deviceTypeOptions} {...deviceTypes}/>;
   }
 }
 
@@ -31,6 +31,6 @@ export const reducers = {
   formValuesToConfig(config, values) {
     return {
       deviceTypes: values.deviceTypes || [] // An array is required.
-    }
+    };
   }
 };

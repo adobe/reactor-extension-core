@@ -34,5 +34,5 @@ describe('comparison operator field', () => {
     });
 
     expect(onChange).toHaveBeenCalledWith('<');
-  })
+  });
 });

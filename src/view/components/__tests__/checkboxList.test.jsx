@@ -116,5 +116,5 @@ describe('checkbox list', () => {
     });
 
     expect(onChange).toHaveBeenCalledWith(['b']);
-  })
+  });
 });

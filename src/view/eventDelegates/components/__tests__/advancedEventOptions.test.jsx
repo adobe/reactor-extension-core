@@ -13,19 +13,19 @@ export default (instance, getParts, extensionBridge) => {
     });
 
     it('sets form values from config', () => {
-        extensionBridge.init({
-          config: {
-            bubbleFireIfParent: true,
-            bubbleStop: true,
-            bubbleFireIfChildFired: true
-          }
-        });
+      extensionBridge.init({
+        config: {
+          bubbleFireIfParent: true,
+          bubbleStop: true,
+          bubbleFireIfChildFired: true
+        }
+      });
 
-        const refs = advancedEventOptionsComponent.refs;
+      const refs = advancedEventOptionsComponent.refs;
 
-        expect(refs.bubbleFireIfParentCheckbox.props.checked).toBe(true);
-        expect(refs.bubbleFireIfChildFiredCheckbox.props.checked).toBe(true);
-        expect(refs.bubbleStopCheckbox.props.checked).toBe(true);
+      expect(refs.bubbleFireIfParentCheckbox.props.checked).toBe(true);
+      expect(refs.bubbleFireIfChildFiredCheckbox.props.checked).toBe(true);
+      expect(refs.bubbleStopCheckbox.props.checked).toBe(true);
     });
 
     it('sets config from form values', () => {

@@ -1,3 +1,4 @@
+/*eslint max-len: [2, 200, 4]*/
 import React from 'react';
 import { Router, Route, hashHistory } from 'react-router';
 
@@ -130,4 +131,4 @@ export default (setBridgeReducers) => {
       <Route path="/dataElements/variable" component={VariableDataElement} onEnter={onEnter}/>
     </Router>
   );
-}
+};

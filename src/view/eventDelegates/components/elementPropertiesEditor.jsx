@@ -34,7 +34,7 @@ export default class ElementPropertiesEditor extends React.Component {
             {...elementProperty}
             remove={this.remove.bind(null, index)}
             removable={elementProperties.length > 1}
-            />
+            />;
         })}
         <Coral.Button ref="addButton" onClick={this.add}>Add</Coral.Button>
       </div>

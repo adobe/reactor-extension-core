@@ -13,16 +13,16 @@ require('turbine-gulp-packager')(gulp, {
 require('turbine-gulp-testrunner')(gulp);
 
 // Shows an growl notification saying that building failed and then logs the error to the console.
-var errorAlert = function(error){
+var errorAlert = function(error) {
   notify.onError({
-    title: "Build Error",
-    message: "Check your terminal",
-    sound: "Sosumi"
+    title: 'Build Error',
+    message: 'Check your terminal',
+    sound: 'Sosumi'
   })(error);
 
   console.log(error.toString());
 
-  this.emit("end");
+  this.emit('end');
 };
 
 var webpackConfig = {

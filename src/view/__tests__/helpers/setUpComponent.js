@@ -1,7 +1,7 @@
 import React from 'react';
  import ReactDOM from 'react-dom';
 import TestUtils from 'react-addons-test-utils';
-import { Provider } from 'react-redux'
+import { Provider } from 'react-redux';
 import reducer from '../../actions/reducer';
 import { createStore } from 'redux';
 import bridgeAdapter from '../../bridgeAdapter';

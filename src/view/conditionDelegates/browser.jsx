@@ -19,7 +19,7 @@ const browserOptions = [
 export class Browser extends React.Component {
   render() {
     const { browsers } = this.props.fields;
-    return <CheckboxList options={browserOptions} {...browsers}/>
+    return <CheckboxList options={browserOptions} {...browsers}/>;
   }
 }
 
@@ -33,7 +33,7 @@ export const reducers = {
   formValuesToConfig(config, values) {
     return {
       browsers: values.browsers || [] // An array is required.
-    }
+    };
   }
 };
 

@@ -10,10 +10,10 @@ import ElementPropertiesEditor, {
 import reduceReducers from 'reduce-reducers';
 
 export const fields = [
-    'showElementPropertiesFilter'
-  ]
-  .concat(elementSelectorFieldFields)
-  .concat(elementPropertiesEditorFields);
+  'showElementPropertiesFilter'
+]
+.concat(elementSelectorFieldFields)
+.concat(elementPropertiesEditorFields);
 
 export default class SpecificElements extends React.Component {
 

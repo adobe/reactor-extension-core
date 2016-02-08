@@ -11,7 +11,7 @@ var window = require('window');
  * @param element
  * @returns {boolean}
  */
-var isNavigationLink = function(element){
+var isNavigationLink = function(element) {
   var tagName = element.tagName;
 
   if (tagName && tagName.toLowerCase() !== 'a') {

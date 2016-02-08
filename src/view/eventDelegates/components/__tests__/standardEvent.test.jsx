@@ -12,7 +12,8 @@ import testElementFilter from './elementFilter.test';
 import testAdvancedOptions from './advancedEventOptions.test';
 import testElementPropertiesEditor from './elementPropertiesEditor.test';
 
-const { instance, extensionBridge } = setUpComponent(StandardEventProviderComponent, standardEventReducers);
+const { instance, extensionBridge } =
+  setUpComponent(StandardEventProviderComponent, standardEventReducers);
 const getParts = (instance) => {
   return {
     elementFilterComponent:

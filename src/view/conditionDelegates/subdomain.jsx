@@ -14,7 +14,9 @@ export class Subdomain extends React.Component {
   renderItem = subdomain => {
     return (
       <div className="u-inlineBlock">
-        <ValidationWrapper className="u-gapRight" error={subdomain.value.touched && subdomain.value.error}>
+        <ValidationWrapper
+          className="u-gapRight"
+          error={subdomain.value.touched && subdomain.value.error}>
           <label>
             <span className="u-label">Subdomain matches</span>
             <Coral.Textfield {...subdomain.value}/>
