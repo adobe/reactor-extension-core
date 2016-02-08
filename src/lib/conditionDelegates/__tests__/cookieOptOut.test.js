@@ -4,8 +4,8 @@ var conditionDelegateInjector = require('inject!../cookieOptOut');
 
 var conditionDelegate;
 
-var setCookie = require('../../../../node_modules/turbine/src/utils/cookie/setCookie');
-var removeCookie = require('../../../../node_modules/turbine/src/utils/cookie/removeCookie');
+var setCookie = require('@reactor/turbine/src/utils/cookie/setCookie');
+var removeCookie = require('@reactor/turbine/src/utils/cookie/removeCookie');
 
 var getConfig = function(acceptsCookies) {
   return {

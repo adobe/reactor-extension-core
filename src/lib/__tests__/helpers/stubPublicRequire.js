@@ -16,7 +16,7 @@ module.exports = function(config) {
   var resources = {};
 
   var publicRequireInjector =
-    require('inject?./state!../../../../node_modules/turbine/src/publicRequire');
+    require('inject?./state!@reactor/turbine/src/publicRequire');
   publicRequire = publicRequireInjector({
     './state': {
       getResource: function(extensionId, resourceId) {

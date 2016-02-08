@@ -1,10 +1,17 @@
 {
-  "name": "turbine-extension-dtm",
+  "name": "@reactor/turbine-extension-dtm",
   "version": "0.0.1",
   "description": "DTM extension for Turbine",
+  "author": {
+    "name": "DTM",
+    "email": "DTM-Engineering@adobe.com"
+  },
   "repository": {
     "type": "git",
     "url": "git@git.corp.adobe.com:reactor/turbine-extension-dtm.git"
+  },
+  "publishConfig": {
+    "registry": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-mcps-release-local"
   },
   "keywords": [
     "turbine",
@@ -40,11 +47,10 @@
     "react": "^0.14.6",
     "react-addons-test-utils": "^0.14.6",
     "react-dom": "^0.14.6",
-    "turbine": "git+https://fcf1e02afcceac6505ac6b6a43c26061c0b9bcaa:x-oauth-basic@git.corp.adobe.com/reactor/turbine.git",
-    "turbine-gulp-sandbox": "git+https://fcf1e02afcceac6505ac6b6a43c26061c0b9bcaa:x-oauth-basic@git.corp.adobe.com/reactor/turbine-gulp-sandbox.git",
-    "turbine-gulp-testrunner": "git+https://fcf1e02afcceac6505ac6b6a43c26061c0b9bcaa:x-oauth-basic@git.corp.adobe.com/reactor/turbine-gulp-testrunner.git",
-    "turbine-gulp-packager": "git+https://fcf1e02afcceac6505ac6b6a43c26061c0b9bcaa:x-oauth-basic@git.corp.adobe.com/reactor/turbine-gulp-packager.git",
+    "@reactor/turbine": "^1.0.0",
+    "@reactor/turbine-gulp-sandbox": "^0.0.1",
+    "@reactor/turbine-gulp-testrunner": "^0.0.1",
+    "@reactor/turbine-gulp-packager": "^0.0.1",
     "webpack-stream": "^3.1.0"
-  },
-  "author": "Adobe"
+  }
 }
