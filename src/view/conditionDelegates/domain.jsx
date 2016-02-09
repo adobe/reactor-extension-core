@@ -3,14 +3,21 @@ import Coral from '../reduxFormCoralUI';
 import CheckboxList from '../components/checkboxList';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
-export class Domain extends React.Component {
+class Domain extends React.Component {
   render() {
     const { domains } = this.props.fields;
     return <CheckboxList options={this.props.domainOptions} {...domains}/>;
   }
 }
 
-const fields = ['domains'];
+const formConfig = {
+  fields: ['domains'],
+  formValuesToConfig(config, values) {
+    return {
+      domains: values.domains || [] // An array is required.
+    };
+  }
+};
 
 const stateToProps = state => {
   return {
@@ -18,17 +25,4 @@ const stateToProps = state => {
   };
 };
 
-export default extensionViewReduxForm(
-  {
-    fields
-  },
-  stateToProps
-)(Domain);
-
-export const reducers = {
-  formValuesToConfig(config, values) {
-    return {
-      domains: values.domains || [] // An array is required.
-    };
-  }
-};
+export default extensionViewReduxForm(formConfig, stateToProps)(Domain);

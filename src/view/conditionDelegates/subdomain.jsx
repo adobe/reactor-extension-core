@@ -6,7 +6,7 @@ import ValidationWrapper from '../components/validationWrapper';
 import createID from '../utils/createID';
 import MultipleItemEditor from './components/multipleItemEditor';
 
-export class Subdomain extends React.Component {
+class Subdomain extends React.Component {
   addRow = () => this.props.fields.subdomains.addField({ id: createID() });
   removeRow = index => this.props.fields.subdomains.removeField(index);
   getKey = subdomain => subdomain.id.value;
@@ -46,36 +46,12 @@ export class Subdomain extends React.Component {
   }
 }
 
-const fields = [
-  'subdomains[].id',
-  'subdomains[].value',
-  'subdomains[].valueIsRegex'
-];
-
-const validate = values => {
-  const errors = {};
-
-  const subdomainsErrors = values.subdomains.map(subdomain => {
-    const result = {};
-
-    if (!subdomain.value) {
-      result.value = 'Please specify a subdomain.';
-    }
-
-    return result;
-  });
-
-  errors.subdomains = subdomainsErrors;
-
-  return errors;
-};
-
-export default extensionViewReduxForm({
-  fields,
-  validate
-})(Subdomain);
-
-export const reducers = {
+const formConfig = {
+  fields: [
+    'subdomains[].id',
+    'subdomains[].value',
+    'subdomains[].valueIsRegex'
+  ],
   configToFormValues(values, options) {
     values = {
       ...values
@@ -112,5 +88,26 @@ export const reducers = {
     });
 
     return config;
+  },
+  validate(errors, values) {
+    errors = {
+      ...errors
+    };
+
+    const subdomainsErrors = values.subdomains.map(subdomain => {
+      const result = {};
+
+      if (!subdomain.value) {
+        result.value = 'Please specify a subdomain.';
+      }
+
+      return result;
+    });
+
+    errors.subdomains = subdomainsErrors;
+
+    return errors;
   }
 };
+
+export default extensionViewReduxForm(formConfig)(Subdomain);

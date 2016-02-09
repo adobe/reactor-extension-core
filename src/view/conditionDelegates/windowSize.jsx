@@ -4,7 +4,7 @@ import extensionViewReduxForm from '../extensionViewReduxForm';
 import ValidationWrapper from '../components/validationWrapper';
 import ComparisonOperatorField from './components/comparisonOperatorField';
 
-export class WindowSize extends React.Component {
+class WindowSize extends React.Component {
   render() {
     const { widthOperator, width, heightOperator, height } = this.props.fields;
 
@@ -39,33 +39,13 @@ export class WindowSize extends React.Component {
   }
 }
 
-const fields = [
-  'widthOperator',
-  'width',
-  'heightOperator',
-  'height'
-];
-
-const validate = values => {
-  const errors = {};
-
-  if (!values.width || isNaN(values.width)) {
-    errors.width = 'Please specify a number for width.';
-  }
-
-  if (!values.height || isNaN(values.height)) {
-    errors.height = 'Please specify a number for height.';
-  }
-
-  return errors;
-};
-
-export default extensionViewReduxForm({
-  fields,
-  validate
-})(WindowSize);
-
-export const reducers = {
+const formConfig = {
+  fields: [
+    'widthOperator',
+    'width',
+    'heightOperator',
+    'height'
+  ],
   configToFormValues(values, options) {
     return {
       ...values,
@@ -79,5 +59,22 @@ export const reducers = {
       width: Number(values.width),
       height: Number(values.height)
     };
+  },
+  validate(errors, values) {
+    errors = {
+      ...errors
+    };
+
+    if (!values.width || isNaN(values.width)) {
+      errors.width = 'Please specify a number for width.';
+    }
+
+    if (!values.height || isNaN(values.height)) {
+      errors.height = 'Please specify a number for height.';
+    }
+
+    return errors;
   }
 };
+
+export default extensionViewReduxForm(formConfig)(WindowSize);

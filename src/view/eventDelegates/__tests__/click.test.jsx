@@ -1,58 +1,48 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../reduxFormCoralUI';
-import ClickProviderComponent, {Click, reducers as clickEventReducers } from '../click';
-import ElementSelectorField from '../components/elementSelectorField';
-import ElementPropertiesEditor from '../components/elementPropertiesEditor';
-import AdvancedEventOptions from '../components/advancedEventOptions';
-import ElementFilter from '../components/elementFilter';
-import SpecificElements from '../components/specificElements';
-import setUpComponent from '../../__tests__/helpers/setUpComponent';
-import testElementFilter from '../components/__tests__/elementFilter.test';
-import testAdvancedOptions from '../components/__tests__/advancedEventOptions.test';
-import testElementPropertiesEditor from '../components/__tests__/elementPropertiesEditor.test';
+import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
+import Click from '../click';
 
-const { instance, extensionBridge } = setUpComponent(ClickProviderComponent, clickEventReducers);
-const getParts = (instance) => {
-  return {
-    elementFilterComponent:
-      TestUtils.findRenderedComponentWithType(instance, ElementFilter),
-    specificElementsComponent:
-      TestUtils.scryRenderedComponentsWithType(instance, SpecificElements)[0],
-    elementSelectorComponent:
-      TestUtils.scryRenderedComponentsWithType(instance, ElementSelectorField)[0],
-    elementPropertiesEditorComponent:
-      TestUtils.scryRenderedComponentsWithType(instance, ElementPropertiesEditor)[0],
-    clickComponent:
-      TestUtils.findRenderedComponentWithType(instance, Click),
-    advancedEventOptionsComponent:
-      TestUtils.findRenderedComponentWithType(instance, AdvancedEventOptions)
-  };
-};
+const { instance, extensionBridge } = setUpConnectedForm(Click);
 
 describe('click view', () => {
   it('sets form values from config', () => {
     extensionBridge.init({
       config: {
-        delayLinkActivation: true
+        delayLinkActivation: true,
+        elementSelector: '.foo',
+        bubbleStop: true
       }
     });
 
-    const { clickComponent } = getParts(instance);
-    expect(clickComponent.refs.delayLinkActivationCheckbox.props.checked).toBe(true);
+    const { delayLinkActivationCheckbox, elementFilter, advancedEventOptions } = instance.refs;
+
+    expect(delayLinkActivationCheckbox.props.value).toBe(true);
+    expect(elementFilter.props.fields.elementSelector.value).toBe('.foo');
+    expect(advancedEventOptions.props.fields.bubbleStop.value).toBe(true);
   });
 
   it('sets config from form values', () => {
     extensionBridge.init();
 
-    const { clickComponent } = getParts(instance);
-    clickComponent.refs.delayLinkActivationCheckbox.props.onChange(true);
+    const { delayLinkActivationCheckbox, elementFilter, advancedEventOptions } = instance.refs;
 
-    expect(extensionBridge.getConfig()).toEqual({
-      delayLinkActivation: true
-    });
+    delayLinkActivationCheckbox.props.onChange(true);
+    elementFilter.props.fields.elementSelector.onChange('.foo');
+    advancedEventOptions.props.fields.bubbleStop.onChange(true);
+
+    const { delayLinkActivation, elementSelector, bubbleStop } = extensionBridge.getConfig();
+
+    expect(delayLinkActivation).toBe(true);
+    expect(elementSelector).toBe('.foo');
+    expect(bubbleStop).toBe(true);
   });
 
-  testElementFilter(instance, getParts, extensionBridge);
-  testAdvancedOptions(instance, getParts, extensionBridge);
-  testElementPropertiesEditor(instance, getParts, extensionBridge);
+  it('sets validation errors', () => {
+    extensionBridge.init();
+
+    const { elementFilter } = instance.refs;
+
+    expect(elementFilter.props.fields.elementSelector.error).toEqual(jasmine.any(String));
+  });
 });

@@ -1,30 +1,18 @@
 import React from 'react';
 import Coral from '../../reduxFormCoralUI';
-import ElementSelectorField, {
-  fields as elementSelectorFieldFields
-} from './elementSelectorField';
-import ElementPropertiesEditor, {
-  fields as elementPropertiesEditorFields,
-  reducers as elementPropertiesEditorReducers
-} from './elementPropertiesEditor';
+import ElementSelectorField, { formConfig as elementSelectorFieldFormConfig } from './elementSelectorField';
+import ElementPropertiesEditor, { formConfig as elementPropertiesEditorFormConfig } from './elementPropertiesEditor';
 import reduceReducers from 'reduce-reducers';
 
-export const fields = [
-  'showElementPropertiesFilter'
-]
-.concat(elementSelectorFieldFields)
-.concat(elementPropertiesEditorFields);
-
 export default class SpecificElements extends React.Component {
-
   render() {
     const {
       showElementPropertiesFilter
     } = this.props.fields;
 
     return (
-      <div ref="specificElementFields">
-        <ElementSelectorField fields={this.props.fields}/>
+      <div>
+        <ElementSelectorField ref="elementSelectorField" fields={this.props.fields}/>
         <div>
           <Coral.Checkbox
             ref="showElementPropertiesCheckbox"
@@ -43,9 +31,12 @@ export default class SpecificElements extends React.Component {
   }
 }
 
-export const reducers = {
+export const formConfig = {
+  fields: [
+    'showElementPropertiesFilter'
+  ].concat(elementSelectorFieldFormConfig.fields, elementPropertiesEditorFormConfig.fields),
   configToFormValues: reduceReducers(
-    elementPropertiesEditorReducers.configToFormValues,
+    elementPropertiesEditorFormConfig.configToFormValues,
     (values, options) => {
       const { elementProperties } = options.config;
 
@@ -56,15 +47,13 @@ export const reducers = {
     }
   ),
   formValuesToConfig: reduceReducers(
-    elementPropertiesEditorReducers.formValuesToConfig,
+    elementPropertiesEditorFormConfig.formValuesToConfig,
     (config, values) => {
       config = {
         ...config
       };
 
-      let { showElementPropertiesFilter } = values;
-
-      if (!showElementPropertiesFilter) {
+      if (!values.showElementPropertiesFilter) {
         delete config.elementProperties;
       }
 
@@ -73,30 +62,22 @@ export const reducers = {
       return config;
     }
   ),
-  validate: (errors, values) => {
-    errors = {
-      ...errors
-    };
+  validate: reduceReducers(
+    elementPropertiesEditorFormConfig.validate,
+    (errors, values) => {
+      errors = {
+        ...errors
+      };
 
-    if (!values.elementSelector) {
-      errors.elementSelector = 'Please specify a CSS selector.';
-    }
-
-    if (values.showElementPropertiesFilter) {
-      const elementPropertiesErrors = values.elementProperties.map((item) => {
-        var result = {};
-        if (item.value && !item.name) {
-          result.name = 'Please fill in the property name.';
-        }
-
-        return result;
-      });
-
-      if (elementPropertiesErrors.some(x => x)) {
-        errors.elementProperties = elementPropertiesErrors;
+      if (!values.elementSelector) {
+        errors.elementSelector = 'Please specify a CSS selector.';
       }
-    }
 
-    return errors;
-  }
+      if (!values.showElementPropertiesFilter) {
+        delete errors.elementProperties;
+      }
+
+      return errors;
+    }
+  )
 };

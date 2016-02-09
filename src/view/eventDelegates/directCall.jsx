@@ -3,7 +3,7 @@ import Coral from '../reduxFormCoralUI';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import ValidationWrapper from '../components/validationWrapper';
 
-export class DirectCall extends React.Component {
+class DirectCall extends React.Component {
   render() {
     const { name } = this.props.fields;
 
@@ -18,19 +18,19 @@ export class DirectCall extends React.Component {
   }
 }
 
-const fields = ['name'];
+const formConfig = {
+  fields: ['name'],
+  validate(errors, values) {
+    errors = {
+      ...errors
+    };
 
-const validate = function(values) {
-  const errors = {};
+    if (!values.name) {
+      errors.name = 'Please specify a rule name.';
+    }
 
-  if (!values.name) {
-    errors.name = 'Please specify a rule name.';
+    return errors;
   }
-
-  return errors;
 };
 
-export default extensionViewReduxForm({
-  fields,
-  validate
-})(DirectCall);
+export default extensionViewReduxForm(formConfig)(DirectCall);

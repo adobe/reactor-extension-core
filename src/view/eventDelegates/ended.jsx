@@ -1,3 +1,2 @@
-import StandardEvent, { reducers }  from './components/standardEvent';
+import StandardEvent  from './components/standardEvent';
 export default StandardEvent;
-export { reducers };

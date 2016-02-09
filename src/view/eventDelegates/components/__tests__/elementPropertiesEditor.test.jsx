@@ -1,129 +1,110 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../../reduxFormCoralUI';
-import ValidationWrapper from '../../../components/validationWrapper';
-import ElementPropertyEditor from '../../components/elementPropertyEditor';
+import setUpConnectedForm from '../../../__tests__/helpers/setUpConnectedForm';
+import extensionViewReduxForm from '../../../extensionViewReduxForm';
+import ElementPropertyEditor from '../elementPropertyEditor';
+import ElementPropertiesEditor, { formConfig } from '../elementPropertiesEditor';
 
-const makeEditorVisible = (instance, getParts) => {
-  const { specificElementsComponent } = getParts(instance);
-  specificElementsComponent.refs.showElementPropertiesCheckbox.props.onChange(true);
-};
+const FormComponent = extensionViewReduxForm(formConfig)(ElementPropertiesEditor);
+const { instance, extensionBridge } = setUpConnectedForm(FormComponent);
 
-const getEditorFields = (instance, getParts) => {
-  makeEditorVisible(instance, getParts);
-
-  const { elementPropertiesEditorComponent } = getParts(instance);
-  const fields =
-    TestUtils.scryRenderedComponentsWithType(elementPropertiesEditorComponent, Coral.Textfield);
-
+const getParts = () => {
+  const editorRows = TestUtils.scryRenderedComponentsWithType(instance, ElementPropertyEditor);
   return {
-    nameField: fields[0].props,
-    valueField: fields[1].props
+    addButton: instance.refs.addButton,
+    editorRows,
+    firstEditorRow: editorRows[0]
   };
 };
 
-const getValidationWrapperOnFirstRow = (instance, getParts) => {
-  const { elementPropertiesEditorComponent } = getParts(instance);
-
-  const editorRows = TestUtils.scryRenderedComponentsWithType(
-    elementPropertiesEditorComponent,
-    ElementPropertyEditor
-  );
-
-  return TestUtils.findRenderedComponentWithType(editorRows[0], ValidationWrapper);
-};
-
-const clickRemoveButtonOnFirstRow = (instance, getParts) => {
-  const { elementPropertiesEditorComponent } = getParts(instance);
-
-  const editorRows = TestUtils.scryRenderedComponentsWithType(
-    elementPropertiesEditorComponent,
-    ElementPropertyEditor
-  );
-
-  const firstRowRemoveButton = editorRows[0].refs.removeButton;
-  firstRowRemoveButton.props.onClick();
-};
-
-const countEditorRows = (instance, getParts) => {
-  const { elementPropertiesEditorComponent } = getParts(instance);
-  const fields =
-    TestUtils.scryRenderedComponentsWithType(elementPropertiesEditorComponent, Coral.Textfield);
-
-  // Two inputs for each visible row.
-  return fields.length / 2;
-};
-
-const clickAddButton = (instance, getParts) => {
-  const { elementPropertiesEditorComponent } = getParts(instance);
-
-  const addButton = elementPropertiesEditorComponent.refs.addButton;
-  addButton.props.onClick();
-};
-
-
-export default (instance, getParts, extensionBridge) => {
-  describe('elementPropertiesEditor', () => {
-    it('sets form values from config', () => {
-      extensionBridge.init({
-        config: {
-          elementProperties:[{
+describe('elementPropertiesEditor', () => {
+  it('sets form values from config', () => {
+    extensionBridge.init({
+      config: {
+        elementProperties:[
+          {
             name: 'someprop',
-            value: 'somevalue'
-          }]
-        }
-      });
-
-      const { nameField, valueField } = getEditorFields(instance, getParts);
-
-      expect(nameField.value).toBe('someprop');
-      expect(valueField.value).toBe('somevalue');
+            value: 'somevalue',
+            valueIsRegex: true
+          }
+        ]
+      }
     });
 
-    it('sets config from form values', () => {
-      extensionBridge.init();
-
-      const { nameField, valueField } = getEditorFields(instance, getParts);
-
-      nameField.onChange('somepropset');
-      valueField.onChange('somevalueset');
-
-      const { elementProperties } = extensionBridge.getConfig();
-      expect({elementProperties}).toEqual({
-        elementProperties: [{
-          name: 'somepropset',
-          value: 'somevalueset'
-        }]
-      });
-    });
-
-    it('sets error if element property name field is empty', () => {
-      extensionBridge.init();
-
-      const { valueField } = getEditorFields(instance, getParts);
-
-      valueField.onChange('somevalueset');
-      expect(extensionBridge.validate()).toBe(false);
-
-      const validationWrapper = getValidationWrapperOnFirstRow(instance, getParts);
-      expect(validationWrapper.props.error).toEqual(jasmine.any(String));
-    });
-
-    it('creates a new row when the add button is clicked', () => {
-      extensionBridge.init();
-      makeEditorVisible(instance, getParts);
-      clickAddButton(instance, getParts);
-
-      // First row is visible by default.
-      expect(countEditorRows(instance, getParts)).toBe(2);
-    });
-
-    it('deletes a row when delete button is clicked', () => {
-      extensionBridge.init();
-      makeEditorVisible(instance, getParts);
-      clickAddButton(instance, getParts);
-      clickRemoveButtonOnFirstRow(instance, getParts);
-
-      expect(countEditorRows(instance, getParts)).toBe(1);
-    });
+    const { firstEditorRow } = getParts(instance);
+    expect(firstEditorRow.props.fields.name.value).toBe('someprop');
+    expect(firstEditorRow.props.fields.value.value).toBe('somevalue');
+    expect(firstEditorRow.props.fields.valueIsRegex.value).toBe(true);
   });
-};
+
+  it('sets config from form values', () => {
+    extensionBridge.init();
+
+    const { firstEditorRow } = getParts(instance);
+
+    firstEditorRow.props.fields.name.onChange('somepropset');
+    firstEditorRow.props.fields.value.onChange('somevalueset');
+    firstEditorRow.props.fields.valueIsRegex.onChange(true);
+
+    const { elementProperties } = extensionBridge.getConfig();
+    expect(elementProperties).toEqual([
+      {
+        name: 'somepropset',
+        value: 'somevalueset',
+        valueIsRegex: true
+      }
+    ]);
+  });
+
+  it('sets error if element property name field is empty and value is not empty', () => {
+    extensionBridge.init();
+
+    const { firstEditorRow } = getParts(instance);
+
+    firstEditorRow.props.fields.value.onChange('foo');
+
+    expect(extensionBridge.validate()).toBe(false);
+
+    expect(firstEditorRow.props.fields.name.touched).toBe(true);
+    expect(firstEditorRow.props.fields.name.error).toEqual(jasmine.any(String));
+  });
+
+  it('creates a new row when the add button is clicked', () => {
+    extensionBridge.init();
+
+    const { addButton } = getParts(instance);
+    addButton.props.onClick();
+
+    const { editorRows } = getParts(instance);
+
+    // First row is visible by default.
+    expect(editorRows.length).toBe(2);
+  });
+
+  it('deletes a row when requested from row', () => {
+    extensionBridge.init({
+      config: {
+        elementProperties:[
+          {
+            name: 'someprop',
+            value: 'somevalue',
+            valueIsRegex: true
+          },
+          {
+            name: 'someprop2',
+            value: 'somevalue2',
+            valueIsRegex: true
+          }
+        ]
+      }
+    });
+
+    const { firstEditorRow } = getParts(instance);
+
+    firstEditorRow.props.remove();
+
+    const { editorRows } = getParts(instance);
+
+    expect(editorRows.length).toBe(1);
+  });
+});

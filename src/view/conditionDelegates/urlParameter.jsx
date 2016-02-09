@@ -4,7 +4,7 @@ import RegexToggle from '../components/regexToggle';
 import ValidationWrapper from '../components/validationWrapper';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
-export class URLParameter extends React.Component {
+class URLParameter extends React.Component {
   render() {
     const { name, value, valueIsRegex } = this.props.fields;
 
@@ -28,23 +28,27 @@ export class URLParameter extends React.Component {
   }
 }
 
-const fields = ['name', 'value', 'valueIsRegex'];
+const formConfig = {
+  fields: [
+    'name',
+    'value',
+    'valueIsRegex'
+  ],
+  validate(errors, values) {
+    errors = {
+      ...errors
+    };
 
-let validate = values => {
-  const errors = {};
+    if (!values.name) {
+      errors.name = 'Please enter a URL parameter name.';
+    }
 
-  if (!values.name) {
-    errors.name = 'Please enter a URL parameter name.';
+    if (!values.value) {
+      errors.value = 'Please enter a URL parameter value.';
+    }
+
+    return errors;
   }
-
-  if (!values.value) {
-    errors.value = 'Please enter a URL parameter value.';
-  }
-
-  return errors;
 };
 
-export default extensionViewReduxForm({
-  fields,
-  validate
-})(URLParameter);
+export default extensionViewReduxForm(formConfig)(URLParameter);

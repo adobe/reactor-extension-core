@@ -3,7 +3,7 @@ import Coral from '../reduxFormCoralUI';
 import ValidationWrapper from '../components/validationWrapper';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
-export class Variable extends React.Component {
+class Variable extends React.Component {
   render() {
     const { path } = this.props.fields;
 
@@ -18,21 +18,21 @@ export class Variable extends React.Component {
   }
 }
 
-const fields = [
-  'path'
-];
+const formConfig = {
+  fields: [
+    'path'
+  ],
+  validate(errors, values) {
+    errors = {
+      ...errors
+    };
 
-const validate = values => {
-  const errors = {};
+    if (!values.path) {
+      errors.path = 'Please specify a variable path.';
+    }
 
-  if (!values.path) {
-    errors.path = 'Please specify a variable path.';
+    return errors;
   }
-
-  return errors;
 };
 
-export default extensionViewReduxForm({
-  fields,
-  validate
-})(Variable);
+export default extensionViewReduxForm(formConfig)(Variable);

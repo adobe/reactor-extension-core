@@ -4,7 +4,7 @@ import extensionViewReduxForm from '../extensionViewReduxForm';
 import RegexToggle from '../components/regexToggle';
 import ValidationWrapper from '../components/validationWrapper';
 
-export class Cookie extends React.Component {
+class Cookie extends React.Component {
   render() {
     const { name, value, valueIsRegex } = this.props.fields;
 
@@ -32,27 +32,27 @@ export class Cookie extends React.Component {
   }
 }
 
-const fields = [
-  'name',
-  'value',
-  'valueIsRegex'
-];
+const formConfig = {
+  fields: [
+    'name',
+    'value',
+    'valueIsRegex'
+  ],
+  validate(errors, values) {
+    errors = {
+      ...errors
+    };
 
-const validate = values => {
-  const errors = {};
+    if (!values.name) {
+      errors.name = 'Please specify a cookie name.';
+    }
 
-  if (!values.name) {
-    errors.name = 'Please specify a cookie name.';
+    if (!values.value) {
+      errors.value = 'Please specify a cookie value.';
+    }
+
+    return errors;
   }
-
-  if (!values.value) {
-    errors.value = 'Please specify a cookie value.';
-  }
-
-  return errors;
 };
 
-export default extensionViewReduxForm({
-  fields,
-  validate
-})(Cookie);
+export default extensionViewReduxForm(formConfig)(Cookie);

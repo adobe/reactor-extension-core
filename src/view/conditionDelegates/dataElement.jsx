@@ -5,7 +5,7 @@ import ValidationWrapper from '../components/validationWrapper';
 import DataElementNameField from './components/dataElementNameField';
 import RegexToggle from '../components/regexToggle';
 
-export class DataElement extends React.Component {
+class DataElement extends React.Component {
   render() {
     const { name, value, valueIsRegex } = this.props.fields;
 
@@ -33,27 +33,27 @@ export class DataElement extends React.Component {
   }
 }
 
-const fields = [
-  'name',
-  'value',
-  'valueIsRegex'
-];
+const formConfig = {
+  fields: [
+    'name',
+    'value',
+    'valueIsRegex'
+  ],
+  validate(errors, values) {
+    errors = {
+      ...errors
+    };
 
-const validate = values => {
-  const errors = {};
+    if (!values.name) {
+      errors.name = 'Please specify a data element.';
+    }
 
-  if (!values.name) {
-    errors.name = 'Please specify a data element.';
+    if (!values.value) {
+      errors.value = 'Please specify a value.';
+    }
+
+    return errors;
   }
-
-  if (!values.value) {
-    errors.value = 'Please specify a value.';
-  }
-
-  return errors;
 };
 
-export default extensionViewReduxForm({
-  fields,
-  validate
-})(DataElement);
+export default extensionViewReduxForm(formConfig)(DataElement);

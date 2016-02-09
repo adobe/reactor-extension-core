@@ -50,7 +50,7 @@ const elementPropertyPresets = [
   }
 ];
 
-export class DOM extends React.Component {
+class DOM extends React.Component {
   render() {
     const {
       fields: {
@@ -98,33 +98,13 @@ export class DOM extends React.Component {
   }
 }
 
-const fields = [
-  'elementSelector',
-  'selectedElementPropertyPreset',
-  'customElementProperty',
-  'elementPropertyPresets'
-];
-
-const validate = values => {
-  const errors = {};
-
-  if (!values.elementSelector) {
-    errors.elementSelector = 'Please specify a CSS selector.';
-  }
-
-  if (values.selectedElementPropertyPreset === 'custom' && !values.customElementProperty) {
-    errors.customElementProperty = 'Please specify an element property.';
-  }
-
-  return errors;
-};
-
-export default extensionViewReduxForm({
-  fields,
-  validate
-})(DOM);
-
-export const reducers = {
+const formConfig = {
+  fields: [
+    'elementSelector',
+    'selectedElementPropertyPreset',
+    'customElementProperty',
+    'elementPropertyPresets'
+  ],
   configToFormValues(values, options) {
     let { elementSelector, elementProperty } = options.config;
 
@@ -164,6 +144,22 @@ export const reducers = {
       elementSelector: values.elementSelector,
       elementProperty
     };
+  },
+  validate(errors, values) {
+    errors = {
+      ...errors
+    };
+
+    if (!values.elementSelector) {
+      errors.elementSelector = 'Please specify a CSS selector.';
+    }
+
+    if (values.selectedElementPropertyPreset === 'custom' && !values.customElementProperty) {
+      errors.customElementProperty = 'Please specify an element property.';
+    }
+
+    return errors;
   }
 };
 
+export default extensionViewReduxForm(formConfig)(DOM);

@@ -8,7 +8,9 @@ export default class ElementPropertyEditor extends React.Component {
     this.props.remove();
   };
   render() {
-    const { name, value, valueIsRegex, removable } = this.props;
+    const { removable } = this.props;
+    const { name, value, valueIsRegex } = this.props.fields;
+
     var removeButton;
     if (removable) {
       removeButton = (
@@ -23,19 +25,22 @@ export default class ElementPropertyEditor extends React.Component {
     return (
       <div className="u-gapBottom">
         <ValidationWrapper
-          ref="elementPropertyValidationWrapper"
+          ref="nameValidationWrapper"
           error={name.touched && name.error}>
           <Coral.Textfield
+            ref="nameField"
             className="u-gapLeft"
             placeholder="Property"
             {...name}/>
         </ValidationWrapper>
         <span className="u-label u-gapLeft">=</span>
         <Coral.Textfield
+          ref="valueField"
           className="u-gapRight"
           placeholder="Value"
           {...value}/>
         <RegexToggle
+          ref="regexToggle"
           value={value.value}
           valueIsRegex={valueIsRegex.value}
           onValueChange={value.onChange}

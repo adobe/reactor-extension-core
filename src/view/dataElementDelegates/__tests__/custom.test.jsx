@@ -1,10 +1,10 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../reduxFormCoralUI';
-import setUpComponent from '../../__tests__/helpers/setUpComponent';
+import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 import Custom from '../custom';
 import ErrorIcon from '../../components/errorIcon';
 
-const { instance, extensionBridge } = setUpComponent(Custom);
+const { instance, extensionBridge } = setUpConnectedForm(Custom);
 const getParts = () => {
   let errorIcons = TestUtils.scryRenderedComponentsWithType(instance, ErrorIcon);
 

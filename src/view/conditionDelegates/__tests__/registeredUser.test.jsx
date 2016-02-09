@@ -1,11 +1,11 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../reduxFormCoralUI';
-import setUpComponent from '../../__tests__/helpers/setUpComponent';
+import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 import RegisteredUser from '../registeredUser';
 import ValidationWrapper from '../../components/validationWrapper';
 import DataElementNameField from '../components/dataElementNameField';
 
-const { instance, extensionBridge } = setUpComponent(RegisteredUser);
+const { instance, extensionBridge } = setUpConnectedForm(RegisteredUser);
 const getParts = () => {
   return {
     dataElementField: TestUtils.findRenderedComponentWithType(instance, DataElementNameField),

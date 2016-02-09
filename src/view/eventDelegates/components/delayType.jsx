@@ -5,7 +5,7 @@ import ValidationWrapper from '../../components/validationWrapper';
 
 export default class DelayType extends React.Component {
   onDelayTypeClick = () => {
-    ReactDOM.findDOMNode(this.refs.delayTextField).focus();
+    ReactDOM.findDOMNode(this.refs.delayTextfield).focus();
   };
 
   onDelayFieldClick = () => {
@@ -21,10 +21,10 @@ export default class DelayType extends React.Component {
           <span className="u-label u-gapRight">Trigger</span>
         </label>
         <Coral.Radio
-          ref="immediatelyRadio"
+          ref="immediateRadio"
           {...delayType}
-          value="immediately"
-          checked={delayType.value === 'immediately'}>
+          value="immediate"
+          checked={delayType.value === 'immediate'}>
           immediately
         </Coral.Radio>
         <Coral.Radio
@@ -39,7 +39,7 @@ export default class DelayType extends React.Component {
           ref="delayValidationWrapper"
           error={delay.touched && delay.error}>
           <Coral.Textfield
-            ref="delayTextField"
+            ref="delayTextfield"
             {...delay}
             onClick={this.onDelayFieldClick}/>
         </ValidationWrapper>
@@ -51,16 +51,15 @@ export default class DelayType extends React.Component {
   }
 }
 
-export const fields = [
-  'delayType',
-  'delay'
-];
-
-export const reducers = {
+export const formConfig = {
+  fields: [
+    'delayType',
+    'delay'
+  ],
   configToFormValues(values, options) {
     return {
       ...values,
-      delayType: options.config.delay > 0 ? 'delay' : 'immediately',
+      delayType: options.config.delay > 0 ? 'delay' : 'immediate',
       delay: options.config.delay > 0 ? options.config.delay : ''
     };
   },

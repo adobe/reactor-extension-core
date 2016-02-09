@@ -1,44 +1,35 @@
 import React from 'react';
 import Coral from '../reduxFormCoralUI';
-import ElementFilter, {
-  fields as elementFilterFields,
-  reducers as elementFilterReducers
-} from './components/elementFilter';
-import AdvancedEventOptions, {
-  fields as advancedEventOptionsFields
-} from './components/advancedEventOptions';
+import ElementFilter, { formConfig as elementFilterFormConfig } from './components/elementFilter';
+import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
-export class Click extends React.Component {
+class Click extends React.Component {
   render() {
     const { delayLinkActivation } = this.props.fields;
 
     return (
       <div>
-        <ElementFilter fields={this.props.fields}/>
+        <ElementFilter ref="elementFilter" fields={this.props.fields}/>
         <Coral.Checkbox
           ref="delayLinkActivationCheckbox"
           className="u-block"
           {...delayLinkActivation}>
           If the element is a link, delay navigation until rule runs
         </Coral.Checkbox>
-        <AdvancedEventOptions fields={this.props.fields}/>
+        <AdvancedEventOptions ref="advancedEventOptions" fields={this.props.fields}/>
       </div>
     );
   }
 }
 
-const fields = [
-  'delayLinkActivation'
-]
-.concat(elementFilterFields)
-.concat(advancedEventOptionsFields);
+const formConfig = {
+  fields: [
+    'delayLinkActivation'
+  ].concat(elementFilterFormConfig.fields, advancedEventOptionsFormConfig.fields),
+  configToFormValues: elementFilterFormConfig.configToFormValues,
+  formValuesToConfig: elementFilterFormConfig.formValuesToConfig,
+  validate: elementFilterFormConfig.validate
+};
 
-const validate = values => elementFilterReducers.validate({}, values);
-
-export default extensionViewReduxForm({
-  fields,
-  validate
-})(Click);
-
-export const reducers = elementFilterReducers;
+export default extensionViewReduxForm(formConfig)(Click);

@@ -2,12 +2,6 @@ import React from 'react';
 import Coral from '../../reduxFormCoralUI';
 import DisclosureButton from '../../components/disclosureButton';
 
-export let fields = [
-  'bubbleFireIfParent',
-  'bubbleFireIfChildFired',
-  'bubbleStop'
-];
-
 export default class AdvancedEventOptions extends React.Component {
   constructor() {
     super();
@@ -21,6 +15,7 @@ export default class AdvancedEventOptions extends React.Component {
       expanded: !this.state.expanded
     });
   };
+
   render() {
     const { bubbleFireIfParent, bubbleFireIfChildFired, bubbleStop } = this.props.fields;
 
@@ -69,3 +64,11 @@ export default class AdvancedEventOptions extends React.Component {
     );
   }
 }
+
+export const formConfig = {
+  fields: [
+    'bubbleFireIfParent',
+    'bubbleFireIfChildFired',
+    'bubbleStop'
+  ]
+};

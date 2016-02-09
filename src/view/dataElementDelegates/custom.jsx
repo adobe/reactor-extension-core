@@ -3,7 +3,7 @@ import Coral from '../reduxFormCoralUI';
 import ErrorIcon from '../components/errorIcon';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
-export class Custom extends React.Component {
+class Custom extends React.Component {
   onOpenEditor = () => {
     let scriptField = this.props.fields.script;
     window.extensionBridge.openCodeEditor(scriptField.value, scriptField.onChange);
@@ -23,19 +23,19 @@ export class Custom extends React.Component {
   }
 }
 
-const fields = ['script'];
+const formConfig = {
+  fields: ['script'],
+  validate(errors, values) {
+    errors = {
+      ...errors
+    };
 
-const validate = values => {
-  const errors = {};
+    if (!values.script) {
+      errors.script = 'Please provide custom script.';
+    }
 
-  if (!values.script) {
-    errors.script = 'Please provide custom script.';
+    return errors;
   }
-
-  return errors;
 };
 
-export default extensionViewReduxForm({
-  fields,
-  validate
-})(Custom);
+export default extensionViewReduxForm(formConfig)(Custom);

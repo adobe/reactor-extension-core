@@ -6,7 +6,7 @@ import ValidationWrapper from '../components/validationWrapper';
 import createID from '../utils/createID';
 import MultipleItemEditor from './components/multipleItemEditor';
 
-export class Path extends React.Component {
+class Path extends React.Component {
   addRow = () => this.props.fields.paths.addField({ id: createID() });
   removeRow = index => this.props.fields.paths.removeField(index);
   getKey = path => path.id.value;
@@ -44,36 +44,12 @@ export class Path extends React.Component {
   }
 }
 
-const fields = [
-  'paths[].id',
-  'paths[].value',
-  'paths[].valueIsRegex'
-];
-
-const validate = values => {
-  const errors = {};
-
-  const pathsErrors = values.paths.map(path => {
-    const result = {};
-
-    if (!path.value) {
-      result.value = 'Please specify a path.';
-    }
-
-    return result;
-  });
-
-  errors.paths = pathsErrors;
-
-  return errors;
-};
-
-export default extensionViewReduxForm({
-  fields,
-  validate
-})(Path);
-
-export const reducers = {
+const formConfig = {
+  fields: [
+    'paths[].id',
+    'paths[].value',
+    'paths[].valueIsRegex'
+  ],
   configToFormValues(values, options) {
     values = {
       ...values
@@ -110,5 +86,26 @@ export const reducers = {
     });
 
     return config;
+  },
+  validate(errors, values) {
+    errors = {
+      ...errors
+    };
+
+    const pathsErrors = values.paths.map(path => {
+      const result = {};
+
+      if (!path.value) {
+        result.value = 'Please specify a path.';
+      }
+
+      return result;
+    });
+
+    errors.paths = pathsErrors;
+
+    return errors;
   }
 };
+
+export default extensionViewReduxForm(formConfig)(Path);

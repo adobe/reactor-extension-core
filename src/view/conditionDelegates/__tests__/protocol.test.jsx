@@ -1,9 +1,9 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../reduxFormCoralUI';
-import setUpComponent from '../../__tests__/helpers/setUpComponent';
-import Protocol, { reducers } from '../protocol';
+import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
+import Protocol from '../protocol';
 
-const { instance, extensionBridge } = setUpComponent(Protocol, reducers);
+const { instance, extensionBridge } = setUpConnectedForm(Protocol);
 const getParts = () => {
   const radios = TestUtils.scryRenderedComponentsWithType(instance, Coral.Radio);
   return {

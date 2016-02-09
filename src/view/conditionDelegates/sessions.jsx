@@ -4,7 +4,7 @@ import extensionViewReduxForm from '../extensionViewReduxForm';
 import ValidationWrapper from '../components/validationWrapper';
 import ComparisonOperatorField from './components/comparisonOperatorField';
 
-export class Sessions extends React.Component {
+class Sessions extends React.Component {
   render() {
     const { operator, count } = this.props.fields;
 
@@ -27,27 +27,11 @@ export class Sessions extends React.Component {
   }
 }
 
-const fields = [
-  'operator',
-  'count'
-];
-
-const validate = values => {
-  const errors = {};
-
-  if (!values.count || isNaN(values.count)) {
-    errors.count = 'Please specify a number of sessions.';
-  }
-
-  return errors;
-};
-
-export default extensionViewReduxForm({
-  fields,
-  validate
-})(Sessions);
-
-export const reducers = {
+const formConfig = {
+  fields: [
+    'operator',
+    'count'
+  ],
   configToFormValues(values, options) {
     return {
       ...values,
@@ -59,5 +43,18 @@ export const reducers = {
       ...config,
       count: Number(values.count)
     };
+  },
+  validate(errors, values) {
+    errors = {
+      ...errors
+    };
+
+    if (!values.count || isNaN(values.count)) {
+      errors.count = 'Please specify a number of sessions.';
+    }
+
+    return errors;
   }
 };
+
+export default extensionViewReduxForm(formConfig)(Sessions);

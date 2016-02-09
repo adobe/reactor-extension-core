@@ -2,7 +2,7 @@ import React from 'react';
 import Coral from '../reduxFormCoralUI';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
-export class Protocol extends React.Component {
+class Protocol extends React.Component {
   render() {
     const { protocol } = this.props.fields;
 
@@ -25,15 +25,8 @@ export class Protocol extends React.Component {
   }
 }
 
-const fields = [
-  'protocol'
-];
-
-export default extensionViewReduxForm({
-  fields
-})(Protocol);
-
-export const reducers = {
+const formConfig = {
+  fields: ['protocol'],
   configToFormValues(values, options) {
     return {
       ...values,
@@ -41,3 +34,5 @@ export const reducers = {
     };
   }
 };
+
+export default extensionViewReduxForm(formConfig)(Protocol);

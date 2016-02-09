@@ -4,7 +4,7 @@ import extensionViewReduxForm from '../extensionViewReduxForm';
 import ValidationWrapper from '../components/validationWrapper';
 import DataElementNameField from './components/dataElementNameField';
 
-export class RegisteredUser extends React.Component {
+class RegisteredUser extends React.Component {
   render() {
     const { dataElement } = this.props.fields;
 
@@ -19,21 +19,19 @@ export class RegisteredUser extends React.Component {
   }
 }
 
-const fields = [
-  'dataElement'
-];
+const formConfig = {
+  fields: [ 'dataElement' ],
+  validate(errors, values) {
+    errors = {
+      ...errors
+    };
 
-const validate = values => {
-  const errors = {};
+    if (!values.dataElement) {
+      errors.dataElement = 'Please specify a data element.';
+    }
 
-  if (!values.dataElement) {
-    errors.dataElement = 'Please specify a data element.';
+    return errors;
   }
-
-  return errors;
 };
 
-export default extensionViewReduxForm({
-  fields,
-  validate
-})(RegisteredUser);
+export default extensionViewReduxForm(formConfig)(RegisteredUser);

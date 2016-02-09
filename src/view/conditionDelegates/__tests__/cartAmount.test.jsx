@@ -1,12 +1,13 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../reduxFormCoralUI';
-import setUpComponent from '../../__tests__/helpers/setUpComponent';
-import CartAmount, { reducers } from '../cartAmount';
+import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
+import CartAmount from '../cartAmount';
 import ValidationWrapper from '../../components/validationWrapper';
 import dataElementNameField from '../components/dataElementNameField';
 import ComparisonOperatorField from '../components/comparisonOperatorField';
 
-const { instance, extensionBridge } = setUpComponent(CartAmount, reducers);
+const { instance, extensionBridge } = setUpConnectedForm(CartAmount);
+
 const getParts = () => {
   const validationWrappers = TestUtils.scryRenderedComponentsWithType(instance, ValidationWrapper);
   return {

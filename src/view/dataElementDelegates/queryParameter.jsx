@@ -3,7 +3,7 @@ import Coral from '../reduxFormCoralUI';
 import ValidationWrapper from '../components/validationWrapper';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
-export class QueryParameter extends React.Component {
+class QueryParameter extends React.Component {
   render() {
     const { name, caseInsensitive } = this.props.fields;
 
@@ -23,31 +23,28 @@ export class QueryParameter extends React.Component {
   }
 }
 
-const fields = [
-  'name',
-  'caseInsensitive'
-];
-
-const validate = values => {
-  const errors = {};
-
-  if (!values.name) {
-    errors.name = 'Please specify a query string parameter name.';
-  }
-
-  return errors;
-};
-
-export default extensionViewReduxForm({
-  fields,
-  validate
-})(QueryParameter);
-
-export const reducers = {
+const formConfig = {
+  fields: [
+    'name',
+    'caseInsensitive'
+  ],
   configToFormValues(values, options) {
     return {
       ...values,
       caseInsensitive: options.configIsNew || options.config.caseInsensitive
     };
+  },
+  validate(errors, values) {
+    errors = {
+      ...errors
+    };
+
+    if (!values.name) {
+      errors.name = 'Please specify a query string parameter name.';
+    }
+
+    return errors;
   }
 };
+
+export default extensionViewReduxForm(formConfig)(QueryParameter);

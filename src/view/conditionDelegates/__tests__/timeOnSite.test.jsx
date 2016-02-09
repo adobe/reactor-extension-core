@@ -1,11 +1,11 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../reduxFormCoralUI';
-import setUpComponent from '../../__tests__/helpers/setUpComponent';
-import TimeOnSite, { reducers } from '../timeOnSite';
+import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
+import TimeOnSite from '../timeOnSite';
 import ValidationWrapper from '../../components/validationWrapper';
 import ComparisonOperatorField from '../components/comparisonOperatorField';
 
-const { instance, extensionBridge } = setUpComponent(TimeOnSite, reducers);
+const { instance, extensionBridge } = setUpConnectedForm(TimeOnSite);
 const getParts = () => {
   return {
     operatorField: TestUtils.findRenderedComponentWithType(instance, ComparisonOperatorField),

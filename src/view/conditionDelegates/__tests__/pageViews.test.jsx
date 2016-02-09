@@ -1,11 +1,11 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../reduxFormCoralUI';
-import setUpComponent from '../../__tests__/helpers/setUpComponent';
-import PageViews, { reducers } from '../pageViews';
+import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
+import PageViews from '../pageViews';
 import ValidationWrapper from '../../components/validationWrapper';
 import ComparisonOperatorField from '../components/comparisonOperatorField';
 
-const { instance, extensionBridge } = setUpComponent(PageViews, reducers);
+const { instance, extensionBridge } = setUpConnectedForm(PageViews);
 const getParts = () => {
   const radios = TestUtils.scryRenderedComponentsWithType(instance, Coral.Radio);
   return {
