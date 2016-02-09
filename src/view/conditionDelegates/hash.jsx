@@ -16,7 +16,7 @@ class Hash extends React.Component {
       <div className="u-inlineBlock">
         <ValidationWrapper className="u-gapRight" error={hash.value.touched && hash.value.error}>
           <label>
-            <span className="u-label">Hash matches</span>
+            <span className="u-label coral-Form-fieldlabel">Hash</span>
             <Coral.Textfield {...hash.value}/>
           </label>
         </ValidationWrapper>

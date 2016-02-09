@@ -16,7 +16,7 @@ class Path extends React.Component {
       <div className="u-inlineBlock">
         <ValidationWrapper className="u-gapRight" error={path.value.touched && path.value.error}>
           <label>
-            <span className="u-label">Path matches</span>
+            <span className="u-label coral-Form-fieldlabel">Path</span>
             <Coral.Textfield {...path.value}/>
           </label>
         </ValidationWrapper>

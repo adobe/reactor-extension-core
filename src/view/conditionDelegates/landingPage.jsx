@@ -12,7 +12,7 @@ class LandingPage extends React.Component {
       <div>
         <ValidationWrapper className="u-gapRight" error={page.touched && page.error}>
           <label>
-            <span className="u-label">Landing Page</span>
+            <span className="u-label coral-Form-fieldlabel">Landing Page</span>
             <Coral.Textfield {...page}/>
           </label>
         </ValidationWrapper>

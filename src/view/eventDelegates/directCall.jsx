@@ -10,7 +10,7 @@ class DirectCall extends React.Component {
     return (
       <ValidationWrapper error={name.touched && name.error}>
         <label>
-          <span className="u-label">String:</span>
+          <span className="u-label coral-Form-fieldlabel">String</span>
           <Coral.Textfield {...name}/>
         </label>
       </ValidationWrapper>

@@ -18,7 +18,7 @@ class Subdomain extends React.Component {
           className="u-gapRight"
           error={subdomain.value.touched && subdomain.value.error}>
           <label>
-            <span className="u-label">Subdomain matches</span>
+            <span className="u-label coral-Form-fieldlabel">Subdomain</span>
             <Coral.Textfield {...subdomain.value}/>
           </label>
         </ValidationWrapper>

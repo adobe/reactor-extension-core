@@ -11,7 +11,7 @@ class LoggedIn extends React.Component {
     return (
       <ValidationWrapper className="u-gapRight" error={dataElement.touched && dataElement.error}>
         <label>
-          <span className="u-label">Data element identifying whether the user is logged in:</span>
+          <span className="u-label coral-Form-fieldlabel">Data element identifying whether the user is logged in</span>
           <DataElementNameField {...dataElement}/>
         </label>
       </ValidationWrapper>

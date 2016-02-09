@@ -10,7 +10,7 @@ class Variable extends React.Component {
     return (
       <ValidationWrapper error={path.touched && path.error}>
         <label>
-          <span className="u-label">Path to variable:</span>
+          <span className="u-label coral-Form-fieldlabel">Path to variable</span>
           <Coral.Textfield {...path}/>
         </label>
       </ValidationWrapper>

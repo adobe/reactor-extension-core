@@ -13,7 +13,7 @@ class DataElement extends React.Component {
       <div>
         <ValidationWrapper className="u-gapRight" error={name.touched && name.error}>
           <label>
-            <span className="u-label">Data element name</span>
+            <span className="u-label">Data element</span>
             <DataElementNameField {...name}/>
           </label>
         </ValidationWrapper>
