@@ -13,8 +13,8 @@ const finalCreateStore = compose(
 )(createStore);
 
 const store = finalCreateStore(reducer, {});
-const setReducersForRoute = bridgeAdapter(extensionBridge, store);
-const router = createRouter(setReducersForRoute);
+const setFormConfigForCurrentRoute = bridgeAdapter(extensionBridge, store);
+const router = createRouter(setFormConfigForCurrentRoute);
 
 ReactDOM.render((
   <div>

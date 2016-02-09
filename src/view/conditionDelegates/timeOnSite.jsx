@@ -4,7 +4,7 @@ import extensionViewReduxForm from '../extensionViewReduxForm';
 import ValidationWrapper from '../components/validationWrapper';
 import ComparisonOperatorField from './components/comparisonOperatorField';
 
-export class TimeOnSite extends React.Component {
+class TimeOnSite extends React.Component {
   render() {
     const { operator, minutes } = this.props.fields;
 
@@ -27,27 +27,11 @@ export class TimeOnSite extends React.Component {
   }
 }
 
-const fields = [
-  'operator',
-  'minutes'
-];
-
-const validate = values => {
-  const errors = {};
-
-  if (!values.minutes || isNaN(values.minutes)) {
-    errors.minutes = 'Please specify a number of minutes.';
-  }
-
-  return errors;
-};
-
-export default extensionViewReduxForm({
-  fields,
-  validate
-})(TimeOnSite);
-
-export const reducers = {
+const formConfig = {
+  fields: [
+    'operator',
+    'minutes'
+  ],
   configToFormValues(values, options) {
     return {
       ...values,
@@ -59,5 +43,18 @@ export const reducers = {
       ...config,
       minutes: Number(values.minutes)
     };
+  },
+  validate(errors, values) {
+    errors = {
+      ...errors
+    };
+
+    if (!values.minutes || isNaN(values.minutes)) {
+      errors.minutes = 'Please specify a number of minutes.';
+    }
+
+    return errors;
   }
 };
+
+export default extensionViewReduxForm(formConfig)(TimeOnSite);

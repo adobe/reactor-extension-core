@@ -14,23 +14,20 @@ const deviceTypeOptions = [
   'Android'
 ];
 
-export class DeviceType extends React.Component {
+class DeviceType extends React.Component {
   render() {
     const { deviceTypes } = this.props.fields;
     return <CheckboxList options={deviceTypeOptions} {...deviceTypes}/>;
   }
 }
 
-const fields = ['deviceTypes'];
-
-export default extensionViewReduxForm({
-  fields
-})(DeviceType);
-
-export const reducers = {
+const formConfig = {
+  fields: ['deviceTypes'],
   formValuesToConfig(config, values) {
     return {
       deviceTypes: values.deviceTypes || [] // An array is required.
     };
   }
 };
+
+export default extensionViewReduxForm(formConfig)(DeviceType);

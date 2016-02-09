@@ -1,10 +1,11 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../reduxFormCoralUI';
 import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
-import Domain, { reducers } from '../domain';
+import Domain from '../domain';
 import CheckboxList from '../../components/checkboxList';
 
-const { instance, extensionBridge } = setUpConnectedForm(Domain, reducers);
+const { instance, extensionBridge } = setUpConnectedForm(Domain);
+
 const getParts = () => {
   return {
     checkboxList: TestUtils.findRenderedComponentWithType(instance, CheckboxList)

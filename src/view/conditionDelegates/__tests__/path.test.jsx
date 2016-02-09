@@ -1,7 +1,7 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../reduxFormCoralUI';
 import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
-import Path, { reducers } from '../path';
+import Path from '../path';
 import MultipleItemEditor from '../components/multipleItemEditor';
 import ValidationWrapper from '../../components/validationWrapper';
 import RegexToggle from '../../components/regexToggle';
@@ -20,7 +20,7 @@ const testProps = {
   }
 };
 
-const { instance, extensionBridge } = setUpConnectedForm(Path, reducers);
+const { instance, extensionBridge } = setUpConnectedForm(Path);
 const getParts = () => {
   return {
     multipleItemEditor: TestUtils.findRenderedComponentWithType(instance, MultipleItemEditor),

@@ -2,10 +2,6 @@ import React from 'react';
 import Coral from '../../reduxFormCoralUI';
 import ValidationWrapper from '../../components/validationWrapper';
 
-export const fields = [
-  'elementSelector'
-];
-
 export default class ElementSelectorField extends React.Component {
   render() {
     const { elementSelector } = this.props.fields;
@@ -22,3 +18,9 @@ export default class ElementSelectorField extends React.Component {
     );
   }
 }
+
+export const formConfig = {
+  fields: [
+    'elementSelector'
+  ]
+};

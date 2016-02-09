@@ -25,7 +25,7 @@ const formValuesToConfigBaseReducer = (config, values) => {
 };
 
 export default (extensionBridge, store) => {
-  let _reducersForRoute;
+  let reducersForRoute;
 
   extensionBridge.init = (options = {}) => {
     options = {
@@ -34,7 +34,7 @@ export default (extensionBridge, store) => {
       configIsNew: !options.config
     };
 
-    const initialValues = _reducersForRoute.configToFormValues({}, options);
+    const initialValues = reducersForRoute.configToFormValues({}, options);
 
     store.dispatch(actionCreators.init({
       propertyConfig: options.propertyConfig,
@@ -51,7 +51,7 @@ export default (extensionBridge, store) => {
 
   extensionBridge.getConfig = () => {
     const values = getValues(store.getState().form.default) || {};
-    return _reducersForRoute.formValuesToConfig({}, values);
+    return reducersForRoute.formValuesToConfig({}, values);
   };
 
   extensionBridge.validate = () => {
@@ -62,20 +62,20 @@ export default (extensionBridge, store) => {
     return valid;
   };
 
-  return (reducersForRoute = {}) => {
+  return formConfig => {
     const configToFormValuesReducers = [ configToFormValuesBaseReducer ];
 
-    if (reducersForRoute.configToFormValues) {
-      configToFormValuesReducers.push(reducersForRoute.configToFormValues);
+    if (formConfig.configToFormValues) {
+      configToFormValuesReducers.push(formConfig.configToFormValues);
     }
 
     const formValuesToConfigReducers = [ formValuesToConfigBaseReducer ];
 
-    if (reducersForRoute.formValuesToConfig) {
-      formValuesToConfigReducers.push(reducersForRoute.formValuesToConfig);
+    if (formConfig.formValuesToConfig) {
+      formValuesToConfigReducers.push(formConfig.formValuesToConfig);
     }
 
-    _reducersForRoute = {
+    reducersForRoute = {
       configToFormValues: reduceReducers(...configToFormValuesReducers),
       formValuesToConfig: reduceReducers(...formValuesToConfigReducers)
     };

@@ -2,7 +2,7 @@ import React from 'react';
 import Coral from 'coralui-support-react';
 import extensionViewReduxForm from '../../extensionViewReduxForm';
 
-export class NoConfig extends React.Component {
+class NoConfig extends React.Component {
   render() {
     return (
       <Coral.Alert>
@@ -15,8 +15,8 @@ export class NoConfig extends React.Component {
   }
 }
 
-const fields = [];
+const formConfig = {
+  fields: []
+};
 
-export default extensionViewReduxForm({
-  fields
-})(NoConfig);
+export default extensionViewReduxForm(formConfig)(NoConfig);

@@ -5,7 +5,7 @@ import ValidationWrapper from '../components/validationWrapper';
 import DataElementNameField from './components/dataElementNameField';
 import ComparisonOperatorField from './components/comparisonOperatorField';
 
-export class CartItemQuantity extends React.Component {
+class CartItemQuantity extends React.Component {
   render() {
     const { dataElement, operator, quantity } = this.props.fields;
 
@@ -36,32 +36,12 @@ export class CartItemQuantity extends React.Component {
   }
 }
 
-const fields = [
-  'dataElement',
-  'operator',
-  'quantity'
-];
-
-const validate = values => {
-  const errors = {};
-
-  if (!values.dataElement) {
-    errors.dataElement = 'Please specify a data element.';
-  }
-
-  if (!values.quantity || isNaN(values.quantity)) {
-    errors.quantity = 'Please specify a number for the cart item quantity.';
-  }
-
-  return errors;
-};
-
-export default extensionViewReduxForm({
-  fields,
-  validate
-})(CartItemQuantity);
-
-export const reducers = {
+const formConfig = {
+  fields: [
+    'dataElement',
+    'operator',
+    'quantity'
+  ],
   configToFormValues(values, options) {
     return {
       ...values,
@@ -73,5 +53,22 @@ export const reducers = {
       ...config,
       quantity: Number(values.quantity)
     };
+  },
+  validate(errors, values) {
+    errors = {
+      ...errors
+    };
+
+    if (!values.dataElement) {
+      errors.dataElement = 'Please specify a data element.';
+    }
+
+    if (!values.quantity || isNaN(values.quantity)) {
+      errors.quantity = 'Please specify a number for the cart item quantity.';
+    }
+
+    return errors;
   }
 };
+
+export default extensionViewReduxForm(formConfig)(CartItemQuantity);

@@ -3,15 +3,10 @@ import Coral from '../../../reduxFormCoralUI';
 import setUpConnectedForm from '../../../__tests__/helpers/setUpConnectedForm';
 import extensionViewReduxForm from '../../../extensionViewReduxForm';
 import ElementPropertyEditor from '../elementPropertyEditor';
-import ElementPropertiesEditor, { fields, reducers } from '../elementPropertiesEditor';
+import ElementPropertiesEditor, { formConfig } from '../elementPropertiesEditor';
 
-
-const FormComponent = extensionViewReduxForm({
-  fields,
-  validate: values => reducers.validate({}, values)
-})(ElementPropertiesEditor);
-
-const { instance, extensionBridge } = setUpConnectedForm(FormComponent, reducers);
+const FormComponent = extensionViewReduxForm(formConfig)(ElementPropertiesEditor);
+const { instance, extensionBridge } = setUpConnectedForm(FormComponent);
 
 const getParts = () => {
   const editorRows = TestUtils.scryRenderedComponentsWithType(instance, ElementPropertyEditor);

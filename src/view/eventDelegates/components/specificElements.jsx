@@ -1,22 +1,10 @@
 import React from 'react';
 import Coral from '../../reduxFormCoralUI';
-import ElementSelectorField, {
-  fields as elementSelectorFieldFields
-} from './elementSelectorField';
-import ElementPropertiesEditor, {
-  fields as elementPropertiesEditorFields,
-  reducers as elementPropertiesEditorReducers
-} from './elementPropertiesEditor';
+import ElementSelectorField, { formConfig as elementSelectorFieldFormConfig } from './elementSelectorField';
+import ElementPropertiesEditor, { formConfig as elementPropertiesEditorFormConfig } from './elementPropertiesEditor';
 import reduceReducers from 'reduce-reducers';
 
-export const fields = [
-  'showElementPropertiesFilter'
-]
-.concat(elementSelectorFieldFields)
-.concat(elementPropertiesEditorFields);
-
 export default class SpecificElements extends React.Component {
-
   render() {
     const {
       showElementPropertiesFilter
@@ -43,9 +31,12 @@ export default class SpecificElements extends React.Component {
   }
 }
 
-export const reducers = {
+export const formConfig = {
+  fields: [
+    'showElementPropertiesFilter'
+  ].concat(elementSelectorFieldFormConfig.fields, elementPropertiesEditorFormConfig.fields),
   configToFormValues: reduceReducers(
-    elementPropertiesEditorReducers.configToFormValues,
+    elementPropertiesEditorFormConfig.configToFormValues,
     (values, options) => {
       const { elementProperties } = options.config;
 
@@ -56,7 +47,7 @@ export const reducers = {
     }
   ),
   formValuesToConfig: reduceReducers(
-    elementPropertiesEditorReducers.formValuesToConfig,
+    elementPropertiesEditorFormConfig.formValuesToConfig,
     (config, values) => {
       config = {
         ...config
@@ -72,7 +63,7 @@ export const reducers = {
     }
   ),
   validate: reduceReducers(
-    elementPropertiesEditorReducers.validate,
+    elementPropertiesEditorFormConfig.validate,
     (errors, values) => {
       errors = {
         ...errors

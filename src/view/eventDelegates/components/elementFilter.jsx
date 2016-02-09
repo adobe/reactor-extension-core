@@ -1,15 +1,7 @@
 import React from 'react';
 import Coral from '../../reduxFormCoralUI';
-import SpecificElements, {
-  fields as specificElementsFields,
-  reducers as specificElementsReducers
-} from './specificElements';
+import SpecificElements, { formConfig as specificElementsFormConfig } from './specificElements';
 import reduceReducers from 'reduce-reducers';
-
-export const fields = [
-  'elementSpecificity'
-]
-.concat(specificElementsFields);
 
 export default class ElementFilter extends React.Component {
 
@@ -43,9 +35,12 @@ export default class ElementFilter extends React.Component {
   }
 }
 
-export const reducers = {
+export const formConfig = {
+  fields: [
+    'elementSpecificity'
+  ].concat(specificElementsFormConfig.fields),
   configToFormValues: reduceReducers(
-    specificElementsReducers.configToFormValues,
+    specificElementsFormConfig.configToFormValues,
     (values, options) => {
       const { config: { elementSelector, elementProperties }, configIsNew } = options;
 
@@ -57,7 +52,7 @@ export const reducers = {
     }
   ),
   formValuesToConfig: reduceReducers(
-    specificElementsReducers.formValuesToConfig,
+    specificElementsFormConfig.formValuesToConfig,
     (config, values) => {
       config = {
         ...config
@@ -75,13 +70,13 @@ export const reducers = {
       return config;
     }
   ),
-  validate: (errors, values) => {
+  validate(errors, values) {
     errors = {
       ...errors
     };
 
     if (values.elementSpecificity === 'specific') {
-      errors = specificElementsReducers.validate(errors, values);
+      errors = specificElementsFormConfig.validate(errors, values);
     }
 
     return errors;

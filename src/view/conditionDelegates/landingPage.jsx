@@ -4,7 +4,7 @@ import extensionViewReduxForm from '../extensionViewReduxForm';
 import RegexToggle from '../components/regexToggle';
 import ValidationWrapper from '../components/validationWrapper';
 
-export class LandingPage extends React.Component {
+class LandingPage extends React.Component {
   render() {
     const { page, pageIsRegex } = this.props.fields;
 
@@ -26,22 +26,22 @@ export class LandingPage extends React.Component {
   }
 }
 
-const fields = [
-  'page',
-  'pageIsRegex'
-];
+const formConfig = {
+  fields: [
+    'page',
+    'pageIsRegex'
+  ],
+  validate(errors, values) {
+    errors = {
+      ...errors
+    };
 
-const validate = values => {
-  const errors = {};
+    if (!values.page) {
+      errors.page = 'Please specify a landing page.';
+    }
 
-  if (!values.page) {
-    errors.page = 'Please specify a landing page.';
+    return errors;
   }
-
-  return errors;
 };
 
-export default extensionViewReduxForm({
-  fields,
-  validate
-})(LandingPage);
+export default extensionViewReduxForm(formConfig)(LandingPage);

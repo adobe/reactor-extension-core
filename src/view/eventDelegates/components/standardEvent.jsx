@@ -1,12 +1,7 @@
 import React from 'react';
 import Coral from '../../reduxFormCoralUI';
-import ElementFilter, {
-  fields as elementFilterFields,
-  reducers as elementFilterReducers
-} from './elementFilter';
-import AdvancedEventOptions, {
-  fields as advancedEventOptionsFields
-} from './advancedEventOptions';
+import ElementFilter, { formConfig as elementFilterFormConfig } from './elementFilter';
+import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './advancedEventOptions';
 import extensionViewReduxForm from '../../extensionViewReduxForm';
 
 class StandardEvent extends React.Component {
@@ -20,13 +15,11 @@ class StandardEvent extends React.Component {
   }
 }
 
-const fields = elementFilterFields.concat(advancedEventOptionsFields);
+const formConfig = {
+  fields: elementFilterFormConfig.fields.concat(advancedEventOptionsFormConfig.fields),
+  configToFormValues: elementFilterFormConfig.configToFormValues,
+  formValuesToConfig: elementFilterFormConfig.formValuesToConfig,
+  validate: elementFilterFormConfig.validate
+};
 
-const validate = values => elementFilterReducers.validate({}, values);
-
-export default extensionViewReduxForm({
-  fields,
-  validate
-})(StandardEvent);
-
-export const reducers = elementFilterReducers;
+export default extensionViewReduxForm(formConfig)(StandardEvent);

@@ -2,7 +2,7 @@ import React from 'react';
 import Coral from '../reduxFormCoralUI';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
-export class NewReturning extends React.Component {
+class NewReturning extends React.Component {
   render() {
     const { visitorType } = this.props.fields;
 
@@ -25,15 +25,10 @@ export class NewReturning extends React.Component {
   }
 }
 
-const fields = [
-  'visitorType'
-];
-
-export default extensionViewReduxForm({
-  fields
-})(NewReturning);
-
-export const reducers = {
+const formConfig = {
+  fields: [
+    'visitorType'
+  ],
   configToFormValues(values, options) {
     return {
       visitorType: options.configIsNew || options.config.isNewVisitor ? 'new' : 'returning'
@@ -45,3 +40,5 @@ export const reducers = {
     };
   }
 };
+
+export default extensionViewReduxForm(formConfig)(NewReturning);

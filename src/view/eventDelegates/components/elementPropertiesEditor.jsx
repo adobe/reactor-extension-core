@@ -3,13 +3,6 @@ import Coral from '../../reduxFormCoralUI';
 import ElementPropertyEditor from './elementPropertyEditor';
 import createID from '../../utils/createID';
 
-export const fields = [
-  'elementProperties[].id',
-  'elementProperties[].name',
-  'elementProperties[].value',
-  'elementProperties[].valueIsRegex'
-];
-
 export default class ElementPropertiesEditor extends React.Component {
   add = () => {
     this.props.fields.elementProperties.addField({
@@ -42,7 +35,13 @@ export default class ElementPropertiesEditor extends React.Component {
   }
 }
 
-export const reducers = {
+export const formConfig = {
+  fields: [
+    'elementProperties[].id',
+    'elementProperties[].name',
+    'elementProperties[].value',
+    'elementProperties[].valueIsRegex'
+  ],
   configToFormValues(values, options) {
     const { config } = options;
 
@@ -93,7 +92,7 @@ export const reducers = {
 
     return config;
   },
-  validate: (errors, values) => {
+  validate(errors, values) {
     errors = {
       ...errors
     };

@@ -3,131 +3,131 @@ import React from 'react';
 import { Router, Route, hashHistory } from 'react-router';
 
 // Events
-import BlurEvent, { reducers as blurEventReducers } from './eventDelegates/blur';
-import ClickEvent, { reducers as clickEventReducers } from './eventDelegates/click';
+import BlurEvent from './eventDelegates/blur';
+import ClickEvent from './eventDelegates/click';
 import DirectCallEvent from './eventDelegates/directCall';
 import DomReadyEvent from './eventDelegates/domReady';
-import ElementExistsEvent, { reducers as elementExistsEventReducers } from './eventDelegates/elementExists';
-import EndedEvent, { reducers as endedEventReducers } from './eventDelegates/ended';
-import EntersViewportEvent, { reducers as entersViewportEventReducers } from './eventDelegates/entersViewport';
-import FocusEvent, { reducers as focusEventReducers } from './eventDelegates/focus';
-import HoverEvent, { reducers as hoverEventReducers } from './eventDelegates/hover';
-import KeyPressEvent, { reducers as keyPressEventReducers } from './eventDelegates/keyPress';
-import LoadedDataEvent, { reducers as loadedDataEventReducers } from './eventDelegates/loadedData';
+import ElementExistsEvent from './eventDelegates/elementExists';
+import EndedEvent from './eventDelegates/ended';
+import EntersViewportEvent from './eventDelegates/entersViewport';
+import FocusEvent from './eventDelegates/focus';
+import HoverEvent from './eventDelegates/hover';
+import KeyPressEvent from './eventDelegates/keyPress';
+import LoadedDataEvent from './eventDelegates/loadedData';
 import LocationChangeEvent from './eventDelegates/locationChange';
 import OnLoadEvent from './eventDelegates/onLoad';
 import OrientationChangeEvent from './eventDelegates/orientationChange';
 import PageBottomEvent from './eventDelegates/pageBottom';
 import PageTopEvent from './eventDelegates/pageTop';
-import PauseEvent, { reducers as pauseEventReducers } from './eventDelegates/pause';
-import PlayEvent, { reducers as playEventReducers } from './eventDelegates/play';
-import StalledEvent, { reducers as stalledEventReducers } from './eventDelegates/stalled';
-import SubmitEvent, { reducers as submitEventReducers } from './eventDelegates/submit';
+import PauseEvent from './eventDelegates/pause';
+import PlayEvent from './eventDelegates/play';
+import StalledEvent from './eventDelegates/stalled';
+import SubmitEvent from './eventDelegates/submit';
 import TabBlurEvent from './eventDelegates/tabBlur';
 import TabFocusEvent from './eventDelegates/tabFocus';
-import TimePlayedEvent, { reducers as timePlayedEventReducers } from './eventDelegates/timePlayed';
-import VolumeChangeEvent, { reducers as volumeChangeEventReducers } from './eventDelegates/volumeChange';
+import TimePlayedEvent from './eventDelegates/timePlayed';
+import VolumeChangeEvent from './eventDelegates/volumeChange';
 import ZoomChangeEvent from './eventDelegates/zoomChange';
 
 // Conditions
-import BrowserCondition, { reducers as browserConditionReducers } from './conditionDelegates/browser';
-import CartAmountCondition, { reducers as cartAmountConditionReducers } from './conditionDelegates/cartAmount';
-import CartItemQuantityCondition, { reducers as cartItemQuantityConditionReducers } from './conditionDelegates/cartItemQuantity';
+import BrowserCondition from './conditionDelegates/browser';
+import CartAmountCondition from './conditionDelegates/cartAmount';
+import CartItemQuantityCondition from './conditionDelegates/cartItemQuantity';
 import CookieCondition from './conditionDelegates/cookie';
 import CookieOptOutCondition from './conditionDelegates/cookieOptOut';
 import CustomCondition from './conditionDelegates/custom';
 import DataElementCondition from './conditionDelegates/dataElement';
-import DeviceTypeCondition, { reducers as deviceTypeConditionReducers } from './conditionDelegates/deviceType';
-import DomainCondition, { reducers as domainConditionReducers } from './conditionDelegates/domain';
-import HashCondition, { reducers as hashConditionReducers } from './conditionDelegates/hash';
+import DeviceTypeCondition from './conditionDelegates/deviceType';
+import DomainCondition from './conditionDelegates/domain';
+import HashCondition from './conditionDelegates/hash';
 import LandingPageCondition from './conditionDelegates/landingPage';
 import LoggedInCondition from './conditionDelegates/loggedIn';
-import NewReturningCondition, { reducers as newReturningConditionReducers } from './conditionDelegates/newReturning';
-import OperatingSystemCondition, { reducers as operatingSystemConditionReducers } from './conditionDelegates/operatingSystem';
-import PageViewsCondition, { reducers as pageViewsConditionReducers } from './conditionDelegates/pageViews';
-import PathCondition, { reducers as pathConditionReducers } from './conditionDelegates/path';
+import NewReturningCondition from './conditionDelegates/newReturning';
+import OperatingSystemCondition from './conditionDelegates/operatingSystem';
+import PageViewsCondition from './conditionDelegates/pageViews';
+import PathCondition from './conditionDelegates/path';
 import PreviousConverterCondition from './conditionDelegates/previousConverter';
-import ProtocolCondition, { reducers as protocolReducers } from './conditionDelegates/protocol';
+import ProtocolCondition from './conditionDelegates/protocol';
 import RegisteredUserCondition from './conditionDelegates/registeredUser';
-import ScreenResolutionCondition, { reducers as screenResolutionConditionReducers } from './conditionDelegates/screenResolution';
-import SessionsCondition, { reducers as sessionsConditionReducers } from './conditionDelegates/sessions';
+import ScreenResolutionCondition from './conditionDelegates/screenResolution';
+import SessionsCondition from './conditionDelegates/sessions';
 import URLParameterCondition from './conditionDelegates/urlParameter';
-import SubdomainCondition, { reducers as subdomainConditionReducers } from './conditionDelegates/subdomain';
-import TimeOnSiteCondition, { reducers as timeOnSiteConditionReducers } from './conditionDelegates/timeOnSite';
+import SubdomainCondition from './conditionDelegates/subdomain';
+import TimeOnSiteCondition from './conditionDelegates/timeOnSite';
 import TrafficSourceCondition from './conditionDelegates/trafficSource';
-import WindowSizeCondition, { reducers as windowSizeConditionReducers } from './conditionDelegates/windowSize';
+import WindowSizeCondition from './conditionDelegates/windowSize';
 
 // Data Elements
 import CookieDataElement from './dataElementDelegates/cookie';
 import CustomDataElement from './dataElementDelegates/custom';
-import DOMDataElement, { reducers as domDataElementReducers } from './dataElementDelegates/dom';
-import QueryParameterDataElement, { reducers as queryParameterReducers } from './dataElementDelegates/queryParameter';
+import DOMDataElement from './dataElementDelegates/dom';
+import QueryParameterDataElement from './dataElementDelegates/queryParameter';
 import VariableDataElement from './dataElementDelegates/variable';
 
-export default (setBridgeReducers) => {
-  const onEnter = (nextState) => {
-    setBridgeReducers(nextState.routes[0].reducers);
+export default (setFormConfigForCurrentRoute) => {
+  const onEnter = nextState => {
+    setFormConfigForCurrentRoute(nextState.routes[0].component.formConfig);
   };
 
   return (
     <Router history={hashHistory}>
-      <Route path="/events/blur" component={BlurEvent} reducers={blurEventReducers} onEnter={onEnter}/>
-      <Route path="/events/click" component={ClickEvent} reducers={clickEventReducers} onEnter={onEnter}/>
+      <Route path="/events/blur" component={BlurEvent} onEnter={onEnter}/>
+      <Route path="/events/click" component={ClickEvent} onEnter={onEnter}/>
       <Route path="/events/directCall" component={DirectCallEvent} onEnter={onEnter}/>
       <Route path="/events/domReady" component={DomReadyEvent} onEnter={onEnter}/>
-      <Route path="/events/elementExists" component={ElementExistsEvent} reducers={elementExistsEventReducers} onEnter={onEnter}/>
-      <Route path="/events/ended" component={EndedEvent} reducers={endedEventReducers} onEnter={onEnter}/>
-      <Route path="/events/entersViewport" component={EntersViewportEvent} reducers={entersViewportEventReducers} onEnter={onEnter}/>
-      <Route path="/events/focus" component={FocusEvent} reducers={focusEventReducers} onEnter={onEnter}/>
-      <Route path="/events/hover" component={HoverEvent} reducers={hoverEventReducers} onEnter={onEnter}/>
-      <Route path="/events/keyPress" component={KeyPressEvent} reducers={keyPressEventReducers} onEnter={onEnter}/>
-      <Route path="/events/loadedData" component={LoadedDataEvent} reducers={loadedDataEventReducers} onEnter={onEnter}/>
+      <Route path="/events/elementExists" component={ElementExistsEvent} onEnter={onEnter}/>
+      <Route path="/events/ended" component={EndedEvent} onEnter={onEnter}/>
+      <Route path="/events/entersViewport" component={EntersViewportEvent} onEnter={onEnter}/>
+      <Route path="/events/focus" component={FocusEvent} onEnter={onEnter}/>
+      <Route path="/events/hover" component={HoverEvent} onEnter={onEnter}/>
+      <Route path="/events/keyPress" component={KeyPressEvent} onEnter={onEnter}/>
+      <Route path="/events/loadedData" component={LoadedDataEvent} onEnter={onEnter}/>
       <Route path="/events/locationChange" component={LocationChangeEvent} onEnter={onEnter}/>
       <Route path="/events/onLoad" component={OnLoadEvent} onEnter={onEnter}/>
       <Route path="/events/orientationChange" component={OrientationChangeEvent} onEnter={onEnter}/>
       <Route path="/events/pageBottom" component={PageBottomEvent} onEnter={onEnter}/>
       <Route path="/events/pageTop" component={PageTopEvent} onEnter={onEnter}/>
-      <Route path="/events/pause" component={PauseEvent} reducers={pauseEventReducers} onEnter={onEnter}/>
-      <Route path="/events/play" component={PlayEvent} reducers={playEventReducers} onEnter={onEnter}/>
-      <Route path="/events/stalled" component={StalledEvent} reducers={stalledEventReducers} onEnter={onEnter}/>
-      <Route path="/events/submit" component={SubmitEvent} reducers={submitEventReducers} onEnter={onEnter}/>
+      <Route path="/events/pause" component={PauseEvent} onEnter={onEnter}/>
+      <Route path="/events/play" component={PlayEvent} onEnter={onEnter}/>
+      <Route path="/events/stalled" component={StalledEvent} onEnter={onEnter}/>
+      <Route path="/events/submit" component={SubmitEvent} onEnter={onEnter}/>
       <Route path="/events/tabBlur" component={TabBlurEvent} onEnter={onEnter}/>
       <Route path="/events/tabFocus" component={TabFocusEvent} onEnter={onEnter}/>
-      <Route path="/events/timePlayed" component={TimePlayedEvent} reducers={timePlayedEventReducers} onEnter={onEnter}/>
-      <Route path="/events/volumeChange" component={VolumeChangeEvent} reducers={volumeChangeEventReducers} onEnter={onEnter}/>
+      <Route path="/events/timePlayed" component={TimePlayedEvent} onEnter={onEnter}/>
+      <Route path="/events/volumeChange" component={VolumeChangeEvent} onEnter={onEnter}/>
       <Route path="/events/zoomChange" component={ZoomChangeEvent} onEnter={onEnter}/>
 
-      <Route path="/conditions/browser" component={BrowserCondition} reducers={browserConditionReducers} onEnter={onEnter}/>
-      <Route path="/conditions/cartAmount" component={CartAmountCondition} reducers={cartAmountConditionReducers} onEnter={onEnter}/>
-      <Route path="/conditions/cartItemQuantity" component={CartItemQuantityCondition} reducers={cartItemQuantityConditionReducers} onEnter={onEnter}/>
+      <Route path="/conditions/browser" component={BrowserCondition} onEnter={onEnter}/>
+      <Route path="/conditions/cartAmount" component={CartAmountCondition} onEnter={onEnter}/>
+      <Route path="/conditions/cartItemQuantity" component={CartItemQuantityCondition} onEnter={onEnter}/>
       <Route path="/conditions/cookie" component={CookieCondition} onEnter={onEnter}/>
       <Route path="/conditions/cookieOptOut" component={CookieOptOutCondition} onEnter={onEnter}/>
       <Route path="/conditions/custom" component={CustomCondition} onEnter={onEnter}/>
       <Route path="/conditions/dataElement" component={DataElementCondition} onEnter={onEnter}/>
-      <Route path="/conditions/deviceType" component={DeviceTypeCondition} reducers={deviceTypeConditionReducers} onEnter={onEnter}/>
-      <Route path="/conditions/domain" component={DomainCondition} reducers={domainConditionReducers} onEnter={onEnter}/>
-      <Route path="/conditions/hash" component={HashCondition} reducers={hashConditionReducers} onEnter={onEnter}/>
+      <Route path="/conditions/deviceType" component={DeviceTypeCondition} onEnter={onEnter}/>
+      <Route path="/conditions/domain" component={DomainCondition} onEnter={onEnter}/>
+      <Route path="/conditions/hash" component={HashCondition} onEnter={onEnter}/>
       <Route path="/conditions/landingPage" component={LandingPageCondition} onEnter={onEnter}/>
       <Route path="/conditions/loggedIn" component={LoggedInCondition} onEnter={onEnter}/>
-      <Route path="/conditions/newReturning" component={NewReturningCondition} reducers={newReturningConditionReducers} onEnter={onEnter}/>
-      <Route path="/conditions/operatingSystem" component={OperatingSystemCondition} reducers={operatingSystemConditionReducers} onEnter={onEnter}/>
-      <Route path="/conditions/pageViews" component={PageViewsCondition} reducers={pageViewsConditionReducers} onEnter={onEnter}/>
-      <Route path="/conditions/path" component={PathCondition} reducers={pathConditionReducers} onEnter={onEnter}/>
+      <Route path="/conditions/newReturning" component={NewReturningCondition} onEnter={onEnter}/>
+      <Route path="/conditions/operatingSystem" component={OperatingSystemCondition} onEnter={onEnter}/>
+      <Route path="/conditions/pageViews" component={PageViewsCondition} onEnter={onEnter}/>
+      <Route path="/conditions/path" component={PathCondition} onEnter={onEnter}/>
       <Route path="/conditions/previousConverter" component={PreviousConverterCondition} onEnter={onEnter}/>
-      <Route path="/conditions/protocol" component={ProtocolCondition} reducers={protocolReducers} onEnter={onEnter}/>
+      <Route path="/conditions/protocol" component={ProtocolCondition} onEnter={onEnter}/>
       <Route path="/conditions/registeredUser" component={RegisteredUserCondition} onEnter={onEnter}/>
-      <Route path="/conditions/screenResolution" component={ScreenResolutionCondition} reducers={screenResolutionConditionReducers} onEnter={onEnter}/>
-      <Route path="/conditions/sessions" component={SessionsCondition} reducers={sessionsConditionReducers} onEnter={onEnter}/>
+      <Route path="/conditions/screenResolution" component={ScreenResolutionCondition} onEnter={onEnter}/>
+      <Route path="/conditions/sessions" component={SessionsCondition} onEnter={onEnter}/>
       <Route path="/conditions/urlParameter" component={URLParameterCondition} onEnter={onEnter}/>
-      <Route path="/conditions/subdomain" component={SubdomainCondition} reducers={subdomainConditionReducers} onEnter={onEnter}/>
-      <Route path="/conditions/timeOnSite" component={TimeOnSiteCondition} reducers={timeOnSiteConditionReducers} onEnter={onEnter}/>
+      <Route path="/conditions/subdomain" component={SubdomainCondition} onEnter={onEnter}/>
+      <Route path="/conditions/timeOnSite" component={TimeOnSiteCondition} onEnter={onEnter}/>
       <Route path="/conditions/trafficSource" component={TrafficSourceCondition} onEnter={onEnter}/>
-      <Route path="/conditions/windowSize" component={WindowSizeCondition} reducers={windowSizeConditionReducers} onEnter={onEnter}/>
+      <Route path="/conditions/windowSize" component={WindowSizeCondition} onEnter={onEnter}/>
 
       <Route path="/dataElements/cookie" component={CookieDataElement} onEnter={onEnter}/>
       <Route path="/dataElements/custom" component={CustomDataElement} onEnter={onEnter}/>
-      <Route path="/dataElements/dom" component={DOMDataElement} reducers={domDataElementReducers} onEnter={onEnter}/>
-      <Route path="/dataElements/queryParameter" component={QueryParameterDataElement} reducers={queryParameterReducers} onEnter={onEnter}/>
+      <Route path="/dataElements/dom" component={DOMDataElement} onEnter={onEnter}/>
+      <Route path="/dataElements/queryParameter" component={QueryParameterDataElement} onEnter={onEnter}/>
       <Route path="/dataElements/variable" component={VariableDataElement} onEnter={onEnter}/>
     </Router>
   );

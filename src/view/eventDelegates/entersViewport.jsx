@@ -1,13 +1,7 @@
 import React from 'react';
 import Coral from '../reduxFormCoralUI';
-import SpecificElements, {
-  fields as specificElementsFields,
-  reducers as specificElementsReducers
-} from './components/specificElements';
-import DelayType, {
-  fields as delayTypeFields,
-  reducers as delayTypeReducers
-} from './components/delayType';
+import SpecificElements, { formConfig as specificElementsFormConfig } from './components/specificElements';
+import DelayType, { formConfig as delayTypeFormConfig } from './components/delayType';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import reduceReducers from 'reduce-reducers';
 
@@ -22,28 +16,21 @@ class EntersViewport extends React.Component {
   }
 }
 
-const fields = specificElementsFields.concat(delayTypeFields);
-
-const validateReducer = reduceReducers(
-  specificElementsReducers.validate,
-  delayTypeReducers.validate
-);
-
-const validate = values => validateReducer({}, values);
-
-export default extensionViewReduxForm({
-  fields,
-  validate
-})(EntersViewport);
-
-export const reducers = {
+const formConfig = {
+  fields: specificElementsFormConfig.fields.concat(delayTypeFormConfig.fields),
+  validate: reduceReducers(
+    specificElementsFormConfig.validate,
+    delayTypeFormConfig.validate
+  ),
   configToFormValues: reduceReducers(
-    specificElementsReducers.configToFormValues,
-    delayTypeReducers.configToFormValues
+    specificElementsFormConfig.configToFormValues,
+    delayTypeFormConfig.configToFormValues
   ),
   formValuesToConfig: reduceReducers(
-    specificElementsReducers.formValuesToConfig,
-    delayTypeReducers.formValuesToConfig
+    specificElementsFormConfig.formValuesToConfig,
+    delayTypeFormConfig.formValuesToConfig
   )
 };
+
+export default extensionViewReduxForm(formConfig)(EntersViewport);
 

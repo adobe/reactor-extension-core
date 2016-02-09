@@ -6,15 +6,16 @@ import reducer from '../../actions/reducer';
 import { createStore } from 'redux';
 import bridgeAdapter from '../../bridgeAdapter';
 
-export default (Component, reducers) => {
+export default (FormComponent) => {
   const store = createStore(reducer, {});
   const extensionBridge = {};
-  const setReducersForCurrentRoute = bridgeAdapter(extensionBridge, store);
-  setReducersForCurrentRoute(reducers);
+  const setFormConfigForCurrentRoute = bridgeAdapter(extensionBridge, store);
+
+  setFormConfigForCurrentRoute(FormComponent.formConfig);
 
   const providerInstance = TestUtils.renderIntoDocument(
     <Provider store={store}>
-      <Component />
+      <FormComponent />
     </Provider>
   );
 

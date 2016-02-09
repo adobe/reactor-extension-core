@@ -4,7 +4,7 @@ import extensionViewReduxForm from '../extensionViewReduxForm';
 import RegexToggle from '../components/regexToggle';
 import ValidationWrapper from '../components/validationWrapper';
 
-export class TrafficSource extends React.Component {
+class TrafficSource extends React.Component {
   render() {
     const { source, sourceIsRegex } = this.props.fields;
 
@@ -26,22 +26,22 @@ export class TrafficSource extends React.Component {
   }
 }
 
-const fields = [
-  'source',
-  'sourceIsRegex'
-];
+const formConfig = {
+  fields: [
+    'source',
+    'sourceIsRegex'
+  ],
+  validate(errors, values) {
+    errors = {
+      ...errors
+    };
 
-const validate = values => {
-  const errors = {};
+    if (!values.source) {
+      errors.source = 'Please specify a traffic source.';
+    }
 
-  if (!values.source) {
-    errors.source = 'Please specify a traffic source.';
+    return errors;
   }
-
-  return errors;
 };
 
-export default extensionViewReduxForm({
-  fields,
-  validate
-})(TrafficSource);
+export default extensionViewReduxForm(formConfig)(TrafficSource);

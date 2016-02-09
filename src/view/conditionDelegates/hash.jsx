@@ -6,7 +6,7 @@ import ValidationWrapper from '../components/validationWrapper';
 import createID from '../utils/createID';
 import MultipleItemEditor from './components/multipleItemEditor';
 
-export class Hash extends React.Component {
+class Hash extends React.Component {
   addRow = () => this.props.fields.hashes.addField({ id: createID() });
   removeRow = index => this.props.fields.hashes.removeField(index);
   getKey = hash => hash.id.value;
@@ -44,36 +44,12 @@ export class Hash extends React.Component {
   }
 }
 
-const fields = [
-  'hashes[].id',
-  'hashes[].value',
-  'hashes[].valueIsRegex'
-];
-
-const validate = values => {
-  const errors = {};
-
-  const hashesErrors = values.hashes.map(hash => {
-    const result = {};
-
-    if (!hash.value) {
-      result.value = 'Please specify a hash.';
-    }
-
-    return result;
-  });
-
-  errors.hashes = hashesErrors;
-
-  return errors;
-};
-
-export default extensionViewReduxForm({
-  fields,
-  validate
-})(Hash);
-
-export const reducers = {
+const formConfig = {
+  fields: [
+    'hashes[].id',
+    'hashes[].value',
+    'hashes[].valueIsRegex'
+  ],
   configToFormValues(values, options) {
     values = {
       ...values
@@ -110,5 +86,26 @@ export const reducers = {
     });
 
     return config;
+  },
+  validate(errors, values) {
+    errors = {
+      ...errors
+    };
+
+    const hashesErrors = values.hashes.map(hash => {
+      const result = {};
+
+      if (!hash.value) {
+        result.value = 'Please specify a hash.';
+      }
+
+      return result;
+    });
+
+    errors.hashes = hashesErrors;
+
+    return errors;
   }
 };
+
+export default extensionViewReduxForm(formConfig)(Hash);

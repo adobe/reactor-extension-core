@@ -1,13 +1,8 @@
 import React from 'react';
 import Coral from '../reduxFormCoralUI';
 import ValidationWrapper from '../components/validationWrapper';
-import ElementFilter, {
-  fields as elementFilterFields,
-  reducers as elementFilterReducers
-} from './components/elementFilter';
-import AdvancedEventOptions, {
-  fields as advancedEventOptionsFields
-} from './components/advancedEventOptions';
+import ElementFilter, { formConfig as elementFilterFormConfig } from './components/elementFilter';
+import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import reduceReducers from 'reduce-reducers';
 
@@ -54,26 +49,13 @@ class TimePlayed extends React.Component {
   }
 }
 
-const fields = ['amount', 'unit'].concat(elementFilterFields, advancedEventOptionsFields);
-
-const validate = values => {
-  const errors = elementFilterReducers.validate({}, values);
-
-  if (isNaN(values.amount) || values.amount <= 0) {
-    errors.amount = 'Please specify a positive number';
-  }
-
-  return errors;
-};
-
-export default extensionViewReduxForm({
-  fields,
-  validate
-})(TimePlayed);
-
-export const reducers = {
+const formConfig = {
+  fields: [
+    'amount',
+    'unit'
+  ].concat(elementFilterFormConfig.fields, advancedEventOptionsFormConfig.fields),
   configToFormValues: reduceReducers(
-    elementFilterReducers.configToFormValues,
+    elementFilterFormConfig.configToFormValues,
     (values, options) => {
       return {
         ...values,
@@ -82,12 +64,29 @@ export const reducers = {
     }
   ),
   formValuesToConfig: reduceReducers(
-    elementFilterReducers.formValuesToConfig,
+    elementFilterFormConfig.formValuesToConfig,
     (config, values) => {
       return {
         ...config,
         amount: Number(values.amount)
       };
     }
+  ),
+  validate: reduceReducers(
+    elementFilterFormConfig.validate,
+    (errors, values) => {
+      errors = {
+        ...errors
+      };
+
+      if (isNaN(values.amount) || values.amount <= 0) {
+        errors.amount = 'Please specify a positive number';
+      }
+
+      return errors;
+    }
   )
 };
+
+
+export default extensionViewReduxForm(formConfig)(TimePlayed);

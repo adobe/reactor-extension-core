@@ -16,24 +16,21 @@ const browserOptions = [
   'OmniWeb'
 ];
 
-export class Browser extends React.Component {
+class Browser extends React.Component {
   render() {
     const { browsers } = this.props.fields;
     return <CheckboxList options={browserOptions} {...browsers}/>;
   }
 }
 
-const fields = ['browsers'];
-
-export default extensionViewReduxForm({
-  fields
-})(Browser);
-
-export const reducers = {
+const formConfig = {
+  fields: ['browsers'],
   formValuesToConfig(config, values) {
     return {
       browsers: values.browsers || [] // An array is required.
     };
   }
 };
+
+export default extensionViewReduxForm(formConfig)(Browser);
 

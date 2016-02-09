@@ -3,7 +3,7 @@ import Coral from '../reduxFormCoralUI';
 import ValidationWrapper from '../components/validationWrapper';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
-export class Cookie extends React.Component {
+class Cookie extends React.Component {
   render() {
     const name = this.props.fields.name;
 
@@ -18,19 +18,19 @@ export class Cookie extends React.Component {
   }
 }
 
-const fields = ['name'];
+const formConfig = {
+  fields: ['name'],
+  validate(errors, values) {
+    errors = {
+      ...errors
+    };
 
-const validate = values => {
-  const errors = {};
+    if (!values.name) {
+      errors.name = 'Please specify a cookie name.';
+    }
 
-  if (!values.name) {
-    errors.name = 'Please specify a cookie name.';
+    return errors;
   }
-
-  return errors;
 };
 
-export default extensionViewReduxForm({
-  fields,
-  validate
-})(Cookie);
+export default extensionViewReduxForm(formConfig)(Cookie);

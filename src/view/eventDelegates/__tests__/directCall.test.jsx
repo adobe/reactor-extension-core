@@ -5,6 +5,7 @@ import DirectCall from '../directCall';
 import ValidationWrapper from '../../components/validationWrapper';
 
 const { instance, extensionBridge } = setUpConnectedForm(DirectCall);
+
 const getParts = () => {
   return {
     nameField: TestUtils.findRenderedComponentWithType(instance, Coral.Textfield),

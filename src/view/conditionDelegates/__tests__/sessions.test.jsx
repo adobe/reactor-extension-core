@@ -1,11 +1,11 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../reduxFormCoralUI';
 import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
-import Sessions, { reducers } from '../sessions';
+import Sessions from '../sessions';
 import ValidationWrapper from '../../components/validationWrapper';
 import ComparisonOperatorField from '../components/comparisonOperatorField';
 
-const { instance, extensionBridge } = setUpConnectedForm(Sessions, reducers);
+const { instance, extensionBridge } = setUpConnectedForm(Sessions);
 const getParts = () => {
   return {
     operatorField: TestUtils.findRenderedComponentWithType(instance, ComparisonOperatorField),

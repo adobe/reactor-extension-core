@@ -1,10 +1,9 @@
 import TestUtils from 'react-addons-test-utils';
 import Coral from '../../reduxFormCoralUI';
-import TimePlayedProviderComponent, { TimePlayed, reducers as timePlayedEventReducers } from '../timePlayed';
+import TimePlayed from '../timePlayed';
 import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 
-const { instance, extensionBridge } =
-  setUpConnectedForm(TimePlayedProviderComponent, timePlayedEventReducers);
+const { instance, extensionBridge } = setUpConnectedForm(TimePlayed);
 
 describe('time played view', () => {
   it('sets form values from config', () => {

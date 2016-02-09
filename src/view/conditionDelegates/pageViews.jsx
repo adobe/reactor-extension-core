@@ -4,7 +4,7 @@ import extensionViewReduxForm from '../extensionViewReduxForm';
 import ValidationWrapper from '../components/validationWrapper';
 import ComparisonOperatorField from './components/comparisonOperatorField';
 
-export class PageViews extends React.Component {
+class PageViews extends React.Component {
   render() {
     const { operator, count, duration } = this.props.fields;
 
@@ -41,28 +41,12 @@ export class PageViews extends React.Component {
   }
 }
 
-const fields = [
-  'operator',
-  'count',
-  'duration'
-];
-
-const validate = values => {
-  const errors = {};
-
-  if (!values.count || isNaN(values.count)) {
-    errors.count = 'Please specify a number of page views.';
-  }
-
-  return errors;
-};
-
-export default extensionViewReduxForm({
-  fields,
-  validate
-})(PageViews);
-
-export const reducers = {
+const formConfig = {
+  fields: [
+    'operator',
+    'count',
+    'duration'
+  ],
   configToFormValues(values, options) {
     return {
       ...values,
@@ -75,5 +59,18 @@ export const reducers = {
       ...config,
       count: Number(values.count)
     };
+  },
+  validate(errors, values) {
+    errors = {
+      ...errors
+    };
+
+    if (!values.count || isNaN(values.count)) {
+      errors.count = 'Please specify a number of page views.';
+    }
+
+    return errors;
   }
 };
+
+export default extensionViewReduxForm(formConfig)(PageViews);

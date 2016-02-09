@@ -15,20 +15,15 @@ const operatingSystemOptions = [
   'Maemo'
 ];
 
-export class OperatingSystem extends React.Component {
+class OperatingSystem extends React.Component {
   render() {
     const { operatingSystems } = this.props.fields;
     return <CheckboxList options={operatingSystemOptions} {...operatingSystems}/>;
   }
 }
 
-const fields = ['operatingSystems'];
-
-export default extensionViewReduxForm({
-  fields
-})(OperatingSystem);
-
-export const reducers = {
+const formConfig = {
+  fields: ['operatingSystems'],
   formValuesToConfig(config, values) {
     return {
       operatingSystems: values.operatingSystems || [] // An array is required.
@@ -36,3 +31,4 @@ export const reducers = {
   }
 };
 
+export default extensionViewReduxForm(formConfig)(OperatingSystem);
