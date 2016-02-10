@@ -96,5 +96,18 @@ describe('timer', function() {
       expect(callback).toHaveBeenCalledWith(2000);
       expect(callback.calls.count()).toEqual(2);
     });
+
+    it('no marker will be called twice', function() {
+      var callback = jasmine.createSpy('onTimePassedCallback');
+      var timer = new Timer();
+      timer.on('markerPassed', callback);
+      timer.addMarker(5000);
+      timer.addMarker(5000);
+      timer.start();
+
+      jasmine.clock().tick(6000);
+
+      expect(callback.calls.count()).toEqual(1);
+    });
   });
 });

@@ -1,6 +1,10 @@
 'use strict';
-var CHECK_INTERVAL_MS = 1000;
 var EventEmitter = require('EventEmitter');
+
+var CHECK_INTERVAL_MS = 1000;
+var onlyUnique = function (value, index, self) {
+  return self.indexOf(value) === index;
+};
 
 /**
  * Track the time passed since an initial moment in time.
@@ -39,6 +43,7 @@ Timer.prototype = {
 
   addMarker: function(marker) {
     this._markers.push(marker);
+    this._markers = this._markers.filter(onlyUnique);
   },
 
   _setIntervalUpdater: function() {
