@@ -1,22 +1,20 @@
 'use strict';
-var CHECK_INTERVAL = 1000;
+var CHECK_INTERVAL_MS = 1000;
+var EventEmitter = require('EventEmitter');
 
 /**
  * Track the time passed since an initial moment in time.
  *
- * @param {Array} markers A list of time markers.
- * @param {Function} callback A callback that will be triggered whenever the timer surpasses a
- * time marker.
- * @param {Number} checkInterval Then interval when the class will update it's counted time.
+ * @param {Number} [checkInterval] The interval (in milliseconds) at which the class will update
+ * it's internal counter.
  * @constructor
  */
-var Timer = function(markers, callback, checkInterval) {
+var Timer = function(checkInterval) {
   this._total = 0;
-  this._checkInterval = checkInterval || CHECK_INTERVAL;
+  this._checkInterval = checkInterval || CHECK_INTERVAL_MS;
   this._intervalId = null;
 
-  this._markers = markers || [];
-  this._onTimePassedCallback = callback || null;
+  this._markers = [];
 };
 
 Timer.prototype = {
@@ -71,8 +69,8 @@ Timer.prototype = {
     var timePassed =  this.getTime();
 
     for (var i = 0, l = this._markers.length; i < l; i++) {
-      if (timePassed >= this._markers[i] * 1000) {
-        this._onTimePassedCallback(this._markers[i]);
+      if (timePassed >= this._markers[i]) {
+        this.trigger('markerPassed', this._markers[i]);
       } else {
         newMarkers.push(this._markers[i]);
       }
@@ -81,5 +79,6 @@ Timer.prototype = {
     this._markers = newMarkers;
   }
 };
+EventEmitter.mixin(Timer);
 
 module.exports = Timer;

@@ -1,19 +1,12 @@
 'use strict';
-
-var eventDelegateInjector = require('inject!../timeSpentOnPage');
-var Timer = require('../../resources/timer');
 var visibilityApi = require('../../resources/visibilityApi');
 var visibilityApiInstance = visibilityApi();
 var visibilityChangeListener;
 
-var mockDocument = {
-  location: 'somelocation',
-  addEventListener: function(event, listener) {
-    if (event && event === visibilityApiInstance.visibilityChangeEventType) {
-      visibilityChangeListener = listener;
-    }
-  }
-};
+var TimerInjector = require('inject!../../resources/timer');
+var Timer = TimerInjector({
+  'EventEmitter': require('@reactor/turbine/src/utils/communication/EventEmitter')
+});
 
 var publicRequire = require('../../__tests__/helpers/stubPublicRequire')({
   resourceStubs: {
@@ -22,6 +15,15 @@ var publicRequire = require('../../__tests__/helpers/stubPublicRequire')({
   }
 });
 
+var mockDocument = {
+  addEventListener: function(event, listener) {
+    if (event && event === visibilityApiInstance.visibilityChangeEventType) {
+      visibilityChangeListener = listener;
+    }
+  }
+};
+
+var eventDelegateInjector = require('inject!../timeSpentOnPage');
 var delegate = eventDelegateInjector({
   resourceProvider: publicRequire('resourceProvider'),
   once: publicRequire('once'),
@@ -33,7 +35,7 @@ describe('time spent on page event type', function() {
   beforeEach(function() {
     jasmine.clock().install();
 
-    var baseTime = new Date(2013, 9, 23);
+    var baseTime = new Date();
     jasmine.clock().mockDate(baseTime);
   });
 
@@ -52,7 +54,7 @@ describe('time spent on page event type', function() {
     expect(call.args[0].target).toBe(mockDocument);
   });
 
-  it('stops the timer on tab blur', function() {;
+  it('stops the timer on tab blur', function() {
     spyOn(Timer.prototype, 'pause');
 
     delegate({});

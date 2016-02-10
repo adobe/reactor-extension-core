@@ -20,14 +20,15 @@ var getPseudoEvent = function(target, timeOnPage) {
   };
 };
 
-var onTimeSpentCallback = function(timeOnPage) {
+var onMarkerPassed = function(timeOnPage) {
   triggers[timeOnPage].forEach(function(trigger) {
-    trigger(getPseudoEvent(document, timeOnPage));
+    trigger(getPseudoEvent(document, timeOnPage / 1000));
   });
 };
 
 var setupTimer = once(function() {
-  var timer = new Timer([], onTimeSpentCallback);
+  var timer = new Timer();
+  timer.on('markerPassed', onMarkerPassed);
 
   document.addEventListener(visibilityChangeEventType, function() {
     if (document[hiddenProperty]) {
@@ -51,11 +52,13 @@ var setupTimer = once(function() {
  */
 module.exports = function(config, trigger) {
   var timer = setupTimer();
-  timer.addMarker(config.timeOnPage);
+  var timeOnPageMilliseconds = config.timeOnPage * 1000;
 
-  if (!triggers[config.timeOnPage]) {
-    triggers[config.timeOnPage] = [];
+  timer.addMarker(timeOnPageMilliseconds);
+
+  if (!triggers[timeOnPageMilliseconds]) {
+    triggers[timeOnPageMilliseconds] = [];
   }
 
-  triggers[config.timeOnPage].push(trigger);
+  triggers[timeOnPageMilliseconds].push(trigger);
 };

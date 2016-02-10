@@ -1,12 +1,17 @@
 'use strict';
 
-var Timer = require('../timer');
+var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
+var TimerInjector = require('inject!../timer');
+
+var Timer = TimerInjector({
+  'EventEmitter': publicRequire('EventEmitter')
+});
 
 describe('timer', function() {
   beforeEach(function() {
     jasmine.clock().install();
 
-    var baseTime = new Date(2013, 9, 23);
+    var baseTime = new Date();
     jasmine.clock().mockDate(baseTime);
   });
 
@@ -58,39 +63,38 @@ describe('timer', function() {
   });
 
   describe('when markers are provided', function() {
-    it('the callback is called', function() {
+    it('an markerPassed event is emitted', function() {
       var callback = jasmine.createSpy('onTimePassedCallback');
-      var timer = new Timer([5], callback);
+      var timer = new Timer();
+      timer.on('markerPassed', callback);
+      timer.addMarker(5000);
       timer.start();
+
       jasmine.clock().tick(6000);
 
-      expect(callback).toHaveBeenCalledWith(5);
+      expect(callback).toHaveBeenCalledWith(5000);
     });
 
-    it('the callback is called once per each marker', function() {
+    it('the markerPassed event is emitted once per each marker', function() {
       var callback = jasmine.createSpy('onTimePassedCallback');
-      var timer = new Timer([1, 2], callback);
+      var timer = new Timer();
+      timer.on('markerPassed', callback);
+      timer.addMarker(1000);
+      timer.addMarker(2000);
       timer.start();
+
       jasmine.clock().tick(1000);
       jasmine.clock().tick(1000);
 
-      expect(callback).toHaveBeenCalledWith(1);
-      expect(callback).toHaveBeenCalledWith(2);
+      // The emitters listeners are called using `setTimeout(listener, 0);`. We need this extra
+      // `tick` call to ensure the listener is called the second time (otherwise, the listener will
+      // be called after the test is completed). The `1000` value of the tick will also insure that
+      // no extra calls will be made.
+      jasmine.clock().tick(1000);
+
+      expect(callback).toHaveBeenCalledWith(1000);
+      expect(callback).toHaveBeenCalledWith(2000);
       expect(callback.calls.count()).toEqual(2);
-    });
-  });
-
-  describe('when a marker is added after timer was initialized', function() {
-    it('the callback is called', function() {
-      var callback = jasmine.createSpy('onTimePassedCallback');
-      var timer = new Timer([], callback);
-      timer.start();
-      jasmine.clock().tick(10);
-      timer.addMarker(2);
-
-      jasmine.clock().tick(3000);
-
-      expect(callback).toHaveBeenCalledWith(2);
     });
   });
 });
