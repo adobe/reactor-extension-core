@@ -3,11 +3,11 @@ import Coral from '../reduxFormCoralUI';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import RegexToggle from '../components/regexToggle';
 import ValidationWrapper from '../components/validationWrapper';
-import createID from '../utils/createID';
+import createId from '../utils/createId';
 import MultipleItemEditor from './components/multipleItemEditor';
 
 class Path extends React.Component {
-  addRow = () => this.props.fields.paths.addField({ id: createID() });
+  addRow = () => this.props.fields.paths.addField({ id: createId() });
   removeRow = index => this.props.fields.paths.removeField(index);
   getKey = path => path.id.value;
 
@@ -66,7 +66,7 @@ const formConfig = {
     values.paths = values.paths.map(path => {
       return {
         ...path,
-        id: createID()
+        id: createId()
       };
     });
 

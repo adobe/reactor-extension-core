@@ -3,11 +3,11 @@ import Coral from '../reduxFormCoralUI';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import RegexToggle from '../components/regexToggle';
 import ValidationWrapper from '../components/validationWrapper';
-import createID from '../utils/createID';
+import createId from '../utils/createId';
 import MultipleItemEditor from './components/multipleItemEditor';
 
 class Hash extends React.Component {
-  addRow = () => this.props.fields.hashes.addField({ id: createID() });
+  addRow = () => this.props.fields.hashes.addField({ id: createId() });
   removeRow = index => this.props.fields.hashes.removeField(index);
   getKey = hash => hash.id.value;
 
@@ -66,7 +66,7 @@ const formConfig = {
     values.hashes = values.hashes.map(hash => {
       return {
         ...hash,
-        id: createID()
+        id: createId()
       };
     });
 

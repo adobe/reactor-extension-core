@@ -3,11 +3,11 @@ import Coral from '../reduxFormCoralUI';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import RegexToggle from '../components/regexToggle';
 import ValidationWrapper from '../components/validationWrapper';
-import createID from '../utils/createID';
+import createId from '../utils/createId';
 import MultipleItemEditor from './components/multipleItemEditor';
 
 class Subdomain extends React.Component {
-  addRow = () => this.props.fields.subdomains.addField({ id: createID() });
+  addRow = () => this.props.fields.subdomains.addField({ id: createId() });
   removeRow = index => this.props.fields.subdomains.removeField(index);
   getKey = subdomain => subdomain.id.value;
 
@@ -68,7 +68,7 @@ const formConfig = {
     values.subdomains = values.subdomains.map(subdomain => {
       return {
         ...subdomain,
-        id: createID()
+        id: createId()
       };
     });
 

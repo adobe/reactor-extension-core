@@ -1,12 +1,12 @@
 import React from 'react';
 import Coral from '../../reduxFormCoralUI';
 import ElementPropertyEditor from './elementPropertyEditor';
-import createID from '../../utils/createID';
+import createId from '../../utils/createId';
 
 export default class ElementPropertiesEditor extends React.Component {
   add = () => {
     this.props.fields.elementProperties.addField({
-      id: createID(),
+      id: createId(),
       name: '',
       value: ''
     });
@@ -57,7 +57,7 @@ export const formConfig = {
     }
 
     // ID used as a key when rendering each item.
-    elementProperties.forEach(elementProperty => elementProperty.id = createID());
+    elementProperties.forEach(elementProperty => elementProperty.id = createId());
 
     return {
       ...values,
