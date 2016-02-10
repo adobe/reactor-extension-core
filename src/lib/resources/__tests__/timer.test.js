@@ -109,5 +109,24 @@ describe('timer', function() {
 
       expect(callback.calls.count()).toEqual(1);
     });
+
+    it('the markerPassed event will be emitted in ascending order', function() {
+      var callback = jasmine.createSpy('onTimePassedCallback');
+      var timer = new Timer();
+      timer.on('markerPassed', callback);
+      timer.addMarker(20);
+      timer.addMarker(10);
+      timer.start();
+
+      jasmine.clock().tick(1000);
+
+      // The emitters listeners are called using `setTimeout(listener, 0);`. We need this extra
+      // `tick` call to ensure the listener is called the second time (otherwise, the listener will
+      // be called after the test is completed).
+      jasmine.clock().tick(0);
+
+      var call = callback.calls.mostRecent();
+      expect(call.args[0]).toBe(20);
+    });
   });
 });

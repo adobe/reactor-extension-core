@@ -44,6 +44,7 @@ Timer.prototype = {
   addMarker: function(marker) {
     this._markers.push(marker);
     this._markers = this._markers.filter(onlyUnique);
+    this._markers.sort();
   },
 
   _setIntervalUpdater: function() {
