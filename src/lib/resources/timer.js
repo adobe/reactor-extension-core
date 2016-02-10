@@ -71,18 +71,16 @@ Timer.prototype = {
   },
 
   _checkMarkersCompleted: function() {
-    var newMarkers = [];
     var timePassed =  this.getTime();
 
-    for (var i = 0, l = this._markers.length; i < l; i++) {
-      if (timePassed >= this._markers[i]) {
-        this.trigger('markerPassed', this._markers[i]);
-      } else {
-        newMarkers.push(this._markers[i]);
+    for (var i = 0; i < this._markers.length; i++) {
+      var marker = this._markers[i];
+      if (timePassed >= marker) {
+        this.trigger('markerPassed', marker);
+        this._markers.splice(i, 1);
+        i -= 1;
       }
     }
-
-    this._markers = newMarkers;
   }
 };
 EventEmitter.mixin(Timer);
