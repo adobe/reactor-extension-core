@@ -9,7 +9,7 @@ var onlyUnique = function (value, index, self) {
 /**
  * Track the time passed since an initial moment in time.
  *
- * @param {Number} [checkInterval] The interval (in milliseconds) at which the class will update
+ * @param {number} [checkInterval] The interval (in milliseconds) at which the class will update
  * it's internal counter.
  * @constructor
  */
@@ -41,6 +41,12 @@ Timer.prototype = {
     return this._total;
   },
 
+  /**
+   * Add new marker to be tracked by the timer. An event (`markedPassed`) will be triggered when
+   * a marker is passed.
+   *
+   * @param {number} marker The marker number to be tracked (in milliseconds).
+   */
   addMarker: function(marker) {
     this._markers.push(marker);
     this._markers = this._markers.filter(onlyUnique);
