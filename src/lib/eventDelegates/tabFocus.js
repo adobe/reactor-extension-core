@@ -3,8 +3,8 @@
 var once = require('once');
 var document = require('document');
 var visibilityApi = require('resourceProvider').get('dtm', 'visibilityApi')();
-var hidden = visibilityApi.hidden;
-var visibilityChange = visibilityApi.visibilityChange;
+var hiddenProperty = visibilityApi.hiddenProperty;
+var visibilityChangeEventType = visibilityApi.visibilityChangeEventType;
 
 /**
  * All trigger methods registered for this event type.
@@ -13,8 +13,8 @@ var visibilityChange = visibilityApi.visibilityChange;
 var triggers = [];
 
 var watchForTabFocus = once(function() {
-  document.addEventListener(visibilityChange, function() {
-    if (!document[hidden]) {
+  document.addEventListener(visibilityChangeEventType, function() {
+    if (!document[hiddenProperty]) {
       var pseudoEvent = {
         type: 'tabfocus',
         target: document

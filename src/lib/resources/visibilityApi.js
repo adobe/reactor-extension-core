@@ -11,8 +11,8 @@ module.exports = function() {
   for (var key in properties) {
     if (properties.hasOwnProperty(key) && typeof document[key] !== 'undefined') {
       return {
-        hidden: key,
-        visibilityChange: properties[key]
+        hiddenProperty: key,
+        visibilityChangeEventType: properties[key]
       };
     }
   }

@@ -40,7 +40,7 @@ const formConfig = {
       ...errors
     };
 
-    if (!values.timeOnPage || isNaN(values.timeOnPage)) {
+    if (isNaN(values.timeOnPage) || values.timeOnPage < 1) {
       errors.timeOnPage = 'Please specify a positive number';
     }
 

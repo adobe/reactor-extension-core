@@ -60,23 +60,37 @@ describe('timer', function() {
   describe('when markers are provided', function() {
     it('the callback is called', function() {
       var callback = jasmine.createSpy('onTimePassedCallback');
-      var timer = new Timer([50], callback);
+      var timer = new Timer([5], callback);
       timer.start();
-      jasmine.clock().tick(1000);
+      jasmine.clock().tick(6000);
 
-      expect(callback).toHaveBeenCalledWith(50);
+      expect(callback).toHaveBeenCalledWith(5);
     });
 
     it('the callback is called once per each marker', function() {
       var callback = jasmine.createSpy('onTimePassedCallback');
-      var timer = new Timer([1000, 2000], callback);
+      var timer = new Timer([1, 2], callback);
       timer.start();
       jasmine.clock().tick(1000);
       jasmine.clock().tick(1000);
 
-      expect(callback).toHaveBeenCalledWith(1000);
-      expect(callback).toHaveBeenCalledWith(2000);
+      expect(callback).toHaveBeenCalledWith(1);
+      expect(callback).toHaveBeenCalledWith(2);
       expect(callback.calls.count()).toEqual(2);
+    });
+  });
+
+  describe('when a marker is added after timer was initialized', function() {
+    it('the callback is called', function() {
+      var callback = jasmine.createSpy('onTimePassedCallback');
+      var timer = new Timer([], callback);
+      timer.start();
+      jasmine.clock().tick(10);
+      timer.addMarker(2);
+
+      jasmine.clock().tick(3000);
+
+      expect(callback).toHaveBeenCalledWith(2);
     });
   });
 });

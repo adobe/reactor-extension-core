@@ -39,6 +39,10 @@ Timer.prototype = {
     return this._total;
   },
 
+  addMarker: function(marker) {
+    this._markers.push(marker);
+  },
+
   _setIntervalUpdater: function() {
     this._intervalId =
       window.setInterval(this._calculateTimePassed.bind(this), this._checkInterval);
@@ -67,7 +71,7 @@ Timer.prototype = {
     var timePassed =  this.getTime();
 
     for (var i = 0, l = this._markers.length; i < l; i++) {
-      if (timePassed >= this._markers[i]) {
+      if (timePassed >= this._markers[i] * 1000) {
         this._onTimePassedCallback(this._markers[i]);
       } else {
         newMarkers.push(this._markers[i]);
