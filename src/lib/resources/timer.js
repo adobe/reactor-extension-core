@@ -2,7 +2,7 @@
 var EventEmitter = require('EventEmitter');
 
 var CHECK_INTERVAL_MS = 1000;
-var onlyUnique = function (value, index, self) {
+var onlyUnique = function(value, index, self) {
   return self.indexOf(value) === index;
 };
 
