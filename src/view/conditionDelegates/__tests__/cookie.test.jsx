@@ -1,22 +1,9 @@
 import TestUtils from 'react-addons-test-utils';
-import Coral from '../../reduxFormCoralUI';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
+
 import Cookie from '../cookie';
-import ValidationWrapper from '../../components/validationWrapper';
-import RegexToggle from '../../components/regexToggle';
+import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 
 const { instance, extensionBridge } = setUpConnectedForm(Cookie);
-const getParts = () => {
-  const validationWrappers = TestUtils.scryRenderedComponentsWithType(instance, ValidationWrapper);
-  const textfields = TestUtils.scryRenderedComponentsWithType(instance, Coral.Textfield);
-  return {
-    nameField: textfields[0],
-    nameValidationWrapper: validationWrappers[0],
-    valueField: textfields[1],
-    valueValidationWrapper: validationWrappers[1],
-    regexToggle: TestUtils.findRenderedComponentWithType(instance, RegexToggle)
-  };
-};
 
 describe('cookie view', () => {
   it('sets form values from config', () => {
@@ -28,22 +15,22 @@ describe('cookie view', () => {
       }
     });
 
-    const { nameField, valueField, regexToggle } = getParts();
+    const { nameField, valueField, valueRegexToggle } = instance.refs;
 
     expect(nameField.props.value).toBe('foo');
     expect(valueField.props.value).toBe('bar');
-    expect(regexToggle.props.value).toBe('bar');
-    expect(regexToggle.props.valueIsRegex).toBe(true);
+    expect(valueRegexToggle.props.value).toBe('bar');
+    expect(valueRegexToggle.props.valueIsRegex).toBe(true);
   });
 
   it('sets config from form values', () => {
     extensionBridge.init();
 
-    const { nameField, valueField, regexToggle } = getParts();
+    const { nameField, valueField, valueRegexToggle } = instance.refs;
 
     nameField.props.onChange('foo');
     valueField.props.onChange('bar');
-    regexToggle.props.onValueIsRegexChange(true);
+    valueRegexToggle.props.onValueIsRegexChange(true);
 
     expect(extensionBridge.getConfig()).toEqual({
       name: 'foo',
@@ -56,12 +43,9 @@ describe('cookie view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const {
-      nameValidationWrapper,
-      valueValidationWrapper
-    } = getParts();
+    const { nameWrapper, valueWrapper } = instance.refs;
 
-    expect(nameValidationWrapper.props.error).toEqual(jasmine.any(String));
-    expect(valueValidationWrapper.props.error).toEqual(jasmine.any(String));
+    expect(nameWrapper.props.error).toEqual(jasmine.any(String));
+    expect(valueWrapper.props.error).toEqual(jasmine.any(String));
   });
 });

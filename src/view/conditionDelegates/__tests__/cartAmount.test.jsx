@@ -1,29 +1,15 @@
 import TestUtils from 'react-addons-test-utils';
-import Coral from '../../reduxFormCoralUI';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
+
 import CartAmount from '../cartAmount';
-import ValidationWrapper from '../../components/validationWrapper';
-import dataElementNameField from '../components/dataElementNameField';
-import ComparisonOperatorField from '../components/comparisonOperatorField';
+import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 
 const { instance, extensionBridge } = setUpConnectedForm(CartAmount);
-
-const getParts = () => {
-  const validationWrappers = TestUtils.scryRenderedComponentsWithType(instance, ValidationWrapper);
-  return {
-    dataElementField: TestUtils.findRenderedComponentWithType(instance, dataElementNameField),
-    dataElementValidationWrapper: validationWrappers[0],
-    operatorField: TestUtils.findRenderedComponentWithType(instance, ComparisonOperatorField),
-    amountField: TestUtils.scryRenderedComponentsWithType(instance, Coral.Textfield)[1],
-    amountValidationWrapper: validationWrappers[1]
-  };
-};
 
 describe('cart amount view', () => {
   it('sets operator to greater than by default', () => {
     extensionBridge.init();
 
-    const { operatorField } = getParts();
+    const { operatorField } = instance.refs;
 
     expect(operatorField.props.value).toBe('>');
   });
@@ -37,7 +23,7 @@ describe('cart amount view', () => {
       }
     });
 
-    const { dataElementField, operatorField, amountField } = getParts();
+    const { dataElementField, operatorField, amountField } = instance.refs;
 
     expect(dataElementField.props.value).toBe('foo');
     expect(operatorField.props.value).toBe('=');
@@ -47,7 +33,7 @@ describe('cart amount view', () => {
   it('sets config from form values', () => {
     extensionBridge.init();
 
-    const { dataElementField, operatorField, amountField } = getParts();
+    const { dataElementField, operatorField, amountField } = instance.refs;
 
     dataElementField.props.onChange('foo');
     operatorField.props.onChange('=');
@@ -64,23 +50,20 @@ describe('cart amount view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const {
-      dataElementValidationWrapper,
-      amountValidationWrapper
-    } = getParts();
+    const { dataElementWrapper, amountWrapper} = instance.refs;
 
-    expect(dataElementValidationWrapper.props.error).toEqual(jasmine.any(String));
-    expect(amountValidationWrapper.props.error).toEqual(jasmine.any(String));
+    expect(dataElementWrapper.props.error).toEqual(jasmine.any(String));
+    expect(amountWrapper.props.error).toEqual(jasmine.any(String));
   });
 
   it('sets error if amount value is not a number', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { amountField, amountValidationWrapper } = getParts();
+    const { amountField, amountWrapper } = instance.refs;
 
     amountField.props.onChange('12.abc');
 
-    expect(amountValidationWrapper.props.error).toEqual(jasmine.any(String));
+    expect(amountWrapper.props.error).toEqual(jasmine.any(String));
   });
 });

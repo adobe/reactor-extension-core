@@ -1,18 +1,9 @@
 import TestUtils from 'react-addons-test-utils';
-import Coral from '../../reduxFormCoralUI';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
+
 import LandingPage from '../landingPage';
-import ValidationWrapper from '../../components/validationWrapper';
-import RegexToggle from '../../components/regexToggle';
+import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 
 const { instance, extensionBridge } = setUpConnectedForm(LandingPage);
-const getParts = () => {
-  return {
-    pageField: TestUtils.findRenderedComponentWithType(instance, Coral.Textfield),
-    pageValidationWrapper: TestUtils.findRenderedComponentWithType(instance, ValidationWrapper),
-    regexToggle: TestUtils.findRenderedComponentWithType(instance, RegexToggle)
-  };
-};
 
 describe('landing page view', () => {
   it('sets form values from config', () => {
@@ -23,20 +14,20 @@ describe('landing page view', () => {
       }
     });
 
-    const { pageField, regexToggle } = getParts();
+    const { pageField, valueRegexToggle } = instance.refs;
 
     expect(pageField.props.value).toBe('foo');
-    expect(regexToggle.props.value).toBe('foo');
-    expect(regexToggle.props.valueIsRegex).toBe(true);
+    expect(valueRegexToggle.props.value).toBe('foo');
+    expect(valueRegexToggle.props.valueIsRegex).toBe(true);
   });
 
   it('sets config from form values', () => {
     extensionBridge.init();
 
-    const { pageField, regexToggle } = getParts();
+    const { pageField, valueRegexToggle } = instance.refs;
 
     pageField.props.onChange('foo');
-    regexToggle.props.onValueIsRegexChange(true);
+    valueRegexToggle.props.onValueIsRegexChange(true);
 
     expect(extensionBridge.getConfig()).toEqual({
       page: 'foo',
@@ -48,10 +39,8 @@ describe('landing page view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const {
-      pageValidationWrapper
-    } = getParts();
+    const { pageWrapper } = instance.refs;
 
-    expect(pageValidationWrapper.props.error).toEqual(jasmine.any(String));
+    expect(pageWrapper.props.error).toEqual(jasmine.any(String));
   });
 });
