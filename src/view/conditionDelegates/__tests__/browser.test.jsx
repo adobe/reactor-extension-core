@@ -1,15 +1,8 @@
 import TestUtils from 'react-addons-test-utils';
-import Coral from '../../reduxFormCoralUI';
 import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 import Browser from '../browser';
-import CheckboxList from '../../components/checkboxList';
 
 const { instance, extensionBridge } = setUpConnectedForm(Browser);
-const getParts = () => {
-  return {
-    checkboxList: TestUtils.findRenderedComponentWithType(instance, CheckboxList)
-  };
-};
 
 const selectedBrowsers = [
   'Chrome',
@@ -24,16 +17,16 @@ describe('browser view', () => {
       }
     });
 
-    const { checkboxList } = getParts();
+    const { browsersCheckboxList } = instance.refs;
 
-    expect(checkboxList.props.value).toEqual(selectedBrowsers);
+    expect(browsersCheckboxList.props.value).toEqual(selectedBrowsers);
   });
 
   it('sets config from form values', () => {
     extensionBridge.init();
 
-    const { checkboxList } = getParts();
-    checkboxList.props.onChange(selectedBrowsers);
+    const { browsersCheckboxList } = instance.refs;
+    browsersCheckboxList.props.onChange(selectedBrowsers);
 
     expect(extensionBridge.getConfig()).toEqual({
       browsers: selectedBrowsers

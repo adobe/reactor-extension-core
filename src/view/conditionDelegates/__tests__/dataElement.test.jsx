@@ -1,22 +1,9 @@
 import TestUtils from 'react-addons-test-utils';
-import Coral from '../../reduxFormCoralUI';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
+
 import DataElement from '../dataElement';
-import ValidationWrapper from '../../components/validationWrapper';
-import DataElementNameField from '../components/dataElementNameField';
-import RegexToggle from '../../components/regexToggle';
+import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 
 const { instance, extensionBridge } = setUpConnectedForm(DataElement);
-const getParts = () => {
-  const validationWrappers = TestUtils.scryRenderedComponentsWithType(instance, ValidationWrapper);
-  return {
-    nameField: TestUtils.findRenderedComponentWithType(instance, DataElementNameField),
-    nameValidationWrapper: validationWrappers[0],
-    valueField: TestUtils.scryRenderedComponentsWithType(instance, Coral.Textfield)[1],
-    valueValidationWrapper: validationWrappers[1],
-    regexToggle: TestUtils.findRenderedComponentWithType(instance, RegexToggle)
-  };
-};
 
 describe('data element view', () => {
   it('sets form values from config', () => {
@@ -28,22 +15,22 @@ describe('data element view', () => {
       }
     });
 
-    const { nameField, valueField, regexToggle } = getParts();
+    const { nameField, valueField, valueRegexToggle } = instance.refs;
 
     expect(nameField.props.value).toBe('foo');
     expect(valueField.props.value).toBe('bar');
-    expect(regexToggle.props.value).toBe('bar');
-    expect(regexToggle.props.valueIsRegex).toBe(true);
+    expect(valueRegexToggle.props.value).toBe('bar');
+    expect(valueRegexToggle.props.valueIsRegex).toBe(true);
   });
 
   it('sets config from form values', () => {
     extensionBridge.init();
 
-    const { nameField, valueField, regexToggle } = getParts();
+    const { nameField, valueField, valueRegexToggle } = instance.refs;
 
     nameField.props.onChange('foo');
     valueField.props.onChange('bar');
-    regexToggle.props.onValueIsRegexChange(true);
+    valueRegexToggle.props.onValueIsRegexChange(true);
 
     expect(extensionBridge.getConfig()).toEqual({
       name: 'foo',
@@ -56,12 +43,9 @@ describe('data element view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const {
-      nameValidationWrapper,
-      valueValidationWrapper
-    } = getParts();
+    const { nameWrapper, valueWrapper } = instance.refs;
 
-    expect(nameValidationWrapper.props.error).toEqual(jasmine.any(String));
-    expect(valueValidationWrapper.props.error).toEqual(jasmine.any(String));
+    expect(nameWrapper.props.error).toEqual(jasmine.any(String));
+    expect(valueWrapper.props.error).toEqual(jasmine.any(String));
   });
 });

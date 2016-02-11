@@ -12,22 +12,24 @@ class CartItemQuantity extends React.Component {
     return (
       <div>
         <div>
-          <ValidationWrapper error={dataElement.touched && dataElement.error}>
+          <ValidationWrapper
+            ref="dataElementWrapper"
+            error={dataElement.touched && dataElement.error}>
             <label>
               <span className="u-label">The cart item quantity identified by the data element</span>
-              <DataElementNameField {...dataElement}/>
+              <DataElementNameField ref="dataElementField" {...dataElement}/>
             </label>
           </ValidationWrapper>
         </div>
         <div className="u-gapTop">
           <label className="u-gapRight">
             <span className="u-label">is</span>
-            <ComparisonOperatorField {...operator}/>
+            <ComparisonOperatorField ref="operatorField" {...operator}/>
           </label>
-          <ValidationWrapper error={quantity.touched && quantity.error}>
+          <ValidationWrapper ref="quantityWrapper" error={quantity.touched && quantity.error}>
             <label>
               <span className="u-label">the value</span>
-              <Coral.Textfield {...quantity}/>
+              <Coral.Textfield ref="quantityField" {...quantity}/>
             </label>
           </ValidationWrapper>
         </div>

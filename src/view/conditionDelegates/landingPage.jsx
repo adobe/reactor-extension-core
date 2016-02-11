@@ -10,13 +10,17 @@ class LandingPage extends React.Component {
 
     return (
       <div>
-        <ValidationWrapper className="u-gapRight" error={page.touched && page.error}>
+        <ValidationWrapper
+          ref="pageWrapper"
+          className="u-gapRight"
+          error={page.touched && page.error}>
           <label>
             <span className="u-label">Landing Page</span>
-            <Coral.Textfield {...page}/>
+            <Coral.Textfield ref="pageField" {...page}/>
           </label>
         </ValidationWrapper>
         <RegexToggle
+          ref="valueRegexToggle"
           value={page.value}
           valueIsRegex={pageIsRegex.value}
           onValueChange={page.onChange}

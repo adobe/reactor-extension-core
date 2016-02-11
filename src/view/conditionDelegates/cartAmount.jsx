@@ -12,22 +12,24 @@ class CartAmount extends React.Component {
     return (
       <div>
         <div>
-          <ValidationWrapper error={dataElement.touched && dataElement.error}>
+          <ValidationWrapper
+            ref="dataElementWrapper"
+            error={dataElement.touched && dataElement.error}>
             <label>
               <span className="u-label">The cart amount identified by the data element</span>
-              <DataElementNameField {...dataElement}/>
+              <DataElementNameField ref="dataElementField" {...dataElement}/>
             </label>
           </ValidationWrapper>
         </div>
         <div className="u-gapTop">
           <label className="u-gapRight">
             <span className="u-label">is</span>
-            <ComparisonOperatorField {...operator}/>
+            <ComparisonOperatorField ref="operatorField" {...operator}/>
           </label>
-          <ValidationWrapper error={amount.touched && amount.error}>
+          <ValidationWrapper ref="amountWrapper" error={amount.touched && amount.error}>
             <label>
               <span className="u-label">the value</span>
-              <Coral.Textfield {...amount}/>
+              <Coral.Textfield ref="amountField" {...amount}/>
             </label>
           </ValidationWrapper>
         </div>

@@ -6,7 +6,10 @@ import extensionViewReduxForm from '../extensionViewReduxForm';
 class Domain extends React.Component {
   render() {
     const { domains } = this.props.fields;
-    return <CheckboxList options={this.props.domainOptions} {...domains}/>;
+    return <CheckboxList
+      ref="domainsCheckboxList"
+      options={this.props.domainOptions}
+      {...domains}/>;
   }
 }
 

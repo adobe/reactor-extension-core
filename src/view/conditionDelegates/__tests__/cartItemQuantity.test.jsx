@@ -1,29 +1,15 @@
 import TestUtils from 'react-addons-test-utils';
-import Coral from '../../reduxFormCoralUI';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
+
 import CartItemQuantity from '../cartItemQuantity';
-import ValidationWrapper from '../../components/validationWrapper';
-import dataElementNameField from '../components/dataElementNameField';
-import ComparisonOperatorField from '../components/comparisonOperatorField';
+import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 
 const { instance, extensionBridge } = setUpConnectedForm(CartItemQuantity);
-
-const getParts = () => {
-  const validationWrappers = TestUtils.scryRenderedComponentsWithType(instance, ValidationWrapper);
-  return {
-    dataElementField: TestUtils.findRenderedComponentWithType(instance, dataElementNameField),
-    dataElementValidationWrapper: validationWrappers[0],
-    operatorField: TestUtils.findRenderedComponentWithType(instance, ComparisonOperatorField),
-    quantityField: TestUtils.scryRenderedComponentsWithType(instance, Coral.Textfield)[1],
-    quantityValidationWrapper: validationWrappers[1]
-  };
-};
 
 describe('cart item quantity view', () => {
   it('sets operator to greater than by default', () => {
     extensionBridge.init();
 
-    const { operatorField } = getParts();
+    const { operatorField } = instance.refs;
 
     expect(operatorField.props.value).toBe('>');
   });
@@ -37,7 +23,7 @@ describe('cart item quantity view', () => {
       }
     });
 
-    const { dataElementField, operatorField, quantityField } = getParts();
+    const { dataElementField, operatorField, quantityField } = instance.refs;
 
     expect(dataElementField.props.value).toBe('foo');
     expect(operatorField.props.value).toBe('=');
@@ -47,7 +33,7 @@ describe('cart item quantity view', () => {
   it('sets config from form values', () => {
     extensionBridge.init();
 
-    const { dataElementField, operatorField, quantityField } = getParts();
+    const { dataElementField, operatorField, quantityField } = instance.refs;
 
     dataElementField.props.onChange('foo');
     operatorField.props.onChange('=');
@@ -64,23 +50,20 @@ describe('cart item quantity view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const {
-      dataElementValidationWrapper,
-      quantityValidationWrapper
-    } = getParts();
+    const { dataElementWrapper, quantityWrapper } = instance.refs;
 
-    expect(dataElementValidationWrapper.props.error).toEqual(jasmine.any(String));
-    expect(quantityValidationWrapper.props.error).toEqual(jasmine.any(String));
+    expect(dataElementWrapper.props.error).toEqual(jasmine.any(String));
+    expect(quantityWrapper.props.error).toEqual(jasmine.any(String));
   });
 
   it('sets error if quantity value is not a number', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { quantityField, quantityValidationWrapper } = getParts();
+    const { quantityField, quantityWrapper } = instance.refs;
 
     quantityField.props.onChange('12.abc');
 
-    expect(quantityValidationWrapper.props.error).toEqual(jasmine.any(String));
+    expect(quantityWrapper.props.error).toEqual(jasmine.any(String));
   });
 });

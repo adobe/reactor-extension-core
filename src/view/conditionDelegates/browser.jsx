@@ -1,5 +1,4 @@
 import React from 'react';
-import Coral from '../reduxFormCoralUI';
 import CheckboxList from '../components/checkboxList';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
@@ -19,7 +18,7 @@ const browserOptions = [
 class Browser extends React.Component {
   render() {
     const { browsers } = this.props.fields;
-    return <CheckboxList options={browserOptions} {...browsers}/>;
+    return <CheckboxList ref="browsersCheckboxList" options={browserOptions} {...browsers}/>;
   }
 }
 
