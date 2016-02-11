@@ -10,15 +10,22 @@ class URLParameter extends React.Component {
 
     return (
       <div>
-        <ValidationWrapper className="u-gapRight" error={name.touched && name.error}>
+        <ValidationWrapper
+          ref="nameWrapper"
+          className="u-gapRight"
+          error={name.touched && name.error}>
           <span className="u-label">URL Parameter Name:</span>
-          <Coral.Textfield {...name}/>
+          <Coral.Textfield ref="nameField" {...name}/>
         </ValidationWrapper>
-        <ValidationWrapper className="u-gapRight" error={value.touched && value.error}>
+        <ValidationWrapper
+          ref="valueWrapper"
+          className="u-gapRight"
+          error={value.touched && value.error}>
           <span className="u-label">URL Parameter Value:</span>
-          <Coral.Textfield {...value}/>
+          <Coral.Textfield ref="valueField" {...value}/>
         </ValidationWrapper>
         <RegexToggle
+          ref="valueRegexToggle"
           value={value.value}
           valueIsRegex={valueIsRegex.value}
           onValueChange={value.onChange}

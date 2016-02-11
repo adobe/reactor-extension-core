@@ -1,30 +1,17 @@
 import TestUtils from 'react-addons-test-utils';
-import Coral from '../../reduxFormCoralUI';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
+
 import DOM from '../dom';
-import ValidationWrapper from '../../components/validationWrapper';
+import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 
 const { instance, extensionBridge } = setUpConnectedForm(DOM);
-const getParts = () => {
-  let textfields = TestUtils.scryRenderedComponentsWithType(instance, Coral.Textfield);
-  let validationWrappers = TestUtils.scryRenderedComponentsWithType(instance, ValidationWrapper);
-  return {
-    elementSelectorField: textfields[0],
-    elementSelectorValidationWrapper: validationWrappers[0],
-    elementPropertyPresetSelect: TestUtils.findRenderedComponentWithType(instance, Coral.Select),
-    customElementPropertyField: textfields.length > 1 ? textfields[1] : null,
-    customElementPropertyValidationWrapper: validationWrappers.length > 1 ?
-      validationWrappers[1] : null
-  };
-};
 
 describe('DOM view', () => {
   it('selects ID preset for new config', () => {
     extensionBridge.init();
 
-    const { elementPropertyPresetSelect } = getParts();
+    const { elementPropertyPresetsSelect } = instance.refs;
 
-    expect(elementPropertyPresetSelect.props.value).toBe('id');
+    expect(elementPropertyPresetsSelect.props.value).toBe('id');
   });
 
 
@@ -36,10 +23,10 @@ describe('DOM view', () => {
       }
     });
 
-    const { elementSelectorField, elementPropertyPresetSelect} = getParts();
+    const { elementSelectorField, elementPropertyPresetsSelect} = instance.refs;
 
     expect(elementSelectorField.props.value).toBe('foo');
-    expect(elementPropertyPresetSelect.props.value).toBe('innerHTML');
+    expect(elementPropertyPresetsSelect.props.value).toBe('innerHTML');
   });
 
   it('sets form values from config using custom element property', () => {
@@ -52,12 +39,12 @@ describe('DOM view', () => {
 
     const {
       elementSelectorField,
-      elementPropertyPresetSelect,
+      elementPropertyPresetsSelect,
       customElementPropertyField
-    } = getParts();
+    } = instance.refs;
 
     expect(elementSelectorField.props.value).toBe('foo');
-    expect(elementPropertyPresetSelect.props.value).toBe('custom');
+    expect(elementPropertyPresetsSelect.props.value).toBe('custom');
     expect(customElementPropertyField.props.value).toBe('bar');
   });
 
@@ -66,18 +53,18 @@ describe('DOM view', () => {
 
     expect(extensionBridge.validate()).toBe(false);
 
-    const { elementSelectorValidationWrapper } = getParts();
+    const { elementSelectorWrapper } = instance.refs;
 
-    expect(elementSelectorValidationWrapper.props.error).toEqual(jasmine.any(String));
+    expect(elementSelectorWrapper.props.error).toEqual(jasmine.any(String));
   });
 
   it('sets config from form values using element property preset', () => {
     extensionBridge.init();
 
-    const { elementSelectorField, elementPropertyPresetSelect } = getParts();
+    const { elementSelectorField, elementPropertyPresetsSelect } = instance.refs;
 
     elementSelectorField.props.onChange('foo');
-    elementPropertyPresetSelect.props.onChange('innerHTML');
+    elementPropertyPresetsSelect.props.onChange('innerHTML');
 
     expect(extensionBridge.getConfig()).toEqual({
       elementSelector: 'foo',
@@ -90,15 +77,15 @@ describe('DOM view', () => {
 
     const {
       elementSelectorField,
-      elementPropertyPresetSelect
-    } = getParts();
+      elementPropertyPresetsSelect
+      } = instance.refs;
 
     elementSelectorField.props.onChange('foo');
-    elementPropertyPresetSelect.props.onChange('custom');
+    elementPropertyPresetsSelect.props.onChange('custom');
 
     const {
       customElementPropertyField
-    } = getParts();
+    } = instance.refs;
 
     customElementPropertyField.props.onChange('bar');
 
@@ -118,8 +105,8 @@ describe('DOM view', () => {
 
     expect(extensionBridge.validate()).toBe(false);
 
-    const { customElementPropertyValidationWrapper } = getParts();
+    const { customElementPropertyWrapper } = instance.refs;
 
-    expect(customElementPropertyValidationWrapper.props.error).toEqual(jasmine.any(String));
+    expect(customElementPropertyWrapper.props.error).toEqual(jasmine.any(String));
   });
 });

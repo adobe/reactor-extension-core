@@ -1,25 +1,18 @@
 import TestUtils from 'react-addons-test-utils';
-import Coral from '../../reduxFormCoralUI';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
+
 import NewReturning from '../newReturning';
+import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 
 const { instance, extensionBridge } = setUpConnectedForm(NewReturning);
-const getParts = () => {
-  const radios = TestUtils.scryRenderedComponentsWithType(instance, Coral.Radio);
-  return {
-    newRadio: radios[0],
-    returningRadio: radios[1]
-  };
-};
 
 describe('new/returning visitor view', () => {
   it('sets new visitor radio as checked by default', () => {
     extensionBridge.init();
 
-    const { newRadio, returningRadio } = getParts();
+    const { newVisitorRadio, returningVisitorRadio } = instance.refs;
 
-    expect(newRadio.props.checked).toBe(true);
-    expect(returningRadio.props.checked).toBe(false);
+    expect(newVisitorRadio.props.checked).toBe(true);
+    expect(returningVisitorRadio.props.checked).toBe(false);
   });
 
   it('sets form values from config', () => {
@@ -29,18 +22,18 @@ describe('new/returning visitor view', () => {
       }
     });
 
-    const { newRadio, returningRadio } = getParts();
+    const { newVisitorRadio, returningVisitorRadio } = instance.refs;
 
-    expect(newRadio.props.checked).toBe(false);
-    expect(returningRadio.props.checked).toBe(true);
+    expect(newVisitorRadio.props.checked).toBe(false);
+    expect(returningVisitorRadio.props.checked).toBe(true);
   });
 
   it('sets config from form values', () => {
     extensionBridge.init();
 
-    const { returningRadio } = getParts();
+    const { returningVisitorRadio } = instance.refs;
 
-    returningRadio.props.onChange('returning');
+    returningVisitorRadio.props.onChange('returning');
 
     expect(extensionBridge.getConfig()).toEqual({
       isNewVisitor: false

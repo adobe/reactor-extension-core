@@ -1,24 +1,15 @@
 import TestUtils from 'react-addons-test-utils';
-import Coral from '../../reduxFormCoralUI';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
+
 import Sessions from '../sessions';
-import ValidationWrapper from '../../components/validationWrapper';
-import ComparisonOperatorField from '../components/comparisonOperatorField';
+import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 
 const { instance, extensionBridge } = setUpConnectedForm(Sessions);
-const getParts = () => {
-  return {
-    operatorField: TestUtils.findRenderedComponentWithType(instance, ComparisonOperatorField),
-    countField: TestUtils.findRenderedComponentWithType(instance, Coral.Textfield),
-    countValidationWrapper: TestUtils.findRenderedComponentWithType(instance, ValidationWrapper)
-  };
-};
 
 describe('sessions view', () => {
   it('sets operator to greater than by default', () => {
     extensionBridge.init();
 
-    const { operatorField } = getParts();
+    const { operatorField } = instance.refs;
 
     expect(operatorField.props.value).toBe('>');
   });
@@ -31,7 +22,7 @@ describe('sessions view', () => {
       }
     });
 
-    const { operatorField, countField } = getParts();
+    const { operatorField, countField } = instance.refs;
 
     expect(operatorField.props.value).toBe('=');
     expect(countField.props.value).toBe(100);
@@ -40,7 +31,7 @@ describe('sessions view', () => {
   it('sets config from form values', () => {
     extensionBridge.init();
 
-    const { operatorField, countField } = getParts();
+    const { operatorField, countField } = instance.refs;
 
     operatorField.props.onChange('=');
     countField.props.onChange(100);
@@ -55,19 +46,19 @@ describe('sessions view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { countValidationWrapper } = getParts();
+    const { countWrapper } = instance.refs;
 
-    expect(countValidationWrapper.props.error).toEqual(jasmine.any(String));
+    expect(countWrapper.props.error).toEqual(jasmine.any(String));
   });
 
   it('sets error if count value is not a number', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { countField, countValidationWrapper } = getParts();
+    const { countField, countWrapper } = instance.refs;
 
     countField.props.onChange('12.abc');
 
-    expect(countValidationWrapper.props.error).toEqual(jasmine.any(String));
+    expect(countWrapper.props.error).toEqual(jasmine.any(String));
   });
 });

@@ -1,7 +1,7 @@
 import TestUtils from 'react-addons-test-utils';
-import Coral from '../../reduxFormCoralUI';
-import TimePlayed from '../timePlayed';
+
 import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
+import TimePlayed from '../timePlayed';
 
 const { instance, extensionBridge } = setUpConnectedForm(TimePlayed);
 

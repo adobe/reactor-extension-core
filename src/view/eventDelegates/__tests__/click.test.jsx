@@ -1,5 +1,5 @@
 import TestUtils from 'react-addons-test-utils';
-import Coral from '../../reduxFormCoralUI';
+
 import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 import Click from '../click';
 

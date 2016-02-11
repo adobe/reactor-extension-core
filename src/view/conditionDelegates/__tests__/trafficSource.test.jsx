@@ -1,18 +1,9 @@
 import TestUtils from 'react-addons-test-utils';
-import Coral from '../../reduxFormCoralUI';
+
 import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 import TrafficSource from '../trafficSource';
-import ValidationWrapper from '../../components/validationWrapper';
-import RegexToggle from '../../components/regexToggle';
 
 const { instance, extensionBridge } = setUpConnectedForm(TrafficSource);
-const getParts = () => {
-  return {
-    sourceField: TestUtils.findRenderedComponentWithType(instance, Coral.Textfield),
-    sourceValidationWrapper: TestUtils.findRenderedComponentWithType(instance, ValidationWrapper),
-    regexToggle: TestUtils.findRenderedComponentWithType(instance, RegexToggle)
-  };
-};
 
 describe('traffic source view', () => {
   it('sets form values from config', () => {
@@ -23,20 +14,20 @@ describe('traffic source view', () => {
       }
     });
 
-    const { sourceField, regexToggle } = getParts();
+    const { sourceField, valueRegexToggle } = instance.refs;
 
     expect(sourceField.props.value).toBe('foo');
-    expect(regexToggle.props.value).toBe('foo');
-    expect(regexToggle.props.valueIsRegex).toBe(true);
+    expect(valueRegexToggle.props.value).toBe('foo');
+    expect(valueRegexToggle.props.valueIsRegex).toBe(true);
   });
 
   it('sets config from form values', () => {
     extensionBridge.init();
 
-    const { sourceField, regexToggle } = getParts();
+    const { sourceField, valueRegexToggle } = instance.refs;
 
     sourceField.props.onChange('foo');
-    regexToggle.props.onValueIsRegexChange(true);
+    valueRegexToggle.props.onValueIsRegexChange(true);
 
     expect(extensionBridge.getConfig()).toEqual({
       source: 'foo',
@@ -48,10 +39,8 @@ describe('traffic source view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const {
-      sourceValidationWrapper
-    } = getParts();
+    const { sourceWrapper } = instance.refs;
 
-    expect(sourceValidationWrapper.props.error).toEqual(jasmine.any(String));
+    expect(sourceWrapper.props.error).toEqual(jasmine.any(String));
   });
 });

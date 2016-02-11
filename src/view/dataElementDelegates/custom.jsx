@@ -14,9 +14,11 @@ class Custom extends React.Component {
 
     return (
       <div>
-        <Coral.Button icon="code" onClick={this.onOpenEditor}>Open Editor</Coral.Button>
+        <Coral.Button ref="openEditorButton" icon="code" onClick={this.onOpenEditor}>
+          Open Editor
+        </Coral.Button>
         {script.touched && script.error ?
-          <ErrorIcon message={script.error}/> : null
+          <ErrorIcon ref="scriptErrorIcon" message={script.error}/> : null
         }
       </div>
     );

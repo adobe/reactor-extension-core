@@ -1,17 +1,9 @@
 import TestUtils from 'react-addons-test-utils';
-import Coral from '../../reduxFormCoralUI';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
+
 import DirectCall from '../directCall';
-import ValidationWrapper from '../../components/validationWrapper';
+import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 
 const { instance, extensionBridge } = setUpConnectedForm(DirectCall);
-
-const getParts = () => {
-  return {
-    nameField: TestUtils.findRenderedComponentWithType(instance, Coral.Textfield),
-    nameValidationWrapper: TestUtils.findRenderedComponentWithType(instance, ValidationWrapper)
-  };
-};
 
 describe('direct call view', () => {
   it('sets form values from config', () => {
@@ -21,7 +13,7 @@ describe('direct call view', () => {
       }
     });
 
-    const { nameField } = getParts();
+    const { nameField } = instance.refs;
 
     expect(nameField.props.value).toBe('foo');
   });
@@ -29,7 +21,7 @@ describe('direct call view', () => {
   it('sets config from form values', () => {
     extensionBridge.init();
 
-    const { nameField } = getParts();
+    const { nameField } = instance.refs;
     nameField.props.onChange('foo');
 
     expect(extensionBridge.getConfig()).toEqual({
@@ -41,8 +33,8 @@ describe('direct call view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { nameValidationWrapper } = getParts();
+    const { nameWrapper } = instance.refs;
 
-    expect(nameValidationWrapper.props.error).toEqual(jasmine.any(String));
+    expect(nameWrapper.props.error).toEqual(jasmine.any(String));
   });
 });
