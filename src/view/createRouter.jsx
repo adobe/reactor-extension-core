@@ -56,6 +56,7 @@ import URLParameterCondition from './conditionDelegates/urlParameter';
 import SubdomainCondition from './conditionDelegates/subdomain';
 import TimeOnSiteCondition from './conditionDelegates/timeOnSite';
 import TrafficSourceCondition from './conditionDelegates/trafficSource';
+import VariableCondition from './conditionDelegates/variable';
 import WindowSizeCondition from './conditionDelegates/windowSize';
 
 // Data Elements
@@ -124,6 +125,7 @@ export default (setFormConfigForCurrentRoute) => {
       <Route path="/conditions/subdomain" component={SubdomainCondition} onEnter={onEnter}/>
       <Route path="/conditions/timeOnSite" component={TimeOnSiteCondition} onEnter={onEnter}/>
       <Route path="/conditions/trafficSource" component={TrafficSourceCondition} onEnter={onEnter}/>
+      <Route path="/conditions/variable" component={VariableCondition} onEnter={onEnter}/>
       <Route path="/conditions/windowSize" component={WindowSizeCondition} onEnter={onEnter}/>
 
       <Route path="/dataElements/cookie" component={CookieDataElement} onEnter={onEnter}/>
