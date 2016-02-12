@@ -7,7 +7,7 @@ describe('createBubbly', function() {
   var createBubbly = createBubblyInjector({
     createDataStash: publicRequire('createDataStash'),
     matchesSelector: publicRequire('matchesSelector'),
-    resourceProvider: publicRequire('resourceProvider')
+    getResource: publicRequire('getResource')
   });
 
   var aElement;

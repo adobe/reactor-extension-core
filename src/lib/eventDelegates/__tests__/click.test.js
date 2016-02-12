@@ -10,7 +10,7 @@ describe('click event type', function() {
   var delegate = delegateInjector({
     propertyConfig: propertyConfig,
     createDataStash: publicRequire('createDataStash'),
-    resourceProvider: publicRequire('resourceProvider'),
+    getResource: publicRequire('getResource'),
     window: mockWindow
   });
 

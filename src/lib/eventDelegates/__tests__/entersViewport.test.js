@@ -39,7 +39,7 @@ describe('entersViewport event type', function() {
     delegate = delegateInjector({
       poll: publicRequire('poll'),
       createDataStash: publicRequire('createDataStash'),
-      resourceProvider: publicRequire('resourceProvider')
+      getResource: publicRequire('getResource')
     });
   });
 

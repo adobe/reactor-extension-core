@@ -2,7 +2,7 @@
 
 var propertyConfig = require('propertyConfig');
 var dataStash = require('createDataStash')('click');
-var bubbly = require('resourceProvider').get('dtm', 'createBubbly')();
+var bubbly = require('getResource')('dtm', 'createBubbly')();
 var window = require('window');
 
 /**

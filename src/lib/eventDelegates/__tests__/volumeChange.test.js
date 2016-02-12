@@ -5,7 +5,7 @@ describe('volumechange event type', function() {
   var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
   var delegateInjector = require('inject!../volumeChange');
   var delegate = delegateInjector({
-    resourceProvider: publicRequire('resourceProvider')
+    getResource: publicRequire('getResource')
   });
 
   testStandardEvent(delegate, 'volumechange');

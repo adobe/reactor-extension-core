@@ -2,7 +2,7 @@
 
 var createDataStash = require('createDataStash');
 var matchesSelector = require('matchesSelector');
-var matchesProperties = require('resourceProvider').get('dtm', 'matchesProperties');
+var matchesProperties = require('getResource')('dtm', 'matchesProperties');
 
 /**
  * Handles logic related to bubbling options provided for many event types.

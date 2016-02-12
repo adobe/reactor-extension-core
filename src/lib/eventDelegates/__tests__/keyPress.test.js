@@ -5,7 +5,7 @@ describe('keypress event type', function() {
   var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
   var delegateInjector = require('inject!../keyPress');
   var delegate = delegateInjector({
-    resourceProvider: publicRequire('resourceProvider')
+    getResource: publicRequire('getResource')
   });
 
   testStandardEvent(delegate, 'keypress');

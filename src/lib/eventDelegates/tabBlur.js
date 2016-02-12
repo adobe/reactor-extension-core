@@ -2,7 +2,7 @@
 
 var once = require('once');
 var document = require('document');
-var visibilityApi = require('resourceProvider').get('dtm', 'visibilityApi')();
+var visibilityApi = require('getResource')('dtm', 'visibilityApi')();
 var hiddenProperty = visibilityApi.hiddenProperty;
 var visibilityChangeEventType = visibilityApi.visibilityChangeEventType;
 

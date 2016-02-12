@@ -1,7 +1,7 @@
 'use strict';
 
 var document = require('document');
-var compareNumbers = require('resourceProvider').get('dtm', 'compareNumbers');
+var compareNumbers = require('getResource')('dtm', 'compareNumbers');
 
 /**
  * Window size condition. Determines if the current window size matches constraints.

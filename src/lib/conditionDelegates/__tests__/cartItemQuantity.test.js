@@ -3,7 +3,7 @@
 var conditionDelegateInjector = require('inject!../cartItemQuantity');
 var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
 var conditionDelegate = conditionDelegateInjector({
-  'resourceProvider': publicRequire('resourceProvider')
+  getResource: publicRequire('getResource')
 });
 
 var getConfig = function(dataElement, operator, quantity) {

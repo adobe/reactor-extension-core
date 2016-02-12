@@ -1,7 +1,7 @@
 'use strict';
-var resourceProvider = require('resourceProvider');
-var visitorTracking = resourceProvider.get('dtm', 'visitorTracking');
-var compareNumbers = resourceProvider.get('dtm', 'compareNumbers');
+var getResource = require('getResource');
+var visitorTracking = getResource('dtm', 'visitorTracking');
+var compareNumbers = getResource('dtm', 'compareNumbers');
 
 // Visitor tracking should only run (be enabled) when a rule for the property contains a condition
 // that needs it. The line below will be included in the emitted library if a rule requires this

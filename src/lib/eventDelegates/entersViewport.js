@@ -3,7 +3,7 @@
 var poll = require('poll');
 var createDataStash = require('createDataStash');
 var dataStash = createDataStash('entersViewport');
-var matchesProperties = require('resourceProvider').get('dtm', 'matchesProperties');
+var matchesProperties = require('getResource')('dtm', 'matchesProperties');
 
 var listenersBySelector = {};
 
