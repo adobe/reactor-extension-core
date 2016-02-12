@@ -1,16 +1,10 @@
 import TestUtils from 'react-addons-test-utils';
-import Coral from '../../reduxFormCoralUI';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
+
 import Cookie from '../cookie';
-import ValidationWrapper from '../../components/validationWrapper';
+import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
+
 
 const { instance, extensionBridge } = setUpConnectedForm(Cookie);
-const getParts = () => {
-  return {
-    nameField: TestUtils.findRenderedComponentWithType(instance, Coral.Textfield),
-    nameValidationWrapper: TestUtils.findRenderedComponentWithType(instance, ValidationWrapper)
-  };
-};
 
 describe('cookie view', () => {
   it('sets form values from config', () => {
@@ -20,7 +14,7 @@ describe('cookie view', () => {
       }
     });
 
-    const { nameField } = getParts();
+    const { nameField } = instance.refs;
 
     expect(nameField.props.value).toBe('foo');
   });
@@ -28,7 +22,7 @@ describe('cookie view', () => {
   it('sets config from form values', () => {
     extensionBridge.init();
 
-    const { nameField } = getParts();
+    const { nameField } = instance.refs;
     nameField.props.onChange('foo');
 
     expect(extensionBridge.getConfig()).toEqual({
@@ -40,8 +34,8 @@ describe('cookie view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { nameValidationWrapper } = getParts();
+    const { nameWrapper } = instance.refs;
 
-    expect(nameValidationWrapper.props.error).toEqual(jasmine.any(String));
+    expect(nameWrapper.props.error).toEqual(jasmine.any(String));
   });
 });

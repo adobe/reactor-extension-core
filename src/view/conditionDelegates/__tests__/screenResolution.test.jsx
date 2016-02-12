@@ -1,33 +1,15 @@
 import TestUtils from 'react-addons-test-utils';
-import Coral from '../../reduxFormCoralUI';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
+
 import ScreenResolution from '../screenResolution';
-import ValidationWrapper from '../../components/validationWrapper';
-import ComparisonOperatorField from '../components/comparisonOperatorField';
+import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 
 const { instance, extensionBridge } = setUpConnectedForm(ScreenResolution);
-
-const getParts = () => {
-  const operatorFields =
-    TestUtils.scryRenderedComponentsWithType(instance, ComparisonOperatorField);
-  const validationWrappers = TestUtils.scryRenderedComponentsWithType(instance, ValidationWrapper);
-  const textfields = TestUtils.scryRenderedComponentsWithType(instance, Coral.Textfield);
-
-  return {
-    widthOperatorField: operatorFields[0],
-    widthField: textfields[0],
-    widthValidationWrapper: validationWrappers[0],
-    heightOperatorField: operatorFields[1],
-    heightField: textfields[1],
-    heightValidationWrapper: validationWrappers[1]
-  };
-};
 
 describe('screen resolution view', () => {
   it('sets operators to greater than by default', () => {
     extensionBridge.init();
 
-    const { widthOperatorField, heightOperatorField } = getParts();
+    const { widthOperatorField, heightOperatorField } = instance.refs;
 
     expect(widthOperatorField.props.value).toBe('>');
     expect(heightOperatorField.props.value).toBe('>');
@@ -43,7 +25,7 @@ describe('screen resolution view', () => {
       }
     });
 
-    const { widthOperatorField, widthField, heightOperatorField, heightField } = getParts();
+    const { widthOperatorField, widthField, heightOperatorField, heightField } = instance.refs;
 
     expect(widthOperatorField.props.value).toBe('=');
     expect(widthField.props.value).toBe(100);
@@ -54,7 +36,7 @@ describe('screen resolution view', () => {
   it('sets config from form values', () => {
     extensionBridge.init();
 
-    const { widthOperatorField, widthField, heightOperatorField, heightField } = getParts();
+    const { widthOperatorField, widthField, heightOperatorField, heightField } = instance.refs;
 
     widthOperatorField.props.onChange('=');
     widthField.props.onChange(100);
@@ -73,30 +55,22 @@ describe('screen resolution view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const {
-      widthValidationWrapper,
-      heightValidationWrapper
-    } = getParts();
+    const { widthWrapper, heightWrapper } = instance.refs;
 
-    expect(widthValidationWrapper.props.error).toEqual(jasmine.any(String));
-    expect(heightValidationWrapper.props.error).toEqual(jasmine.any(String));
+    expect(widthWrapper.props.error).toEqual(jasmine.any(String));
+    expect(heightWrapper.props.error).toEqual(jasmine.any(String));
   });
 
   it('sets errors if values are not numbers', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const {
-      widthField,
-      widthValidationWrapper,
-      heightField,
-      heightValidationWrapper
-    } = getParts();
+    const { widthField, widthWrapper, heightField, heightWrapper } = instance.refs;
 
     widthField.props.onChange('12.abc');
     heightField.props.onChange('12.abc');
 
-    expect(widthValidationWrapper.props.error).toEqual(jasmine.any(String));
-    expect(heightValidationWrapper.props.error).toEqual(jasmine.any(String));
+    expect(widthWrapper.props.error).toEqual(jasmine.any(String));
+    expect(heightWrapper.props.error).toEqual(jasmine.any(String));
   });
 });

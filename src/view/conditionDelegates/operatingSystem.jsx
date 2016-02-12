@@ -18,7 +18,10 @@ const operatingSystemOptions = [
 class OperatingSystem extends React.Component {
   render() {
     const { operatingSystems } = this.props.fields;
-    return <CheckboxList options={operatingSystemOptions} {...operatingSystems}/>;
+    return <CheckboxList
+      ref="operatingSystemsCheckboxList"
+      options={operatingSystemOptions}
+      {...operatingSystems}/>;
   }
 }
 

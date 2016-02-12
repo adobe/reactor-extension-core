@@ -11,11 +11,12 @@ export default class DataElementNameField extends React.Component {
     return (
       <span>
         <Coral.Textfield
+          ref="textfield"
           value={this.props.value}
           onClick={this.onClick}
           readOnly="true"
           invalid={this.props.invalid}/>
-        <DataElementSelectorButton onClick={this.onClick}/>
+        <DataElementSelectorButton ref="button" onClick={this.onClick}/>
       </span>
     );
   }

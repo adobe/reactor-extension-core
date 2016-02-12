@@ -1,6 +1,7 @@
 import TestUtils from 'react-addons-test-utils';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
+
 import Browser from '../browser';
+import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 
 const { instance, extensionBridge } = setUpConnectedForm(Browser);
 

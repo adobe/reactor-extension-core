@@ -10,13 +10,17 @@ class TrafficSource extends React.Component {
 
     return (
       <div>
-        <ValidationWrapper className="u-gapRight" error={source.touched && source.error}>
+        <ValidationWrapper
+          ref="sourceWrapper"
+          className="u-gapRight"
+          error={source.touched && source.error}>
           <label>
             <span className="u-label">Traffic Source</span>
-            <Coral.Textfield {...source}/>
+            <Coral.Textfield ref="sourceField" {...source}/>
           </label>
         </ValidationWrapper>
         <RegexToggle
+          ref="valueRegexToggle"
           value={source.value}
           valueIsRegex={sourceIsRegex.value}
           onValueChange={source.onChange}

@@ -13,12 +13,12 @@ class Sessions extends React.Component {
         <div>
           <label className="u-gapRight">
             <span className="u-label">The user's number of sessions is</span>
-            <ComparisonOperatorField {...operator}/>
+            <ComparisonOperatorField ref="operatorField" {...operator}/>
           </label>
-          <ValidationWrapper error={count.touched && count.error}>
+          <ValidationWrapper ref="countWrapper" error={count.touched && count.error}>
             <label>
               <span className="u-label">the value</span>
-              <Coral.Textfield {...count}/>
+              <Coral.Textfield ref="countField" {...count}/>
             </label>
           </ValidationWrapper>
         </div>

@@ -7,25 +7,19 @@ const render = props => {
   return TestUtils.renderIntoDocument(<ComparisonOperatorField {...props}/>);
 };
 
-const getParts = instance => {
-  return {
-    select: TestUtils.findRenderedComponentWithType(instance, Coral.Select)
-  };
-};
-
 describe('comparison operator field', () => {
   it('sets selected value on select', () => {
-    const { select } = getParts(render({
+    const { select } = render({
       value: '<'
-    }));
+    }).refs;
     expect(select.props.value).toBe('<');
   });
   
   it('calls onChange with value from event', () => {
     const onChange = jasmine.createSpy();
-    const { select } = getParts(render({
+    const { select } = render({
       onChange
-    }));
+    }).refs;
 
     select.props.onChange({
       target: {

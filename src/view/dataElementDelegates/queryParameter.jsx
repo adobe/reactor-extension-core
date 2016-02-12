@@ -9,13 +9,16 @@ class QueryParameter extends React.Component {
 
     return (
       <div>
-        <ValidationWrapper error={name.touched && name.error} className="u-gapRight">
+        <ValidationWrapper
+          ref="nameWrapper"
+          error={name.touched && name.error}
+          className="u-gapRight">
           <label>
             <span className="u-label">URL Querystring Parameter Name:</span>
-            <Coral.Textfield {...name}/>
+            <Coral.Textfield ref="nameField" {...name}/>
           </label>
         </ValidationWrapper>
-        <Coral.Checkbox {...caseInsensitive}>
+        <Coral.Checkbox ref="caseInsensitiveCheckbox" {...caseInsensitive}>
           Ignore capitalization differences
         </Coral.Checkbox>
       </div>

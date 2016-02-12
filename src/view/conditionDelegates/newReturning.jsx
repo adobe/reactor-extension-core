@@ -9,12 +9,14 @@ class NewReturning extends React.Component {
     return (
       <div>
         <Coral.Radio
+          ref="newVisitorRadio"
           {...visitorType}
           value="new"
           checked={visitorType.value === 'new'}>
           New Visitor
         </Coral.Radio>
         <Coral.Radio
+          ref="returningVisitorRadio"
           {...visitorType}
           value="returning"
           checked={visitorType.value === 'returning'}>
