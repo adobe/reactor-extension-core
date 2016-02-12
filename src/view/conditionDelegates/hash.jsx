@@ -11,16 +11,20 @@ class Hash extends React.Component {
   removeRow = index => this.props.fields.hashes.removeField(index);
   getKey = hash => hash.id.value;
 
-  renderItem = hash => {
+  renderItem = (hash, index) => {
     return (
       <div className="u-inlineBlock">
-        <ValidationWrapper className="u-gapRight" error={hash.value.touched && hash.value.error}>
+        <ValidationWrapper
+          ref={`hashWrapper${index}`}
+          className="u-gapRight"
+          error={hash.value.touched && hash.value.error}>
           <label>
             <span className="u-label">Hash matches</span>
-            <Coral.Textfield {...hash.value}/>
+            <Coral.Textfield ref={`hashField${index}`} {...hash.value}/>
           </label>
         </ValidationWrapper>
         <RegexToggle
+          ref={`hashRegexToggle${index}`}
           value={hash.value.value}
           valueIsRegex={hash.valueIsRegex.value}
           onValueChange={hash.value.onChange}
@@ -34,6 +38,7 @@ class Hash extends React.Component {
 
     return (
       <MultipleItemEditor
+        ref="multipleItemEditor"
         items={hashes}
         renderItem={this.renderItem}
         getKey={this.getKey}

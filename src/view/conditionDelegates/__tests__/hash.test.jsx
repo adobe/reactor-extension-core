@@ -1,10 +1,7 @@
 import TestUtils from 'react-addons-test-utils';
-import Coral from '../../reduxFormCoralUI';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
+
 import Hash from '../hash';
-import MultipleItemEditor from '../components/multipleItemEditor';
-import ValidationWrapper from '../../components/validationWrapper';
-import RegexToggle from '../../components/regexToggle';
+import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 
 const testProps = {
   config: {
@@ -21,34 +18,31 @@ const testProps = {
 };
 
 const { instance, extensionBridge } = setUpConnectedForm(Hash);
-const getParts = () => {
-  return {
-    multipleItemEditor: TestUtils.findRenderedComponentWithType(instance, MultipleItemEditor),
-    hashFields: TestUtils.scryRenderedComponentsWithType(instance, Coral.Textfield),
-    hashValidationWrappers: TestUtils.scryRenderedComponentsWithType(instance, ValidationWrapper),
-    regexToggles: TestUtils.scryRenderedComponentsWithType(instance, RegexToggle)
-  };
-};
 
 describe('hash view', () => {
   it('sets form values from config', () => {
     extensionBridge.init(testProps);
 
-    const { hashFields, regexToggles } = getParts();
+    const {
+      hashField0,
+      hashField1,
+      hashRegexToggle0,
+      hashRegexToggle1
+    } = instance.refs.multipleItemEditor.refs;
 
-    expect(hashFields[0].props.value).toBe('foo');
-    expect(hashFields[1].props.value).toBe('bar');
-    expect(regexToggles[0].props.valueIsRegex).toBeUndefined();
-    expect(regexToggles[1].props.valueIsRegex).toBe(true);
+    expect(hashField0.props.value).toBe('foo');
+    expect(hashField1.props.value).toBe('bar');
+    expect(hashRegexToggle0.props.valueIsRegex).toBeUndefined();
+    expect(hashRegexToggle1.props.valueIsRegex).toBe(true);
   });
 
   it('sets config from form values', () => {
     extensionBridge.init();
 
-    const { hashFields, regexToggles } = getParts();
+    const { hashField0, hashRegexToggle0 } = instance.refs.multipleItemEditor.refs;
 
-    hashFields[0].props.onChange('goo');
-    regexToggles[0].props.onValueIsRegexChange(true);
+    hashField0.props.onChange('goo');
+    hashRegexToggle0.props.onValueIsRegexChange(true);
 
     expect(extensionBridge.getConfig()).toEqual({
       hashes: [
@@ -63,33 +57,45 @@ describe('hash view', () => {
   it('adds a row', () => {
     extensionBridge.init(testProps);
 
-    const { multipleItemEditor } = getParts();
+    const { multipleItemEditor } = instance.refs;
 
     multipleItemEditor.props.onAddItem();
 
-    const { hashFields } = getParts();
+    const {
+      hashField0,
+      hashField1,
+      hashField2,
+      hashField3
+    } = instance.refs.multipleItemEditor.refs;
 
-    expect(hashFields.length).toBe(3);
+    expect(hashField0).toBeDefined();
+    expect(hashField1).toBeDefined();
+    expect(hashField2).toBeDefined();
+    expect(hashField3).toBeUndefined();
   });
 
   it('removes a row', () => {
     extensionBridge.init(testProps);
 
-    const { multipleItemEditor } = getParts();
+    const { multipleItemEditor } = instance.refs;
 
     multipleItemEditor.props.onRemoveItem(1);
 
-    const { hashFields } = getParts();
+    const {
+      hashField0,
+      hashField1
+    } = instance.refs.multipleItemEditor.refs;
 
-    expect(hashFields.length).toBe(1);
+    expect(hashField0).toBeDefined();
+    expect(hashField1).toBeUndefined();
   });
   
   it('sets errors if required values are not provided', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { hashValidationWrappers } = getParts();
+    const { hashWrapper0 } = instance.refs.multipleItemEditor.refs;
 
-    expect(hashValidationWrappers[0].props.error).toBeDefined();
+    expect(hashWrapper0.props.error).toBeDefined();
   });
 });

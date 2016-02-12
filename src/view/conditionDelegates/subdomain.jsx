@@ -11,18 +11,20 @@ class Subdomain extends React.Component {
   removeRow = index => this.props.fields.subdomains.removeField(index);
   getKey = subdomain => subdomain.id.value;
 
-  renderItem = subdomain => {
+  renderItem = (subdomain, index) => {
     return (
       <div className="u-inlineBlock">
         <ValidationWrapper
+          ref={`subdomainWrapper${index}`}
           className="u-gapRight"
           error={subdomain.value.touched && subdomain.value.error}>
           <label>
             <span className="u-label">Subdomain matches</span>
-            <Coral.Textfield {...subdomain.value}/>
+            <Coral.Textfield ref={`subdomainField${index}`} {...subdomain.value}/>
           </label>
         </ValidationWrapper>
         <RegexToggle
+          ref={`subdomainRegexToggle${index}`}
           value={subdomain.value.value}
           valueIsRegex={subdomain.valueIsRegex.value}
           onValueChange={subdomain.value.onChange}
@@ -36,6 +38,7 @@ class Subdomain extends React.Component {
 
     return (
       <MultipleItemEditor
+        ref="multipleItemEditor"
         items={subdomains}
         renderItem={this.renderItem}
         getKey={this.getKey}

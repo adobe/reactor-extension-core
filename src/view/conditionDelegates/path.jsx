@@ -11,16 +11,20 @@ class Path extends React.Component {
   removeRow = index => this.props.fields.paths.removeField(index);
   getKey = path => path.id.value;
 
-  renderItem = path => {
+  renderItem = (path, index) => {
     return (
       <div className="u-inlineBlock">
-        <ValidationWrapper className="u-gapRight" error={path.value.touched && path.value.error}>
+        <ValidationWrapper
+          ref={`pathWrapper${index}`}
+          className="u-gapRight"
+          error={path.value.touched && path.value.error}>
           <label>
             <span className="u-label">Path matches</span>
-            <Coral.Textfield {...path.value}/>
+            <Coral.Textfield ref={`pathField${index}`} {...path.value}/>
           </label>
         </ValidationWrapper>
         <RegexToggle
+          ref={`pathRegexToggle${index}`}
           value={path.value.value}
           valueIsRegex={path.valueIsRegex.value}
           onValueChange={path.value.onChange}
@@ -34,6 +38,7 @@ class Path extends React.Component {
 
     return (
       <MultipleItemEditor
+        ref="multipleItemEditor"
         items={paths}
         renderItem={this.renderItem}
         getKey={this.getKey}

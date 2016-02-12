@@ -1,10 +1,7 @@
 import TestUtils from 'react-addons-test-utils';
-import Coral from '../../reduxFormCoralUI';
+
 import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 import Subdomain from '../subdomain';
-import MultipleItemEditor from '../components/multipleItemEditor';
-import ValidationWrapper from '../../components/validationWrapper';
-import RegexToggle from '../../components/regexToggle';
 
 const testProps = {
   config: {
@@ -21,35 +18,34 @@ const testProps = {
 };
 
 const { instance, extensionBridge } = setUpConnectedForm(Subdomain);
-const getParts = () => {
-  return {
-    multipleItemEditor: TestUtils.findRenderedComponentWithType(instance, MultipleItemEditor),
-    subdomainFields: TestUtils.scryRenderedComponentsWithType(instance, Coral.Textfield),
-    subdomainValidationWrappers:
-      TestUtils.scryRenderedComponentsWithType(instance, ValidationWrapper),
-    regexToggles: TestUtils.scryRenderedComponentsWithType(instance, RegexToggle)
-  };
-};
 
 describe('subdomain view', () => {
   it('sets form values from config', () => {
     extensionBridge.init(testProps);
 
-    const { subdomainFields, regexToggles } = getParts();
+    const {
+      subdomainField0,
+      subdomainField1,
+      subdomainRegexToggle0,
+      subdomainRegexToggle1
+    } = instance.refs.multipleItemEditor.refs;
 
-    expect(subdomainFields[0].props.value).toBe('foo');
-    expect(subdomainFields[1].props.value).toBe('bar');
-    expect(regexToggles[0].props.valueIsRegex).toBeUndefined();
-    expect(regexToggles[1].props.valueIsRegex).toBe(true);
+    expect(subdomainField0.props.value).toBe('foo');
+    expect(subdomainField1.props.value).toBe('bar');
+    expect(subdomainRegexToggle0.props.valueIsRegex).toBeUndefined();
+    expect(subdomainRegexToggle1.props.valueIsRegex).toBe(true);
   });
 
   it('sets config from form values', () => {
     extensionBridge.init();
 
-    const { subdomainFields, regexToggles } = getParts();
+    const {
+      subdomainField0,
+      subdomainRegexToggle0
+    } = instance.refs.multipleItemEditor.refs;
 
-    subdomainFields[0].props.onChange('goo');
-    regexToggles[0].props.onValueIsRegexChange(true);
+    subdomainField0.props.onChange('goo');
+    subdomainRegexToggle0.props.onValueIsRegexChange(true);
 
     expect(extensionBridge.getConfig()).toEqual({
       subdomains: [
@@ -64,33 +60,45 @@ describe('subdomain view', () => {
   it('adds a row', () => {
     extensionBridge.init(testProps);
 
-    const { multipleItemEditor } = getParts();
+    const { multipleItemEditor } = instance.refs;
 
     multipleItemEditor.props.onAddItem();
 
-    const { subdomainFields } = getParts();
+    const {
+      subdomainField0,
+      subdomainField1,
+      subdomainField2,
+      subdomainField3
+    } = instance.refs.multipleItemEditor.refs;
 
-    expect(subdomainFields.length).toBe(3);
+    expect(subdomainField0).toBeDefined();
+    expect(subdomainField1).toBeDefined();
+    expect(subdomainField2).toBeDefined();
+    expect(subdomainField3).toBeUndefined();
   });
 
   it('removes a row', () => {
     extensionBridge.init(testProps);
 
-    const { multipleItemEditor } = getParts();
+    const { multipleItemEditor } = instance.refs;
 
     multipleItemEditor.props.onRemoveItem(1);
 
-    const { subdomainFields } = getParts();
+    const {
+      subdomainField0,
+      subdomainField1
+    } = instance.refs.multipleItemEditor.refs;
 
-    expect(subdomainFields.length).toBe(1);
+    expect(subdomainField0).toBeDefined();
+    expect(subdomainField1).toBeUndefined();
   });
 
   it('sets errors if required values are not provided', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { subdomainValidationWrappers } = getParts();
+    const { subdomainWrapper0 } = instance.refs.multipleItemEditor.refs;
 
-    expect(subdomainValidationWrappers[0].props.error).toBeDefined();
+    expect(subdomainWrapper0.props.error).toBeDefined();
   });
 });
