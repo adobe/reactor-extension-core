@@ -5,6 +5,7 @@
   "libBasePath": "src/lib",
   "events": [
     {
+      "name": "blur",
       "displayName": "Blur",
       "libPath": "eventDelegates/blur.js",
       "viewPath": "index.html#/events/blur",
@@ -48,6 +49,7 @@
       }
     },
     {
+      "name": "click",
       "displayName": "Click",
       "libPath": "eventDelegates/click.js",
       "viewPath": "index.html#/events/click",
@@ -94,6 +96,7 @@
       }
     },
     {
+      "name": "directCall",
       "displayName": "Direct Call",
       "libPath": "eventDelegates/directCall.js",
       "viewPath": "index.html#/events/directCall",
@@ -110,12 +113,14 @@
       }
     },
     {
+      "name": "domReady",
       "displayName": "DOM Ready",
       "libPath": "eventDelegates/domReady.js",
       "viewPath": "index.html#/events/domReady",
       "schema": {}
     },
     {
+      "name": "elementExists",
       "displayName": "Element Exists",
       "libPath": "eventDelegates/elementExists.js",
       "viewPath": "index.html#/events/elementExists",
@@ -151,6 +156,7 @@
       }
     },
     {
+      "name": "mediaEnded",
       "displayName": "Media Ended",
       "libPath": "eventDelegates/ended.js",
       "viewPath": "index.html#/events/ended",
@@ -194,6 +200,7 @@
       }
     },
     {
+      "name": "entersViewport",
       "displayName": "Enters Viewport",
       "libPath": "eventDelegates/entersViewport.js",
       "viewPath": "index.html#/events/entersViewport",
@@ -233,6 +240,7 @@
       }
     },
     {
+      "name": "focus",
       "displayName": "Focus",
       "libPath": "eventDelegates/focus.js",
       "viewPath": "index.html#/events/focus",
@@ -276,6 +284,7 @@
       }
     },
     {
+      "name": "hover",
       "displayName": "Hover",
       "libPath": "eventDelegates/hover.js",
       "viewPath": "index.html#/events/hover",
@@ -324,6 +333,7 @@
       }
     },
     {
+      "name": "keyPress",
       "displayName": "Key Press",
       "libPath": "eventDelegates/keyPress.js",
       "viewPath": "index.html#/events/keyPress",
@@ -367,6 +377,7 @@
       }
     },
     {
+      "name": "mediaLoadedData",
       "displayName": "Media Loaded Data",
       "libPath": "eventDelegates/loadedData.js",
       "viewPath": "index.html#/events/loadedData",
@@ -410,36 +421,42 @@
       }
     },
     {
+      "name": "locationChange",
       "displayName": "Location Change",
       "libPath": "eventDelegates/locationChange.js",
       "viewPath": "index.html#/events/locationChange",
       "schema": {}
     },
     {
+      "name": "onLoad",
       "displayName": "On Load",
       "libPath": "eventDelegates/onLoad.js",
       "viewPath": "index.html#/events/onLoad",
       "schema": {}
     },
     {
+      "name": "orientationChange",
       "displayName": "Orientation Change",
       "libPath": "eventDelegates/orientationChange.js",
       "viewPath": "index.html#/events/orientationChange",
       "schema": {}
     },
     {
+      "name": "pageBottom",
       "displayName": "Page Bottom",
       "libPath": "eventDelegates/pageBottom.js",
       "viewPath": "index.html#/events/pageBottom",
       "schema": {}
     },
     {
+      "name": "pageTop",
       "displayName": "Page Top",
       "libPath": "eventDelegates/pageTop.js",
       "viewPath": "index.html#/events/pageTop",
       "schema": {}
     },
     {
+      "name": "mediaPause",
       "displayName": "Media Pause",
       "libPath": "eventDelegates/pause.js",
       "viewPath": "index.html#/events/pause",
@@ -483,6 +500,7 @@
       }
     },
     {
+      "name": "mediaPlay",
       "displayName": "Media Play",
       "libPath": "eventDelegates/play.js",
       "viewPath": "index.html#/events/play",
@@ -526,6 +544,7 @@
       }
     },
     {
+      "name": "mediaStalled",
       "displayName": "Media Stalled",
       "libPath": "eventDelegates/stalled.js",
       "viewPath": "index.html#/events/stalled",
@@ -569,6 +588,7 @@
       }
     },
     {
+      "name": "submit",
       "displayName": "Submit",
       "libPath": "eventDelegates/submit.js",
       "viewPath": "index.html#/events/submit",
@@ -612,18 +632,21 @@
       }
     },
     {
+      "name": "tabBlur",
       "displayName": "Tab Blur",
       "libPath": "eventDelegates/tabBlur.js",
       "viewPath": "index.html#/events/tabBlur",
       "schema": {}
     },
     {
+      "name": "tabFocus",
       "displayName": "Tab Focus",
       "libPath": "eventDelegates/tabFocus.js",
       "viewPath": "index.html#/events/tabFocus",
       "schema": {}
     },
     {
+      "name": "timeSpentOnPage",
       "displayName": "Time Spent On Page",
       "libPath": "eventDelegates/timeSpentOnPage.js",
       "viewPath": "index.html#/events/timeSpentOnPage",
@@ -640,6 +663,7 @@
       }
     },
     {
+      "name": "mediaTimePlayed",
       "displayName": "Media Time Played",
       "libPath": "eventDelegates/timePlayed.js",
       "viewPath": "index.html#/events/timePlayed",
@@ -692,6 +716,7 @@
       }
     },
     {
+      "name": "mediaVolumeChange",
       "displayName": "Media Volume Change",
       "libPath": "eventDelegates/volumeChange.js",
       "viewPath": "index.html#/events/volumeChange",
@@ -735,6 +760,7 @@
       }
     },
     {
+      "name": "zoomChange",
       "displayName": "Zoom Change",
       "libPath": "eventDelegates/zoomChange.js",
       "viewPath": "index.html#/events/zoomChange",
@@ -743,6 +769,7 @@
   ],
   "conditions": [
     {
+      "name": "browser",
       "displayName": "Browser",
       "libPath": "conditionDelegates/browser.js",
       "viewPath": "index.html#/conditions/browser",
@@ -773,6 +800,7 @@
       }
     },
     {
+      "name": "cartAmount",
       "displayName": "Cart Amount",
       "libPath": "conditionDelegates/cartAmount.js",
       "viewPath": "index.html#/conditions/cartAmount",
@@ -800,6 +828,7 @@
       }
     },
     {
+      "name": "cartItemQuantity",
       "displayName": "Cart Item Quantity",
       "libPath": "conditionDelegates/cartItemQuantity.js",
       "viewPath": "index.html#/conditions/cartItemQuantity",
@@ -827,6 +856,7 @@
       }
     },
     {
+      "name": "cookie",
       "displayName": "Cookie",
       "libPath": "conditionDelegates/cookie.js",
       "viewPath": "index.html#/conditions/cookie",
@@ -850,6 +880,7 @@
       }
     },
     {
+      "name": "cookieOptOut",
       "displayName": "Cookie Opt-out",
       "libPath": "conditionDelegates/cookieOptOut.js",
       "viewPath": "index.html#/conditions/cookieOptOut",
@@ -864,6 +895,7 @@
       }
     },
     {
+      "name": "customScript",
       "displayName": "Custom Script",
       "libPath": "conditionDelegates/custom.js",
       "viewPath": "index.html#/conditions/custom",
@@ -889,6 +921,7 @@
       ]
     },
     {
+      "name": "dataElement",
       "displayName": "Data Element",
       "libPath": "conditionDelegates/dataElement.js",
       "viewPath": "index.html#/conditions/dataElement",
@@ -911,6 +944,7 @@
       }
     },
     {
+      "name": "deviceType",
       "displayName": "Device Type",
       "libPath": "conditionDelegates/deviceType.js",
       "viewPath": "index.html#/conditions/deviceType",
@@ -939,6 +973,7 @@
       }
     },
     {
+      "name": "domain",
       "displayName": "Domain",
       "libPath": "conditionDelegates/domain.js",
       "viewPath": "index.html#/conditions/domain",
@@ -957,6 +992,7 @@
       }
     },
     {
+      "name": "hash",
       "displayName": "Hash",
       "libPath": "conditionDelegates/hash.js",
       "viewPath": "index.html#/conditions/hash",
@@ -986,6 +1022,7 @@
       }
     },
     {
+      "name": "landingPage",
       "displayName": "Landing Page",
       "libPath": "conditionDelegates/landingPage.js",
       "viewPath": "index.html#/conditions/landingPage",
@@ -1005,6 +1042,7 @@
       }
     },
     {
+      "name": "loggedIn",
       "displayName": "Logged In",
       "libPath": "conditionDelegates/loggedIn.js",
       "viewPath": "index.html#/conditions/loggedIn",
@@ -1021,6 +1059,7 @@
       }
     },
     {
+      "name": "newReturningVisitor",
       "displayName": "New/Returning Visitor",
       "libPath": "conditionDelegates/newReturning.js",
       "viewPath": "index.html#/conditions/newReturning",
@@ -1036,6 +1075,7 @@
       }
     },
     {
+      "name": "operatingSystem",
       "displayName": "Operating System",
       "libPath": "conditionDelegates/operatingSystem.js",
       "viewPath": "index.html#/conditions/operatingSystem",
@@ -1065,6 +1105,7 @@
       }
     },
     {
+      "name": "pageViews",
       "displayName": "Page Views",
       "libPath": "conditionDelegates/pageViews.js",
       "viewPath": "index.html#/conditions/pageViews",
@@ -1095,6 +1136,7 @@
       }
     },
     {
+      "name": "path",
       "displayName": "Path",
       "libPath": "conditionDelegates/path.js",
       "viewPath": "index.html#/conditions/path",
@@ -1124,6 +1166,7 @@
       }
     },
     {
+      "name": "previousConverter",
       "displayName": "Previous Converter",
       "libPath": "conditionDelegates/previousConverter.js",
       "viewPath": "index.html#/conditions/previousConverter",
@@ -1140,6 +1183,7 @@
       }
     },
     {
+      "name": "protocol",
       "displayName": "Protocol",
       "libPath": "conditionDelegates/protocol.js",
       "viewPath": "index.html#/conditions/protocol",
@@ -1159,6 +1203,7 @@
       }
     },
     {
+      "name": "registeredUser",
       "displayName": "Registered User",
       "libPath": "conditionDelegates/registeredUser.js",
       "viewPath": "index.html#/conditions/registeredUser",
@@ -1175,6 +1220,7 @@
       }
     },
     {
+      "name": "screenResolution",
       "displayName": "Screen Resolution",
       "libPath": "conditionDelegates/screenResolution.js",
       "viewPath": "index.html#/conditions/screenResolution",
@@ -1209,6 +1255,7 @@
       }
     },
     {
+      "name": "sessions",
       "displayName": "Sessions",
       "libPath": "conditionDelegates/sessions.js",
       "viewPath": "index.html#/conditions/sessions",
@@ -1232,6 +1279,7 @@
       }
     },
     {
+      "name": "subdomain",
       "displayName": "Subdomain",
       "libPath": "conditionDelegates/subdomain.js",
       "viewPath": "index.html#/conditions/subdomain",
@@ -1261,6 +1309,7 @@
       }
     },
     {
+      "name": "timeOnSite",
       "displayName": "Time On Site",
       "libPath": "conditionDelegates/timeOnSite.js",
       "viewPath": "index.html#/conditions/timeOnSite",
@@ -1284,6 +1333,7 @@
       }
     },
     {
+      "name": "trafficSource",
       "displayName": "Traffic Source",
       "libPath": "conditionDelegates/trafficSource.js",
       "viewPath": "index.html#/conditions/trafficSource",
@@ -1303,6 +1353,7 @@
       }
     },
     {
+      "name": "urlParameter",
       "displayName": "URL Parameter",
       "libPath": "conditionDelegates/urlParameter.js",
       "viewPath": "index.html#/conditions/urlParameter",
@@ -1326,6 +1377,7 @@
       }
     },
     {
+      "name": "windowSize",
       "displayName": "Window Size",
       "libPath": "conditionDelegates/windowSize.js",
       "viewPath": "index.html#/conditions/windowSize",
@@ -1362,6 +1414,7 @@
   ],
   "dataElements": [
     {
+      "name": "cookie",
       "displayName": "Cookie",
       "libPath": "dataElementDelegates/cookie.js",
       "viewPath": "index.html#/dataElements/cookie",
@@ -1378,6 +1431,7 @@
       }
     },
     {
+      "name": "customScript",
       "displayName": "Custom Script",
       "libPath": "dataElementDelegates/custom.js",
       "viewPath": "index.html#/dataElements/custom",
@@ -1399,6 +1453,7 @@
       ]
     },
     {
+      "name": "domAttribute",
       "displayName": "DOM Attribute",
       "libPath": "dataElementDelegates/dom.js",
       "viewPath": "index.html#/dataElements/dom",
@@ -1419,6 +1474,7 @@
       }
     },
     {
+      "name": "urlQuerystringParameter",
       "displayName": "URL Querystring Parameter",
       "libPath": "dataElementDelegates/queryParameter.js",
       "viewPath": "index.html#/dataElements/queryParameter",
@@ -1435,6 +1491,7 @@
       }
     },
     {
+      "name": "javascriptVariable",
       "displayName": "JavaScript Variable",
       "libPath": "dataElementDelegates/variable.js",
       "viewPath": "index.html#/dataElements/variable",
