@@ -49,7 +49,7 @@
     "react-dom": "^0.14.6",
     "@reactor/turbine": "^1.0.1",
     "@reactor/turbine-gulp-sandbox": "^0.0.1",
-    "@reactor/turbine-gulp-testrunner": "^0.0.1",
+    "@reactor/turbine-gulp-testrunner": "^0.1.0",
     "@reactor/turbine-gulp-packager": "^0.0.1",
     "webpack-stream": "^3.1.0"
   }
