@@ -1,4 +1,7 @@
-# turbine-extension-dtm [![Build Status](https://dtm-builder.ut1.mcps.adobe.net/buildStatus/icon?job=turbine-extension-dtm)](https://dtm-builder.ut1.mcps.adobe.net/job/turbine-extension-dtm)
+# turbine-extension-dtm
+[![Build Status](https://dtm-builder.ut1.mcps.adobe.net/buildStatus/icon?job=turbine-extension-dtm)](https://dtm-builder.ut1.mcps.adobe.net/job/turbine-extension-dtm)
+[![coverage](https://dtm-builder.ut1.mcps.adobe.net/view/Reactor/job/turbine-extension-dtm/ws/badges/coverage.svg)](https://dtm-builder.ut1.mcps.adobe.net/view/Reactor/job/turbine-extension-dtm/lastStableBuild/cobertura/)
+[![npm](https://dtm-builder.ut1.mcps.adobe.net/view/Reactor/job/turbine-extension-dtm/ws/badges/npm.svg)](https://artifactory.corp.adobe.com/artifactory/webapp/#/artifacts/browse/tree/General/npm-mcps-release-local/@reactor/turbine-extension-dtm/-/@reactor)
 
 This is the DTM extension for Turbine. It provides the default event types, condition types, and data element types available to all DTM users.
 
