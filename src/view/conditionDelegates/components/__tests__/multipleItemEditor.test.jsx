@@ -1,6 +1,6 @@
 import React from 'react';
-import Coral from 'coralui-support-react';
 import TestUtils from 'react-addons-test-utils';
+
 import MultipleItemEditor from '../multipleItemEditor';
 
 const getTestProps = () => {
@@ -20,20 +20,10 @@ const render = props => {
   return TestUtils.renderIntoDocument(<MultipleItemEditor {...props}/>);
 };
 
-const getParts = instance => {
-  return {
-    row0: instance.refs.row0,
-    row1: instance.refs.row1,
-    removeButton0: instance.refs.removeButton1,
-    removeButton1: instance.refs.removeButton2,
-    addButton: instance.refs.addButton
-  };
-};
-
 describe('multiple item editor', () => {
   it('renders a row for each item', () => {
     const props = getTestProps();
-    const { row0, row1 } = getParts(render(props));
+    const { row0, row1 } = render(props).refs;
     expect(props.getKey).toHaveBeenCalledTimes(2);
     expect(props.renderItem).toHaveBeenCalledTimes(2);
     expect(row0).toBeDefined();
@@ -43,7 +33,7 @@ describe('multiple item editor', () => {
 
   it('calls onAddItem when add button is clicked', () => {
     const props = getTestProps();
-    const { addButton } = getParts(render(props));
+    const { addButton } = render(props).refs;
 
     addButton.props.onClick();
 
@@ -52,9 +42,9 @@ describe('multiple item editor', () => {
 
   it('calls onRemoveItem when remove button is clicked for a row', () => {
     const props = getTestProps();
-    const { removeButton0 } = getParts(render(props));
+    const { removeButton1 } = render(props).refs;
 
-    removeButton0.props.onClick();
+    removeButton1.props.onClick();
 
     expect(props.onRemoveItem).toHaveBeenCalledWith(1);
   });

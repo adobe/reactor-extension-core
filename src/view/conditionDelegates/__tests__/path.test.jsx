@@ -1,10 +1,7 @@
 import TestUtils from 'react-addons-test-utils';
-import Coral from '../../reduxFormCoralUI';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
+
 import Path from '../path';
-import MultipleItemEditor from '../components/multipleItemEditor';
-import ValidationWrapper from '../../components/validationWrapper';
-import RegexToggle from '../../components/regexToggle';
+import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 
 const testProps = {
   config: {
@@ -21,34 +18,31 @@ const testProps = {
 };
 
 const { instance, extensionBridge } = setUpConnectedForm(Path);
-const getParts = () => {
-  return {
-    multipleItemEditor: TestUtils.findRenderedComponentWithType(instance, MultipleItemEditor),
-    pathFields: TestUtils.scryRenderedComponentsWithType(instance, Coral.Textfield),
-    pathValidationWrappers: TestUtils.scryRenderedComponentsWithType(instance, ValidationWrapper),
-    regexToggles: TestUtils.scryRenderedComponentsWithType(instance, RegexToggle)
-  };
-};
 
 describe('path view', () => {
   it('sets form values from config', () => {
     extensionBridge.init(testProps);
 
-    const { pathFields, regexToggles } = getParts();
+    const {
+      pathField0,
+      pathField1,
+      pathRegexToggle0,
+      pathRegexToggle1
+    } = instance.refs.multipleItemEditor.refs;
 
-    expect(pathFields[0].props.value).toBe('foo');
-    expect(pathFields[1].props.value).toBe('bar');
-    expect(regexToggles[0].props.valueIsRegex).toBeUndefined();
-    expect(regexToggles[1].props.valueIsRegex).toBe(true);
+    expect(pathField0.props.value).toBe('foo');
+    expect(pathField1.props.value).toBe('bar');
+    expect(pathRegexToggle0.props.valueIsRegex).toBeUndefined();
+    expect(pathRegexToggle1.props.valueIsRegex).toBe(true);
   });
 
   it('sets config from form values', () => {
     extensionBridge.init();
 
-    const { pathFields, regexToggles } = getParts();
+    const { pathField0, pathRegexToggle0 } = instance.refs.multipleItemEditor.refs;
 
-    pathFields[0].props.onChange('goo');
-    regexToggles[0].props.onValueIsRegexChange(true);
+    pathField0.props.onChange('goo');
+    pathRegexToggle0.props.onValueIsRegexChange(true);
 
     expect(extensionBridge.getConfig()).toEqual({
       paths: [
@@ -63,33 +57,45 @@ describe('path view', () => {
   it('adds a row', () => {
     extensionBridge.init(testProps);
 
-    const { multipleItemEditor } = getParts();
+    const { multipleItemEditor } = instance.refs;
 
     multipleItemEditor.props.onAddItem();
+    
+    const {
+      pathField0,
+      pathField1,
+      pathField2,
+      pathField3
+    } = instance.refs.multipleItemEditor.refs;
 
-    const { pathFields } = getParts();
-
-    expect(pathFields.length).toBe(3);
+    expect(pathField0).toBeDefined();
+    expect(pathField1).toBeDefined();
+    expect(pathField2).toBeDefined();
+    expect(pathField3).toBeUndefined();
   });
 
   it('removes a row', () => {
     extensionBridge.init(testProps);
 
-    const { multipleItemEditor } = getParts();
+    const { multipleItemEditor } = instance.refs;
 
     multipleItemEditor.props.onRemoveItem(1);
 
-    const { pathFields } = getParts();
+    const {
+      pathField0,
+      pathField1
+    } = instance.refs.multipleItemEditor.refs;
 
-    expect(pathFields.length).toBe(1);
+    expect(pathField0).toBeDefined();
+    expect(pathField1).toBeUndefined();
   });
   
   it('sets errors if required values are not provided', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { pathValidationWrappers } = getParts();
+    const { pathWrapper0 } = instance.refs.multipleItemEditor.refs;
 
-    expect(pathValidationWrappers[0].props.error).toBeDefined();
+    expect(pathWrapper0.props.error).toBeDefined();
   });
 });
