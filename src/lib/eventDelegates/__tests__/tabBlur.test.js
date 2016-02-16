@@ -20,7 +20,7 @@ var publicRequire = require('../../__tests__/helpers/stubPublicRequire')({
   }
 });
 var delegate = eventDelegateInjector({
-  getResource: publicRequire('getResource'),
+  getExtension: publicRequire('getExtension'),
   once: publicRequire('once'),
   document: mockDocument
 });

@@ -1,7 +1,8 @@
 'use strict';
 
-var bubbly = require('getResource')('dtm', 'createBubbly')();
-var matchesProperties = require('getResource')('dtm', 'matchesProperties');
+var extension = require('getExtension')('dtm');
+var bubbly = extension.getResource('createBubbly')();
+var matchesProperties = extension.getResource('matchesProperties');
 var liveQuerySelector = require('liveQuerySelector');
 var dataStash = require('createDataStash')('hover');
 

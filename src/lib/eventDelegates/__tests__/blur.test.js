@@ -5,7 +5,7 @@ describe('blur event type', function() {
   var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
   var delegateInjector = require('inject!../blur');
   var delegate = delegateInjector({
-    getResource: publicRequire('getResource')
+    getExtension: publicRequire('getExtension')
   });
 
   testStandardEvent(delegate, 'blur');

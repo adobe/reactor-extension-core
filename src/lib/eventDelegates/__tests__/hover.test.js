@@ -36,7 +36,7 @@ describe('hover event type', function() {
     var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
     var delegateInjector = require('inject!../hover');
     delegate = delegateInjector({
-      getResource: publicRequire('getResource'),
+      getExtension: publicRequire('getExtension'),
       liveQuerySelector: publicRequire('liveQuerySelector'),
       createDataStash: publicRequire('createDataStash')
     });

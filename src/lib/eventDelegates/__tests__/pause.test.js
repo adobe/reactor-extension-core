@@ -5,7 +5,7 @@ describe('pause event type', function() {
   var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
   var delegateInjector = require('inject!../pause');
   var delegate = delegateInjector({
-    getResource: publicRequire('getResource')
+    getExtension: publicRequire('getExtension')
   });
 
   testStandardEvent(delegate, 'pause');

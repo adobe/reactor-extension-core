@@ -25,7 +25,7 @@ var mockDocument = {
 
 var eventDelegateInjector = require('inject!../timeSpentOnPage');
 var delegate = eventDelegateInjector({
-  getResource: publicRequire('getResource'),
+  getExtension: publicRequire('getExtension'),
   once: publicRequire('once'),
   document: mockDocument
 });

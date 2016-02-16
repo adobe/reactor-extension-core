@@ -5,7 +5,7 @@ describe('change event type', function() {
   var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
   var delegateInjector = require('inject!../change');
   var delegate = delegateInjector({
-    getResource: publicRequire('getResource'),
+    getExtension: publicRequire('getExtension'),
     textMatch: publicRequire('textMatch')
   });
 

@@ -1,8 +1,9 @@
 'use strict';
 var document = require('document');
 var once = require('once');
-var visibilityApi = require('getResource')('dtm', 'visibilityApi')();
-var Timer = require('getResource')('dtm', 'timer');
+var extension = require('getExtension')('dtm');
+var visibilityApi = extension.getResource('visibilityApi')();
+var Timer = extension.getResource('timer');
 
 var hiddenProperty = visibilityApi.hiddenProperty;
 var visibilityChangeEventType = visibilityApi.visibilityChangeEventType;

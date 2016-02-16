@@ -19,13 +19,17 @@ module.exports = function(config) {
     require('inject?./state!@reactor/turbine/src/publicRequire');
   publicRequire = publicRequireInjector({
     './state': {
-      getResourceExports: function(extensionName, resourceName) {
-        var uniqueId = extensionName + '/resources/' + resourceName;
-        if (config && config.resourceStubs && config.resourceStubs[uniqueId]) {
-          return config.resourceStubs[uniqueId];
-        } else {
-          return resources[uniqueId];
-        }
+      getExtension: function(extensionName) {
+        return {
+          getResource: function(resourceName) {
+            var uniqueId = extensionName + '/resources/' + resourceName;
+            if (config && config.resourceStubs && config.resourceStubs[uniqueId]) {
+              return config.resourceStubs[uniqueId];
+            } else {
+              return resources[uniqueId];
+            }
+          }
+        };
       },
       getPropertyConfig: function() {
         return config && config.propertyConfig ? config.propertyConfig : {};
@@ -44,7 +48,7 @@ module.exports = function(config) {
   var createBubbly = createBubblyInjector({
     createDataStash: publicRequire('createDataStash'),
     matchesSelector: publicRequire('matchesSelector'),
-    getResource: publicRequire('getResource')
+    getExtension: publicRequire('getExtension')
   });
   resources['dtm/resources/createBubbly'] = createBubbly;
 
