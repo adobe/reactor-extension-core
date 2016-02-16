@@ -1,7 +1,8 @@
 'use strict';
 
 var document = require('document');
-var compareNumbers = require('resourceProvider').get('dtm', 'compareNumbers');
+var extension = require('getExtension')('dtm');
+var compareNumbers = extension.getResource('compareNumbers');
 
 /**
  * Window size condition. Determines if the current window size matches constraints.

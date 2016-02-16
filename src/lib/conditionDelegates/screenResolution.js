@@ -1,7 +1,8 @@
 'use strict';
 
 var window = require('window');
-var compareNumbers = require('resourceProvider').get('dtm', 'compareNumbers');
+var extension = require('getExtension')('dtm');
+var compareNumbers = extension.getResource('compareNumbers');
 
 /**
  * Screen resolution condition. Determines if the current screen resolution matches constraints.

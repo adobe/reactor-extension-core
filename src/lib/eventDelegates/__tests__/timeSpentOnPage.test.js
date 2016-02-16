@@ -10,8 +10,8 @@ var Timer = TimerInjector({
 
 var publicRequire = require('../../__tests__/helpers/stubPublicRequire')({
   resourceStubs: {
-    'dtm.visibilityApi': visibilityApi,
-    'dtm.timer': Timer
+    'dtm/resources/visibilityApi': visibilityApi,
+    'dtm/resources/timer': Timer
   }
 });
 
@@ -25,7 +25,7 @@ var mockDocument = {
 
 var eventDelegateInjector = require('inject!../timeSpentOnPage');
 var delegate = eventDelegateInjector({
-  resourceProvider: publicRequire('resourceProvider'),
+  getExtension: publicRequire('getExtension'),
   once: publicRequire('once'),
   document: mockDocument
 });

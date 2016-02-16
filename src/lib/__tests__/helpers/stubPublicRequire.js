@@ -19,13 +19,17 @@ module.exports = function(config) {
     require('inject?./state!@reactor/turbine/src/publicRequire');
   publicRequire = publicRequireInjector({
     './state': {
-      getResource: function(extensionId, resourceId) {
-        var uniqueId = extensionId + '.' + resourceId;
-        if (config && config.resourceStubs && config.resourceStubs[uniqueId]) {
-          return config.resourceStubs[uniqueId];
-        } else {
-          return resources[uniqueId];
-        }
+      getExtension: function(extensionName) {
+        return {
+          getResource: function(resourceName) {
+            var uniqueId = extensionName + '/resources/' + resourceName;
+            if (config && config.resourceStubs && config.resourceStubs[uniqueId]) {
+              return config.resourceStubs[uniqueId];
+            } else {
+              return resources[uniqueId];
+            }
+          }
+        };
       },
       getPropertyConfig: function() {
         return config && config.propertyConfig ? config.propertyConfig : {};
@@ -38,18 +42,18 @@ module.exports = function(config) {
   var matchesProperties = matchesPropertiesInjector({
     textMatch: publicRequire('textMatch')
   });
-  resources['dtm.matchesProperties'] = matchesProperties;
+  resources['dtm/resources/matchesProperties'] = matchesProperties;
 
   var createBubblyInjector = require('inject!../../resources/createBubbly');
   var createBubbly = createBubblyInjector({
     createDataStash: publicRequire('createDataStash'),
     matchesSelector: publicRequire('matchesSelector'),
-    resourceProvider: publicRequire('resourceProvider')
+    getExtension: publicRequire('getExtension')
   });
-  resources['dtm.createBubbly'] = createBubbly;
+  resources['dtm/resources/createBubbly'] = createBubbly;
 
   var compareNumbers = require('../../resources/compareNumbers');
-  resources['dtm.compareNumbers'] = compareNumbers;
+  resources['dtm/resources/compareNumbers'] = compareNumbers;
 
   var visitorTrackingInjector =
     require('inject!../../resources/visitorTracking');
@@ -60,7 +64,7 @@ module.exports = function(config) {
     'window': publicRequire('window'),
     'propertyConfig': publicRequire('propertyConfig')
   });
-  resources['dtm.visitorTracking'] = visitorTracking;
+  resources['dtm/resources/visitorTracking'] = visitorTracking;
 
   return publicRequire;
 };

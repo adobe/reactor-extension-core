@@ -16,11 +16,11 @@ var mockDocument = {
 
 var publicRequire = require('../../__tests__/helpers/stubPublicRequire')({
   resourceStubs: {
-    'dtm.visibilityApi': visibilityApi
+    'dtm/resources/visibilityApi': visibilityApi
   }
 });
 var delegate = eventDelegateInjector({
-  resourceProvider: publicRequire('resourceProvider'),
+  getExtension: publicRequire('getExtension'),
   once: publicRequire('once'),
   document: mockDocument
 });
