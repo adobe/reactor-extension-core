@@ -13,7 +13,7 @@ const finalCreateStore = compose(
 )(createStore);
 
 const store = finalCreateStore(reducer, {});
-const setFormConfigForCurrentRoute = bridgeAdapter(extensionBridge, store);
+const setFormConfigForCurrentRoute = bridgeAdapter(window.extensionBridge || {}, store);
 const router = createRouter(setFormConfigForCurrentRoute);
 
 ReactDOM.render((
