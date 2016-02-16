@@ -15,7 +15,7 @@ class VariableSet extends React.Component {
           className="u-gapRight"
           error={name.touched && name.error}>
           <label>
-            <span className="u-label">JS Variable Name:</span>
+            <span className="u-label coral-Form-fieldlabel">JS Variable Name</span>
             <Coral.Textfield ref="nameField" {...name}/>
           </label>
         </ValidationWrapper>
@@ -24,7 +24,7 @@ class VariableSet extends React.Component {
           className="u-gapRight"
           error={value.touched && value.error}>
           <label>
-            <span className="u-label">JS Variable Value:</span>
+            <span className="u-label coral-Form-fieldlabel">JS Variable Value</span>
             <Coral.Textfield ref="valueField" {...value}/>
           </label>
         </ValidationWrapper>
