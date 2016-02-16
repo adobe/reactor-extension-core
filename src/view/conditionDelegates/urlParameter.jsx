@@ -14,14 +14,14 @@ class URLParameter extends React.Component {
           ref="nameWrapper"
           className="u-gapRight"
           error={name.touched && name.error}>
-          <span className="u-label">URL Parameter Name:</span>
+          <span className="u-label coral-Form-fieldlabel">URL Parameter Name</span>
           <Coral.Textfield ref="nameField" {...name}/>
         </ValidationWrapper>
         <ValidationWrapper
           ref="valueWrapper"
           className="u-gapRight"
           error={value.touched && value.error}>
-          <span className="u-label">URL Parameter Value:</span>
+          <span className="u-label coral-Form-fieldlabel">URL Parameter Value</span>
           <Coral.Textfield ref="valueField" {...value}/>
         </ValidationWrapper>
         <RegexToggle

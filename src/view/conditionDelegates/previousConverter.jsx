@@ -14,8 +14,8 @@ class PreviousConverter extends React.Component {
         className="u-gapRight"
         error={dataElement.touched && dataElement.error}>
         <label>
-          <span className="u-label">
-            Data element identifying whether the user is a previous converter:
+          <span className="u-label coral-Form-fieldlabel">
+            Data element identifying whether the user is a previous converter
           </span>
           <DataElementNameField ref="dataElementField" {...dataElement}/>
         </label>

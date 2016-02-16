@@ -29,7 +29,6 @@ export default class ElementPropertyEditor extends React.Component {
           error={name.touched && name.error}>
           <Coral.Textfield
             ref="nameField"
-            className="u-gapLeft"
             placeholder="Property"
             {...name}/>
         </ValidationWrapper>

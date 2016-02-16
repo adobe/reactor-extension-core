@@ -19,7 +19,7 @@ class Path extends React.Component {
           className="u-gapRight"
           error={path.value.touched && path.value.error}>
           <label>
-            <span className="u-label">Path matches</span>
+            <span className="u-label coral-Form-fieldlabel">Path</span>
             <Coral.Textfield ref={`pathField${index}`} {...path.value}/>
           </label>
         </ValidationWrapper>
