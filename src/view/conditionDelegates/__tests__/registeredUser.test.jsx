@@ -1,18 +1,9 @@
 import TestUtils from 'react-addons-test-utils';
-import Coral from '../../reduxFormCoralUI';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
+
 import RegisteredUser from '../registeredUser';
-import ValidationWrapper from '../../components/validationWrapper';
-import DataElementNameField from '../components/dataElementNameField';
+import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 
 const { instance, extensionBridge } = setUpConnectedForm(RegisteredUser);
-const getParts = () => {
-  return {
-    dataElementField: TestUtils.findRenderedComponentWithType(instance, DataElementNameField),
-    dataElementValidationWrapper:
-      TestUtils.findRenderedComponentWithType(instance, ValidationWrapper)
-  };
-};
 
 describe('registered user view', () => {
   it('sets form values from config', () => {
@@ -22,7 +13,7 @@ describe('registered user view', () => {
       }
     });
 
-    const { dataElementField } = getParts();
+    const { dataElementField } = instance.refs;
 
     expect(dataElementField.props.value).toBe('foo');
   });
@@ -30,7 +21,7 @@ describe('registered user view', () => {
   it('sets config from form values', () => {
     extensionBridge.init();
 
-    const { dataElementField } = getParts();
+    const { dataElementField } = instance.refs;
 
     dataElementField.props.onChange('foo');
 
@@ -43,10 +34,8 @@ describe('registered user view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const {
-      dataElementValidationWrapper
-    } = getParts();
+    const { dataElementWrapper } = instance.refs;
 
-    expect(dataElementValidationWrapper.props.error).toEqual(jasmine.any(String));
+    expect(dataElementWrapper.props.error).toEqual(jasmine.any(String));
   });
 });

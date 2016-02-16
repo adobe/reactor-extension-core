@@ -1,21 +1,11 @@
 import TestUtils from 'react-addons-test-utils';
-import Coral from '../../../reduxFormCoralUI';
+
 import setUpConnectedForm from '../../../__tests__/helpers/setUpConnectedForm';
 import extensionViewReduxForm from '../../../extensionViewReduxForm';
-import ElementPropertyEditor from '../elementPropertyEditor';
 import ElementPropertiesEditor, { formConfig } from '../elementPropertiesEditor';
 
 const FormComponent = extensionViewReduxForm(formConfig)(ElementPropertiesEditor);
 const { instance, extensionBridge } = setUpConnectedForm(FormComponent);
-
-const getParts = () => {
-  const editorRows = TestUtils.scryRenderedComponentsWithType(instance, ElementPropertyEditor);
-  return {
-    addButton: instance.refs.addButton,
-    editorRows,
-    firstEditorRow: editorRows[0]
-  };
-};
 
 describe('elementPropertiesEditor', () => {
   it('sets form values from config', () => {
@@ -23,34 +13,34 @@ describe('elementPropertiesEditor', () => {
       config: {
         elementProperties:[
           {
-            name: 'someprop',
-            value: 'somevalue',
+            name: 'some prop',
+            value: 'some value',
             valueIsRegex: true
           }
         ]
       }
     });
 
-    const { firstEditorRow } = getParts(instance);
-    expect(firstEditorRow.props.fields.name.value).toBe('someprop');
-    expect(firstEditorRow.props.fields.value.value).toBe('somevalue');
-    expect(firstEditorRow.props.fields.valueIsRegex.value).toBe(true);
+    const { elementPropertyEditor0 } = instance.refs;
+    expect(elementPropertyEditor0.props.fields.name.value).toBe('some prop');
+    expect(elementPropertyEditor0.props.fields.value.value).toBe('some value');
+    expect(elementPropertyEditor0.props.fields.valueIsRegex.value).toBe(true);
   });
 
   it('sets config from form values', () => {
     extensionBridge.init();
 
-    const { firstEditorRow } = getParts(instance);
+    const { elementPropertyEditor0 } = instance.refs;
 
-    firstEditorRow.props.fields.name.onChange('somepropset');
-    firstEditorRow.props.fields.value.onChange('somevalueset');
-    firstEditorRow.props.fields.valueIsRegex.onChange(true);
+    elementPropertyEditor0.props.fields.name.onChange('some prop set');
+    elementPropertyEditor0.props.fields.value.onChange('some value set');
+    elementPropertyEditor0.props.fields.valueIsRegex.onChange(true);
 
     const { elementProperties } = extensionBridge.getConfig();
     expect(elementProperties).toEqual([
       {
-        name: 'somepropset',
-        value: 'somevalueset',
+        name: 'some prop set',
+        value: 'some value set',
         valueIsRegex: true
       }
     ]);
@@ -59,26 +49,32 @@ describe('elementPropertiesEditor', () => {
   it('sets error if element property name field is empty and value is not empty', () => {
     extensionBridge.init();
 
-    const { firstEditorRow } = getParts(instance);
+    const { elementPropertyEditor0 } = instance.refs;
 
-    firstEditorRow.props.fields.value.onChange('foo');
+    elementPropertyEditor0.props.fields.value.onChange('foo');
 
     expect(extensionBridge.validate()).toBe(false);
 
-    expect(firstEditorRow.props.fields.name.touched).toBe(true);
-    expect(firstEditorRow.props.fields.name.error).toEqual(jasmine.any(String));
+    expect(elementPropertyEditor0.props.fields.name.touched).toBe(true);
+    expect(elementPropertyEditor0.props.fields.name.error).toEqual(jasmine.any(String));
   });
 
   it('creates a new row when the add button is clicked', () => {
     extensionBridge.init();
 
-    const { addButton } = getParts(instance);
+    const { addButton } = instance.refs;
     addButton.props.onClick();
 
-    const { editorRows } = getParts(instance);
+    const {
+      elementPropertyEditor0,
+      elementPropertyEditor1,
+      elementPropertyEditor2
+    } = instance.refs;
 
     // First row is visible by default.
-    expect(editorRows.length).toBe(2);
+    expect(elementPropertyEditor0).toBeDefined();
+    expect(elementPropertyEditor1).toBeDefined();
+    expect(elementPropertyEditor2).toBeUndefined();
   });
 
   it('deletes a row when requested from row', () => {
@@ -86,25 +82,30 @@ describe('elementPropertiesEditor', () => {
       config: {
         elementProperties:[
           {
-            name: 'someprop',
-            value: 'somevalue',
+            name: 'some prop',
+            value: 'some value',
             valueIsRegex: true
           },
           {
-            name: 'someprop2',
-            value: 'somevalue2',
+            name: 'some prop2',
+            value: 'some value2',
             valueIsRegex: true
           }
         ]
       }
     });
 
-    const { firstEditorRow } = getParts(instance);
+    const firstEditorRow = instance.refs.elementPropertyEditor0;
 
     firstEditorRow.props.remove();
 
-    const { editorRows } = getParts(instance);
+    const {
+      elementPropertyEditor0,
+      elementPropertyEditor1
+    } = instance.refs;
 
-    expect(editorRows.length).toBe(1);
+    // First row is visible by default.
+    expect(elementPropertyEditor0).toBeDefined();
+    expect(elementPropertyEditor1).toBeUndefined();
   });
 });

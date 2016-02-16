@@ -2,7 +2,8 @@
 
 var poll = require('poll');
 var dataStash = require('createDataStash')('elementExists');
-var matchesProperties = require('resourceProvider').get('dtm', 'matchesProperties');
+var extension = require('getExtension')('dtm');
+var matchesProperties = extension.getResource('matchesProperties');
 
 var listenersBySelector = {};
 

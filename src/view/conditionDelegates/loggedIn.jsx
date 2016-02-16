@@ -9,10 +9,15 @@ class LoggedIn extends React.Component {
     const { dataElement } = this.props.fields;
 
     return (
-      <ValidationWrapper className="u-gapRight" error={dataElement.touched && dataElement.error}>
+      <ValidationWrapper
+        ref="dataElementWrapper"
+        className="u-gapRight"
+        error={dataElement.touched && dataElement.error}>
         <label>
-          <span className="u-label coral-Form-fieldlabel">Data element identifying whether the user is logged in</span>
-          <DataElementNameField {...dataElement}/>
+          <span className="u-label coral-Form-fieldlabel">
+            Data element identifying whether the user is logged in
+          </span>
+          <DataElementNameField ref="dataElementField" {...dataElement}/>
         </label>
       </ValidationWrapper>
     );

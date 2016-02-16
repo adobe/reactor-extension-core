@@ -1,6 +1,7 @@
 'use strict';
 
-var compareNumbers = require('resourceProvider').get('dtm', 'compareNumbers');
+var extension = require('getExtension')('dtm');
+var compareNumbers = extension.getResource('compareNumbers');
 
 /**
  * Cart amount condition. Determines if the current cart amount matches constraints.

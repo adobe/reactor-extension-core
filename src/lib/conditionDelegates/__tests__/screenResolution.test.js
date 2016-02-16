@@ -11,7 +11,7 @@ var conditionDelegateInjector = require('inject!../screenResolution');
 var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
 var conditionDelegate = conditionDelegateInjector({
   window: mockWindow,
-  resourceProvider: publicRequire('resourceProvider')
+  getExtension: publicRequire('getExtension')
 });
 
 var getConfig = function(width, widthOperator, height, heightOperator) {

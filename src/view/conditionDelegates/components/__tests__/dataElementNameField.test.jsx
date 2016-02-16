@@ -1,18 +1,10 @@
 import React from 'react';
-import Coral from 'coralui-support-react';
 import TestUtils from 'react-addons-test-utils';
+
 import DataElementNameField from '../dataElementNameField';
-import DataElementSelectorButton from '../dataElementSelectorButton';
 
 const render = props => {
   return TestUtils.renderIntoDocument(<DataElementNameField {...props}/>);
-};
-
-const getParts = instance => {
-  return {
-    textfield: TestUtils.findRenderedComponentWithType(instance, Coral.Textfield),
-    selectorButton: TestUtils.findRenderedComponentWithType(instance, DataElementSelectorButton)
-  };
 };
 
 describe('data element name field', () => {
@@ -27,26 +19,26 @@ describe('data element name field', () => {
   });
 
   it('sets value on textfield', () => {
-    const { textfield } = getParts(render({
+    const { textfield } = render({
       value: 'foo'
-    }));
+    }).refs;
 
     expect(textfield.props.value).toBe('foo');
   });
 
   it('sets invalid prop on textfield', () => {
-    const { textfield } = getParts(render({
+    const { textfield } = render({
       invalid: true
-    }));
+    }).refs;
 
     expect(textfield.props.invalid).toBe(true);
   });
 
   it('support data element selector workflow when clicking textfield', () => {
     const onChange = jasmine.createSpy();
-    const { textfield } = getParts(render({
+    const { textfield } = render({
       onChange
-    }));
+    }).refs;
 
     textfield.props.onClick();
 
@@ -57,11 +49,11 @@ describe('data element name field', () => {
 
   it('support data element selector workflow when clicking button', () => {
     const onChange = jasmine.createSpy();
-    const { selectorButton } = getParts(render({
+    const { button } = render({
       onChange
-    }));
+    }).refs;
 
-    selectorButton.props.onClick();
+    button.props.onClick();
 
     expect(window.extensionBridge.openDataElementSelector)
       .toHaveBeenCalledWith(jasmine.any(Function));

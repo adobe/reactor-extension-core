@@ -1,24 +1,15 @@
 import TestUtils from 'react-addons-test-utils';
-import Coral from '../../reduxFormCoralUI';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
+
 import QueryParameter from '../queryParameter';
-import ValidationWrapper from '../../components/validationWrapper';
+import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 
 const { instance, extensionBridge } = setUpConnectedForm(QueryParameter);
-
-const getParts = () => {
-  return {
-    nameField: TestUtils.findRenderedComponentWithType(instance, Coral.Textfield),
-    nameValidationWrapper: TestUtils.findRenderedComponentWithType(instance, ValidationWrapper),
-    caseInsensitiveCheckbox: TestUtils.findRenderedComponentWithType(instance, Coral.Checkbox)
-  };
-};
 
 describe('query parameter view', () => {
   it('checks case insensitive checkbox by default', () => {
     extensionBridge.init();
 
-    const { caseInsensitiveCheckbox } = getParts();
+    const { caseInsensitiveCheckbox } = instance.refs;
 
     expect(caseInsensitiveCheckbox.props.checked).toBe(true);
   });
@@ -31,7 +22,7 @@ describe('query parameter view', () => {
       }
     });
 
-    const { nameField, caseInsensitiveCheckbox } = getParts();
+    const { nameField, caseInsensitiveCheckbox } = instance.refs;
 
     expect(nameField.props.value).toBe('foo');
     expect(caseInsensitiveCheckbox.props.checked).toBe(false);
@@ -40,7 +31,7 @@ describe('query parameter view', () => {
   it('sets config from form values', () => {
     extensionBridge.init();
 
-    const { nameField, caseInsensitiveCheckbox } = getParts();
+    const { nameField, caseInsensitiveCheckbox } = instance.refs;
 
     nameField.props.onChange('foo');
     caseInsensitiveCheckbox.props.onChange(false);
@@ -54,9 +45,9 @@ describe('query parameter view', () => {
   it('sets errors if required values are not provided', () => {
     extensionBridge.init();
 
-    const { nameValidationWrapper } = getParts();
+    const { nameWrapper } = instance.refs;
 
     expect(extensionBridge.validate()).toBe(false);
-    expect(nameValidationWrapper.props.error).toEqual(jasmine.any(String));
+    expect(nameWrapper.props.error).toEqual(jasmine.any(String));
   });
 });

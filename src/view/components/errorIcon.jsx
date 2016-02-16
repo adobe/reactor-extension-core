@@ -25,12 +25,14 @@ export default class ErrorIcon extends React.Component {
     return (
       <div className="ErrorIcon">
         <Coral.Icon
+          ref="icon"
           className="u-gapLeft ErrorIcon-icon"
           size="S"
           icon="alert"
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}/>
         <Coral.Tooltip
+          ref="tooltip"
           target="_prev"
           placement="bottom"
           offset="18"

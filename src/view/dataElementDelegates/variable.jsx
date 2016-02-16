@@ -8,10 +8,10 @@ class Variable extends React.Component {
     const { path } = this.props.fields;
 
     return (
-      <ValidationWrapper error={path.touched && path.error}>
+      <ValidationWrapper ref="pathWrapper" error={path.touched && path.error}>
         <label>
           <span className="u-label coral-Form-fieldlabel">Path to variable</span>
-          <Coral.Textfield {...path}/>
+          <Coral.Textfield ref="pathField" {...path}/>
         </label>
       </ValidationWrapper>
     );

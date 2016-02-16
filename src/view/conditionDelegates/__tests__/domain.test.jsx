@@ -1,16 +1,9 @@
 import TestUtils from 'react-addons-test-utils';
-import Coral from '../../reduxFormCoralUI';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
+
 import Domain from '../domain';
-import CheckboxList from '../../components/checkboxList';
+import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 
 const { instance, extensionBridge } = setUpConnectedForm(Domain);
-
-const getParts = () => {
-  return {
-    checkboxList: TestUtils.findRenderedComponentWithType(instance, CheckboxList)
-  };
-};
 
 const domains = [
   'adobe.com',
@@ -32,17 +25,17 @@ describe('domain view', () => {
       }
     });
 
-    const { checkboxList } = getParts();
+    const { domainsCheckboxList } = instance.refs;
 
-    expect(checkboxList.props.options).toEqual(domains);
-    expect(checkboxList.props.value).toEqual(selectedDomains);
+    expect(domainsCheckboxList.props.options).toEqual(domains);
+    expect(domainsCheckboxList.props.value).toEqual(selectedDomains);
   });
 
   it('sets config from form values', () => {
     extensionBridge.init();
 
-    const { checkboxList } = getParts();
-    checkboxList.props.onChange(selectedDomains);
+    const { domainsCheckboxList } = instance.refs;
+    domainsCheckboxList.props.onChange(selectedDomains);
 
     expect(extensionBridge.getConfig()).toEqual({
       domains: selectedDomains

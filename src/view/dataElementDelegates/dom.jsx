@@ -63,17 +63,22 @@ class DOM extends React.Component {
     return (
       <div>
         <div className="u-gapBottom">
-          <ValidationWrapper error={elementSelector.touched && elementSelector.error}>
+          <ValidationWrapper
+            ref="elementSelectorWrapper"
+            error={elementSelector.touched && elementSelector.error}>
             <label>
               <span className="u-label">From the DOM element matching the CSS Selector</span>
-              <Coral.Textfield {...elementSelector}/>
+              <Coral.Textfield ref="elementSelectorField" {...elementSelector}/>
             </label>
           </ValidationWrapper>
         </div>
         <div>
           <label>
             <span className="u-label">Use the value of</span>
-            <Coral.Select {...selectedElementPropertyPreset} className="u-gapRight">
+            <Coral.Select
+              ref="elementPropertyPresetsSelect"
+              {...selectedElementPropertyPreset}
+              className="u-gapRight">
               {
                 elementPropertyPresets.map(preset => {
                   return (
@@ -87,8 +92,10 @@ class DOM extends React.Component {
           </label>
           {
             (selectedElementPropertyPreset.value === 'custom') ?
-            <ValidationWrapper error={customElementProperty.touched && customElementProperty.error}>
-              <Coral.Textfield {...customElementProperty}/>
+            <ValidationWrapper
+              ref="customElementPropertyWrapper"
+              error={customElementProperty.touched && customElementProperty.error}>
+              <Coral.Textfield ref="customElementPropertyField" {...customElementProperty}/>
             </ValidationWrapper>
             : null
           }

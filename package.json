@@ -18,6 +18,10 @@
     "extension",
     "dtm"
   ],
+  "scripts": {
+    "ci-job": "xvfb-run gulp test --ci --browser all && gulp lint && gulp package && npm run plato",
+    "plato": "plato -r -d platoReport src"
+  },
   "dependencies": {
     "classnames": "^2.2.3",
     "coralui-support-react": "git+https://fcf1e02afcceac6505ac6b6a43c26061c0b9bcaa:x-oauth-basic@git.corp.adobe.com/Coral/coralui-support-react.git",
@@ -47,9 +51,9 @@
     "react": "^0.14.6",
     "react-addons-test-utils": "^0.14.6",
     "react-dom": "^0.14.6",
-    "@reactor/turbine": "^1.0.0",
+    "@reactor/turbine": "^2.0.0",
     "@reactor/turbine-gulp-sandbox": "^0.0.1",
-    "@reactor/turbine-gulp-testrunner": "^0.0.1",
+    "@reactor/turbine-gulp-testrunner": "^0.1.0",
     "@reactor/turbine-gulp-packager": "^0.0.1",
     "webpack-stream": "^3.1.0"
   }

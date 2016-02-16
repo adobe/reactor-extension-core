@@ -11,19 +11,26 @@ class DataElement extends React.Component {
 
     return (
       <div>
-        <ValidationWrapper className="u-gapRight" error={name.touched && name.error}>
+        <ValidationWrapper
+          ref="nameWrapper"
+          className="u-gapRight"
+          error={name.touched && name.error}>
           <label>
             <span className="u-label">Data element</span>
-            <DataElementNameField {...name}/>
+            <DataElementNameField ref="nameField" {...name}/>
           </label>
         </ValidationWrapper>
-        <ValidationWrapper className="u-gapRight" error={value.touched && value.error}>
+        <ValidationWrapper
+          ref="valueWrapper"
+          className="u-gapRight"
+          error={value.touched && value.error}>
           <label>
             <span className="u-label">has the value</span>
-            <Coral.Textfield {...value}/>
+            <Coral.Textfield ref="valueField" {...value}/>
           </label>
         </ValidationWrapper>
         <RegexToggle
+          ref="valueRegexToggle"
           value={value.value}
           valueIsRegex={valueIsRegex.value}
           onValueChange={value.onChange}

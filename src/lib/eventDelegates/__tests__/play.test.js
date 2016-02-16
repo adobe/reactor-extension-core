@@ -5,7 +5,7 @@ describe('play event type', function() {
   var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
   var delegateInjector = require('inject!../play');
   var delegate = delegateInjector({
-    resourceProvider: publicRequire('resourceProvider')
+    getExtension: publicRequire('getExtension')
   });
 
   testStandardEvent(delegate, 'play');

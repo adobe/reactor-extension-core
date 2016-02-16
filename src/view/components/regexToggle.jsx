@@ -19,11 +19,13 @@ export default class RegexToggle extends React.Component {
       <div className={classNames(this.props.className, 'u-inlineBlock')}>
         <label>
           <Coral.Switch
+            ref="regexSwitch"
             className="u-gapRight"
             checked={this.props.valueIsRegex}
             onChange={this.onToggleChange}/>
           <span className="u-label">Regex</span>
           <button
+            ref="testButton"
             className="u-buttonReset coral-Link"
             onClick={this.onTestRegex}
             style={{ visibility: this.props.valueIsRegex ? 'visible' : 'hidden' }}>Test</button>

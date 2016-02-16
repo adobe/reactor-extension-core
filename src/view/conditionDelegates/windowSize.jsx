@@ -13,11 +13,11 @@ class WindowSize extends React.Component {
         <div>
           <label className="u-gapRight">
             <span className="u-label">The user's window size width is</span>
-            <ComparisonOperatorField {...widthOperator}/>
+            <ComparisonOperatorField ref="widthOperatorField" {...widthOperator}/>
           </label>
-          <ValidationWrapper error={width.touched && width.error}>
+          <ValidationWrapper ref="widthWrapper" error={width.touched && width.error}>
             <label>
-              <Coral.Textfield className="u-gapRight" {...width}/>
+              <Coral.Textfield ref="widthField" className="u-gapRight" {...width}/>
               <span>px</span>
             </label>
           </ValidationWrapper>
@@ -25,11 +25,11 @@ class WindowSize extends React.Component {
         <div className="u-gapTop">
           <label className="u-gapRight">
             <span className="u-label">and height is</span>
-            <ComparisonOperatorField {...heightOperator}/>
+            <ComparisonOperatorField ref="heightOperatorField" {...heightOperator}/>
           </label>
-          <ValidationWrapper error={height.touched && height.error}>
+          <ValidationWrapper ref="heightWrapper" error={height.touched && height.error}>
             <label>
-              <Coral.Textfield className="u-gapRight" {...height}/>
+              <Coral.Textfield ref="heightField" className="u-gapRight" {...height}/>
               <span>px</span>
             </label>
           </ValidationWrapper>

@@ -3,26 +3,28 @@ import Coral from '../reduxFormCoralUI';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import RegexToggle from '../components/regexToggle';
 import ValidationWrapper from '../components/validationWrapper';
-import createID from '../utils/createID';
+import createId from '../utils/createId';
 import MultipleItemEditor from './components/multipleItemEditor';
 
 class Subdomain extends React.Component {
-  addRow = () => this.props.fields.subdomains.addField({ id: createID() });
+  addRow = () => this.props.fields.subdomains.addField({ id: createId() });
   removeRow = index => this.props.fields.subdomains.removeField(index);
   getKey = subdomain => subdomain.id.value;
 
-  renderItem = subdomain => {
+  renderItem = (subdomain, index) => {
     return (
       <div className="u-inlineBlock">
         <ValidationWrapper
+          ref={`subdomainWrapper${index}`}
           className="u-gapRight"
           error={subdomain.value.touched && subdomain.value.error}>
           <label>
             <span className="u-label coral-Form-fieldlabel">Subdomain</span>
-            <Coral.Textfield {...subdomain.value}/>
+            <Coral.Textfield ref={`subdomainField${index}`} {...subdomain.value}/>
           </label>
         </ValidationWrapper>
         <RegexToggle
+          ref={`subdomainRegexToggle${index}`}
           value={subdomain.value.value}
           valueIsRegex={subdomain.valueIsRegex.value}
           onValueChange={subdomain.value.onChange}
@@ -36,6 +38,7 @@ class Subdomain extends React.Component {
 
     return (
       <MultipleItemEditor
+        ref="multipleItemEditor"
         items={subdomains}
         renderItem={this.renderItem}
         getKey={this.getKey}
@@ -68,7 +71,7 @@ const formConfig = {
     values.subdomains = values.subdomains.map(subdomain => {
       return {
         ...subdomain,
-        id: createID()
+        id: createId()
       };
     });
 

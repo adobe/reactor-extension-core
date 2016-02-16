@@ -9,12 +9,14 @@ class Protocol extends React.Component {
     return (
       <div>
         <Coral.Radio
+          ref="httpRadio"
           {...protocol}
           value="http:"
           checked={protocol.value === 'http:'}>
           HTTP
         </Coral.Radio>
         <Coral.Radio
+          ref="httpsRadio"
           {...protocol}
           value="https:"
           checked={protocol.value === 'https:'}>

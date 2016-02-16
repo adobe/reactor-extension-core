@@ -13,11 +13,11 @@ class TimeOnSite extends React.Component {
         <div>
           <label className="u-gapRight">
             <span className="u-label">User has spent</span>
-            <ComparisonOperatorField {...operator}/>
+            <ComparisonOperatorField ref="operatorField" {...operator}/>
           </label>
-          <ValidationWrapper error={minutes.touched && minutes.error}>
+          <ValidationWrapper ref="minutesWrapper" error={minutes.touched && minutes.error}>
             <label>
-              <Coral.Textfield {...minutes}/>
+              <Coral.Textfield ref="minutesField" {...minutes}/>
               <span className="u-label u-gapLeft">minutes on site</span>
             </label>
           </ValidationWrapper>

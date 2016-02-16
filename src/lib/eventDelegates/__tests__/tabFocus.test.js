@@ -8,7 +8,7 @@ var visibilityChangeListener;
 var mockDocument = {
   location: 'somelocation',
   addEventListener: function(event, listener) {
-    if (event === visibilityApiInstance.visibilityChange) {
+    if (event && event === visibilityApiInstance.visibilityChangeEventType) {
       visibilityChangeListener = listener;
     }
   }
@@ -16,11 +16,11 @@ var mockDocument = {
 
 var publicRequire = require('../../__tests__/helpers/stubPublicRequire')({
   resourceStubs: {
-    'dtm.visibilityApi': visibilityApi
+    'dtm/resources/visibilityApi': visibilityApi
   }
 });
 var delegate = eventDelegateInjector({
-  resourceProvider: publicRequire('resourceProvider'),
+  getExtension: publicRequire('getExtension'),
   once: publicRequire('once'),
   document: mockDocument
 });
@@ -34,7 +34,7 @@ describe('tabfocus event type', function() {
 
     expect(trigger.calls.count()).toBe(0);
 
-    mockDocument[visibilityApiInstance.hidden] = false;
+    mockDocument[visibilityApiInstance.hiddenProperty] = false;
     visibilityChangeListener.call(location);
 
     expect(trigger.calls.count()).toBe(1);

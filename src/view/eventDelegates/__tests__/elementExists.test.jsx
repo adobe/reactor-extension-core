@@ -1,7 +1,7 @@
 import TestUtils from 'react-addons-test-utils';
-import Coral from '../../reduxFormCoralUI';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
+
 import ElementExists from '../elementExists';
+import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 
 const { instance, extensionBridge } = setUpConnectedForm(ElementExists);
 

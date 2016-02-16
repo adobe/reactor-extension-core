@@ -10,12 +10,12 @@ var mockVisitorTracking = {
 var conditionDelegateInjector = require('inject!../trafficSource');
 var publicRequire = require('../../__tests__/helpers/stubPublicRequire')({
   resourceStubs: {
-    'dtm.visitorTracking': mockVisitorTracking
+    'dtm/resources/visitorTracking': mockVisitorTracking
   }
 });
 var conditionDelegate = conditionDelegateInjector({
   textMatch: publicRequire('textMatch'),
-  resourceProvider: publicRequire('resourceProvider')
+  getExtension: publicRequire('getExtension')
 });
 
 var getConfig = function(source, sourceIsRegex) {

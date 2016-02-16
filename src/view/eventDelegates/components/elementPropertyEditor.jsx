@@ -28,6 +28,7 @@ export default class ElementPropertyEditor extends React.Component {
           ref="nameValidationWrapper"
           error={name.touched && name.error}>
           <Coral.Textfield
+            ref="nameField"
             placeholder="Property"
             {...name}/>
         </ValidationWrapper>

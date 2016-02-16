@@ -13,11 +13,11 @@ var mockVisitorTracking = {
 var conditionDelegateInjector = require('inject!../pageViews');
 var publicRequire = require('../../__tests__/helpers/stubPublicRequire')({
   resourceStubs: {
-    'dtm.visitorTracking': mockVisitorTracking
+    'dtm/resources/visitorTracking': mockVisitorTracking
   }
 });
 var conditionDelegate = conditionDelegateInjector({
-  resourceProvider: publicRequire('resourceProvider')
+  getExtension: publicRequire('getExtension')
 });
 
 var DURATIONS = [

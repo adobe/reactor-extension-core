@@ -9,7 +9,7 @@ export default class MultipleItemEditor extends React.Component {
       return (
         <div ref={'row' + i} key={getKey(item)}>
           { i !== 0 ? <div className="MultipleItemEditor-orLabel">or</div> : null }
-          { renderItem(item) }
+          { renderItem(item, i) }
           {
             items.length > 1 ?
               <Coral.Button

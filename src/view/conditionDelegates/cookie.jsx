@@ -10,19 +10,26 @@ class Cookie extends React.Component {
 
     return (
       <div>
-        <ValidationWrapper className="u-gapRight" error={name.touched && name.error}>
+        <ValidationWrapper
+          ref="nameWrapper"
+          className="u-gapRight"
+          error={name.touched && name.error}>
           <label>
             <span className="u-label coral-Form-fieldlabel">Cookie Name</span>
-            <Coral.Textfield {...name}/>
+            <Coral.Textfield ref="nameField" {...name}/>
           </label>
         </ValidationWrapper>
-        <ValidationWrapper className="u-gapRight" error={value.touched && value.error}>
+        <ValidationWrapper
+          ref="valueWrapper"
+          className="u-gapRight"
+          error={value.touched && value.error}>
           <label>
             <span className="u-label coral-Form-fieldlabel">Cookie Value</span>
-            <Coral.Textfield {...value}/>
+            <Coral.Textfield ref="valueField" {...value}/>
           </label>
         </ValidationWrapper>
         <RegexToggle
+          ref="valueRegexToggle"
           value={value.value}
           valueIsRegex={valueIsRegex.value}
           onValueChange={value.onChange}

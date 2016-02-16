@@ -17,7 +17,10 @@ const deviceTypeOptions = [
 class DeviceType extends React.Component {
   render() {
     const { deviceTypes } = this.props.fields;
-    return <CheckboxList options={deviceTypeOptions} {...deviceTypes}/>;
+    return <CheckboxList
+      ref="deviceOptionsCheckboxList"
+      options={deviceTypeOptions}
+      {...deviceTypes}/>;
   }
 }
 

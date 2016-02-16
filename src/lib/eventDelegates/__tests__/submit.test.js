@@ -5,7 +5,7 @@ describe('submit event type', function() {
   var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
   var delegateInjector = require('inject!../submit');
   var delegate = delegateInjector({
-    resourceProvider: publicRequire('resourceProvider')
+    getExtension: publicRequire('getExtension')
   });
 
   testStandardEvent(delegate, 'submit');

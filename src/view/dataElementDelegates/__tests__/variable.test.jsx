@@ -1,16 +1,9 @@
 import TestUtils from 'react-addons-test-utils';
-import Coral from '../../reduxFormCoralUI';
+
 import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 import Variable from '../variable';
-import ValidationWrapper from '../../components/validationWrapper';
 
 const { instance, extensionBridge } = setUpConnectedForm(Variable);
-const getParts = () => {
-  return {
-    pathField: TestUtils.findRenderedComponentWithType(instance, Coral.Textfield),
-    pathValidationWrapper: TestUtils.findRenderedComponentWithType(instance, ValidationWrapper)
-  };
-};
 
 describe('variable view', () => {
   it('sets form values from config', () => {
@@ -20,7 +13,7 @@ describe('variable view', () => {
       }
     });
 
-    const { pathField } = getParts();
+    const { pathField } = instance.refs;
 
     expect(pathField.props.value).toBe('foo');
   });
@@ -28,7 +21,7 @@ describe('variable view', () => {
   it('sets config from form values', () => {
     extensionBridge.init();
 
-    const { pathField } = getParts();
+    const { pathField } = instance.refs;
 
     pathField.props.onChange('foo');
 
@@ -40,9 +33,9 @@ describe('variable view', () => {
   it('sets errors if required values are not provided', () => {
     extensionBridge.init();
 
-    const { pathValidationWrapper } = getParts();
+    const { pathWrapper } = instance.refs;
 
     expect(extensionBridge.validate()).toBe(false);
-    expect(pathValidationWrapper.props.error).toEqual(jasmine.any(String));
+    expect(pathWrapper.props.error).toEqual(jasmine.any(String));
   });
 });

@@ -1,24 +1,15 @@
 import TestUtils from 'react-addons-test-utils';
-import Coral from '../../reduxFormCoralUI';
+
 import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 import TimeOnSite from '../timeOnSite';
-import ValidationWrapper from '../../components/validationWrapper';
-import ComparisonOperatorField from '../components/comparisonOperatorField';
 
 const { instance, extensionBridge } = setUpConnectedForm(TimeOnSite);
-const getParts = () => {
-  return {
-    operatorField: TestUtils.findRenderedComponentWithType(instance, ComparisonOperatorField),
-    minutesField: TestUtils.findRenderedComponentWithType(instance, Coral.Textfield),
-    minutesValidationWrapper: TestUtils.findRenderedComponentWithType(instance, ValidationWrapper)
-  };
-};
 
 describe('time on site view', () => {
   it('sets operator to greater than by default', () => {
     extensionBridge.init();
 
-    const { operatorField } = getParts();
+    const { operatorField } = instance.refs;
 
     expect(operatorField.props.value).toBe('>');
   });
@@ -31,7 +22,7 @@ describe('time on site view', () => {
       }
     });
 
-    const { operatorField, minutesField } = getParts();
+    const { operatorField, minutesField } = instance.refs;
 
     expect(operatorField.props.value).toBe('=');
     expect(minutesField.props.value).toBe(100);
@@ -40,7 +31,7 @@ describe('time on site view', () => {
   it('sets config from form values', () => {
     extensionBridge.init();
 
-    const { operatorField, minutesField } = getParts();
+    const { operatorField, minutesField } = instance.refs;
 
     operatorField.props.onChange('=');
     minutesField.props.onChange(100);
@@ -55,19 +46,19 @@ describe('time on site view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { minutesValidationWrapper } = getParts();
+    const { minutesWrapper } = instance.refs;
 
-    expect(minutesValidationWrapper.props.error).toEqual(jasmine.any(String));
+    expect(minutesWrapper.props.error).toEqual(jasmine.any(String));
   });
 
   it('sets error if count value is not a number', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { minutesField, minutesValidationWrapper } = getParts();
+    const { minutesField, minutesWrapper } = instance.refs;
 
     minutesField.props.onChange('12.abc');
 
-    expect(minutesValidationWrapper.props.error).toEqual(jasmine.any(String));
+    expect(minutesWrapper.props.error).toEqual(jasmine.any(String));
   });
 });

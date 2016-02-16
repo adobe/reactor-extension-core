@@ -1,6 +1,6 @@
 'use strict';
-
-var bubbly = require('resourceProvider').get('dtm', 'createBubbly')();
+var extension = require('getExtension')('dtm');
+var bubbly = extension.getResource('createBubbly')();
 
 var typesWatched = [];
 

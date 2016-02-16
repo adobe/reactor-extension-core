@@ -20,7 +20,7 @@ describe('custom event type', function() {
   var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
   var delegateInjector = require('inject!../custom');
   var delegate = delegateInjector({
-    resourceProvider: publicRequire('resourceProvider')
+    getExtension: publicRequire('getExtension')
   });
 
   beforeAll(function() {

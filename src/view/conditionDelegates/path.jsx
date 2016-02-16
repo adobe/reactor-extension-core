@@ -3,24 +3,28 @@ import Coral from '../reduxFormCoralUI';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import RegexToggle from '../components/regexToggle';
 import ValidationWrapper from '../components/validationWrapper';
-import createID from '../utils/createID';
+import createId from '../utils/createId';
 import MultipleItemEditor from './components/multipleItemEditor';
 
 class Path extends React.Component {
-  addRow = () => this.props.fields.paths.addField({ id: createID() });
+  addRow = () => this.props.fields.paths.addField({ id: createId() });
   removeRow = index => this.props.fields.paths.removeField(index);
   getKey = path => path.id.value;
 
-  renderItem = path => {
+  renderItem = (path, index) => {
     return (
       <div className="u-inlineBlock">
-        <ValidationWrapper className="u-gapRight" error={path.value.touched && path.value.error}>
+        <ValidationWrapper
+          ref={`pathWrapper${index}`}
+          className="u-gapRight"
+          error={path.value.touched && path.value.error}>
           <label>
             <span className="u-label coral-Form-fieldlabel">Path</span>
-            <Coral.Textfield {...path.value}/>
+            <Coral.Textfield ref={`pathField${index}`} {...path.value}/>
           </label>
         </ValidationWrapper>
         <RegexToggle
+          ref={`pathRegexToggle${index}`}
           value={path.value.value}
           valueIsRegex={path.valueIsRegex.value}
           onValueChange={path.value.onChange}
@@ -34,6 +38,7 @@ class Path extends React.Component {
 
     return (
       <MultipleItemEditor
+        ref="multipleItemEditor"
         items={paths}
         renderItem={this.renderItem}
         getKey={this.getKey}
@@ -66,7 +71,7 @@ const formConfig = {
     values.paths = values.paths.map(path => {
       return {
         ...path,
-        id: createID()
+        id: createId()
       };
     });
 

@@ -6,9 +6,9 @@ export default class DisclosureButton extends React.Component {
     var iconClass = this.props.selected ? 'chevronDown' : 'chevronRight';
 
     return (
-      <button className="u-buttonReset" onClick={this.props.onClick}>
+      <button ref="button" className="u-buttonReset" onClick={this.props.onClick}>
         {this.props.label}
-        <Coral.Icon className="DisclosureButton-icon" icon={iconClass}/>
+        <Coral.Icon ref="icon" className="DisclosureButton-icon" icon={iconClass}/>
       </button>
     );
   }
