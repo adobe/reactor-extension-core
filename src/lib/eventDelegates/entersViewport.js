@@ -141,7 +141,7 @@ var dataStashHelper = {
   },
 
   /**
-   * Returns whether the a listener has been executed for the given target element.
+   * Returns whether the listener has been executed for the given target element.
    * @param {HTMLElement} element
    * @param {Object} listener
    * @returns {boolean}
@@ -240,11 +240,11 @@ var checkForElementsInViewport = function() {
         var element = elements[i];
 
         if (dataStashHelper.getIsListenerComplete(element, listener)) {
-          return;
+          continue;
         }
 
         if (!matchesProperties(element, listener.settings.elementProperties)) {
-          return;
+          continue;
         }
 
         if (elementIsInView(element, viewportHeight, scrollTop)) {
@@ -264,8 +264,9 @@ poll('enters viewport event delegate', checkForElementsInViewport);
 
 /**
  * Enters viewport event. This event occurs when an element has entered the viewport. The rule
- * should only run once per targeted element.
- * @param {Object} settings The event settings object.
+ * will run once and only once for each element that matches the settings. If multiple
+ * elements match the settings, the rule will fire for each matching element.
+ * @param {Object} settings The event config object.
  * @param {string} settings.elementSelector The CSS selector the element must match in order for
  * the rule to fire.
  * targeting.
