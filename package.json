@@ -52,8 +52,8 @@
     "react-addons-test-utils": "^0.14.6",
     "react-dom": "^0.14.6",
     "@reactor/turbine": "^2.0.0",
-    "@reactor/turbine-gulp-sandbox": "^0.0.1",
-    "@reactor/turbine-gulp-testrunner": "^0.1.0",
+    "@reactor/turbine-gulp-sandbox": "^1.0.0",
+    "@reactor/turbine-gulp-testrunner": "^1.0.0",
     "@reactor/turbine-gulp-packager": "^0.0.1",
     "webpack-stream": "^3.1.0"
   }
