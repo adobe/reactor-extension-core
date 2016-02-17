@@ -17,7 +17,7 @@ describe('hash condition delegate', function() {
   });
 
   it('returns true when the hash matches an acceptable string', function() {
-    var config = {
+    var settings = {
       hashes: [
         {
           value: '#foo'
@@ -27,11 +27,11 @@ describe('hash condition delegate', function() {
         }
       ]
     };
-    expect(conditionDelegate(config)).toBe(true);
+    expect(conditionDelegate(settings)).toBe(true);
   });
 
   it('returns false when the hash does not match an acceptable string', function() {
-    var config = {
+    var settings = {
       hashes: [
         {
           value: '#foo'
@@ -41,11 +41,11 @@ describe('hash condition delegate', function() {
         }
       ]
     };
-    expect(conditionDelegate(config)).toBe(false);
+    expect(conditionDelegate(settings)).toBe(false);
   });
 
   it('returns true when the hash matches an acceptable regex', function() {
-    var config = {
+    var settings = {
       hashes: [
         {
           value: '#foo'
@@ -56,11 +56,11 @@ describe('hash condition delegate', function() {
         }
       ]
     };
-    expect(conditionDelegate(config)).toBe(true);
+    expect(conditionDelegate(settings)).toBe(true);
   });
 
   it('returns false when the hash does not match an acceptable regex', function() {
-    var config = {
+    var settings = {
       hashes: [
         {
           value: '#foo'
@@ -71,6 +71,6 @@ describe('hash condition delegate', function() {
         }
       ]
     };
-    expect(conditionDelegate(config)).toBe(false);
+    expect(conditionDelegate(settings)).toBe(false);
   });
 });

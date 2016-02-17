@@ -12,14 +12,15 @@ visitorTracking.enable();
 /**
  * Traffic source condition. Determines if the actual traffic source matches an acceptable traffic
  * source.
- * @param {Object} config Condition config.
- * @param {string} config.source An acceptable traffic source.
- * @param {boolean} [config.sourceIsRegex=false] Whether <code>config.source</code> is intended to
- * be a regular expression.
+ * @param {Object} settings Condition settings.
+ * @param {string} settings.source An acceptable traffic source.
+ * @param {boolean} [settings.sourceIsRegex=false] Whether <code>settings.source</code> is intended
+ * to be a regular expression.
  * @returns {boolean}
  */
-module.exports = function(config) {
-  var acceptableSource = config.sourceIsRegex ? new RegExp(config.source, 'i') : config.source;
+module.exports = function(settings) {
+  var acceptableSource =
+    settings.sourceIsRegex ? new RegExp(settings.source, 'i') : settings.source;
   return textMatch(visitorTracking.getTrafficSource(), acceptableSource);
 };
 

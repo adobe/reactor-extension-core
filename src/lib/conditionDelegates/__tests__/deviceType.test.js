@@ -9,7 +9,7 @@ var conditionDelegate = conditionDelegateInjector({
   clientInfo: mockClientInfo
 });
 
-var getConfig = function(deviceTypes) {
+var getSettings = function(deviceTypes) {
   return {
     deviceTypes: deviceTypes
   };
@@ -18,13 +18,13 @@ var getConfig = function(deviceTypes) {
 describe('device type condition delegate', function() {
   it('returns true when the current device type matches one of the selected ' +
       'device types', function() {
-    var config = getConfig(['Shoe', 'Goo', 'Foo', 'Moo']);
-    expect(conditionDelegate(config)).toBe(true);
+    var settings = getSettings(['Shoe', 'Goo', 'Foo', 'Moo']);
+    expect(conditionDelegate(settings)).toBe(true);
   });
 
   it('returns false when the current device type does not match any of the selected ' +
       'device types', function() {
-    var config = getConfig(['Shoe', 'Goo', 'Boo', 'Moo']);
-    expect(conditionDelegate(config)).toBe(false);
+    var settings = getSettings(['Shoe', 'Goo', 'Boo', 'Moo']);
+    expect(conditionDelegate(settings)).toBe(false);
   });
 });

@@ -18,9 +18,9 @@ window.addEventListener('orientationchange', function(event) {
 
 /**
  * The orientationchange event. This event occurs when the orientation of the device has changed.
- * @param {Object} config The event config object.
+ * @param {Object} settings The event settings object.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function(config, trigger) {
+module.exports = function(settings, trigger) {
   triggers.push(trigger);
 };

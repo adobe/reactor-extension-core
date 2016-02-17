@@ -48,12 +48,12 @@ var setupTimer = once(function() {
  * that will be used trigger a callback method. The callback is called whenever the counted time
  * passes the provided markers. The timer will be paused whenever the user will switch to another
  * tab and it will be resumed when the user returns back to the tab.
- * @param {Object} config The event config object.
+ * @param {Object} settings The event settings object.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function(config, trigger) {
+module.exports = function(settings, trigger) {
   var timer = setupTimer();
-  var timeOnPageMilliseconds = config.timeOnPage * 1000;
+  var timeOnPageMilliseconds = settings.timeOnPage * 1000;
 
   timer.addMarker(timeOnPageMilliseconds);
 

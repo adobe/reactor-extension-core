@@ -8,7 +8,7 @@ var conditionDelegate = require('inject!../urlParameter')({
   }
 });
 
-var getConfig = function(name, value, valueIsRegex) {
+var getSettings = function(name, value, valueIsRegex) {
   return {
     name: name,
     value: value,
@@ -18,22 +18,22 @@ var getConfig = function(name, value, valueIsRegex) {
 
 describe('url parameter condition delegate', function() {
   it('returns true when value matches using regular string', function() {
-    var config = getConfig('testParam', 'foo', false);
-    expect(conditionDelegate(config)).toBe(true);
+    var settings = getSettings('testParam', 'foo', false);
+    expect(conditionDelegate(settings)).toBe(true);
   });
 
   it('returns false when value does not match using regular string', function() {
-    var config = getConfig('testParam', 'goo', false);
-    expect(conditionDelegate(config)).toBe(false);
+    var settings = getSettings('testParam', 'goo', false);
+    expect(conditionDelegate(settings)).toBe(false);
   });
 
   it('returns true when value matches using regex', function() {
-    var config = getConfig('testParam', '^F[ojd]o$', true);
-    expect(conditionDelegate(config)).toBe(true);
+    var settings = getSettings('testParam', '^F[ojd]o$', true);
+    expect(conditionDelegate(settings)).toBe(true);
   });
 
   it('returns false when value does not match using regex', function() {
-    var config = getConfig('testParam', '^g[ojd]o$', true);
-    expect(conditionDelegate(config)).toBe(false);
+    var settings = getSettings('testParam', '^g[ojd]o$', true);
+    expect(conditionDelegate(settings)).toBe(false);
   });
 });

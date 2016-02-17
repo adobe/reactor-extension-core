@@ -32,10 +32,10 @@ var watchForTabFocus = once(function() {
  * Tabfocus event. This event occurs when a webpage is visible or in focus. With tabbed browsing,
  * there is a reasonable chance that any given webpage is in the background and thus not
  * visible to the user.
- * @param {Object} config The event config object.
+ * @param {Object} settings The event settings object.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function(config, trigger) {
+module.exports = function(settings, trigger) {
   watchForTabFocus();
   triggers.push(trigger);
 };

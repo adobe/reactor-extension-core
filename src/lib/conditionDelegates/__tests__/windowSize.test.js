@@ -14,7 +14,7 @@ var conditionDelegate = conditionDelegateInjector({
   getExtension: publicRequire('getExtension')
 });
 
-var getConfig = function(width, widthOperator, height, heightOperator) {
+var getSettings = function(width, widthOperator, height, heightOperator) {
   return {
     width: width,
     widthOperator: widthOperator,
@@ -25,32 +25,32 @@ var getConfig = function(width, widthOperator, height, heightOperator) {
 
 describe('window size condition delegate', function() {
   it('returns true when dimension is above "greater than" constraint', function() {
-    var config = getConfig(1365, '>', 768, '=');
-    expect(conditionDelegate(config)).toBe(true);
+    var settings = getSettings(1365, '>', 768, '=');
+    expect(conditionDelegate(settings)).toBe(true);
   });
 
   it('returns false when dimension is below "greater than" constraint', function() {
-    var config = getConfig(1366, '>', 768, '=');
-    expect(conditionDelegate(config)).toBe(false);
+    var settings = getSettings(1366, '>', 768, '=');
+    expect(conditionDelegate(settings)).toBe(false);
   });
 
   it('returns true when dimension is below "less than" constraint', function() {
-    var config = getConfig(1366, '=', 769, '<');
-    expect(conditionDelegate(config)).toBe(true);
+    var settings = getSettings(1366, '=', 769, '<');
+    expect(conditionDelegate(settings)).toBe(true);
   });
 
   it('returns false when dimension is above "less than" constraint', function() {
-    var config = getConfig(1366, '=', 768, '<');
-    expect(conditionDelegate(config)).toBe(false);
+    var settings = getSettings(1366, '=', 768, '<');
+    expect(conditionDelegate(settings)).toBe(false);
   });
 
   it('returns true when dimension matches "equals" constraint', function() {
-    var config = getConfig(1366, '=', 768, '=');
-    expect(conditionDelegate(config)).toBe(true);
+    var settings = getSettings(1366, '=', 768, '=');
+    expect(conditionDelegate(settings)).toBe(true);
   });
 
   it('returns false when dimension does not match "equals" constraint', function() {
-    var config = getConfig(1366, '=', 767, '=');
-    expect(conditionDelegate(config)).toBe(false);
+    var settings = getSettings(1366, '=', 767, '=');
+    expect(conditionDelegate(settings)).toBe(false);
   });
 });

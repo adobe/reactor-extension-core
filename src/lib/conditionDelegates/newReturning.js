@@ -9,14 +9,14 @@ visitorTracking.enable();
 
 /**
  * New vs. returning visitor condition. Determines if the visitor is a new or returning visitor.
- * @param {Object} config Condition config.
- * @param {boolean} config.isNewVisitor When true, the condition returns true if the
+ * @param {Object} settings Condition settings.
+ * @param {boolean} settings.isNewVisitor When true, the condition returns true if the
  * visitor is a new visitor. When false, the condition returns true if the visitor is a returning
  * visitor.
  * @returns {boolean}
  */
-module.exports = function(config) {
+module.exports = function(settings) {
   var isNewVisitor = visitorTracking.getIsNewVisitor();
-  return config.isNewVisitor ? isNewVisitor : !isNewVisitor;
+  return settings.isNewVisitor ? isNewVisitor : !isNewVisitor;
 };
 

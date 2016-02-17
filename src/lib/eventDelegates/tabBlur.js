@@ -30,10 +30,10 @@ var watchForTabBlur = once(function() {
 
 /**
  * Tabblur event. This event occurs when a webpage is not visible or not in focus.
- * @param {Object} config The event config object.
+ * @param {Object} settings The event settings object.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function(config, trigger) {
+module.exports = function(settings, trigger) {
   watchForTabBlur();
   triggers.push(trigger);
 };

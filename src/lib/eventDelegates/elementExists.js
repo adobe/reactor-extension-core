@@ -21,7 +21,7 @@ poll('element exists event delegate', function() {
 
         for (var k = 0; k < listeners.length; k++) {
           var listener = listeners[k];
-          if (matchesProperties(element, listener.config.elementProperties)) {
+          if (matchesProperties(element, listener.settings.elementProperties)) {
             listener.trigger({
               type: 'elementexists',
               target: element
@@ -46,26 +46,26 @@ poll('element exists event delegate', function() {
 /**
  * Element exists event. This event occurs when an element has been added to the DOM. The rule
  * should run no more than once.
- * @param {Object} config The event config object.
- * @param {string} config.elementSelector The CSS selector the element must match in order for
+ * @param {Object} settings The event settings object.
+ * @param {string} settings.elementSelector The CSS selector the element must match in order for
  * the rule to fire.
- * @param {Object[]} [config.elementProperties] Property values the element must have in order
+ * @param {Object[]} [settings.elementProperties] Property values the element must have in order
  * for the rule to fire.
- * @param {string} config.elementProperties[].name The property name.
- * @param {string} config.elementProperties[].value The property value.
- * @param {boolean} [config.elementProperties[].valueIsRegex=false] Whether <code>value</code>
+ * @param {string} settings.elementProperties[].name The property name.
+ * @param {string} settings.elementProperties[].value The property value.
+ * @param {boolean} [settings.elementProperties[].valueIsRegex=false] Whether <code>value</code>
  * on the object instance is intended to be a regular expression.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function(config, trigger) {
-  var listeners = listenersBySelector[config.elementSelector];
+module.exports = function(settings, trigger) {
+  var listeners = listenersBySelector[settings.elementSelector];
 
   if (!listeners) {
-    listeners = listenersBySelector[config.elementSelector] = [];
+    listeners = listenersBySelector[settings.elementSelector] = [];
   }
 
   listeners.push({
-    config: config,
+    settings: settings,
     trigger: trigger
   });
 };

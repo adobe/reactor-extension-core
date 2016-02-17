@@ -7,12 +7,12 @@ var dataElementDelegate = require('inject!../queryParameter')({
 
 describe('queryParam data element delegate', function() {
   it('should return a query parameter value', function() {
-    var config = {
+    var settings = {
       name: 'foo',
       caseInsensitive: true
     };
 
-    var value = dataElementDelegate(config);
+    var value = dataElementDelegate(settings);
 
     expect(value).toBe('bar');
     expect(getQueryParamSpy.calls.argsFor(0)).toEqual(['foo', true]);

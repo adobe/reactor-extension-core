@@ -14,7 +14,7 @@ var conditionDelegate = conditionDelegateInjector({
   getExtension: publicRequire('getExtension')
 });
 
-var getConfig = function(isNewVisitor) {
+var getSettings = function(isNewVisitor) {
   return {
     isNewVisitor: isNewVisitor
   };
@@ -30,8 +30,8 @@ describe('new vs. returning condition delegate', function() {
       return true;
     };
 
-    var config = getConfig(true);
-    expect(conditionDelegate(config)).toBe(true);
+    var settings = getSettings(true);
+    expect(conditionDelegate(settings)).toBe(true);
   });
 
   it('returns true when isNewVisitor = false and the visitor is returning', function() {
@@ -39,8 +39,8 @@ describe('new vs. returning condition delegate', function() {
       return false;
     };
 
-    var config = getConfig(false);
-    expect(conditionDelegate(config)).toBe(true);
+    var settings = getSettings(false);
+    expect(conditionDelegate(settings)).toBe(true);
   });
 
   it('returns false when isNewVisitor = false and the visitor is new', function() {
@@ -48,8 +48,8 @@ describe('new vs. returning condition delegate', function() {
       return true;
     };
 
-    var config = getConfig(false);
-    expect(conditionDelegate(config)).toBe(false);
+    var settings = getSettings(false);
+    expect(conditionDelegate(settings)).toBe(false);
   });
 
   it('returns false when isNewVisitor = true and the visitor is returning', function() {
@@ -57,7 +57,7 @@ describe('new vs. returning condition delegate', function() {
       return false;
     };
 
-    var config = getConfig(true);
-    expect(conditionDelegate(config)).toBe(false);
+    var settings = getSettings(true);
+    expect(conditionDelegate(settings)).toBe(false);
   });
 });

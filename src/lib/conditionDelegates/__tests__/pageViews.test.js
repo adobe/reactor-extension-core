@@ -25,7 +25,7 @@ var DURATIONS = [
   'session'
 ];
 
-var getConfig = function(count, operator, duration) {
+var getSettings = function(count, operator, duration) {
   return {
     count: count,
     operator: operator,
@@ -54,38 +54,38 @@ describe('page views condition delegate', function() {
       };
 
       it('returns true when number of page views is above "greater than" constraint', function() {
-        var config = getConfig(4, '>', duration);
-        expect(conditionDelegate(config)).toBe(true);
+        var settings = getSettings(4, '>', duration);
+        expect(conditionDelegate(settings)).toBe(true);
         assertCorrectMethodCall();
       });
 
       it('returns false when number of page views is below "greater than" constraint', function() {
-        var config = getConfig(6, '>', duration);
-        expect(conditionDelegate(config)).toBe(false);
+        var settings = getSettings(6, '>', duration);
+        expect(conditionDelegate(settings)).toBe(false);
         assertCorrectMethodCall();
       });
 
       it('returns true when number of page views is below "less than" constraint', function() {
-        var config = getConfig(6, '<', duration);
-        expect(conditionDelegate(config)).toBe(true);
+        var settings = getSettings(6, '<', duration);
+        expect(conditionDelegate(settings)).toBe(true);
         assertCorrectMethodCall();
       });
 
       it('returns false when number of page views is above "less than" constraint', function() {
-        var config = getConfig(4, '<', duration);
-        expect(conditionDelegate(config)).toBe(false);
+        var settings = getSettings(4, '<', duration);
+        expect(conditionDelegate(settings)).toBe(false);
         assertCorrectMethodCall();
       });
 
       it('returns true when number of page views matches "equals" constraint', function() {
-        var config = getConfig(5, '=', duration);
-        expect(conditionDelegate(config)).toBe(true);
+        var settings = getSettings(5, '=', duration);
+        expect(conditionDelegate(settings)).toBe(true);
         assertCorrectMethodCall();
       });
 
       it('returns false when number of page views does not match "equals" constraint', function() {
-        var config = getConfig(11, '=', duration);
-        expect(conditionDelegate(config)).toBe(false);
+        var settings = getSettings(11, '=', duration);
+        expect(conditionDelegate(settings)).toBe(false);
         assertCorrectMethodCall();
       });
     });

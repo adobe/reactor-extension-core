@@ -6,7 +6,7 @@ var conditionDelegate = conditionDelegateInjector({
   getExtension: publicRequire('getExtension')
 });
 
-var getConfig = function(dataElement, operator, amount) {
+var getSettings = function(dataElement, operator, amount) {
   return {
     dataElement: dataElement,
     operator: operator,
@@ -34,33 +34,33 @@ describe('cart amount condition delegate', function() {
     });
 
     it('returns true when cart amount is above "greater than" constraint', function() {
-      var config = getConfig('foo', '>', 5.16);
-      expect(conditionDelegate(config)).toBe(true);
+      var settings = getSettings('foo', '>', 5.16);
+      expect(conditionDelegate(settings)).toBe(true);
     });
 
     it('returns false when cart amount is below "greater than" constraint', function() {
-      var config = getConfig('foo', '>', 5.18);
-      expect(conditionDelegate(config)).toBe(false);
+      var settings = getSettings('foo', '>', 5.18);
+      expect(conditionDelegate(settings)).toBe(false);
     });
 
     it('returns true when cart amount is below "less than" constraint', function() {
-      var config = getConfig('foo', '<', 5.18);
-      expect(conditionDelegate(config)).toBe(true);
+      var settings = getSettings('foo', '<', 5.18);
+      expect(conditionDelegate(settings)).toBe(true);
     });
 
     it('returns false when cart amount is above "less than" constraint', function() {
-      var config = getConfig('foo', '<', 5.16);
-      expect(conditionDelegate(config)).toBe(false);
+      var settings = getSettings('foo', '<', 5.16);
+      expect(conditionDelegate(settings)).toBe(false);
     });
 
     it('returns true when cart amount matches "equals" constraint', function() {
-      var config = getConfig('foo', '=', 5.17);
-      expect(conditionDelegate(config)).toBe(true);
+      var settings = getSettings('foo', '=', 5.17);
+      expect(conditionDelegate(settings)).toBe(true);
     });
 
     it('returns false when cart amount does not match "equals" constraint', function() {
-      var config = getConfig('foo', '=', 11.42);
-      expect(conditionDelegate(config)).toBe(false);
+      var settings = getSettings('foo', '=', 11.42);
+      expect(conditionDelegate(settings)).toBe(false);
     });
   });
 
@@ -96,23 +96,23 @@ describe('cart amount condition delegate', function() {
       });
 
       it('coerces the value to ' + nonNumber.coercedValue, function() {
-        var config = getConfig('foo', '>', nonNumber.coercedValue - .01);
-        expect(conditionDelegate(config)).toBe(true);
+        var settings = getSettings('foo', '>', nonNumber.coercedValue - .01);
+        expect(conditionDelegate(settings)).toBe(true);
 
-        config = getConfig('foo', '>', nonNumber.coercedValue + .01);
-        expect(conditionDelegate(config)).toBe(false);
+        settings = getSettings('foo', '>', nonNumber.coercedValue + .01);
+        expect(conditionDelegate(settings)).toBe(false);
 
-        config = getConfig('foo', '<', nonNumber.coercedValue + .01);
-        expect(conditionDelegate(config)).toBe(true);
+        settings = getSettings('foo', '<', nonNumber.coercedValue + .01);
+        expect(conditionDelegate(settings)).toBe(true);
 
-        config = getConfig('foo', '<', nonNumber.coercedValue - .01);
-        expect(conditionDelegate(config)).toBe(false);
+        settings = getSettings('foo', '<', nonNumber.coercedValue - .01);
+        expect(conditionDelegate(settings)).toBe(false);
 
-        config = getConfig('foo', '=', nonNumber.coercedValue);
-        expect(conditionDelegate(config)).toBe(true);
+        settings = getSettings('foo', '=', nonNumber.coercedValue);
+        expect(conditionDelegate(settings)).toBe(true);
 
-        config = getConfig('foo', '=', nonNumber.coercedValue - 11);
-        expect(conditionDelegate(config)).toBe(false);
+        settings = getSettings('foo', '=', nonNumber.coercedValue - 11);
+        expect(conditionDelegate(settings)).toBe(false);
       });
     });
   });

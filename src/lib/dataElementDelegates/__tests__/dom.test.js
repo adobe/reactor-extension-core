@@ -18,20 +18,20 @@ describe('dom data element delegate', function() {
   });
 
   it('should return the text value of the first matching element', function() {
-    var config = {
+    var settings = {
       elementSelector: '#domDataElement',
       elementProperty: 'text'
     };
 
-    expect(dataElementDelegate(config)).toBe('Foo Content');
+    expect(dataElementDelegate(settings)).toBe('Foo Content');
   });
 
   it('should return an attribute of the first matching element', function() {
-    var config = {
+    var settings = {
       elementSelector: '#domDataElement',
       elementProperty: 'data-cake'
     };
 
-    expect(dataElementDelegate(config)).toBe('delish');
+    expect(dataElementDelegate(settings)).toBe('delish');
   });
 });
