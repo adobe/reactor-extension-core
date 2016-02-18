@@ -29,10 +29,10 @@ class Protocol extends React.Component {
 
 const formConfig = {
   fields: ['protocol'],
-  configToFormValues(values, options) {
+  settingsToFormValues(values, options) {
     return {
       ...values,
-      protocol: options.config.protocol || 'http:'
+      protocol: options.settings.protocol || 'http:'
     };
   }
 };

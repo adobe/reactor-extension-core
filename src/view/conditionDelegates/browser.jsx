@@ -24,7 +24,7 @@ class Browser extends React.Component {
 
 const formConfig = {
   fields: ['browsers'],
-  formValuesToConfig(config, values) {
+  formValuesToSettings(settings, values) {
     return {
       browsers: values.browsers || [] // An array is required.
     };

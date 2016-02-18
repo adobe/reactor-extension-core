@@ -56,26 +56,26 @@ export const formConfig = {
     'delayType',
     'delay'
   ],
-  configToFormValues(values, options) {
+  settingsToFormValues(values, options) {
     return {
       ...values,
-      delayType: options.config.delay > 0 ? 'delay' : 'immediate',
-      delay: options.config.delay > 0 ? options.config.delay : ''
+      delayType: options.settings.delay > 0 ? 'delay' : 'immediate',
+      delay: options.settings.delay > 0 ? options.settings.delay : ''
     };
   },
-  formValuesToConfig(config, values) {
-    config = {
-      ...config
+  formValuesToSettings(settings, values) {
+    settings = {
+      ...settings
     };
 
     if (values.delayType === 'delay') {
-      config.delay = Number(values.delay);
+      settings.delay = Number(values.delay);
     } else {
-      delete config.delay;
+      delete settings.delay;
     }
 
-    delete config.delayType;
-    return config;
+    delete settings.delayType;
+    return settings;
   },
   validate(errors, values) {
     errors = {

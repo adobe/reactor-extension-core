@@ -14,9 +14,9 @@ describe('cart amount view', () => {
     expect(operatorField.props.value).toBe('>');
   });
 
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         dataElement: 'foo',
         operator: '=',
         amount: 12.50
@@ -30,7 +30,7 @@ describe('cart amount view', () => {
     expect(amountField.props.value).toBe(12.50);
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { dataElementField, operatorField, amountField } = instance.refs;
@@ -39,7 +39,7 @@ describe('cart amount view', () => {
     operatorField.props.onChange('=');
     amountField.props.onChange('12.50');
 
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       dataElement: 'foo',
       operator: '=',
       amount: 12.50

@@ -29,9 +29,9 @@ class TimeSpentOnPage extends React.Component {
 
 const formConfig = {
   fields: ['timeOnPage'],
-  formValuesToConfig: (config, values) => {
+  formValuesToSettings: (settings, values) => {
     return {
-      ...config,
+      ...settings,
       timeOnPage: Number(values.timeOnPage)
     };
   },

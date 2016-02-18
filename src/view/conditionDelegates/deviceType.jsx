@@ -26,7 +26,7 @@ class DeviceType extends React.Component {
 
 const formConfig = {
   fields: ['deviceTypes'],
-  formValuesToConfig(config, values) {
+  formValuesToSettings(settings, values) {
     return {
       deviceTypes: values.deviceTypes || [] // An array is required.
     };

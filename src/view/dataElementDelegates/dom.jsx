@@ -112,8 +112,8 @@ const formConfig = {
     'customElementProperty',
     'elementPropertyPresets'
   ],
-  configToFormValues(values, options) {
-    let { elementSelector, elementProperty } = options.config;
+  settingsToFormValues(values, options) {
+    let { elementSelector, elementProperty } = options.settings;
 
     let elementPropertyIsPreset =
       elementPropertyPresets.some(preset => preset.value === elementProperty);
@@ -137,7 +137,7 @@ const formConfig = {
     };
   },
 
-  formValuesToConfig(config, values) {
+  formValuesToSettings(settings, values) {
     let { selectedElementPropertyPreset, customElementProperty } = values;
     let elementProperty;
 

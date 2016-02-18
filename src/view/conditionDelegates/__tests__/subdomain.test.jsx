@@ -4,7 +4,7 @@ import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 import Subdomain from '../subdomain';
 
 const testProps = {
-  config: {
+  settings: {
     subdomains: [
       {
         value: 'foo'
@@ -20,7 +20,7 @@ const testProps = {
 const { instance, extensionBridge } = setUpConnectedForm(Subdomain);
 
 describe('subdomain view', () => {
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init(testProps);
 
     const {
@@ -36,7 +36,7 @@ describe('subdomain view', () => {
     expect(subdomainRegexToggle1.props.valueIsRegex).toBe(true);
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const {
@@ -47,7 +47,7 @@ describe('subdomain view', () => {
     subdomainField0.props.onChange('goo');
     subdomainRegexToggle0.props.onValueIsRegexChange(true);
 
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       subdomains: [
         {
           value: 'goo',

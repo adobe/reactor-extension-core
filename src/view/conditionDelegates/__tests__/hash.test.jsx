@@ -4,7 +4,7 @@ import Hash from '../hash';
 import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 
 const testProps = {
-  config: {
+  settings: {
     hashes: [
       {
         value: 'foo'
@@ -20,7 +20,7 @@ const testProps = {
 const { instance, extensionBridge } = setUpConnectedForm(Hash);
 
 describe('hash view', () => {
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init(testProps);
 
     const {
@@ -36,7 +36,7 @@ describe('hash view', () => {
     expect(hashRegexToggle1.props.valueIsRegex).toBe(true);
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { hashField0, hashRegexToggle0 } = instance.refs.multipleItemEditor.refs;
@@ -44,7 +44,7 @@ describe('hash view', () => {
     hashField0.props.onChange('goo');
     hashRegexToggle0.props.onValueIsRegexChange(true);
 
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       hashes: [
         {
           value: 'goo',

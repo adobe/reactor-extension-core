@@ -55,7 +55,7 @@ const formConfig = {
     'hashes[].value',
     'hashes[].valueIsRegex'
   ],
-  configToFormValues(values, options) {
+  settingsToFormValues(values, options) {
     values = {
       ...values
     };
@@ -77,20 +77,20 @@ const formConfig = {
 
     return values;
   },
-  formValuesToConfig(config, values) {
-    config = {
-      ...config
+  formValuesToSettings(settings, values) {
+    settings = {
+      ...settings
     };
 
-    config.hashes = values.hashes.map(hash => {
-      // Don't let ID get into the config since it's only used in the view.
+    settings.hashes = values.hashes.map(hash => {
+      // Don't let ID get into the settings since it's only used in the view.
       return {
         value: hash.value,
         valueIsRegex: hash.valueIsRegex
       };
     });
 
-    return config;
+    return settings;
   },
   validate(errors, values) {
     errors = {

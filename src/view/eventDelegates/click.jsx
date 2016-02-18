@@ -27,8 +27,8 @@ const formConfig = {
   fields: [
     'delayLinkActivation'
   ].concat(elementFilterFormConfig.fields, advancedEventOptionsFormConfig.fields),
-  configToFormValues: elementFilterFormConfig.configToFormValues,
-  formValuesToConfig: elementFilterFormConfig.formValuesToConfig,
+  settingsToFormValues: elementFilterFormConfig.settingsToFormValues,
+  formValuesToSettings: elementFilterFormConfig.formValuesToSettings,
   validate: elementFilterFormConfig.validate
 };
 

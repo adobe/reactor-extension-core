@@ -8,9 +8,9 @@ const { instance, extensionBridge } = setUpConnectedForm(FormComponent);
 
 describe('delayType', () => {
   describe('sets form values', () => {
-    it('when config contains delay value', () => {
+    it('when settings contains delay value', () => {
       extensionBridge.init({
-        config: {
+        settings: {
           delay: 500
         }
       });
@@ -21,8 +21,8 @@ describe('delayType', () => {
       expect(delayTextfield.props.value).toBe(500);
     });
 
-    it('when config doesn\'t contain delay value', () => {
-      extensionBridge.init({config: {}});
+    it('when settings doesn\'t contain delay value', () => {
+      extensionBridge.init({settings: {}});
 
       const { immediateRadio } = instance.refs;
 
@@ -38,7 +38,7 @@ describe('delayType', () => {
     expect(immediateRadio.props.checked).toBe(true);
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { delayRadio, delayTextfield } = instance.refs;
@@ -46,12 +46,12 @@ describe('delayType', () => {
     delayRadio.props.onChange('delay');
     delayTextfield.props.onChange(100);
 
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       delay: 100
     });
   });
 
-  it('sets config without delay when trigger immediately is selected and delay ' +
+  it('sets settings without delay when trigger immediately is selected and delay ' +
     'contains a value', () => {
     extensionBridge.init();
 
@@ -60,7 +60,7 @@ describe('delayType', () => {
     delayTextfield.props.onChange(100);
     immediateRadio.props.onChange('immediately');
 
-    expect(extensionBridge.getConfig().delay).toBeUndefined();
+    expect(extensionBridge.getSettings().delay).toBeUndefined();
   });
 
   it('sets error if delay radio is selected and the delay field is empty', () => {

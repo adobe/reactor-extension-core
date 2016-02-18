@@ -6,9 +6,9 @@ import TimeSpentOnPage from '../timeSpentOnPage';
 const { instance, extensionBridge } = setUpConnectedForm(TimeSpentOnPage);
 
 describe('time spent on page view', () => {
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         timeOnPage: 44
       }
     });
@@ -18,13 +18,13 @@ describe('time spent on page view', () => {
     expect(timeOnPageField.props.value).toBe(44);
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { timeOnPageField } = instance.refs;
     timeOnPageField.props.onChange('55');
 
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       timeOnPage: 55
     });
   });

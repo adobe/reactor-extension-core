@@ -55,7 +55,7 @@ const formConfig = {
     'paths[].value',
     'paths[].valueIsRegex'
   ],
-  configToFormValues(values, options) {
+  settingsToFormValues(values, options) {
     values = {
       ...values
     };
@@ -77,20 +77,20 @@ const formConfig = {
 
     return values;
   },
-  formValuesToConfig(config, values) {
-    config = {
-      ...config
+  formValuesToSettings(settings, values) {
+    settings = {
+      ...settings
     };
 
-    config.paths = values.paths.map(path => {
-      // Don't let ID get into the config since it's only used in the view.
+    settings.paths = values.paths.map(path => {
+      // Don't let ID get into the settings since it's only used in the view.
       return {
         value: path.value,
         valueIsRegex: path.valueIsRegex
       };
     });
 
-    return config;
+    return settings;
   },
   validate(errors, values) {
     errors = {

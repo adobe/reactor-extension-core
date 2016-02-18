@@ -6,9 +6,9 @@ import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 const { instance, extensionBridge } = setUpConnectedForm(ElementExists);
 
 describe('element exists view', () => {
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         elementSelector: '.foo'
       }
     });
@@ -18,14 +18,14 @@ describe('element exists view', () => {
     expect(specificElements.props.fields.elementSelector.value).toBe('.foo');
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { specificElements } = instance.refs;
 
     specificElements.props.fields.elementSelector.onChange('.foo');
 
-    const { elementSelector } = extensionBridge.getConfig();
+    const { elementSelector } = extensionBridge.getSettings();
 
     expect(elementSelector).toBe('.foo');
   });

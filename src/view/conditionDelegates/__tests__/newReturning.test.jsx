@@ -15,9 +15,9 @@ describe('new/returning visitor view', () => {
     expect(returningVisitorRadio.props.checked).toBe(false);
   });
 
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         isNewVisitor: false
       }
     });
@@ -28,14 +28,14 @@ describe('new/returning visitor view', () => {
     expect(returningVisitorRadio.props.checked).toBe(true);
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { returningVisitorRadio } = instance.refs;
 
     returningVisitorRadio.props.onChange('returning');
 
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       isNewVisitor: false
     });
   });

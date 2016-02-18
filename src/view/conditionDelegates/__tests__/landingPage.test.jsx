@@ -6,9 +6,9 @@ import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 const { instance, extensionBridge } = setUpConnectedForm(LandingPage);
 
 describe('landing page view', () => {
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         page: 'foo',
         pageIsRegex: true
       }
@@ -21,7 +21,7 @@ describe('landing page view', () => {
     expect(valueRegexToggle.props.valueIsRegex).toBe(true);
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { pageField, valueRegexToggle } = instance.refs;
@@ -29,7 +29,7 @@ describe('landing page view', () => {
     pageField.props.onChange('foo');
     valueRegexToggle.props.onValueIsRegexChange(true);
 
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       page: 'foo',
       pageIsRegex: true
     });

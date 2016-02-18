@@ -16,9 +16,9 @@ export let handleSubmit;
  * (@see http://erikras.github.io/redux-form/#/api/reduxForm) with a few changes:
  * (1) config.validate must be a reducer that receives both an error object and
  * a formValues object. config.validate should return a new error object.
- * (2) config.formValuesToConfig should be specified when the view needs to save form values to the
- * config object.
- * (3) config.configToFormValues should be specified when the view needs to populate form values
+ * (2) config.formValuesToSettings should be specified when the view needs to save form values to
+ * the config object.
+ * (3) config.settingsToFormValues should be specified when the view needs to populate form values
  * from the config object.
  * @param [mapStateToProps] {Function} If specified, the component will subscribe to Redux store
  * updates. Any time it updates, mapStateToProps will be called. Its result must be a plain object,
@@ -45,7 +45,7 @@ export default (config, mapStateToProps, mapDispatchToProps, mergeProps, options
     fields: config.fields,
     // Proxy the provided validate reducer using a function that matches what redux-form expects.
     // Note that there's no technical reason why config.validate must be a reducer. It does
-    // maintain some consistency with configToFormValues and formValuesToConfig.
+    // maintain some consistency with settingsToFormValues and formValuesToSettings.
     validate: config.validate ? values => config.validate({}, values) : undefined
   };
 
@@ -78,8 +78,8 @@ export default (config, mapStateToProps, mapDispatchToProps, mergeProps, options
       options
     )(ProgrammaticallySubmittableForm);
 
-    // Saved on the component class so that bridgeAdapter can get access to configToFormValues and
-    // formValuesToConfig.
+    // Saved on the component class so that bridgeAdapter can get access to settingsToFormValues and
+    // formValuesToSettings.
     ReduxForm.formConfig = config;
 
     return ReduxForm;

@@ -27,7 +27,7 @@ class OperatingSystem extends React.Component {
 
 const formConfig = {
   fields: ['operatingSystems'],
-  formValuesToConfig(config, values) {
+  formValuesToSettings(settings, values) {
     return {
       operatingSystems: values.operatingSystems || [] // An array is required.
     };

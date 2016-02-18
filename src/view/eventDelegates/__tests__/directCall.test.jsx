@@ -6,9 +6,9 @@ import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 const { instance, extensionBridge } = setUpConnectedForm(DirectCall);
 
 describe('direct call view', () => {
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         name: 'foo'
       }
     });
@@ -18,13 +18,13 @@ describe('direct call view', () => {
     expect(nameField.props.value).toBe('foo');
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { nameField } = instance.refs;
     nameField.props.onChange('foo');
 
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       name: 'foo'
     });
   });

@@ -9,7 +9,7 @@ const { instance, extensionBridge } = setUpConnectedForm(FormComponent);
 describe('elementFilter', () => {
   it('updates view properly when elementSelector is provided', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         elementSelector: '.foo'
       }
     });
@@ -21,7 +21,7 @@ describe('elementFilter', () => {
   });
 
   it('updates view properly when elementSelector is not provided', () => {
-    extensionBridge.init({config: {}});
+    extensionBridge.init({settings: {}});
 
     const { anyElementRadio, specificElements } = instance.refs;
 
@@ -29,10 +29,10 @@ describe('elementFilter', () => {
     expect(specificElements).not.toBeDefined();
   });
 
-  it('removes elementSelector and elementProperties from config if any ' +
+  it('removes elementSelector and elementProperties from settings if any ' +
     'element radio is selected', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         elementSelector: '.foo',
         elementProperties: [
           {
@@ -47,7 +47,7 @@ describe('elementFilter', () => {
 
     anyElementRadio.props.onChange(anyElementRadio.props.value);
 
-    const { elementSelector, elementProperties } = extensionBridge.getConfig();
+    const { elementSelector, elementProperties } = extensionBridge.getSettings();
 
     expect(elementSelector).toBeUndefined();
     expect(elementProperties).toBeUndefined();

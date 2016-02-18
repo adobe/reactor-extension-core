@@ -8,9 +8,9 @@ const FormComponent = extensionViewReduxForm(formConfig)(ElementPropertiesEditor
 const { instance, extensionBridge } = setUpConnectedForm(FormComponent);
 
 describe('elementPropertiesEditor', () => {
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         elementProperties:[
           {
             name: 'some prop',
@@ -27,7 +27,7 @@ describe('elementPropertiesEditor', () => {
     expect(elementPropertyEditor0.props.fields.valueIsRegex.value).toBe(true);
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { elementPropertyEditor0 } = instance.refs;
@@ -36,7 +36,7 @@ describe('elementPropertiesEditor', () => {
     elementPropertyEditor0.props.fields.value.onChange('some value set');
     elementPropertyEditor0.props.fields.valueIsRegex.onChange(true);
 
-    const { elementProperties } = extensionBridge.getConfig();
+    const { elementProperties } = extensionBridge.getSettings();
     expect(elementProperties).toEqual([
       {
         name: 'some prop set',
@@ -79,7 +79,7 @@ describe('elementPropertiesEditor', () => {
 
   it('deletes a row when requested from row', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         elementProperties:[
           {
             name: 'some prop',

@@ -17,8 +17,8 @@ class StandardEvent extends React.Component {
 
 const formConfig = {
   fields: elementFilterFormConfig.fields.concat(advancedEventOptionsFormConfig.fields),
-  configToFormValues: elementFilterFormConfig.configToFormValues,
-  formValuesToConfig: elementFilterFormConfig.formValuesToConfig,
+  settingsToFormValues: elementFilterFormConfig.settingsToFormValues,
+  formValuesToSettings: elementFilterFormConfig.formValuesToSettings,
   validate: elementFilterFormConfig.validate
 };
 

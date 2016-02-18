@@ -43,10 +43,10 @@ export const formConfig = {
     'elementProperties[].value',
     'elementProperties[].valueIsRegex'
   ],
-  configToFormValues(values, options) {
-    const { config } = options;
+  settingsToFormValues(values, options) {
+    const { settings } = options;
 
-    var elementProperties = config.elementProperties || [];
+    var elementProperties = settings.elementProperties || [];
 
     // Make sure there's always at least one element property. This is just so the view
     // always shows at least one row.
@@ -65,9 +65,9 @@ export const formConfig = {
       elementProperties
     };
   },
-  formValuesToConfig(config, values) {
-    config = {
-      ...config
+  formValuesToSettings(settings, values) {
+    settings = {
+      ...settings
     };
 
     let { elementProperties } = values;
@@ -86,12 +86,12 @@ export const formConfig = {
     });
 
     if (elementProperties.length) {
-      config.elementProperties = elementProperties;
+      settings.elementProperties = elementProperties;
     } else {
-      delete config.elementProperties;
+      delete settings.elementProperties;
     }
 
-    return config;
+    return settings;
   },
   validate(errors, values) {
     errors = {

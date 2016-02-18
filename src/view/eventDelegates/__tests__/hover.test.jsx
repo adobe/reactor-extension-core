@@ -6,9 +6,9 @@ import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 const { instance, extensionBridge } = setUpConnectedForm(Hover);
 
 describe('hover view', () => {
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         elementSelector: '.foo',
         delay: 100,
         bubbleStop: true
@@ -22,7 +22,7 @@ describe('hover view', () => {
     expect(advancedEventOptions.props.fields.bubbleStop.value).toBe(true);
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { specificElements, delayType, advancedEventOptions } = instance.refs;
@@ -32,7 +32,7 @@ describe('hover view', () => {
     delayType.props.fields.delay.onChange(100);
     advancedEventOptions.props.fields.bubbleStop.onChange(true);
 
-    const { elementSelector, delay, bubbleStop } = extensionBridge.getConfig();
+    const { elementSelector, delay, bubbleStop } = extensionBridge.getSettings();
 
     expect(elementSelector).toBe('.foo');
     expect(delay).toBe(100);
