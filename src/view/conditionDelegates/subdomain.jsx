@@ -55,7 +55,7 @@ const formConfig = {
     'subdomains[].value',
     'subdomains[].valueIsRegex'
   ],
-  configToFormValues(values, options) {
+  settingsToFormValues(values, options) {
     values = {
       ...values
     };
@@ -77,20 +77,20 @@ const formConfig = {
 
     return values;
   },
-  formValuesToConfig(config, values) {
-    config = {
-      ...config
+  formValuesToSettings(settings, values) {
+    settings = {
+      ...settings
     };
 
-    config.subdomains = values.subdomains.map(subdomain => {
-      // Don't let ID get into the config since it's only used in the view.
+    settings.subdomains = values.subdomains.map(subdomain => {
+      // Don't let ID get into the settings since it's only used in the view.
       return {
         value: subdomain.value,
         valueIsRegex: subdomain.valueIsRegex
       };
     });
 
-    return config;
+    return settings;
   },
   validate(errors, values) {
     errors = {

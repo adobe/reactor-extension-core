@@ -4,7 +4,7 @@ import Path from '../path';
 import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 
 const testProps = {
-  config: {
+  settings: {
     paths: [
       {
         value: 'foo'
@@ -20,7 +20,7 @@ const testProps = {
 const { instance, extensionBridge } = setUpConnectedForm(Path);
 
 describe('path view', () => {
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init(testProps);
 
     const {
@@ -36,7 +36,7 @@ describe('path view', () => {
     expect(pathRegexToggle1.props.valueIsRegex).toBe(true);
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { pathField0, pathRegexToggle0 } = instance.refs.multipleItemEditor.refs;
@@ -44,7 +44,7 @@ describe('path view', () => {
     pathField0.props.onChange('goo');
     pathRegexToggle0.props.onValueIsRegexChange(true);
 
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       paths: [
         {
           value: 'goo',

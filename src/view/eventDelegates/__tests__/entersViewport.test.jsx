@@ -6,9 +6,9 @@ import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 const { instance, extensionBridge } = setUpConnectedForm(EntersViewport);
 
 describe('enters viewport view', () => {
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         elementSelector: '.foo',
         delay: 100
       }
@@ -20,7 +20,7 @@ describe('enters viewport view', () => {
     expect(delayType.props.fields.delay.value).toBe(100);
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { specificElements, delayType } = instance.refs;
@@ -29,7 +29,7 @@ describe('enters viewport view', () => {
     delayType.props.fields.delayType.onChange('delay');
     delayType.props.fields.delay.onChange(100);
 
-    const { elementSelector, delay } = extensionBridge.getConfig();
+    const { elementSelector, delay } = extensionBridge.getSettings();
 
     expect(elementSelector).toBe('.foo');
     expect(delay).toBe(100);

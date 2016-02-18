@@ -31,12 +31,12 @@ const formConfig = {
   fields: [
     'visitorType'
   ],
-  configToFormValues(values, options) {
+  settingsToFormValues(values, options) {
     return {
-      visitorType: options.configIsNew || options.config.isNewVisitor ? 'new' : 'returning'
+      visitorType: options.settingsIsNew || options.settings.isNewVisitor ? 'new' : 'returning'
     };
   },
-  formValuesToConfig(config, values) {
+  formValuesToSettings(settings, values) {
     return {
       isNewVisitor: values.visitorType === 'new'
     };

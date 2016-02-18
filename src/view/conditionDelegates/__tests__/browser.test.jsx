@@ -11,9 +11,9 @@ const selectedBrowsers = [
 ];
 
 describe('browser view', () => {
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         browsers: selectedBrowsers
       }
     });
@@ -23,20 +23,20 @@ describe('browser view', () => {
     expect(browsersCheckboxList.props.value).toEqual(selectedBrowsers);
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { browsersCheckboxList } = instance.refs;
     browsersCheckboxList.props.onChange(selectedBrowsers);
 
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       browsers: selectedBrowsers
     });
   });
 
   it('sets browsers to an empty array if nothing is selected', () => {
     extensionBridge.init();
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       browsers: []
     });
   });

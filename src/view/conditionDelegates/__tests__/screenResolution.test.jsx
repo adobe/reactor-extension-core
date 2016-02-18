@@ -15,9 +15,9 @@ describe('screen resolution view', () => {
     expect(heightOperatorField.props.value).toBe('>');
   });
 
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         widthOperator: '=',
         width: 100,
         heightOperator: '<',
@@ -33,7 +33,7 @@ describe('screen resolution view', () => {
     expect(heightField.props.value).toBe(200);
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { widthOperatorField, widthField, heightOperatorField, heightField } = instance.refs;
@@ -43,7 +43,7 @@ describe('screen resolution view', () => {
     heightOperatorField.props.onChange('<');
     heightField.props.onChange(200);
 
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       widthOperator: '=',
       width: 100,
       heightOperator: '<',

@@ -6,9 +6,9 @@ import Variable from '../variable';
 const { instance, extensionBridge } = setUpConnectedForm(Variable);
 
 describe('variable view', () => {
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         path: 'foo'
       }
     });
@@ -18,14 +18,14 @@ describe('variable view', () => {
     expect(pathField.props.value).toBe('foo');
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { pathField } = instance.refs;
 
     pathField.props.onChange('foo');
 
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       path: 'foo'
     });
   });

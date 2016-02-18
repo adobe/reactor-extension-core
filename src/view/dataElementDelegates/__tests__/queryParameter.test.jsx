@@ -14,9 +14,9 @@ describe('query parameter view', () => {
     expect(caseInsensitiveCheckbox.props.checked).toBe(true);
   });
 
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         name: 'foo',
         caseInsensitive: false
       }
@@ -28,7 +28,7 @@ describe('query parameter view', () => {
     expect(caseInsensitiveCheckbox.props.checked).toBe(false);
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { nameField, caseInsensitiveCheckbox } = instance.refs;
@@ -36,7 +36,7 @@ describe('query parameter view', () => {
     nameField.props.onChange('foo');
     caseInsensitiveCheckbox.props.onChange(false);
 
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       name: 'foo',
       caseInsensitive: false
     });

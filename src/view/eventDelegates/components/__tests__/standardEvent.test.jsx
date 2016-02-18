@@ -6,9 +6,9 @@ import setUpConnectedForm from '../../../__tests__/helpers/setUpConnectedForm';
 const { instance, extensionBridge } = setUpConnectedForm(StandardEvent);
 
 describe('standard event view', () => {
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         elementSelector: '.foo',
         bubbleStop: true
       }
@@ -20,7 +20,7 @@ describe('standard event view', () => {
     expect(advancedEventOptions.props.fields.bubbleStop.value).toBe(true);
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { elementFilter, advancedEventOptions } = instance.refs;
@@ -28,7 +28,7 @@ describe('standard event view', () => {
     elementFilter.props.fields.elementSelector.onChange('.foo');
     advancedEventOptions.props.fields.bubbleStop.onChange(true);
 
-    const { elementSelector, bubbleStop } = extensionBridge.getConfig();
+    const { elementSelector, bubbleStop } = extensionBridge.getSettings();
     expect(elementSelector).toBe('.foo');
     expect(bubbleStop).toBe(true);
   });

@@ -6,9 +6,9 @@ import Click from '../click';
 const { instance, extensionBridge } = setUpConnectedForm(Click);
 
 describe('click view', () => {
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         delayLinkActivation: true,
         elementSelector: '.foo',
         bubbleStop: true
@@ -22,7 +22,7 @@ describe('click view', () => {
     expect(advancedEventOptions.props.fields.bubbleStop.value).toBe(true);
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { delayLinkActivationCheckbox, elementFilter, advancedEventOptions } = instance.refs;
@@ -31,7 +31,7 @@ describe('click view', () => {
     elementFilter.props.fields.elementSelector.onChange('.foo');
     advancedEventOptions.props.fields.bubbleStop.onChange(true);
 
-    const { delayLinkActivation, elementSelector, bubbleStop } = extensionBridge.getConfig();
+    const { delayLinkActivation, elementSelector, bubbleStop } = extensionBridge.getSettings();
 
     expect(delayLinkActivation).toBe(true);
     expect(elementSelector).toBe('.foo');

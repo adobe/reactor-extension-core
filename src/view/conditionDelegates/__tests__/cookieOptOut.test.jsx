@@ -6,9 +6,9 @@ import CookieOptOut from '../cookieOptOut';
 const { instance, extensionBridge } = setUpConnectedForm(CookieOptOut);
 
 describe('cookie out-out view', () => {
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         acceptsCookies: true
       }
     });
@@ -18,14 +18,14 @@ describe('cookie out-out view', () => {
     expect(acceptCookiesCheckbox.props.checked).toBe(true);
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { acceptCookiesCheckbox } = instance.refs;
 
     acceptCookiesCheckbox.props.onChange(true);
 
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       acceptsCookies: true
     });
   });

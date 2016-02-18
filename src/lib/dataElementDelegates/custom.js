@@ -2,10 +2,10 @@
 
 /**
  * The custom data element.
- * @param {Object} config The data element config object.
- * @param {string} config.script The function that should be called which will return a value.
+ * @param {Object} settings The data element settings object.
+ * @param {string} settings.script The function that should be called which will return a value.
  * @returns {string}
  */
-module.exports = function(config) {
-  return config.script();
+module.exports = function(settings) {
+  return settings.script();
 };

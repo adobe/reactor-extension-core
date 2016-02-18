@@ -14,9 +14,9 @@ describe('sessions view', () => {
     expect(operatorField.props.value).toBe('>');
   });
 
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         operator: '=',
         count: 100
       }
@@ -28,7 +28,7 @@ describe('sessions view', () => {
     expect(countField.props.value).toBe(100);
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { operatorField, countField } = instance.refs;
@@ -36,7 +36,7 @@ describe('sessions view', () => {
     operatorField.props.onChange('=');
     countField.props.onChange(100);
 
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       operator: '=',
       count: 100
     });

@@ -6,9 +6,9 @@ import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 const { instance, extensionBridge } = setUpConnectedForm(Cookie);
 
 describe('cookie view', () => {
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         name: 'foo',
         value: 'bar',
         valueIsRegex: true
@@ -23,7 +23,7 @@ describe('cookie view', () => {
     expect(valueRegexToggle.props.valueIsRegex).toBe(true);
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { nameField, valueField, valueRegexToggle } = instance.refs;
@@ -32,7 +32,7 @@ describe('cookie view', () => {
     valueField.props.onChange('bar');
     valueRegexToggle.props.onValueIsRegexChange(true);
 
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       name: 'foo',
       value: 'bar',
       valueIsRegex: true

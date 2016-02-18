@@ -6,9 +6,9 @@ import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 const { instance, extensionBridge } = setUpConnectedForm(RegisteredUser);
 
 describe('registered user view', () => {
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         dataElement: 'foo'
       }
     });
@@ -18,14 +18,14 @@ describe('registered user view', () => {
     expect(dataElementField.props.value).toBe('foo');
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { dataElementField } = instance.refs;
 
     dataElementField.props.onChange('foo');
 
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       dataElement: 'foo'
     });
   });

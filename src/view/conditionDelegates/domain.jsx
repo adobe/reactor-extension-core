@@ -15,7 +15,7 @@ class Domain extends React.Component {
 
 const formConfig = {
   fields: ['domains'],
-  formValuesToConfig(config, values) {
+  formValuesToSettings(settings, values) {
     return {
       domains: values.domains || [] // An array is required.
     };

@@ -15,9 +15,9 @@ describe('advancedEventOptions', () => {
     instance.toggleSelected();
   });
 
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         bubbleFireIfParent: true,
         bubbleStop: true,
         bubbleFireIfChildFired: true
@@ -35,7 +35,7 @@ describe('advancedEventOptions', () => {
     expect(bubbleStopCheckbox.props.checked).toBe(true);
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const {
@@ -52,7 +52,7 @@ describe('advancedEventOptions', () => {
       bubbleFireIfParent,
       bubbleStop,
       bubbleFireIfChildFired
-    } = extensionBridge.getConfig();
+    } = extensionBridge.getSettings();
 
     expect(bubbleFireIfParent).toBe(true);
     expect(bubbleStop).toBe(true);

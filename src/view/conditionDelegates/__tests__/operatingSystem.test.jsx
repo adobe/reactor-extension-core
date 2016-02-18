@@ -11,9 +11,9 @@ const selectedOperatingSystems = [
 ];
 
 describe('operating system view', () => {
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         operatingSystems: selectedOperatingSystems
       }
     });
@@ -23,20 +23,20 @@ describe('operating system view', () => {
     expect(operatingSystemsCheckboxList.props.value).toEqual(selectedOperatingSystems);
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { operatingSystemsCheckboxList } = instance.refs;
     operatingSystemsCheckboxList.props.onChange(selectedOperatingSystems);
 
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       operatingSystems: selectedOperatingSystems
     });
   });
 
   it('sets operatingSystems to an empty array if nothing is selected', () => {
     extensionBridge.init();
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       operatingSystems: []
     });
   });

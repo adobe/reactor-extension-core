@@ -18,7 +18,7 @@ var conditionDelegate = conditionDelegateInjector({
   getExtension: publicRequire('getExtension')
 });
 
-var getConfig = function(page, pageIsRegex) {
+var getSettings = function(page, pageIsRegex) {
   return {
     page: page,
     pageIsRegex: pageIsRegex
@@ -31,22 +31,22 @@ describe('landing page condition delegate', function() {
   });
 
   it('returns true when the landing page matches a string', function() {
-    var config = getConfig('http://landingpage.com/test.html', false);
-    expect(conditionDelegate(config)).toBe(true);
+    var settings = getSettings('http://landingpage.com/test.html', false);
+    expect(conditionDelegate(settings)).toBe(true);
   });
 
   it('returns false when the landing page does not match a string', function() {
-    var config = getConfig('http://foo.com/bar.html', false);
-    expect(conditionDelegate(config)).toBe(false);
+    var settings = getSettings('http://foo.com/bar.html', false);
+    expect(conditionDelegate(settings)).toBe(false);
   });
 
   it('returns true when the landing page matches a regex', function() {
-    var config = getConfig('Landingpage\\.com\\/t.st', true);
-    expect(conditionDelegate(config)).toBe(true);
+    var settings = getSettings('Landingpage\\.com\\/t.st', true);
+    expect(conditionDelegate(settings)).toBe(true);
   });
 
   it('returns false when the landing page does not match a regex', function() {
-    var config = getConfig('f.o', true);
-    expect(conditionDelegate(config)).toBe(false);
+    var settings = getSettings('f.o', true);
+    expect(conditionDelegate(settings)).toBe(false);
   });
 });

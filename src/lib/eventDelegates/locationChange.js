@@ -63,10 +63,10 @@ var watchForLocationChange = once(function() {
 /**
  * Location change event. This event occurs when the URL hash is changed or the URL is changed
  * through the <code>history</code> API.
- * @param {Object} config The event config object.
+ * @param {Object} settings The event settings object.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function(config, trigger) {
+module.exports = function(settings, trigger) {
   watchForLocationChange();
   triggers.push(trigger);
 };

@@ -32,15 +32,15 @@ const formConfig = {
     'operator',
     'count'
   ],
-  configToFormValues(values, options) {
+  settingsToFormValues(values, options) {
     return {
       ...values,
-      operator: options.config.operator || '>'
+      operator: options.settings.operator || '>'
     };
   },
-  formValuesToConfig(config, values) {
+  formValuesToSettings(settings, values) {
     return {
-      ...config,
+      ...settings,
       count: Number(values.count)
     };
   },

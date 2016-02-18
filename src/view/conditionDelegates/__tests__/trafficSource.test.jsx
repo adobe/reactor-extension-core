@@ -6,9 +6,9 @@ import TrafficSource from '../trafficSource';
 const { instance, extensionBridge } = setUpConnectedForm(TrafficSource);
 
 describe('traffic source view', () => {
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         source: 'foo',
         sourceIsRegex: true
       }
@@ -21,7 +21,7 @@ describe('traffic source view', () => {
     expect(valueRegexToggle.props.valueIsRegex).toBe(true);
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { sourceField, valueRegexToggle } = instance.refs;
@@ -29,7 +29,7 @@ describe('traffic source view', () => {
     sourceField.props.onChange('foo');
     valueRegexToggle.props.onValueIsRegexChange(true);
 
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       source: 'foo',
       sourceIsRegex: true
     });

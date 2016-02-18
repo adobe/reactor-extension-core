@@ -10,7 +10,7 @@ const { instance, extensionBridge } = setUpConnectedForm(FormComponent);
 describe('specificElements', () => {
   it('updates view properly when elementProperties provided', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         elementSelector: '.foo',
         elementProperties: [
           {
@@ -29,7 +29,7 @@ describe('specificElements', () => {
 
   it('updates view properly when elementProperties not provided', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         elementSelector: '.foo'
       }
     });
@@ -39,9 +39,9 @@ describe('specificElements', () => {
     expect(elementPropertiesEditor).toBeUndefined();
   });
 
-  it('removes elementProperties from config if element properties hidden', () => {
+  it('removes elementProperties from settings if element properties hidden', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         elementSelector: '.foo',
         elementProperties: [
           {
@@ -56,7 +56,7 @@ describe('specificElements', () => {
 
     showElementPropertiesCheckbox.props.onChange(false);
 
-    expect(extensionBridge.getConfig().elementProperties).toBeUndefined();
+    expect(extensionBridge.getSettings().elementProperties).toBeUndefined();
   });
 
   it('sets error if elementSelector is not specified', () => {
@@ -73,7 +73,7 @@ describe('specificElements', () => {
     // An element property with a value but not a name would typically create a validation error
     // if the element properties editor were visible.
     extensionBridge.init({
-      config: {
+      settings: {
         elementSelector: '.foo',
         elementProperties: [
           {

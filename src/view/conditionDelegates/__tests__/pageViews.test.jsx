@@ -14,9 +14,9 @@ describe('page views view', () => {
     expect(operatorField.props.value).toBe('>');
   });
 
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         operator: '=',
         count: 100,
         duration: 'session'
@@ -31,7 +31,7 @@ describe('page views view', () => {
     expect(sessionRadio.props.checked).toBe(true);
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { operatorField, countField, sessionRadio } = instance.refs;
@@ -40,7 +40,7 @@ describe('page views view', () => {
     countField.props.onChange(100);
     sessionRadio.props.onChange('session');
 
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       operator: '=',
       count: 100,
       duration: 'session'

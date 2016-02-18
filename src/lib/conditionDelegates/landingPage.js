@@ -11,14 +11,14 @@ visitorTracking.enable();
 
 /**
  * Landing page condition. Determines if the actual landing page matches an acceptable landing page.
- * @param {Object} config Condition config.
- * @param {string} config.page An acceptable landing page.
- * @param {boolean} [config.pageIsRegex=false] Whether <code>config.page</code> is intended to be
- * a regular expression.
+ * @param {Object} settings Condition settings.
+ * @param {string} settings.page An acceptable landing page.
+ * @param {boolean} [settings.pageIsRegex=false] Whether <code>settings.page</code> is intended to
+ * be a regular expression.
  * @returns {boolean}
  */
-module.exports = function(config) {
-  var acceptablePage = config.pageIsRegex ? new RegExp(config.page, 'i') : config.page;
+module.exports = function(settings) {
+  var acceptablePage = settings.pageIsRegex ? new RegExp(settings.page, 'i') : settings.page;
   return textMatch(visitorTracking.getLandingPage(), acceptablePage);
 };
 

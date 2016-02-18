@@ -20,27 +20,27 @@ module.exports = function() {
     /**
      * Register a config object that should be evaluated for an event to determine if a rule
      * should be executed. If it should be executed, the callback function will be called.
-     * @param {Object} config The event config object.
-     * @param {string} [config.elementSelector] The CSS selector the element must match in order for
-     * the rule to fire.
-     * @param {Object[]} [config.elementProperties] Property values the element must have in order
+     * @param {Object} settings The event config object.
+     * @param {string} [settings.elementSelector] The CSS selector the element must match in order
      * for the rule to fire.
-     * @param {string} config.elementProperties[].name The property name.
-     * @param {string} config.elementProperties[].value The property value.
-     * @param {boolean} [config.elementProperties[].valueIsRegex=false] Whether <code>value</code>
+     * @param {Object[]} [settings.elementProperties] Property values the element must have in order
+     * for the rule to fire.
+     * @param {string} settings.elementProperties[].name The property name.
+     * @param {string} settings.elementProperties[].value The property value.
+     * @param {boolean} [settings.elementProperties[].valueIsRegex=false] Whether <code>value</code>
      * on the object instance is intended to be a regular expression.
-     * @param {boolean} [config.bubbleFireIfParent=false] Whether the rule should fire if the
+     * @param {boolean} [settings.bubbleFireIfParent=false] Whether the rule should fire if the
      * event originated from a descendant element.
-     * @param {boolean} [config.bubbleFireIfChildFired=false] Whether the rule should fire if the
+     * @param {boolean} [settings.bubbleFireIfChildFired=false] Whether the rule should fire if the
      * same event has already triggered a rule targeting a descendant element.
-     * @param {boolean} [config.bubbleStop=false] Whether the event should not trigger rules on
+     * @param {boolean} [settings.bubbleStop=false] Whether the event should not trigger rules on
      * ancestor elements.
      * @param {Function} callback The function to be called when a matching event is seen. If the
      * callback does not end up triggering a rule, the callback should explicitly return false.
      */
-    addListener: function(config, callback) {
+    addListener: function(settings, callback) {
       listeners.push({
-        config: config,
+        settings: settings,
         callback: callback
       });
     },
@@ -79,14 +79,14 @@ module.exports = function() {
         // Just because this could be processed a lot, we'll use a for loop instead of forEach.
         for (var i = 0; i < listeners.length; i++) {
           var listener = listeners[i];
-          var elementSelector = listener.config.elementSelector;
-          var elementProperties = listener.config.elementProperties;
+          var elementSelector = listener.settings.elementSelector;
+          var elementProperties = listener.settings.elementProperties;
 
-          if (!listener.config.bubbleFireIfChildFired && childHasTriggeredRule) {
+          if (!listener.settings.bubbleFireIfChildFired && childHasTriggeredRule) {
             continue;
           }
 
-          if (node !== event.target && !listener.config.bubbleFireIfParent) {
+          if (node !== event.target && !listener.settings.bubbleFireIfParent) {
             continue;
           }
 
@@ -112,7 +112,7 @@ module.exports = function() {
           if (ruleTriggered) {
             nodeTriggeredRule = true;
 
-            if (listener.config.bubbleStop) {
+            if (listener.settings.bubbleStop) {
               preventEvaluationOnAncestors = true;
             }
           }

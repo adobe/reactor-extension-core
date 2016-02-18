@@ -61,16 +61,16 @@ const formConfig = {
 
     return errors;
   },
-  configToFormValues(values, options) {
+  settingsToFormValues(values, options) {
     return {
       ...values,
-      widthOperator: options.config.widthOperator || '>',
-      heightOperator: options.config.heightOperator || '>'
+      widthOperator: options.settings.widthOperator || '>',
+      heightOperator: options.settings.heightOperator || '>'
     };
   },
-  formValuesToConfig(config, values) {
+  formValuesToSettings(settings, values) {
     return {
-      ...config,
+      ...settings,
       width: Number(values.width),
       height: Number(values.height)
     };

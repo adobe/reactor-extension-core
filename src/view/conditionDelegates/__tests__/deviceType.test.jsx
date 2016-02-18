@@ -11,9 +11,9 @@ const selectedDeviceTypes = [
 ];
 
 describe('device type view', () => {
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         deviceTypes: selectedDeviceTypes
       }
     });
@@ -23,20 +23,20 @@ describe('device type view', () => {
     expect(deviceOptionsCheckboxList.props.value).toEqual(selectedDeviceTypes);
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { deviceOptionsCheckboxList } = instance.refs;
     deviceOptionsCheckboxList.props.onChange(selectedDeviceTypes);
 
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       deviceTypes: selectedDeviceTypes
     });
   });
 
   it('sets deviceTypes to an empty array if nothing is selected', () => {
     extensionBridge.init();
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       deviceTypes: []
     });
   });

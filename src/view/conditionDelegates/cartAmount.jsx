@@ -44,15 +44,15 @@ const formConfig = {
     'operator',
     'amount'
   ],
-  configToFormValues(values, options) {
+  settingsToFormValues(values, options) {
     return {
       ...values,
-      operator: options.config.operator || '>'
+      operator: options.settings.operator || '>'
     };
   },
-  formValuesToConfig(config, values) {
+  formValuesToSettings(settings, values) {
     return {
-      ...config,
+      ...settings,
       amount: Number(values.amount)
     };
   },

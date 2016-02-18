@@ -11,7 +11,7 @@ var conditionDelegate = conditionDelegateInjector({
   document: mockDocument
 });
 
-var getConfig = function(domains) {
+var getSettings = function(domains) {
   return {
     domains: domains
   };
@@ -19,12 +19,12 @@ var getConfig = function(domains) {
 
 describe('domain condition delegate', function() {
   it('returns true when the domain matches', function() {
-    var config = getConfig(['example\.com$', 'Adobe\.com$']);
-    expect(conditionDelegate(config)).toBe(true);
+    var settings = getSettings(['example\.com$', 'Adobe\.com$']);
+    expect(conditionDelegate(settings)).toBe(true);
   });
 
   it('returns false when the domain does not match', function() {
-    var config = getConfig(['example\.com$', 'yahoo\.com$']);
-    expect(conditionDelegate(config)).toBe(false);
+    var settings = getSettings(['example\.com$', 'yahoo\.com$']);
+    expect(conditionDelegate(settings)).toBe(false);
   });
 });

@@ -234,7 +234,7 @@ var checkForElementsInViewport = function() {
     var elements = document.querySelectorAll(selector);
 
     listeners.forEach(function(listener) {
-      var delay = listener.config.delay;
+      var delay = listener.settings.delay;
 
       for (var i = 0; i < elements.length; i++) {
         var element = elements[i];
@@ -243,7 +243,7 @@ var checkForElementsInViewport = function() {
           return;
         }
 
-        if (!matchesProperties(element, listener.config.elementProperties)) {
+        if (!matchesProperties(element, listener.settings.elementProperties)) {
           return;
         }
 
@@ -265,29 +265,29 @@ poll('enters viewport event delegate', checkForElementsInViewport);
 /**
  * Enters viewport event. This event occurs when an element has entered the viewport. The rule
  * should only run once per targeted element.
- * @param {Object} config The event config object.
- * @param {string} config.elementSelector The CSS selector the element must match in order for
+ * @param {Object} settings The event settings object.
+ * @param {string} settings.elementSelector The CSS selector the element must match in order for
  * the rule to fire.
  * targeting.
- * @param {Object[]} [config.elementProperties] Property values the element must have in order
+ * @param {Object[]} [settings.elementProperties] Property values the element must have in order
  * for the rule to fire.
- * @param {string} config.elementProperties[].name The property name.
- * @param {string} config.elementProperties[].value The property value.
- * @param {boolean} [config.elementProperties[].valueIsRegex=false] Whether <code>value</code>
+ * @param {string} settings.elementProperties[].name The property name.
+ * @param {string} settings.elementProperties[].value The property value.
+ * @param {boolean} [settings.elementProperties[].valueIsRegex=false] Whether <code>value</code>
  * on the object instance is intended to be a regular expression.
- * @param {Number} [config.delay] The number of milliseconds the element must be
+ * @param {Number} [settings.delay] The number of milliseconds the element must be
  * within the viewport before declaring that the event has occurred.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function(config, trigger) {
-  var listeners = listenersBySelector[config.elementSelector];
+module.exports = function(settings, trigger) {
+  var listeners = listenersBySelector[settings.elementSelector];
 
   if (!listeners) {
-    listeners = listenersBySelector[config.elementSelector] = [];
+    listeners = listenersBySelector[settings.elementSelector] = [];
   }
 
   listeners.push({
-    config: config,
+    settings: settings,
     trigger: trigger
   });
 };

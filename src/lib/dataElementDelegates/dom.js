@@ -2,18 +2,18 @@
 
 /**
  * The dom data element.
- * @param {Object} config The data element config object.
- * @param {string} config.elementSelector The CSS selector for a DOM element.
- * @param {string} config.elementProperty The name of the property or attribute of the DOM
+ * @param {Object} settings The data element settings object.
+ * @param {string} settings.elementSelector The CSS selector for a DOM element.
+ * @param {string} settings.elementProperty The name of the property or attribute of the DOM
  * element.
  * @returns {string}
  */
-module.exports = function(config) {
-  var elements = document.querySelectorAll(config.elementSelector);
+module.exports = function(settings) {
+  var elements = document.querySelectorAll(settings.elementSelector);
   if (elements.length > 0) {
     var element = elements[0];
 
-    var property = config.elementProperty;
+    var property = settings.elementProperty;
 
     // TODO Can we use getObjectProperty() here or at least getElementText()?
     if (property === 'text') {

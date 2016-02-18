@@ -35,10 +35,10 @@ export const formConfig = {
   fields: [
     'showElementPropertiesFilter'
   ].concat(elementSelectorFieldFormConfig.fields, elementPropertiesEditorFormConfig.fields),
-  configToFormValues: reduceReducers(
-    elementPropertiesEditorFormConfig.configToFormValues,
+  settingsToFormValues: reduceReducers(
+    elementPropertiesEditorFormConfig.settingsToFormValues,
     (values, options) => {
-      const { elementProperties } = options.config;
+      const { elementProperties } = options.settings;
 
       return {
         ...values,
@@ -46,20 +46,20 @@ export const formConfig = {
       };
     }
   ),
-  formValuesToConfig: reduceReducers(
-    elementPropertiesEditorFormConfig.formValuesToConfig,
-    (config, values) => {
-      config = {
-        ...config
+  formValuesToSettings: reduceReducers(
+    elementPropertiesEditorFormConfig.formValuesToSettings,
+    (settings, values) => {
+      settings = {
+        ...settings
       };
 
       if (!values.showElementPropertiesFilter) {
-        delete config.elementProperties;
+        delete settings.elementProperties;
       }
 
-      delete config.showElementPropertiesFilter;
+      delete settings.showElementPropertiesFilter;
 
-      return config;
+      return settings;
     }
   ),
   validate: reduceReducers(

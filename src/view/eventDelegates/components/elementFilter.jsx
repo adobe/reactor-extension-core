@@ -39,35 +39,35 @@ export const formConfig = {
   fields: [
     'elementSpecificity'
   ].concat(specificElementsFormConfig.fields),
-  configToFormValues: reduceReducers(
-    specificElementsFormConfig.configToFormValues,
+  settingsToFormValues: reduceReducers(
+    specificElementsFormConfig.settingsToFormValues,
     (values, options) => {
-      const { config: { elementSelector, elementProperties }, configIsNew } = options;
+      const { settings: { elementSelector, elementProperties }, settingsIsNew } = options;
 
       return {
         ...values,
-        elementSpecificity: configIsNew || elementSelector || elementProperties ?
+        elementSpecificity: settingsIsNew || elementSelector || elementProperties ?
           'specific' : 'any'
       };
     }
   ),
-  formValuesToConfig: reduceReducers(
-    specificElementsFormConfig.formValuesToConfig,
-    (config, values) => {
-      config = {
-        ...config
+  formValuesToSettings: reduceReducers(
+    specificElementsFormConfig.formValuesToSettings,
+    (settings, values) => {
+      settings = {
+        ...settings
       };
 
       let { elementSpecificity } = values;
 
       if (elementSpecificity === 'any') {
-        delete config.elementSelector;
-        delete config.elementProperties;
+        delete settings.elementSelector;
+        delete settings.elementProperties;
       }
 
-      delete config.elementSpecificity;
+      delete settings.elementSpecificity;
 
-      return config;
+      return settings;
     }
   ),
   validate(errors, values) {

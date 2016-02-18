@@ -4,9 +4,9 @@ import NoConfig from '../noConfig';
 const { extensionBridge } = setUpConnectedForm(NoConfig);
 
 describe('dom ready view', () => {
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
-    expect(extensionBridge.getConfig()).toEqual({});
+    expect(extensionBridge.getSettings()).toEqual({});
   });
 
   it('is valid', () => {

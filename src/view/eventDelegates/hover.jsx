@@ -22,13 +22,13 @@ class Hover extends React.Component {
 const formConfig = {
   fields: delayTypeFormConfig.fields
     .concat(specificElementsFormConfig.fields, advancedEventOptionsFormConfig.fields),
-  configToFormValues: reduceReducers(
-    specificElementsFormConfig.configToFormValues,
-    delayTypeFormConfig.configToFormValues
+  settingsToFormValues: reduceReducers(
+    specificElementsFormConfig.settingsToFormValues,
+    delayTypeFormConfig.settingsToFormValues
   ),
-  formValuesToConfig: reduceReducers(
-    specificElementsFormConfig.formValuesToConfig,
-    delayTypeFormConfig.formValuesToConfig
+  formValuesToSettings: reduceReducers(
+    specificElementsFormConfig.formValuesToSettings,
+    delayTypeFormConfig.formValuesToSettings
   ),
   validate: reduceReducers(
     specificElementsFormConfig.validate,

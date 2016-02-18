@@ -15,9 +15,9 @@ describe('protocol view', () => {
     expect(httpsRadio.props.checked).toBe(false);
   });
 
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         protocol: 'https:'
       }
     });
@@ -28,14 +28,14 @@ describe('protocol view', () => {
     expect(httpsRadio.props.checked).toBe(true);
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { httpsRadio } = instance.refs;
 
     httpsRadio.props.onChange('https:');
 
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       protocol: 'https:'
     });
   });

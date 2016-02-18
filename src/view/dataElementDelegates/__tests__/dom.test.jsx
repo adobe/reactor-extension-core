@@ -6,7 +6,7 @@ import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 const { instance, extensionBridge } = setUpConnectedForm(DOM);
 
 describe('DOM view', () => {
-  it('selects ID preset for new config', () => {
+  it('selects ID preset for new settings', () => {
     extensionBridge.init();
 
     const { elementPropertyPresetsSelect } = instance.refs;
@@ -15,9 +15,9 @@ describe('DOM view', () => {
   });
 
 
-  it('sets form values from config using element property preset', () => {
+  it('sets form values from settings using element property preset', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         elementSelector: 'foo',
         elementProperty: 'innerHTML'
       }
@@ -29,9 +29,9 @@ describe('DOM view', () => {
     expect(elementPropertyPresetsSelect.props.value).toBe('innerHTML');
   });
 
-  it('sets form values from config using custom element property', () => {
+  it('sets form values from settings using custom element property', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         elementSelector: 'foo',
         elementProperty: 'bar'
       }
@@ -58,7 +58,7 @@ describe('DOM view', () => {
     expect(elementSelectorWrapper.props.error).toEqual(jasmine.any(String));
   });
 
-  it('sets config from form values using element property preset', () => {
+  it('sets settings from form values using element property preset', () => {
     extensionBridge.init();
 
     const { elementSelectorField, elementPropertyPresetsSelect } = instance.refs;
@@ -66,13 +66,13 @@ describe('DOM view', () => {
     elementSelectorField.props.onChange('foo');
     elementPropertyPresetsSelect.props.onChange('innerHTML');
 
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       elementSelector: 'foo',
       elementProperty: 'innerHTML'
     });
   });
 
-  it('sets config from form values using custom element property', () => {
+  it('sets settings from form values using custom element property', () => {
     extensionBridge.init();
 
     const {
@@ -89,7 +89,7 @@ describe('DOM view', () => {
 
     customElementPropertyField.props.onChange('bar');
 
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       elementSelector: 'foo',
       elementProperty: 'bar'
     });
@@ -97,7 +97,7 @@ describe('DOM view', () => {
 
   it('sets errors if required values are not provided', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         elementSelector: 'foo',
         elementProperty: ''
       }

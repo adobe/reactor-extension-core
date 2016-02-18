@@ -54,20 +54,20 @@ const formConfig = {
     'amount',
     'unit'
   ].concat(elementFilterFormConfig.fields, advancedEventOptionsFormConfig.fields),
-  configToFormValues: reduceReducers(
-    elementFilterFormConfig.configToFormValues,
+  settingsToFormValues: reduceReducers(
+    elementFilterFormConfig.settingsToFormValues,
     (values, options) => {
       return {
         ...values,
-        unit: options.config.unit || timePlayedUnit.SECOND
+        unit: options.settings.unit || timePlayedUnit.SECOND
       };
     }
   ),
-  formValuesToConfig: reduceReducers(
-    elementFilterFormConfig.formValuesToConfig,
-    (config, values) => {
+  formValuesToSettings: reduceReducers(
+    elementFilterFormConfig.formValuesToSettings,
+    (settings, values) => {
       return {
-        ...config,
+        ...settings,
         amount: Number(values.amount)
       };
     }

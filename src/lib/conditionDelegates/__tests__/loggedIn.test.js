@@ -14,18 +14,18 @@ describe('logged in condition delegate', function() {
       getDataElement: getDataElement
     });
 
-    var config = {
+    var settings = {
       dataElement: 'foo'
     };
 
     dataElementValue = true;
-    expect(conditionDelegate(config)).toBe(true);
+    expect(conditionDelegate(settings)).toBe(true);
 
     dataElementValue = false;
-    expect(conditionDelegate(config)).toBe(false);
+    expect(conditionDelegate(settings)).toBe(false);
 
     dataElementValue = undefined;
-    expect(conditionDelegate(config)).toBe(false);
+    expect(conditionDelegate(settings)).toBe(false);
 
     expect(getDataElement).toHaveBeenCalledWith('foo', true);
   });

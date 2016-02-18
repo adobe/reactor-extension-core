@@ -6,9 +6,9 @@ import TimePlayed from '../timePlayed';
 const { instance, extensionBridge } = setUpConnectedForm(TimePlayed);
 
 describe('time played view', () => {
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         elementSelector: '.foo',
         amount: 55,
         unit: 'percent',
@@ -24,7 +24,7 @@ describe('time played view', () => {
     expect(advancedEventOptions.props.fields.bubbleStop.value).toBe(true);
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { amountField, elementFilter, advancedEventOptions } = instance.refs;
@@ -33,7 +33,7 @@ describe('time played view', () => {
     elementFilter.props.fields.elementSelector.onChange('.foo');
     advancedEventOptions.props.fields.bubbleStop.onChange(true);
 
-    const { amount, unit, elementSelector, bubbleStop } = extensionBridge.getConfig();
+    const { amount, unit, elementSelector, bubbleStop } = extensionBridge.getSettings();
     expect(amount).toBe(45);
     expect(unit).toBe('second');
     expect(elementSelector).toBe('.foo');

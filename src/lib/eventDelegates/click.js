@@ -44,29 +44,29 @@ document.addEventListener('click', bubbly.evaluateEvent, true);
 
 /**
  * The click event. This event occurs when a user has clicked an element.
- * @param {Object} config The event config object.
- * @param {string} [config.elementSelector] The CSS selector the element must match in order for
+ * @param {Object} settings The event settings object.
+ * @param {string} [settings.elementSelector] The CSS selector the element must match in order for
  * the rule to fire.
- * @param {Object[]} [config.elementProperties] Property values the element must have in order
+ * @param {Object[]} [settings.elementProperties] Property values the element must have in order
  * for the rule to fire.
- * @param {string} config.elementProperties[].name The property name.
- * @param {string} config.elementProperties[].value The property value.
- * @param {boolean} [config.elementProperties[].valueIsRegex=false] Whether <code>value</code>
+ * @param {string} settings.elementProperties[].name The property name.
+ * @param {string} settings.elementProperties[].value The property value.
+ * @param {boolean} [settings.elementProperties[].valueIsRegex=false] Whether <code>value</code>
  * on the object instance is intended to be a regular expression.
- * @param {boolean} [config.bubbleFireIfParent=false] Whether the rule should fire if
+ * @param {boolean} [settings.bubbleFireIfParent=false] Whether the rule should fire if
  * the event originated from a descendant element.
- * @param {boolean} [config.bubbleFireIfChildFired=false] Whether the rule should fire
+ * @param {boolean} [settings.bubbleFireIfChildFired=false] Whether the rule should fire
  * if the same event has already triggered a rule targeting a descendant element.
- * @param {boolean} [config.bubbleStop=false] Whether the event should not trigger
+ * @param {boolean} [settings.bubbleStop=false] Whether the event should not trigger
  * rules on ancestor elements.
- * @param {boolean} [config.delayLinkActivation=false] When true and a link is clicked, actual
+ * @param {boolean} [settings.delayLinkActivation=false] When true and a link is clicked, actual
  * navigation will be postponed for a period of time. This is typically used to allow time for
  * scripts within the rule to execute, beacons to be sent to servers, etc.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function(config, trigger) {
-  bubbly.addListener(config, function(event, relatedElement) {
-    if (config.delayLinkActivation) {
+module.exports = function(settings, trigger) {
+  bubbly.addListener(settings, function(event, relatedElement) {
+    if (settings.delayLinkActivation) {
       var eventDataStash = dataStash(event);
       if (!eventDataStash.evaluatedForLinkDelay) {
         if (isNavigationLink(event.target)) {

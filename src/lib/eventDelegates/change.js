@@ -7,30 +7,30 @@ document.addEventListener('change', bubbly.evaluateEvent, true);
 
 /**
  * The change event. This event occurs when a change to an element's value is committed by the user.
- * @param {Object} config The event config object.
- * @param {string} [config.elementSelector] The CSS selector the element must match in order for
+ * @param {Object} settings The event settings object.
+ * @param {string} [settings.elementSelector] The CSS selector the element must match in order for
  * the rule to fire.
- * @param {Object[]} [config.elementProperties] Property values the element must have in order
+ * @param {Object[]} [settings.elementProperties] Property values the element must have in order
  * for the rule to fire.
- * @param {string} config.elementProperties[].name The property name.
- * @param {string} config.elementProperties[].value The property value.
- * @param {boolean} [config.elementProperties[].valueIsRegex=false] Whether <code>value</code>
+ * @param {string} settings.elementProperties[].name The property name.
+ * @param {string} settings.elementProperties[].value The property value.
+ * @param {boolean} [settings.elementProperties[].valueIsRegex=false] Whether <code>value</code>
  * on the object instance is intended to be a regular expression.
- * @param {string} [config.value] What the new value must be for the rule
+ * @param {string} [settings.value] What the new value must be for the rule
  * to fire.
- * @param {boolean} [config.valueIsRegex=false] Whether <code>config.value</code> is intended to be
- * a regular expression.
- * @param {boolean} [config.bubbleFireIfParent=false] Whether the rule should fire if
+ * @param {boolean} [settings.valueIsRegex=false] Whether <code>settings.value</code> is intended to
+ * be a regular expression.
+ * @param {boolean} [settings.bubbleFireIfParent=false] Whether the rule should fire if
  * the event originated from a descendant element.
- * @param {boolean} [config.bubbleFireIfChildFired=false] Whether the rule should fire
+ * @param {boolean} [settings.bubbleFireIfChildFired=false] Whether the rule should fire
  * if the same event has already triggered a rule targeting a descendant element.
- * @param {boolean} [config.bubbleStop=false] Whether the event should not trigger
+ * @param {boolean} [settings.bubbleStop=false] Whether the event should not trigger
  * rules on ancestor elements.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function(config, trigger) {
-  var acceptableValue = config.valueIsRegex ? new RegExp(config.value, 'i') : config.value;
-  bubbly.addListener(config, function(event, relatedElement) {
+module.exports = function(settings, trigger) {
+  var acceptableValue = settings.valueIsRegex ? new RegExp(settings.value, 'i') : settings.value;
+  bubbly.addListener(settings, function(event, relatedElement) {
     if (acceptableValue === undefined || textMatch(event.target.value, acceptableValue)) {
       trigger(event, relatedElement);
     } else {

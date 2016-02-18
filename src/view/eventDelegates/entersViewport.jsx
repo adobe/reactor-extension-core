@@ -22,13 +22,13 @@ const formConfig = {
     specificElementsFormConfig.validate,
     delayTypeFormConfig.validate
   ),
-  configToFormValues: reduceReducers(
-    specificElementsFormConfig.configToFormValues,
-    delayTypeFormConfig.configToFormValues
+  settingsToFormValues: reduceReducers(
+    specificElementsFormConfig.settingsToFormValues,
+    delayTypeFormConfig.settingsToFormValues
   ),
-  formValuesToConfig: reduceReducers(
-    specificElementsFormConfig.formValuesToConfig,
-    delayTypeFormConfig.formValuesToConfig
+  formValuesToSettings: reduceReducers(
+    specificElementsFormConfig.formValuesToSettings,
+    delayTypeFormConfig.formValuesToSettings
   )
 };
 

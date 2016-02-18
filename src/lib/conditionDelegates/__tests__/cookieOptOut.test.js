@@ -7,7 +7,7 @@ var conditionDelegate;
 var setCookie = require('@reactor/turbine/src/utils/cookie/setCookie');
 var removeCookie = require('@reactor/turbine/src/utils/cookie/removeCookie');
 
-var getConfig = function(acceptsCookies) {
+var getSettings = function(acceptsCookies) {
   return {
     acceptsCookies: acceptsCookies
   };
@@ -41,40 +41,40 @@ describe('cookie opt-out condition delegate', function() {
 
       it('returns true when the cookie is set to "true" and acceptsCookies is true', function() {
         setCookie(cookieName, 'true');
-        var config = getConfig(true);
-        expect(conditionDelegate(config)).toBe(true);
+        var settings = getSettings(true);
+        expect(conditionDelegate(settings)).toBe(true);
         removeCookie(cookieName);
       });
 
       it('returns false when the cookie is set to "false" and acceptsCookies is true', function() {
         setCookie(cookieName, 'false');
-        var config = getConfig(true);
-        expect(conditionDelegate(config)).toBe(false);
+        var settings = getSettings(true);
+        expect(conditionDelegate(settings)).toBe(false);
         removeCookie(cookieName);
       });
 
       it('returns false when the cookie is set to "true" and acceptsCookies is false', function() {
         setCookie(cookieName, 'true');
-        var config = getConfig(false);
-        expect(conditionDelegate(config)).toBe(false);
+        var settings = getSettings(false);
+        expect(conditionDelegate(settings)).toBe(false);
         removeCookie(cookieName);
       });
 
       it('returns true when the cookie is set to "false" and acceptsCookies is false', function() {
         setCookie(cookieName, 'false');
-        var config = getConfig(false);
-        expect(conditionDelegate(config)).toBe(true);
+        var settings = getSettings(false);
+        expect(conditionDelegate(settings)).toBe(true);
         removeCookie(cookieName);
       });
 
       it('returns false when the cookie has not been set and acceptsCookies is true', function() {
-        var config = getConfig(true);
-        expect(conditionDelegate(config)).toBe(false);
+        var settings = getSettings(true);
+        expect(conditionDelegate(settings)).toBe(false);
       });
 
       it('returns false when the cookie has not been set and acceptsCookies is false', function() {
-        var config = getConfig(false);
-        expect(conditionDelegate(config)).toBe(false);
+        var settings = getSettings(false);
+        expect(conditionDelegate(settings)).toBe(false);
       });
     });
   };

@@ -15,7 +15,7 @@ var conditionDelegate = conditionDelegateInjector({
 
 describe('subdomain condition delegate', function() {
   it('returns true when the subdomain matches an acceptable string', function() {
-    var config = {
+    var settings = {
       subdomains: [
         {
           value: 'basketball.espn.com'
@@ -25,11 +25,11 @@ describe('subdomain condition delegate', function() {
         }
       ]
     };
-    expect(conditionDelegate(config)).toBe(true);
+    expect(conditionDelegate(settings)).toBe(true);
   });
 
   it('returns false when the subdomain does not match an acceptable string', function() {
-    var config = {
+    var settings = {
       subdomains: [
         {
           value: 'basketball.espn.com'
@@ -39,11 +39,11 @@ describe('subdomain condition delegate', function() {
         }
       ]
     };
-    expect(conditionDelegate(config)).toBe(false);
+    expect(conditionDelegate(settings)).toBe(false);
   });
 
   it('returns true when the subdomain matches an acceptable regex', function() {
-    var config = {
+    var settings = {
       subdomains: [
         {
           value: 'basketball.espn.com'
@@ -54,11 +54,11 @@ describe('subdomain condition delegate', function() {
         }
       ]
     };
-    expect(conditionDelegate(config)).toBe(true);
+    expect(conditionDelegate(settings)).toBe(true);
   });
 
   it('returns false when the subdomain does not match an acceptable regex', function() {
-    var config = {
+    var settings = {
       subdomains: [
         {
           value: 'basketball.espn.com'
@@ -69,6 +69,6 @@ describe('subdomain condition delegate', function() {
         }
       ]
     };
-    expect(conditionDelegate(config)).toBe(false);
+    expect(conditionDelegate(settings)).toBe(false);
   });
 });

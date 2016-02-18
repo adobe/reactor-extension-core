@@ -4,22 +4,22 @@ import { getValues, reset } from 'redux-form';
 import reduceReducers from 'reduce-reducers';
 
 /**
- * Assigns everything inside config to state.
+ * Assigns everything inside settings to state.
  */
-const configToFormValuesBaseReducer = (values, options) => {
-  const { config } = options;
+const settingsToFormValuesBaseReducer = (values, options) => {
+  const { settings } = options;
   return {
     ...values,
-    ...config
+    ...settings
   };
 };
 
 /**
- * Assigns everything inside state to config.
+ * Assigns everything inside state to settings.
  */
-const formValuesToConfigBaseReducer = (config, values) => {
+const formValuesToSettingsBaseReducer = (settings, values) => {
   return {
-    ...config,
+    ...settings,
     ...values
   };
 };
@@ -30,11 +30,11 @@ export default (extensionBridge, store) => {
   extensionBridge.init = (options = {}) => {
     options = {
       ...options,
-      config: options.config || {},
-      configIsNew: !options.config
+      settings: options.settings || {},
+      settingsIsNew: !options.settings
     };
 
-    const initialValues = reducersForRoute.configToFormValues({}, options);
+    const initialValues = reducersForRoute.settingsToFormValues({}, options);
 
     store.dispatch(actionCreators.init({
       propertyConfig: options.propertyConfig,
@@ -49,9 +49,9 @@ export default (extensionBridge, store) => {
     store.dispatch(reset('default'));
   };
 
-  extensionBridge.getConfig = () => {
+  extensionBridge.getSettings = () => {
     const values = getValues(store.getState().form.default) || {};
-    return reducersForRoute.formValuesToConfig({}, values);
+    return reducersForRoute.formValuesToSettings({}, values);
   };
 
   extensionBridge.validate = () => {
@@ -62,22 +62,22 @@ export default (extensionBridge, store) => {
     return valid;
   };
 
-  return formConfig => {
-    const configToFormValuesReducers = [ configToFormValuesBaseReducer ];
+  return formSettings => {
+    const settingsToFormValuesReducers = [ settingsToFormValuesBaseReducer ];
 
-    if (formConfig.configToFormValues) {
-      configToFormValuesReducers.push(formConfig.configToFormValues);
+    if (formSettings.settingsToFormValues) {
+      settingsToFormValuesReducers.push(formSettings.settingsToFormValues);
     }
 
-    const formValuesToConfigReducers = [ formValuesToConfigBaseReducer ];
+    const formValuesToSettingsReducers = [ formValuesToSettingsBaseReducer ];
 
-    if (formConfig.formValuesToConfig) {
-      formValuesToConfigReducers.push(formConfig.formValuesToConfig);
+    if (formSettings.formValuesToSettings) {
+      formValuesToSettingsReducers.push(formSettings.formValuesToSettings);
     }
 
     reducersForRoute = {
-      configToFormValues: reduceReducers(...configToFormValuesReducers),
-      formValuesToConfig: reduceReducers(...formValuesToConfigReducers)
+      settingsToFormValues: reduceReducers(...settingsToFormValuesReducers),
+      formValuesToSettings: reduceReducers(...formValuesToSettingsReducers)
     };
   };
 };

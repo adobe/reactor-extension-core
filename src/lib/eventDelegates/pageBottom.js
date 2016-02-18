@@ -36,9 +36,9 @@ document.addEventListener('DOMContentLoaded', triggerPageBottom);
 /**
  * Page top event. This event occurs as soon as the user calls _satellite.pageBottom() (which is
  * supposed to be at the bottom of the page).
- * @param {Object} config The event config object.
+ * @param {Object} settings The event settings object.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function(config, trigger) {
+module.exports = function(settings, trigger) {
   triggers.push(trigger);
 };

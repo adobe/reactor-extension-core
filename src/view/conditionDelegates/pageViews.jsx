@@ -49,16 +49,16 @@ const formConfig = {
     'count',
     'duration'
   ],
-  configToFormValues(values, options) {
+  settingsToFormValues(values, options) {
     return {
       ...values,
-      operator: options.config.operator || '>',
-      duration: options.config.duration || 'lifetime'
+      operator: options.settings.operator || '>',
+      duration: options.settings.duration || 'lifetime'
     };
   },
-  formValuesToConfig(config, values) {
+  formValuesToSettings(settings, values) {
     return {
-      ...config,
+      ...settings,
       count: Number(values.count)
     };
   },

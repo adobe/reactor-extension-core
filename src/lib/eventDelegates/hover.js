@@ -65,30 +65,30 @@ var watchElement = function(element, trackedDelays) {
 
 /**
  * The hover event. This event occurs when a user has moved the pointer to be on top of an element.
- * @param {Object} config The event config object.
- * @param {string} config.elementSelector The CSS selector the element must match in order for
+ * @param {Object} settings The event settings object.
+ * @param {string} settings.elementSelector The CSS selector the element must match in order for
  * the rule to fire.
- * @param {Object[]} [config.elementProperties] Property values the element must have in order
+ * @param {Object[]} [settings.elementProperties] Property values the element must have in order
  * for the rule to fire.
- * @param {string} config.elementProperties[].name The property name.
- * @param {string} config.elementProperties[].value The property value.
- * @param {boolean} [config.elementProperties[].valueIsRegex=false] Whether <code>value</code>
+ * @param {string} settings.elementProperties[].name The property name.
+ * @param {string} settings.elementProperties[].value The property value.
+ * @param {boolean} [settings.elementProperties[].valueIsRegex=false] Whether <code>value</code>
  * on the object instance is intended to be a regular expression.
- * @param {Number} [config.delay] The number of milliseconds the pointer must be on
+ * @param {Number} [settings.delay] The number of milliseconds the pointer must be on
  * top of the element before declaring that a hover has occurred.
- * @param {boolean} [config.bubbleFireIfParent=false] Whether the rule should fire
+ * @param {boolean} [settings.bubbleFireIfParent=false] Whether the rule should fire
  * if the event originated from a descendant element.
- * @param {boolean} [config.bubbleFireIfChildFired=false] Whether the rule should
+ * @param {boolean} [settings.bubbleFireIfChildFired=false] Whether the rule should
  * fire if the same event has already triggered a rule targeting a descendant element.
- * @param {boolean} [config.bubbleStop=false] Whether the event should not trigger
+ * @param {boolean} [settings.bubbleStop=false] Whether the event should not trigger
  * rules on ancestor elements.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function(config, trigger) {
-  var delay = config.delay || 0;
+module.exports = function(settings, trigger) {
+  var delay = settings.delay || 0;
 
   var pseudoEventType = getPseudoEventType(delay);
-  bubbly.addListener(config, function(event, relatedElement) {
+  bubbly.addListener(settings, function(event, relatedElement) {
     // Bubbling for this event is dependent upon the delay configured for rules.
     // An event can "bubble up" to other rules with the same delay but not to rules with
     // different delays. See the tests for how this plays out.
@@ -99,8 +99,8 @@ module.exports = function(config, trigger) {
     }
   });
 
-  liveQuerySelector(config.elementSelector, function(element) {
-    if (!matchesProperties(element, config.elementProperties)) {
+  liveQuerySelector(settings.elementSelector, function(element) {
+    if (!matchesProperties(element, settings.elementProperties)) {
       return;
     }
 

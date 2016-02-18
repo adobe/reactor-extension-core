@@ -12,16 +12,16 @@ visitorTracking.enable();
 /**
  * Time on site condition. Determines if the user has been on the site for a certain amount
  * of time.
- * @param {Object} config Condition config.
- * @param {number} config.minutes The number of minutes to compare against.
- * @param {comparisonOperator} config.operator The comparison operator to use to
+ * @param {Object} settings Condition settings.
+ * @param {number} settings.minutes The number of minutes to compare against.
+ * @param {comparisonOperator} settings.operator The comparison operator to use to
  * compare against minutes.
  * @returns {boolean}
  */
-module.exports = function(config) {
+module.exports = function(settings) {
   return compareNumbers(
     visitorTracking.getMinutesOnSite(),
-    config.operator,
-    config.minutes
+    settings.operator,
+    settings.minutes
   );
 };

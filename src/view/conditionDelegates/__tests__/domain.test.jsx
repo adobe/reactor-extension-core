@@ -15,9 +15,9 @@ const selectedDomains = [
 ];
 
 describe('domain view', () => {
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         domains: selectedDomains
       },
       propertyConfig: {
@@ -31,20 +31,20 @@ describe('domain view', () => {
     expect(domainsCheckboxList.props.value).toEqual(selectedDomains);
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { domainsCheckboxList } = instance.refs;
     domainsCheckboxList.props.onChange(selectedDomains);
 
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       domains: selectedDomains
     });
   });
 
   it('sets domains to an empty array if nothing is selected', () => {
     extensionBridge.init();
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       domains: []
     });
   });

@@ -14,9 +14,9 @@ describe('time on site view', () => {
     expect(operatorField.props.value).toBe('>');
   });
 
-  it('sets form values from config', () => {
+  it('sets form values from settings', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         operator: '=',
         minutes: 100
       }
@@ -28,7 +28,7 @@ describe('time on site view', () => {
     expect(minutesField.props.value).toBe(100);
   });
 
-  it('sets config from form values', () => {
+  it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { operatorField, minutesField } = instance.refs;
@@ -36,7 +36,7 @@ describe('time on site view', () => {
     operatorField.props.onChange('=');
     minutesField.props.onChange(100);
 
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       operator: '=',
       minutes: 100
     });

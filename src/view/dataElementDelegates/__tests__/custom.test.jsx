@@ -8,7 +8,7 @@ const { instance, extensionBridge } = setUpConnectedForm(Custom);
 describe('custom view', () => {
   it('opens code editor with script value when button is clicked and stores result', () => {
     extensionBridge.init({
-      config: {
+      settings: {
         script: 'foo'
       }
     });
@@ -26,7 +26,7 @@ describe('custom view', () => {
     expect(window.extensionBridge.openCodeEditor)
       .toHaveBeenCalledWith('foo', jasmine.any(Function));
     expect(extensionBridge.validate()).toBe(true);
-    expect(extensionBridge.getConfig()).toEqual({
+    expect(extensionBridge.getSettings()).toEqual({
       script: 'bar'
     });
 
