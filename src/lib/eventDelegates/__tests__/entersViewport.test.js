@@ -10,11 +10,13 @@ describe('entersViewport event type', function() {
     aElement = document.createElement('div');
     aElement.id = 'a';
     aElement.innerHTML = 'a';
+    aElement.customProp = 'foo';
     document.body.insertBefore(aElement, document.body.firstChild);
 
     bElement = document.createElement('div');
     bElement.id = 'b';
     bElement.innerHTML = 'b';
+    bElement.customProp = 'foo';
     aElement.appendChild(bElement);
   };
 
@@ -193,6 +195,68 @@ describe('entersViewport event type', function() {
     __tickGlobalPoll();
 
     expect(bTrigger.calls.count()).toEqual(0);
+  });
+
+  it('triggers rule when targeting using elementProperties', function() {
+    var bTrigger = jasmine.createSpy();
+
+    delegate({
+      elementSelector: 'div',
+      elementProperties: [
+        {
+          name: 'id',
+          value: 'b'
+        }
+      ]
+    }, bTrigger);
+
+    __tickGlobalPoll();
+
+    assertTriggerCall({
+      call: bTrigger.calls.mostRecent(),
+      relatedElement: bElement,
+      target: bElement
+    });
+  });
+
+  it('triggers rule for each matching element', function() {
+    var trigger = jasmine.createSpy();
+
+    delegate({
+      elementSelector: 'div',
+      elementProperties: [
+        {
+          name: 'customProp',
+          value: 'foo'
+        }
+      ]
+    }, trigger);
+
+    __tickGlobalPoll();
+
+    assertTriggerCall({
+      call: trigger.calls.first(),
+      relatedElement: aElement,
+      target: aElement
+    });
+
+    assertTriggerCall({
+      call: trigger.calls.mostRecent(),
+      relatedElement: bElement,
+      target: bElement
+    });
+
+    var elementAddedLater = document.createElement('div');
+    elementAddedLater.customProp = 'foo';
+    document.body.appendChild(elementAddedLater);
+
+    __tickGlobalPoll();
+
+    assertTriggerCall({
+      call: trigger.calls.mostRecent(),
+      relatedElement: elementAddedLater,
+      target: elementAddedLater
+    });
   });
 
   // iOS Safari doesn't allow iframes to have overflow (scrollbars) but instead pushes the
