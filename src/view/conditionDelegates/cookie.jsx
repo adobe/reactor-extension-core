@@ -15,7 +15,7 @@ class Cookie extends React.Component {
           className="u-gapRight"
           error={name.touched && name.error}>
           <label>
-            <span className="u-label coral-Form-fieldlabel">Cookie Name</span>
+            <span className="u-label">Cookie Name</span>
             <Coral.Textfield ref="nameField" {...name}/>
           </label>
         </ValidationWrapper>
@@ -24,7 +24,7 @@ class Cookie extends React.Component {
           className="u-gapRight"
           error={value.touched && value.error}>
           <label>
-            <span className="u-label coral-Form-fieldlabel">Cookie Value</span>
+            <span className="u-label">Cookie Value</span>
             <Coral.Textfield ref="valueField" {...value}/>
           </label>
         </ValidationWrapper>

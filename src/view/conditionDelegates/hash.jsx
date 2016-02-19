@@ -19,7 +19,7 @@ class Hash extends React.Component {
           className="u-gapRight"
           error={hash.value.touched && hash.value.error}>
           <label>
-            <span className="u-label coral-Form-fieldlabel">Hash</span>
+            <span className="u-label">Hash</span>
             <Coral.Textfield ref={`hashField${index}`} {...hash.value}/>
           </label>
         </ValidationWrapper>
