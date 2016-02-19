@@ -16,9 +16,10 @@ export default class ElementPropertyEditor extends React.Component {
       removeButton = (
         <Coral.Button
           ref="removeButton"
+          className="u-gapBottom"
           variant="quiet"
           icon="close"
-          iconsize="XS"
+          iconsize="S"
           onClick={this.remove}/>
       );
     }

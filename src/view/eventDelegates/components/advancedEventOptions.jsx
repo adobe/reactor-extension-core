@@ -23,7 +23,7 @@ export default class AdvancedEventOptions extends React.Component {
 
     if (this.state.expanded) {
       advancedPanel = (
-        <div>
+        <div className="u-gapTop">
           <h4 className="coral-Heading coral-Heading--4">Bubbling</h4>
 
           <Coral.Checkbox
