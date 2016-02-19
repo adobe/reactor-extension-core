@@ -7,7 +7,8 @@ var path = require('path');
 var plumber = require('gulp-plumber');
 var notify = require('gulp-notify');
 var argv = require('yargs')
-  .alias('with-source-maps', 'source-maps')
+  .default('watch', true)
+  .alias('source-maps', 'with-source-maps')
   .argv;
 
 require('@reactor/turbine-gulp-packager')(gulp, {
@@ -32,7 +33,7 @@ var webpackConfig = {
   output: {
     filename: 'view.js'
   },
-  devtool: argv['source-maps'] ? '#inline-source-map' : false,
+  devtool: argv.sourceMaps ? '#inline-source-map' : false,
   module: {
     loaders: [
       {
@@ -72,7 +73,7 @@ gulp.task('buildJS', function() {
     .pipe(sourcemaps.init())
     .pipe(webpack(webpackConfig));
 
-  if (argv['source-maps']) {
+  if (argv.sourceMaps) {
     stream = stream.pipe(sourcemaps.write('.'));
   }
 
@@ -93,6 +94,11 @@ gulp.task('watch', function() {
 
 gulp.task('buildView', ['buildJS', 'copyHTML']);
 
+var dependencyTasks = ['buildView'];
+if (argv.watch && !argv.withoutWatch) {
+  dependencyTasks.push('watch');
+}
+
 require('@reactor/turbine-gulp-sandbox')(gulp, {
-  dependencyTasks: ['buildView', 'watch']
+  dependencyTasks: dependencyTasks
 });
