@@ -15,7 +15,7 @@ class TrafficSource extends React.Component {
           className="u-gapRight"
           error={source.touched && source.error}>
           <label>
-            <span className="u-label coral-Form-fieldlabel">Traffic Source</span>
+            <span className="u-label">Traffic Source</span>
             <Coral.Textfield ref="sourceField" {...source}/>
           </label>
         </ValidationWrapper>

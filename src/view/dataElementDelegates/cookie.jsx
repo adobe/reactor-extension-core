@@ -10,7 +10,7 @@ class Cookie extends React.Component {
     return (
       <ValidationWrapper ref="nameWrapper" error={name.touched && name.error}>
         <label>
-          <span className="u-label coral-Form-fieldlabel">Cookie Name</span>
+          <span className="u-label">Cookie Name</span>
           <Coral.Textfield ref="nameField" {...name}/>
         </label>
       </ValidationWrapper>

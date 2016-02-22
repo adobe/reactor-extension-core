@@ -15,7 +15,7 @@ class VariableSet extends React.Component {
           className="u-gapRight"
           error={name.touched && name.error}>
           <label>
-            <span className="u-label coral-Form-fieldlabel">JS Variable Name</span>
+            <span className="u-label">JS Variable Name</span>
             <Coral.Textfield ref="nameField" {...name}/>
           </label>
         </ValidationWrapper>
@@ -24,10 +24,16 @@ class VariableSet extends React.Component {
           className="u-gapRight"
           error={value.touched && value.error}>
           <label>
-            <span className="u-label coral-Form-fieldlabel">JS Variable Value</span>
+            <span className="u-label">JS Variable Value</span>
             <Coral.Textfield ref="valueField" {...value}/>
           </label>
         </ValidationWrapper>
+        <Coral.Icon icon="infoCircle" className="Variable-tooltip u-gapRight"/>
+        <Coral.Tooltip className="u-tooltipMaxWidth" placement="right" target="_prev">
+          Specify a text (string) value here. The rule will only fire if the specified
+          variable contains this string. Note: If your variable contains a number,
+          this will not work as expected.
+        </Coral.Tooltip>
         <RegexToggle
           ref="valueRegexToggle"
           value={value.value}

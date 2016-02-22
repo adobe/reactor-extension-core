@@ -16,7 +16,7 @@ export default class MultipleItemEditor extends React.Component {
                 ref={'removeButton' + i}
                 className="u-gapLeft"
                 icon="close"
-                iconsize="XS"
+                iconsize="S"
                 variant="quiet"
                 onClick={onRemoveItem.bind(this, i)}>
                 Remove Pattern
@@ -32,7 +32,7 @@ export default class MultipleItemEditor extends React.Component {
         <div>
           <Coral.Button
             ref="addButton"
-            className="u-gapTop"
+            className="MultipleItemEditor-addPatternButton"
             icon="addCircle"
             iconsize="S"
             variant="quiet"

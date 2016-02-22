@@ -14,7 +14,7 @@ class QueryParameter extends React.Component {
           error={name.touched && name.error}
           className="u-gapRight">
           <label>
-            <span className="u-label coral-Form-fieldlabel">URL Querystring Parameter Name</span>
+            <span className="u-label">URL Querystring Parameter Name</span>
             <Coral.Textfield ref="nameField" {...name}/>
           </label>
         </ValidationWrapper>

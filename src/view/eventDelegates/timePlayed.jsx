@@ -31,7 +31,7 @@ class TimePlayed extends React.Component {
           <Coral.Select
             {...unit}
             ref="unitSelect"
-            className="u-gapLeft">
+            className="u-gapLeft TimePlayed-unitSelect">
             <coral-select-item value={timePlayedUnit.SECOND}>
               seconds
             </coral-select-item>
