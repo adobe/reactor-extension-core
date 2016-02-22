@@ -43,7 +43,7 @@
   "devDependencies": {
     "@reactor/turbine": "^2.1.0",
     "@reactor/turbine-gulp-packager": "^0.0.1",
-    "@reactor/turbine-gulp-sandbox": "^1.2.1",
+    "@reactor/turbine-gulp-sandbox": "^1.3.0",
     "@reactor/turbine-gulp-testrunner": "^1.0.0",
     "babel-core": "^6.5.2",
     "babel-loader": "^6.2.3",
