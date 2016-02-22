@@ -6,6 +6,10 @@ var sourcemaps = require('gulp-sourcemaps');
 var path = require('path');
 var plumber = require('gulp-plumber');
 var notify = require('gulp-notify');
+var argv = require('yargs')
+  .default('watch', true)
+  .alias('source-maps', 'with-source-maps')
+  .argv;
 
 require('@reactor/turbine-gulp-packager')(gulp, {
   dependencyTasks: ['buildView']
@@ -29,7 +33,7 @@ var webpackConfig = {
   output: {
     filename: 'view.js'
   },
-  devtool: '#source-map',
+  devtool: argv.sourceMaps ? '#inline-source-map' : false,
   module: {
     loaders: [
       {
@@ -63,13 +67,17 @@ var webpackConfig = {
 };
 
 gulp.task('buildJS', function() {
-  return gulp.src('src/view/index.jsx')
+  var stream = gulp.src('src/view/index.jsx')
     // Allows building to fail without breaking file watchers, etc.
     .pipe(plumber({ errorHandler: errorAlert }))
     .pipe(sourcemaps.init())
-    .pipe(webpack(webpackConfig))
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest('dist'));
+    .pipe(webpack(webpackConfig));
+
+  if (argv.sourceMaps) {
+    stream = stream.pipe(sourcemaps.write('.'));
+  }
+
+  return stream.pipe(gulp.dest('dist'));
 });
 
 gulp.task('copyHTML', function() {
@@ -86,6 +94,11 @@ gulp.task('watch', function() {
 
 gulp.task('buildView', ['buildJS', 'copyHTML']);
 
+var dependencyTasks = ['buildView'];
+if (argv.watch && !argv.withoutWatch) {
+  dependencyTasks.push('watch');
+}
+
 require('@reactor/turbine-gulp-sandbox')(gulp, {
-  dependencyTasks: ['buildView', 'watch']
+  dependencyTasks: dependencyTasks
 });
