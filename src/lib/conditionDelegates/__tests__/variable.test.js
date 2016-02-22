@@ -12,8 +12,10 @@ describe('variable condition delegate', function() {
   beforeAll(function() {
     window._satellite = window._satellite || {};
     previousGetVar = window._satellite.getVar;
-    window._satellite.getVar = function() {
-      return 'foo';
+    window._satellite.getVar = function(variableName) {
+      if (variableName) {
+        return 'foo';
+      }
     };
   });
 
