@@ -18,7 +18,7 @@ class Sessions extends React.Component {
           <ValidationWrapper ref="countWrapper" error={count.touched && count.error}>
             <label>
               <span className="u-label">the value</span>
-              <Coral.Textfield ref="countField" {...count}/>
+              <Coral.Textfield className="u-smallTextfield" ref="countField" {...count}/>
             </label>
           </ValidationWrapper>
         </div>
