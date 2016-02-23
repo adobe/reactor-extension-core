@@ -17,7 +17,7 @@ class TimeOnSite extends React.Component {
           </label>
           <ValidationWrapper ref="minutesWrapper" error={minutes.touched && minutes.error}>
             <label>
-              <Coral.Textfield ref="minutesField" {...minutes}/>
+              <Coral.Textfield className="u-smallTextfield" ref="minutesField" {...minutes}/>
               <span className="u-label u-gapLeft">minutes on site</span>
             </label>
           </ValidationWrapper>

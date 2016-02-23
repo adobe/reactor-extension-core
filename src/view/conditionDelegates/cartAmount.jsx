@@ -29,7 +29,7 @@ class CartAmount extends React.Component {
           <ValidationWrapper ref="amountWrapper" error={amount.touched && amount.error}>
             <label>
               <span className="u-label">the value</span>
-              <Coral.Textfield ref="amountField" {...amount}/>
+              <Coral.Textfield className="u-smallTextfield" ref="amountField" {...amount}/>
             </label>
           </ValidationWrapper>
         </div>

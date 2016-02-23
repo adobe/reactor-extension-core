@@ -17,7 +17,10 @@ class WindowSize extends React.Component {
           </label>
           <ValidationWrapper ref="widthWrapper" error={width.touched && width.error}>
             <label>
-              <Coral.Textfield ref="widthField" className="u-gapRight" {...width}/>
+              <Coral.Textfield
+                ref="widthField"
+                className="u-gapRight u-smallTextfield"
+                {...width}/>
               <span>px</span>
             </label>
           </ValidationWrapper>
@@ -29,7 +32,10 @@ class WindowSize extends React.Component {
           </label>
           <ValidationWrapper ref="heightWrapper" error={height.touched && height.error}>
             <label>
-              <Coral.Textfield ref="heightField" className="u-gapRight" {...height}/>
+              <Coral.Textfield
+                ref="heightField"
+                className="u-gapRight u-smallTextfield"
+                {...height}/>
               <span>px</span>
             </label>
           </ValidationWrapper>

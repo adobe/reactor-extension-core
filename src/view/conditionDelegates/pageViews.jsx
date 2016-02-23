@@ -16,27 +16,30 @@ class PageViews extends React.Component {
             <ComparisonOperatorField ref="operatorField" {...operator}/>
           </label>
           <ValidationWrapper ref="countWrapper" error={count.touched && count.error}>
-            <label>
+            <label  className="u-gapRight">
               <span className="u-label">the value</span>
-              <Coral.Textfield ref="countField" {...count}/>
+              <Coral.Textfield className="u-smallTextfield" ref="countField" {...count}/>
             </label>
           </ValidationWrapper>
-        </div>
-        <div>
-          <Coral.Radio
-            ref="lifetimeRadio"
-            {...duration}
-            value="lifetime"
-            checked={duration.value === 'lifetime'}>
-            Lifetime
-          </Coral.Radio>
-          <Coral.Radio
-            ref="sessionRadio"
-            {...duration}
-            value="session"
-            checked={duration.value === 'session'}>
-            Current Session
-          </Coral.Radio>
+          <span className="u-noWrap">
+            <label>
+              <span className="u-label">over</span>
+            </label>
+            <Coral.Radio
+              ref="lifetimeRadio"
+              {...duration}
+              value="lifetime"
+              checked={duration.value === 'lifetime'}>
+              Lifetime
+            </Coral.Radio>
+            <Coral.Radio
+              ref="sessionRadio"
+              {...duration}
+              value="session"
+              checked={duration.value === 'session'}>
+              Current Session
+            </Coral.Radio>
+          </span>
         </div>
       </div>
     );

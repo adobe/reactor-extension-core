@@ -29,7 +29,7 @@ class CartItemQuantity extends React.Component {
           <ValidationWrapper ref="quantityWrapper" error={quantity.touched && quantity.error}>
             <label>
               <span className="u-label">the value</span>
-              <Coral.Textfield ref="quantityField" {...quantity}/>
+              <Coral.Textfield className="u-smallTextfield" ref="quantityField" {...quantity}/>
             </label>
           </ValidationWrapper>
         </div>
