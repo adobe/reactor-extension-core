@@ -43,6 +43,22 @@ module.exports = function(config) {
   var matchesSelector = require('../../resources/matchesSelector');
   resources['dtm/resources/matchesSelector'] = matchesSelector;
 
+  var pollInjector =
+    require('inject!../../resources/poll');
+  var poll = pollInjector({
+    'once': publicRequire('once')
+  });
+  resources['dtm/resources/poll'] = poll;
+
+  var liveQuerySelectorInjector =
+    require('inject!../../resources/liveQuerySelector');
+  var liveQuerySelector = liveQuerySelectorInjector({
+    once: publicRequire('once'),
+    createDataStash: publicRequire('createDataStash'),
+    getExtension: publicRequire('getExtension')
+  });
+  resources['dtm/resources/liveQuerySelector'] = liveQuerySelector;
+
   var matchesPropertiesInjector =
     require('inject!../../resources/matchesProperties');
   var matchesProperties = matchesPropertiesInjector({
@@ -70,13 +86,6 @@ module.exports = function(config) {
     'propertyConfig': publicRequire('propertyConfig')
   });
   resources['dtm/resources/visitorTracking'] = visitorTracking;
-
-  var pollInjector =
-    require('inject!../../resources/poll');
-  var pollInjector = pollInjector({
-    'once': publicRequire('once')
-  });
-  resources['dtm/resources/poll'] = pollInjector;
 
   return publicRequire;
 };
