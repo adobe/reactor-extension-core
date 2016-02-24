@@ -2,9 +2,6 @@
 
 var conditionDelegateInjector = require('inject!../cartAmount');
 var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
-var conditionDelegate = conditionDelegateInjector({
-  getExtension: publicRequire('getExtension')
-});
 
 var getSettings = function(dataElement, operator, amount) {
   return {
@@ -15,22 +12,15 @@ var getSettings = function(dataElement, operator, amount) {
 };
 
 describe('cart amount condition delegate', function() {
-  var previousGetVar;
-
-  beforeAll(function() {
-    window._satellite = window._satellite || {};
-    previousGetVar = window._satellite.getVar;
-  });
-
-  afterAll(function() {
-    window._satellite.getVar = previousGetVar;
-  });
-
   describe('with numerical data element value', function() {
+    var conditionDelegate;
     beforeAll(function() {
-      window._satellite.getVar = function() {
-        return 5.17;
-      };
+      conditionDelegate = conditionDelegateInjector({
+        getVar: function() {
+          return 5.17;
+        },
+        getExtension: publicRequire('getExtension')
+      });
     });
 
     it('returns true when cart amount is above "greater than" constraint', function() {
@@ -89,10 +79,14 @@ describe('cart amount condition delegate', function() {
 
   nonNumbers.forEach(function(nonNumber) {
     describe('with non-numerical data element value of ' + nonNumber.dataElementValue, function() {
+      var conditionDelegate;
       beforeAll(function() {
-        window._satellite.getVar = function() {
-          return nonNumber.dataElementValue;
-        };
+        conditionDelegate = conditionDelegateInjector({
+          getVar: function() {
+            return nonNumber.dataElementValue;
+          },
+          getExtension: publicRequire('getExtension')
+        });
       });
 
       it('coerces the value to ' + nonNumber.coercedValue, function() {

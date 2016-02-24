@@ -1,4 +1,6 @@
 'use strict';
+
+var getVar = require('getVar');
 var extension = require('getExtension')('dtm');
 var compareNumbers = extension.getResource('compareNumbers');
 
@@ -13,7 +15,7 @@ var compareNumbers = extension.getResource('compareNumbers');
  * @returns {boolean}
  */
 module.exports = function(settings) {
-  var quantity = Number(_satellite.getVar(settings.dataElement));
+  var quantity = Number(getVar(settings.dataElement));
 
   if (isNaN(quantity)) {
     quantity = 0;

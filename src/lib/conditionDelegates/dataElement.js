@@ -1,5 +1,6 @@
 'use strict';
 
+var getVar = require('getVar');
 var extension = require('getExtension')('dtm');
 var textMatch = extension.getResource('textMatch');
 
@@ -15,5 +16,5 @@ var textMatch = extension.getResource('textMatch');
  */
 module.exports = function(settings) {
   var acceptableValue = settings.valueIsRegex ? new RegExp(settings.value, 'i') : settings.value;
-  return textMatch(_satellite.getVar(settings.name), acceptableValue);
+  return textMatch(getVar(settings.name), acceptableValue);
 };
