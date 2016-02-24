@@ -1613,6 +1613,10 @@
     {
       "name": "textMatch",
       "libPath": "resources/textMatch.js"
+    },
+    {
+      "name": "matchesSelector",
+      "libPath": "resources/matchesSelector.js"
     }
   ]
 }

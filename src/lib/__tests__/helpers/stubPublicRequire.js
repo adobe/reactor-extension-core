@@ -40,6 +40,9 @@ module.exports = function(config) {
   var textMatch = require('../../resources/textMatch');
   resources['dtm/resources/textMatch'] = textMatch;
 
+  var matchesSelector = require('../../resources/matchesSelector');
+  resources['dtm/resources/matchesSelector'] = matchesSelector;
+
   var matchesPropertiesInjector =
     require('inject!../../resources/matchesProperties');
   var matchesProperties = matchesPropertiesInjector({
@@ -50,7 +53,6 @@ module.exports = function(config) {
   var createBubblyInjector = require('inject!../../resources/createBubbly');
   var createBubbly = createBubblyInjector({
     createDataStash: publicRequire('createDataStash'),
-    matchesSelector: publicRequire('matchesSelector'),
     getExtension: publicRequire('getExtension')
   });
   resources['dtm/resources/createBubbly'] = createBubbly;
