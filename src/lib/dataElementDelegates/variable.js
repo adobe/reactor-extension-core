@@ -1,6 +1,20 @@
 'use strict';
+var window = require('window');
 
-var getObjectProperty = require('getObjectProperty');
+var getObjectProperty = function(obj, property) {
+  var propertyChain = property.split('.');
+  var currentValue = obj;
+
+  for (var i = 0, len = propertyChain.length; i < len; i++) {
+    if (currentValue == null) {
+      return undefined;
+    }
+
+    currentValue = currentValue[propertyChain[i]];
+  }
+
+  return currentValue;
+};
 
 /**
  * The variable data element.
