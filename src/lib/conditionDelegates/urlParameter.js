@@ -1,7 +1,8 @@
 'use strict';
 
-var textMatch = require('textMatch');
 var getQueryParam = require('getQueryParam');
+var extension = require('getExtension')('dtm');
+var textMatch = extension.getResource('textMatch');
 
 /**
  * URL parameter condition. Determines if a querystring parameter exists with a name and value that

@@ -1,6 +1,7 @@
 'use strict';
 
-var textMatch = require('textMatch');
+var extension = require('getExtension')('dtm');
+var textMatch = extension.getResource('textMatch');
 
 var getElementProperty = function(element, property) {
   if (property === '@text' || property === 'innerText') {
@@ -18,9 +19,9 @@ var getElementProperty = function(element, property) {
  * evaluated if it exists.
  * @param {HTMLElement} element The element to match against.
  * @param {Object[]} properties The criteria of properties to match again.
- * @param {string} config.properties[].name The property name.
- * @param {string} config.properties[].value The property value.
- * @param {boolean} [config.properties[].valueIsRegex=false] Whether <code>value</code> on the
+ * @param {string} properties.name The property name.
+ * @param {string} properties.value The property value.
+ * @param {boolean} [properties.valueIsRegex=false] Whether <code>value</code> on the
  * object instance is intended to be a regular expression.
  * @returns {boolean} Whether the element matches the criteria.
  */

@@ -37,10 +37,13 @@ module.exports = function(config) {
     }
   });
 
+  var textMatch = require('../../resources/textMatch');
+  resources['dtm/resources/textMatch'] = textMatch;
+
   var matchesPropertiesInjector =
     require('inject!../../resources/matchesProperties');
   var matchesProperties = matchesPropertiesInjector({
-    textMatch: publicRequire('textMatch')
+    getExtension: publicRequire('getExtension')
   });
   resources['dtm/resources/matchesProperties'] = matchesProperties;
 

@@ -1,6 +1,7 @@
 'use strict';
 
-var textMatch = require('textMatch');
+var extension = require('getExtension')('dtm');
+var textMatch = extension.getResource('textMatch');
 
 /**
  * Hash condition. Determines if the actual hash (URL fragment identifier) matches at least one

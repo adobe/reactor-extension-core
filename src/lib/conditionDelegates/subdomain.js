@@ -1,7 +1,8 @@
 'use strict';
 
-var textMatch = require('textMatch');
 var document = require('document');
+var extension = require('getExtension')('dtm');
+var textMatch = extension.getResource('textMatch');
 
 /**
  * Subdomain condition. Determines if the actual subdomain matches at least one acceptable

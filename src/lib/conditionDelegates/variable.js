@@ -1,6 +1,7 @@
 'use strict';
 
-var textMatch = require('textMatch');
+var extension = require('getExtension')('dtm');
+var textMatch = extension.getResource('textMatch');
 
 /**
  * Variable condition. Determines if a particular JS variable's actual value matches

@@ -5,8 +5,7 @@ describe('change event type', function() {
   var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
   var delegateInjector = require('inject!../change');
   var delegate = delegateInjector({
-    getExtension: publicRequire('getExtension'),
-    textMatch: publicRequire('textMatch')
+    getExtension: publicRequire('getExtension')
   });
 
   var assertTriggerCall = function(options) {
