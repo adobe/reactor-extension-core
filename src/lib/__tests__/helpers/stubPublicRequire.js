@@ -66,5 +66,12 @@ module.exports = function(config) {
   });
   resources['dtm/resources/visitorTracking'] = visitorTracking;
 
+  var pollInjector =
+    require('inject!../../resources/poll');
+  var pollInjector = pollInjector({
+    'once': publicRequire('once')
+  });
+  resources['dtm/resources/poll'] = pollInjector;
+
   return publicRequire;
 };

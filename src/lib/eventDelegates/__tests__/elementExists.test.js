@@ -35,7 +35,6 @@ describe('elementExists event type', function() {
     var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
     var delegateInjector = require('inject!../elementExists');
     delegate = delegateInjector({
-      poll: publicRequire('poll'),
       createDataStash: publicRequire('createDataStash'),
       getExtension: publicRequire('getExtension')
     });

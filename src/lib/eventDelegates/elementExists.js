@@ -1,8 +1,8 @@
 'use strict';
 
-var poll = require('poll');
 var dataStash = require('createDataStash')('elementExists');
 var extension = require('getExtension')('dtm');
+var poll = extension.getResource('poll');
 var matchesProperties = extension.getResource('matchesProperties');
 
 var listenersBySelector = {};
