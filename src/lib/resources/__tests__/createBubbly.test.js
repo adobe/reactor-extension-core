@@ -6,7 +6,6 @@ describe('createBubbly', function() {
   var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
   var createBubbly = createBubblyInjector({
     createDataStash: publicRequire('createDataStash'),
-    matchesSelector: publicRequire('matchesSelector'),
     getExtension: publicRequire('getExtension')
   });
 

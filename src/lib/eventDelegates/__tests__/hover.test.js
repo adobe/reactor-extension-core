@@ -37,7 +37,6 @@ describe('hover event type', function() {
     var delegateInjector = require('inject!../hover');
     delegate = delegateInjector({
       getExtension: publicRequire('getExtension'),
-      liveQuerySelector: publicRequire('liveQuerySelector'),
       createDataStash: publicRequire('createDataStash')
     });
   });

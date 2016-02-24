@@ -2,8 +2,8 @@
 
 var extension = require('getExtension')('dtm');
 var bubbly = extension.getResource('createBubbly')();
+var liveQuerySelector = extension.getResource('liveQuerySelector');
 var matchesProperties = extension.getResource('matchesProperties');
-var liveQuerySelector = require('liveQuerySelector');
 var dataStash = require('createDataStash')('hover');
 
 /**

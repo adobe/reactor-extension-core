@@ -1609,6 +1609,22 @@
     {
       "name": "timer",
       "libPath": "resources/timer.js"
+    },
+    {
+      "name": "textMatch",
+      "libPath": "resources/textMatch.js"
+    },
+    {
+      "name": "matchesSelector",
+      "libPath": "resources/matchesSelector.js"
+    },
+    {
+      "name": "poll",
+      "libPath": "resources/poll.js"
+    },
+    {
+      "name": "liveQuerySelector",
+      "libPath": "resources/liveQuerySelector.js"
     }
   ]
 }

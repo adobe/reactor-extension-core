@@ -37,17 +37,47 @@ module.exports = function(config) {
     }
   });
 
+  var textMatch = require('../../resources/textMatch');
+  resources['dtm/resources/textMatch'] = textMatch;
+
+  var matchesSelector = require('../../resources/matchesSelector');
+  resources['dtm/resources/matchesSelector'] = matchesSelector;
+
+  var timerInjector = require('inject!../../resources/timer');
+  var Timer = timerInjector({
+    'EventEmitter': publicRequire('EventEmitter')
+  });
+  resources['dtm/resources/timer'] = Timer;
+
+  var visibilityApi = require('../../resources/visibilityApi');
+  resources['dtm/resources/visibilityApi'] = visibilityApi;
+
+  var pollInjector =
+    require('inject!../../resources/poll');
+  var poll = pollInjector({
+    'once': publicRequire('once')
+  });
+  resources['dtm/resources/poll'] = poll;
+
+  var liveQuerySelectorInjector =
+    require('inject!../../resources/liveQuerySelector');
+  var liveQuerySelector = liveQuerySelectorInjector({
+    once: publicRequire('once'),
+    createDataStash: publicRequire('createDataStash'),
+    getExtension: publicRequire('getExtension')
+  });
+  resources['dtm/resources/liveQuerySelector'] = liveQuerySelector;
+
   var matchesPropertiesInjector =
     require('inject!../../resources/matchesProperties');
   var matchesProperties = matchesPropertiesInjector({
-    textMatch: publicRequire('textMatch')
+    getExtension: publicRequire('getExtension')
   });
   resources['dtm/resources/matchesProperties'] = matchesProperties;
 
   var createBubblyInjector = require('inject!../../resources/createBubbly');
   var createBubbly = createBubblyInjector({
     createDataStash: publicRequire('createDataStash'),
-    matchesSelector: publicRequire('matchesSelector'),
     getExtension: publicRequire('getExtension')
   });
   resources['dtm/resources/createBubbly'] = createBubbly;

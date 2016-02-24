@@ -1,6 +1,8 @@
 'use strict';
 
-var textMatch = require('textMatch');
+var getVar = require('getVar');
+var extension = require('getExtension')('dtm');
+var textMatch = extension.getResource('textMatch');
 
 /**
  * Data element condition. Determines if a particular data element's actual value matches
@@ -14,5 +16,5 @@ var textMatch = require('textMatch');
  */
 module.exports = function(settings) {
   var acceptableValue = settings.valueIsRegex ? new RegExp(settings.value, 'i') : settings.value;
-  return textMatch(_satellite.getVar(settings.name), acceptableValue);
+  return textMatch(getVar(settings.name), acceptableValue);
 };

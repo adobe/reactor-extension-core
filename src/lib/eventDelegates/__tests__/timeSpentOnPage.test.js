@@ -3,17 +3,7 @@ var visibilityApi = require('../../resources/visibilityApi');
 var visibilityApiInstance = visibilityApi();
 var visibilityChangeListener;
 
-var TimerInjector = require('inject!../../resources/timer');
-var Timer = TimerInjector({
-  'EventEmitter': require('@reactor/turbine/src/utils/communication/EventEmitter')
-});
-
-var publicRequire = require('../../__tests__/helpers/stubPublicRequire')({
-  resourceStubs: {
-    'dtm/resources/visibilityApi': visibilityApi,
-    'dtm/resources/timer': Timer
-  }
-});
+var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
 
 var mockDocument = {
   addEventListener: function(event, listener) {
@@ -30,6 +20,7 @@ var delegate = eventDelegateInjector({
   document: mockDocument
 });
 
+var Timer = publicRequire('getExtension')('dtm').getResource('timer');
 
 describe('time spent on page event type', function() {
   beforeEach(function() {

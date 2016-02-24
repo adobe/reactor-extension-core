@@ -16,7 +16,7 @@ class PageViews extends React.Component {
             <ComparisonOperatorField ref="operatorField" {...operator}/>
           </label>
           <ValidationWrapper ref="countWrapper" error={count.touched && count.error}>
-            <label  className="u-gapRight">
+            <label className="u-gapRight">
               <span className="u-label">the value</span>
               <Coral.Textfield className="u-smallTextfield" ref="countField" {...count}/>
             </label>
