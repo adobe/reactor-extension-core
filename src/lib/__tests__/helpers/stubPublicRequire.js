@@ -43,6 +43,15 @@ module.exports = function(config) {
   var matchesSelector = require('../../resources/matchesSelector');
   resources['dtm/resources/matchesSelector'] = matchesSelector;
 
+  var timerInjector = require('inject!../../resources/timer');
+  var Timer = timerInjector({
+    'EventEmitter': publicRequire('EventEmitter')
+  });
+  resources['dtm/resources/timer'] = Timer;
+
+  var visibilityApi = require('../../resources/visibilityApi');
+  resources['dtm/resources/visibilityApi'] = visibilityApi;
+
   var pollInjector =
     require('inject!../../resources/poll');
   var poll = pollInjector({
