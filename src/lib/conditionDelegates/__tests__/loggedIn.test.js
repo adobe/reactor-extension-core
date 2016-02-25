@@ -11,7 +11,7 @@ describe('logged in condition delegate', function() {
     });
 
     var conditionDelegate = conditionDelegateInjector({
-      getDataElement: getDataElement
+      'get-data-element': getDataElement
     });
 
     var settings = {

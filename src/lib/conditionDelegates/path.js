@@ -1,8 +1,8 @@
 'use strict';
 
 var document = require('document');
-var extension = require('getExtension')('dtm');
-var textMatch = extension.getResource('textMatch');
+var extension = require('get-extension')('dtm');
+var textMatch = extension.getResource('text-match');
 
 /**
  * Path condition. Determines if the actual path matches at least one acceptable path.

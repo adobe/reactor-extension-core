@@ -4,7 +4,7 @@ describe('matchesProperties', function() {
   var matchesPropertiesInjector = require('inject!../matchesProperties');
   var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
   var matchesProperties = matchesPropertiesInjector({
-    getExtension: publicRequire('getExtension')
+    'get-extension': publicRequire('get-extension')
   });
   var element;
   

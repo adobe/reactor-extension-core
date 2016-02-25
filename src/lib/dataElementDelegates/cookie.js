@@ -1,6 +1,6 @@
 'use strict';
 
-var getCookie = require('getCookie');
+var getCookie = require('get-cookie');
 
 /**
  * The cookie data element.

@@ -1,7 +1,7 @@
 'use strict';
 
-var getCookie = require('getCookie');
-var propertyConfig = require('propertyConfig');
+var getCookie = require('get-cookie');
+var propertyConfig = require('property-config');
 
 /**
  * Cookie opt-out condition. Determines whether the user has chosen to accept cookies.

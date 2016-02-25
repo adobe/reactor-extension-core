@@ -1,6 +1,6 @@
 'use strict';
 
-var clientInfo = require('clientInfo');
+var clientInfo = require('client-info');
 
 /**
  * Operating system condition. Determines if the actual operating system matches at least one

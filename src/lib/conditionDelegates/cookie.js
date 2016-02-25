@@ -1,8 +1,8 @@
 'use strict';
 
-var getCookie = require('getCookie');
-var extension = require('getExtension')('dtm');
-var textMatch = extension.getResource('textMatch');
+var getCookie = require('get-cookie');
+var extension = require('get-extension')('dtm');
+var textMatch = extension.getResource('text-match');
 
 /**
  * Cookie condition. Determines if a particular cookie's actual value matches an acceptable value.

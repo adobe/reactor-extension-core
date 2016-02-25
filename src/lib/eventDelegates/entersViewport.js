@@ -2,10 +2,10 @@
 
 var POLL_INTERVAL = 3000;
 
-var createDataStash = require('createDataStash');
+var createDataStash = require('create-data-stash');
 var dataStash = createDataStash('entersViewport');
-var extension = require('getExtension')('dtm');
-var matchesProperties = extension.getResource('matchesProperties');
+var extension = require('get-extension')('dtm');
+var matchesProperties = extension.getResource('matches-properties');
 
 var listenersBySelector = {};
 

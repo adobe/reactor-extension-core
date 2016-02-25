@@ -1,7 +1,7 @@
 'use strict';
 
 var dataElementDelegate = require('inject!../cookie')({
-  getCookie: function() {
+  'get-cookie': function() {
     return 'bar';
   }
 });

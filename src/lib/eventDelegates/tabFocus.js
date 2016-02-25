@@ -2,8 +2,8 @@
 
 var once = require('once');
 var document = require('document');
-var extension = require('getExtension')('dtm');
-var visibilityApi = extension.getResource('visibilityApi')();
+var extension = require('get-extension')('dtm');
+var visibilityApi = extension.getResource('visibility-api')();
 var hiddenProperty = visibilityApi.hiddenProperty;
 var visibilityChangeEventType = visibilityApi.visibilityChangeEventType;
 

@@ -1,9 +1,9 @@
 'use strict';
 
-var propertyConfig = require('propertyConfig');
-var dataStash = require('createDataStash')('click');
-var extension = require('getExtension')('dtm');
-var bubbly = extension.getResource('createBubbly')();
+var propertyConfig = require('property-config');
+var dataStash = require('create-data-stash')('click');
+var extension = require('get-extension')('dtm');
+var bubbly = extension.getResource('create-bubbly')();
 var window = require('window');
 
 /**

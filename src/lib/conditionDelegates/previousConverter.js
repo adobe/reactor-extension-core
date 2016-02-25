@@ -1,6 +1,6 @@
 'use strict';
 
-var getDataElement = require('getDataElement');
+var getDataElement = require('get-data-element');
 
 /**
  * Previous converter condition. Determines if the user is a previous converter.

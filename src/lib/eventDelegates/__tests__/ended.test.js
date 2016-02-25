@@ -5,7 +5,7 @@ describe('ended event type', function() {
   var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
   var delegateInjector = require('inject!../ended');
   var delegate = delegateInjector({
-    getExtension: publicRequire('getExtension')
+    'get-extension': publicRequire('get-extension')
   });
 
   testStandardEvent(delegate, 'ended');

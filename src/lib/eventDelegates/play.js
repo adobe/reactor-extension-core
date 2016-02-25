@@ -1,6 +1,6 @@
 'use strict';
-var extension = require('getExtension')('dtm');
-var bubbly = extension.getResource('createBubbly')();
+var extension = require('get-extension')('dtm');
+var bubbly = extension.getResource('create-bubbly')();
 
 document.addEventListener('play', bubbly.evaluateEvent, true);
 

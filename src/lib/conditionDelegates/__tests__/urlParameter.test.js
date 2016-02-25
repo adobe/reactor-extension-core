@@ -2,7 +2,7 @@
 
 var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
 var conditionDelegate = require('inject!../urlParameter')({
-  getExtension: publicRequire('getExtension'),
+  'get-extension': publicRequire('get-extension'),
   getQueryParam: function() {
     return 'foo';
   }

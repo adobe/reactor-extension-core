@@ -2,7 +2,7 @@
 var POLL_INTERVAL = 3000;
 
 var once = require('once');
-var dataStash = require('createDataStash')('liveQuerySelector');
+var dataStash = require('create-data-stash')('liveQuerySelector');
 
 // Create a naked object with no prototype so we can safely use it as a map.
 var callbacksBySelector = Object.create(null);

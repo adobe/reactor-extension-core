@@ -10,11 +10,11 @@ var mockVisitorTracking = {
 var conditionDelegateInjector = require('inject!../sessions');
 var publicRequire = require('../../__tests__/helpers/stubPublicRequire')({
   resourceStubs: {
-    'dtm/resources/visitorTracking': mockVisitorTracking
+    'dtm/resources/visitor-tracking': mockVisitorTracking
   }
 });
 var conditionDelegate = conditionDelegateInjector({
-  getExtension: publicRequire('getExtension')
+  'get-extension': publicRequire('get-extension')
 });
 
 var getSettings = function(count, operator) {

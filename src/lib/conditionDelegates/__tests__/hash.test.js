@@ -3,7 +3,7 @@
 var conditionDelegateInjector = require('inject!../hash');
 var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
 var conditionDelegate = conditionDelegateInjector({
-  getExtension: publicRequire('getExtension')
+  'get-extension': publicRequire('get-extension')
 });
 
 describe('hash condition delegate', function() {
