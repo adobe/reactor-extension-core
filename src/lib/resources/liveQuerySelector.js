@@ -1,9 +1,8 @@
 'use strict';
+var POLL_INTERVAL = 3000;
 
 var once = require('once');
 var dataStash = require('createDataStash')('liveQuerySelector');
-var extension = require('getExtension')('dtm');
-var poll = extension.getResource('poll');
 
 // Create a naked object with no prototype so we can safely use it as a map.
 var callbacksBySelector = Object.create(null);
@@ -28,7 +27,7 @@ var findElements = function() {
 };
 
 var initializePolling = once(function() {
-  poll('liveFindElements', findElements);
+  setInterval(findElements, POLL_INTERVAL);
 });
 
 var callbackIdIncrementor = 0;

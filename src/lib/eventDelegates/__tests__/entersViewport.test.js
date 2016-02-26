@@ -1,5 +1,7 @@
 'use strict';
 
+var POLL_INTERVAL = 3000;
+
 describe('entersViewport event type', function() {
   var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
   var delegate;
@@ -64,7 +66,7 @@ describe('entersViewport event type', function() {
       elementSelector: '#a'
     }, aTrigger);
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     assertTriggerCall({
       call: aTrigger.calls.mostRecent(),
@@ -85,7 +87,7 @@ describe('entersViewport event type', function() {
       elementSelector: '#a'
     }, a2Trigger);
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     expect(aTrigger.calls.count()).toEqual(1);
     expect(a2Trigger.calls.count()).toEqual(1);
@@ -105,7 +107,7 @@ describe('entersViewport event type', function() {
       delay: 100000
     }, a2Trigger);
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     expect(aTrigger.calls.count()).toEqual(0);
     expect(a2Trigger.calls.count()).toEqual(0);
@@ -130,7 +132,7 @@ describe('entersViewport event type', function() {
       delay: 200000
     }, a2Trigger);
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     expect(aTrigger.calls.count()).toEqual(0);
     expect(a2Trigger.calls.count()).toEqual(0);
@@ -158,7 +160,7 @@ describe('entersViewport event type', function() {
       elementSelector: 'div#a'
     }, a2Trigger);
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     expect(aTrigger.calls.count()).toEqual(1);
     expect(a2Trigger.calls.count()).toEqual(1);
@@ -175,7 +177,7 @@ describe('entersViewport event type', function() {
       }]
     }, bTrigger);
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     expect(bTrigger.calls.count()).toEqual(1);
   });
@@ -191,7 +193,7 @@ describe('entersViewport event type', function() {
       }]
     }, bTrigger);
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     expect(bTrigger.calls.count()).toEqual(0);
   });
@@ -209,7 +211,7 @@ describe('entersViewport event type', function() {
       ]
     }, bTrigger);
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     assertTriggerCall({
       call: bTrigger.calls.mostRecent(),
@@ -231,7 +233,7 @@ describe('entersViewport event type', function() {
       ]
     }, trigger);
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     assertTriggerCall({
       call: trigger.calls.first(),
@@ -249,7 +251,7 @@ describe('entersViewport event type', function() {
     elementAddedLater.customProp = 'foo';
     document.body.appendChild(elementAddedLater);
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     assertTriggerCall({
       call: trigger.calls.mostRecent(),
@@ -312,24 +314,24 @@ describe('entersViewport event type', function() {
           delay: 200000
         }, b2Trigger);
 
-        __tickGlobalPoll();
+        jasmine.clock().tick(POLL_INTERVAL);
 
         expect(aTrigger.calls.count()).toEqual(0);
         expect(bTrigger.calls.count()).toEqual(0);
         expect(b2Trigger.calls.count()).toEqual(0);
 
         window.scrollTo(0, 10000);
-        __tickGlobalPoll();
+        jasmine.clock().tick(POLL_INTERVAL);
 
         expect(aTrigger.calls.count()).toEqual(1);
         expect(bTrigger.calls.count()).toEqual(0);
         expect(b2Trigger.calls.count()).toEqual(0);
 
         window.scrollTo(0, 0);
-        __tickGlobalPoll();
+        jasmine.clock().tick(POLL_INTERVAL);
 
         window.scrollTo(0, 10000);
-        __tickGlobalPoll();
+        jasmine.clock().tick(POLL_INTERVAL);
 
         // The first trigger should only be called the first time the element comes into view.
         expect(aTrigger.calls.count()).toEqual(1);
@@ -337,14 +339,14 @@ describe('entersViewport event type', function() {
         expect(b2Trigger.calls.count()).toEqual(0);
 
         window.scrollTo(0, 20000);
-        __tickGlobalPoll();
+        jasmine.clock().tick(POLL_INTERVAL);
 
         expect(aTrigger.calls.count()).toEqual(1);
         expect(bTrigger.calls.count()).toEqual(0);
         expect(b2Trigger.calls.count()).toEqual(0);
 
         window.scrollTo(0, 0);
-        __tickGlobalPoll();
+        jasmine.clock().tick(POLL_INTERVAL);
 
         // Give enough time for the configured delay time to pass. The b element rules
         // shouldn't be triggered because the b element is no longer in view.
@@ -355,7 +357,7 @@ describe('entersViewport event type', function() {
         expect(b2Trigger.calls.count()).toEqual(0);
 
         window.scrollTo(0, 20000);
-        __tickGlobalPoll();
+        jasmine.clock().tick(POLL_INTERVAL);
 
         // Give enough time for the configured delay time to
         // pass. The second trigger should be called.
