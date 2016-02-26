@@ -8,7 +8,22 @@ import bridgeAdapter from '../../bridgeAdapter';
 
 export default (FormComponent) => {
   const store = createStore(reducer, {});
-  const extensionBridge = {};
+
+  const extensionBridge = {
+    register: function(options) {
+      this._registeredOptions = options;
+    },
+    init: function() {
+      return this._registeredOptions.init.apply(this, arguments);
+    },
+    validate: function() {
+      return this._registeredOptions.validate.apply(this, arguments);
+    },
+    getSettings: function() {
+      return this._registeredOptions.getSettings.apply(this, arguments);
+    }
+  };
+
   const setFormConfigForCurrentRoute = bridgeAdapter(extensionBridge, store);
 
   setFormConfigForCurrentRoute(FormComponent.formConfig);
