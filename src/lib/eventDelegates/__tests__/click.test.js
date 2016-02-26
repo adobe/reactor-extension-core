@@ -8,9 +8,9 @@ describe('click event type', function() {
   var propertyConfig = {};
 
   var delegate = delegateInjector({
-    propertyConfig: propertyConfig,
-    createDataStash: publicRequire('createDataStash'),
-    getExtension: publicRequire('getExtension'),
+    'property-config': propertyConfig,
+    'create-data-stash': publicRequire('create-data-stash'),
+    'get-extension': publicRequire('get-extension'),
     window: mockWindow
   });
 

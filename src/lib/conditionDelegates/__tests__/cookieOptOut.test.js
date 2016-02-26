@@ -34,8 +34,8 @@ describe('cookie opt-out condition delegate', function() {
         });
 
         conditionDelegate = conditionDelegateInjector({
-          propertyConfig: publicRequire('propertyConfig'),
-          getCookie: publicRequire('getCookie')
+          'property-config': publicRequire('property-config'),
+          'get-cookie': publicRequire('get-cookie')
         });
       });
 

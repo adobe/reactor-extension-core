@@ -4,7 +4,7 @@ var liveQuerySelectorInjector = require('inject!../liveQuerySelector');
 var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
 var liveQuerySelector = liveQuerySelectorInjector({
   once: publicRequire('once'),
-  createDataStash: publicRequire('createDataStash')
+  'create-data-stash': publicRequire('create-data-stash')
 });
 
 describe('liveQuerySelector', function() {

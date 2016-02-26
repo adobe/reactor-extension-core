@@ -1,6 +1,6 @@
 'use strict';
 
-var getDataElement = require('getDataElement');
+var getDataElement = require('get-data-element');
 
 /**
  * Registered user condition. Determines if the user is a registered user.

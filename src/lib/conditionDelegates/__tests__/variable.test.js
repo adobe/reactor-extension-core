@@ -8,7 +8,7 @@ describe('variable condition delegate', function() {
 
   beforeAll(function() {
     conditionDelegate = conditionDelegateInjector({
-      getExtension: publicRequire('getExtension'),
+      'get-extension': publicRequire('get-extension'),
       window: {
         test: 'foo'
       }

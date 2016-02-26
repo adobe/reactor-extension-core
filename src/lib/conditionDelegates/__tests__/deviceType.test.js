@@ -6,7 +6,7 @@ var mockClientInfo = {
 
 var conditionDelegateInjector = require('inject!../deviceType');
 var conditionDelegate = conditionDelegateInjector({
-  clientInfo: mockClientInfo
+  'client-info': mockClientInfo
 });
 
 var getSettings = function(deviceTypes) {

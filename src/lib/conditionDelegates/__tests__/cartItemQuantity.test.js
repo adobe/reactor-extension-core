@@ -17,10 +17,10 @@ describe('cart item quantity condition delegate', function() {
 
     beforeAll(function() {
       conditionDelegate = conditionDelegateInjector({
-        getVar: function() {
+        'get-var': function() {
           return 5;
         },
-        getExtension: publicRequire('getExtension')
+        'get-extension': publicRequire('get-extension')
       });
     });
 
@@ -84,10 +84,10 @@ describe('cart item quantity condition delegate', function() {
 
       beforeAll(function() {
         conditionDelegate = conditionDelegateInjector({
-          getVar: function() {
+          'get-var': function() {
             return nonNumber.dataElementValue;
           },
-          getExtension: publicRequire('getExtension')
+          'get-extension': publicRequire('get-extension')
         });
       });
 

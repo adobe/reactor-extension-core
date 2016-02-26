@@ -8,12 +8,12 @@ describe('data element condition delegate', function() {
 
   beforeAll(function() {
     conditionDelegate = conditionDelegateInjector({
-      getVar: function(variableName) {
+      'get-var': function(variableName) {
         if (variableName) {
           return 'foo';
         }
       },
-      getExtension: publicRequire('getExtension')
+      'get-extension': publicRequire('get-extension')
     });
   });
 

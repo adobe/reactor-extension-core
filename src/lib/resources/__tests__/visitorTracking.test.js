@@ -32,8 +32,8 @@ var visitorTrackingInjector = require('inject!../visitorTracking');
 
 var getVisitorTracking = function(enableTracking) {
   var visitorTracking = visitorTrackingInjector({
-    getCookie: mockGetCookie,
-    setCookie: mockSetCookie,
+    'get-cookie': mockGetCookie,
+    'set-cookie': mockSetCookie,
     document: mockDocument,
     window: mockWindow,
     logger: mockLogger

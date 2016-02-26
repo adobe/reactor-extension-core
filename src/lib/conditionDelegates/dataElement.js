@@ -1,8 +1,8 @@
 'use strict';
 
-var getVar = require('getVar');
-var extension = require('getExtension')('dtm');
-var textMatch = extension.getResource('textMatch');
+var getVar = require('get-var');
+var extension = require('get-extension')('dtm');
+var textMatch = extension.getResource('text-match');
 
 /**
  * Data element condition. Determines if a particular data element's actual value matches

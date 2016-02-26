@@ -8,7 +8,7 @@ var dataElementDelegate = dataElementDelegateInjector({
       path: 'bar'
     }
   },
-  getExtension: publicRequire('getExtension')
+  'get-extension': publicRequire('get-extension')
 });
 
 describe('variable data element delegate', function() {

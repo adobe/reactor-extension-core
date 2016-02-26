@@ -1,8 +1,8 @@
 'use strict';
 
-var getVar = require('getVar');
-var extension = require('getExtension')('dtm');
-var compareNumbers = extension.getResource('compareNumbers');
+var getVar = require('get-var');
+var extension = require('get-extension')('dtm');
+var compareNumbers = extension.getResource('compare-numbers');
 
 /**
  * Cart item quantity condition. Determines if the current cart item quantity matches constraints.

@@ -36,8 +36,8 @@ describe('timePlayed event type', function() {
     var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
     var delegateInjector = require('inject!../timePlayed');
     delegate = delegateInjector({
-      getExtension: publicRequire('getExtension'),
-      createDataStash: publicRequire('createDataStash')
+      'get-extension': publicRequire('get-extension'),
+      'create-data-stash': publicRequire('create-data-stash')
     });
   });
 

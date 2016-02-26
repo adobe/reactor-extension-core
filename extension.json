@@ -98,7 +98,7 @@
       }
     },
     {
-      "name": "directCall",
+      "name": "direct-call",
       "categoryName": "Other",
       "displayName": "Direct Call",
       "libPath": "eventDelegates/directCall.js",
@@ -116,7 +116,7 @@
       }
     },
     {
-      "name": "domReady",
+      "name": "dom-ready",
       "categoryName": "Page Load",
       "displayName": "DOM Ready",
       "libPath": "eventDelegates/domReady.js",
@@ -124,7 +124,7 @@
       "schema": {}
     },
     {
-      "name": "elementExists",
+      "name": "element-exists",
       "categoryName": "Other",
       "displayName": "Element Exists",
       "libPath": "eventDelegates/elementExists.js",
@@ -161,7 +161,7 @@
       }
     },
     {
-      "name": "mediaEnded",
+      "name": "media-ended",
       "categoryName": "Media",
       "displayName": "Media Ended",
       "libPath": "eventDelegates/ended.js",
@@ -206,7 +206,7 @@
       }
     },
     {
-      "name": "entersViewport",
+      "name": "enters-viewport",
       "categoryName": "Other",
       "displayName": "Enters Viewport",
       "libPath": "eventDelegates/entersViewport.js",
@@ -342,7 +342,7 @@
       }
     },
     {
-      "name": "keyPress",
+      "name": "key-press",
       "categoryName": "Keyboard",
       "displayName": "Key Press",
       "libPath": "eventDelegates/keyPress.js",
@@ -387,7 +387,7 @@
       }
     },
     {
-      "name": "mediaLoadedData",
+      "name": "media-loaded-data",
       "categoryName": "Media",
       "displayName": "Media Loaded Data",
       "libPath": "eventDelegates/loadedData.js",
@@ -432,7 +432,7 @@
       }
     },
     {
-      "name": "locationChange",
+      "name": "location-change",
       "categoryName": "Other",
       "displayName": "pushState or hashchange",
       "libPath": "eventDelegates/locationChange.js",
@@ -440,7 +440,7 @@
       "schema": {}
     },
     {
-      "name": "onLoad",
+      "name": "on-load",
       "categoryName": "Page Load",
       "displayName": "On Load",
       "libPath": "eventDelegates/onLoad.js",
@@ -448,7 +448,7 @@
       "schema": {}
     },
     {
-      "name": "orientationChange",
+      "name": "orientation-change",
       "categoryName": "Mobile",
       "displayName": "Orientation Change",
       "libPath": "eventDelegates/orientationChange.js",
@@ -456,7 +456,7 @@
       "schema": {}
     },
     {
-      "name": "pageBottom",
+      "name": "page-bottom",
       "categoryName": "Page Load",
       "displayName": "Page Bottom",
       "libPath": "eventDelegates/pageBottom.js",
@@ -464,7 +464,7 @@
       "schema": {}
     },
     {
-      "name": "pageTop",
+      "name": "page-top",
       "categoryName": "Page Load",
       "displayName": "Page Top",
       "libPath": "eventDelegates/pageTop.js",
@@ -472,7 +472,7 @@
       "schema": {}
     },
     {
-      "name": "mediaPause",
+      "name": "media-pause",
       "categoryName": "Media",
       "displayName": "Media Pause",
       "libPath": "eventDelegates/pause.js",
@@ -517,7 +517,7 @@
       }
     },
     {
-      "name": "mediaPlay",
+      "name": "media-play",
       "categoryName": "Media",
       "displayName": "Media Play",
       "libPath": "eventDelegates/play.js",
@@ -562,7 +562,7 @@
       }
     },
     {
-      "name": "mediaStalled",
+      "name": "media-stalled",
       "categoryName": "Media",
       "displayName": "Media Stalled",
       "libPath": "eventDelegates/stalled.js",
@@ -652,7 +652,7 @@
       }
     },
     {
-      "name": "tabBlur",
+      "name": "tab-blur",
       "categoryName": "Browser",
       "displayName": "Tab Blur",
       "libPath": "eventDelegates/tabBlur.js",
@@ -660,7 +660,7 @@
       "schema": {}
     },
     {
-      "name": "tabFocus",
+      "name": "tab-focus",
       "categoryName": "Browser",
       "displayName": "Tab Focus",
       "libPath": "eventDelegates/tabFocus.js",
@@ -668,7 +668,7 @@
       "schema": {}
     },
     {
-      "name": "timeSpentOnPage",
+      "name": "time-spent-on-page",
       "categoryName": "Other",
       "displayName": "Time Spent On Page",
       "libPath": "eventDelegates/timeSpentOnPage.js",
@@ -686,7 +686,7 @@
       }
     },
     {
-      "name": "mediaTimePlayed",
+      "name": "media-time-played",
       "categoryName": "Media",
       "displayName": "Media Time Played",
       "libPath": "eventDelegates/timePlayed.js",
@@ -740,7 +740,7 @@
       }
     },
     {
-      "name": "mediaVolumeChange",
+      "name": "media-volume-change",
       "categoryName": "Media",
       "displayName": "Media Volume Change",
       "libPath": "eventDelegates/volumeChange.js",
@@ -785,7 +785,7 @@
       }
     },
     {
-      "name": "zoomChange",
+      "name": "zoom-change",
       "categoryName": "Mobile",
       "displayName": "Zoom Change",
       "libPath": "eventDelegates/zoomChange.js",
@@ -827,7 +827,7 @@
       }
     },
     {
-      "name": "cartAmount",
+      "name": "cart-amount",
       "categoryName": "Engagement",
       "displayName": "Cart Amount",
       "libPath": "conditionDelegates/cartAmount.js",
@@ -856,7 +856,7 @@
       }
     },
     {
-      "name": "cartItemQuantity",
+      "name": "cart-item-quantity",
       "categoryName": "Engagement",
       "displayName": "Cart Item Quantity",
       "libPath": "conditionDelegates/cartItemQuantity.js",
@@ -910,7 +910,7 @@
       }
     },
     {
-      "name": "cookieOptOut",
+      "name": "cookie-opt-out",
       "categoryName": "Data",
       "displayName": "Cookie Opt-out",
       "libPath": "conditionDelegates/cookieOptOut.js",
@@ -926,7 +926,7 @@
       }
     },
     {
-      "name": "customScript",
+      "name": "custom-script",
       "categoryName": "Data",
       "displayName": "Custom Script",
       "libPath": "conditionDelegates/custom.js",
@@ -953,7 +953,7 @@
       ]
     },
     {
-      "name": "dataElement",
+      "name": "data-element",
       "categoryName": "Data",
       "displayName": "Data Element",
       "libPath": "conditionDelegates/dataElement.js",
@@ -977,7 +977,7 @@
       }
     },
     {
-      "name": "deviceType",
+      "name": "device-type",
       "categoryName": "Technology",
       "displayName": "Device Type",
       "libPath": "conditionDelegates/deviceType.js",
@@ -1058,7 +1058,7 @@
       }
     },
     {
-      "name": "landingPage",
+      "name": "landing-page",
       "categoryName": "Engagement",
       "displayName": "Landing Page",
       "libPath": "conditionDelegates/landingPage.js",
@@ -1079,7 +1079,7 @@
       }
     },
     {
-      "name": "loggedIn",
+      "name": "logged-in",
       "categoryName": "Engagement",
       "displayName": "Logged In",
       "libPath": "conditionDelegates/loggedIn.js",
@@ -1097,7 +1097,7 @@
       }
     },
     {
-      "name": "newReturningVisitor",
+      "name": "new-returning-visitor",
       "categoryName": "Engagement",
       "displayName": "New/Returning Visitor",
       "libPath": "conditionDelegates/newReturning.js",
@@ -1114,7 +1114,7 @@
       }
     },
     {
-      "name": "operatingSystem",
+      "name": "operating-system",
       "categoryName": "Technology",
       "displayName": "Operating System",
       "libPath": "conditionDelegates/operatingSystem.js",
@@ -1145,7 +1145,7 @@
       }
     },
     {
-      "name": "pageViews",
+      "name": "page-views",
       "categoryName": "Engagement",
       "displayName": "Page Views",
       "libPath": "conditionDelegates/pageViews.js",
@@ -1208,7 +1208,7 @@
       }
     },
     {
-      "name": "previousConverter",
+      "name": "previous-converter",
       "categoryName": "Engagement",
       "displayName": "Previous Converter",
       "libPath": "conditionDelegates/previousConverter.js",
@@ -1247,7 +1247,7 @@
       }
     },
     {
-      "name": "registeredUser",
+      "name": "registered-user",
       "categoryName": "Engagement",
       "displayName": "Registered User",
       "libPath": "conditionDelegates/registeredUser.js",
@@ -1265,7 +1265,7 @@
       }
     },
     {
-      "name": "screenResolution",
+      "name": "screen-resolution",
       "categoryName": "Technology",
       "displayName": "Screen Resolution",
       "libPath": "conditionDelegates/screenResolution.js",
@@ -1357,7 +1357,7 @@
       }
     },
     {
-      "name": "timeOnSite",
+      "name": "time-on-site",
       "categoryName": "Engagement",
       "displayName": "Time On Site",
       "libPath": "conditionDelegates/timeOnSite.js",
@@ -1382,7 +1382,7 @@
       }
     },
     {
-      "name": "trafficSource",
+      "name": "traffic-source",
       "categoryName": "Engagement",
       "displayName": "Traffic Source",
       "libPath": "conditionDelegates/trafficSource.js",
@@ -1403,7 +1403,7 @@
       }
     },
     {
-      "name": "urlParameter",
+      "name": "url-parameter",
       "categoryName": "URL",
       "displayName": "URL Parameter",
       "libPath": "conditionDelegates/urlParameter.js",
@@ -1453,7 +1453,7 @@
       }
     },
     {
-      "name": "windowSize",
+      "name": "window-size",
       "categoryName": "Technology",
       "displayName": "Window Size",
       "libPath": "conditionDelegates/windowSize.js",
@@ -1508,7 +1508,7 @@
       }
     },
     {
-      "name": "customScript",
+      "name": "custom-script",
       "displayName": "Custom Script",
       "libPath": "dataElementDelegates/custom.js",
       "viewPath": "index.html#/dataElements/custom",
@@ -1530,7 +1530,7 @@
       ]
     },
     {
-      "name": "domAttribute",
+      "name": "dom-attribute",
       "displayName": "DOM Attribute",
       "libPath": "dataElementDelegates/dom.js",
       "viewPath": "index.html#/dataElements/dom",
@@ -1551,7 +1551,7 @@
       }
     },
     {
-      "name": "urlQuerystringParameter",
+      "name": "url-querystring-parameter",
       "displayName": "URL Querystring Parameter",
       "libPath": "dataElementDelegates/queryParameter.js",
       "viewPath": "index.html#/dataElements/queryParameter",
@@ -1568,7 +1568,7 @@
       }
     },
     {
-      "name": "javascriptVariable",
+      "name": "javascript-variable",
       "displayName": "JavaScript Variable",
       "libPath": "dataElementDelegates/variable.js",
       "viewPath": "index.html#/dataElements/variable",
@@ -1587,23 +1587,23 @@
   ],
   "resources": [
     {
-      "name": "compareNumbers",
+      "name": "compare-numbers",
       "libPath": "resources/compareNumbers.js"
     },
     {
-      "name": "createBubbly",
+      "name": "create-bubbly",
       "libPath": "resources/createBubbly.js"
     },
     {
-      "name": "matchesProperties",
+      "name": "matches-properties",
       "libPath": "resources/matchesProperties.js"
     },
     {
-      "name": "visibilityApi",
+      "name": "visibility-api",
       "libPath": "resources/visibilityApi.js"
     },
     {
-      "name": "visitorTracking",
+      "name": "visitor-tracking",
       "libPath": "resources/visitorTracking.js"
     },
     {
@@ -1611,19 +1611,19 @@
       "libPath": "resources/timer.js"
     },
     {
-      "name": "textMatch",
+      "name": "text-match",
       "libPath": "resources/textMatch.js"
     },
     {
-      "name": "matchesSelector",
+      "name": "matches-selector",
       "libPath": "resources/matchesSelector.js"
     },
     {
-      "name": "getObjectProperty",
+      "name": "get-object-property",
       "libPath": "resources/getObjectProperty.js"
     },
     {
-      "name": "liveQuerySelector",
+      "name": "live-query-selector",
       "libPath": "resources/liveQuerySelector.js"
     }
   ]

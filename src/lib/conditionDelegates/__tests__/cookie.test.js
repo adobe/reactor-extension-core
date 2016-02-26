@@ -3,8 +3,8 @@
 var conditionDelegateInjector = require('inject!../cookie');
 var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
 var conditionDelegate = conditionDelegateInjector({
-  getExtension: publicRequire('getExtension'),
-  getCookie: function() {
+  'get-extension': publicRequire('get-extension'),
+  'get-cookie': function() {
     return 'foo';
   }
 });

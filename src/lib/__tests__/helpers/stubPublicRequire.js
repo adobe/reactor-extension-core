@@ -6,7 +6,7 @@
  * of the process and create a publicRequire function that behaves similar to the real one. For
  * anything that is not an extension resource, this delegates to the real publicRequire.
  * @param [config]
- * @param {Object} [config.property] Property configuration.
+ * @param {Object} [config.propertyConfig] Property configuration.
  * @param {Object} [config.resourceStubs] Resource stubs. The key is the qualified ID
  * (dtm.fooResource) and the value is the resource that should be provided when requested.
  * @returns {Function}
@@ -38,59 +38,59 @@ module.exports = function(config) {
   });
 
   var getObjectProperty = require('../../resources/getObjectProperty');
-  resources['dtm/resources/getObjectProperty'] = getObjectProperty;
+  resources['dtm/resources/get-object-property'] = getObjectProperty;
 
   var textMatch = require('../../resources/textMatch');
-  resources['dtm/resources/textMatch'] = textMatch;
+  resources['dtm/resources/text-match'] = textMatch;
 
   var matchesSelector = require('../../resources/matchesSelector');
-  resources['dtm/resources/matchesSelector'] = matchesSelector;
+  resources['dtm/resources/matches-selector'] = matchesSelector;
 
   var timerInjector = require('inject!../../resources/timer');
   var Timer = timerInjector({
-    'EventEmitter': publicRequire('EventEmitter')
+    'event-emitter': publicRequire('event-emitter')
   });
   resources['dtm/resources/timer'] = Timer;
 
   var visibilityApi = require('../../resources/visibilityApi');
-  resources['dtm/resources/visibilityApi'] = visibilityApi;
+  resources['dtm/resources/visibility-api'] = visibilityApi;
 
   var liveQuerySelectorInjector =
     require('inject!../../resources/liveQuerySelector');
   var liveQuerySelector = liveQuerySelectorInjector({
-    once: publicRequire('once'),
-    createDataStash: publicRequire('createDataStash'),
-    getExtension: publicRequire('getExtension')
+    'once': publicRequire('once'),
+    'create-data-stash': publicRequire('create-data-stash'),
+    'get-extension': publicRequire('get-extension')
   });
-  resources['dtm/resources/liveQuerySelector'] = liveQuerySelector;
+  resources['dtm/resources/live-query-selector'] = liveQuerySelector;
 
   var matchesPropertiesInjector =
     require('inject!../../resources/matchesProperties');
   var matchesProperties = matchesPropertiesInjector({
-    getExtension: publicRequire('getExtension')
+    'get-extension': publicRequire('get-extension')
   });
-  resources['dtm/resources/matchesProperties'] = matchesProperties;
+  resources['dtm/resources/matches-properties'] = matchesProperties;
 
   var createBubblyInjector = require('inject!../../resources/createBubbly');
   var createBubbly = createBubblyInjector({
-    createDataStash: publicRequire('createDataStash'),
-    getExtension: publicRequire('getExtension')
+    'create-data-stash': publicRequire('create-data-stash'),
+    'get-extension': publicRequire('get-extension')
   });
-  resources['dtm/resources/createBubbly'] = createBubbly;
+  resources['dtm/resources/create-bubbly'] = createBubbly;
 
   var compareNumbers = require('../../resources/compareNumbers');
-  resources['dtm/resources/compareNumbers'] = compareNumbers;
+  resources['dtm/resources/compare-numbers'] = compareNumbers;
 
   var visitorTrackingInjector =
     require('inject!../../resources/visitorTracking');
   var visitorTracking = visitorTrackingInjector({
-    'getCookie': publicRequire('getCookie'),
-    'setCookie': publicRequire('setCookie'),
+    'get-cookie': publicRequire('get-cookie'),
+    'set-cookie': publicRequire('set-cookie'),
     'document': publicRequire('document'),
     'window': publicRequire('window'),
-    'propertyConfig': publicRequire('propertyConfig')
+    'property-config': publicRequire('property-config')
   });
-  resources['dtm/resources/visitorTracking'] = visitorTracking;
+  resources['dtm/resources/visitor-tracking'] = visitorTracking;
 
   return publicRequire;
 };

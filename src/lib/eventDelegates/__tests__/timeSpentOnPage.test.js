@@ -15,12 +15,12 @@ var mockDocument = {
 
 var eventDelegateInjector = require('inject!../timeSpentOnPage');
 var delegate = eventDelegateInjector({
-  getExtension: publicRequire('getExtension'),
+  'get-extension': publicRequire('get-extension'),
   once: publicRequire('once'),
   document: mockDocument
 });
 
-var Timer = publicRequire('getExtension')('dtm').getResource('timer');
+var Timer = publicRequire('get-extension')('dtm').getResource('timer');
 
 describe('time spent on page event type', function() {
   beforeEach(function() {

@@ -41,8 +41,8 @@ describe('entersViewport event type', function() {
     var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
     var delegateInjector = require('inject!../entersViewport');
     delegate = delegateInjector({
-      createDataStash: publicRequire('createDataStash'),
-      getExtension: publicRequire('getExtension')
+      'create-data-stash': publicRequire('create-data-stash'),
+      'get-extension': publicRequire('get-extension')
     });
   });
 

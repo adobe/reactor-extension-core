@@ -1,7 +1,7 @@
 'use strict';
 
 var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
-var Timer = publicRequire('getExtension')('dtm').getResource('timer');
+var Timer = publicRequire('get-extension')('dtm').getResource('timer');
 
 describe('timer', function() {
   beforeEach(function() {

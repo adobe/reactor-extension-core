@@ -2,7 +2,7 @@
 
 var matcher = require('../textMatch');
 
-describe('textMatch', function() {
+describe('text-match', function() {
   it('returns true if string is an exact match', function() {
     expect(matcher('This is My House', 'This is My House')).toBe(true);
   });

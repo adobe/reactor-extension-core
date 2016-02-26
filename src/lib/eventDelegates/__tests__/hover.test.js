@@ -37,8 +37,8 @@ var POLL_INTERVAL = 3000;
     var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
     var delegateInjector = require('inject!../hover');
     delegate = delegateInjector({
-      getExtension: publicRequire('getExtension'),
-      createDataStash: publicRequire('createDataStash')
+      'get-extension': publicRequire('get-extension'),
+      'create-data-stash': publicRequire('create-data-stash')
     });
   });
 

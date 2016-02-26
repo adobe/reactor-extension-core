@@ -1,6 +1,6 @@
 'use strict';
 
-var getDataElement = require('getDataElement');
+var getDataElement = require('get-data-element');
 
 /**
  * Logged in condition. Determines if the user is logged in.

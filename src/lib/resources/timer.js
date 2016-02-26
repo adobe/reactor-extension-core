@@ -1,5 +1,5 @@
 'use strict';
-var EventEmitter = require('EventEmitter');
+var EventEmitter = require('event-emitter');
 
 var CHECK_INTERVAL_MS = 1000;
 var onlyUnique = function(value, index, self) {

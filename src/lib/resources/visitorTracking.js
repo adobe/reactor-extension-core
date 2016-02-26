@@ -1,7 +1,7 @@
 'use strict';
 
-var getCookie = require('getCookie');
-var setCookie = require('setCookie');
+var getCookie = require('get-cookie');
+var setCookie = require('set-cookie');
 var document = require('document');
 var window = require('window');
 var logger = require('logger');
