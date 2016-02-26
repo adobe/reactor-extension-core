@@ -1,7 +1,7 @@
 'use strict';
 
 var getCookie = require('get-cookie');
-var propertyConfig = require('property-config');
+var propertySettings = require('property-settings');
 
 /**
  * Cookie opt-out condition. Determines whether the user has chosen to accept cookies.
@@ -13,9 +13,9 @@ var propertyConfig = require('property-config');
  * @returns {boolean}
  */
 module.exports = function(settings) {
-  var cookieName = propertyConfig.euCookieName === undefined ?
+  var cookieName = propertySettings.euCookieName === undefined ?
     'sat_track' :
-    propertyConfig.euCookieName;
+    propertySettings.euCookieName;
   return getCookie(cookieName) === (settings.acceptsCookies ? 'true' : 'false');
 };
 

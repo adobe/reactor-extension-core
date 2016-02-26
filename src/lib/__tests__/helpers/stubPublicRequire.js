@@ -6,7 +6,7 @@
  * of the process and create a publicRequire function that behaves similar to the real one. For
  * anything that is not an extension resource, this delegates to the real publicRequire.
  * @param [config]
- * @param {Object} [config.propertyConfig] Property configuration.
+ * @param {Object} [config.propertySettings] Property settings.
  * @param {Object} [config.resourceStubs] Resource stubs. The key is the qualified ID
  * (dtm.fooResource) and the value is the resource that should be provided when requested.
  * @returns {Function}
@@ -31,8 +31,8 @@ module.exports = function(config) {
           }
         };
       },
-      getPropertyConfig: function() {
-        return config && config.propertyConfig ? config.propertyConfig : {};
+      getPropertySettings: function() {
+        return config && config.propertySettings ? config.propertySettings : {};
       }
     }
   });
@@ -88,7 +88,7 @@ module.exports = function(config) {
     'set-cookie': publicRequire('set-cookie'),
     'document': publicRequire('document'),
     'window': publicRequire('window'),
-    'property-config': publicRequire('property-config')
+    'property-settings': publicRequire('property-settings')
   });
   resources['dtm/resources/visitor-tracking'] = visitorTracking;
 

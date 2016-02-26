@@ -20,7 +20,7 @@ describe('domain view', () => {
       settings: {
         domains: selectedDomains
       },
-      propertyConfig: {
+      propertySettings: {
         domainList: domains
       }
     });

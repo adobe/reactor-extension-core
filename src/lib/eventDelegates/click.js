@@ -1,6 +1,6 @@
 'use strict';
 
-var propertyConfig = require('property-config');
+var propertySettings = require('property-settings');
 var dataStash = require('create-data-stash')('click');
 var extension = require('get-extension')('dtm');
 var bubbly = extension.getResource('create-bubbly')();
@@ -73,7 +73,7 @@ module.exports = function(settings, trigger) {
           event.preventDefault();
           setTimeout(function() {
             window.location = event.target.href;
-          }, propertyConfig.linkDelay || 100);
+          }, propertySettings.linkDelay || 100);
         }
         eventDataStash.evaluatedForLinkDelay = true;
       }
