@@ -24,7 +24,7 @@ const formConfig = {
 
 const stateToProps = state => {
   return {
-    domainOptions: state.propertyConfig ? state.propertyConfig.domainList : []
+    domainOptions: state.propertySettings ? state.propertySettings.domainList : []
   };
 };
 

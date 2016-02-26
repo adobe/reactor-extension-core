@@ -17,24 +17,24 @@ describe('cookie opt-out condition delegate', function() {
   var runTests = function(customCookieName) {
     describe('with ' + customCookieName ? 'custom cookie name' : 'default cookie name', function() {
       var cookieName = 'sat_track';
-      var mockPropertyConfig;
+      var mockPropertySettings;
 
       beforeAll(function() {
-        mockPropertyConfig = {};
+        mockPropertySettings = {};
 
         if (customCookieName) {
-          mockPropertyConfig.euCookieName = customCookieName;
+          mockPropertySettings.euCookieName = customCookieName;
           cookieName = customCookieName;
         } else {
-          delete mockPropertyConfig.euCookieName;
+          delete mockPropertySettings.euCookieName;
         }
 
         var publicRequire = require('../../__tests__/helpers/stubPublicRequire')({
-          propertyConfig: mockPropertyConfig
+          propertySettings: mockPropertySettings
         });
 
         conditionDelegate = conditionDelegateInjector({
-          'property-config': publicRequire('property-config'),
+          'property-settings': publicRequire('property-settings'),
           'get-cookie': publicRequire('get-cookie')
         });
       });

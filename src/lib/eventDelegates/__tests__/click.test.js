@@ -5,10 +5,10 @@ describe('click event type', function() {
   var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
   var delegateInjector = require('inject!../click');
   var mockWindow = {};
-  var propertyConfig = {};
+  var propertySettings = {};
 
   var delegate = delegateInjector({
-    'property-config': propertyConfig,
+    'property-settings': propertySettings,
     'create-data-stash': publicRequire('create-data-stash'),
     'get-extension': publicRequire('get-extension'),
     window: mockWindow
@@ -41,7 +41,7 @@ describe('click event type', function() {
     });
 
     beforeEach(function() {
-      delete propertyConfig.linkDelay;
+      delete propertySettings.linkDelay;
       mockWindow.location = INITIAL_LOCATION;
       mockWindow.top = mockWindow;
       mockWindow.name = 'myWindow';
@@ -77,7 +77,7 @@ describe('click event type', function() {
     });
 
     it('delays navigation by a custom delay', function() {
-      propertyConfig.linkDelay = 3000;
+      propertySettings.linkDelay = 3000;
       delegate({
         delayLinkActivation: true
       }, function() {});
