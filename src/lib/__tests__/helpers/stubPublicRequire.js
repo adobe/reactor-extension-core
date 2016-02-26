@@ -37,6 +37,9 @@ module.exports = function(config) {
     }
   });
 
+  var getObjectProperty = require('../../resources/getObjectProperty');
+  resources['dtm/resources/getObjectProperty'] = getObjectProperty;
+
   var textMatch = require('../../resources/textMatch');
   resources['dtm/resources/textMatch'] = textMatch;
 

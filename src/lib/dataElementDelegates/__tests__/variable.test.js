@@ -1,11 +1,14 @@
 'use strict';
 
-var dataElementDelegate = require('inject!../variable')({
+var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
+var dataElementDelegateInjector = require('inject!../variable')
+var dataElementDelegate = dataElementDelegateInjector({
   window: {
     my: {
       path: 'bar'
     }
-  }
+  },
+  getExtension: publicRequire('getExtension')
 });
 
 describe('variable data element delegate', function() {
