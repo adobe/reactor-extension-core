@@ -1623,10 +1623,6 @@
       "libPath": "resources/getObjectProperty.js"
     },
     {
-      "name": "poll",
-      "libPath": "resources/poll.js"
-    },
-    {
       "name": "liveQuerySelector",
       "libPath": "resources/liveQuerySelector.js"
     }

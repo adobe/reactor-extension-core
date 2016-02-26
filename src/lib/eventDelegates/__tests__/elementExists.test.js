@@ -1,5 +1,7 @@
 'use strict';
 
+var POLL_INTERVAL = 3000;
+
 describe('elementExists event type', function() {
   var delegate;
   var aElement;
@@ -59,7 +61,7 @@ describe('elementExists event type', function() {
       elementSelector: '#a'
     }, aTrigger);
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     assertTriggerCall({
       call: aTrigger.calls.mostRecent(),
@@ -80,7 +82,7 @@ describe('elementExists event type', function() {
       elementSelector: '#a'
     }, a2Trigger);
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     expect(aTrigger.calls.count()).toEqual(1);
     expect(a2Trigger.calls.count()).toEqual(1);
@@ -97,7 +99,7 @@ describe('elementExists event type', function() {
       }]
     }, trigger);
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     expect(trigger.calls.count()).toEqual(1);
   });
@@ -113,7 +115,7 @@ describe('elementExists event type', function() {
       }]
     }, trigger);
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     expect(trigger.calls.count()).toEqual(0);
   });
@@ -134,7 +136,7 @@ describe('elementExists event type', function() {
       }]
     }, selectorAndPropsTrigger);
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     expect(selectorOnlyTrigger.calls.count()).toBe(1);
     expect(selectorAndPropsTrigger.calls.count()).toBe(0);
@@ -143,7 +145,7 @@ describe('elementExists event type', function() {
     addedLaterElement.innerHTML = 'added later';
     document.body.appendChild(addedLaterElement);
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     expect(selectorOnlyTrigger.calls.count()).toBe(1);
     expect(selectorAndPropsTrigger.calls.count()).toBe(1);

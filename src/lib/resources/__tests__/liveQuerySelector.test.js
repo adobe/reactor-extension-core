@@ -1,10 +1,9 @@
 'use strict';
-
+var POLL_INTERVAL = 3000;
 var liveQuerySelectorInjector = require('inject!../liveQuerySelector');
 var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
 var liveQuerySelector = liveQuerySelectorInjector({
   once: publicRequire('once'),
-  getExtension: publicRequire('getExtension'),
   createDataStash: publicRequire('createDataStash')
 });
 
@@ -25,7 +24,7 @@ describe('liveQuerySelector', function() {
     var callback = jasmine.createSpy();
     liveQuerySelector('.foo', callback);
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     expect(callback.calls.count()).toBe(1);
 
@@ -44,7 +43,7 @@ describe('liveQuerySelector', function() {
     var callback = jasmine.createSpy();
     liveQuerySelector('.foo', callback);
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     expect(callback.calls.count()).toBe(1);
 
@@ -63,7 +62,7 @@ describe('liveQuerySelector', function() {
     var callback = jasmine.createSpy();
     liveQuerySelector('.foo', callback);
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     expect(callback.calls.count()).toBe(2);
 
@@ -81,7 +80,7 @@ describe('liveQuerySelector', function() {
     var callback2 = jasmine.createSpy();
     liveQuerySelector('.foo', callback2);
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     expect(callback1.calls.count()).toBe(1);
     expect(callback2.calls.count()).toBe(1);
@@ -97,17 +96,17 @@ describe('liveQuerySelector', function() {
     var callback = jasmine.createSpy();
     liveQuerySelector('.foo', callback);
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     expect(callback.calls.count()).toBe(1);
 
     document.body.removeChild(div);
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     document.body.appendChild(div);
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     expect(callback.calls.count()).toBe(1);
 

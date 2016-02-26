@@ -1,6 +1,7 @@
 'use strict';
+var POLL_INTERVAL = 3000;
 
-describe('hover event type', function() {
+  describe('hover event type', function() {
   var delegate;
   var aElement;
   var bElement;
@@ -73,7 +74,7 @@ describe('hover event type', function() {
       bubbleStop: false
     }, bTrigger);
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     Simulate.mouseenter(aElement);
 
@@ -126,7 +127,7 @@ describe('hover event type', function() {
       bubbleStop: false
     }, a2Trigger);
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     Simulate.mouseenter(aElement);
 
@@ -169,7 +170,7 @@ describe('hover event type', function() {
       delay: 1000
     }, bTrigger);
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     Simulate.mouseenter(aElement);
     Simulate.mouseenter(bElement);
@@ -236,7 +237,7 @@ describe('hover event type', function() {
     }, bTrigger);
 
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     Simulate.mouseenter(aElement);
     Simulate.mouseenter(bElement);
@@ -299,7 +300,7 @@ describe('hover event type', function() {
       delay: 1000
     }, a2Trigger);
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     Simulate.mouseenter(aElement);
 
@@ -353,7 +354,7 @@ describe('hover event type', function() {
       delay: 2000
     }, a2Trigger);
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     Simulate.mouseenter(aElement);
 
@@ -402,7 +403,7 @@ describe('hover event type', function() {
       }]
     }, bTrigger);
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     Simulate.mouseenter(bElement);
 
@@ -420,7 +421,7 @@ describe('hover event type', function() {
       }]
     }, bTrigger);
 
-    __tickGlobalPoll();
+    jasmine.clock().tick(POLL_INTERVAL);
 
     Simulate.mouseenter(bElement);
 

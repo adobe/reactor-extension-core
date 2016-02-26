@@ -1,9 +1,10 @@
 'use strict';
 
+var POLL_INTERVAL = 3000;
+
 var createDataStash = require('createDataStash');
 var dataStash = createDataStash('entersViewport');
 var extension = require('getExtension')('dtm');
-var poll = extension.getResource('poll');
 var matchesProperties = extension.getResource('matchesProperties');
 
 var listenersBySelector = {};
@@ -260,7 +261,7 @@ var checkForElementsInViewport = function() {
 // TODO: Add debounce to the scroll event handling?
 window.addEventListener('scroll', checkForElementsInViewport);
 window.addEventListener('load', checkForElementsInViewport);
-poll('enters viewport event delegate', checkForElementsInViewport);
+setInterval(checkForElementsInViewport, POLL_INTERVAL);
 
 /**
  * Enters viewport event. This event occurs when an element has entered the viewport. The rule

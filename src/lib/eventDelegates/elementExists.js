@@ -1,13 +1,14 @@
 'use strict';
 
+var POLL_INTERVAL = 3000;
+
 var dataStash = require('createDataStash')('elementExists');
 var extension = require('getExtension')('dtm');
-var poll = extension.getResource('poll');
 var matchesProperties = extension.getResource('matchesProperties');
 
 var listenersBySelector = {};
 
-poll('element exists event delegate', function() {
+setInterval(function() {
   Object.keys(listenersBySelector).forEach(function(selector) {
     var listeners = listenersBySelector[selector];
     var elements = document.querySelectorAll(selector);
@@ -41,7 +42,7 @@ poll('element exists event delegate', function() {
       }
     }
   });
-});
+}, POLL_INTERVAL);
 
 /**
  * Element exists event. This event occurs when an element has been added to the DOM. The rule

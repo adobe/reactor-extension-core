@@ -55,13 +55,6 @@ module.exports = function(config) {
   var visibilityApi = require('../../resources/visibilityApi');
   resources['dtm/resources/visibilityApi'] = visibilityApi;
 
-  var pollInjector =
-    require('inject!../../resources/poll');
-  var poll = pollInjector({
-    'once': publicRequire('once')
-  });
-  resources['dtm/resources/poll'] = poll;
-
   var liveQuerySelectorInjector =
     require('inject!../../resources/liveQuerySelector');
   var liveQuerySelector = liveQuerySelectorInjector({
