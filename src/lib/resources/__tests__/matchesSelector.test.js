@@ -29,4 +29,13 @@ describe('matchesSelector', function() {
   it('returns false for window', function() {
     expect(matchesSelector(window, 'window')).toBe(false);
   });
+
+  it('logs a warning when selector matching fails', function() {
+    var logger = jasmine.createSpyObj('logger', ['warn']);
+    var matchesSelectorInjector = require('inject!../matchesSelector');
+    var matchesSelector = matchesSelectorInjector({ logger: logger});
+
+    matchesSelector(document.body, 'somewrong#!@$%selector');
+    expect(logger.warn).toHaveBeenCalled();
+  });
 });

@@ -1,5 +1,7 @@
 'use strict';
 
+var logger = require('logger');
+
 /**
  * Returns whether an element matches a selector.
  * @param {HTMLElement} element The HTML element being tested.
@@ -13,7 +15,7 @@ module.exports = function(element, selector) {
     try {
       return matches.call(element, selector);
     } catch (error) {
-      // TODO: log error?
+      logger.warn('Matching element failed. ' + selector + ' is not a valid selector.');
       return false;
     }
   }
