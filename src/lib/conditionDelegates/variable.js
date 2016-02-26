@@ -1,7 +1,8 @@
 'use strict';
+var window = require('window');
 
-var getVar = require('getVar');
 var extension = require('getExtension')('dtm');
+var getObjectProperty = extension.getResource('getObjectProperty');
 var textMatch = extension.getResource('textMatch');
 
 /**
@@ -16,5 +17,11 @@ var textMatch = extension.getResource('textMatch');
  */
 module.exports = function(settings) {
   var acceptableValue = settings.valueIsRegex ? new RegExp(settings.value, 'i') : settings.value;
-  return textMatch(getVar(settings.name), acceptableValue);
+  var variable = settings.name;
+
+  if (variable.substring(0, 7) === 'window.') {
+    variable = variable.slice(7);
+  }
+
+  return textMatch(getObjectProperty(window, variable), acceptableValue);
 };

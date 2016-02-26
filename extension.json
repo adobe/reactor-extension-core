@@ -1619,6 +1619,10 @@
       "libPath": "resources/matchesSelector.js"
     },
     {
+      "name": "getObjectProperty",
+      "libPath": "resources/getObjectProperty.js"
+    },
+    {
       "name": "poll",
       "libPath": "resources/poll.js"
     },

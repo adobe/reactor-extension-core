@@ -8,12 +8,10 @@ describe('variable condition delegate', function() {
 
   beforeAll(function() {
     conditionDelegate = conditionDelegateInjector({
-      getVar: function(variableName) {
-        if (variableName) {
-          return 'foo';
-        }
-      },
-      getExtension: publicRequire('getExtension')
+      getExtension: publicRequire('getExtension'),
+      window: {
+        test: 'foo'
+      }
     });
   });
 
@@ -35,5 +33,10 @@ describe('variable condition delegate', function() {
   it('returns false when the variable does not match the regex value', function() {
     var settings = { name: 'test', value: 'g.o', valueIsRegex: true };
     expect(conditionDelegate(settings)).toBe(false);
+  });
+
+  it('strips window from the variable name', function() {
+    var settings = { name: 'window.test', value: 'foo' };
+    expect(conditionDelegate(settings)).toBe(true);
   });
 });
