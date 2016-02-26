@@ -1,6 +1,6 @@
 {
   "name": "@reactor/turbine-extension-dtm",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "DTM extension for Turbine",
   "author": {
     "name": "DTM",
