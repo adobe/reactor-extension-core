@@ -1,6 +1,13 @@
 {
   "name": "dtm",
+  "version": "1.0.0",
   "displayName": "DTM",
+  "description": "DTM extension provides the default event types, condition types, and data element types available to all DTM users.",
+  "icon": "https://placeholdit.imgix.net/~text?txtsize=16&txt=64%C3%9764&w=64&h=64",
+  "author": {
+    "name": "Adobe Systems",
+    "email": "DTM-Engineering@adobe.com"
+  },
   "viewBasePath": "dist",
   "libBasePath": "src/lib",
   "events": [
