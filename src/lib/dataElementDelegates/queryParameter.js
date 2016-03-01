@@ -1,6 +1,6 @@
 'use strict';
 
-var getQueryParam = require('getQueryParam');
+var getQueryParam = require('get-query-param');
 
 /**
  * The query parameter data element.
