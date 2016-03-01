@@ -14,11 +14,11 @@ See the [turbine-gulp-sandbox README](https://git.corp.adobe.com/Activation/turb
 
 [status-url]: https://dtm-builder.ut1.mcps.adobe.net/job/turbine-extension-dtm
 [status-image]: https://dtm-builder.ut1.mcps.adobe.net/buildStatus/icon?job=turbine-extension-dtm
-[coverage-url]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor/job/turbine-extension-dtm/lastStableBuild/cobertura/
-[coverage-image]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor/job/turbine-extension-dtm/ws/badges/coverage.svg
-[npm-url]: https://artifactory.corp.adobe.com/artifactory/webapp/#/artifacts/browse/tree/General/npm-mcps-release-local/@reactor/turbine-extension-dtm/-/@reactor
-[npm-image]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor/job/turbine-extension-dtm/ws/badges/npm.svg
-[npm-dependencies-url]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor/job/turbine-extension-dtm/ws/dependencies.txt
-[npm-dependencies-image]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor/job/turbine-extension-dtm/ws/badges/dependencies.svg
-[sandbox-url]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor/job/turbine-extension-dtm/ws/sandbox/viewSandbox.html
-[sandbox-image]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor/job/turbine-extension-dtm/ws/badges/sandbox.svg
+[coverage-url]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/turbine-extension-dtm/lastStableBuild/cobertura/
+[coverage-image]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/turbine-extension-dtm/ws/badges/coverage.svg
+[npm-url]: https://artifactory.corp.adobe.com/artifactory/webapp/#/artifacts/browse/tree/General/npm-mcps-release-local/@Reactor-Frontend/turbine-extension-dtm/-/@Reactor-Frontend
+[npm-image]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/turbine-extension-dtm/ws/badges/npm.svg
+[npm-dependencies-url]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/turbine-extension-dtm/ws/dependencies.txt
+[npm-dependencies-image]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/turbine-extension-dtm/ws/badges/dependencies.svg
+[sandbox-url]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/turbine-extension-dtm/ws/sandbox/viewSandbox.html
+[sandbox-image]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/turbine-extension-dtm/ws/badges/sandbox.svg
