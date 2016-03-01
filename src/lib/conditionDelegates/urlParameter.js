@@ -1,6 +1,6 @@
 'use strict';
 
-var getQueryParam = require('getQueryParam');
+var getQueryParam = require('get-query-param');
 var extension = require('get-extension')('dtm');
 var textMatch = extension.getResource('text-match');
 
