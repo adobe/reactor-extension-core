@@ -1,6 +1,7 @@
 'use strict';
 
-var getCookie = require('get-cookie');
+var document = require('document');
+var cookie = require('cookie');
 var extension = require('get-extension')('dtm');
 var textMatch = extension.getResource('text-match');
 
@@ -15,6 +16,6 @@ var textMatch = extension.getResource('text-match');
  */
 module.exports = function(settings) {
   var acceptableValue = settings.valueIsRegex ? new RegExp(settings.value, 'i') : settings.value;
-  return textMatch(getCookie(settings.name), acceptableValue);
+  return textMatch(cookie.parse(document.cookie)[settings.name], acceptableValue);
 };
 

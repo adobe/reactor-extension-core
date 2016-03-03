@@ -4,8 +4,23 @@ var conditionDelegateInjector = require('inject!../cookieOptOut');
 
 var conditionDelegate;
 
-var setCookie = require('@reactor/turbine/src/utils/cookie/setCookie');
-var removeCookie = require('@reactor/turbine/src/utils/cookie/removeCookie');
+var cookie = require('@reactor/turbine/src/utils/cookie/cookie');
+
+var setCookie = function(name, value, days) {
+  var options = {};
+
+  if (days) {
+    var date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    options.expires = date;
+  }
+
+  document.cookie = cookie.serialize(name, value, options);
+};
+
+var removeCookie = function(name) {
+  setCookie(name, '', -1);
+};
 
 var getSettings = function(acceptsCookies) {
   return {
@@ -35,7 +50,7 @@ describe('cookie opt-out condition delegate', function() {
 
         conditionDelegate = conditionDelegateInjector({
           'property-settings': publicRequire('property-settings'),
-          'get-cookie': publicRequire('get-cookie')
+          'cookie': publicRequire('cookie')
         });
       });
 

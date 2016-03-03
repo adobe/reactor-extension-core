@@ -1,17 +1,31 @@
 'use strict';
 
-var cookieValues;
+var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
+var cookie = publicRequire('cookie');
 
-var mockGetCookie = jasmine.createSpy().and.callFake(function(key) {
-  return cookieValues[key];
-});
+var getCookieString = function(cookieValues) {
+  var cookieString = '';
+  Object.keys(cookieValues).forEach(function(key) {
+    cookieString += cookie.serialize(key, cookieValues[key]) + ';';
+  });
 
-var mockSetCookie = jasmine.createSpy().and.callFake(function(key, value) {
-  cookieValues[key] = value;
-});
+  return cookieString;
+};
 
-var mockDocument = {
-  referrer: 'http://testreferrer.com/test.html'
+var getCookieValues = function(cookieString) {
+  var cookieValues = cookie.parse(cookieString);
+  delete cookieValues['Expires'];
+
+  return cookieValues;
+};
+
+var removeCookie = function(cookieName, cookieString) {
+  var cookieValues = getCookieValues(cookieString);
+
+  delete cookieValues['Expires'];
+  delete cookieValues[cookieName];
+
+  return getCookieString(cookieValues);
 };
 
 var mockWindow = {
@@ -27,13 +41,23 @@ var mockLogger = {
   error: jasmine.createSpy()
 };
 
-var visitorTrackingInjector = require('inject!../visitorTracking');
+var mockCookie = {
+  serialize: jasmine.createSpy('serialize').and.callFake(function(name, value, options) {
+    var cookieValues = getCookieValues(mockDocument.cookie);
+    cookieValues[name] = value;
 
+    return getCookieString(cookieValues);
+  }),
+  parse: cookie.parse
+};
+
+var mockDocument;
+
+var visitorTrackingInjector = require('inject!../visitorTracking');
 
 var getVisitorTracking = function(enableTracking) {
   var visitorTracking = visitorTrackingInjector({
-    'get-cookie': mockGetCookie,
-    'set-cookie': mockSetCookie,
+    cookie: mockCookie,
     document: mockDocument,
     window: mockWindow,
     logger: mockLogger
@@ -52,9 +76,10 @@ var key = function(name) {
 
 describe('visitor tracking', function() {
   beforeEach(function() {
-    mockGetCookie.calls.reset();
-    mockSetCookie.calls.reset();
-    cookieValues = {};
+    mockDocument = {
+      referrer: 'http://testreferrer.com/test.html',
+      cookie: ''
+    };
   });
 
   it('tracks the landing page if the current page is the landing page', function() {
@@ -63,14 +88,14 @@ describe('visitor tracking', function() {
     var url1CookieRegex = /http:\/\/visitortracking\.com\/test\.html?p=123|456\|\d+$/;
 
     var visitorTracking = getVisitorTracking(true);
-    var cookieValue = cookieValues[key('landing_page')];
+
+    var cookieValue = cookie.parse(mockDocument.cookie)[key('landing_page')];
     expect(visitorTracking.getLandingPage()).toBe(url1);
     expect(url1CookieRegex.test(cookieValue)).toBe(true);
 
     mockWindow.location.href = url2;
 
     visitorTracking = getVisitorTracking(true);
-    cookieValue = cookieValues[key('landing_page')];
     expect(visitorTracking.getLandingPage()).toBe(url1);
     expect(url1CookieRegex.test(cookieValue)).toBe(true);
   });
@@ -112,37 +137,39 @@ describe('visitor tracking', function() {
   it('tracks the number of sessions', function() {
     var visitorTracking = getVisitorTracking(true);
     expect(visitorTracking.getSessionCount()).toBe(1);
-    expect(mockSetCookie).toHaveBeenCalledWith(key('session_count'), 1, 365 * 2);
+    expect(mockCookie.serialize).toHaveBeenCalledWith(key('session_count'), 1, jasmine.any(Object));
 
     visitorTracking = getVisitorTracking(true);
     expect(visitorTracking.getSessionCount()).toBe(1);
 
     // Number of sessions is incremented only if the landing page cookie has not been set.
-    delete cookieValues[key('landing_page')];
+    mockDocument.cookie = removeCookie(key('landing_page'), mockDocument.cookie);
 
     visitorTracking = getVisitorTracking(true);
     expect(visitorTracking.getSessionCount()).toBe(2);
-    expect(mockSetCookie).toHaveBeenCalledWith(key('session_count'), 2, 365 * 2);
+    expect(mockCookie.serialize).toHaveBeenCalledWith(key('session_count'), 2, jasmine.any(Object));
   });
 
   it('tracks lifetime pages viewed', function() {
     var visitorTracking = getVisitorTracking(true);
     expect(visitorTracking.getLifetimePageViewCount()).toBe(1);
-    expect(mockSetCookie).toHaveBeenCalledWith(key('lt_pages_viewed'), 1, 365 * 2);
+    expect(mockCookie.serialize)
+      .toHaveBeenCalledWith(key('lt_pages_viewed'), 1, jasmine.any(Object));
 
     visitorTracking = getVisitorTracking(true);
     expect(visitorTracking.getLifetimePageViewCount()).toBe(2);
-    expect(mockSetCookie).toHaveBeenCalledWith(key('lt_pages_viewed'), 2, 365 * 2);
+    expect(mockCookie.serialize)
+      .toHaveBeenCalledWith(key('lt_pages_viewed'), 2, jasmine.any(Object));
   });
 
   it('tracks session pages viewed', function() {
     var visitorTracking = getVisitorTracking(true);
     expect(visitorTracking.getSessionPageViewCount()).toBe(1);
-    expect(mockSetCookie).toHaveBeenCalledWith(key('pages_viewed'), 1);
+    expect(mockCookie.serialize).toHaveBeenCalledWith(key('pages_viewed'), 1, jasmine.any(Object));
 
     visitorTracking = getVisitorTracking(true);
     expect(visitorTracking.getSessionPageViewCount()).toBe(2);
-    expect(mockSetCookie).toHaveBeenCalledWith(key('pages_viewed'), 2);
+    expect(mockCookie.serialize).toHaveBeenCalledWith(key('pages_viewed'), 2, jasmine.any(Object));
   });
 
   it('tracks traffic source', function() {
@@ -151,13 +178,15 @@ describe('visitor tracking', function() {
 
     var visitorTracking = getVisitorTracking(true);
     expect(visitorTracking.getTrafficSource()).toBe(referrer1);
-    expect(mockSetCookie).toHaveBeenCalledWith(key('traffic_source'), referrer1);
+    expect(mockCookie.serialize)
+      .toHaveBeenCalledWith(key('traffic_source'), referrer1, jasmine.any(Object));
 
     mockDocument.referrer = referrer2;
 
     visitorTracking = getVisitorTracking(true);
     expect(visitorTracking.getTrafficSource()).toBe(referrer1);
-    expect(mockSetCookie).not.toHaveBeenCalledWith(key('traffic_source'), referrer2);
+    expect(mockCookie.serialize)
+      .not.toHaveBeenCalledWith(key('traffic_source'), referrer2, jasmine.any(Object));
   });
   
   it('tracks whether the visitor is new', function() {
@@ -167,7 +196,7 @@ describe('visitor tracking', function() {
     // The visitor is considered "returning" if more than one session has been recorded.
     // The session count is incremented when the landing page cookie has not been set.
     // Therefore, to make getIsNewVisitor() return false we have to reset the landing page cookie.
-    delete cookieValues[key('landing_page')];
+    mockDocument.cookie = removeCookie(key('landing_page'), mockDocument.cookie);
 
     visitorTracking = getVisitorTracking(true);
     expect(visitorTracking.getIsNewVisitor()).toBe(false);

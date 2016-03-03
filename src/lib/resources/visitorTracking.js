@@ -1,13 +1,28 @@
 'use strict';
 
-var getCookie = require('get-cookie');
-var setCookie = require('set-cookie');
+var cookie = require('cookie');
 var document = require('document');
 var window = require('window');
 var logger = require('logger');
 
 var key = function(name) {
   return '_sdsat_' + name;
+};
+
+var getCookie = function(name) {
+  return cookie.parse(document.cookie)[name];
+};
+
+var setCookie = function(name, value, days) {
+  var options = {};
+
+  if (days) {
+    var date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    options.expires = date;
+  }
+
+  document.cookie = cookie.serialize(name, value, options);
 };
 
 var PAGE_TIME_DELIMITER = '|';
