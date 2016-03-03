@@ -82,7 +82,7 @@ Timer.prototype = {
     for (var i = 0; i < this._markers.length; i++) {
       var marker = this._markers[i];
       if (timePassed >= marker) {
-        this.trigger('markerPassed', marker);
+        this.emit('markerPassed', marker);
         this._markers.splice(i, 1);
         i -= 1;
       }

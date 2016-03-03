@@ -1,8 +1,10 @@
 'use strict';
 
+var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
 var dataElementDelegate = require('inject!../cookie')({
-  'get-cookie': function() {
-    return 'bar';
+  'cookie': publicRequire('cookie'),
+  'document': {
+    cookie: 'foo=bar'
   }
 });
 

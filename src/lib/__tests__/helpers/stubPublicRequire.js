@@ -84,8 +84,7 @@ module.exports = function(config) {
   var visitorTrackingInjector =
     require('inject!../../resources/visitorTracking');
   var visitorTracking = visitorTrackingInjector({
-    'get-cookie': publicRequire('get-cookie'),
-    'set-cookie': publicRequire('set-cookie'),
+    'cookie': publicRequire('cookie'),
     'document': publicRequire('document'),
     'window': publicRequire('window'),
     'property-settings': publicRequire('property-settings')

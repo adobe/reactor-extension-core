@@ -1,6 +1,7 @@
 'use strict';
 
-var getCookie = require('get-cookie');
+var document = require('document');
+var cookie = require('cookie');
 var propertySettings = require('property-settings');
 
 /**
@@ -16,6 +17,6 @@ module.exports = function(settings) {
   var cookieName = propertySettings.euCookieName === undefined ?
     'sat_track' :
     propertySettings.euCookieName;
-  return getCookie(cookieName) === (settings.acceptsCookies ? 'true' : 'false');
+  return cookie.parse(document.cookie)[cookieName] === (settings.acceptsCookies ? 'true' : 'false');
 };
 

@@ -4,13 +4,13 @@ var conditionDelegateInjector = require('inject!../cookie');
 var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
 var conditionDelegate = conditionDelegateInjector({
   'get-extension': publicRequire('get-extension'),
-  'get-cookie': function() {
-    return 'foo';
+  'cookie': publicRequire('cookie'),
+  'document': {
+    cookie: 'test=foo'
   }
 });
 
 describe('cookie condition delegate', function() {
-
   it('returns true when the cookie matches the string value', function() {
     var settings = { name: 'test', value: 'foo' };
     expect(conditionDelegate(settings)).toBe(true);

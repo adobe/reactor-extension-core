@@ -1,6 +1,7 @@
 'use strict';
 
-var getCookie = require('get-cookie');
+var document = require('document');
+var cookie = require('cookie');
 
 /**
  * The cookie data element.
@@ -9,5 +10,5 @@ var getCookie = require('get-cookie');
  * @returns {string}
  */
 module.exports = function(settings) {
-  return getCookie(settings.name);
+  return cookie.parse(document.cookie)[settings.name];
 };
