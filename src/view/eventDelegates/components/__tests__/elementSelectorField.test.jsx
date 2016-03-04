@@ -1,6 +1,6 @@
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import Coral from '../../../reduxFormCoralUI';
+import Coral from 'coralui-support-reduxform';
 import ValidationWrapper from '../../../components/validationWrapper';
 import ElementSelectorField from '../../components/elementSelectorField';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import Coral from '../reduxFormCoralUI';
+import Coral from 'coralui-support-reduxform';
 import ErrorIcon from '../components/errorIcon';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
