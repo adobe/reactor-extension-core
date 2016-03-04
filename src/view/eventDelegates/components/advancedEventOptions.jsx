@@ -1,5 +1,5 @@
 import React from 'react';
-import Coral from '../../reduxFormCoralUI';
+import Coral from 'coralui-support-reduxform';
 import DisclosureButton from '../../components/disclosureButton';
 
 export default class AdvancedEventOptions extends React.Component {

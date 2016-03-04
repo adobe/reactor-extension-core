@@ -1,5 +1,5 @@
 import React from 'react';
-import Coral from '../reduxFormCoralUI';
+import Coral from 'coralui-support-reduxform';
 import ElementFilter, { formConfig as elementFilterFormConfig } from './components/elementFilter';
 import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
 import extensionViewReduxForm from '../extensionViewReduxForm';

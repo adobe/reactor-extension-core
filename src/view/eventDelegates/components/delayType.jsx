@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Coral from '../../reduxFormCoralUI';
+import Coral from 'coralui-support-reduxform';
 import ValidationWrapper from '../../components/validationWrapper';
 
 export default class DelayType extends React.Component {

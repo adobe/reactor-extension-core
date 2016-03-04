@@ -1,5 +1,5 @@
 import React from 'react';
-import Coral from '../../reduxFormCoralUI';
+import Coral from 'coralui-support-reduxform';
 import SpecificElements, { formConfig as specificElementsFormConfig } from './specificElements';
 import reduceReducers from 'reduce-reducers';
 

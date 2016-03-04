@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Coral from '../reduxFormCoralUI';
+import Coral from 'coralui-support-reduxform';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import reduceReducers from 'reduce-reducers';
 import DelayType, { formConfig as delayTypeFormConfig } from './components/delayType';

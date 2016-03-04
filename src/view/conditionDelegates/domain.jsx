@@ -1,5 +1,5 @@
 import React from 'react';
-import Coral from '../reduxFormCoralUI';
+import Coral from 'coralui-support-reduxform';
 import CheckboxList from '../components/checkboxList';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
