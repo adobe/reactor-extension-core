@@ -1,7 +1,7 @@
 # reactor-extension-dtm
 [![Build Status][status-image]][status-url] [![Coverage Status][coverage-image]][coverage-url] [![NPM Dependencies][npm-dependencies-image]][npm-dependencies-url] [![Sandbox][sandbox-image]][sandbox-url]
 
-This is the DTM extension for Turbine. It provides the default event types, condition types, and data element types available to all DTM users.
+This is the DTM extension for Reactor. It provides the default event types, condition types, and data element types available to all DTM users.
 
 ## Development Setup
 1. Install [node.js](https://nodejs.org/).
