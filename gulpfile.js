@@ -11,10 +11,10 @@ var argv = require('yargs')
   .alias('source-maps', 'with-source-maps')
   .argv;
 
-require('@reactor/turbine-gulp-packager')(gulp, {
+require('@reactor/reactor-gulp-packager')(gulp, {
   dependencyTasks: ['buildView']
 });
-require('@reactor/turbine-gulp-testrunner')(gulp);
+require('@reactor/reactor-gulp-testrunner')(gulp);
 
 // Shows an growl notification saying that building failed and then logs the error to the console.
 var errorAlert = function(error) {
@@ -86,7 +86,6 @@ gulp.task('copyHTML', function() {
     .pipe(gulp.dest('dist'));
 });
 
-// Rename once turbine-gulp-builder has namespaced tasks
 gulp.task('watch', function() {
   gulp.watch('src/view/**/*', ['buildJS']);
   gulp.watch('src/view/**/*.html', ['copyHTML']);
@@ -99,6 +98,6 @@ if (argv.watch && !argv.withoutWatch) {
   dependencyTasks.push('watch');
 }
 
-require('@reactor/turbine-gulp-sandbox')(gulp, {
+require('@reactor/reactor-gulp-sandbox')(gulp, {
   dependencyTasks: dependencyTasks
 });
