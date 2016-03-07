@@ -11,10 +11,10 @@ var argv = require('yargs')
   .alias('source-maps', 'with-source-maps')
   .argv;
 
-require('@reactor/reactor-gulp-packager')(gulp, {
+require('@reactor/extension-support-packager')(gulp, {
   dependencyTasks: ['buildView']
 });
-require('@reactor/reactor-gulp-testrunner')(gulp);
+require('@reactor/extension-support-testrunner')(gulp);
 
 // Shows an growl notification saying that building failed and then logs the error to the console.
 var errorAlert = function(error) {
@@ -98,6 +98,6 @@ if (argv.watch && !argv.withoutWatch) {
   dependencyTasks.push('watch');
 }
 
-require('@reactor/reactor-gulp-sandbox')(gulp, {
+require('@reactor/extension-support-sandbox')(gulp, {
   dependencyTasks: dependencyTasks
 });

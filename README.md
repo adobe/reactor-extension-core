@@ -1,4 +1,4 @@
-# reactor-extension-dtm
+# extension-dtm
 [![Build Status][status-image]][status-url] [![Coverage Status][coverage-image]][coverage-url] [![NPM Dependencies][npm-dependencies-image]][npm-dependencies-url] [![Sandbox][sandbox-image]][sandbox-url]
 
 This is the DTM extension for Reactor. It provides the default event types, condition types, and data element types available to all DTM users.
@@ -10,13 +10,13 @@ This is the DTM extension for Reactor. It provides the default event types, cond
 4. After navigating into the project directory, install project dependencies by running `npm install`.
 5. Test the project by running `gulp test`.
 
-See the [reactor-gulp-sandbox README](https://git.corp.adobe.com/Activation/reactor-gulp-sandbox/blob/master/README.md) and the [reactor-gulp-testrunner README](https://git.corp.adobe.com/Activation/reactor-gulp-testrunner/blob/master/README.md) for more information on how to build and test this project.
+See the [extension-support-sandbox README](https://git.corp.adobe.com/Activation/extension-support-sandbox/blob/master/README.md) and the [extension-support-testrunner README](https://git.corp.adobe.com/Activation/extension-support-testrunner/blob/master/README.md) for more information on how to build and test this project.
 
-[status-url]: https://dtm-builder.ut1.mcps.adobe.net/job/reactor-extension-dtm
-[status-image]: https://dtm-builder.ut1.mcps.adobe.net/buildStatus/icon?job=reactor-extension-dtm
-[coverage-url]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/reactor-extension-dtm/lastStableBuild/cobertura/
-[coverage-image]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/reactor-extension-dtm/ws/badges/coverage.svg
-[npm-dependencies-url]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/reactor-extension-dtm/ws/dependencies.txt
-[npm-dependencies-image]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/reactor-extension-dtm/ws/badges/dependencies.svg
-[sandbox-url]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/reactor-extension-dtm/ws/sandbox/viewSandbox.html
-[sandbox-image]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/reactor-extension-dtm/ws/badges/sandbox.svg
+[status-url]: https://dtm-builder.ut1.mcps.adobe.net/job/extension-dtm
+[status-image]: https://dtm-builder.ut1.mcps.adobe.net/buildStatus/icon?job=extension-dtm
+[coverage-url]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-dtm/lastStableBuild/cobertura/
+[coverage-image]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-dtm/ws/badges/coverage.svg
+[npm-dependencies-url]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-dtm/ws/dependencies.txt
+[npm-dependencies-image]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-dtm/ws/badges/dependencies.svg
+[sandbox-url]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-dtm/ws/sandbox/viewSandbox.html
+[sandbox-image]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-dtm/ws/badges/sandbox.svg

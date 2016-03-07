@@ -1,5 +1,5 @@
 {
-  "name": "@reactor/reactor-extension-dtm",
+  "name": "@reactor/extension-dtm",
   "version": "1.0.0",
   "description": "DTM extension for Turbine",
   "author": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@git.corp.adobe.com:reactor/reactor-extension-dtm.git"
+    "url": "git@git.corp.adobe.com:reactor/extension-dtm.git"
   },
   "publishConfig": {
     "registry": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-mcps-release-local"
@@ -44,9 +44,9 @@
     "stylus-loader": "^1.5.1"
   },
   "devDependencies": {
-    "@reactor/reactor-gulp-packager": "^1.0.0",
-    "@reactor/reactor-gulp-sandbox": "^1.0.0",
-    "@reactor/reactor-gulp-testrunner": "^1.0.0",
+    "@reactor/extension-support-packager": "^1.0.0",
+    "@reactor/extension-support-sandbox": "^1.0.0",
+    "@reactor/extension-support-testrunner": "^1.0.0",
     "@reactor/turbine": "^7.0.0",
     "babel-core": "^6.6.4",
     "babel-loader": "^6.2.4",
