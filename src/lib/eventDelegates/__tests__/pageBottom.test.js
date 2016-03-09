@@ -1,66 +1,44 @@
 'use strict';
+var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
+var Promise = publicRequire('promise');
+
+var injector = require('inject!../pageBottom');
+
 describe('pageBottom event type', function() {
-  var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
-  var documentSpy;
-  var injector;
+  it('triggers rule at the bottom of the page', function(done) {
+    var fakeDocument;
+    var promise;
+    var promiseResolve;
+    
+    fakeDocument = {
+      location: 'http://somelocation.com'
+    };
 
-
-  beforeEach(function() {
-    documentSpy = jasmine.createSpyObj('document', ['addEventListener']);
-    documentSpy.location = 'http://somelocation.com';
-
-    injector = require('inject!../pageBottom');
-  });
-
-  var createDelegate = function() {
-    return injector({
-      document: documentSpy,
-      once: publicRequire('once')
+    promise = new Promise(function(resolve) {
+      promiseResolve = resolve;
     });
-  };
 
-  it('triggers rule when _satellite.pageBottom() is called but not more than once', function() {
-    var delegate = createDelegate();
+    var delegate = injector({
+      'document': fakeDocument,
+      'page-bottom': promise
+    });
 
     var trigger = jasmine.createSpy();
     delegate({}, trigger);
+
     expect(trigger.calls.count()).toBe(0);
 
-    _satellite.pageBottom();
+    promise.then(function() {
+      expect(trigger.calls.count()).toBe(1);
 
-    expect(trigger.calls.count()).toBe(1);
+      var call = trigger.calls.mostRecent();
+      expect(call.args[0].type).toBe('pagebottom');
+      expect(call.args[0].target).toBe('http://somelocation.com');
+      expect(call.args[1]).toBe('http://somelocation.com');
 
-    // It shouldn't run rules again if we call pageBottom() more than once.
-    _satellite.pageBottom();
-
-    expect(trigger.calls.count()).toBe(1);
-
-    var call = trigger.calls.mostRecent();
-    expect(call.args[0].type).toBe('pagebottom');
-    expect(call.args[0].target).toBe('http://somelocation.com');
-    expect(call.args[1]).toBe('http://somelocation.com');
-  });
-
-  it('triggers rule on DOMContentLoaded if _satellite.pageBottom() is not called', function() {
-    var triggerPageBottomCallback;
-    documentSpy.addEventListener.and.callFake(function(event, callback) {
-      triggerPageBottomCallback = callback;
+      done();
     });
 
-    var delegate = createDelegate();
-
-    var trigger = jasmine.createSpy();
-
-    delegate({}, trigger);
-    expect(trigger.calls.count()).toBe(0);
-
-    triggerPageBottomCallback();
-
-    expect(trigger.calls.count()).toBe(1);
-
-    var call = trigger.calls.mostRecent();
-    expect(call.args[0].type).toBe('pagebottom');
-    expect(call.args[0].target).toBe('http://somelocation.com');
-    expect(call.args[1]).toBe('http://somelocation.com');
+    promiseResolve();
   });
 });
