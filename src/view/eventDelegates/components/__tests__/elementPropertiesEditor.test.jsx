@@ -107,5 +107,8 @@ describe('elementPropertiesEditor', () => {
     // First row is visible by default.
     expect(elementPropertyEditor0).toBeDefined();
     expect(elementPropertyEditor1).toBeUndefined();
+
+    expect(elementPropertyEditor0.props.fields.name.value).toBe('some prop2');
+    expect(elementPropertyEditor0.props.fields.value.value).toBe('some value2');
   });
 });
