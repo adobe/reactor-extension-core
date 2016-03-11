@@ -1,7 +1,7 @@
 import React from 'react';
 import Coral from 'coralui-support-reduxform';
 import RegexToggle from '../components/regexToggle';
-import ValidationWrapper from '../components/validationWrapper';
+import { ValidationWrapper } from '@reactor/react-components';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
 class URLParameter extends React.Component {

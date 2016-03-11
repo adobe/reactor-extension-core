@@ -1,7 +1,7 @@
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import Coral from 'coralui-support-reduxform';
-import ValidationWrapper from '../../../components/validationWrapper';
+import { ValidationWrapper } from '@reactor/react-components';
 import ElementPropertyEditor from '../../components/elementPropertyEditor';
 
 const render = props => {

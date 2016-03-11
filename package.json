@@ -23,6 +23,7 @@
     "plato": "plato -r -d platoReport src"
   },
   "dependencies": {
+    "@reactor/react-components": "^1.0.0",
     "classnames": "^2.2.3",
     "coralui-support-react": "git+https://fcf1e02afcceac6505ac6b6a43c26061c0b9bcaa:x-oauth-basic@git.corp.adobe.com/Coral/coralui-support-react.git",
     "coralui-support-reduxform": "git+https://fcf1e02afcceac6505ac6b6a43c26061c0b9bcaa:x-oauth-basic@git.corp.adobe.com:Coral/coralui-support-reduxform.git#v1.0.0",
