@@ -21,7 +21,7 @@ class Custom extends React.Component {
         {script.touched && script.error ?
           <ErrorTip ref="scriptErrorIcon" message={script.error}/> : null
         }
-        <Coral.Icon icon="infoCircle" className="Custom-tooltip u-gapLeft"/>
+        <Coral.Icon icon="infoCircle" className="u-inline-tooltip u-gapLeft"/>
         <Coral.Tooltip className="u-tooltipMaxWidth" placement="right" target="_prev">
           Enter a script that must evaluate true/false to control whether this rule executes.
           Use this field to check for certain values like shopping cart size or item price,

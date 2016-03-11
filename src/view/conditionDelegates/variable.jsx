@@ -28,7 +28,7 @@ class VariableSet extends React.Component {
             <Coral.Textfield ref="valueField" {...value}/>
           </label>
         </ValidationWrapper>
-        <Coral.Icon icon="infoCircle" className="Variable-tooltip u-gapRight"/>
+        <Coral.Icon icon="infoCircle" className="u-inline-tooltip u-gapRight"/>
         <Coral.Tooltip className="u-tooltipMaxWidth" placement="right" target="_prev">
           Specify a text (string) value here. The rule will only fire if the specified
           variable contains this string. Note: If your variable contains a number,
