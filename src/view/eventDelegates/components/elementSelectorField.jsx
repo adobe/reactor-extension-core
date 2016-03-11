@@ -1,6 +1,6 @@
 import React from 'react';
 import Coral from 'coralui-support-reduxform';
-import ValidationWrapper from '../../components/validationWrapper';
+import { ValidationWrapper } from '@reactor/react-components';
 
 export default class ElementSelectorField extends React.Component {
   render() {

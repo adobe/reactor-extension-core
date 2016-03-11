@@ -1,1 +1,2 @@
 @import '**/*.styl';
+@import '../../node_modules/@reactor/react-components/lib/index.css';

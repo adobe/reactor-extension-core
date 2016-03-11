@@ -1,6 +1,7 @@
 import React from 'react';
 import Coral from 'coralui-support-reduxform';
-import ErrorIcon from '../components/errorIcon';
+import { ErrorTip } from '@reactor/react-components';
+
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
 class Custom extends React.Component {
@@ -18,7 +19,7 @@ class Custom extends React.Component {
           Open Editor
         </Coral.Button>
         {script.touched && script.error ?
-          <ErrorIcon ref="scriptErrorIcon" message={script.error}/> : null
+          <ErrorTip ref="scriptErrorIcon" message={script.error}/> : null
         }
         <Coral.Icon icon="infoCircle" className="Custom-tooltip u-gapLeft"/>
         <Coral.Tooltip className="u-tooltipMaxWidth" placement="right" target="_prev">

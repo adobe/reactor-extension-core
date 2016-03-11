@@ -2,7 +2,7 @@ import React from 'react';
 
 import Coral from 'coralui-support-reduxform';
 import extensionViewReduxForm from '../extensionViewReduxForm';
-import ValidationWrapper from '../components/validationWrapper';
+import { ValidationWrapper } from '@reactor/react-components';
 
 class TimeSpentOnPage extends React.Component {
   render() {

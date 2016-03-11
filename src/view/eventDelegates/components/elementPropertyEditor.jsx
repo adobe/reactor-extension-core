@@ -1,7 +1,7 @@
 import React from 'react';
 import Coral from 'coralui-support-react';
 import RegexToggle from '../../components/regexToggle';
-import ValidationWrapper from '../../components/validationWrapper';
+import { ValidationWrapper } from '@reactor/react-components';
 
 export default class ElementPropertyEditor extends React.Component {
   remove = () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import Coral from 'coralui-support-reduxform';
-import ValidationWrapper from '../components/validationWrapper';
+import { ValidationWrapper } from '@reactor/react-components';
 import ElementFilter, { formConfig as elementFilterFormConfig } from './components/elementFilter';
 import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
 import extensionViewReduxForm from '../extensionViewReduxForm';

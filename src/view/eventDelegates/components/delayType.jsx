@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Coral from 'coralui-support-reduxform';
-import ValidationWrapper from '../../components/validationWrapper';
+import { ValidationWrapper } from '@reactor/react-components';
 
 export default class DelayType extends React.Component {
   onDelayTypeClick = () => {
