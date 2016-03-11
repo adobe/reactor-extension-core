@@ -23,7 +23,7 @@ export default class ElementPropertiesEditor extends React.Component {
       <div>
         {elementProperties.map((elementProperty, index) => {
           return <ElementPropertyEditor
-            ref={`elementPropertyEditor${index++}`}
+            ref={`elementPropertyEditor${index}`}
             key={elementProperty.id.value}
             fields={elementProperty}
             remove={this.remove.bind(null, index)}
