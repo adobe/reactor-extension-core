@@ -1,5 +1,5 @@
 import React from 'react';
-import Coral from 'coralui-support-reduxform';
+import Coral from '@coralui/coralui-support-reduxform';
 import ElementSelectorField, { formConfig as elementSelectorFieldFormConfig } from './elementSelectorField';
 import ElementPropertiesEditor, { formConfig as elementPropertiesEditorFormConfig } from './elementPropertiesEditor';
 import reduceReducers from 'reduce-reducers';
