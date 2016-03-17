@@ -1,7 +1,7 @@
 'use strict';
 var extension = require('get-extension')('dtm');
-var bubbly = extension.getResource('create-bubbly')();
-var textMatch = extension.getResource('text-match');
+var bubbly = extension.getHelper('create-bubbly')();
+var textMatch = extension.getHelper('text-match');
 
 document.addEventListener('change', bubbly.evaluateEvent, true);
 

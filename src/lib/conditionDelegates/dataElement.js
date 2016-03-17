@@ -2,7 +2,7 @@
 
 var getVar = require('get-var');
 var extension = require('get-extension')('dtm');
-var textMatch = extension.getResource('text-match');
+var textMatch = extension.getHelper('text-match');
 
 /**
  * Data element condition. Determines if a particular data element's actual value matches

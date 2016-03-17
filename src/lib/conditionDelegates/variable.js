@@ -2,8 +2,8 @@
 var window = require('window');
 
 var extension = require('get-extension')('dtm');
-var getObjectProperty = extension.getResource('get-object-property');
-var textMatch = extension.getResource('text-match');
+var getObjectProperty = extension.getHelper('get-object-property');
+var textMatch = extension.getHelper('text-match');
 
 /**
  * Variable condition. Determines if a particular JS variable's actual value matches

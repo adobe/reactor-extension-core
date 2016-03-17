@@ -2,7 +2,7 @@
 
 var document = require('document');
 var extension = require('get-extension')('dtm');
-var compareNumbers = extension.getResource('compare-numbers');
+var compareNumbers = extension.getHelper('compare-numbers');
 
 /**
  * Window size condition. Determines if the current window size matches constraints.

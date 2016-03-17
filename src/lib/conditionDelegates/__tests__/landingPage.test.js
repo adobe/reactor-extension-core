@@ -9,8 +9,8 @@ var mockVisitorTracking = {
 
 var conditionDelegateInjector = require('inject!../landingPage');
 var publicRequire = require('../../__tests__/helpers/stubPublicRequire')({
-  resourceStubs: {
-    'dtm/resources/visitor-tracking': mockVisitorTracking
+  helperStubs: {
+    'dtm/helpers/visitor-tracking': mockVisitorTracking
   }
 });
 var conditionDelegate = conditionDelegateInjector({

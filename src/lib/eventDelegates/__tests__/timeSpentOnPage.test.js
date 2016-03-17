@@ -1,5 +1,5 @@
 'use strict';
-var visibilityApi = require('../../resources/visibilityApi');
+var visibilityApi = require('../../helpers/visibilityApi');
 var visibilityApiInstance = visibilityApi();
 var visibilityChangeListener;
 
@@ -20,7 +20,7 @@ var delegate = eventDelegateInjector({
   document: mockDocument
 });
 
-var Timer = publicRequire('get-extension')('dtm').getResource('timer');
+var Timer = publicRequire('get-extension')('dtm').getHelper('timer');
 
 describe('time spent on page event type', function() {
   beforeEach(function() {

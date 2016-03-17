@@ -1,8 +1,8 @@
 'use strict';
 
 var extension = require('get-extension')('dtm');
-var textMatch = extension.getResource('text-match');
-var visitorTracking = extension.getResource('visitor-tracking');
+var textMatch = extension.getHelper('text-match');
+var visitorTracking = extension.getHelper('visitor-tracking');
 
 // Visitor tracking should only run (be enabled) when a rule for the property contains a condition
 // that needs it. The line below will be included in the emitted library if a rule requires this

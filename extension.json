@@ -1592,46 +1592,46 @@
       }
     }
   ],
-  "resources": [
+  "helpers": [
     {
       "name": "compare-numbers",
-      "libPath": "resources/compareNumbers.js"
+      "libPath": "helpers/compareNumbers.js"
     },
     {
       "name": "create-bubbly",
-      "libPath": "resources/createBubbly.js"
+      "libPath": "helpers/createBubbly.js"
     },
     {
       "name": "matches-properties",
-      "libPath": "resources/matchesProperties.js"
+      "libPath": "helpers/matchesProperties.js"
     },
     {
       "name": "visibility-api",
-      "libPath": "resources/visibilityApi.js"
+      "libPath": "helpers/visibilityApi.js"
     },
     {
       "name": "visitor-tracking",
-      "libPath": "resources/visitorTracking.js"
+      "libPath": "helpers/visitorTracking.js"
     },
     {
       "name": "timer",
-      "libPath": "resources/timer.js"
+      "libPath": "helpers/timer.js"
     },
     {
       "name": "text-match",
-      "libPath": "resources/textMatch.js"
+      "libPath": "helpers/textMatch.js"
     },
     {
       "name": "matches-selector",
-      "libPath": "resources/matchesSelector.js"
+      "libPath": "helpers/matchesSelector.js"
     },
     {
       "name": "get-object-property",
-      "libPath": "resources/getObjectProperty.js"
+      "libPath": "helpers/getObjectProperty.js"
     },
     {
       "name": "live-query-selector",
-      "libPath": "resources/liveQuerySelector.js"
+      "libPath": "helpers/liveQuerySelector.js"
     }
   ]
 }

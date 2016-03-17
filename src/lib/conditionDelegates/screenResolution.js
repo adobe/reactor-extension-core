@@ -2,7 +2,7 @@
 
 var window = require('window');
 var extension = require('get-extension')('dtm');
-var compareNumbers = extension.getResource('compare-numbers');
+var compareNumbers = extension.getHelper('compare-numbers');
 
 /**
  * Screen resolution condition. Determines if the current screen resolution matches constraints.

@@ -2,7 +2,7 @@
 
 var document = require('document');
 var extension = require('get-extension')('dtm');
-var textMatch = extension.getResource('text-match');
+var textMatch = extension.getHelper('text-match');
 
 /**
  * Subdomain condition. Determines if the actual subdomain matches at least one acceptable

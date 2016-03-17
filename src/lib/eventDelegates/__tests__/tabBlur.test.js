@@ -1,7 +1,7 @@
 'use strict';
 
 var eventDelegateInjector = require('inject!../tabBlur');
-var visibilityApi = require('../../resources/visibilityApi');
+var visibilityApi = require('../../helpers/visibilityApi');
 var visibilityApiInstance = visibilityApi();
 var visibilityChangeListener;
 
@@ -15,8 +15,8 @@ var mockDocument = {
 };
 
 var publicRequire = require('../../__tests__/helpers/stubPublicRequire')({
-  resourceStubs: {
-    'dtm/resources/visibility-api': visibilityApi
+  helperStubs: {
+    'dtm/helpers/visibility-api': visibilityApi
   }
 });
 var delegate = eventDelegateInjector({
