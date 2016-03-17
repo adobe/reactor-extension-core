@@ -2,7 +2,7 @@
 var window = require('window');
 
 var extension = require('get-extension')('dtm');
-var getObjectProperty = extension.getResource('get-object-property');
+var getObjectProperty = extension.getHelper('get-object-property');
 
 /**
  * The variable data element.

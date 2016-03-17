@@ -2,7 +2,7 @@
 
 var getVar = require('get-var');
 var extension = require('get-extension')('dtm');
-var compareNumbers = extension.getResource('compare-numbers');
+var compareNumbers = extension.getHelper('compare-numbers');
 
 /**
  * Cart item quantity condition. Determines if the current cart item quantity matches constraints.

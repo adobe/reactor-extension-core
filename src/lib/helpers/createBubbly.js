@@ -2,8 +2,8 @@
 
 var createDataStash = require('create-data-stash');
 var extension = require('get-extension')('dtm');
-var matchesProperties = extension.getResource('matches-properties');
-var matchesSelector = extension.getResource('matches-selector');
+var matchesProperties = extension.getHelper('matches-properties');
+var matchesSelector = extension.getHelper('matches-selector');
 
 /**
  * Handles logic related to bubbling options provided for many event types.

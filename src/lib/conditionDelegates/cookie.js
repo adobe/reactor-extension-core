@@ -3,7 +3,7 @@
 var document = require('document');
 var cookie = require('cookie');
 var extension = require('get-extension')('dtm');
-var textMatch = extension.getResource('text-match');
+var textMatch = extension.getHelper('text-match');
 
 /**
  * Cookie condition. Determines if a particular cookie's actual value matches an acceptable value.

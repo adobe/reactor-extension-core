@@ -1,7 +1,7 @@
 'use strict';
 
 var extension = require('get-extension')('dtm');
-var bubbly = extension.getResource('create-bubbly')();
+var bubbly = extension.getHelper('create-bubbly')();
 var dataStash = require('create-data-stash')('timePlayed');
 
 var relevantMarkers = [];
