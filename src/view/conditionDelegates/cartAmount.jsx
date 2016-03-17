@@ -1,5 +1,5 @@
 import React from 'react';
-import Coral from 'coralui-support-reduxform';
+import Coral from '@coralui/coralui-support-reduxform';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import { ValidationWrapper } from '@reactor/react-components';
 import DataElementNameField from './components/dataElementNameField';

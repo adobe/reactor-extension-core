@@ -1,6 +1,6 @@
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import Coral from 'coralui-support-reduxform';
+import Coral from '@coralui/coralui-support-reduxform';
 import { ValidationWrapper } from '@reactor/react-components';
 import ElementPropertyEditor from '../../components/elementPropertyEditor';
 

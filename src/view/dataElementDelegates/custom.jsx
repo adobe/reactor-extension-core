@@ -1,5 +1,5 @@
 import React from 'react';
-import Coral from 'coralui-support-reduxform';
+import Coral from '@coralui/coralui-support-reduxform';
 import { ErrorTip } from '@reactor/react-components';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 

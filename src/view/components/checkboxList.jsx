@@ -1,5 +1,5 @@
 import React from 'react';
-import Coral from 'coralui-support-react';
+import Coral from '@coralui/coralui-support-react';
 
 export default class CheckboxList extends React.Component {
   onChange = event => {

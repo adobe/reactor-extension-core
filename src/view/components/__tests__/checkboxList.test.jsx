@@ -1,5 +1,5 @@
 import React from 'react';
-import Coral from 'coralui-support-react';
+import Coral from '@coralui/coralui-support-react';
 import TestUtils from 'react-addons-test-utils';
 import CheckboxList from '../checkboxList';
 

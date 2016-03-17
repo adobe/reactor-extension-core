@@ -1,5 +1,5 @@
 import TestUtils from 'react-addons-test-utils';
-import Coral from 'coralui-support-reduxform';
+import Coral from '@coralui/coralui-support-reduxform';
 import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 import VariableSet from '../variable';
 import { ValidationWrapper } from '@reactor/react-components';
