@@ -3,6 +3,7 @@ import Coral from '@coralui/coralui-support-reduxform';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import { ValidationWrapper } from '@reactor/react-components';
 import ComparisonOperatorField from './components/comparisonOperatorField';
+import { isNumber } from '../utils/validators';
 
 class PageViews extends React.Component {
   render() {
@@ -70,7 +71,7 @@ const formConfig = {
       ...errors
     };
 
-    if (!values.count || isNaN(values.count)) {
+    if (!isNumber(values.count)) {
       errors.count = 'Please specify a number of page views.';
     }
 

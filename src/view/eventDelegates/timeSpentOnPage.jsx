@@ -3,6 +3,7 @@ import React from 'react';
 import Coral from '@coralui/coralui-support-reduxform';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import { ValidationWrapper } from '@reactor/react-components';
+import { isPositiveNumber } from '../utils/validators';
 
 class TimeSpentOnPage extends React.Component {
   render() {
@@ -40,7 +41,7 @@ const formConfig = {
       ...errors
     };
 
-    if (isNaN(values.timeOnPage) || values.timeOnPage < 1) {
+    if (!isPositiveNumber(values.timeOnPage)) {
       errors.timeOnPage = 'Please specify a positive number';
     }
 

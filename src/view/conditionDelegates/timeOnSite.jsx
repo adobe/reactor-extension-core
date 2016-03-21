@@ -3,6 +3,7 @@ import Coral from '@coralui/coralui-support-reduxform';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import { ValidationWrapper } from '@reactor/react-components';
 import ComparisonOperatorField from './components/comparisonOperatorField';
+import { isNumber } from '../utils/validators';
 
 class TimeOnSite extends React.Component {
   render() {
@@ -49,8 +50,8 @@ const formConfig = {
       ...errors
     };
 
-    if (!values.minutes || isNaN(values.minutes)) {
-      errors.minutes = 'Please specify a number of minutes.';
+    if (!isNumber(values.minutes)) {
+      errors.minutes = 'Please specify a positive number of minutes.';
     }
 
     return errors;

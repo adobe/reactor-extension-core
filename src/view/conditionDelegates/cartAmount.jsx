@@ -4,6 +4,7 @@ import extensionViewReduxForm from '../extensionViewReduxForm';
 import { ValidationWrapper } from '@reactor/react-components';
 import DataElementNameField from './components/dataElementNameField';
 import ComparisonOperatorField from './components/comparisonOperatorField';
+import { isNumber } from '../utils/validators';
 
 class CartAmount extends React.Component {
   render() {
@@ -65,7 +66,7 @@ const formConfig = {
       errors.dataElement = 'Please specify a data element.';
     }
 
-    if (!values.amount || isNaN(values.amount)) {
+    if (!isNumber(values.amount)) {
       errors.amount = 'Please specify a number for the cart amount';
     }
 

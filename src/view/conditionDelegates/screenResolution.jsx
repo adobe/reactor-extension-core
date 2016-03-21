@@ -3,6 +3,7 @@ import Coral from '@coralui/coralui-support-reduxform';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import { ValidationWrapper } from '@reactor/react-components';
 import ComparisonOperatorField from './components/comparisonOperatorField';
+import { isNumber } from '../utils/validators';
 
 class ScreenResolution extends React.Component {
   render() {
@@ -57,11 +58,11 @@ const formConfig = {
       ...errors
     };
 
-    if (!values.width || isNaN(values.width)) {
+    if (!isNumber(values.width)) {
       errors.width = 'Please specify a number for width.';
     }
 
-    if (!values.height || isNaN(values.height)) {
+    if (!isNumber(values.height)) {
       errors.height = 'Please specify a number for height.';
     }
 

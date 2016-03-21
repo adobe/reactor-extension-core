@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Coral from '@coralui/coralui-support-reduxform';
 import { ValidationWrapper } from '@reactor/react-components';
+import { isPositiveNumber } from '../../utils/validators';
 
 export default class DelayType extends React.Component {
   onDelayTypeClick = () => {
@@ -82,8 +83,7 @@ export const formConfig = {
       ...errors
     };
 
-    if (values.delayType === 'delay'
-      && (isNaN(values.delay) || values.delay < 1)) {
+    if (values.delayType === 'delay' && !isPositiveNumber(values.delay)) {
       errors.delay = 'Please specify a positive number';
     }
 
