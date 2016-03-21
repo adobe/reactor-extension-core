@@ -5,6 +5,7 @@ import ElementFilter, { formConfig as elementFilterFormConfig } from './componen
 import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import reduceReducers from 'reduce-reducers';
+import { isPositiveNumber } from '../utils/validators';
 
 const timePlayedUnit = {
   SECOND: 'second',
@@ -79,7 +80,7 @@ const formConfig = {
         ...errors
       };
 
-      if (isNaN(values.amount) || values.amount <= 0) {
+      if (!isPositiveNumber(values.amount)) {
         errors.amount = 'Please specify a positive number';
       }
 
