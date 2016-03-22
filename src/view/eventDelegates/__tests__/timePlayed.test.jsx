@@ -1,11 +1,15 @@
-import TestUtils from 'react-addons-test-utils';
-
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 import TimePlayed from '../timePlayed';
-
-const { instance, extensionBridge } = setUpConnectedForm(TimePlayed);
+import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 describe('time played view', () => {
+  let extensionBridge;
+  let instance;
+
+  beforeAll(() => {
+    extensionBridge = createExtensionBridge();
+    instance = getFormInstance(TimePlayed, extensionBridge);
+  });
+
   it('sets form values from settings', () => {
     extensionBridge.init({
       settings: {

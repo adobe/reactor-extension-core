@@ -1,12 +1,15 @@
-import TestUtils from 'react-addons-test-utils';
-import Coral from '@coralui/coralui-support-reduxform';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 import VariableSet from '../variable';
-import { ValidationWrapper } from '@reactor/react-components';
-
-const { instance, extensionBridge } = setUpConnectedForm(VariableSet);
+import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 describe('variable set view', () => {
+  let extensionBridge;
+  let instance;
+
+  beforeAll(() => {
+    extensionBridge = createExtensionBridge();
+    instance = getFormInstance(VariableSet, extensionBridge);
+  });
+
   it('sets form values from settings', () => {
     extensionBridge.init({
       settings: {

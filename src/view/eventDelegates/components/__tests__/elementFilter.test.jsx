@@ -1,12 +1,17 @@
-import TestUtils from 'react-addons-test-utils';
-import setUpConnectedForm from '../../../__tests__/helpers/setUpConnectedForm';
 import extensionViewReduxForm from '../../../extensionViewReduxForm';
 import ElementFilter, { formConfig } from '../elementFilter';
-
-const FormComponent = extensionViewReduxForm(formConfig)(ElementFilter);
-const { instance, extensionBridge } = setUpConnectedForm(FormComponent);
+import { getFormInstance, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
 
 describe('elementFilter', () => {
+  let extensionBridge;
+  let instance;
+
+  beforeAll(() => {
+    const FormComponent = extensionViewReduxForm(formConfig)(ElementFilter);
+    extensionBridge = createExtensionBridge();
+    instance = getFormInstance(FormComponent, extensionBridge);
+  });
+
   it('updates view properly when elementSelector is provided', () => {
     extensionBridge.init({
       settings: {

@@ -1,13 +1,17 @@
-import TestUtils from 'react-addons-test-utils';
-import setUpConnectedForm from '../../../__tests__/helpers/setUpConnectedForm';
 import extensionViewReduxForm from '../../../extensionViewReduxForm';
 import SpecificElements, { formConfig } from '../specificElements';
-
-const FormComponent = extensionViewReduxForm(formConfig)(SpecificElements);
-
-const { instance, extensionBridge } = setUpConnectedForm(FormComponent);
+import { getFormInstance, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
 
 describe('specificElements', () => {
+  let extensionBridge;
+  let instance;
+
+  beforeAll(() => {
+    const FormComponent = extensionViewReduxForm(formConfig)(SpecificElements);
+    extensionBridge = createExtensionBridge();
+    instance = getFormInstance(FormComponent, extensionBridge);
+  });
+
   it('updates view properly when elementProperties provided', () => {
     extensionBridge.init({
       settings: {

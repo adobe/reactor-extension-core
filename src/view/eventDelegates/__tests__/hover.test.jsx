@@ -1,11 +1,15 @@
-import TestUtils from 'react-addons-test-utils';
-
 import Hover from '../hover';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
-
-const { instance, extensionBridge } = setUpConnectedForm(Hover);
+import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 describe('hover view', () => {
+  let extensionBridge;
+  let instance;
+
+  beforeAll(() => {
+    extensionBridge = createExtensionBridge();
+    instance = getFormInstance(Hover, extensionBridge);
+  });
+
   it('sets form values from settings', () => {
     extensionBridge.init({
       settings: {

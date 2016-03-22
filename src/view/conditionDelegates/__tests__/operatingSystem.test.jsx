@@ -1,9 +1,5 @@
-import TestUtils from 'react-addons-test-utils';
-
 import OperatingSystem from '../operatingSystem';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
-
-const { instance, extensionBridge } = setUpConnectedForm(OperatingSystem);
+import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const selectedOperatingSystems = [
   'Windows',
@@ -11,6 +7,14 @@ const selectedOperatingSystems = [
 ];
 
 describe('operating system view', () => {
+  let extensionBridge;
+  let instance;
+
+  beforeAll(() => {
+    extensionBridge = createExtensionBridge();
+    instance = getFormInstance(OperatingSystem, extensionBridge);
+  });
+
   it('sets form values from settings', () => {
     extensionBridge.init({
       settings: {

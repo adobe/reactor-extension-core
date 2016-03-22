@@ -1,7 +1,5 @@
-import TestUtils from 'react-addons-test-utils';
-
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 import Subdomain from '../subdomain';
+import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const testProps = {
   settings: {
@@ -17,9 +15,15 @@ const testProps = {
   }
 };
 
-const { instance, extensionBridge } = setUpConnectedForm(Subdomain);
-
 describe('subdomain view', () => {
+  let extensionBridge;
+  let instance;
+
+  beforeAll(() => {
+    extensionBridge = createExtensionBridge();
+    instance = getFormInstance(Subdomain, extensionBridge);
+  });
+
   it('sets form values from settings', () => {
     extensionBridge.init(testProps);
 

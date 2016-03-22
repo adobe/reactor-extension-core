@@ -1,11 +1,15 @@
-import TestUtils from 'react-addons-test-utils';
-
 import ScreenResolution from '../screenResolution';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
-
-const { instance, extensionBridge } = setUpConnectedForm(ScreenResolution);
+import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 describe('screen resolution view', () => {
+  let extensionBridge;
+  let instance;
+
+  beforeAll(() => {
+    extensionBridge = createExtensionBridge();
+    instance = getFormInstance(ScreenResolution, extensionBridge);
+  });
+
   it('sets operators to greater than by default', () => {
     extensionBridge.init();
 

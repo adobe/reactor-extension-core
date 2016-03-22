@@ -1,9 +1,5 @@
-import TestUtils from 'react-addons-test-utils';
-
 import Domain from '../domain';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
-
-const { instance, extensionBridge } = setUpConnectedForm(Domain);
+import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const domains = [
   'adobe.com',
@@ -15,6 +11,14 @@ const selectedDomains = [
 ];
 
 describe('domain view', () => {
+  let extensionBridge;
+  let instance;
+
+  beforeAll(() => {
+    extensionBridge = createExtensionBridge();
+    instance = getFormInstance(Domain, extensionBridge);
+  });
+
   it('sets form values from settings', () => {
     extensionBridge.init({
       settings: {

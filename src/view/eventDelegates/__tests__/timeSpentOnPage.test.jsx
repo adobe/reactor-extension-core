@@ -1,11 +1,15 @@
-import TestUtils from 'react-addons-test-utils';
-
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 import TimeSpentOnPage from '../timeSpentOnPage';
-
-const { instance, extensionBridge } = setUpConnectedForm(TimeSpentOnPage);
+import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 describe('time spent on page view', () => {
+  let extensionBridge;
+  let instance;
+
+  beforeAll(() => {
+    extensionBridge = createExtensionBridge();
+    instance = getFormInstance(TimeSpentOnPage, extensionBridge);
+  });
+
   it('sets form values from settings', () => {
     extensionBridge.init({
       settings: {

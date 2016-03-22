@@ -1,11 +1,15 @@
-import TestUtils from 'react-addons-test-utils';
-
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 import WindowSize from '../windowSize';
-
-const { instance, extensionBridge } = setUpConnectedForm(WindowSize);
+import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 describe('window size view', () => {
+  let extensionBridge;
+  let instance;
+
+  beforeAll(() => {
+    extensionBridge = createExtensionBridge();
+    instance = getFormInstance(WindowSize, extensionBridge);
+  });
+
   it('sets operators to greater than by default', () => {
     extensionBridge.init();
 

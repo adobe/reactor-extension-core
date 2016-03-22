@@ -1,11 +1,15 @@
-import TestUtils from 'react-addons-test-utils';
-
 import DOM from '../dom';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
-
-const { instance, extensionBridge } = setUpConnectedForm(DOM);
+import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 describe('DOM view', () => {
+  let extensionBridge;
+  let instance;
+
+  beforeAll(() => {
+    extensionBridge = createExtensionBridge();
+    instance = getFormInstance(DOM, extensionBridge);
+  });
+
   it('selects ID preset for new settings', () => {
     extensionBridge.init();
 

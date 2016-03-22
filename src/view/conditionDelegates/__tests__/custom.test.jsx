@@ -1,11 +1,15 @@
-import TestUtils from 'react-addons-test-utils';
-
 import Custom from '../custom';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
-
-const { instance, extensionBridge } = setUpConnectedForm(Custom);
+import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 describe('custom view', () => {
+  let extensionBridge;
+  let instance;
+
+  beforeAll(() => {
+    extensionBridge = createExtensionBridge();
+    instance = getFormInstance(Custom, extensionBridge);
+  });
+
   it('opens code editor with script value when button is clicked and stores result', () => {
     extensionBridge.init({
       settings: {

@@ -1,11 +1,15 @@
-import TestUtils from 'react-addons-test-utils';
-
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 import TrafficSource from '../trafficSource';
-
-const { instance, extensionBridge } = setUpConnectedForm(TrafficSource);
+import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 describe('traffic source view', () => {
+  let extensionBridge;
+  let instance;
+
+  beforeAll(() => {
+    extensionBridge = createExtensionBridge();
+    instance = getFormInstance(TrafficSource, extensionBridge);
+  });
+
   it('sets form values from settings', () => {
     extensionBridge.init({
       settings: {

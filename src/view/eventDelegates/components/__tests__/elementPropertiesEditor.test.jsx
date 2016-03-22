@@ -1,13 +1,17 @@
-import TestUtils from 'react-addons-test-utils';
-
-import setUpConnectedForm from '../../../__tests__/helpers/setUpConnectedForm';
 import extensionViewReduxForm from '../../../extensionViewReduxForm';
 import ElementPropertiesEditor, { formConfig } from '../elementPropertiesEditor';
-
-const FormComponent = extensionViewReduxForm(formConfig)(ElementPropertiesEditor);
-const { instance, extensionBridge } = setUpConnectedForm(FormComponent);
+import { getFormInstance, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
 
 describe('elementPropertiesEditor', () => {
+  let extensionBridge;
+  let instance;
+
+  beforeAll(() => {
+    const FormComponent = extensionViewReduxForm(formConfig)(ElementPropertiesEditor);
+    extensionBridge = createExtensionBridge();
+    instance = getFormInstance(FormComponent, extensionBridge);
+  });
+
   it('sets form values from settings', () => {
     extensionBridge.init({
       settings: {

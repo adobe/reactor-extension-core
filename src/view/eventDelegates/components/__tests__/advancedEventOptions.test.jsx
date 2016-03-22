@@ -1,12 +1,17 @@
-import TestUtils from 'react-addons-test-utils';
-import setUpConnectedForm from '../../../__tests__/helpers/setUpConnectedForm';
 import extensionViewReduxForm from '../../../extensionViewReduxForm';
 import AdvancedEventOptions, { formConfig } from '../advancedEventOptions';
-
-const FormComponent = extensionViewReduxForm(formConfig)(AdvancedEventOptions);
-const { instance, extensionBridge } = setUpConnectedForm(FormComponent);
+import { getFormInstance, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
 
 describe('advancedEventOptions', () => {
+  let extensionBridge;
+  let instance;
+
+  beforeAll(() => {
+    const FormComponent = extensionViewReduxForm(formConfig)(AdvancedEventOptions);
+    extensionBridge = createExtensionBridge();
+    instance = getFormInstance(FormComponent, extensionBridge);
+  });
+
   beforeEach(() => {
     instance.toggleSelected();
   });

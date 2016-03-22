@@ -1,11 +1,29 @@
-import TestUtils from 'react-addons-test-utils';
-
 import DataElement from '../dataElement';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
-
-const { instance, extensionBridge } = setUpConnectedForm(DataElement);
+import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 describe('data element view', () => {
+  let extensionBridge;
+  let instance;
+
+  beforeAll(() => {
+    extensionBridge = createExtensionBridge();
+    extensionBridge.openDataElementSelector = jasmine.createSpy();
+    window.extensionBridge = extensionBridge;
+    instance = getFormInstance(DataElement, extensionBridge);
+  });
+
+  afterAll(() => {
+    delete window.extensionBridge;
+  });
+
+  it('opens the data element selector from data element field', () => {
+    const { nameField } = instance.refs;
+
+    nameField.props.onOpenSelector();
+
+    expect(window.extensionBridge.openDataElementSelector).toHaveBeenCalled();
+  });
+
   it('sets form values from settings', () => {
     extensionBridge.init({
       settings: {

@@ -1,9 +1,15 @@
-import setUpConnectedForm from '../../../__tests__/helpers/setUpConnectedForm';
 import NoConfig from '../noConfig';
-
-const { extensionBridge } = setUpConnectedForm(NoConfig);
+import { getFormInstance, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
 
 describe('dom ready view', () => {
+  let extensionBridge;
+  let instance;
+
+  beforeAll(() => {
+    extensionBridge = createExtensionBridge();
+    instance = getFormInstance(NoConfig, extensionBridge);
+  });
+
   it('sets settings from form values', () => {
     extensionBridge.init();
     expect(extensionBridge.getSettings()).toEqual({});
