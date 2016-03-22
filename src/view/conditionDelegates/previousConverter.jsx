@@ -1,8 +1,6 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-reduxform';
 import extensionViewReduxForm from '../extensionViewReduxForm';
-import { ValidationWrapper } from '@reactor/react-components';
-import DataElementNameField from './components/dataElementNameField';
+import { ValidationWrapper, DataElementField } from '@reactor/react-components';
 
 class PreviousConverter extends React.Component {
   render() {
@@ -17,7 +15,9 @@ class PreviousConverter extends React.Component {
           <span className="u-label">
             Data element identifying whether the user is a previous converter
           </span>
-          <DataElementNameField ref="dataElementField" {...dataElement}/>
+          <DataElementField ref="dataElementField" {...dataElement}
+            nameOnly="true"
+            onOpenSelector={window.extensionBridge.openDataElementSelector}/>
         </label>
       </ValidationWrapper>
     );

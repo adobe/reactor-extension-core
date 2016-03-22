@@ -1,11 +1,29 @@
-import TestUtils from 'react-addons-test-utils';
-
 import CartAmount from '../cartAmount';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
-
-const { instance, extensionBridge } = setUpConnectedForm(CartAmount);
+import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 describe('cart amount view', () => {
+  let extensionBridge;
+  let instance;
+
+  beforeAll(() => {
+    extensionBridge = createExtensionBridge();
+    extensionBridge.openDataElementSelector = jasmine.createSpy();
+    window.extensionBridge = extensionBridge;
+    instance = getFormInstance(CartAmount, extensionBridge);
+  });
+
+  afterAll(() => {
+    delete window.extensionBridge;
+  });
+
+  it('opens the data element selector from data element field', () => {
+    const { dataElementField } = instance.refs;
+
+    dataElementField.props.onOpenSelector();
+
+    expect(window.extensionBridge.openDataElementSelector).toHaveBeenCalled();
+  });
+
   it('sets operator to greater than by default', () => {
     extensionBridge.init();
 

@@ -1,11 +1,15 @@
-import TestUtils from 'react-addons-test-utils';
-
 import NewReturning from '../newReturning';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
-
-const { instance, extensionBridge } = setUpConnectedForm(NewReturning);
+import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 describe('new/returning visitor view', () => {
+  let extensionBridge;
+  let instance;
+
+  beforeAll(() => {
+    extensionBridge = createExtensionBridge();
+    instance = getFormInstance(NewReturning, extensionBridge);
+  });
+
   it('sets new visitor radio as checked by default', () => {
     extensionBridge.init();
 

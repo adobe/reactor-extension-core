@@ -1,11 +1,15 @@
-import TestUtils from 'react-addons-test-utils';
-
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
 import TimeOnSite from '../timeOnSite';
-
-const { instance, extensionBridge } = setUpConnectedForm(TimeOnSite);
+import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 describe('time on site view', () => {
+  let extensionBridge;
+  let instance;
+
+  beforeAll(() => {
+    extensionBridge = createExtensionBridge();
+    instance = getFormInstance(TimeOnSite, extensionBridge);
+  });
+
   it('sets operator to greater than by default', () => {
     extensionBridge.init();
 

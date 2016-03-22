@@ -1,7 +1,5 @@
-import TestUtils from 'react-addons-test-utils';
-
 import Path from '../path';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
+import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const testProps = {
   settings: {
@@ -17,9 +15,15 @@ const testProps = {
   }
 };
 
-const { instance, extensionBridge } = setUpConnectedForm(Path);
-
 describe('path view', () => {
+  let extensionBridge;
+  let instance;
+
+  beforeAll(() => {
+    extensionBridge = createExtensionBridge();
+    instance = getFormInstance(Path, extensionBridge);
+  });
+
   it('sets form values from settings', () => {
     extensionBridge.init(testProps);
 

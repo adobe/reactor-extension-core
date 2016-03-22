@@ -1,11 +1,15 @@
-import TestUtils from 'react-addons-test-utils';
-
 import QueryParameter from '../queryParameter';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
-
-const { instance, extensionBridge } = setUpConnectedForm(QueryParameter);
+import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 describe('query parameter view', () => {
+  let extensionBridge;
+  let instance;
+
+  beforeAll(() => {
+    extensionBridge = createExtensionBridge();
+    instance = getFormInstance(QueryParameter, extensionBridge);
+  });
+
   it('checks case insensitive checkbox by default', () => {
     extensionBridge.init();
 

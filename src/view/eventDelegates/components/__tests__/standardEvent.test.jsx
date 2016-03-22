@@ -1,11 +1,15 @@
-import TestUtils from 'react-addons-test-utils';
-import Coral from '@coralui/coralui-support-reduxform';
 import StandardEvent from '../../components/standardEvent';
-import setUpConnectedForm from '../../../__tests__/helpers/setUpConnectedForm';
-
-const { instance, extensionBridge } = setUpConnectedForm(StandardEvent);
+import { getFormInstance, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
 
 describe('standard event view', () => {
+  let extensionBridge;
+  let instance;
+
+  beforeAll(() => {
+    extensionBridge = createExtensionBridge();
+    instance = getFormInstance(StandardEvent, extensionBridge);
+  });
+
   it('sets form values from settings', () => {
     extensionBridge.init({
       settings: {

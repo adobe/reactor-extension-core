@@ -1,8 +1,7 @@
 import React from 'react';
 import Coral from '@coralui/coralui-support-reduxform';
 import extensionViewReduxForm from '../extensionViewReduxForm';
-import { ValidationWrapper } from '@reactor/react-components';
-import DataElementNameField from './components/dataElementNameField';
+import { ValidationWrapper, DataElementField } from '@reactor/react-components';
 import RegexToggle from '../components/regexToggle';
 
 class DataElement extends React.Component {
@@ -17,7 +16,9 @@ class DataElement extends React.Component {
           error={name.touched && name.error}>
           <label>
             <span className="u-label">Data element</span>
-            <DataElementNameField ref="nameField" {...name}/>
+            <DataElementField ref="nameField" {...name}
+              nameOnly="true"
+              onOpenSelector={window.extensionBridge.openDataElementSelector}/>
           </label>
         </ValidationWrapper>
         <ValidationWrapper

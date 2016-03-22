@@ -6,24 +6,30 @@ import reducer from '../../actions/reducer';
 import { createStore } from 'redux';
 import bridgeAdapter from '../../bridgeAdapter';
 
-export default (FormComponent) => {
-  const store = createStore(reducer, {});
+export const createExtensionBridge = () => {
+  let registeredOptions;
 
-  const extensionBridge = {
-    register: function(options) {
-      this._registeredOptions = options;
+  return {
+    register(options) {
+      registeredOptions = options;
     },
-    init: function() {
-      return this._registeredOptions.init.apply(this, arguments);
+    init() {
+      return registeredOptions.init.apply(this, arguments);
     },
-    validate: function() {
-      return this._registeredOptions.validate.apply(this, arguments);
+    validate() {
+      return registeredOptions.validate.apply(this, arguments);
     },
-    getSettings: function() {
-      return this._registeredOptions.getSettings.apply(this, arguments);
-    }
+    getSettings() {
+      return registeredOptions.getSettings.apply(this, arguments);
+    },
+    openCodeEditor() {},
+    openRegexTester() {},
+    openDataElementSelector() {}
   };
+};
 
+export const getFormInstance = (FormComponent, extensionBridge) => {
+  const store = createStore(reducer, {});
   const setFormConfigForCurrentRoute = bridgeAdapter(extensionBridge, store);
 
   setFormConfigForCurrentRoute(FormComponent.formConfig);
@@ -36,12 +42,7 @@ export default (FormComponent) => {
 
   // Have to do this mess in order to get the wrapped component because redux-form doesn't
   // expose any method for us to do so. https://github.com/erikras/redux-form/issues/202
-  const instance = TestUtils.findAllInRenderedTree(providerInstance, function(component) {
+  return TestUtils.findAllInRenderedTree(providerInstance, function(component) {
     return component.refs && component.refs.extensionViewWrappedComponent;
   })[0].refs.extensionViewWrappedComponent;
-
-  return {
-    instance,
-    extensionBridge
-  };
 };

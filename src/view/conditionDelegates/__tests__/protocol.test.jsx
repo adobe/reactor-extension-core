@@ -1,11 +1,15 @@
-import TestUtils from 'react-addons-test-utils';
-
 import Protocol from '../protocol';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
-
-const { instance, extensionBridge } = setUpConnectedForm(Protocol);
+import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 describe('protocol view', () => {
+  let extensionBridge;
+  let instance;
+
+  beforeAll(() => {
+    extensionBridge = createExtensionBridge();
+    instance = getFormInstance(Protocol, extensionBridge);
+  });
+
   it('sets http radio as checked by default', () => {
     extensionBridge.init();
 

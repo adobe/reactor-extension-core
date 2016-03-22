@@ -1,12 +1,17 @@
-import TestUtils from 'react-addons-test-utils';
-import setUpConnectedForm from '../../../__tests__/helpers/setUpConnectedForm';
 import extensionViewReduxForm from '../../../extensionViewReduxForm';
 import DelayType, { formConfig } from '../delayType';
-
-const FormComponent = extensionViewReduxForm(formConfig)(DelayType);
-const { instance, extensionBridge } = setUpConnectedForm(FormComponent);
+import { getFormInstance, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
 
 describe('delayType', () => {
+  let extensionBridge;
+  let instance;
+
+  beforeAll(() => {
+    const FormComponent = extensionViewReduxForm(formConfig)(DelayType);
+    extensionBridge = createExtensionBridge();
+    instance = getFormInstance(FormComponent, extensionBridge);
+  });
+
   describe('sets form values', () => {
     it('when settings contains delay value', () => {
       extensionBridge.init({

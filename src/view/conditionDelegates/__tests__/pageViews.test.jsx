@@ -1,11 +1,15 @@
-import TestUtils from 'react-addons-test-utils';
-
 import PageViews from '../pageViews';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
-
-const { instance, extensionBridge } = setUpConnectedForm(PageViews);
+import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 describe('page views view', () => {
+  let extensionBridge;
+  let instance;
+
+  beforeAll(() => {
+    extensionBridge = createExtensionBridge();
+    instance = getFormInstance(PageViews, extensionBridge);
+  });
+
   it('sets operator to greater than by default', () => {
     extensionBridge.init();
 

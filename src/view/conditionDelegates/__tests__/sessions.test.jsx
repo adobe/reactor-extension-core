@@ -1,11 +1,15 @@
-import TestUtils from 'react-addons-test-utils';
-
 import Sessions from '../sessions';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
-
-const { instance, extensionBridge } = setUpConnectedForm(Sessions);
+import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 describe('sessions view', () => {
+  let extensionBridge;
+  let instance;
+
+  beforeAll(() => {
+    extensionBridge = createExtensionBridge();
+    instance = getFormInstance(Sessions, extensionBridge);
+  });
+
   it('sets operator to greater than by default', () => {
     extensionBridge.init();
 

@@ -1,9 +1,5 @@
-import TestUtils from 'react-addons-test-utils';
-
 import DeviceType from '../deviceType';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
-
-const { instance, extensionBridge } = setUpConnectedForm(DeviceType);
+import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const selectedDeviceTypes = [
   'Desktop',
@@ -11,6 +7,14 @@ const selectedDeviceTypes = [
 ];
 
 describe('device type view', () => {
+  let extensionBridge;
+  let instance;
+
+  beforeAll(() => {
+    extensionBridge = createExtensionBridge();
+    instance = getFormInstance(DeviceType, extensionBridge);
+  });
+
   it('sets form values from settings', () => {
     extensionBridge.init({
       settings: {

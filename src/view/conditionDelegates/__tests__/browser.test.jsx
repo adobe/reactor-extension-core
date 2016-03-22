@@ -1,9 +1,5 @@
-import TestUtils from 'react-addons-test-utils';
-
 import Browser from '../browser';
-import setUpConnectedForm from '../../__tests__/helpers/setUpConnectedForm';
-
-const { instance, extensionBridge } = setUpConnectedForm(Browser);
+import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const selectedBrowsers = [
   'Chrome',
@@ -11,6 +7,14 @@ const selectedBrowsers = [
 ];
 
 describe('browser view', () => {
+  let extensionBridge;
+  let instance;
+
+  beforeAll(() => {
+    extensionBridge = createExtensionBridge();
+    instance = getFormInstance(Browser, extensionBridge);
+  });
+
   it('sets form values from settings', () => {
     extensionBridge.init({
       settings: {
