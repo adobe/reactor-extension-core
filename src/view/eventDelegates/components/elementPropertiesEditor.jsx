@@ -98,7 +98,7 @@ export const formConfig = {
       ...errors
     };
 
-    const elementPropertiesErrors = values.elementProperties.map((item) => {
+    errors.elementProperties = values.elementProperties.map((item) => {
       var result = {};
 
       if (item.value && !item.name) {
@@ -107,10 +107,6 @@ export const formConfig = {
 
       return result;
     });
-
-    if (elementPropertiesErrors.some(x => x)) {
-      errors.elementProperties = elementPropertiesErrors;
-    }
 
     return errors;
   }
