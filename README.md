@@ -10,7 +10,7 @@ This is the DTM extension for Reactor. It provides the default event types, cond
 4. After navigating into the project directory, install project dependencies by running `npm install`.
 5. Test the project by running `gulp test`.
 
-See the [extension-support-sandbox README](https://git.corp.adobe.com/Activation/extension-support-sandbox/blob/master/README.md) and the [extension-support-testrunner README](https://git.corp.adobe.com/Activation/extension-support-testrunner/blob/master/README.md) for more information on how to build and test this project.
+See the [extension-support-sandbox README](https://git.corp.adobe.com/reactor/extension-support-sandbox/blob/master/README.md) and the [extension-support-testrunner README](https://git.corp.adobe.com/reactor/extension-support-testrunner/blob/master/README.md) for more information on how to build and test this project.
 
 [status-url]: https://dtm-builder.ut1.mcps.adobe.net/job/extension-dtm
 [status-image]: https://dtm-builder.ut1.mcps.adobe.net/buildStatus/icon?job=extension-dtm
