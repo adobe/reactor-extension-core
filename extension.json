@@ -41,6 +41,7 @@
                   "type": "boolean"
                 }
               },
+              "additionalProperties": false,
               "required": ["name", "value"]
             }
           },
@@ -53,7 +54,8 @@
           "bubbleStop": {
             "type": "boolean"
           }
-        }
+        },
+        "additionalProperties": false
       }
     },
     {
@@ -86,6 +88,7 @@
                   "type": "boolean"
                 }
               },
+              "additionalProperties": false,
               "required": ["name", "value"]
             }
           },
@@ -101,7 +104,8 @@
           "delayLinkActivation": {
             "type": "boolean"
           }
-        }
+        },
+        "additionalProperties": false
       }
     },
     {
@@ -119,6 +123,7 @@
             "minLength": 1
           }
         },
+        "additionalProperties": false,
         "required": ["name"]
       }
     },
@@ -160,10 +165,12 @@
                   "type": "boolean"
                 }
               },
+              "additionalProperties": false,
               "required": ["name", "value"]
             }
           }
         },
+        "additionalProperties": false,
         "required": ["elementSelector"]
       }
     },
@@ -197,6 +204,7 @@
                   "type": "boolean"
                 }
               },
+              "additionalProperties": false,
               "required": ["name", "value"]
             }
           },
@@ -209,7 +217,8 @@
           "bubbleStop": {
             "type": "boolean"
           }
-        }
+        },
+        "additionalProperties": false
       }
     },
     {
@@ -242,6 +251,7 @@
                   "type": "boolean"
                 }
               },
+              "additionalProperties": false,
               "required": ["name", "value"]
             }
           },
@@ -250,6 +260,7 @@
             "minimum": 1
           }
         },
+        "additionalProperties": false,
         "required": ["elementSelector"]
       }
     },
@@ -283,6 +294,7 @@
                   "type": "boolean"
                 }
               },
+              "additionalProperties": false,
               "required": ["name", "value"]
             }
           },
@@ -295,7 +307,8 @@
           "bubbleStop": {
             "type": "boolean"
           }
-        }
+        },
+        "additionalProperties": false
       }
     },
     {
@@ -328,6 +341,7 @@
                   "type": "boolean"
                 }
               },
+              "additionalProperties": false,
               "required": ["name", "value"]
             }
           },
@@ -345,6 +359,7 @@
             "minimum": 1
           }
         },
+        "additionalProperties": false,
         "required": ["elementSelector"]
       }
     },
@@ -378,6 +393,7 @@
                   "type": "boolean"
                 }
               },
+              "additionalProperties": false,
               "required": ["name", "value"]
             }
           },
@@ -390,7 +406,8 @@
           "bubbleStop": {
             "type": "boolean"
           }
-        }
+        },
+        "additionalProperties": false
       }
     },
     {
@@ -423,6 +440,7 @@
                   "type": "boolean"
                 }
               },
+              "additionalProperties": false,
               "required": ["name", "value"]
             }
           },
@@ -435,7 +453,8 @@
           "bubbleStop": {
             "type": "boolean"
           }
-        }
+        },
+        "additionalProperties": false
       }
     },
     {
@@ -508,6 +527,7 @@
                   "type": "boolean"
                 }
               },
+              "additionalProperties": false,
               "required": ["name", "value"]
             }
           },
@@ -520,7 +540,8 @@
           "bubbleStop": {
             "type": "boolean"
           }
-        }
+        },
+        "additionalProperties": false
       }
     },
     {
@@ -553,6 +574,7 @@
                   "type": "boolean"
                 }
               },
+              "additionalProperties": false,
               "required": ["name", "value"]
             }
           },
@@ -565,7 +587,8 @@
           "bubbleStop": {
             "type": "boolean"
           }
-        }
+        },
+        "additionalProperties": false
       }
     },
     {
@@ -598,6 +621,7 @@
                   "type": "boolean"
                 }
               },
+              "additionalProperties": false,
               "required": ["name", "value"]
             }
           },
@@ -610,7 +634,8 @@
           "bubbleStop": {
             "type": "boolean"
           }
-        }
+        },
+        "additionalProperties": false
       }
     },
     {
@@ -643,6 +668,7 @@
                   "type": "boolean"
                 }
               },
+              "additionalProperties": false,
               "required": ["name", "value"]
             }
           },
@@ -655,7 +681,8 @@
           "bubbleStop": {
             "type": "boolean"
           }
-        }
+        },
+        "additionalProperties": false
       }
     },
     {
@@ -689,6 +716,7 @@
             "minimum": 1
           }
         },
+        "additionalProperties": false,
         "required": ["timeOnPage"]
       }
     },
@@ -722,6 +750,7 @@
                   "type": "boolean"
                 }
               },
+              "additionalProperties": false,
               "required": ["name", "value"]
             }
           },
@@ -743,6 +772,7 @@
             "enum": ["percent", "second"]
           }
         },
+        "additionalProperties": false,
         "required": ["amount", "unit"]
       }
     },
@@ -776,6 +806,7 @@
                   "type": "boolean"
                 }
               },
+              "additionalProperties": false,
               "required": ["name", "value"]
             }
           },
@@ -788,7 +819,8 @@
           "bubbleStop": {
             "type": "boolean"
           }
-        }
+        },
+        "additionalProperties": false
       }
     },
     {
@@ -830,6 +862,7 @@
             }
           }
         },
+        "additionalProperties": false,
         "required": ["browsers"]
       }
     },
@@ -859,6 +892,7 @@
             "type": "number"
           }
         },
+        "additionalProperties": false,
         "required": ["dataElement", "operator", "amount"]
       }
     },
@@ -888,6 +922,7 @@
             "type": "number"
           }
         },
+        "additionalProperties": false,
         "required": ["dataElement", "operator", "quantity"]
       }
     },
@@ -913,6 +948,7 @@
             "type": "boolean"
           }
         },
+        "additionalProperties": false,
         "required": ["name", "value"]
       }
     },
@@ -929,7 +965,8 @@
           "acceptsCookies": {
             "type": "boolean"
           }
-        }
+        },
+        "additionalProperties": false
       }
     },
     {
@@ -947,6 +984,7 @@
             "minLength": 1
           }
         },
+        "additionalProperties": false,
         "required": ["script"]
       },
       "functionize": [
@@ -980,6 +1018,7 @@
             "type": "boolean"
           }
         },
+        "additionalProperties": false,
         "required": ["name", "value"]
       }
     },
@@ -1010,6 +1049,7 @@
             }
           }
         },
+        "additionalProperties": false,
         "required": ["deviceTypes"]
       }
     },
@@ -1030,6 +1070,7 @@
             }
           }
         },
+        "additionalProperties": false,
         "required": ["domains"]
       }
     },
@@ -1056,11 +1097,13 @@
                   "type": "boolean"
                 }
               },
+              "additionalProperties": false,
               "required": ["value"]
             },
             "minItems": 1
           }
         },
+        "additionalProperties": false,
         "required": ["hashes"]
       }
     },
@@ -1082,6 +1125,7 @@
             "type": "boolean"
           }
         },
+        "additionalProperties": false,
         "required": ["page"]
       }
     },
@@ -1100,6 +1144,7 @@
             "minLength": 1
           }
         },
+        "additionalProperties": false,
         "required": ["dataElement"]
       }
     },
@@ -1117,6 +1162,7 @@
             "type": "boolean"
           }
         },
+        "additionalProperties": false,
         "required": ["isNewVisitor"]
       }
     },
@@ -1148,6 +1194,7 @@
             }
           }
         },
+        "additionalProperties": false,
         "required": ["operatingSystems"]
       }
     },
@@ -1180,6 +1227,7 @@
             ]
           }
         },
+        "additionalProperties": false,
         "required": ["operator", "count", "duration"]
       }
     },
@@ -1206,11 +1254,13 @@
                   "type": "boolean"
                 }
               },
+              "additionalProperties": false,
               "required": ["value"]
             },
             "minItems": 1
           }
         },
+        "additionalProperties": false,
         "required": ["paths"]
       }
     },
@@ -1229,6 +1279,7 @@
             "minLength": 1
           }
         },
+        "additionalProperties": false,
         "required": ["dataElement"]
       }
     },
@@ -1250,6 +1301,7 @@
             ]
           }
         },
+        "additionalProperties": false,
         "required": ["protocol"]
       }
     },
@@ -1268,6 +1320,7 @@
             "minLength": 1
           }
         },
+        "additionalProperties": false,
         "required": ["dataElement"]
       }
     },
@@ -1304,6 +1357,7 @@
             "type": "number"
           }
         },
+        "additionalProperties": false,
         "required": ["widthOperator", "width", "heightOperator", "height"]
       }
     },
@@ -1329,6 +1383,7 @@
             "type": "number"
           }
         },
+        "additionalProperties": false,
         "required": ["operator", "count"]
       }
     },
@@ -1355,11 +1410,13 @@
                   "type": "boolean"
                 }
               },
+              "additionalProperties": false,
               "required": ["value"]
             },
             "minItems": 1
           }
         },
+        "additionalProperties": false,
         "required": ["subdomains"]
       }
     },
@@ -1385,6 +1442,7 @@
             "type": "number"
           }
         },
+        "additionalProperties": false,
         "required": ["operator", "minutes"]
       }
     },
@@ -1406,6 +1464,7 @@
             "type": "boolean"
           }
         },
+        "additionalProperties": false,
         "required": ["source"]
       }
     },
@@ -1431,6 +1490,7 @@
             "type": "boolean"
           }
         },
+        "additionalProperties": false,
         "required": ["name", "value"]
       }
     },
@@ -1456,6 +1516,7 @@
             "type": "boolean"
           }
         },
+        "additionalProperties": false,
         "required": ["name", "value"]
       }
     },
@@ -1492,6 +1553,7 @@
             "type": "number"
           }
         },
+        "additionalProperties": false,
         "required": ["widthOperator", "width", "heightOperator", "height"]
       }
     }
@@ -1511,6 +1573,7 @@
             "minLength": 1
           }
         },
+        "additionalProperties": false,
         "required": ["name"]
       }
     },
@@ -1528,6 +1591,7 @@
             "minLength": 1
           }
         },
+        "additionalProperties": false,
         "required": ["script"]
       },
       "functionize": [
@@ -1554,6 +1618,7 @@
             "minLength": 1
           }
         },
+        "additionalProperties": false,
         "required": ["elementSelector", "elementProperty"]
       }
     },
@@ -1571,6 +1636,7 @@
             "minLength": 1
           }
         },
+        "additionalProperties": false,
         "required": ["name"]
       }
     },
@@ -1588,6 +1654,7 @@
             "minLength": 1
           }
         },
+        "additionalProperties": false,
         "required": ["path"]
       }
     }
