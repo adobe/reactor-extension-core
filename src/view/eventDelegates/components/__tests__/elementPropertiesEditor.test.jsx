@@ -1,3 +1,6 @@
+import ReactDom from 'react-dom';
+import TestUtils from 'react-addons-test-utils';
+
 import extensionViewReduxForm from '../../../extensionViewReduxForm';
 import ElementPropertiesEditor, { formConfig } from '../elementPropertiesEditor';
 import { getFormInstance, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
@@ -114,5 +117,24 @@ describe('elementPropertiesEditor', () => {
 
     expect(elementPropertyEditor0.props.fields.name.value).toBe('some prop2');
     expect(elementPropertyEditor0.props.fields.value.value).toBe('some value2');
+  });
+
+  it('creates a new row when the enter key is pressed', () => {
+    extensionBridge.init();
+
+    const firstEditorRow = instance.refs.elementPropertyEditor0;
+    const input = ReactDom.findDOMNode(firstEditorRow.refs.nameField);
+    TestUtils.Simulate.keyPress(input, {key: "Enter", keyCode: 13, which: 13});
+
+    const {
+      elementPropertyEditor0,
+      elementPropertyEditor1,
+      elementPropertyEditor2
+    } = instance.refs;
+
+    // First row is visible by default.
+    expect(elementPropertyEditor0).toBeDefined();
+    expect(elementPropertyEditor1).toBeDefined();
+    expect(elementPropertyEditor2).toBeUndefined();
   });
 });
