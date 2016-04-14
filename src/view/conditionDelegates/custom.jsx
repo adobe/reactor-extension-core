@@ -1,8 +1,14 @@
 import React from 'react';
 import Coral from '@coralui/coralui-support-reduxform';
 import { ErrorTip } from '@reactor/react-components';
+import customScriptWrapping from '../utils/customScriptWrapping';
 
 import extensionViewReduxForm from '../extensionViewReduxForm';
+
+const WRAPPING_FUNCTION_PARAMS = [
+  'event',
+  'target'
+];
 
 class Custom extends React.Component {
   onOpenEditor = () => {
@@ -34,6 +40,29 @@ class Custom extends React.Component {
 
 const formConfig = {
   fields: ['script'],
+  settingsToFormValues(values, options) {
+    values = {
+      ...values
+    };
+
+    if (options.settings.script) {
+      values.script = customScriptWrapping.unwrap(
+        options.settings.script, WRAPPING_FUNCTION_PARAMS);
+    }
+
+    return values;
+  },
+  formValuesToSettings(settings, values) {
+    settings = {
+      ...settings
+    };
+
+    if (values.script) {
+      settings.script = customScriptWrapping.wrap(values.script, WRAPPING_FUNCTION_PARAMS);
+    }
+
+    return settings;
+  },
   validate(errors, values) {
     errors = {
       ...errors

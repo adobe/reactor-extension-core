@@ -28,6 +28,7 @@
     "@reactor/react-components": "^1.1.0",
     "classnames": "^2.2.3",
     "css-loader": "^0.23.1",
+    "escape-string-regexp": "^1.0.5",
     "gulp-notify": "^2.2.0",
     "gulp-plumber": "^1.1.0",
     "history": "2.0.1",
