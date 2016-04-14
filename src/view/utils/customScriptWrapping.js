@@ -30,4 +30,4 @@ export default {
     const matches = str.match(regex);
     return matches ? matches[1] : null;
   }
-}
+};
