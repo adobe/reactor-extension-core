@@ -987,15 +987,9 @@
         "additionalProperties": false,
         "required": ["script"]
       },
-      "functionize": [
-        {
-          "path": "script",
-          "params": [
-            "event",
-            "target"
-          ]
-        }
-      ]
+      "transform": {
+        "script": "unquoted"
+      }
     },
     {
       "name": "data-element",
@@ -1594,11 +1588,9 @@
         "additionalProperties": false,
         "required": ["script"]
       },
-      "functionize": [
-        {
-          "path": "script"
-        }
-      ]
+      "transform": {
+        "script": "unquoted"
+      }
     },
     {
       "name": "dom-attribute",
