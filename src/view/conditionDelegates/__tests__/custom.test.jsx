@@ -13,7 +13,7 @@ describe('custom view', () => {
   it('opens code editor with script value when button is clicked and stores result', () => {
     extensionBridge.init({
       settings: {
-        script: 'function(event, target) { foo }'
+        script: 'foo'
       }
     });
 
@@ -31,7 +31,7 @@ describe('custom view', () => {
       .toHaveBeenCalledWith('foo', jasmine.any(Function));
     expect(extensionBridge.validate()).toBe(true);
     expect(extensionBridge.getSettings()).toEqual({
-      script: 'function(event, target) { bar }'
+      script: 'bar'
     });
 
     delete window.extensionBridge;
