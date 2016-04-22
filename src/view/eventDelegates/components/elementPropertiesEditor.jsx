@@ -1,15 +1,34 @@
 import React from 'react';
+import ReactDom from 'react-dom';
 import Coral from '@coralui/coralui-support-reduxform';
 import ElementPropertyEditor from './elementPropertyEditor';
 import createId from '../../utils/createId';
 
 export default class ElementPropertiesEditor extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   add = () => {
     this.props.fields.elementProperties.addField({
       id: createId(),
       name: '',
       value: ''
     });
+
+    // Focus the newly added field. We use setTimeout because at this moment, the new row is not
+    // yet available in the page.
+    setTimeout(() => {
+      const lastRowIndex = this.props.fields.elementProperties.length - 1;
+      const lastElementPropertyEditor = this.refs['elementPropertyEditor' + lastRowIndex];
+      ReactDom.findDOMNode(lastElementPropertyEditor.refs.nameField).focus();
+    });
+  };
+
+  handleKeyPress = event => {
+    if (event.key === 'Enter') {
+      this.add();
+    }
   };
 
   remove = index => {
@@ -28,6 +47,7 @@ export default class ElementPropertiesEditor extends React.Component {
             fields={elementProperty}
             remove={this.remove.bind(null, index)}
             removable={elementProperties.length > 1}
+            onKeyPress = {this.handleKeyPress}
             />;
         })}
         <Coral.Button ref="addButton" onClick={this.add}>Add</Coral.Button>

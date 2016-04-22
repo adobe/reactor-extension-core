@@ -31,6 +31,7 @@ export default class ElementPropertyEditor extends React.Component {
           <Coral.Textfield
             ref="nameField"
             placeholder="Property"
+            onKeyPress={this.props.onKeyPress}
             {...name}/>
         </ValidationWrapper>
         <span className="u-label u-gapLeft">=</span>
@@ -38,6 +39,7 @@ export default class ElementPropertyEditor extends React.Component {
           ref="valueField"
           className="u-gapRight"
           placeholder="Value"
+          onKeyPress={this.props.onKeyPress}
           {...value}/>
         <RegexToggle
           ref="regexToggle"
