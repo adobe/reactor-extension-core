@@ -23,7 +23,8 @@ class CartAmount extends React.Component {
               <span className="u-label">The cart amount identified by the data element</span>
               <Coral.Textfield ref="dataElementField" {...dataElement}/>
             </label>
-            <DataElementSelectorButton ref="dataElementButton" onClick={this.onOpenDataElementSelector}/>
+            <DataElementSelectorButton ref="dataElementButton"
+              onClick={this.onOpenDataElementSelector}/>
           </ValidationWrapper>
         </div>
         <div className="u-gapTop">

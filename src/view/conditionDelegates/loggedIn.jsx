@@ -21,7 +21,8 @@ class LoggedIn extends React.Component {
             Data element identifying whether the user is logged in
           </span>
           <Coral.Textfield ref="dataElementField" {...dataElement}/>
-          <DataElementSelectorButton ref="dataElementButton" onClick={this.onOpenDataElementSelector}/>
+          <DataElementSelectorButton ref="dataElementButton"
+            onClick={this.onOpenDataElementSelector}/>
         </label>
       </ValidationWrapper>
     );

@@ -21,7 +21,8 @@ class RegisteredUser extends React.Component {
             Data element identifying whether the user is registered
           </span>
           <Coral.Textfield ref="dataElementField" {...dataElement}/>
-          <DataElementSelectorButton ref="dataElementButton" onClick={this.onOpenDataElementSelector}/>
+          <DataElementSelectorButton ref="dataElementButton"
+            onClick={this.onOpenDataElementSelector}/>
         </label>
       </ValidationWrapper>
     );

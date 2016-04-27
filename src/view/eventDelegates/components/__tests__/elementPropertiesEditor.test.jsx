@@ -124,7 +124,7 @@ describe('elementPropertiesEditor', () => {
 
     const firstEditorRow = instance.refs.elementPropertyEditor0;
     const input = ReactDom.findDOMNode(firstEditorRow.refs.nameField);
-    TestUtils.Simulate.keyPress(input, {key: "Enter", keyCode: 13, which: 13});
+    TestUtils.Simulate.keyPress(input, {key: 'Enter', keyCode: 13, which: 13});
 
     const {
       elementPropertyEditor0,
