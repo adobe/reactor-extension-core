@@ -7,7 +7,6 @@ describe('data element view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    extensionBridge.openDataElementSelector = jasmine.createSpy();
     window.extensionBridge = extensionBridge;
     instance = getFormInstance(DataElement, extensionBridge);
   });
@@ -16,12 +15,17 @@ describe('data element view', () => {
     delete window.extensionBridge;
   });
 
-  it('opens the data element selector from data element field', () => {
-    const { nameField } = instance.refs;
+  it('opens the data element selector from data element button', () => {
+    const { nameField, nameButton } = instance.refs;
 
-    nameField.props.onOpenSelector();
+    spyOn(window.extensionBridge, 'openDataElementSelector').and.callFake(callback => {
+      callback('foo');
+    });
+
+    nameButton.props.onClick();
 
     expect(window.extensionBridge.openDataElementSelector).toHaveBeenCalled();
+    expect(nameField.props.value).toBe('foo');
   });
 
   it('sets form values from settings', () => {

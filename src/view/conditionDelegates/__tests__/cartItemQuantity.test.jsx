@@ -7,7 +7,6 @@ describe('cart item quantity view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    extensionBridge.openDataElementSelector = jasmine.createSpy();
     window.extensionBridge = extensionBridge;
     instance = getFormInstance(CartItemQuantity, extensionBridge);
   });
@@ -16,12 +15,17 @@ describe('cart item quantity view', () => {
     delete window.extensionBridge;
   });
 
-  it('opens the data element selector from data element field', () => {
-    const { dataElementField } = instance.refs;
+  it('opens the data element selector from data element button', () => {
+    const { dataElementField, dataElementButton } = instance.refs;
 
-    dataElementField.props.onOpenSelector();
+    spyOn(window.extensionBridge, 'openDataElementSelector').and.callFake(callback => {
+      callback('foo');
+    });
+
+    dataElementButton.props.onClick();
 
     expect(window.extensionBridge.openDataElementSelector).toHaveBeenCalled();
+    expect(dataElementField.props.value).toBe('foo');
   });
 
   it('sets operator to greater than by default', () => {

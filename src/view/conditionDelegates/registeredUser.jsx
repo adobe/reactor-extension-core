@@ -1,8 +1,13 @@
 import React from 'react';
+import Coral from '@coralui/coralui-support-reduxform';
 import extensionViewReduxForm from '../extensionViewReduxForm';
-import { ValidationWrapper, DataElementField } from '@reactor/react-components';
+import { ValidationWrapper, DataElementSelectorButton } from '@reactor/react-components';
 
 class RegisteredUser extends React.Component {
+  onOpenDataElementSelector = () => {
+    window.extensionBridge.openDataElementSelector(this.props.fields.dataElement.onChange);
+  };
+
   render() {
     const { dataElement } = this.props.fields;
 
@@ -15,9 +20,9 @@ class RegisteredUser extends React.Component {
           <span className="u-label">
             Data element identifying whether the user is registered
           </span>
-          <DataElementField ref="dataElementField" {...dataElement}
-            nameOnly="true"
-            onOpenSelector={window.extensionBridge.openDataElementSelector}/>
+          <Coral.Textfield ref="dataElementField" {...dataElement}/>
+          <DataElementSelectorButton ref="dataElementButton"
+            onClick={this.onOpenDataElementSelector}/>
         </label>
       </ValidationWrapper>
     );
