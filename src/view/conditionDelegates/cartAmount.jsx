@@ -1,11 +1,15 @@
 import React from 'react';
 import Coral from '@coralui/coralui-support-reduxform';
 import extensionViewReduxForm from '../extensionViewReduxForm';
-import { ValidationWrapper, DataElementField } from '@reactor/react-components';
+import { ValidationWrapper, DataElementSelectorButton } from '@reactor/react-components';
 import ComparisonOperatorField from './components/comparisonOperatorField';
 import { isNumber } from '../utils/validators';
 
 class CartAmount extends React.Component {
+  onOpenDataElementSelector = () => {
+    window.extensionBridge.openDataElementSelector(this.props.fields.dataElement.onChange);
+  };
+
   render() {
     const { dataElement, operator, amount } = this.props.fields;
 
@@ -17,10 +21,9 @@ class CartAmount extends React.Component {
             error={dataElement.touched && dataElement.error}>
             <label>
               <span className="u-label">The cart amount identified by the data element</span>
-              <DataElementField ref="dataElementField" {...dataElement}
-                nameOnly="true"
-                onOpenSelector={window.extensionBridge.openDataElementSelector}/>
+              <Coral.Textfield ref="dataElementField" {...dataElement}/>
             </label>
+            <DataElementSelectorButton ref="dataElementButton" onClick={this.onOpenDataElementSelector}/>
           </ValidationWrapper>
         </div>
         <div className="u-gapTop">
@@ -63,8 +66,8 @@ const formConfig = {
       ...errors
     };
 
-    if (!values.dataElement) {
-      errors.dataElement = 'Please specify a data element.';
+    if ((values.dataElement && values.dataElement.indexOf('%') !== -1) || !values.dataElement) {
+      errors.dataElement = 'Please specify a data element name (without % characters)';
     }
 
     if (!isNumber(values.amount)) {

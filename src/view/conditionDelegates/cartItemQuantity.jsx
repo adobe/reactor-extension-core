@@ -1,11 +1,15 @@
 import React from 'react';
 import Coral from '@coralui/coralui-support-reduxform';
 import extensionViewReduxForm from '../extensionViewReduxForm';
-import { ValidationWrapper, DataElementField } from '@reactor/react-components';
+import { ValidationWrapper, DataElementSelectorButton } from '@reactor/react-components';
 import ComparisonOperatorField from './components/comparisonOperatorField';
 import { isNumber } from '../utils/validators';
 
 class CartItemQuantity extends React.Component {
+  onOpenDataElementSelector = () => {
+    window.extensionBridge.openDataElementSelector(this.props.fields.dataElement.onChange);
+  };
+
   render() {
     const { dataElement, operator, quantity } = this.props.fields;
 
@@ -17,9 +21,8 @@ class CartItemQuantity extends React.Component {
             error={dataElement.touched && dataElement.error}>
             <label>
               <span className="u-label">The cart item quantity identified by the data element</span>
-              <DataElementField ref="dataElementField" {...dataElement}
-                nameOnly="true"
-                onOpenSelector={window.extensionBridge.openDataElementSelector}/>
+              <Coral.Textfield ref="dataElementField" {...dataElement}/>
+              <DataElementSelectorButton ref="dataElementButton" onClick={this.onOpenDataElementSelector}/>
             </label>
           </ValidationWrapper>
         </div>
