@@ -1659,6 +1659,15 @@
       }
     }
   ],
+  "actions": [
+    {
+      "name": "third-party-script",
+      "displayName": "Third-party Script",
+      "libPath": "actions/thirdPartyScript.js",
+      "viewPath": "index.html#/actions/thirdPartyScript",
+      "schema": {}
+    }
+  ],
   "helpers": [
     {
       "name": "compare-numbers",
