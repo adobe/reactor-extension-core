@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import bridgeAdapter from './bridgeAdapter';
 import { applyMiddleware, createStore, compose } from 'redux';
 import { Provider } from 'react-redux';
-import reducer from './actions/reducer';
+import reducer from './reduxActions/reducer';
 import createRouter from './createRouter';
 
 const finalCreateStore = compose(

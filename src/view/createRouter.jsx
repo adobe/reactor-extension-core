@@ -66,6 +66,9 @@ import DOMDataElement from './dataElementDelegates/dom';
 import QueryParameterDataElement from './dataElementDelegates/queryParameter';
 import VariableDataElement from './dataElementDelegates/variable';
 
+// Actions
+import ThirdPartyScriptAction from './actions/thirdPartyScript';
+
 export default (setFormConfigForCurrentRoute) => {
   const onEnter = nextState => {
     setFormConfigForCurrentRoute(nextState.routes[0].component.formConfig);
@@ -133,6 +136,8 @@ export default (setFormConfigForCurrentRoute) => {
       <Route path="/dataElements/dom" component={DOMDataElement} onEnter={onEnter}/>
       <Route path="/dataElements/queryParameter" component={QueryParameterDataElement} onEnter={onEnter}/>
       <Route path="/dataElements/variable" component={VariableDataElement} onEnter={onEnter}/>
+
+      <Route path="/actions/thirdPartyScript" component={ThirdPartyScriptAction} onEnter={onEnter}/>
     </Router>
   );
 };
