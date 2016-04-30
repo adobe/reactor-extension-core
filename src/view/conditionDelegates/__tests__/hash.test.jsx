@@ -36,7 +36,7 @@ describe('hash view', () => {
 
     expect(hashField0.props.value).toBe('foo');
     expect(hashField1.props.value).toBe('bar');
-    expect(hashRegexToggle0.props.valueIsRegex).toBeUndefined();
+    expect(hashRegexToggle0.props.valueIsRegex).toBe('');
     expect(hashRegexToggle1.props.valueIsRegex).toBe(true);
   });
 

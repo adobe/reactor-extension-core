@@ -21,12 +21,12 @@ export default class ElementPropertiesEditor extends React.Component {
     setTimeout(() => {
       const lastRowIndex = this.props.fields.elementProperties.length - 1;
       const lastElementPropertyEditor = this.refs['elementPropertyEditor' + lastRowIndex];
-      ReactDom.findDOMNode(lastElementPropertyEditor.refs.nameField).focus();
+      ReactDom.findDOMNode(lastElementPropertyEditor.refs.nameField).firstChild.focus();
     });
   };
 
   handleKeyPress = event => {
-    if (event.key === 'Enter') {
+    if (event.keyCode === 13 && !event.shiftKey && !event.ctrlKey && !event.altKey) {
       this.add();
     }
   };
@@ -47,7 +47,7 @@ export default class ElementPropertiesEditor extends React.Component {
             fields={elementProperty}
             remove={this.remove.bind(null, index)}
             removable={elementProperties.length > 1}
-            onKeyPress = {this.handleKeyPress}
+            onKeyPress={this.handleKeyPress}
             />;
         })}
         <Coral.Button ref="addButton" onClick={this.add}>Add</Coral.Button>

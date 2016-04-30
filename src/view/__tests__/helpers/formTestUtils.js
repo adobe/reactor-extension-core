@@ -43,6 +43,6 @@ export const getFormInstance = (FormComponent, extensionBridge) => {
   // Have to do this mess in order to get the wrapped component because redux-form doesn't
   // expose any method for us to do so. https://github.com/erikras/redux-form/issues/202
   return TestUtils.findAllInRenderedTree(providerInstance, function(component) {
-    return component.refs && component.refs.extensionViewWrappedComponent;
+    return component && component.refs && component.refs.extensionViewWrappedComponent;
   })[0].refs.extensionViewWrappedComponent;
 };

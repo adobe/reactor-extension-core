@@ -36,7 +36,7 @@ describe('path view', () => {
 
     expect(pathField0.props.value).toBe('foo');
     expect(pathField1.props.value).toBe('bar');
-    expect(pathRegexToggle0.props.valueIsRegex).toBeUndefined();
+    expect(pathRegexToggle0.props.valueIsRegex).toBe('');
     expect(pathRegexToggle1.props.valueIsRegex).toBe(true);
   });
 

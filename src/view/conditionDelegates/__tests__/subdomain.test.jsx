@@ -36,7 +36,7 @@ describe('subdomain view', () => {
 
     expect(subdomainField0.props.value).toBe('foo');
     expect(subdomainField1.props.value).toBe('bar');
-    expect(subdomainRegexToggle0.props.valueIsRegex).toBeUndefined();
+    expect(subdomainRegexToggle0.props.valueIsRegex).toBe('');
     expect(subdomainRegexToggle1.props.valueIsRegex).toBe(true);
   });
 
