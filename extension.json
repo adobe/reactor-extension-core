@@ -1667,47 +1667,5 @@
       "viewPath": "index.html#/actions/thirdPartyScript",
       "schema": {}
     }
-  ],
-  "helpers": [
-    {
-      "name": "compare-numbers",
-      "libPath": "helpers/compareNumbers.js"
-    },
-    {
-      "name": "create-bubbly",
-      "libPath": "helpers/createBubbly.js"
-    },
-    {
-      "name": "matches-properties",
-      "libPath": "helpers/matchesProperties.js"
-    },
-    {
-      "name": "visibility-api",
-      "libPath": "helpers/visibilityApi.js"
-    },
-    {
-      "name": "visitor-tracking",
-      "libPath": "helpers/visitorTracking.js"
-    },
-    {
-      "name": "timer",
-      "libPath": "helpers/timer.js"
-    },
-    {
-      "name": "text-match",
-      "libPath": "helpers/textMatch.js"
-    },
-    {
-      "name": "matches-selector",
-      "libPath": "helpers/matchesSelector.js"
-    },
-    {
-      "name": "get-object-property",
-      "libPath": "helpers/getObjectProperty.js"
-    },
-    {
-      "name": "live-query-selector",
-      "libPath": "helpers/liveQuerySelector.js"
-    }
   ]
 }

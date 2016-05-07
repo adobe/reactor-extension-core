@@ -1,7 +1,6 @@
 'use strict';
 
-var extension = require('get-extension')('dtm');
-var textMatch = extension.getHelper('text-match');
+var textMatch = require('./textMatch.js');
 
 var getElementProperty = function(element, property) {
   if (property === '@text' || property === 'innerText') {

@@ -1,7 +1,6 @@
 'use strict';
 
-var extension = require('get-extension')('dtm');
-var textMatch = extension.getHelper('text-match');
+var textMatch = require('../helpers/textMatch.js');
 
 /**
  * Hash condition. Determines if the actual hash (URL fragment identifier) matches at least one

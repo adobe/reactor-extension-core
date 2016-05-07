@@ -1,8 +1,7 @@
 'use strict';
 
 var document = require('document');
-var extension = require('get-extension')('dtm');
-var textMatch = extension.getHelper('text-match');
+var textMatch = require('../helpers/textMatch.js');
 
 /**
  * Subdomain condition. Determines if the actual subdomain matches at least one acceptable

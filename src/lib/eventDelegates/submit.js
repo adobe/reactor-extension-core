@@ -1,6 +1,5 @@
 'use strict';
-var extension = require('get-extension')('dtm');
-var bubbly = extension.getHelper('create-bubbly')();
+var bubbly = require('../helpers/createBubbly.js')();
 
 document.addEventListener('submit', bubbly.evaluateEvent, true);
 

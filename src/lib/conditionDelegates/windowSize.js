@@ -1,8 +1,7 @@
 'use strict';
 
 var document = require('document');
-var extension = require('get-extension')('dtm');
-var compareNumbers = extension.getHelper('compare-numbers');
+var compareNumbers = require('../helpers/compareNumbers.js');
 
 /**
  * Window size condition. Determines if the current window size matches constraints.

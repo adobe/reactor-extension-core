@@ -3,8 +3,7 @@
 var POLL_INTERVAL = 3000;
 
 var dataStash = require('create-data-stash')('elementExists');
-var extension = require('get-extension')('dtm');
-var matchesProperties = extension.getHelper('matches-properties');
+var matchesProperties = require('../helpers/matchesProperties.js');
 
 var listenersBySelector = {};
 
