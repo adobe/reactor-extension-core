@@ -70,5 +70,13 @@ export const formConfig = {
     'bubbleFireIfParent',
     'bubbleFireIfChildFired',
     'bubbleStop'
-  ]
+  ],
+  settingsToFormValues(values, options) {
+    return {
+      ...values,
+      bubbleFireIfParent: options.settings.bubbleFireIfParent !== false,
+      bubbleFireIfChildFired: options.settings.bubbleFireIfChildFired,
+      bubbleStop: options.settings.bubbleStop
+    };
+  }
 };

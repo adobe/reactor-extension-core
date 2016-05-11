@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Coral from '@coralui/coralui-support-reduxform';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import reduceReducers from 'reduce-reducers';
 import DelayType, { formConfig as delayTypeFormConfig } from './components/delayType';
@@ -24,7 +23,8 @@ const formConfig = {
     .concat(specificElementsFormConfig.fields, advancedEventOptionsFormConfig.fields),
   settingsToFormValues: reduceReducers(
     specificElementsFormConfig.settingsToFormValues,
-    delayTypeFormConfig.settingsToFormValues
+    delayTypeFormConfig.settingsToFormValues,
+    advancedEventOptionsFormConfig.settingsToFormValues
   ),
   formValuesToSettings: reduceReducers(
     specificElementsFormConfig.formValuesToSettings,
