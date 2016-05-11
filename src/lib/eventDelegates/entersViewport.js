@@ -181,7 +181,7 @@ var handleElementEnterViewport = function(element, delay, listener) {
       inviewDelay: delay
     };
 
-    listener.trigger(event, element);
+    listener.trigger(element, event);
   };
 
   if (delay) {

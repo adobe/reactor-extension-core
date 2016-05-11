@@ -5,9 +5,9 @@ describe('locationchange event type', function() {
   var origHref = window.location.href;
 
   var assertTriggerCall = function(call) {
-    expect(call.args[0].type).toBe('locationchange');
-    expect(call.args[0].target).toBe(document);
-    expect(call.args[1]).toBe(document);
+    expect(call.args[0]).toBe(document);
+    expect(call.args[1].type).toBe('locationchange');
+    expect(call.args[1].target).toBe(document);
   };
 
   beforeAll(function() {

@@ -22,7 +22,7 @@ var watchForTabFocus = once(function() {
       };
 
       triggers.forEach(function(trigger) {
-        trigger(pseudoEvent, document.location);
+        trigger(document.location, pseudoEvent);
       });
     }
   }, true);

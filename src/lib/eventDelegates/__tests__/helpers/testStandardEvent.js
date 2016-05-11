@@ -4,9 +4,9 @@ var outerElement;
 var innerElement;
 
 var assertTriggerCall = function(options) {
-  expect(options.call.args[0].type).toBe(options.type);
-  expect(options.call.args[0].target).toBe(options.target);
-  expect(options.call.args[1]).toBe(options.relatedElement);
+  expect(options.call.args[0]).toBe(options.relatedElement);
+  expect(options.call.args[1].type).toBe(options.type);
+  expect(options.call.args[1].target).toBe(options.target);
 };
 
 module.exports = function(delegate, type) {

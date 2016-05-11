@@ -23,7 +23,7 @@ var getPseudoEvent = function(target, timeOnPage) {
 
 var onMarkerPassed = function(timeOnPage) {
   triggers[timeOnPage].forEach(function(trigger) {
-    trigger(getPseudoEvent(document, timeOnPage / 1000));
+    trigger(null, getPseudoEvent(document, timeOnPage / 1000));
   });
 };
 

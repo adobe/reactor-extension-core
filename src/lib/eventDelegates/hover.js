@@ -88,12 +88,12 @@ module.exports = function(settings, trigger) {
   var delay = settings.delay || 0;
 
   var pseudoEventType = getPseudoEventType(delay);
-  bubbly.addListener(settings, function(event, relatedElement) {
+  bubbly.addListener(settings, function(relatedElement, event) {
     // Bubbling for this event is dependent upon the delay configured for rules.
     // An event can "bubble up" to other rules with the same delay but not to rules with
     // different delays. See the tests for how this plays out.
     if (event.type === pseudoEventType) {
-      trigger(event, relatedElement);
+      trigger(relatedElement, event);
     } else {
       return false;
     }

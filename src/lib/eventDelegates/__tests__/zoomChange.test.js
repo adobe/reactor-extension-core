@@ -1,11 +1,11 @@
 'use strict';
 
 var assertTriggerCall = function(options) {
-  expect(options.call.args[0].type).toBe('zoomchange');
-  expect(options.call.args[0].target).toBe(document);
-  expect(options.call.args[0].method).toBe(options.method);
-  expect(options.call.args[0].zoom).toBe(options.zoom);
-  expect(options.call.args[1]).toBe(document);
+  expect(options.call.args[0]).toBe(document);
+  expect(options.call.args[1].type).toBe('zoomchange');
+  expect(options.call.args[1].target).toBe(document);
+  expect(options.call.args[1].method).toBe(options.method);
+  expect(options.call.args[1].zoom).toBe(options.zoom);
 };
 
 describe('zoomchange event type', function() {

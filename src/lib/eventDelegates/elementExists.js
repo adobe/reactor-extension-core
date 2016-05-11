@@ -23,10 +23,10 @@ setInterval(function() {
         for (var k = 0; k < listeners.length; k++) {
           var listener = listeners[k];
           if (matchesProperties(element, listener.settings.elementProperties)) {
-            listener.trigger({
+            listener.trigger(element, {
               type: 'elementexists',
               target: element
-            }, element);
+            });
             listeners.splice(k, 1);
             k--;
           }

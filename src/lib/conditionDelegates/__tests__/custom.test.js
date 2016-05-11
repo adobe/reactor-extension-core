@@ -18,7 +18,7 @@ describe('custom condition delegate', function() {
     var relatedElement = {};
 
     spyOn(settings, 'script').and.callThrough();
-    conditionDelegate(settings, event, relatedElement);
+    conditionDelegate(settings, relatedElement, event);
 
     expect(settings.script.calls.first()).toEqual({
       object: relatedElement,

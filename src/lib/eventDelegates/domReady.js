@@ -13,7 +13,7 @@ var handleDOMContentLoaded = function() {
       target: document.location
     };
 
-    trigger(pseudoEvent, document.location);
+    trigger(document.location, pseudoEvent);
   });
 };
 

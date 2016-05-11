@@ -65,7 +65,7 @@ document.addEventListener('click', bubbly.evaluateEvent, true);
  * @param {ruleTrigger} trigger The trigger callback.
  */
 module.exports = function(settings, trigger) {
-  bubbly.addListener(settings, function(event, relatedElement) {
+  bubbly.addListener(settings, function(relatedElement, event) {
     if (settings.delayLinkActivation) {
       var eventDataStash = dataStash(event);
       if (!eventDataStash.evaluatedForLinkDelay) {
@@ -79,7 +79,7 @@ module.exports = function(settings, trigger) {
       }
     }
 
-    trigger.call(this, event, relatedElement);
+    trigger.call(this, relatedElement, event);
   });
 };
 

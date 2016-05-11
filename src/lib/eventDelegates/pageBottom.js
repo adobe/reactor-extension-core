@@ -16,7 +16,7 @@ pageBottom.then(function() {
   };
 
   triggers.forEach(function(trigger) {
-    trigger(pseudoEvent, document.location);
+    trigger(document.location, pseudoEvent);
   });
 });
 

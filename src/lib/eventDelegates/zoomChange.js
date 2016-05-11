@@ -11,7 +11,7 @@ var getCurrentZoom = function() {
 
 var callTriggers = function(event) {
   triggers.forEach(function(trigger) {
-    trigger(event, document);
+    trigger(document, event);
   });
 };
 

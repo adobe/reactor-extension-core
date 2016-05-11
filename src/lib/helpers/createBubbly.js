@@ -107,7 +107,7 @@ module.exports = function() {
           }
 
           // The callback should return false if it didn't end up triggering a rule.
-          var ruleTriggered = listener.callback(event, node) !== false;
+          var ruleTriggered = listener.callback(node, event) !== false;
 
           if (ruleTriggered) {
             nodeTriggeredRule = true;
