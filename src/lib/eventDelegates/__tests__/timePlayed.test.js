@@ -26,9 +26,9 @@ describe('timePlayed event type', function() {
 
   var assertTriggerCall = function(options) {
     var unitPrefix = options.unit === 'second' ? 's' : '%';
-    expect(options.call.args[0].type).toBe('videoplayed(' + options.amount + unitPrefix + ')');
-    expect(options.call.args[0].target).toBe(options.target);
-    expect(options.call.args[1]).toBe(options.relatedElement);
+    expect(options.call.args[0]).toBe(options.relatedElement);
+    expect(options.call.args[1].type).toBe('videoplayed(' + options.amount + unitPrefix + ')');
+    expect(options.call.args[1].target).toBe(options.target);
   };
 
   beforeAll(function() {

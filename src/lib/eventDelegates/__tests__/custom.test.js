@@ -3,12 +3,6 @@
 var outerElement;
 var innerElement;
 
-var assertTriggerCall = function(options) {
-  expect(options.call.args[0].type).toBe(options.type);
-  expect(options.call.args[0].target).toBe(options.target);
-  expect(options.call.args[1]).toBe(options.relatedElement);
-};
-
 var triggerCustomEvent = function(element, type) {
   var event = document.createEvent('Event');
   event.initEvent(type, true, true);
@@ -53,7 +47,7 @@ describe('custom event type', function() {
 
     expect(trigger.calls.count()).toBe(1);
     var call = trigger.calls.mostRecent();
-    expect(call.args[0]).toBe(event);
-    expect(call.args[1]).toBe(outerElement);
+    expect(call.args[0]).toBe(outerElement);
+    expect(call.args[1]).toBe(event);
   });
 });

@@ -30,10 +30,10 @@ describe('entersViewport event type', function() {
   };
 
   var assertTriggerCall = function(options) {
-    expect(options.call.args[0].type).toBe('inview');
-    expect(options.call.args[0].target).toBe(options.target);
-    expect(options.call.args[0].inviewDelay).toBe(options.delay);
-    expect(options.call.args[1]).toBe(options.relatedElement);
+    expect(options.call.args[0]).toBe(options.relatedElement);
+    expect(options.call.args[1].type).toBe('inview');
+    expect(options.call.args[1].target).toBe(options.target);
+    expect(options.call.args[1].inviewDelay).toBe(options.delay);
   };
 
   beforeAll(function() {

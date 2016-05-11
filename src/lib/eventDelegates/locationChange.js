@@ -35,7 +35,7 @@ var callTriggersIfURIChanged = debounce(function() {
     };
 
     triggers.forEach(function(trigger) {
-      trigger(pseudoEvent, document);
+      trigger(document, pseudoEvent);
     });
 
     lastURI = uri;

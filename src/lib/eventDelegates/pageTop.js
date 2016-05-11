@@ -12,5 +12,5 @@ var pseudoEvent = {
  * @param {ruleTrigger} trigger The trigger callback.
  */
 module.exports = function(settings, trigger) {
-  trigger(pseudoEvent, document.location);
+  trigger(document.location, pseudoEvent);
 };

@@ -11,7 +11,7 @@ window.addEventListener('orientationchange', function(event) {
     event.orientation = window.orientation === 0 ? 'portrait' : 'landscape';
 
     triggers.forEach(function(trigger) {
-      trigger(event, window);
+      trigger(window, event);
     });
   }
 });
