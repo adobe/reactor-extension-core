@@ -1,7 +1,7 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-reduxform';
 import ElementFilter, { formConfig as elementFilterFormConfig } from './elementFilter';
 import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './advancedEventOptions';
+import reduceReducers from 'reduce-reducers';
 import extensionViewReduxForm from '../../extensionViewReduxForm';
 
 class StandardEvent extends React.Component {
@@ -17,7 +17,10 @@ class StandardEvent extends React.Component {
 
 const formConfig = {
   fields: elementFilterFormConfig.fields.concat(advancedEventOptionsFormConfig.fields),
-  settingsToFormValues: elementFilterFormConfig.settingsToFormValues,
+  settingsToFormValues: reduceReducers(
+    elementFilterFormConfig.settingsToFormValues,
+    advancedEventOptionsFormConfig.settingsToFormValues
+  ),
   formValuesToSettings: elementFilterFormConfig.formValuesToSettings,
   validate: elementFilterFormConfig.validate
 };

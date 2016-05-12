@@ -40,6 +40,18 @@ describe('advancedEventOptions', () => {
     expect(bubbleStopCheckbox.props.checked).toBe(true);
   });
 
+  it('has bubbleFireIfParent set to true by default', () => {
+    extensionBridge.init({
+      settings: {}
+    });
+
+    const {
+      bubbleFireIfParentCheckbox
+    } = instance.refs;
+
+    expect(bubbleFireIfParentCheckbox.props.checked).toBe(true);
+  });
+
   it('sets settings from form values', () => {
     extensionBridge.init();
 

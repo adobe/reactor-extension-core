@@ -3,6 +3,7 @@ import Coral from '@coralui/coralui-support-reduxform';
 import ElementFilter, { formConfig as elementFilterFormConfig } from './components/elementFilter';
 import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
 import extensionViewReduxForm from '../extensionViewReduxForm';
+import reduceReducers from 'reduce-reducers';
 
 class Click extends React.Component {
   render() {
@@ -27,7 +28,10 @@ const formConfig = {
   fields: [
     'delayLinkActivation'
   ].concat(elementFilterFormConfig.fields, advancedEventOptionsFormConfig.fields),
-  settingsToFormValues: elementFilterFormConfig.settingsToFormValues,
+  settingsToFormValues: reduceReducers(
+    elementFilterFormConfig.settingsToFormValues,
+    advancedEventOptionsFormConfig.settingsToFormValues
+  ),
   formValuesToSettings: elementFilterFormConfig.formValuesToSettings,
   validate: elementFilterFormConfig.validate
 };
