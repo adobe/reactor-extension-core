@@ -46,7 +46,6 @@ export default class ElementPropertiesEditor extends React.Component {
             key={elementProperty.id.value}
             fields={elementProperty}
             remove={this.remove.bind(null, index)}
-            removable={elementProperties.length > 1}
             onKeyPress={this.handleKeyPress}
             />;
         })}

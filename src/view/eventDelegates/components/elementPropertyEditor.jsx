@@ -8,21 +8,8 @@ export default class ElementPropertyEditor extends React.Component {
     this.props.remove();
   };
   render() {
-    const { removable } = this.props;
     const { name, value, valueIsRegex } = this.props.fields;
 
-    var removeButton;
-    if (removable) {
-      removeButton = (
-        <Coral.Button
-          ref="removeButton"
-          className="u-gapBottom"
-          variant="quiet"
-          icon="close"
-          iconsize="S"
-          onClick={this.remove}/>
-      );
-    }
     return (
       <div className="u-gapBottom">
         <ValidationWrapper
@@ -47,7 +34,13 @@ export default class ElementPropertyEditor extends React.Component {
           valueIsRegex={valueIsRegex.value}
           onValueChange={value.onChange}
           onValueIsRegexChange={valueIsRegex.onChange}/>
-        {removeButton}
+        <Coral.Button
+          ref="removeButton"
+          className="u-gapBottom"
+          variant="quiet"
+          icon="close"
+          iconsize="S"
+          onClick={this.remove}/>
       </div>
     );
   }
