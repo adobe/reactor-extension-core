@@ -11,11 +11,11 @@ describe('locationchange event type', function() {
   };
 
   beforeAll(function() {
-    var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
+
     var delegateInjector = require('inject!../locationChange');
     delegate = delegateInjector({
-      debounce: publicRequire('debounce'),
-      once: publicRequire('once')
+      debounce: require('@reactor/turbine/src/public/debounce'),
+      once: require('@reactor/turbine/src/public/once')
     });
   });
 

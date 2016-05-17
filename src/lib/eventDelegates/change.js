@@ -1,6 +1,6 @@
 'use strict';
 var bubbly = require('../helpers/createBubbly.js')();
-var textMatch = require('../helpers/textMatch.js');;
+var textMatch = require('../helpers/textMatch.js');
 
 document.addEventListener('change', bubbly.evaluateEvent, true);
 

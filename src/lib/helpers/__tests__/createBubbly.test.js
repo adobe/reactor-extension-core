@@ -3,10 +3,8 @@
 
 describe('createBubbly', function() {
   var createBubblyInjector = require('inject!../createBubbly');
-  var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
   var createBubbly = createBubblyInjector({
-    'create-data-stash': publicRequire('create-data-stash'),
-    'get-extension': publicRequire('get-extension')
+    'create-data-stash': require('@reactor/turbine/src/public/createDataStash')
   });
 
   var aElement;

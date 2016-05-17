@@ -33,11 +33,16 @@ describe('timePlayed event type', function() {
 
   beforeAll(function() {
     jasmine.clock().install();
-    var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
+
+    var createBubblyInjector = require('inject!../../helpers/createBubbly');
+    var createBubbly = createBubblyInjector({
+      'create-data-stash': require('@reactor/turbine/src/public/createDataStash')
+    });
+
     var delegateInjector = require('inject!../timePlayed');
     delegate = delegateInjector({
-      'get-extension': publicRequire('get-extension'),
-      'create-data-stash': publicRequire('create-data-stash')
+      'create-data-stash': require('@reactor/turbine/src/public/createDataStash'),
+      '../helpers/createBubbly.js': createBubbly
     });
   });
 

@@ -1,10 +1,6 @@
 'use strict';
 
-var conditionDelegateInjector = require('inject!../hash');
-var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
-var conditionDelegate = conditionDelegateInjector({
-  'get-extension': publicRequire('get-extension')
-});
+var conditionDelegate = require('../hash');
 
 describe('hash condition delegate', function() {
 

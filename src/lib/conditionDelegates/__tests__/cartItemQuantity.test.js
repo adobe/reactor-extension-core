@@ -1,7 +1,6 @@
 'use strict';
 
 var conditionDelegateInjector = require('inject!../cartItemQuantity');
-var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
 
 var getSettings = function(dataElement, operator, quantity) {
   return {
@@ -19,8 +18,7 @@ describe('cart item quantity condition delegate', function() {
       conditionDelegate = conditionDelegateInjector({
         'get-var': function() {
           return 5;
-        },
-        'get-extension': publicRequire('get-extension')
+        }
       });
     });
 
@@ -86,8 +84,7 @@ describe('cart item quantity condition delegate', function() {
         conditionDelegate = conditionDelegateInjector({
           'get-var': function() {
             return nonNumber.dataElementValue;
-          },
-          'get-extension': publicRequire('get-extension')
+          }
         });
       });
 

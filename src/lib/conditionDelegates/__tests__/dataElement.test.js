@@ -1,7 +1,6 @@
 'use strict';
 
 var conditionDelegateInjector = require('inject!../dataElement');
-var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
 
 describe('data element condition delegate', function() {
   var conditionDelegate;
@@ -12,8 +11,7 @@ describe('data element condition delegate', function() {
         if (variableName) {
           return 'foo';
         }
-      },
-      'get-extension': publicRequire('get-extension')
+      }
     });
   });
 

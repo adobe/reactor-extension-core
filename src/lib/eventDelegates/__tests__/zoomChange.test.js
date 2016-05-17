@@ -19,11 +19,10 @@ describe('zoomchange event type', function() {
     jasmine.clock().install();
     jasmine.clock().mockDate();
 
-    var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
     var delegateInjector = require('inject!../zoomChange');
     delegate = delegateInjector({
       window: mockWindow,
-      once: publicRequire('once')
+      once: require('@reactor/turbine/src/public/once')
     });
   });
 

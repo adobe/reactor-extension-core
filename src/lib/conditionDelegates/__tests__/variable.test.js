@@ -1,14 +1,12 @@
 'use strict';
 
 var conditionDelegateInjector = require('inject!../variable');
-var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
 
 describe('variable condition delegate', function() {
   var conditionDelegate;
 
   beforeAll(function() {
     conditionDelegate = conditionDelegateInjector({
-      'get-extension': publicRequire('get-extension'),
       window: {
         test: 'foo'
       }

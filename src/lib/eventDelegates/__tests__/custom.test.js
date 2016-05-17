@@ -11,10 +11,14 @@ var triggerCustomEvent = function(element, type) {
 };
 
 describe('custom event type', function() {
-  var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
+  var createBubblyInjector = require('inject!../../helpers/createBubbly');
+  var createBubbly = createBubblyInjector({
+    'create-data-stash': require('@reactor/turbine/src/public/createDataStash')
+  });
+
   var delegateInjector = require('inject!../custom');
   var delegate = delegateInjector({
-    'get-extension': publicRequire('get-extension')
+    '../helpers/createBubbly.js': createBubbly
   });
 
   beforeAll(function() {

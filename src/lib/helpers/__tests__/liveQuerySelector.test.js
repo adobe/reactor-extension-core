@@ -1,10 +1,9 @@
 'use strict';
 var POLL_INTERVAL = 3000;
 var liveQuerySelectorInjector = require('inject!../liveQuerySelector');
-var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
 var liveQuerySelector = liveQuerySelectorInjector({
-  once: publicRequire('once'),
-  'create-data-stash': publicRequire('create-data-stash')
+  'once': require('@reactor/turbine/src/public/once'),
+  'create-data-stash': require('@reactor/turbine/src/public/createDataStash')
 });
 
 describe('liveQuerySelector', function() {

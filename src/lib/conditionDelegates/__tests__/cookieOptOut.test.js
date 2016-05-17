@@ -4,7 +4,7 @@ var conditionDelegateInjector = require('inject!../cookieOptOut');
 
 var conditionDelegate;
 
-var cookie = require('@reactor/turbine/src/utils/cookie/cookie');
+var cookie = require('@reactor/turbine/src/public/cookie');
 
 var setCookie = function(name, value, days) {
   var options = {};
@@ -43,14 +43,10 @@ describe('cookie opt-out condition delegate', function() {
         } else {
           delete mockPropertySettings.euCookieName;
         }
-
-        var publicRequire = require('../../__tests__/helpers/stubPublicRequire')({
-          propertySettings: mockPropertySettings
-        });
-
+        
         conditionDelegate = conditionDelegateInjector({
-          'property-settings': publicRequire('property-settings'),
-          'cookie': publicRequire('cookie')
+          'property-settings': mockPropertySettings,
+          'cookie': cookie
         });
       });
 

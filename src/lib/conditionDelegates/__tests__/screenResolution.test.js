@@ -8,10 +8,8 @@ var mockWindow = {
 };
 
 var conditionDelegateInjector = require('inject!../screenResolution');
-var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
 var conditionDelegate = conditionDelegateInjector({
-  window: mockWindow,
-  'get-extension': publicRequire('get-extension')
+  window: mockWindow
 });
 
 var getSettings = function(width, widthOperator, height, heightOperator) {

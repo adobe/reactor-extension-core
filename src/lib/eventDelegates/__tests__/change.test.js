@@ -2,10 +2,15 @@
 
 describe('change event type', function() {
   var testStandardEvent = require('./helpers/testStandardEvent');
-  var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
+
+  var createBubblyInjector = require('inject!../../helpers/createBubbly');
+  var createBubbly = createBubblyInjector({
+    'create-data-stash': require('@reactor/turbine/src/public/createDataStash')
+  });
+
   var delegateInjector = require('inject!../change');
   var delegate = delegateInjector({
-    'get-extension': publicRequire('get-extension')
+    '../helpers/createBubbly.js': createBubbly
   });
 
   var assertTriggerCall = function(options) {

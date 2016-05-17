@@ -34,11 +34,23 @@ describe('hover event type', function() {
 
   beforeAll(function() {
     jasmine.clock().install();
-    var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
+
+    var createBubblyInjector = require('inject!../../helpers/createBubbly');
+    var createBubbly = createBubblyInjector({
+      'create-data-stash': require('@reactor/turbine/src/public/createDataStash')
+    });
+
+    var liveQuerySelectorInjector = require('inject!../../helpers/liveQuerySelector');
+    var liveQuerySelector = liveQuerySelectorInjector({
+      'create-data-stash': require('@reactor/turbine/src/public/createDataStash'),
+      'once': require('@reactor/turbine/src/public/once')
+    });
+
     var delegateInjector = require('inject!../hover');
     delegate = delegateInjector({
-      'get-extension': publicRequire('get-extension'),
-      'create-data-stash': publicRequire('create-data-stash')
+      'create-data-stash': require('@reactor/turbine/src/public/createDataStash'),
+      '../helpers/createBubbly.js': createBubbly,
+      '../helpers/liveQuerySelector.js': liveQuerySelector
     });
   });
 

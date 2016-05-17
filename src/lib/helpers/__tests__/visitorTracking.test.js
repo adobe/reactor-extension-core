@@ -1,7 +1,6 @@
 'use strict';
 
-var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
-var cookie = publicRequire('cookie');
+var cookie = require('@reactor/turbine/src/public/cookie');
 
 var getCookieString = function(cookieValues) {
   var cookieString = '';

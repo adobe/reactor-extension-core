@@ -1,13 +1,14 @@
 'use strict';
 
 describe('directCall event type', function() {
-  var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
   var delegateInjector = require('inject!../directCall');
   var delegate;
 
   beforeAll(function() {
     delegate = delegateInjector({
-      logger: publicRequire('logger')
+      'logger': {
+        log: function() {}
+      }
     });
   });
 

@@ -14,14 +14,8 @@ var mockDocument = {
   }
 };
 
-var publicRequire = require('../../__tests__/helpers/stubPublicRequire')({
-  helperStubs: {
-    'dtm/helpers/visibility-api': visibilityApi
-  }
-});
 var delegate = eventDelegateInjector({
-  'get-extension': publicRequire('get-extension'),
-  once: publicRequire('once'),
+  once: require('@reactor/turbine/src/public/once'),
   document: mockDocument
 });
 

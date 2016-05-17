@@ -2,15 +2,19 @@
 
 describe('click event type', function() {
   var testStandardEvent = require('./helpers/testStandardEvent');
-  var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
-  var delegateInjector = require('inject!../click');
   var mockWindow = {};
   var propertySettings = {};
 
+  var createBubblyInjector = require('inject!../../helpers/createBubbly');
+  var createBubbly = createBubblyInjector({
+    'create-data-stash': require('@reactor/turbine/src/public/createDataStash'),
+  });
+
+  var delegateInjector = require('inject!../click');
   var delegate = delegateInjector({
+    '../helpers/createBubbly.js': createBubbly,
     'property-settings': propertySettings,
-    'create-data-stash': publicRequire('create-data-stash'),
-    'get-extension': publicRequire('get-extension'),
+    'create-data-stash': require('@reactor/turbine/src/public/createDataStash'),
     window: mockWindow
   });
 
