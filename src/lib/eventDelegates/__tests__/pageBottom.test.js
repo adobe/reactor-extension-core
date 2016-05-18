@@ -1,5 +1,7 @@
 'use strict';
-var Promise = require('@reactor/turbine/src/public/Promise');
+
+var publicRequire = require('../../__tests__/helpers/publicRequire');
+var Promise = publicRequire('promise');
 
 var injector = require('inject!../pageBottom');
 

@@ -1,10 +1,11 @@
 'use strict';
 
+var publicRequire = require('../../__tests__/helpers/publicRequire');
 var conditionDelegateInjector = require('inject!../cookieOptOut');
 
 var conditionDelegate;
 
-var cookie = require('@reactor/turbine/src/public/cookie');
+var cookie = publicRequire('cookie');
 
 var setCookie = function(name, value, days) {
   var options = {};

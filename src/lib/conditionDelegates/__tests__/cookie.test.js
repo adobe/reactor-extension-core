@@ -1,8 +1,9 @@
 'use strict';
+var publicRequire = require('../../__tests__/helpers/publicRequire');
 
 var conditionDelegateInjector = require('inject!../cookie');
 var conditionDelegate = conditionDelegateInjector({
-  'cookie': require('@reactor/turbine/src/public/cookie'),
+  'cookie': publicRequire('cookie'),
   'document': {
     cookie: 'test=foo'
   }

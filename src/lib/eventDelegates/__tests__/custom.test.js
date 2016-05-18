@@ -3,6 +3,8 @@
 var outerElement;
 var innerElement;
 
+var publicRequire = require('../../__tests__/helpers/publicRequire');
+
 var triggerCustomEvent = function(element, type) {
   var event = document.createEvent('Event');
   event.initEvent(type, true, true);
@@ -13,7 +15,7 @@ var triggerCustomEvent = function(element, type) {
 describe('custom event type', function() {
   var createBubblyInjector = require('inject!../../helpers/createBubbly');
   var createBubbly = createBubblyInjector({
-    'create-data-stash': require('@reactor/turbine/src/public/createDataStash')
+    'create-data-stash': publicRequire('create-data-stash')
   });
 
   var delegateInjector = require('inject!../custom');

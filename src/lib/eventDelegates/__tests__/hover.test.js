@@ -1,5 +1,6 @@
 'use strict';
 var POLL_INTERVAL = 3000;
+var publicRequire = require('../../__tests__/helpers/publicRequire');
 
 describe('hover event type', function() {
   var delegate;
@@ -37,18 +38,18 @@ describe('hover event type', function() {
 
     var createBubblyInjector = require('inject!../../helpers/createBubbly');
     var createBubbly = createBubblyInjector({
-      'create-data-stash': require('@reactor/turbine/src/public/createDataStash')
+      'create-data-stash': publicRequire('create-data-stash')
     });
 
     var liveQuerySelectorInjector = require('inject!../../helpers/liveQuerySelector');
     var liveQuerySelector = liveQuerySelectorInjector({
-      'create-data-stash': require('@reactor/turbine/src/public/createDataStash'),
-      'once': require('@reactor/turbine/src/public/once')
+      'create-data-stash': publicRequire('create-data-stash'),
+      'once': publicRequire('once')
     });
 
     var delegateInjector = require('inject!../hover');
     delegate = delegateInjector({
-      'create-data-stash': require('@reactor/turbine/src/public/createDataStash'),
+      'create-data-stash': publicRequire('create-data-stash'),
       '../helpers/createBubbly.js': createBubbly,
       '../helpers/liveQuerySelector.js': liveQuerySelector
     });

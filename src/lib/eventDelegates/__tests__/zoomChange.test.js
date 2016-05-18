@@ -1,5 +1,7 @@
 'use strict';
 
+var publicRequire = require('../../__tests__/helpers/publicRequire');
+
 var assertTriggerCall = function(options) {
   expect(options.call.args[0]).toBe(document);
   expect(options.call.args[1].type).toBe('zoomchange');
@@ -22,7 +24,7 @@ describe('zoomchange event type', function() {
     var delegateInjector = require('inject!../zoomChange');
     delegate = delegateInjector({
       window: mockWindow,
-      once: require('@reactor/turbine/src/public/once')
+      once: publicRequire('once')
     });
   });
 

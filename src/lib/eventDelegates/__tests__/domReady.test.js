@@ -1,9 +1,11 @@
 'use strict';
 
+var publicRequire = require('../../__tests__/helpers/publicRequire');
+
 describe('domReady event type', function() {
   var delegateInjector = require('inject!../domReady');
   var delegate = delegateInjector({
-    once: require('@reactor/turbine/src/public/once')
+    once: publicRequire('once')
   });
 
   it('triggers rule when the dom ready event occurs', function() {

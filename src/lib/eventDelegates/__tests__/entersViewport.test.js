@@ -1,6 +1,7 @@
 'use strict';
 
 var POLL_INTERVAL = 3000;
+var publicRequire = require('../../__tests__/helpers/publicRequire');
 
 describe('entersViewport event type', function() {
   var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -41,7 +42,7 @@ describe('entersViewport event type', function() {
 
     var delegateInjector = require('inject!../entersViewport');
     delegate = delegateInjector({
-      'create-data-stash': require('@reactor/turbine/src/public/createDataStash')
+      'create-data-stash': publicRequire('create-data-stash')
     });
   });
 

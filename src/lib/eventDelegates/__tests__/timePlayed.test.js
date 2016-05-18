@@ -1,5 +1,7 @@
 'use strict';
 
+var publicRequire = require('../../__tests__/helpers/publicRequire');
+
 describe('timePlayed event type', function() {
   var delegate;
   var aElement;
@@ -36,12 +38,12 @@ describe('timePlayed event type', function() {
 
     var createBubblyInjector = require('inject!../../helpers/createBubbly');
     var createBubbly = createBubblyInjector({
-      'create-data-stash': require('@reactor/turbine/src/public/createDataStash')
+      'create-data-stash': publicRequire('create-data-stash')
     });
 
     var delegateInjector = require('inject!../timePlayed');
     delegate = delegateInjector({
-      'create-data-stash': require('@reactor/turbine/src/public/createDataStash'),
+      'create-data-stash': publicRequire('create-data-stash'),
       '../helpers/createBubbly.js': createBubbly
     });
   });

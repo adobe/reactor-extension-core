@@ -1,11 +1,13 @@
 'use strict';
 
+var publicRequire = require('../../__tests__/helpers/publicRequire');
+
 describe('onload event type', function() {
   it('triggers rule when the load event occurs', function() {
 
     var delegateInjector = require('inject!../onLoad');
     var delegate = delegateInjector({
-      once: require('@reactor/turbine/src/public/once')
+      once: publicRequire('once')
     });
 
     var trigger = jasmine.createSpy();

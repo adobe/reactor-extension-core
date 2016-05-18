@@ -1,6 +1,7 @@
 'use strict';
 
 var POLL_INTERVAL = 3000;
+var publicRequire = require('../../__tests__/helpers/publicRequire');
 
 describe('elementExists event type', function() {
   var delegate;
@@ -37,7 +38,7 @@ describe('elementExists event type', function() {
 
     var delegateInjector = require('inject!../elementExists');
     delegate = delegateInjector({
-      'create-data-stash': require('@reactor/turbine/src/public/createDataStash')
+      'create-data-stash': publicRequire('create-data-stash')
     });
   });
 
