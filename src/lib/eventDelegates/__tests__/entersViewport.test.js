@@ -1,6 +1,7 @@
 'use strict';
 
 var POLL_INTERVAL = 3000;
+var publicRequire = require('../../__tests__/helpers/publicRequire');
 
 describe('entersViewport event type', function() {
   var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -38,11 +39,10 @@ describe('entersViewport event type', function() {
 
   beforeAll(function() {
     jasmine.clock().install();
-    var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
+
     var delegateInjector = require('inject!../entersViewport');
     delegate = delegateInjector({
-      'create-data-stash': publicRequire('create-data-stash'),
-      'get-extension': publicRequire('get-extension')
+      'create-data-stash': publicRequire('create-data-stash')
     });
   });
 

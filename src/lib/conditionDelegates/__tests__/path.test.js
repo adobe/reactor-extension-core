@@ -8,9 +8,7 @@ var mockDocument = {
 };
 
 var conditionDelegateInjector = require('inject!../path');
-var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
 var conditionDelegate = conditionDelegateInjector({
-  'get-extension': publicRequire('get-extension'),
   document: mockDocument
 });
 
@@ -19,7 +17,7 @@ describe('path condition delegate', function() {
     var settings = {
       paths: [
         {
-          value: 'snowcones.html',
+          value: 'snowcones.html'
         },
         {
           value: '/foo/bar.html?mmm=bacon'
@@ -33,7 +31,7 @@ describe('path condition delegate', function() {
     var settings = {
       paths: [
         {
-          value: 'snowcones.html',
+          value: 'snowcones.html'
         },
         {
           value: 'hotdogs.html?mmm=bacon'
@@ -47,7 +45,7 @@ describe('path condition delegate', function() {
     var settings = {
       paths: [
         {
-          value: 'snowcones.html',
+          value: 'snowcones.html'
         },
         {
           value: '\\/Foo\\/bar.*',

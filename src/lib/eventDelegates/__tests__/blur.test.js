@@ -1,11 +1,18 @@
 'use strict';
 
+var publicRequire = require('../../__tests__/helpers/publicRequire');
+
 describe('blur event type', function() {
   var testStandardEvent = require('./helpers/testStandardEvent');
-  var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
+
+  var createBubblyInjector = require('inject!../../helpers/createBubbly');
+  var createBubbly = createBubblyInjector({
+    'create-data-stash': publicRequire('create-data-stash')
+  });
+
   var delegateInjector = require('inject!../blur');
   var delegate = delegateInjector({
-    'get-extension': publicRequire('get-extension')
+    '../helpers/createBubbly.js': createBubbly
   });
 
   testStandardEvent(delegate, 'blur');

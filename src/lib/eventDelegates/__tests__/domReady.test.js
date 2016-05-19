@@ -1,8 +1,9 @@
 'use strict';
 
+var publicRequire = require('../../__tests__/helpers/publicRequire');
+
 describe('domReady event type', function() {
   var delegateInjector = require('inject!../domReady');
-  var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
   var delegate = delegateInjector({
     once: publicRequire('once')
   });

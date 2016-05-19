@@ -1,11 +1,7 @@
 'use strict';
 
 describe('matchesProperties', function() {
-  var matchesPropertiesInjector = require('inject!../matchesProperties');
-  var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
-  var matchesProperties = matchesPropertiesInjector({
-    'get-extension': publicRequire('get-extension')
-  });
+  var matchesProperties = require('../matchesProperties');
   var element;
   
   beforeAll(function() {

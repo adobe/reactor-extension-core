@@ -1,5 +1,6 @@
 'use strict';
-var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
+
+var publicRequire = require('../../__tests__/helpers/publicRequire');
 var Promise = publicRequire('promise');
 
 var injector = require('inject!../pageBottom');

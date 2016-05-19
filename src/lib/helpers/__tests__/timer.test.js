@@ -1,7 +1,11 @@
 'use strict';
 
-var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
-var Timer = publicRequire('get-extension')('dtm').getHelper('timer');
+var publicRequire = require('../../__tests__/helpers/publicRequire');
+
+var TimerInjector = require('inject!../timer');
+var Timer = TimerInjector({
+  'event-emitter': publicRequire('event-emitter')
+});
 
 describe('timer', function() {
   beforeEach(function() {

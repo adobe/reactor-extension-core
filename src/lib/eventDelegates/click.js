@@ -2,8 +2,7 @@
 
 var propertySettings = require('property-settings');
 var dataStash = require('create-data-stash')('click');
-var extension = require('get-extension')('dtm');
-var bubbly = extension.getHelper('create-bubbly')();
+var bubbly = require('../helpers/createBubbly.js')();
 var window = require('window');
 
 /**

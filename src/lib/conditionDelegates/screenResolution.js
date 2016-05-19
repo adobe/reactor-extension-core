@@ -1,8 +1,7 @@
 'use strict';
 
 var window = require('window');
-var extension = require('get-extension')('dtm');
-var compareNumbers = extension.getHelper('compare-numbers');
+var compareNumbers = require('../helpers/compareNumbers.js');
 
 /**
  * Screen resolution condition. Determines if the current screen resolution matches constraints.

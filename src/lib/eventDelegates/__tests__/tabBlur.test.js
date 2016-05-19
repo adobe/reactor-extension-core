@@ -1,5 +1,7 @@
 'use strict';
 
+var publicRequire = require('../../__tests__/helpers/publicRequire');
+
 var eventDelegateInjector = require('inject!../tabBlur');
 var visibilityApi = require('../../helpers/visibilityApi');
 var visibilityApiInstance = visibilityApi();
@@ -14,13 +16,7 @@ var mockDocument = {
   }
 };
 
-var publicRequire = require('../../__tests__/helpers/stubPublicRequire')({
-  helperStubs: {
-    'dtm/helpers/visibility-api': visibilityApi
-  }
-});
 var delegate = eventDelegateInjector({
-  'get-extension': publicRequire('get-extension'),
   once: publicRequire('once'),
   document: mockDocument
 });

@@ -1,12 +1,11 @@
 /*eslint max-len:0*/
 'use strict';
+var publicRequire = require('../../__tests__/helpers/publicRequire');
 
 describe('createBubbly', function() {
   var createBubblyInjector = require('inject!../createBubbly');
-  var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
   var createBubbly = createBubblyInjector({
-    'create-data-stash': publicRequire('create-data-stash'),
-    'get-extension': publicRequire('get-extension')
+    'create-data-stash': publicRequire('create-data-stash')
   });
 
   var aElement;

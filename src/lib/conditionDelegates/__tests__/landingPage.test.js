@@ -8,13 +8,8 @@ var mockVisitorTracking = {
 };
 
 var conditionDelegateInjector = require('inject!../landingPage');
-var publicRequire = require('../../__tests__/helpers/stubPublicRequire')({
-  helperStubs: {
-    'dtm/helpers/visitor-tracking': mockVisitorTracking
-  }
-});
 var conditionDelegate = conditionDelegateInjector({
-  'get-extension': publicRequire('get-extension')
+  '../helpers/visitorTracking.js': mockVisitorTracking
 });
 
 var getSettings = function(page, pageIsRegex) {

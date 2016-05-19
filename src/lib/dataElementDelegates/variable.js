@@ -1,8 +1,7 @@
 'use strict';
 var window = require('window');
 
-var extension = require('get-extension')('dtm');
-var getObjectProperty = extension.getHelper('get-object-property');
+var getObjectProperty = require('../helpers/getObjectProperty.js');
 
 /**
  * The variable data element.

@@ -1,9 +1,8 @@
 'use strict';
 
 var createDataStash = require('create-data-stash');
-var extension = require('get-extension')('dtm');
-var matchesProperties = extension.getHelper('matches-properties');
-var matchesSelector = extension.getHelper('matches-selector');
+var matchesProperties = require('./matchesProperties.js');
+var matchesSelector = require('./matchesSelector.js');
 
 /**
  * Handles logic related to bubbling options provided for many event types.

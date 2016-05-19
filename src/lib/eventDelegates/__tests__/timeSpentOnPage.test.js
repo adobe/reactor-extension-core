@@ -1,9 +1,10 @@
 'use strict';
+
+var publicRequire = require('../../__tests__/helpers/publicRequire');
+
 var visibilityApi = require('../../helpers/visibilityApi');
 var visibilityApiInstance = visibilityApi();
 var visibilityChangeListener;
-
-var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
 
 var mockDocument = {
   addEventListener: function(event, listener) {
@@ -13,14 +14,17 @@ var mockDocument = {
   }
 };
 
-var eventDelegateInjector = require('inject!../timeSpentOnPage');
-var delegate = eventDelegateInjector({
-  'get-extension': publicRequire('get-extension'),
-  once: publicRequire('once'),
-  document: mockDocument
+var TimerInjector = require('inject!../../helpers/timer');
+var Timer = TimerInjector({
+  'event-emitter': publicRequire('event-emitter')
 });
 
-var Timer = publicRequire('get-extension')('dtm').getHelper('timer');
+var eventDelegateInjector = require('inject!../timeSpentOnPage');
+var delegate = eventDelegateInjector({
+  once: publicRequire('once'),
+  '../helpers/timer.js': Timer,
+  document: mockDocument
+});
 
 describe('time spent on page event type', function() {
   beforeEach(function() {

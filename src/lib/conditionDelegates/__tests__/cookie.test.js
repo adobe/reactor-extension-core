@@ -1,9 +1,8 @@
 'use strict';
+var publicRequire = require('../../__tests__/helpers/publicRequire');
 
 var conditionDelegateInjector = require('inject!../cookie');
-var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
 var conditionDelegate = conditionDelegateInjector({
-  'get-extension': publicRequire('get-extension'),
   'cookie': publicRequire('cookie'),
   'document': {
     cookie: 'test=foo'

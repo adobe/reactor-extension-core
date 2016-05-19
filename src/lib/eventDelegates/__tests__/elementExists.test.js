@@ -1,6 +1,7 @@
 'use strict';
 
 var POLL_INTERVAL = 3000;
+var publicRequire = require('../../__tests__/helpers/publicRequire');
 
 describe('elementExists event type', function() {
   var delegate;
@@ -34,11 +35,10 @@ describe('elementExists event type', function() {
 
   beforeAll(function() {
     jasmine.clock().install();
-    var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
+
     var delegateInjector = require('inject!../elementExists');
     delegate = delegateInjector({
-      'create-data-stash': publicRequire('create-data-stash'),
-      'get-extension': publicRequire('get-extension')
+      'create-data-stash': publicRequire('create-data-stash')
     });
   });
 

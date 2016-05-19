@@ -7,9 +7,7 @@ var mockDocument = {
 };
 
 var conditionDelegateInjector = require('inject!../subdomain');
-var publicRequire = require('../../__tests__/helpers/stubPublicRequire')();
 var conditionDelegate = conditionDelegateInjector({
-  'get-extension': publicRequire('get-extension'),
   document: mockDocument
 });
 
