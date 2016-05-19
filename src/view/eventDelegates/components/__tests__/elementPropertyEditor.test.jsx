@@ -101,23 +101,13 @@ describe('elementPropertyEditor', () => {
   });
 
   describe('remove button', () => {
-    it('is shown when removable=true', () => {
-      mockProps.removable = true;
-
+    it('is shown by default', () => {
       const { removeButton } = render(mockProps).refs;
 
       expect(removeButton).toBeDefined();
     });
 
-    it('is not shown when removable=false', () => {
-      const { removeButton } = render(mockProps).refs;
-
-      expect(removeButton).toBeUndefined();
-    });
-
     it('calls remove property when clicked', () => {
-      mockProps.removable = true;
-
       const { removeButton } = render(mockProps).refs;
 
       removeButton.props.onClick();
