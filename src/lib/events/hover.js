@@ -55,7 +55,7 @@ var getPseudoEvent = function(target, delay) {
 var watchElement = function(element, trackedDelays) {
   element.addEventListener('mouseenter', function(event) {
     trackedDelays.forEach(function(trackedDelay) {
-      delayHover(event, trackedDelay, function() {
+      delayHover(event, trackedDelay, function(event) {
         bubbly.evaluateEvent(getPseudoEvent(event.target, trackedDelay));
       });
     });
