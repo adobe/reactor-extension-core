@@ -4,3 +4,4 @@ test_results
 dist
 sandbox*
 testrunner
+.sonar
