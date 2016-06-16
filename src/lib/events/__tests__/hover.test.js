@@ -38,18 +38,18 @@ describe('hover event type', function() {
 
     var createBubblyInjector = require('inject!../../helpers/createBubbly');
     var createBubbly = createBubblyInjector({
-      'create-data-stash': publicRequire('create-data-stash')
+      'weak-map': publicRequire('weak-map')
     });
 
     var liveQuerySelectorInjector = require('inject!../../helpers/liveQuerySelector');
     var liveQuerySelector = liveQuerySelectorInjector({
-      'create-data-stash': publicRequire('create-data-stash'),
+      'weak-map': publicRequire('weak-map'),
       'once': publicRequire('once')
     });
 
     var delegateInjector = require('inject!../hover');
     delegate = delegateInjector({
-      'create-data-stash': publicRequire('create-data-stash'),
+      'weak-map': publicRequire('weak-map'),
       '../helpers/createBubbly.js': createBubbly,
       '../helpers/liveQuerySelector.js': liveQuerySelector
     });

@@ -1,7 +1,8 @@
 'use strict';
 
 var bubbly = require('../helpers/createBubbly.js')();
-var dataStash = require('create-data-stash')('timePlayed');
+var WeakMap = require('weak-map');
+var dataStash = new WeakMap();
 
 var relevantMarkers = [];
 
@@ -40,7 +41,12 @@ var handleTimeUpdate = function(event) {
   var endTime = seekable.end(0);
   var currentTime = target.currentTime;
   var playedSeconds = currentTime - startTime;
-  var targetDataStash = dataStash(target);
+  var targetDataStash = dataStash.get(target);
+
+  if (!targetDataStash) {
+    targetDataStash = { lastTriggered: 0 };
+    dataStash.set(target, targetDataStash);
+  }
 
   var secondsLastTriggered = targetDataStash.lastTriggered || 0;
   var pseudoEvent;

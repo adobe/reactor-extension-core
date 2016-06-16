@@ -10,14 +10,14 @@ describe('click event type', function() {
 
   var createBubblyInjector = require('inject!../../helpers/createBubbly');
   var createBubbly = createBubblyInjector({
-    'create-data-stash': publicRequire('create-data-stash')
+    'weak-map': publicRequire('weak-map')
   });
 
   var delegateInjector = require('inject!../click');
   var delegate = delegateInjector({
     '../helpers/createBubbly.js': createBubbly,
     'property-settings': propertySettings,
-    'create-data-stash': publicRequire('create-data-stash'),
+    'weak-map': publicRequire('weak-map'),
     window: mockWindow
   });
 

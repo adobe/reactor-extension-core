@@ -42,7 +42,7 @@ describe('entersViewport event type', function() {
 
     var delegateInjector = require('inject!../entersViewport');
     delegate = delegateInjector({
-      'create-data-stash': publicRequire('create-data-stash')
+      'weak-map': publicRequire('weak-map')
     });
   });
 

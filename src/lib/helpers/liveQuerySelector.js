@@ -2,7 +2,8 @@
 var POLL_INTERVAL = 3000;
 
 var once = require('once');
-var dataStash = require('create-data-stash')('liveQuerySelector');
+var WeakMap = require('weak-map');
+var dataStash = new WeakMap();
 
 // Create a naked object with no prototype so we can safely use it as a map.
 var callbacksBySelector = Object.create(null);
@@ -50,7 +51,12 @@ module.exports = function(selector, callback) {
   // This function will be called for every element found matching the selector but we will only
   // call the consumer's callback if it has not already been called for the element.
   callbacks.push(function(element) {
-    var elementDataStash = dataStash(element);
+    var elementDataStash = dataStash.get(element);
+    if (!elementDataStash) {
+      elementDataStash = {};
+      dataStash.set(element, elementDataStash);
+    }
+
     if (!elementDataStash[callbackId]) {
       elementDataStash[callbackId] = true;
       callback(element);

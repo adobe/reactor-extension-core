@@ -2,11 +2,21 @@
 
 var POLL_INTERVAL = 3000;
 
-var createDataStash = require('create-data-stash');
-var dataStash = createDataStash('entersViewport');
+var WeakMap = require('weak-map');
+var dataStash = new WeakMap();
 var matchesProperties = require('../helpers/matchesProperties.js');
 
 var listenersBySelector = {};
+
+var getDataStashForElement = function(element) {
+  var elementDataStash = dataStash.get(element);
+  if (!elementDataStash) {
+    elementDataStash = {};
+    dataStash.set(element, elementDataStash);
+  }
+
+  return elementDataStash;
+};
 
 /**
  * Gets the offset of the element.
@@ -86,7 +96,7 @@ var dataStashHelper = {
    * @param timeoutId
    */
   storeTimeoutId: function(element, timeoutId) {
-    var elementDataStash = dataStash(element);
+    var elementDataStash = getDataStashForElement(element);
     elementDataStash.timeoutIds = elementDataStash.timeoutIds || [];
     elementDataStash.timeoutIds.push(timeoutId);
   },
@@ -97,9 +107,9 @@ var dataStashHelper = {
    * @returns {Array}
    */
   getTimeoutIds: function(element) {
-    var elementDataStash = dataStash(element);
+    var elementDataStash = getDataStashForElement(element);
     elementDataStash.timeoutIds = elementDataStash.timeoutIds || [];
-    return dataStash(element).timeoutIds;
+    return elementDataStash.timeoutIds;
   },
 
   /**
@@ -107,7 +117,8 @@ var dataStashHelper = {
    * @param element
    */
   removeTimeoutIds: function(element) {
-    dataStash(element).timeoutIds = null;
+    var elementDataStash = getDataStashForElement(element);
+    elementDataStash.timeoutIds = null;
   },
 
   /**
@@ -116,7 +127,7 @@ var dataStashHelper = {
    * @param listener
    */
   storeDelayedListener: function(element, listener) {
-    var elementDataStash = dataStash(element);
+    var elementDataStash = getDataStashForElement(element);
     elementDataStash.delayedListeners = elementDataStash.delayedListeners || [];
     elementDataStash.delayedListeners.push(listener);
   },
@@ -128,7 +139,8 @@ var dataStashHelper = {
    * @returns {boolean}
    */
   isListenerDelayed: function(element, listener) {
-    var delayedListeners = dataStash(element).delayedListeners;
+    var elementDataStash = getDataStashForElement(element);
+    var delayedListeners = elementDataStash.delayedListeners;
     return delayedListeners && delayedListeners.indexOf(listener) > -1;
   },
 
@@ -137,7 +149,8 @@ var dataStashHelper = {
    * @param element
    */
   removeDelayedListeners: function(element) {
-    dataStash(element).delayedListeners = null;
+    var elementDataStash = getDataStashForElement(element);
+    elementDataStash.delayedListeners = null;
   },
 
   /**
@@ -147,7 +160,8 @@ var dataStashHelper = {
    * @returns {boolean}
    */
   getIsListenerComplete: function(element, listener) {
-    var listeners = dataStash(element).completedListeners;
+    var elementDataStash = getDataStashForElement(element);
+    var listeners = elementDataStash.completedListeners;
     return listeners && listeners.indexOf(listener) > -1;
   },
 
@@ -157,7 +171,7 @@ var dataStashHelper = {
    * @param {Object} listener
    */
   storeCompleteListener: function(element, listener) {
-    var elementDataStash = dataStash(element);
+    var elementDataStash = getDataStashForElement(element);
     elementDataStash.completedListeners = elementDataStash.completedListeners || [];
     elementDataStash.completedListeners.push(listener);
   }

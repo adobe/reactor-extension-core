@@ -1,6 +1,6 @@
 'use strict';
 
-var createDataStash = require('create-data-stash');
+var WeakMap = require('weak-map');
 var matchesProperties = require('./matchesProperties.js');
 var matchesSelector = require('./matchesSelector.js');
 
@@ -13,7 +13,7 @@ module.exports = function() {
   // It's important that a new data stash is created for each instance of bubbly in order to store
   // whether this particular bubbly instance has processed the event. More than one instance of
   // bubbly may process an event. No instance of bubbly should process an event more than once.
-  var dataStash = createDataStash('bubbly');
+  var dataStash = new WeakMap();
 
   var bubbly = {
     /**
@@ -55,13 +55,13 @@ module.exports = function() {
         return;
       }
 
-      var eventDataStash = dataStash(event);
+      var eventDataStash = dataStash.get(event);
 
       // When an event is handled it is evaluated a single time but checks out which rules are
       // targeting elements starting at the target node and looking all the way up the element
       // hierarchy. This should only happen once regardless of how many listeners exist for the
       // event.
-      if (eventDataStash.processed) {
+      if (eventDataStash) {
         return;
       }
 
@@ -128,7 +128,7 @@ module.exports = function() {
         node = node.parentNode;
       }
 
-      eventDataStash.processed = true;
+      dataStash.set(event, true);
     }
   };
 

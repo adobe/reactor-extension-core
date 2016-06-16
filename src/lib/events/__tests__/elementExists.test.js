@@ -38,7 +38,7 @@ describe('elementExists event type', function() {
 
     var delegateInjector = require('inject!../elementExists');
     delegate = delegateInjector({
-      'create-data-stash': publicRequire('create-data-stash')
+      'weak-map': publicRequire('weak-map')
     });
   });
 

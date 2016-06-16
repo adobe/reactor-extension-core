@@ -15,7 +15,7 @@ var triggerCustomEvent = function(element, type) {
 describe('custom event type', function() {
   var createBubblyInjector = require('inject!../../helpers/createBubbly');
   var createBubbly = createBubblyInjector({
-    'create-data-stash': publicRequire('create-data-stash')
+    'weak-map': publicRequire('weak-map')
   });
 
   var delegateInjector = require('inject!../custom');
