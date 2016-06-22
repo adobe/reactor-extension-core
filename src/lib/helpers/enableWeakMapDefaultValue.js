@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Modifies a weakmap so that when get() is called with a key for which no entry is found,
  * a default value will be stored and then returned for the key.
