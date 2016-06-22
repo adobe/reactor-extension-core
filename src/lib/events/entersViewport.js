@@ -3,20 +3,19 @@
 var POLL_INTERVAL = 3000;
 
 var WeakMap = require('weak-map');
-var dataStash = new WeakMap();
+var enableWeakMapDefaultValue = require('../helpers/enableWeakMapDefaultValue.js');
+
+var arrayFactory = function() {
+  return [];
+};
+
+var timeoutIdsByElement = enableWeakMapDefaultValue(new WeakMap(), arrayFactory);
+var delayedListenersByElement = enableWeakMapDefaultValue(new WeakMap(), arrayFactory);
+var completedListenersByElement = enableWeakMapDefaultValue(new WeakMap(), arrayFactory);
+
 var matchesProperties = require('../helpers/matchesProperties.js');
 
 var listenersBySelector = {};
-
-var getDataStashForElement = function(element) {
-  var elementDataStash = dataStash.get(element);
-  if (!elementDataStash) {
-    elementDataStash = {};
-    dataStash.set(element, elementDataStash);
-  }
-
-  return elementDataStash;
-};
 
 /**
  * Gets the offset of the element.
@@ -88,95 +87,6 @@ var elementIsInView = function(element, viewportHeight, scrollTop) {
     !(scrollTop > (top + height) || scrollTop + viewportHeight < top);
 };
 
-var dataStashHelper = {
-  /**
-   * Stores a timeout ID for the target element. This timeout runs while the element is in the
-   * viewport and, when finished, potentially executes a rule that was waiting for the delay.
-   * @param element
-   * @param timeoutId
-   */
-  storeTimeoutId: function(element, timeoutId) {
-    var elementDataStash = getDataStashForElement(element);
-    elementDataStash.timeoutIds = elementDataStash.timeoutIds || [];
-    elementDataStash.timeoutIds.push(timeoutId);
-  },
-
-  /**
-   * Returns all timeout IDs for the target element.
-   * @param element
-   * @returns {Array}
-   */
-  getTimeoutIds: function(element) {
-    var elementDataStash = getDataStashForElement(element);
-    elementDataStash.timeoutIds = elementDataStash.timeoutIds || [];
-    return elementDataStash.timeoutIds;
-  },
-
-  /**
-   * Removes timeout IDs.
-   * @param element
-   */
-  removeTimeoutIds: function(element) {
-    var elementDataStash = getDataStashForElement(element);
-    elementDataStash.timeoutIds = null;
-  },
-
-  /**
-   * Stores listeners that are waiting for a delay while the element is in the viewport.
-   * @param element
-   * @param listener
-   */
-  storeDelayedListener: function(element, listener) {
-    var elementDataStash = getDataStashForElement(element);
-    elementDataStash.delayedListeners = elementDataStash.delayedListeners || [];
-    elementDataStash.delayedListeners.push(listener);
-  },
-
-  /**
-   * Returns whether the given listener is waiting for a delay while the element is in the viewport.
-   * @param element
-   * @param listener
-   * @returns {boolean}
-   */
-  isListenerDelayed: function(element, listener) {
-    var elementDataStash = getDataStashForElement(element);
-    var delayedListeners = elementDataStash.delayedListeners;
-    return delayedListeners && delayedListeners.indexOf(listener) > -1;
-  },
-
-  /**
-   * Removes listeners that were waiting for a delay while the element was in the viewport.
-   * @param element
-   */
-  removeDelayedListeners: function(element) {
-    var elementDataStash = getDataStashForElement(element);
-    elementDataStash.delayedListeners = null;
-  },
-
-  /**
-   * Returns whether the listener has been executed for the given target element.
-   * @param {HTMLElement} element
-   * @param {Object} listener
-   * @returns {boolean}
-   */
-  getIsListenerComplete: function(element, listener) {
-    var elementDataStash = getDataStashForElement(element);
-    var listeners = elementDataStash.completedListeners;
-    return listeners && listeners.indexOf(listener) > -1;
-  },
-
-  /**
-   * Stores that a listener has been executed for the given target element.
-   * @param {HTMLElement} element
-   * @param {Object} listener
-   */
-  storeCompleteListener: function(element, listener) {
-    var elementDataStash = getDataStashForElement(element);
-    elementDataStash.completedListeners = elementDataStash.completedListeners || [];
-    elementDataStash.completedListeners.push(listener);
-  }
-};
-
 /**
  * Handle when a targeted element enters the viewport.
  * @param {HTMLElement} element
@@ -185,7 +95,7 @@ var dataStashHelper = {
  */
 var handleElementEnterViewport = function(element, delay, listener) {
   var complete = function() {
-    dataStashHelper.storeCompleteListener(element, listener);
+    completedListenersByElement.get(element).push(listener);
 
     var event = {
       type: 'inview',
@@ -199,7 +109,7 @@ var handleElementEnterViewport = function(element, delay, listener) {
 
   if (delay) {
 
-    if (dataStashHelper.isListenerDelayed(element, listener)) {
+    if (delayedListenersByElement.get(element).indexOf(listener) !== -1) {
       return;
     }
 
@@ -209,8 +119,8 @@ var handleElementEnterViewport = function(element, delay, listener) {
       }
     }, delay);
 
-    dataStashHelper.storeTimeoutId(element, timeoutId);
-    dataStashHelper.storeDelayedListener(element, listener);
+    timeoutIdsByElement.get(element).push(timeoutId);
+    delayedListenersByElement.get(element).push(listener);
   } else {
     complete();
   }
@@ -221,12 +131,11 @@ var handleElementEnterViewport = function(element, delay, listener) {
  * @param element
  */
 var handleElementExitViewport = function(element) {
-  var timeoutIds = dataStashHelper.getTimeoutIds(element);
-
+  var timeoutIds = timeoutIdsByElement.get(element);
   if (timeoutIds) {
     timeoutIds.forEach(clearTimeout);
-    dataStashHelper.removeTimeoutIds(element);
-    dataStashHelper.removeDelayedListeners(element);
+    timeoutIdsByElement.delete(element);
+    delayedListenersByElement.delete(element);
   }
 };
 
@@ -253,7 +162,7 @@ var checkForElementsInViewport = function() {
       for (var i = 0; i < elements.length; i++) {
         var element = elements[i];
 
-        if (dataStashHelper.getIsListenerComplete(element, listener)) {
+        if (completedListenersByElement.get(element).indexOf(listener) !== -1) {
           continue;
         }
 

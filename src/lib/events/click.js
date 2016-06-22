@@ -2,7 +2,7 @@
 
 var propertySettings = require('property-settings');
 var WeakMap = require('weak-map');
-var dataStash = new WeakMap();
+var evaluatedEvents = new WeakMap();
 var bubbly = require('../helpers/createBubbly.js')();
 var window = require('window');
 
@@ -67,14 +67,14 @@ document.addEventListener('click', bubbly.evaluateEvent, true);
 module.exports = function(settings, trigger) {
   bubbly.addListener(settings, function(relatedElement, event) {
     if (settings.delayLinkActivation) {
-      if (!dataStash.get(event)) {
+      if (!evaluatedEvents.has(event)) {
         if (isNavigationLink(event.target)) {
           event.preventDefault();
           setTimeout(function() {
             window.location = event.target.href;
           }, propertySettings.linkDelay || 100);
         }
-        dataStash.set(event, true);
+        evaluatedEvents.set(event, true);
       }
     }
 

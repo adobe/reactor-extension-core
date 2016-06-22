@@ -3,7 +3,7 @@
 var POLL_INTERVAL = 3000;
 
 var WeakMap = require('weak-map');
-var dataStash = new WeakMap();
+var seenElements = new WeakMap();
 var matchesProperties = require('../helpers/matchesProperties.js');
 
 var listenersBySelector = {};
@@ -16,8 +16,8 @@ setInterval(function() {
     for (var i = 0; i < elements.length; i++) {
       var element = elements[i];
 
-      if (!dataStash.get(element)) {
-        dataStash.set(element, true);
+      if (!seenElements.has(element)) {
+        seenElements.set(element, true);
 
         for (var k = 0; k < listeners.length; k++) {
           var listener = listeners[k];
