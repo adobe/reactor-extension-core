@@ -67,7 +67,7 @@ import QueryParameterDataElement from './dataElements/queryParameter';
 import VariableDataElement from './dataElements/variable';
 
 // Actions
-import ThirdPartyScriptAction from './actions/thirdPartyScript';
+import CustomAction from './actions/custom';
 
 export default (setFormConfigForCurrentRoute) => {
   const onEnter = nextState => {
@@ -137,7 +137,7 @@ export default (setFormConfigForCurrentRoute) => {
       <Route path="/dataElements/queryParameter" component={QueryParameterDataElement} onEnter={onEnter}/>
       <Route path="/dataElements/variable" component={VariableDataElement} onEnter={onEnter}/>
 
-      <Route path="/actions/thirdPartyScript" component={ThirdPartyScriptAction} onEnter={onEnter}/>
+      <Route path="/actions/custom" component={CustomAction} onEnter={onEnter}/>
     </Router>
   );
 };

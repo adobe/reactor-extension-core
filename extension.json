@@ -1661,10 +1661,10 @@
   ],
   "actions": [
     {
-      "name": "third-party-script",
-      "displayName": "Third-party Script",
-      "libPath": "actions/thirdPartyScript.js",
-      "viewPath": "index.html#/actions/thirdPartyScript",
+      "name": "custom",
+      "displayName": "Custom",
+      "libPath": "actions/custom.js",
+      "viewPath": "index.html#/actions/custom",
       "schema": {}
     }
   ]

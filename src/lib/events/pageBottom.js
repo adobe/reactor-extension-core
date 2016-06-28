@@ -1,6 +1,6 @@
 'use strict';
 
-var pageBottom = require('page-bottom');
+var onPageBottom = require('on-page-bottom');
 var document = require('document');
 
 /**
@@ -9,7 +9,7 @@ var document = require('document');
  */
 var triggers = [];
 
-pageBottom.then(function() {
+onPageBottom(function() {
   var pseudoEvent = {
     type: 'pagebottom',
     target: document.location
