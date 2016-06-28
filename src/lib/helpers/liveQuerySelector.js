@@ -2,7 +2,8 @@
 var POLL_INTERVAL = 3000;
 
 var once = require('once');
-var dataStash = require('create-data-stash')('liveQuerySelector');
+var WeakMap = require('weak-map');
+var calledCallbacksByElement = new WeakMap();
 
 // Create a naked object with no prototype so we can safely use it as a map.
 var callbacksBySelector = Object.create(null);
@@ -30,8 +31,6 @@ var initializePolling = once(function() {
   setInterval(findElements, POLL_INTERVAL);
 });
 
-var callbackIdIncrementor = 0;
-
 /**
  * Polls for elements added to the DOM matching a given selector.
  * @param {String} selector The CSS selector used to find elements.
@@ -45,14 +44,18 @@ module.exports = function(selector, callback) {
     callbacks = callbacksBySelector[selector] = [];
   }
 
-  var callbackId = callbackIdIncrementor++;
-
   // This function will be called for every element found matching the selector but we will only
   // call the consumer's callback if it has not already been called for the element.
   callbacks.push(function(element) {
-    var elementDataStash = dataStash(element);
-    if (!elementDataStash[callbackId]) {
-      elementDataStash[callbackId] = true;
+    var calledCallbacks = calledCallbacksByElement.get(element);
+
+    if (!calledCallbacks) {
+      calledCallbacks = new WeakMap();
+      calledCallbacksByElement.set(element, calledCallbacks);
+    }
+
+    if (!calledCallbacks.has(callback)) {
+      calledCallbacks.set(callback, true);
       callback(element);
     }
   });

@@ -7,7 +7,7 @@ var publicRequire = require('../../__tests__/helpers/publicRequire');
 var liveQuerySelectorInjector = require('inject!../liveQuerySelector');
 var liveQuerySelector = liveQuerySelectorInjector({
   'once': publicRequire('once'),
-  'create-data-stash': publicRequire('create-data-stash')
+  'weak-map': publicRequire('weak-map')
 });
 
 describe('liveQuerySelector', function() {

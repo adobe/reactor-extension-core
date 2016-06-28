@@ -5,7 +5,7 @@ var publicRequire = require('../../__tests__/helpers/publicRequire');
 describe('createBubbly', function() {
   var createBubblyInjector = require('inject!../createBubbly');
   var createBubbly = createBubblyInjector({
-    'create-data-stash': publicRequire('create-data-stash')
+    'weak-map': publicRequire('weak-map')
   });
 
   var aElement;

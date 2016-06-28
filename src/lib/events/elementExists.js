@@ -2,7 +2,8 @@
 
 var POLL_INTERVAL = 3000;
 
-var dataStash = require('create-data-stash')('elementExists');
+var WeakMap = require('weak-map');
+var seenElements = new WeakMap();
 var matchesProperties = require('../helpers/matchesProperties.js');
 
 var listenersBySelector = {};
@@ -14,10 +15,9 @@ setInterval(function() {
 
     for (var i = 0; i < elements.length; i++) {
       var element = elements[i];
-      var elementDataStash = dataStash(element);
 
-      if (!elementDataStash.seen) {
-        elementDataStash.seen = true;
+      if (!seenElements.has(element)) {
+        seenElements.set(element, true);
 
         for (var k = 0; k < listeners.length; k++) {
           var listener = listeners[k];

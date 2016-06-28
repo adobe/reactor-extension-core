@@ -3,7 +3,8 @@
 var bubbly = require('../helpers/createBubbly.js')();
 var liveQuerySelector = require('../helpers/liveQuerySelector.js');
 var matchesProperties = require('../helpers/matchesProperties.js');
-var dataStash = require('create-data-stash')('hover');
+var WeakMap = require('weak-map');
+var trackedDelaysByElement = new WeakMap();
 
 /**
  * After a mouseenter has occurred, waits a given amount of time before declaring that a hover
@@ -103,8 +104,7 @@ module.exports = function(settings, trigger) {
       return;
     }
 
-    var elementDataStash = dataStash(element);
-    var trackedDelays = elementDataStash.delays;
+    var trackedDelays = trackedDelaysByElement.get(element);
 
     if (trackedDelays) {
       if (trackedDelays.indexOf(delay) === -1) {
@@ -112,7 +112,7 @@ module.exports = function(settings, trigger) {
       }
     } else {
       trackedDelays = [delay];
-      elementDataStash.delays = trackedDelays;
+      trackedDelaysByElement.set(element, trackedDelays);
       watchElement(element, trackedDelays);
     }
   });
