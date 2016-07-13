@@ -24,6 +24,8 @@ var getQueryStringForTokens = function(tokens, relatedElement, event) {
     .join('&');
 };
 
+// A map used to store everything necessary to provide the
+// "this", "event", and "target" variables to non-global JavaScript.
 var actionsAwaitingJSCallback = {
   _actionsByCodeId: {},
   addAction: function(action) {
@@ -51,6 +53,7 @@ var actionsAwaitingJSCallback = {
   }
 };
 
+// A queue for sequential JavaScript and HTML.
 var sequentialQueue = {
   _queue: [],
   _outstandingAction: null,
@@ -74,6 +77,7 @@ var sequentialQueue = {
   }
 };
 
+// Method called by both global and non-global external JavaScript.
 _satellite._customJSLoaded = function(codeId, callback) {
   var action = actionsAwaitingJSCallback.removeActionById(codeId);
 
@@ -91,7 +95,9 @@ _satellite._customJSLoaded = function(codeId, callback) {
 
 var BLOCKING_CODE_ID_ATTRIBUTE = 'data-dtmblockingcodeid';
 
-// See the documentation where this is called for why it is necessary.
+// Watches for script loading errors for any blocking external JavaScript and cleans
+// up related items accordingly. To understand why this is necessary, see the documentation
+// found above the code that calls it.
 var watchForBlockingJavaScriptError = once(function() {
   window.addEventListener('error', function(event) {
     if (event.target.hasAttribute && event.target.hasAttribute(BLOCKING_CODE_ID_ATTRIBUTE)) {
@@ -100,10 +106,6 @@ var watchForBlockingJavaScriptError = once(function() {
     }
   }, true);
 });
-
-setInterval(function() {
-  console.log(JSON.stringify(actionsAwaitingJSCallback._actionsByCodeId));
-}, 5000);
 
 var loadJavaScriptSequential = function(action) {
   actionsAwaitingJSCallback.addAction(action);
@@ -118,6 +120,10 @@ var loadJavaScriptSequential = function(action) {
   // things from happening on the page while it loads), it will still be sequential in
   // relation to other DTM third-party scripts due to the sequential queue we have in place.
   try {
+    writeHtml('<script ' +
+      'src="' + source + '" ' +
+      BLOCKING_CODE_ID_ATTRIBUTE + '="' + codeId + '"' +
+      '></scr' + 'ipt>');
     // If the script fails to load, we need to call actionsAwaitingJSCallback.removeActionById
     // otherwise the action object and everything it references will remain in memory.
     // We're limited in how we detect that the script has failed to load. We
@@ -135,12 +141,8 @@ var loadJavaScriptSequential = function(action) {
     // larger chunks. Calling Document.close() is the only way to explicitly force all buffered
     // output to be 'flushed' and displayed in the browser window."
     // As a result, we will instead watch for errors on window in their capture phase and determine
-    // if they they are load errors for the scripts we added here.
+    // if they are load errors for the scripts we added here.
     watchForBlockingJavaScriptError();
-    writeHtml('<script ' +
-      'src="' + source + '" ' +
-      BLOCKING_CODE_ID_ATTRIBUTE + '="' + codeId + '"' +
-      '></scr' + 'ipt>');
     // If we were able to document.write the script tag, it will be blocking (scripts added to
     // the document later won't be executed before it) so we can immediately move to processing
     // the next item in the sequential queue. One alternative explored was waiting for the script
@@ -156,7 +158,8 @@ var loadJavaScriptSequential = function(action) {
     // entire document with the second script tag. This occurs even though the
     // DOMContentLoaded event has not yet fired. ¯\_(ツ)_/¯
     // Instead, we're relegated to making sure that all the document.writes that we can perform
-    // occur as soon as possible and letting the browser naturally handle the queuing + blocking.
+    // occur as soon as possible and letting the browser naturally handle the queuing and
+    // blocking.
     sequentialQueue.actionCompleted(codeId);
   } catch (error) {
     loadScript(source).then(function() {
