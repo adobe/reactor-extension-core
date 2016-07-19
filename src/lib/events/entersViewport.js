@@ -1,9 +1,11 @@
 'use strict';
 
-var POLL_INTERVAL = 3000;
-
 var WeakMap = require('weak-map');
+var debounce = require('debounce');
 var enableWeakMapDefaultValue = require('../helpers/enableWeakMapDefaultValue.js');
+
+var POLL_INTERVAL = 3000;
+var DEBOUNCE_DELAY = 200;
 
 var arrayFactory = function() {
   return [];
@@ -147,7 +149,7 @@ var handleElementExitViewport = function(element) {
  * can't trigger the same rule again. If another element matching the same selector comes into
  * the viewport, it may trigger the same rule again.
  */
-var checkForElementsInViewport = function() {
+var checkForElementsInViewport = debounce(function() {
   // Cached and re-used for optimization.
   var viewportHeight = getViewportHeight();
   var scrollTop = getScrollTop();
@@ -178,12 +180,14 @@ var checkForElementsInViewport = function() {
       }
     });
   });
-};
+}, DEBOUNCE_DELAY);
 
-// TODO: Add debounce to the scroll event handling?
-window.addEventListener('scroll', checkForElementsInViewport);
-window.addEventListener('load', checkForElementsInViewport);
-setInterval(checkForElementsInViewport, POLL_INTERVAL);
+window.addEventListener('load', function() {
+  checkForElementsInViewport();
+  setInterval(checkForElementsInViewport, POLL_INTERVAL);
+  window.addEventListener('resize', checkForElementsInViewport);
+  window.addEventListener('scroll', checkForElementsInViewport);
+});
 
 /**
  * Enters viewport event. This event occurs when an element has entered the viewport. The rule

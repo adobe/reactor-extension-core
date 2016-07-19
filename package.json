@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@reactor/extension-support-packager": "^1.1.0",
-    "@reactor/extension-support-sandbox": "^3.0.0",
+    "@reactor/extension-support-sandbox": "^4.0.0",
     "@reactor/extension-support-testrunner": "^3.1.0",
     "@reactor/turbine": "^12.0.0",
     "babel-core": "^6.9.1",
