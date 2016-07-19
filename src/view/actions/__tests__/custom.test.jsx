@@ -87,7 +87,7 @@ describe('custom action view', () => {
       language: 'javascript',
       sequential: true,
       global: true
-    })
+    });
   });
 
   it('sets errors if required values are not provided', () => {

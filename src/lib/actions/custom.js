@@ -3,14 +3,25 @@
 var loadScript = require('load-script');
 var getVar = require('get-var');
 var logger = require('logger');
-var writeHtml = require('write-html');
 var once = require('once');
+var buildInfo = require('build-info');
+
+var BLOCKING_CODE_ID_ATTRIBUTE = 'data-dtmblockingcodeid';
+
+var domContentLoaded = false;
+
+document.addEventListener('DOMContentLoaded', function() {
+  domContentLoaded = true;
+});
+
+var canWriteToDocument = function() {
+  return document.write && !domContentLoaded;
+};
 
 var appendToBody = function(element) {
-  var body = document.getElementsByTagName('body')[0];
-
-  if (body) {
-    body.appendChild(element)
+  // Ensure body is available before adding the element.
+  if (domContentLoaded) {
+    document.getElementsByTagName('body')[0].appendChild(element);
   } else {
     document.addEventListener('DOMContentLoaded', appendToBody.bind(this, element));
   }
@@ -22,6 +33,10 @@ var getQueryStringForTokens = function(tokens, relatedElement, event) {
       return token + '=' + getVar(token, relatedElement, event);
     })
     .join('&');
+};
+
+var getFileUrl = function(relativePath) {
+  return buildInfo.hostedFilesBaseUrl + relativePath;
 };
 
 // A map used to store everything necessary to provide the
@@ -93,8 +108,6 @@ _satellite._customJSLoaded = function(codeId, callback) {
   }
 };
 
-var BLOCKING_CODE_ID_ATTRIBUTE = 'data-dtmblockingcodeid';
-
 // Watches for script loading errors for any blocking external JavaScript and cleans
 // up related items accordingly. To understand why this is necessary, see the documentation
 // found above the code that calls it.
@@ -110,17 +123,17 @@ var watchForBlockingJavaScriptError = once(function() {
 var loadJavaScriptSequential = function(action) {
   actionsAwaitingJSCallback.addAction(action);
 
-  var source = action.settings.source;
+  var source = getFileUrl(action.settings.source);
   var codeId = action.settings.codeId;
 
-  // We first try to use writeHtml (document.write) because if the page is still loading we want
-  // the script to load and execute before parsing the rest of the page. If the page has already
-  // loaded, writeHtml will throw an error and we'll instead use loadScript to create and append a
-  // script element. Even though the script won't be "blocking" in this case (it won't prevent other
-  // things from happening on the page while it loads), it will still be sequential in
-  // relation to other DTM third-party scripts due to the sequential queue we have in place.
-  try {
-    writeHtml('<script ' +
+  // We first try to document.write because if the page is still loading we want the script to
+  // load and execute before parsing the rest of the page. If the page has already loaded,
+  // we'll instead use loadScript to create and append a script element. Even though the script
+  // won't be "blocking" in this case (it won't prevent other things from happening on the page
+  // while it loads), it will still be sequential in relation to other DTM third-party scripts
+  // due to the sequential queue we have in place.
+  if (canWriteToDocument()) {
+    document.write('<script ' +
       'src="' + source + '" ' +
       BLOCKING_CODE_ID_ATTRIBUTE + '="' + codeId + '"' +
       '></scr' + 'ipt>');
@@ -145,23 +158,18 @@ var loadJavaScriptSequential = function(action) {
     watchForBlockingJavaScriptError();
     // If we were able to document.write the script tag, it will be blocking (scripts added to
     // the document later won't be executed before it) so we can immediately move to processing
-    // the next item in the sequential queue. One alternative explored was waiting for the script
-    // to load which would in turn call _satellite._customJSLoaded(). When that is called, we
-    // would then write the script tag for the next item in the queue. With this approach, we
-    // still needed to handle errors like if the first script 404'd while loading. The problem with
-    // this reveals itself in the following scenario:
-    // (1) We watch for an error event on the script and, when an error occurs, we move onto
-    // the next item in the sequential queue.
-    // (2) We then try to document.write the script tag for the next item in the sequential queue.
-    // In this case, and only when the prior script errors, for whatever reason
-    // IE (at least 9 and 10) considers the document "closed" at this point and will replace the
-    // entire document with the second script tag. This occurs even though the
-    // DOMContentLoaded event has not yet fired. ¯\_(ツ)_/¯
+    // the next item in the sequential queue. One alternative explored was only writing one script
+    // tag at a time and waiting for the loaded script to call _satellite._customJSLoaded()
+    // before writing the next script tag. With this approach, we still needed to handle errors
+    // like if the first script 404'd while loading by watching for an error event.
+    // In this case, and only when the prior script errors, IE (at least 9 and 10) considers
+    // the document "closed" at this point and will replace the entire document with the second
+    // script tag. This occurs even though the DOMContentLoaded event has not yet fired. ¯\_(ツ)_/¯
     // Instead, we're relegated to making sure that all the document.writes that we can perform
     // occur as soon as possible and letting the browser naturally handle the queuing and
     // blocking.
     sequentialQueue.actionCompleted(codeId);
-  } catch (error) {
+  } else {
     loadScript(source).then(function() {
       sequentialQueue.actionCompleted(codeId);
     }, function() {
@@ -172,8 +180,10 @@ var loadJavaScriptSequential = function(action) {
 };
 
 var loadJavaScriptNonSequential = function(action) {
+  var source = getFileUrl(action.settings.source);
+
   actionsAwaitingJSCallback.addAction(action);
-  loadScript(action.settings.source).catch(function() {
+  loadScript(source).catch(function() {
     actionsAwaitingJSCallback.removeActionById(action.settings.codeId);
   });
 };
@@ -183,23 +193,22 @@ var loadHtmlSequential = function(action) {
   var source = action.settings.source;
   var codeId = action.settings.codeId;
 
-  try {
+  if (canWriteToDocument()) {
     // Note that if the rule is fired in Internet Explorer 9 before the page's
     // HTML document has been loaded and parsed, any inline script
     // (e.g., <script>console.log('test');<script>) within source will be executed before
     // prior sequential JavaScript.
-    writeHtml(source);
-  } catch (error) {
-    logger.error('Unable to write sequential HTML for ' + name + ' . Sequential HTML ' +
+    document.write(source);
+  } else {
+    logger.error('Unable to write sequential HTML for ' + name + '. Sequential HTML ' +
       'is not supported for rules that fire after the page has loaded.');
-  } finally {
-    sequentialQueue.actionCompleted(codeId);
   }
+
+  sequentialQueue.actionCompleted(codeId);
 };
 
 var loadHtmlNonSequential = function(action) {
-  // TODO: Do I need to access host, basepath, etc or will that be in the URL?
-  var source = action.settings.source;
+  var source = getFileUrl(action.settings.source);
   var tokens = action.settings.tokens;
 
   if (tokens && tokens.length) {
@@ -242,3 +251,10 @@ module.exports = function(settings, relatedElement, event) {
     processAction(action);
   }
 };
+
+if (ENV_TEST) {
+  module.exports.__isMemoryCleanedUp = function() {
+    return !Object.keys(actionsAwaitingJSCallback._actionsByCodeId).length &&
+        !sequentialQueue._queue.length;
+  };
+}
