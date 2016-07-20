@@ -42,13 +42,10 @@ describe('entersViewport event type', function() {
   beforeAll(function() {
     jasmine.clock().install();
 
-    var originalWindowAddEventListener = window.addEventListener;
-    spyOn(window, 'addEventListener').and.callFake(function(type, callback) {
+    spyOn(document, 'addEventListener').and.callFake(function(type, callback) {
       // Simulate that the window has loaded.
-      if (type === 'load') {
+      if (type === 'DOMContentLoaded') {
         callback();
-      } else {
-        originalWindowAddEventListener.apply(window, arguments);
       }
     });
 

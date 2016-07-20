@@ -182,7 +182,7 @@ var checkForElementsInViewport = debounce(function() {
   });
 }, DEBOUNCE_DELAY);
 
-window.addEventListener('load', function() {
+document.addEventListener('DOMContentLoaded', function() {
   checkForElementsInViewport();
   setInterval(checkForElementsInViewport, POLL_INTERVAL);
   window.addEventListener('resize', checkForElementsInViewport);
