@@ -1,7 +1,9 @@
 'use strict';
 
-var POLL_INTERVAL = 3000;
 var publicRequire = require('../../__tests__/helpers/publicRequire');
+
+var POLL_INTERVAL = 3000;
+var DEBOUNCE_DELAY = 200;
 
 describe('entersViewport event type', function() {
   var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -40,9 +42,17 @@ describe('entersViewport event type', function() {
   beforeAll(function() {
     jasmine.clock().install();
 
+    spyOn(document, 'addEventListener').and.callFake(function(type, callback) {
+      // Simulate that the window has loaded.
+      if (type === 'DOMContentLoaded') {
+        callback();
+      }
+    });
+
     var delegateInjector = require('inject!../entersViewport');
     delegate = delegateInjector({
-      'weak-map': publicRequire('weak-map')
+      'weak-map': publicRequire('weak-map'),
+      'debounce': publicRequire('debounce')
     });
   });
 
@@ -278,13 +288,16 @@ describe('entersViewport event type', function() {
           elementSelector: '#a'
         }, aTrigger);
 
+
         Simulate.event(window, 'scroll');
+        jasmine.clock().tick(DEBOUNCE_DELAY); // Skip past debounce.
 
         // The rule shouldn't be triggered because the element isn't in view.
         expect(aTrigger.calls.count()).toEqual(0);
 
         window.scrollTo(0, 3000);
         Simulate.event(window, 'scroll');
+        jasmine.clock().tick(DEBOUNCE_DELAY); // Skip past debounce.
 
         expect(aTrigger.calls.count()).toEqual(1);
       });
