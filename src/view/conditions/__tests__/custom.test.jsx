@@ -10,15 +10,15 @@ describe('custom view', () => {
     instance = getFormInstance(Custom, extensionBridge);
   });
 
-  it('opens code editor with script value when button is clicked and stores result', () => {
+  it('opens code editor with source value when button is clicked and stores result', () => {
     extensionBridge.init({
       settings: {
-        script: 'foo'
+        source: 'foo'
       }
     });
 
     window.extensionBridge = {
-      openCodeEditor: jasmine.createSpy().and.callFake((script, callback) => {
+      openCodeEditor: jasmine.createSpy().and.callFake((source, callback) => {
         callback('bar');
       })
     };
@@ -31,19 +31,19 @@ describe('custom view', () => {
       .toHaveBeenCalledWith('foo', jasmine.any(Function));
     expect(extensionBridge.validate()).toBe(true);
     expect(extensionBridge.getSettings()).toEqual({
-      script: 'bar'
+      source: 'bar'
     });
 
     delete window.extensionBridge;
   });
 
-  it('sets error if script is empty', () => {
+  it('sets error if source is empty', () => {
     extensionBridge.init();
 
     expect(extensionBridge.validate()).toBe(false);
 
-    const { scriptErrorIcon } = instance.refs;
+    const { sourceErrorIcon } = instance.refs;
 
-    expect(scriptErrorIcon.props.message).toBeDefined();
+    expect(sourceErrorIcon.props.message).toBeDefined();
   });
 });

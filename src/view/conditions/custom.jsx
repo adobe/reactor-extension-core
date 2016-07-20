@@ -6,20 +6,20 @@ import extensionViewReduxForm from '../extensionViewReduxForm';
 
 class Custom extends React.Component {
   onOpenEditor = () => {
-    let scriptField = this.props.fields.script;
-    window.extensionBridge.openCodeEditor(scriptField.value, scriptField.onChange);
+    let sourceField = this.props.fields.source;
+    window.extensionBridge.openCodeEditor(sourceField.value, sourceField.onChange);
   };
 
   render() {
-    let script = this.props.fields.script;
+    let source = this.props.fields.source;
 
     return (
       <div>
         <Coral.Button ref="openEditorButton" icon="code" onClick={this.onOpenEditor}>
           Open Editor
         </Coral.Button>
-        {script.touched && script.error ?
-          <ErrorTip ref="scriptErrorIcon" message={script.error}/> : null
+        {source.touched && source.error ?
+          <ErrorTip ref="sourceErrorIcon" message={source.error}/> : null
         }
         <Coral.Icon icon="infoCircle" className="u-inline-tooltip u-gapLeft"/>
         <Coral.Tooltip className="u-tooltipMaxWidth" placement="right" target="_prev">
@@ -33,14 +33,14 @@ class Custom extends React.Component {
 }
 
 const formConfig = {
-  fields: ['script'],
+  fields: ['source'],
   validate(errors, values) {
     errors = {
       ...errors
     };
 
-    if (!values.script) {
-      errors.script = 'Please provide custom script.';
+    if (!values.source) {
+      errors.source = 'Please provide custom script.';
     }
 
     return errors;
