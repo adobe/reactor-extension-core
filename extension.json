@@ -979,23 +979,24 @@
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
         "properties": {
-          "script": {
+          "source": {
             "type": "string",
             "minLength": 1
           }
         },
         "additionalProperties": false,
-        "required": ["script"]
+        "required": ["source"]
       },
-      "transform": {
-        "script": {
+      "transform": [
+        {
           "type": "function",
+          "propertyPath": "source",
           "parameters": [
             "event",
             "target"
           ]
         }
-      }
+      ]
     },
     {
       "name": "data-element",
@@ -1586,19 +1587,20 @@
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
         "properties": {
-          "script": {
+          "source": {
             "type": "string",
             "minLength": 1
           }
         },
         "additionalProperties": false,
-        "required": ["script"]
+        "required": ["source"]
       },
-      "transform": {
-        "script": {
-          "type": "function"
+      "transform": [
+        {
+          "type": "function",
+          "propertyPath": "source"
         }
-      }
+      ]
     },
     {
       "name": "dom-attribute",
@@ -1665,7 +1667,43 @@
       "displayName": "Custom",
       "libPath": "actions/custom.js",
       "viewPath": "index.html#/actions/custom",
-      "schema": {}
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "language": {
+            "enum": [
+              "javascript",
+              "html"
+            ]
+          },
+          "sequential": {
+            "type": "boolean"
+          },
+          "global": {
+            "type": "boolean"
+          },
+          "source": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "language",
+          "source"
+        ]
+      },
+      "transform": [
+        {
+          "type": "customCode"
+        }
+      ]
     }
   ]
 }
