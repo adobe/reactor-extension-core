@@ -1,5 +1,31 @@
+import { mount } from 'enzyme';
 import WindowSize from '../windowSize';
-import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import ComparisonOperatorField from '../components/comparisonOperatorField';
+import Textfield from '@coralui/react-coral/lib/Textfield';
+import { ValidationWrapper } from '@reactor/react-components';
+
+const getReactComponents = (wrapper) => {
+  const widthOperatorField =
+    wrapper.find(ComparisonOperatorField).filterWhere(n => n.prop('name') === 'widthOperator').node;
+  const heightOperatorField = wrapper
+    .find(ComparisonOperatorField).filterWhere(n => n.prop('name') === 'heightOperator').node;
+  const widthField = wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'width').node;
+  const heightField = wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'height').node;
+  const widthWrapper =
+    wrapper.find(ValidationWrapper).filterWhere(n => n.prop('type') === 'width').node;
+  const heightWrapper =
+    wrapper.find(ValidationWrapper).filterWhere(n => n.prop('type') === 'height').node;
+
+  return {
+    widthOperatorField,
+    widthField,
+    heightOperatorField,
+    heightField,
+    widthWrapper,
+    heightWrapper
+  };
+};
 
 describe('window size view', () => {
   let extensionBridge;
@@ -7,13 +33,13 @@ describe('window size view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = getFormInstance(WindowSize, extensionBridge);
+    instance = mount(getFormComponent(WindowSize, extensionBridge));
   });
 
   it('sets operators to greater than by default', () => {
     extensionBridge.init();
 
-    const { widthOperatorField, heightOperatorField } = instance.refs;
+    const { widthOperatorField, heightOperatorField } = getReactComponents(instance);
 
     expect(widthOperatorField.props.value).toBe('>');
     expect(heightOperatorField.props.value).toBe('>');
@@ -29,7 +55,12 @@ describe('window size view', () => {
       }
     });
 
-    const { widthOperatorField, widthField, heightOperatorField, heightField } = instance.refs;
+    const {
+      widthOperatorField,
+      widthField,
+      heightOperatorField,
+      heightField
+    } = getReactComponents(instance);
 
     expect(widthOperatorField.props.value).toBe('=');
     expect(widthField.props.value).toBe(100);
@@ -40,7 +71,12 @@ describe('window size view', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { widthOperatorField, widthField, heightOperatorField, heightField } = instance.refs;
+    const {
+      widthOperatorField,
+      widthField,
+      heightOperatorField,
+      heightField
+    } = getReactComponents(instance);
 
     widthOperatorField.props.onChange('=');
     widthField.props.onChange(100);
@@ -62,7 +98,7 @@ describe('window size view', () => {
     const {
       widthWrapper,
       heightWrapper
-    } = instance.refs;
+    } = getReactComponents(instance);
 
     expect(widthWrapper.props.error).toEqual(jasmine.any(String));
     expect(heightWrapper.props.error).toEqual(jasmine.any(String));
@@ -72,7 +108,7 @@ describe('window size view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { widthField, widthWrapper, heightField, heightWrapper } = instance.refs;
+    const { widthField, widthWrapper, heightField, heightWrapper } = getReactComponents(instance);
 
     widthField.props.onChange('12.abc');
     heightField.props.onChange('12.abc');

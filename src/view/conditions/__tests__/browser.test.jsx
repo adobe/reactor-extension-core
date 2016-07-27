@@ -1,10 +1,20 @@
 import Browser from '../browser';
-import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import { mount } from 'enzyme';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import CheckboxList from '../../components/checkboxList';
 
 const selectedBrowsers = [
   'Chrome',
   'Safari'
 ];
+
+const getReactComponents = (wrapper) => {
+  const browsersCheckboxList = wrapper.find(CheckboxList).node;
+
+  return {
+    browsersCheckboxList
+  };
+};
 
 describe('browser view', () => {
   let extensionBridge;
@@ -12,7 +22,7 @@ describe('browser view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = getFormInstance(Browser, extensionBridge);
+    instance = mount(getFormComponent(Browser, extensionBridge));
   });
 
   it('sets form values from settings', () => {
@@ -22,7 +32,7 @@ describe('browser view', () => {
       }
     });
 
-    const { browsersCheckboxList } = instance.refs;
+    const { browsersCheckboxList } = getReactComponents(instance);
 
     expect(browsersCheckboxList.props.value).toEqual(selectedBrowsers);
   });
@@ -30,7 +40,7 @@ describe('browser view', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { browsersCheckboxList } = instance.refs;
+    const { browsersCheckboxList } = getReactComponents(instance);
     browsersCheckboxList.props.onChange(selectedBrowsers);
 
     expect(extensionBridge.getSettings()).toEqual({

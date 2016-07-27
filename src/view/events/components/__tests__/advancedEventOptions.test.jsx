@@ -1,6 +1,23 @@
 import extensionViewReduxForm from '../../../extensionViewReduxForm';
+import { mount } from 'enzyme';
 import AdvancedEventOptions, { formConfig } from '../advancedEventOptions';
-import { getFormInstance, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
+import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
+import Checkbox from '@coralui/react-coral/lib/Checkbox';
+
+const getReactComponents = (wrapper) => {
+  const bubbleFireIfParentCheckbox =
+    wrapper.find(Checkbox).filterWhere(n => n.prop('name') === 'bubbleFireIfParent').node;
+  const bubbleFireIfChildFiredCheckbox =
+    wrapper.find(Checkbox).filterWhere(n => n.prop('name') === 'bubbleFireIfChildFired').node;
+  const bubbleStopCheckbox =
+    wrapper.find(Checkbox).filterWhere(n => n.prop('name') === 'bubbleStop').node;
+
+  return {
+    bubbleFireIfParentCheckbox,
+    bubbleFireIfChildFiredCheckbox,
+    bubbleStopCheckbox
+  };
+};
 
 describe('advancedEventOptions', () => {
   let extensionBridge;
@@ -9,15 +26,15 @@ describe('advancedEventOptions', () => {
   beforeAll(() => {
     const FormComponent = extensionViewReduxForm(formConfig)(AdvancedEventOptions);
     extensionBridge = createExtensionBridge();
-    instance = getFormInstance(FormComponent, extensionBridge);
+    instance = mount(getFormComponent(FormComponent, extensionBridge));
   });
 
   beforeEach(() => {
-    instance.toggleSelected();
+    instance.find(AdvancedEventOptions).node.toggleSelected();
   });
 
   afterEach(() => {
-    instance.toggleSelected();
+    instance.find(AdvancedEventOptions).node.toggleSelected();
   });
 
   it('sets form values from settings', () => {
@@ -33,7 +50,7 @@ describe('advancedEventOptions', () => {
       bubbleFireIfParentCheckbox,
       bubbleFireIfChildFiredCheckbox,
       bubbleStopCheckbox
-    } = instance.refs;
+    } = getReactComponents(instance);
 
     expect(bubbleFireIfParentCheckbox.props.checked).toBe(true);
     expect(bubbleFireIfChildFiredCheckbox.props.checked).toBe(true);
@@ -47,7 +64,7 @@ describe('advancedEventOptions', () => {
 
     const {
       bubbleFireIfParentCheckbox
-    } = instance.refs;
+    } = getReactComponents(instance);
 
     expect(bubbleFireIfParentCheckbox.props.checked).toBe(true);
   });
@@ -59,7 +76,7 @@ describe('advancedEventOptions', () => {
 
     const {
       bubbleFireIfChildFiredCheckbox
-    } = instance.refs;
+    } = getReactComponents(instance);
 
     expect(bubbleFireIfChildFiredCheckbox.props.checked).toBe(true);
   });
@@ -72,7 +89,7 @@ describe('advancedEventOptions', () => {
       bubbleFireIfParentCheckbox,
       bubbleFireIfChildFiredCheckbox,
       bubbleStopCheckbox
-    } = instance.refs;
+    } = getReactComponents(instance);
 
     bubbleFireIfParentCheckbox.props.onChange(true);
     bubbleFireIfChildFiredCheckbox.props.onChange(true);

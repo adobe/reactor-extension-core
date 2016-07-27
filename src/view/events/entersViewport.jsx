@@ -1,20 +1,15 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-reduxform';
 import SpecificElements, { formConfig as specificElementsFormConfig } from './components/specificElements';
 import DelayType, { formConfig as delayTypeFormConfig } from './components/delayType';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import reduceReducers from 'reduce-reducers';
 
-class EntersViewport extends React.Component {
-  render() {
-    return (
-      <div>
-        <SpecificElements ref="specificElements" fields={this.props.fields}/>
-        <DelayType ref="delayType" fields={this.props.fields}/>
-      </div>
-    );
-  }
-}
+const EntersViewport = ({ ...props }) => (
+  <div>
+    <SpecificElements fields={ props.fields } />
+    <DelayType fields={ props.fields } />
+  </div>
+);
 
 const formConfig = {
   fields: specificElementsFormConfig.fields.concat(delayTypeFormConfig.fields),
@@ -33,4 +28,3 @@ const formConfig = {
 };
 
 export default extensionViewReduxForm(formConfig)(EntersViewport);
-

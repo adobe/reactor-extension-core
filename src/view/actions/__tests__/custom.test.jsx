@@ -1,13 +1,62 @@
+/* eslint no-useless-concat: 0 */
+
+import { mount } from 'enzyme';
 import Custom from '../custom';
-import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import Textfield from '@coralui/react-coral/lib/Textfield';
+import Radio from '@coralui/react-coral/lib/Radio';
+import Checkbox from '@coralui/react-coral/lib/Checkbox';
+import Button from '@coralui/react-coral/lib/Button';
+import Alert from '@coralui/react-coral/lib/Alert';
+import { ValidationWrapper, ErrorTip } from '@reactor/react-components';
+
+const getReactComponents = (wrapper) => {
+  const nameField =
+    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'name').node;
+  const javaScriptLanguageRadio =
+    wrapper.find(Radio).filterWhere(n => n.prop('value') === 'javascript').node;
+  const htmlLanguageRadio =
+    wrapper.find(Radio).filterWhere(n => n.prop('value') === 'html').node;
+  const sequentialCheckbox =
+    wrapper.find(Checkbox).filterWhere(n => n.prop('name').includes('sequential')).node;
+  const globalCheckbox =
+    wrapper.find(Checkbox).filterWhere(n => n.prop('name').includes('global')).node;
+  const nameWrapper = wrapper.find(ValidationWrapper).node;
+  const sourceErrorIcon = wrapper.find(ErrorTip).node;
+  const openEditorButton = wrapper.find(Button).filterWhere(n => n.prop('icon') === 'code').node;
+  const sequentialHtmlAlert =
+    wrapper.find(Alert).filterWhere(n => n.prop('type') === 'sequential').node;
+  const inlineScriptAlert =
+    wrapper.find(Alert).filterWhere(n => n.prop('type') === 'inline').node;
+
+  return {
+    nameField,
+    javaScriptLanguageRadio,
+    htmlLanguageRadio,
+    sequentialCheckbox,
+    globalCheckbox,
+    nameWrapper,
+    sourceErrorIcon,
+    openEditorButton,
+    sequentialHtmlAlert,
+    inlineScriptAlert
+  };
+};
 
 describe('custom action view', () => {
   let extensionBridge;
   let instance;
+  let backupExtensionBridge;
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = getFormInstance(Custom, extensionBridge);
+    instance = mount(getFormComponent(Custom, extensionBridge));
+
+    backupExtensionBridge = window.extensionBridge;
+  });
+
+  afterAll(() => {
+    window.extensionBridge = backupExtensionBridge;
   });
 
   it('sets form values from settings', () => {
@@ -20,13 +69,16 @@ describe('custom action view', () => {
       }
     });
 
-    var {
-      nameField,
+    const {
+      nameField
+    } = getReactComponents(instance);
+
+    let {
       javaScriptLanguageRadio,
       htmlLanguageRadio,
       sequentialCheckbox,
       globalCheckbox
-    } = instance.refs;
+    } = getReactComponents(instance);
 
     expect(nameField.props.value).toBe('foo');
     expect(javaScriptLanguageRadio.props.checked).toBe(false);
@@ -45,12 +97,11 @@ describe('custom action view', () => {
     });
 
     ({
-      nameField,
       javaScriptLanguageRadio,
       htmlLanguageRadio,
       sequentialCheckbox,
       globalCheckbox
-    } = instance.refs);
+    } = getReactComponents(instance));
 
     expect(javaScriptLanguageRadio.props.checked).toBe(true);
     expect(htmlLanguageRadio.props.checked).toBe(false);
@@ -61,13 +112,13 @@ describe('custom action view', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    var {
+    const {
       nameField,
       javaScriptLanguageRadio,
       htmlLanguageRadio,
       sequentialCheckbox,
       globalCheckbox
-    } = instance.refs;
+    } = getReactComponents(instance);
 
     nameField.props.onChange('foo');
     htmlLanguageRadio.props.onChange('html');
@@ -96,11 +147,11 @@ describe('custom action view', () => {
 
     const {
       nameWrapper,
-      scriptErrorIcon
-    } = instance.refs;
+      sourceErrorIcon
+    } = getReactComponents(instance);
 
     expect(nameWrapper.props.error).toEqual(jasmine.any(String));
-    expect(scriptErrorIcon).toBeDefined();
+    expect(sourceErrorIcon.props.children).toBeDefined();
   });
 
   it('opens code editor with source value when button is clicked and stores result', () => {
@@ -118,7 +169,7 @@ describe('custom action view', () => {
       })
     };
 
-    const { openEditorButton } = instance.refs;
+    const { openEditorButton } = getReactComponents(instance);
 
     openEditorButton.props.onClick();
 
@@ -133,13 +184,13 @@ describe('custom action view', () => {
 
     delete window.extensionBridge;
   });
-  
+
   it('shows sequential html alert when HTML and sequential are selected', () => {
     extensionBridge.init();
 
-    var {
+    let {
       sequentialHtmlAlert
-    } = instance.refs;
+    } = getReactComponents(instance);
 
     expect(sequentialHtmlAlert).toBeUndefined();
 
@@ -152,7 +203,7 @@ describe('custom action view', () => {
 
     ({
       sequentialHtmlAlert
-    } = instance.refs);
+    } = getReactComponents(instance));
 
     expect(sequentialHtmlAlert).toBeDefined();
   });
@@ -167,9 +218,9 @@ describe('custom action view', () => {
       }
     });
 
-    var {
+    let {
       inlineScriptAlert
-    } = instance.refs;
+    } = getReactComponents(instance);
 
     expect(inlineScriptAlert).toBeUndefined();
 
@@ -183,7 +234,7 @@ describe('custom action view', () => {
 
     ({
       inlineScriptAlert
-    } = instance.refs);
+    } = getReactComponents(instance));
 
     expect(inlineScriptAlert).toBeDefined();
   });

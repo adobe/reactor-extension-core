@@ -1,34 +1,32 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-reduxform';
+import Textfield from '@coralui/react-coral/lib/Textfield';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import RegexToggle from '../components/regexToggle';
 import { ValidationWrapper } from '@reactor/react-components';
 
-class TrafficSource extends React.Component {
-  render() {
-    const { source, sourceIsRegex } = this.props.fields;
+const TrafficSource = ({ ...props }) => {
+  const { source, sourceIsRegex } = props.fields;
 
-    return (
-      <div>
-        <ValidationWrapper
-          ref="sourceWrapper"
-          className="u-gapRight"
-          error={source.touched && source.error}>
-          <label>
-            <span className="u-label">Traffic Source</span>
-            <Coral.Textfield ref="sourceField" {...source}/>
-          </label>
-        </ValidationWrapper>
-        <RegexToggle
-          ref="valueRegexToggle"
-          value={source.value}
-          valueIsRegex={sourceIsRegex.value}
-          onValueChange={source.onChange}
-          onValueIsRegexChange={sourceIsRegex.onChange}/>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <ValidationWrapper
+        className="u-gapRight"
+        error={ source.touched && source.error }
+      >
+        <label>
+          <span className="u-label">Traffic Source</span>
+          <Textfield { ...source } />
+        </label>
+      </ValidationWrapper>
+      <RegexToggle
+        value={ source.value }
+        valueIsRegex={ sourceIsRegex.value }
+        onValueChange={ source.onChange }
+        onValueIsRegexChange={ sourceIsRegex.onChange }
+      />
+    </div>
+  );
+};
 
 const formConfig = {
   fields: [

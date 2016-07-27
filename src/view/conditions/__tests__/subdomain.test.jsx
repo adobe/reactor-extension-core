@@ -1,5 +1,24 @@
+import { mount } from 'enzyme';
 import Subdomain from '../subdomain';
-import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import RegexToggle from '../../components/regexToggle';
+import { ValidationWrapper } from '@reactor/react-components';
+import Textfield from '@coralui/react-coral/lib/Textfield';
+import MultipleItemEditor from '../components/multipleItemEditor';
+
+const getReactComponents = (wrapper) => {
+  const subdomainFields = wrapper.find(Textfield).nodes;
+  const subdomainRegexToggles = wrapper.find(RegexToggle).nodes;
+  const subdomainWrappers = wrapper.find(ValidationWrapper).nodes;
+  const multipleItemEditor = wrapper.find(MultipleItemEditor).node;
+
+  return {
+    subdomainFields,
+    subdomainRegexToggles,
+    subdomainWrappers,
+    multipleItemEditor
+  };
+};
 
 const testProps = {
   settings: {
@@ -21,35 +40,33 @@ describe('subdomain view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = getFormInstance(Subdomain, extensionBridge);
+    instance = mount(getFormComponent(Subdomain, extensionBridge));
   });
 
   it('sets form values from settings', () => {
     extensionBridge.init(testProps);
 
     const {
-      subdomainField0,
-      subdomainField1,
-      subdomainRegexToggle0,
-      subdomainRegexToggle1
-    } = instance.refs.multipleItemEditor.refs;
+      subdomainFields,
+      subdomainRegexToggles
+    } = getReactComponents(instance);
 
-    expect(subdomainField0.props.value).toBe('foo');
-    expect(subdomainField1.props.value).toBe('bar');
-    expect(subdomainRegexToggle0.props.valueIsRegex).toBe('');
-    expect(subdomainRegexToggle1.props.valueIsRegex).toBe(true);
+    expect(subdomainFields[0].props.value).toBe('foo');
+    expect(subdomainFields[1].props.value).toBe('bar');
+    expect(subdomainRegexToggles[0].props.valueIsRegex).toBe('');
+    expect(subdomainRegexToggles[1].props.valueIsRegex).toBe(true);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
     const {
-      subdomainField0,
-      subdomainRegexToggle0
-    } = instance.refs.multipleItemEditor.refs;
+      subdomainFields,
+      subdomainRegexToggles
+    } = getReactComponents(instance);
 
-    subdomainField0.props.onChange('goo');
-    subdomainRegexToggle0.props.onValueIsRegexChange(true);
+    subdomainFields[0].props.onChange('goo');
+    subdomainRegexToggles[0].props.onValueIsRegexChange(true);
 
     expect(extensionBridge.getSettings()).toEqual({
       subdomains: [
@@ -64,45 +81,37 @@ describe('subdomain view', () => {
   it('adds a row', () => {
     extensionBridge.init(testProps);
 
-    const { multipleItemEditor } = instance.refs;
+    const { multipleItemEditor } = getReactComponents(instance);
 
     multipleItemEditor.props.onAddItem();
 
-    const {
-      subdomainField0,
-      subdomainField1,
-      subdomainField2,
-      subdomainField3
-    } = instance.refs.multipleItemEditor.refs;
+    const { subdomainFields } = getReactComponents(instance);
 
-    expect(subdomainField0).toBeDefined();
-    expect(subdomainField1).toBeDefined();
-    expect(subdomainField2).toBeDefined();
-    expect(subdomainField3).toBeUndefined();
+    expect(subdomainFields[0]).toBeDefined();
+    expect(subdomainFields[1]).toBeDefined();
+    expect(subdomainFields[2]).toBeDefined();
+    expect(subdomainFields[3]).toBeUndefined();
   });
 
   it('removes a row', () => {
     extensionBridge.init(testProps);
 
-    const { multipleItemEditor } = instance.refs;
+    const { multipleItemEditor } = getReactComponents(instance);
 
     multipleItemEditor.props.onRemoveItem(1);
 
-    const {
-      subdomainField0,
-      subdomainField1
-    } = instance.refs.multipleItemEditor.refs;
+    const { subdomainFields } = getReactComponents(instance);
 
-    expect(subdomainField0).toBeDefined();
-    expect(subdomainField1).toBeUndefined();
+    expect(subdomainFields[0]).toBeDefined();
+    expect(subdomainFields[1]).toBeUndefined();
   });
 
   it('sets errors if required values are not provided', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { subdomainWrapper0 } = instance.refs.multipleItemEditor.refs;
+    const { subdomainWrappers } = getReactComponents(instance);
 
-    expect(subdomainWrapper0.props.error).toBeDefined();
+    expect(subdomainWrappers[0].props.error).toBeDefined();
   });
 });

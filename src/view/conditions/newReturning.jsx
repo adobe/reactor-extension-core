@@ -1,31 +1,29 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-reduxform';
+import Radio from '@coralui/react-coral/lib/Radio';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
-class NewReturning extends React.Component {
-  render() {
-    const { visitorType } = this.props.fields;
+const NewReturning = ({ ...props }) => {
+  const { visitorType } = props.fields;
 
-    return (
-      <div>
-        <Coral.Radio
-          ref="newVisitorRadio"
-          {...visitorType}
-          value="new"
-          checked={visitorType.value === 'new'}>
-          New Visitor
-        </Coral.Radio>
-        <Coral.Radio
-          ref="returningVisitorRadio"
-          {...visitorType}
-          value="returning"
-          checked={visitorType.value === 'returning'}>
-          Returning Visitor
-        </Coral.Radio>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <Radio
+        { ...visitorType }
+        value="new"
+        checked={ visitorType.value === 'new' }
+      >
+        New Visitor
+      </Radio>
+      <Radio
+        { ...visitorType }
+        value="returning"
+        checked={ visitorType.value === 'returning' }
+      >
+        Returning Visitor
+      </Radio>
+    </div>
+  );
+};
 
 const formConfig = {
   fields: [

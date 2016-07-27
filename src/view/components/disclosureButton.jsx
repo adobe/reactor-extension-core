@@ -1,15 +1,13 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-react';
+import Icon from '@coralui/react-coral/lib/Icon';
 
-export default class DisclosureButton extends React.Component {
-  render() {
-    var iconClass = this.props.selected ? 'chevronDown' : 'chevronRight';
+export default ({ ...props }) => {
+  const iconClass = props.selected ? 'chevronDown' : 'chevronRight';
 
-    return (
-      <button ref="button" className="u-buttonReset" onClick={this.props.onClick}>
-        <Coral.Icon ref="icon" className="DisclosureButton-icon u-gapRight" icon={iconClass}/>
-        {this.props.label}
-      </button>
-    );
-  }
-}
+  return (
+    <button className="u-buttonReset" onClick={ props.onClick }>
+      <Icon className="DisclosureButton-icon u-gapRight" icon={ iconClass } />
+      { props.label }
+    </button>
+  );
+};

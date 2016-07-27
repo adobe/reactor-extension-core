@@ -6,10 +6,8 @@ export default reduceReducers(
   bridgeAdapterActions,
 
   // Setup for redux-form.
-  (state, action) => {
-    return {
-      ...state,
-      form: formReducer(state.form, action)
-    };
-  }
+  (state, action) => ({
+    ...state,
+    form: formReducer(state.form, action)
+  })
 );

@@ -1,9 +1,9 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-reduxform';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import { ValidationWrapper, DataElementSelectorButton } from '@reactor/react-components';
 import ComparisonOperatorField from './components/comparisonOperatorField';
 import { isNumber } from '../utils/validators';
+import Textfield from '@coralui/react-coral/lib/Textfield';
 
 class CartAmount extends React.Component {
   onOpenDataElementSelector = () => {
@@ -16,26 +16,23 @@ class CartAmount extends React.Component {
     return (
       <div>
         <div>
-          <ValidationWrapper
-            ref="dataElementWrapper"
-            error={dataElement.touched && dataElement.error}>
+          <ValidationWrapper type="dataElement" error={ dataElement.touched && dataElement.error }>
             <label>
               <span className="u-label">The cart amount identified by the data element</span>
-              <Coral.Textfield ref="dataElementField" {...dataElement}/>
+              <Textfield { ...dataElement } />
             </label>
-            <DataElementSelectorButton ref="dataElementButton"
-              onClick={this.onOpenDataElementSelector}/>
+            <DataElementSelectorButton onClick={ this.onOpenDataElementSelector } />
           </ValidationWrapper>
         </div>
         <div className="u-gapTop">
           <label className="u-gapRight">
             <span className="u-label">is</span>
-            <ComparisonOperatorField ref="operatorField" {...operator}/>
+            <ComparisonOperatorField { ...operator } />
           </label>
-          <ValidationWrapper ref="amountWrapper" error={amount.touched && amount.error}>
+          <ValidationWrapper type="amount" error={ amount.touched && amount.error }>
             <label>
               <span className="u-label">the value</span>
-              <Coral.Textfield className="u-smallTextfield" ref="amountField" {...amount}/>
+              <Textfield className="u-smallTextfield" { ...amount } />
             </label>
           </ValidationWrapper>
         </div>

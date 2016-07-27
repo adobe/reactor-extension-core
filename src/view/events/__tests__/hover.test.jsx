@@ -1,5 +1,21 @@
+import { mount } from 'enzyme';
 import Hover from '../hover';
-import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import SpecificElements from '../components/specificElements';
+import DelayType from '../components/delayType';
+import AdvancedEventOptions from '../components/advancedEventOptions';
+
+const getReactComponents = (wrapper) => {
+  const specificElements = wrapper.find(SpecificElements).node;
+  const delayType = wrapper.find(DelayType).node;
+  const advancedEventOptions = wrapper.find(AdvancedEventOptions).node;
+
+  return {
+    specificElements,
+    delayType,
+    advancedEventOptions
+  };
+};
 
 describe('hover view', () => {
   let extensionBridge;
@@ -7,7 +23,7 @@ describe('hover view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = getFormInstance(Hover, extensionBridge);
+    instance = mount(getFormComponent(Hover, extensionBridge));
   });
 
   it('sets form values from settings', () => {
@@ -19,7 +35,7 @@ describe('hover view', () => {
       }
     });
 
-    const { specificElements, delayType, advancedEventOptions } = instance.refs;
+    const { specificElements, delayType, advancedEventOptions } = getReactComponents(instance);
 
     expect(specificElements.props.fields.elementSelector.value).toBe('.foo');
     expect(delayType.props.fields.delay.value).toBe(100);
@@ -29,7 +45,7 @@ describe('hover view', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { specificElements, delayType, advancedEventOptions } = instance.refs;
+    const { specificElements, delayType, advancedEventOptions } = getReactComponents(instance);
 
     specificElements.props.fields.elementSelector.onChange('.foo');
     delayType.props.fields.delayType.onChange('delay');
@@ -46,7 +62,7 @@ describe('hover view', () => {
   it('sets validation errors', () => {
     extensionBridge.init();
 
-    const { specificElements, delayType } = instance.refs;
+    const { specificElements, delayType } = getReactComponents(instance);
 
     delayType.props.fields.delayType.onChange('delay');
 

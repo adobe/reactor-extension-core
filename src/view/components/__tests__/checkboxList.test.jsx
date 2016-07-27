@@ -1,17 +1,13 @@
+import { mount } from 'enzyme';
 import React from 'react';
-import Coral from '@coralui/coralui-support-react';
-import TestUtils from 'react-addons-test-utils';
 import CheckboxList from '../checkboxList';
+import Checkbox from '@coralui/react-coral/lib/Checkbox';
 
-const render = props => {
-  return TestUtils.renderIntoDocument(<CheckboxList {...props}/>);
-};
+const render = props => mount(<CheckboxList { ...props } />);
 
-const getParts = instance => {
-  return {
-    checkboxes: TestUtils.scryRenderedComponentsWithType(instance, Coral.Checkbox)
-  };
-};
+const getParts = wrapper => ({
+  checkboxes: wrapper.find(Checkbox).nodes
+});
 
 const stringOptions = [
   'a',
@@ -40,13 +36,8 @@ describe('checkbox list', () => {
       options: stringOptions
     }));
 
-    const renderedValues = checkboxes.map(checkbox => {
-      return checkbox.props.value;
-    });
-
-    const renderedLabels = checkboxes.map(checkbox => {
-      return checkbox.props.children;
-    });
+    const renderedValues = checkboxes.map(checkbox => checkbox.props.value);
+    const renderedLabels = checkboxes.map(checkbox => checkbox.props.children);
 
     expect(renderedValues).toEqual(stringOptions);
     expect(renderedLabels).toEqual(stringOptions);
@@ -57,13 +48,8 @@ describe('checkbox list', () => {
       options: objectOptions
     }));
 
-    const renderedValues = checkboxes.map(checkbox => {
-      return checkbox.props.value;
-    });
-
-    const renderedLabels = checkboxes.map(checkbox => {
-      return checkbox.props.children;
-    });
+    const renderedValues = checkboxes.map(checkbox => checkbox.props.value);
+    const renderedLabels = checkboxes.map(checkbox => checkbox.props.children);
 
     expect(renderedValues).toEqual(['a', 'b', 'c']);
     expect(renderedLabels).toEqual(['A', 'B', 'C']);

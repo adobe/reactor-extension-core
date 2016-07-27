@@ -1,5 +1,15 @@
+import { mount } from 'enzyme';
 import ElementExists from '../elementExists';
-import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import SpecificElements from '../components/specificElements';
+
+const getReactComponents = (wrapper) => {
+  const specificElements = wrapper.find(SpecificElements).node;
+
+  return {
+    specificElements
+  };
+};
 
 describe('element exists view', () => {
   let extensionBridge;
@@ -7,7 +17,7 @@ describe('element exists view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = getFormInstance(ElementExists, extensionBridge);
+    instance = mount(getFormComponent(ElementExists, extensionBridge));
   });
 
   it('sets form values from settings', () => {
@@ -17,7 +27,7 @@ describe('element exists view', () => {
       }
     });
 
-    const { specificElements } = instance.refs;
+    const { specificElements } = getReactComponents(instance);
 
     expect(specificElements.props.fields.elementSelector.value).toBe('.foo');
   });
@@ -25,7 +35,7 @@ describe('element exists view', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { specificElements } = instance.refs;
+    const { specificElements } = getReactComponents(instance);
 
     specificElements.props.fields.elementSelector.onChange('.foo');
 
@@ -37,7 +47,7 @@ describe('element exists view', () => {
   it('sets validation errors', () => {
     extensionBridge.init();
 
-    const { specificElements } = instance.refs;
+    const { specificElements } = getReactComponents(instance);
 
     expect(extensionBridge.validate()).toBe(false);
     expect(specificElements.props.fields.elementSelector.error).toEqual(jasmine.any(String));

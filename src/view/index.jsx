@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import bridgeAdapter from './bridgeAdapter';
-import { applyMiddleware, createStore, compose } from 'redux';
+import { createStore, compose } from 'redux';
 import { Provider } from 'react-redux';
 import reducer from './reduxActions/reducer';
 import createRouter from './createRouter';
@@ -18,8 +18,8 @@ const router = createRouter(setFormConfigForCurrentRoute);
 
 ReactDOM.render((
   <div>
-    <Provider store={store}>
-      {router}
+    <Provider store={ store }>
+      { router }
     </Provider>
   </div>
 ), document.getElementById('content'));

@@ -1,35 +1,34 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-reduxform';
+import reduceReducers from 'reduce-reducers';
+import Checkbox from '@coralui/react-coral/lib/Checkbox';
+
 import ElementSelectorField, { formConfig as elementSelectorFieldFormConfig } from './elementSelectorField';
 import ElementPropertiesEditor, { formConfig as elementPropertiesEditorFormConfig } from './elementPropertiesEditor';
-import reduceReducers from 'reduce-reducers';
 
-export default class SpecificElements extends React.Component {
-  render() {
-    const {
-      showElementPropertiesFilter
-    } = this.props.fields;
+export default ({ ...props }) => {
+  const {
+    showElementPropertiesFilter
+  } = props.fields;
 
-    return (
+  return (
+    <div>
+      <ElementSelectorField fields={ props.fields } />
       <div>
-        <ElementSelectorField ref="elementSelectorField" fields={this.props.fields}/>
-        <div>
-          <Coral.Checkbox
-            ref="showElementPropertiesCheckbox"
-            {...showElementPropertiesFilter}>
-            and having certain property values...
-          </Coral.Checkbox>
-          {
-            showElementPropertiesFilter.value ?
+        <Checkbox
+          { ...showElementPropertiesFilter }
+        >
+          and having certain property values...
+        </Checkbox>
+        {
+          showElementPropertiesFilter.value ?
             <ElementPropertiesEditor
-              ref="elementPropertiesEditor"
-              fields={this.props.fields}/> : null
-          }
-        </div>
+              fields={ props.fields }
+            /> : null
+        }
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export const formConfig = {
   fields: [

@@ -1,48 +1,53 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-reduxform';
+import Icon from '@coralui/react-coral/lib/Icon';
+import Textfield from '@coralui/react-coral/lib/Textfield';
+import Tooltip from '@coralui/react-coral/lib/Tooltip';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import RegexToggle from '../components/regexToggle';
 import { ValidationWrapper } from '@reactor/react-components';
 
-class VariableSet extends React.Component {
-  render() {
-    const { name, value, valueIsRegex } = this.props.fields;
+function Variable({ ...props }) {
+  const { name, value, valueIsRegex } = props.fields;
 
-    return (
-      <div>
-        <ValidationWrapper
-          ref="nameWrapper"
-          className="u-gapRight"
-          error={name.touched && name.error}>
-          <label>
-            <span className="u-label">JS Variable Name</span>
-            <Coral.Textfield ref="nameField" {...name}/>
-          </label>
-        </ValidationWrapper>
-        <ValidationWrapper
-          ref="valueWrapper"
-          className="u-gapRight"
-          error={value.touched && value.error}>
-          <label>
-            <span className="u-label">JS Variable Value</span>
-            <Coral.Textfield ref="valueField" {...value}/>
-          </label>
-        </ValidationWrapper>
-        <Coral.Icon icon="infoCircle" className="u-inline-tooltip u-gapRight"/>
-        <Coral.Tooltip className="u-tooltipMaxWidth" placement="right" target="_prev">
-          Specify a text (string) value here. The rule will only fire if the specified
-          variable contains this string. Note: If your variable contains a number,
-          this will not work as expected.
-        </Coral.Tooltip>
-        <RegexToggle
-          ref="valueRegexToggle"
-          value={value.value}
-          valueIsRegex={valueIsRegex.value}
-          onValueChange={value.onChange}
-          onValueIsRegexChange={valueIsRegex.onChange}/>
-      </div>
-    );
-  }
+  return (
+    <div>
+      <ValidationWrapper
+        type="name"
+        className="u-gapRight"
+        error={ name.touched && name.error }
+      >
+        <label>
+          <span className="u-label">JS Variable Name</span>
+          <Textfield { ...name } />
+        </label>
+      </ValidationWrapper>
+      <ValidationWrapper
+        type="value"
+        className="u-gapRight"
+        error={ value.touched && value.error }
+      >
+        <label>
+          <span className="u-label">JS Variable Value</span>
+          <Textfield { ...value } />
+        </label>
+      </ValidationWrapper>
+      <Tooltip
+        className="u-tooltipMaxWidth"
+        openOn="hover"
+        content="Specify a text (string) value here. The rule will only fire if the specified
+        variable contains this string. Note: If your variable contains a number, this will not
+        work as expected."
+      >
+        <Icon icon="infoCircle" className="u-inline-tooltip u-gapRight" />
+      </Tooltip>
+      <RegexToggle
+        value={ value.value }
+        valueIsRegex={ valueIsRegex.value }
+        onValueChange={ value.onChange }
+        onValueIsRegexChange={ valueIsRegex.onChange }
+      />
+    </div>
+  );
 }
 
 const formConfig = {
@@ -68,4 +73,4 @@ const formConfig = {
   }
 };
 
-export default extensionViewReduxForm(formConfig)(VariableSet);
+export default extensionViewReduxForm(formConfig)(Variable);

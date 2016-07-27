@@ -1,5 +1,19 @@
+import { mount } from 'enzyme';
 import NewReturning from '../newReturning';
-import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import Radio from '@coralui/react-coral/lib/Radio';
+
+const getReactComponents = (wrapper) => {
+  const newVisitorRadio =
+    wrapper.find(Radio).filterWhere(n => n.prop('value') === 'new').node;
+  const returningVisitorRadio =
+    wrapper.find(Radio).filterWhere(n => n.prop('value') === 'returning').node;
+
+  return {
+    newVisitorRadio,
+    returningVisitorRadio
+  };
+};
 
 describe('new/returning visitor view', () => {
   let extensionBridge;
@@ -7,13 +21,13 @@ describe('new/returning visitor view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = getFormInstance(NewReturning, extensionBridge);
+    instance = mount(getFormComponent(NewReturning, extensionBridge));
   });
 
   it('sets new visitor radio as checked by default', () => {
     extensionBridge.init();
 
-    const { newVisitorRadio, returningVisitorRadio } = instance.refs;
+    const { newVisitorRadio, returningVisitorRadio } = getReactComponents(instance);
 
     expect(newVisitorRadio.props.checked).toBe(true);
     expect(returningVisitorRadio.props.checked).toBe(false);
@@ -26,7 +40,7 @@ describe('new/returning visitor view', () => {
       }
     });
 
-    const { newVisitorRadio, returningVisitorRadio } = instance.refs;
+    const { newVisitorRadio, returningVisitorRadio } = getReactComponents(instance);
 
     expect(newVisitorRadio.props.checked).toBe(false);
     expect(returningVisitorRadio.props.checked).toBe(true);
@@ -35,7 +49,7 @@ describe('new/returning visitor view', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { returningVisitorRadio } = instance.refs;
+    const { returningVisitorRadio } = getReactComponents(instance);
 
     returningVisitorRadio.props.onChange('returning');
 

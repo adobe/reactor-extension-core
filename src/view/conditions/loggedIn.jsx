@@ -1,5 +1,5 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-reduxform';
+import Textfield from '@coralui/react-coral/lib/Textfield';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import { ValidationWrapper, DataElementSelectorButton } from '@reactor/react-components';
 
@@ -13,16 +13,15 @@ class LoggedIn extends React.Component {
 
     return (
       <ValidationWrapper
-        ref="dataElementWrapper"
         className="u-gapRight"
-        error={dataElement.touched && dataElement.error}>
+        error={ dataElement.touched && dataElement.error }
+      >
         <label>
           <span className="u-label">
             Data element identifying whether the user is logged in
           </span>
-          <Coral.Textfield ref="dataElementField" {...dataElement}/>
-          <DataElementSelectorButton ref="dataElementButton"
-            onClick={this.onOpenDataElementSelector}/>
+          <Textfield { ...dataElement } />
+          <DataElementSelectorButton onClick={ this.onOpenDataElementSelector } />
         </label>
       </ValidationWrapper>
     );

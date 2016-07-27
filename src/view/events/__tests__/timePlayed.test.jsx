@@ -1,5 +1,24 @@
+import { mount } from 'enzyme';
 import TimePlayed from '../timePlayed';
-import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import Textfield from '@coralui/react-coral/lib/Textfield';
+import ElementFilter from '../components/elementFilter';
+import { ReduxFormSelect as Select } from '@reactor/react-components';
+import AdvancedEventOptions from '../components/advancedEventOptions';
+
+const getReactComponents = (wrapper) => {
+  const amountField = wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'amount').node;
+  const unitSelect = wrapper.find(Select).node;
+  const elementFilter = wrapper.find(ElementFilter).node;
+  const advancedEventOptions = wrapper.find(AdvancedEventOptions).node;
+
+  return {
+    amountField,
+    unitSelect,
+    elementFilter,
+    advancedEventOptions
+  };
+};
 
 describe('time played view', () => {
   let extensionBridge;
@@ -7,7 +26,7 @@ describe('time played view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = getFormInstance(TimePlayed, extensionBridge);
+    instance = mount(getFormComponent(TimePlayed, extensionBridge));
   });
 
   it('sets form values from settings', () => {
@@ -20,7 +39,12 @@ describe('time played view', () => {
       }
     });
 
-    const { amountField, unitSelect, elementFilter, advancedEventOptions } = instance.refs;
+    const {
+      amountField,
+      unitSelect,
+      elementFilter,
+      advancedEventOptions
+    } = getReactComponents(instance);
 
     expect(amountField.props.value).toBe(55);
     expect(unitSelect.props.value).toBe('percent');
@@ -31,7 +55,7 @@ describe('time played view', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { amountField, elementFilter, advancedEventOptions } = instance.refs;
+    const { amountField, elementFilter, advancedEventOptions } = getReactComponents(instance);
 
     amountField.props.onChange(45);
     elementFilter.props.fields.elementSelector.onChange('.foo');
@@ -47,7 +71,7 @@ describe('time played view', () => {
   it('sets validation errors', () => {
     extensionBridge.init();
 
-    const { amountField, elementFilter } = instance.refs;
+    const { amountField, elementFilter } = getReactComponents(instance);
 
     expect(extensionBridge.validate()).toBe(false);
     expect(amountField.props.error).toEqual(jasmine.any(String));

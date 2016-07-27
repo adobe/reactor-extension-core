@@ -1,10 +1,20 @@
 import OperatingSystem from '../operatingSystem';
-import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import { mount } from 'enzyme';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import CheckboxList from '../../components/checkboxList';
 
 const selectedOperatingSystems = [
   'Windows',
   'Unix'
 ];
+
+const getReactComponents = (wrapper) => {
+  const operatingSystemsCheckboxList = wrapper.find(CheckboxList).node;
+
+  return {
+    operatingSystemsCheckboxList
+  };
+};
 
 describe('operating system view', () => {
   let extensionBridge;
@@ -12,7 +22,7 @@ describe('operating system view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = getFormInstance(OperatingSystem, extensionBridge);
+    instance = mount(getFormComponent(OperatingSystem, extensionBridge));
   });
 
   it('sets form values from settings', () => {
@@ -22,7 +32,7 @@ describe('operating system view', () => {
       }
     });
 
-    const { operatingSystemsCheckboxList } = instance.refs;
+    const { operatingSystemsCheckboxList } = getReactComponents(instance);
 
     expect(operatingSystemsCheckboxList.props.value).toEqual(selectedOperatingSystems);
   });
@@ -30,7 +40,7 @@ describe('operating system view', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { operatingSystemsCheckboxList } = instance.refs;
+    const { operatingSystemsCheckboxList } = getReactComponents(instance);
     operatingSystemsCheckboxList.props.onChange(selectedOperatingSystems);
 
     expect(extensionBridge.getSettings()).toEqual({

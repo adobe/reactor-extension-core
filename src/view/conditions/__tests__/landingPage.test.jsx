@@ -1,5 +1,21 @@
+import { mount } from 'enzyme';
 import LandingPage from '../landingPage';
-import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import RegexToggle from '../../components/regexToggle';
+import Textfield from '@coralui/react-coral/lib/Textfield';
+import { ValidationWrapper } from '@reactor/react-components';
+
+const getReactComponents = (wrapper) => {
+  const pageField = wrapper.find(Textfield).node;
+  const valueRegexToggle = wrapper.find(RegexToggle).node;
+  const pageWrapper = wrapper.find(ValidationWrapper).node;
+
+  return {
+    pageField,
+    valueRegexToggle,
+    pageWrapper
+  };
+};
 
 describe('landing page view', () => {
   let extensionBridge;
@@ -7,7 +23,7 @@ describe('landing page view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = getFormInstance(LandingPage, extensionBridge);
+    instance = mount(getFormComponent(LandingPage, extensionBridge));
   });
 
   it('sets form values from settings', () => {
@@ -18,7 +34,7 @@ describe('landing page view', () => {
       }
     });
 
-    const { pageField, valueRegexToggle } = instance.refs;
+    const { pageField, valueRegexToggle } = getReactComponents(instance);
 
     expect(pageField.props.value).toBe('foo');
     expect(valueRegexToggle.props.value).toBe('foo');
@@ -28,7 +44,7 @@ describe('landing page view', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { pageField, valueRegexToggle } = instance.refs;
+    const { pageField, valueRegexToggle } = getReactComponents(instance);
 
     pageField.props.onChange('foo');
     valueRegexToggle.props.onValueIsRegexChange(true);
@@ -43,7 +59,7 @@ describe('landing page view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { pageWrapper } = instance.refs;
+    const { pageWrapper } = getReactComponents(instance);
 
     expect(pageWrapper.props.error).toEqual(jasmine.any(String));
   });

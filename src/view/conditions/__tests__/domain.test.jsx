@@ -1,5 +1,15 @@
+import { mount } from 'enzyme';
 import Domain from '../domain';
-import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import CheckboxList from '../../components/checkboxList';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+
+const getReactComponents = (wrapper) => {
+  const domainsCheckboxList = wrapper.find(CheckboxList).node;
+
+  return {
+    domainsCheckboxList
+  };
+};
 
 const domains = [
   'adobe.com',
@@ -16,7 +26,7 @@ describe('domain view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = getFormInstance(Domain, extensionBridge);
+    instance = mount(getFormComponent(Domain, extensionBridge));
   });
 
   it('sets form values from settings', () => {
@@ -29,7 +39,7 @@ describe('domain view', () => {
       }
     });
 
-    const { domainsCheckboxList } = instance.refs;
+    const { domainsCheckboxList } = getReactComponents(instance);
 
     expect(domainsCheckboxList.props.options).toEqual(domains);
     expect(domainsCheckboxList.props.value).toEqual(selectedDomains);
@@ -38,7 +48,7 @@ describe('domain view', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { domainsCheckboxList } = instance.refs;
+    const { domainsCheckboxList } = getReactComponents(instance);
     domainsCheckboxList.props.onChange(selectedDomains);
 
     expect(extensionBridge.getSettings()).toEqual({

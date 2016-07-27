@@ -1,27 +1,14 @@
 import React from 'react';
-import ReactDom from 'react-dom';
-import Coral from '@coralui/coralui-support-reduxform';
 import ElementPropertyEditor from './elementPropertyEditor';
 import createId from '../../utils/createId';
+import Button from '@coralui/react-coral/lib/Button';
 
 export default class ElementPropertiesEditor extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   add = () => {
     this.props.fields.elementProperties.addField({
       id: createId(),
       name: '',
       value: ''
-    });
-
-    // Focus the newly added field. We use setTimeout because at this moment, the new row is not
-    // yet available in the page.
-    setTimeout(() => {
-      const lastRowIndex = this.props.fields.elementProperties.length - 1;
-      const lastElementPropertyEditor = this.refs['elementPropertyEditor' + lastRowIndex];
-      ReactDom.findDOMNode(lastElementPropertyEditor.refs.nameField).firstChild.focus();
     });
   };
 
@@ -40,16 +27,17 @@ export default class ElementPropertiesEditor extends React.Component {
 
     return (
       <div>
-        {elementProperties.map((elementProperty, index) => {
-          return <ElementPropertyEditor
-            ref={`elementPropertyEditor${index}`}
-            key={elementProperty.id.value}
-            fields={elementProperty}
-            remove={this.remove.bind(null, index)}
-            onKeyPress={this.handleKeyPress}
-            />;
-        })}
-        <Coral.Button ref="addButton" onClick={this.add}>Add</Coral.Button>
+        {
+          elementProperties.map((elementProperty, index) => (
+            <ElementPropertyEditor
+              key={ elementProperty.id.value }
+              fields={ elementProperty }
+              remove={ this.remove.bind(null, index) }
+              onKeyPress={ this.handleKeyPress }
+            />
+          ))
+        }
+        <Button onClick={ this.add }>Add</Button>
       </div>
     );
   }
@@ -65,7 +53,7 @@ export const formConfig = {
   settingsToFormValues(values, options) {
     const { settings } = options;
 
-    var elementProperties = settings.elementProperties || [];
+    const elementProperties = settings.elementProperties || [];
 
     // Make sure there's always at least one element property. This is just so the view
     // always shows at least one row.
@@ -77,7 +65,7 @@ export const formConfig = {
     }
 
     // ID used as a key when rendering each item.
-    elementProperties.forEach(elementProperty => elementProperty.id = createId());
+    elementProperties.forEach(elementProperty => { elementProperty.id = createId(); });
 
     return {
       ...values,
@@ -91,18 +79,18 @@ export const formConfig = {
 
     let { elementProperties } = values;
 
-    elementProperties = elementProperties.filter(elementProperty => {
-      return elementProperty.name;
-    }).map(elementProperty => {
-      elementProperty = {
-        ...elementProperty
-      };
+    elementProperties = elementProperties
+      .filter(elementProperty => elementProperty.name)
+      .map(elementProperty => {
+        elementProperty = {
+          ...elementProperty
+        };
 
-      // ID is only used for view rendering.
-      delete elementProperty.id;
+        // ID is only used for view rendering.
+        delete elementProperty.id;
 
-      return elementProperty;
-    });
+        return elementProperty;
+      });
 
     if (elementProperties.length) {
       settings.elementProperties = elementProperties;
@@ -118,7 +106,7 @@ export const formConfig = {
     };
 
     errors.elementProperties = values.elementProperties.map((item) => {
-      var result = {};
+      const result = {};
 
       if (item.value && !item.name) {
         result.name = 'Please fill in the property name.';

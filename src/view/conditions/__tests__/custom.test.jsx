@@ -1,5 +1,18 @@
 import Custom from '../custom';
-import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import { mount } from 'enzyme';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import Button from '@coralui/react-coral/lib/Button';
+import { ErrorTip } from '@reactor/react-components';
+
+const getReactComponents = (wrapper) => {
+  const openEditorButton = wrapper.find(Button).filterWhere(n => n.prop('icon') === 'code').node;
+  const sourceErrorIcon = wrapper.find(ErrorTip).node;
+
+  return {
+    openEditorButton,
+    sourceErrorIcon
+  };
+};
 
 describe('custom view', () => {
   let extensionBridge;
@@ -7,7 +20,7 @@ describe('custom view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = getFormInstance(Custom, extensionBridge);
+    instance = mount(getFormComponent(Custom, extensionBridge));
   });
 
   it('opens code editor with source value when button is clicked and stores result', () => {
@@ -23,7 +36,7 @@ describe('custom view', () => {
       })
     };
 
-    const { openEditorButton } = instance.refs;
+    const { openEditorButton } = getReactComponents(instance);
 
     openEditorButton.props.onClick();
 
@@ -42,8 +55,8 @@ describe('custom view', () => {
 
     expect(extensionBridge.validate()).toBe(false);
 
-    const { sourceErrorIcon } = instance.refs;
+    const { sourceErrorIcon } = getReactComponents(instance);
 
-    expect(sourceErrorIcon.props.message).toBeDefined();
+    expect(sourceErrorIcon.props.children).toBeDefined();
   });
 });

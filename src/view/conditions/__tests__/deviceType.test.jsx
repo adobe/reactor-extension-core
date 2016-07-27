@@ -1,10 +1,20 @@
+import { mount } from 'enzyme';
 import DeviceType from '../deviceType';
-import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import CheckboxList from '../../components/checkboxList';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const selectedDeviceTypes = [
   'Desktop',
   'Android'
 ];
+
+const getReactComponents = (wrapper) => {
+  const deviceOptionsCheckboxList = wrapper.find(CheckboxList).node;
+
+  return {
+    deviceOptionsCheckboxList
+  };
+};
 
 describe('device type view', () => {
   let extensionBridge;
@@ -12,7 +22,7 @@ describe('device type view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = getFormInstance(DeviceType, extensionBridge);
+    instance = mount(getFormComponent(DeviceType, extensionBridge));
   });
 
   it('sets form values from settings', () => {
@@ -22,7 +32,7 @@ describe('device type view', () => {
       }
     });
 
-    const { deviceOptionsCheckboxList } = instance.refs;
+    const { deviceOptionsCheckboxList } = getReactComponents(instance);
 
     expect(deviceOptionsCheckboxList.props.value).toEqual(selectedDeviceTypes);
   });
@@ -30,7 +40,7 @@ describe('device type view', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { deviceOptionsCheckboxList } = instance.refs;
+    const { deviceOptionsCheckboxList } = getReactComponents(instance);
     deviceOptionsCheckboxList.props.onChange(selectedDeviceTypes);
 
     expect(extensionBridge.getSettings()).toEqual({

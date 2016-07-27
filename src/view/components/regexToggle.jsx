@@ -1,6 +1,6 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-react';
 import classNames from 'classnames';
+import Switch from '@coralui/react-coral/lib/Switch';
 
 export default class RegexToggle extends React.Component {
   onToggleChange = event => {
@@ -10,25 +10,25 @@ export default class RegexToggle extends React.Component {
   onTestRegex = () => {
     window.extensionBridge.openRegexTester(
       this.props.value,
-      this.props.onValueChange || function() {}
+      this.props.onValueChange || (() => {})
     );
   };
 
   render() {
     return (
-      <div className={classNames(this.props.className, 'u-inlineBlock')}>
+      <div className={ classNames(this.props.className, 'u-inlineBlock') }>
         <label>
-          <Coral.Switch
-            ref="regexSwitch"
+          <Switch
             className="u-gapRight"
-            checked={this.props.valueIsRegex}
-            onChange={this.onToggleChange}/>
+            checked={ this.props.valueIsRegex }
+            onChange={ this.onToggleChange }
+          />
           <span className="u-label">Regex</span>
           <button
-            ref="testButton"
             className="u-buttonReset coral-Link"
-            onClick={this.onTestRegex}
-            style={{ visibility: this.props.valueIsRegex ? 'visible' : 'hidden' }}>Test</button>
+            onClick={ this.onTestRegex }
+            style={ { visibility: this.props.valueIsRegex ? 'visible' : 'hidden' } }
+          >Test</button>
         </label>
       </div>
     );

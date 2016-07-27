@@ -1,25 +1,31 @@
+import { mount } from 'enzyme';
 import React from 'react';
-import Coral from '@coralui/coralui-support-react';
-import TestUtils from 'react-addons-test-utils';
 import ComparisonOperatorField from '../comparisonOperatorField';
+import { ReduxFormSelect as Select } from '@reactor/react-components';
 
-const render = props => {
-  return TestUtils.renderIntoDocument(<ComparisonOperatorField {...props}/>);
+const getReactComponents = (wrapper) => {
+  const select = wrapper.find(Select).node;
+
+  return {
+    select
+  };
 };
+
+const render = props => mount(<ComparisonOperatorField { ...props } />);
 
 describe('comparison operator field', () => {
   it('sets selected value on select', () => {
-    const { select } = render({
+    const { select } = getReactComponents(render({
       value: '<'
-    }).refs;
+    }));
     expect(select.props.value).toBe('<');
   });
-  
+
   it('calls onChange with value from event', () => {
     const onChange = jasmine.createSpy();
-    const { select } = render({
+    const { select } = getReactComponents(render({
       onChange
-    }).refs;
+    }));
 
     select.props.onChange({
       target: {

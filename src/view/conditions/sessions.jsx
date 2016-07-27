@@ -1,32 +1,30 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-reduxform';
+import Textfield from '@coralui/react-coral/lib/Textfield';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import { ValidationWrapper } from '@reactor/react-components';
 import ComparisonOperatorField from './components/comparisonOperatorField';
 import { isNumber } from '../utils/validators';
 
-class Sessions extends React.Component {
-  render() {
-    const { operator, count } = this.props.fields;
+const Sessions = ({ ...props }) => {
+  const { operator, count } = props.fields;
 
-    return (
+  return (
+    <div>
       <div>
-        <div>
-          <label className="u-gapRight">
-            <span className="u-label">The user's number of sessions is</span>
-            <ComparisonOperatorField ref="operatorField" {...operator}/>
+        <label className="u-gapRight">
+          <span className="u-label">The user's number of sessions is</span>
+          <ComparisonOperatorField { ...operator } />
+        </label>
+        <ValidationWrapper error={ count.touched && count.error }>
+          <label>
+            <span className="u-label">the value</span>
+            <Textfield className="u-smallTextfield" { ...count } />
           </label>
-          <ValidationWrapper ref="countWrapper" error={count.touched && count.error}>
-            <label>
-              <span className="u-label">the value</span>
-              <Coral.Textfield className="u-smallTextfield" ref="countField" {...count}/>
-            </label>
-          </ValidationWrapper>
-        </div>
+        </ValidationWrapper>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 const formConfig = {
   fields: [

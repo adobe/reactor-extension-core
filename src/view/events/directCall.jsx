@@ -1,21 +1,19 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-reduxform';
+import Textfield from '@coralui/react-coral/lib/Textfield';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import { ValidationWrapper } from '@reactor/react-components';
 
-class DirectCall extends React.Component {
-  render() {
-    const { name } = this.props.fields;
+function DirectCall({ ...props }) {
+  const { name } = props.fields;
 
-    return (
-      <ValidationWrapper ref="nameWrapper" error={name.touched && name.error}>
-        <label>
-          <span className="u-label">_satellite.track string</span>
-          <Coral.Textfield ref="nameField" {...name}/>
-        </label>
-      </ValidationWrapper>
-    );
-  }
+  return (
+    <ValidationWrapper error={ name.touched && name.error }>
+      <label>
+        <span className="u-label">_satellite.track string</span>
+        <Textfield { ...name } />
+      </label>
+    </ValidationWrapper>
+  );
 }
 
 const formConfig = {

@@ -1,5 +1,5 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-reduxform';
+import Textfield from '@coralui/react-coral/lib/Textfield';
 import RegexToggle from '../components/regexToggle';
 import { ValidationWrapper } from '@reactor/react-components';
 import extensionViewReduxForm from '../extensionViewReduxForm';
@@ -11,25 +11,27 @@ class URLParameter extends React.Component {
     return (
       <div>
         <ValidationWrapper
-          ref="nameWrapper"
+          type="name"
           className="u-gapRight"
-          error={name.touched && name.error}>
+          error={ name.touched && name.error }
+        >
           <span className="u-label">URL Parameter Name</span>
-          <Coral.Textfield ref="nameField" {...name}/>
+          <Textfield ref="nameField" { ...name } />
         </ValidationWrapper>
         <ValidationWrapper
-          ref="valueWrapper"
+          type="value"
           className="u-gapRight"
-          error={value.touched && value.error}>
+          error={ value.touched && value.error }
+        >
           <span className="u-label">URL Parameter Value</span>
-          <Coral.Textfield ref="valueField" {...value}/>
+          <Textfield { ...value } />
         </ValidationWrapper>
         <RegexToggle
-          ref="valueRegexToggle"
-          value={value.value}
-          valueIsRegex={valueIsRegex.value}
-          onValueChange={value.onChange}
-          onValueIsRegexChange={valueIsRegex.onChange}/>
+          value={ value.value }
+          valueIsRegex={ valueIsRegex.value }
+          onValueChange={ value.onChange }
+          onValueIsRegexChange={ valueIsRegex.onChange }
+        />
       </div>
     );
   }

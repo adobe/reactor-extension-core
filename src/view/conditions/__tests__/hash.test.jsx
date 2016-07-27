@@ -1,5 +1,25 @@
+import { mount } from 'enzyme';
 import Hash from '../hash';
-import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import RegexToggle from '../../components/regexToggle';
+import { ValidationWrapper } from '@reactor/react-components';
+import Textfield from '@coralui/react-coral/lib/Textfield';
+import MultipleItemEditor from '../components/multipleItemEditor';
+
+const getReactComponents = (wrapper) => {
+  const hashFields = wrapper.find(Textfield).nodes;
+  const hashRegexToggles = wrapper.find(RegexToggle).nodes;
+  const hashWrappers = wrapper.find(ValidationWrapper).nodes;
+  const multipleItemEditor = wrapper.find(MultipleItemEditor).node;
+
+  return {
+    hashFields,
+    hashRegexToggles,
+    hashWrappers,
+    multipleItemEditor
+  };
+};
+
 
 const testProps = {
   settings: {
@@ -21,32 +41,33 @@ describe('hash view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = getFormInstance(Hash, extensionBridge);
+    instance = mount(getFormComponent(Hash, extensionBridge));
   });
 
   it('sets form values from settings', () => {
     extensionBridge.init(testProps);
 
     const {
-      hashField0,
-      hashField1,
-      hashRegexToggle0,
-      hashRegexToggle1
-    } = instance.refs.multipleItemEditor.refs;
+      hashFields,
+      hashRegexToggles
+    } = getReactComponents(instance);
 
-    expect(hashField0.props.value).toBe('foo');
-    expect(hashField1.props.value).toBe('bar');
-    expect(hashRegexToggle0.props.valueIsRegex).toBe('');
-    expect(hashRegexToggle1.props.valueIsRegex).toBe(true);
+    expect(hashFields[0].props.value).toBe('foo');
+    expect(hashFields[1].props.value).toBe('bar');
+    expect(hashRegexToggles[0].props.valueIsRegex).toBe('');
+    expect(hashRegexToggles[1].props.valueIsRegex).toBe(true);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { hashField0, hashRegexToggle0 } = instance.refs.multipleItemEditor.refs;
+    const {
+      hashFields,
+      hashRegexToggles
+    } = getReactComponents(instance);
 
-    hashField0.props.onChange('goo');
-    hashRegexToggle0.props.onValueIsRegexChange(true);
+    hashFields[0].props.onChange('goo');
+    hashRegexToggles[0].props.onValueIsRegexChange(true);
 
     expect(extensionBridge.getSettings()).toEqual({
       hashes: [
@@ -61,45 +82,41 @@ describe('hash view', () => {
   it('adds a row', () => {
     extensionBridge.init(testProps);
 
-    const { multipleItemEditor } = instance.refs;
+    const { multipleItemEditor } = getReactComponents(instance);
 
     multipleItemEditor.props.onAddItem();
 
     const {
-      hashField0,
-      hashField1,
-      hashField2,
-      hashField3
-    } = instance.refs.multipleItemEditor.refs;
+      hashFields
+    } = getReactComponents(instance);
 
-    expect(hashField0).toBeDefined();
-    expect(hashField1).toBeDefined();
-    expect(hashField2).toBeDefined();
-    expect(hashField3).toBeUndefined();
+    expect(hashFields[0]).toBeDefined();
+    expect(hashFields[1]).toBeDefined();
+    expect(hashFields[2]).toBeDefined();
+    expect(hashFields[3]).toBeUndefined();
   });
 
   it('removes a row', () => {
     extensionBridge.init(testProps);
 
-    const { multipleItemEditor } = instance.refs;
+    const { multipleItemEditor } = getReactComponents(instance);
 
     multipleItemEditor.props.onRemoveItem(1);
 
     const {
-      hashField0,
-      hashField1
-    } = instance.refs.multipleItemEditor.refs;
+      hashFields
+    } = getReactComponents(instance);
 
-    expect(hashField0).toBeDefined();
-    expect(hashField1).toBeUndefined();
+    expect(hashFields[0]).toBeDefined();
+    expect(hashFields[1]).toBeUndefined();
   });
-  
+
   it('sets errors if required values are not provided', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { hashWrapper0 } = instance.refs.multipleItemEditor.refs;
+    const { hashWrappers } = getReactComponents(instance);
 
-    expect(hashWrapper0.props.error).toBeDefined();
+    expect(hashWrappers[0].props.error).toBeDefined();
   });
 });

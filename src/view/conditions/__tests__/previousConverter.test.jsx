@@ -1,5 +1,20 @@
+import { mount } from 'enzyme';
 import PreviousConverter from '../previousConverter';
-import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import { ValidationWrapper, DataElementSelectorButton } from '@reactor/react-components';
+import Textfield from '@coralui/react-coral/lib/Textfield';
+
+const getReactComponents = (wrapper) => {
+  const dataElementField = wrapper.find(Textfield).node;
+  const dataElementButton = wrapper.find(DataElementSelectorButton).node;
+  const dataElementWrapper = wrapper.find(ValidationWrapper).node;
+
+  return {
+    dataElementField,
+    dataElementButton,
+    dataElementWrapper
+  };
+};
 
 describe('previous converter view', () => {
   let extensionBridge;
@@ -8,7 +23,7 @@ describe('previous converter view', () => {
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
     window.extensionBridge = extensionBridge;
-    instance = getFormInstance(PreviousConverter, extensionBridge);
+    instance = mount(getFormComponent(PreviousConverter, extensionBridge));
   });
 
   afterAll(() => {
@@ -16,7 +31,7 @@ describe('previous converter view', () => {
   });
 
   it('opens the data element selector from data element button', () => {
-    const { dataElementField, dataElementButton } = instance.refs;
+    const { dataElementField, dataElementButton } = getReactComponents(instance);
 
     spyOn(window.extensionBridge, 'openDataElementSelector').and.callFake(callback => {
       callback('foo');
@@ -35,7 +50,7 @@ describe('previous converter view', () => {
       }
     });
 
-    const { dataElementField } = instance.refs;
+    const { dataElementField } = getReactComponents(instance);
 
     expect(dataElementField.props.value).toBe('foo');
   });
@@ -43,7 +58,7 @@ describe('previous converter view', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { dataElementField } = instance.refs;
+    const { dataElementField } = getReactComponents(instance);
 
     dataElementField.props.onChange('foo');
 
@@ -56,7 +71,7 @@ describe('previous converter view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { dataElementWrapper } = instance.refs;
+    const { dataElementWrapper } = getReactComponents(instance);
 
     expect(dataElementWrapper.props.error).toEqual(jasmine.any(String));
   });

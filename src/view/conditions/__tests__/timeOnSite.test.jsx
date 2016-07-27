@@ -1,5 +1,21 @@
+import { mount } from 'enzyme';
 import TimeOnSite from '../timeOnSite';
-import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import Textfield from '@coralui/react-coral/lib/Textfield';
+import { ValidationWrapper } from '@reactor/react-components';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import ComparisonOperatorField from '../components/comparisonOperatorField';
+
+const getReactComponents = (wrapper) => {
+  const operatorField = wrapper.find(ComparisonOperatorField).node;
+  const minutesField = wrapper.find(Textfield).node;
+  const minutesWrapper = wrapper.find(ValidationWrapper).node;
+
+  return {
+    operatorField,
+    minutesField,
+    minutesWrapper
+  };
+};
 
 describe('time on site view', () => {
   let extensionBridge;
@@ -7,13 +23,13 @@ describe('time on site view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = getFormInstance(TimeOnSite, extensionBridge);
+    instance = mount(getFormComponent(TimeOnSite, extensionBridge));
   });
 
   it('sets operator to greater than by default', () => {
     extensionBridge.init();
 
-    const { operatorField } = instance.refs;
+    const { operatorField } = getReactComponents(instance);
 
     expect(operatorField.props.value).toBe('>');
   });
@@ -26,7 +42,7 @@ describe('time on site view', () => {
       }
     });
 
-    const { operatorField, minutesField } = instance.refs;
+    const { operatorField, minutesField } = getReactComponents(instance);
 
     expect(operatorField.props.value).toBe('=');
     expect(minutesField.props.value).toBe(100);
@@ -35,7 +51,7 @@ describe('time on site view', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { operatorField, minutesField } = instance.refs;
+    const { operatorField, minutesField } = getReactComponents(instance);
 
     operatorField.props.onChange('=');
     minutesField.props.onChange(100);
@@ -50,7 +66,7 @@ describe('time on site view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { minutesWrapper } = instance.refs;
+    const { minutesWrapper } = getReactComponents(instance);
 
     expect(minutesWrapper.props.error).toEqual(jasmine.any(String));
   });
@@ -59,7 +75,7 @@ describe('time on site view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { minutesField, minutesWrapper } = instance.refs;
+    const { minutesField, minutesWrapper } = getReactComponents(instance);
 
     minutesField.props.onChange('12.abc');
 

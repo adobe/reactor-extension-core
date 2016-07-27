@@ -1,5 +1,4 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-reduxform';
 import CheckboxList from '../components/checkboxList';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
@@ -14,15 +13,13 @@ const deviceTypeOptions = [
   'Android'
 ];
 
-class DeviceType extends React.Component {
-  render() {
-    const { deviceTypes } = this.props.fields;
-    return <CheckboxList
-      ref="deviceOptionsCheckboxList"
-      options={deviceTypeOptions}
-      {...deviceTypes}/>;
-  }
-}
+const DeviceType = ({ ...props }) => {
+  const { deviceTypes } = props.fields;
+  return (<CheckboxList
+    options={ deviceTypeOptions }
+    { ...deviceTypes }
+  />);
+};
 
 const formConfig = {
   fields: ['deviceTypes'],

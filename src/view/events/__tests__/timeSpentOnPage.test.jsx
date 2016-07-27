@@ -1,5 +1,18 @@
+import { mount } from 'enzyme';
 import TimeSpentOnPage from '../timeSpentOnPage';
-import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import Textfield from '@coralui/react-coral/lib/Textfield';
+import { ValidationWrapper } from '@reactor/react-components';
+
+const getReactComponents = (wrapper) => {
+  const timeOnPageField = wrapper.find(Textfield).node;
+  const timeOnPageWrapper = wrapper.find(ValidationWrapper).node;
+
+  return {
+    timeOnPageField,
+    timeOnPageWrapper
+  };
+};
 
 describe('time spent on page view', () => {
   let extensionBridge;
@@ -7,7 +20,7 @@ describe('time spent on page view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = getFormInstance(TimeSpentOnPage, extensionBridge);
+    instance = mount(getFormComponent(TimeSpentOnPage, extensionBridge));
   });
 
   it('sets form values from settings', () => {
@@ -17,7 +30,7 @@ describe('time spent on page view', () => {
       }
     });
 
-    const { timeOnPageField } = instance.refs;
+    const { timeOnPageField } = getReactComponents(instance);
 
     expect(timeOnPageField.props.value).toBe(44);
   });
@@ -25,7 +38,7 @@ describe('time spent on page view', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { timeOnPageField } = instance.refs;
+    const { timeOnPageField } = getReactComponents(instance);
     timeOnPageField.props.onChange('55');
 
     expect(extensionBridge.getSettings()).toEqual({
@@ -37,7 +50,7 @@ describe('time spent on page view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { timeOnPageWrapper } = instance.refs;
+    const { timeOnPageWrapper } = getReactComponents(instance);
 
     expect(timeOnPageWrapper.props.error).toEqual(jasmine.any(String));
   });
@@ -46,7 +59,7 @@ describe('time spent on page view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { timeOnPageField, timeOnPageWrapper } = instance.refs;
+    const { timeOnPageField, timeOnPageWrapper } = getReactComponents(instance);
 
     timeOnPageField.props.onChange('12.abc');
 

@@ -1,5 +1,18 @@
+import { mount } from 'enzyme';
 import EntersViewport from '../entersViewport';
-import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import SpecificElements from '../components/specificElements';
+import DelayType from '../components/delayType';
+
+const getReactComponents = (wrapper) => {
+  const specificElements = wrapper.find(SpecificElements).node;
+  const delayType = wrapper.find(DelayType).node;
+
+  return {
+    specificElements,
+    delayType
+  };
+};
 
 describe('enters viewport view', () => {
   let extensionBridge;
@@ -7,7 +20,7 @@ describe('enters viewport view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = getFormInstance(EntersViewport, extensionBridge);
+    instance = mount(getFormComponent(EntersViewport, extensionBridge));
   });
 
   it('sets form values from settings', () => {
@@ -18,7 +31,7 @@ describe('enters viewport view', () => {
       }
     });
 
-    const { specificElements, delayType } = instance.refs;
+    const { specificElements, delayType } = getReactComponents(instance);
 
     expect(specificElements.props.fields.elementSelector.value).toBe('.foo');
     expect(delayType.props.fields.delay.value).toBe(100);
@@ -27,7 +40,7 @@ describe('enters viewport view', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { specificElements, delayType } = instance.refs;
+    const { specificElements, delayType } = getReactComponents(instance);
 
     specificElements.props.fields.elementSelector.onChange('.foo');
     delayType.props.fields.delayType.onChange('delay');
@@ -42,7 +55,7 @@ describe('enters viewport view', () => {
   it('sets validation errors', () => {
     extensionBridge.init();
 
-    const { specificElements, delayType } = instance.refs;
+    const { specificElements, delayType } = getReactComponents(instance);
 
     delayType.props.fields.delayType.onChange('delay');
 

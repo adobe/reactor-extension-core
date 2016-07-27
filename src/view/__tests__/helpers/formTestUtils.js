@@ -1,9 +1,8 @@
 import React from 'react';
- import ReactDOM from 'react-dom';
-import TestUtils from 'react-addons-test-utils';
 import { Provider } from 'react-redux';
-import reducer from '../../reduxActions/reducer';
 import { createStore } from 'redux';
+
+import reducer from '../../reduxActions/reducer';
 import bridgeAdapter from '../../bridgeAdapter';
 
 export const createExtensionBridge = () => {
@@ -13,14 +12,14 @@ export const createExtensionBridge = () => {
     register(options) {
       registeredOptions = options;
     },
-    init() {
-      return registeredOptions.init.apply(this, arguments);
+    init(...args) {
+      return registeredOptions.init.apply(this, args);
     },
-    validate() {
-      return registeredOptions.validate.apply(this, arguments);
+    validate(...args) {
+      return registeredOptions.validate.apply(this, args);
     },
-    getSettings() {
-      return registeredOptions.getSettings.apply(this, arguments);
+    getSettings(...args) {
+      return registeredOptions.getSettings.apply(this, args);
     },
     openCodeEditor() {},
     openRegexTester() {},
@@ -28,21 +27,15 @@ export const createExtensionBridge = () => {
   };
 };
 
-export const getFormInstance = (FormComponent, extensionBridge) => {
+export const getFormComponent = (FormComponent, extensionBridge, props = {}) => {
   const store = createStore(reducer, {});
   const setFormConfigForCurrentRoute = bridgeAdapter(extensionBridge, store);
 
   setFormConfigForCurrentRoute(FormComponent.formConfig);
 
-  const providerInstance = TestUtils.renderIntoDocument(
-    <Provider store={store}>
-      <FormComponent />
+  return (
+    <Provider store={ store }>
+      <FormComponent { ...props } />
     </Provider>
   );
-
-  // Have to do this mess in order to get the wrapped component because redux-form doesn't
-  // expose any method for us to do so. https://github.com/erikras/redux-form/issues/202
-  return TestUtils.findAllInRenderedTree(providerInstance, function(component) {
-    return component && component.refs && component.refs.extensionViewWrappedComponent;
-  })[0].refs.extensionViewWrappedComponent;
 };

@@ -1,6 +1,26 @@
 import extensionViewReduxForm from '../../../extensionViewReduxForm';
+import { mount } from 'enzyme';
 import DelayType, { formConfig } from '../delayType';
-import { getFormInstance, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
+import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
+import Radio from '@coralui/react-coral/lib/Radio';
+import Textfield from '@coralui/react-coral/lib/Textfield';
+import { ValidationWrapper } from '@reactor/react-components';
+
+const getReactComponents = (wrapper) => {
+  const delayRadio =
+    wrapper.find(Radio).filterWhere(n => n.prop('value') === 'delay').node;
+  const immediateRadio =
+    wrapper.find(Radio).filterWhere(n => n.prop('value') === 'immediate').node;
+  const delayTextfield = wrapper.find(Textfield).node;
+  const delayValidationWrapper = wrapper.find(ValidationWrapper).node;
+
+  return {
+    delayRadio,
+    delayTextfield,
+    immediateRadio,
+    delayValidationWrapper
+  };
+};
 
 describe('delayType', () => {
   let extensionBridge;
@@ -9,7 +29,7 @@ describe('delayType', () => {
   beforeAll(() => {
     const FormComponent = extensionViewReduxForm(formConfig)(DelayType);
     extensionBridge = createExtensionBridge();
-    instance = getFormInstance(FormComponent, extensionBridge);
+    instance = mount(getFormComponent(FormComponent, extensionBridge));
   });
 
   describe('sets form values', () => {
@@ -20,16 +40,16 @@ describe('delayType', () => {
         }
       });
 
-      const { delayRadio, delayTextfield } = instance.refs;
+      const { delayRadio, delayTextfield } = getReactComponents(instance);
 
       expect(delayRadio.props.checked).toBe(true);
       expect(delayTextfield.props.value).toBe(500);
     });
 
     it('when settings doesn\'t contain delay value', () => {
-      extensionBridge.init({settings: {}});
+      extensionBridge.init({ settings: {} });
 
-      const { immediateRadio } = instance.refs;
+      const { immediateRadio } = getReactComponents(instance);
 
       expect(immediateRadio.props.checked).toBe(true);
     });
@@ -38,7 +58,7 @@ describe('delayType', () => {
   it('has the specific element radio button selected', () => {
     extensionBridge.init();
 
-    const { immediateRadio } = instance.refs;
+    const { immediateRadio } = getReactComponents(instance);
 
     expect(immediateRadio.props.checked).toBe(true);
   });
@@ -46,7 +66,7 @@ describe('delayType', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { delayRadio, delayTextfield } = instance.refs;
+    const { delayRadio, delayTextfield } = getReactComponents(instance);
 
     delayRadio.props.onChange('delay');
     delayTextfield.props.onChange(100);
@@ -60,7 +80,7 @@ describe('delayType', () => {
     'contains a value', () => {
     extensionBridge.init();
 
-    const { delayTextfield, immediateRadio } = instance.refs;
+    const { delayTextfield, immediateRadio } = getReactComponents(instance);
 
     delayTextfield.props.onChange(100);
     immediateRadio.props.onChange('immediately');
@@ -71,7 +91,7 @@ describe('delayType', () => {
   it('sets error if delay radio is selected and the delay field is empty', () => {
     extensionBridge.init();
 
-    const { delayRadio, delayValidationWrapper } = instance.refs;
+    const { delayRadio, delayValidationWrapper } = getReactComponents(instance);
     delayRadio.props.onChange('delay');
 
     expect(extensionBridge.validate()).toBe(false);
@@ -81,7 +101,7 @@ describe('delayType', () => {
   it('sets error if the delay field is not a number', () => {
     extensionBridge.init();
 
-    const { delayRadio, delayTextfield, delayValidationWrapper } = instance.refs;
+    const { delayRadio, delayTextfield, delayValidationWrapper } = getReactComponents(instance);
     delayRadio.props.onChange('delay');
     delayTextfield.props.onChange('aaa');
 

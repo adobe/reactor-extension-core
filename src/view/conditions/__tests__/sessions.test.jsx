@@ -1,5 +1,21 @@
+import { mount } from 'enzyme';
 import Sessions from '../sessions';
-import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import Textfield from '@coralui/react-coral/lib/Textfield';
+import { ValidationWrapper } from '@reactor/react-components';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import ComparisonOperatorField from '../components/comparisonOperatorField';
+
+const getReactComponents = (wrapper) => {
+  const operatorField = wrapper.find(ComparisonOperatorField).node;
+  const countField = wrapper.find(Textfield).node;
+  const countWrapper = wrapper.find(ValidationWrapper).node;
+
+  return {
+    operatorField,
+    countField,
+    countWrapper
+  };
+};
 
 describe('sessions view', () => {
   let extensionBridge;
@@ -7,13 +23,13 @@ describe('sessions view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = getFormInstance(Sessions, extensionBridge);
+    instance = mount(getFormComponent(Sessions, extensionBridge));
   });
 
   it('sets operator to greater than by default', () => {
     extensionBridge.init();
 
-    const { operatorField } = instance.refs;
+    const { operatorField } = getReactComponents(instance);
 
     expect(operatorField.props.value).toBe('>');
   });
@@ -26,7 +42,7 @@ describe('sessions view', () => {
       }
     });
 
-    const { operatorField, countField } = instance.refs;
+    const { operatorField, countField } = getReactComponents(instance);
 
     expect(operatorField.props.value).toBe('=');
     expect(countField.props.value).toBe(100);
@@ -35,7 +51,7 @@ describe('sessions view', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { operatorField, countField } = instance.refs;
+    const { operatorField, countField } = getReactComponents(instance);
 
     operatorField.props.onChange('=');
     countField.props.onChange(100);
@@ -50,7 +66,7 @@ describe('sessions view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { countWrapper } = instance.refs;
+    const { countWrapper } = getReactComponents(instance);
 
     expect(countWrapper.props.error).toEqual(jasmine.any(String));
   });
@@ -59,7 +75,7 @@ describe('sessions view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { countField, countWrapper } = instance.refs;
+    const { countField, countWrapper } = getReactComponents(instance);
 
     countField.props.onChange('12.abc');
 

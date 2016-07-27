@@ -1,24 +1,24 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-reduxform';
-import { ErrorTip } from '@reactor/react-components';
 import extensionViewReduxForm from '../extensionViewReduxForm';
+import Button from '@coralui/react-coral/lib/Button';
+import { ErrorTip } from '@reactor/react-components';
 
 class Custom extends React.Component {
   onOpenEditor = () => {
-    let sourceField = this.props.fields.source;
+    const sourceField = this.props.fields.source;
     window.extensionBridge.openCodeEditor(sourceField.value, sourceField.onChange);
   };
 
   render() {
-    let source = this.props.fields.source;
+    const source = this.props.fields.source;
 
     return (
       <div>
-        <Coral.Button ref="openEditorButton" icon="code" onClick={this.onOpenEditor}>
+        <Button icon="code" onClick={ this.onOpenEditor }>
           Open Editor
-        </Coral.Button>
-        {source.touched && source.error ?
-          <ErrorTip ref="sourceErrorIcon" message={source.error}/> : null
+        </Button>
+        { source.touched && source.error ?
+          <ErrorTip>{ source.error }</ErrorTip> : null
         }
       </div>
     );
