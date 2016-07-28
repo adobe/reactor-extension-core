@@ -1,23 +1,19 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-reduxform';
 import { ValidationWrapper } from '@reactor/react-components';
+import Textfield from '@coralui/react-coral/lib/Textfield';
 
-export default class ElementSelectorField extends React.Component {
-  render() {
-    const { elementSelector } = this.props.fields;
+export default ({ ...props }) => {
+  const { elementSelector } = props.fields;
 
-    return (
-      <ValidationWrapper
-        ref="validationWrapper"
-        error={elementSelector.touched && elementSelector.error}>
-        <label>
-          <span className="u-label">Elements matching the CSS selector</span>
-          <Coral.Textfield ref="textfield" {...elementSelector}/>
-        </label>
-      </ValidationWrapper>
-    );
-  }
-}
+  return (
+    <ValidationWrapper error={ elementSelector.touched && elementSelector.error }>
+      <label>
+        <span className="u-label">Elements matching the CSS selector</span>
+        <Textfield { ...elementSelector } />
+      </label>
+    </ValidationWrapper>
+  );
+};
 
 export const formConfig = {
   fields: [

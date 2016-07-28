@@ -1,7 +1,7 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-reduxform';
+import { ReduxFormSelect as Select, ValidationWrapper } from '@reactor/react-components';
+import Textfield from '@coralui/react-coral/lib/Textfield';
 import extensionViewReduxForm from '../extensionViewReduxForm';
-import { ValidationWrapper } from '@reactor/react-components';
 
 const elementPropertyPresets = [
   {
@@ -50,59 +50,50 @@ const elementPropertyPresets = [
   }
 ];
 
-class DOM extends React.Component {
-  render() {
-    const {
-      fields: {
-        elementSelector,
-        selectedElementPropertyPreset,
-        customElementProperty
-      }
-    } = this.props;
+function DOM({ ...props }) {
+  const {
+    fields: {
+      elementSelector,
+      selectedElementPropertyPreset,
+      customElementProperty
+    }
+  } = props;
 
-    return (
-      <div>
-        <div className="u-gapBottom">
-          <ValidationWrapper
-            ref="elementSelectorWrapper"
-            error={elementSelector.touched && elementSelector.error}>
-            <label>
-              <span className="u-label">From the DOM element matching the CSS Selector</span>
-              <Coral.Textfield ref="elementSelectorField" {...elementSelector}/>
-            </label>
-          </ValidationWrapper>
-        </div>
-        <div>
+  return (
+    <div>
+      <div className="u-gapBottom">
+        <ValidationWrapper
+          type="elementSelector"
+          error={ elementSelector.touched && elementSelector.error }
+        >
           <label>
-            <span className="u-label">Use the value of</span>
-            <Coral.Select
-              ref="elementPropertyPresetsSelect"
-              {...selectedElementPropertyPreset}
-              className="u-gapRight">
-              {
-                elementPropertyPresets.map(preset => {
-                  return (
-                    <Coral.Select.Item key={preset.value} value={preset.value}>
-                      {preset.label}
-                    </Coral.Select.Item>
-                  );
-                })
-              }
-            </Coral.Select>
+            <span className="u-label">From the DOM element matching the CSS Selector</span>
+            <Textfield { ...elementSelector } />
           </label>
-          {
-            (selectedElementPropertyPreset.value === 'custom') ?
+        </ValidationWrapper>
+      </div>
+      <div>
+        <label>
+          <span className="u-label">Use the value of</span>
+          <Select
+            { ...selectedElementPropertyPreset }
+            className="u-gapRight"
+            options={ elementPropertyPresets }
+          />
+        </label>
+        {
+          (selectedElementPropertyPreset.value === 'custom') ?
             <ValidationWrapper
-              ref="customElementPropertyWrapper"
-              error={customElementProperty.touched && customElementProperty.error}>
-              <Coral.Textfield ref="customElementPropertyField" {...customElementProperty}/>
+              type="customElementProperty"
+              error={ customElementProperty.touched && customElementProperty.error }
+            >
+              <Textfield { ...customElementProperty } />
             </ValidationWrapper>
             : null
-          }
-        </div>
+        }
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 const formConfig = {
@@ -113,9 +104,9 @@ const formConfig = {
     'elementPropertyPresets'
   ],
   settingsToFormValues(values, options) {
-    let { elementSelector, elementProperty } = options.settings;
+    const { elementSelector, elementProperty } = options.settings;
 
-    let elementPropertyIsPreset =
+    const elementPropertyIsPreset =
       elementPropertyPresets.some(preset => preset.value === elementProperty);
 
     let selectedElementPropertyPreset;
@@ -138,7 +129,7 @@ const formConfig = {
   },
 
   formValuesToSettings(settings, values) {
-    let { selectedElementPropertyPreset, customElementProperty } = values;
+    const { selectedElementPropertyPreset, customElementProperty } = values;
     let elementProperty;
 
     if (selectedElementPropertyPreset === 'custom') {

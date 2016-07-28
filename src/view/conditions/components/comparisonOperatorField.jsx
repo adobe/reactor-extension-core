@@ -1,5 +1,16 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-react';
+import { ReduxFormSelect as Select } from '@reactor/react-components';
+
+const options = [{
+  label: 'greater than',
+  value: '>'
+}, {
+  label: 'equal to',
+  value: '='
+}, {
+  label: 'less than',
+  value: '<'
+}];
 
 export default class ComparisonOperatorSelect extends React.Component {
   onChange = event => {
@@ -10,11 +21,11 @@ export default class ComparisonOperatorSelect extends React.Component {
 
   render() {
     return (
-      <Coral.Select ref="select" value={this.props.value} onChange={this.onChange}>
-        <Coral.Select.Item value=">">greater than</Coral.Select.Item>
-        <Coral.Select.Item value="=">equal to</Coral.Select.Item>
-        <Coral.Select.Item value="<">less than</Coral.Select.Item>
-      </Coral.Select>
+      <Select
+        value={ this.props.value }
+        onChange={ this.onChange }
+        options={ options }
+      />
     );
   }
 }

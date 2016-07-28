@@ -1,6 +1,6 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-reduxform';
-import { ValidationWrapper } from '@reactor/react-components';
+import Textfield from '@coralui/react-coral/lib/Textfield';
+import { ReduxFormSelect as Select, ValidationWrapper } from '@reactor/react-components';
 import ElementFilter, { formConfig as elementFilterFormConfig } from './components/elementFilter';
 import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
 import extensionViewReduxForm from '../extensionViewReduxForm';
@@ -12,43 +12,46 @@ const timePlayedUnit = {
   PERCENT: 'percent'
 };
 
-class TimePlayed extends React.Component {
-  render() {
-    const { amount, unit } = this.props.fields;
-    return (
-      <div>
-        <ElementFilter ref="elementFilter" fields={this.props.fields}/>
-        <div className="u-gapTop">
-          <label>
-            <span className="u-label u-gapRight">Trigger when</span>
-          </label>
-          <ValidationWrapper
-            ref="delayValidationWrapper"
-            error={amount.touched && amount.error}>
-            <Coral.Textfield
-              ref="amountField"
-              {...amount}/>
-          </ValidationWrapper>
-          <Coral.Select
-            {...unit}
-            ref="unitSelect"
-            className="u-gapLeft TimePlayed-unitSelect">
-            <coral-select-item value={timePlayedUnit.SECOND}>
-              seconds
-            </coral-select-item>
-            <coral-select-item value={timePlayedUnit.PERCENT}>
-              %
-            </coral-select-item>
-          </Coral.Select>
-          <label>
-            <span className="u-label u-gapLeft">have passed</span>
-          </label>
-        </div>
-        <AdvancedEventOptions ref="advancedEventOptions" fields={this.props.fields}/>
-      </div>
-    );
+const timePlayedUnitOptions = [
+  {
+    value: timePlayedUnit.SECOND,
+    label: 'seconds'
+  },
+  {
+    value: timePlayedUnit.PERCENT,
+    label: '%'
   }
-}
+];
+
+const TimePlayed = ({ ...props }) => {
+  const { amount, unit } = props.fields;
+  return (
+    <div>
+      <ElementFilter fields={ props.fields } />
+      <div className="u-gapTop">
+        <label>
+          <span className="u-label u-gapRight">Trigger when</span>
+        </label>
+        <ValidationWrapper
+          error={ amount.touched && amount.error }
+        >
+          <Textfield
+            { ...amount }
+          />
+        </ValidationWrapper>
+        <Select
+          { ...unit }
+          className="u-gapLeft TimePlayed-unitSelect"
+          options={ timePlayedUnitOptions }
+        />
+        <label>
+          <span className="u-label u-gapLeft">have passed</span>
+        </label>
+      </div>
+      <AdvancedEventOptions fields={ props.fields } />
+    </div>
+  );
+};
 
 const formConfig = {
   fields: [
@@ -58,21 +61,17 @@ const formConfig = {
   settingsToFormValues: reduceReducers(
     elementFilterFormConfig.settingsToFormValues,
     advancedEventOptionsFormConfig.settingsToFormValues,
-    (values, options) => {
-      return {
-        ...values,
-        unit: options.settings.unit || timePlayedUnit.SECOND
-      };
-    }
+    (values, options) => ({
+      ...values,
+      unit: options.settings.unit || timePlayedUnit.SECOND
+    })
   ),
   formValuesToSettings: reduceReducers(
     elementFilterFormConfig.formValuesToSettings,
-    (settings, values) => {
-      return {
-        ...settings,
-        amount: Number(values.amount)
-      };
-    }
+    (settings, values) => ({
+      ...settings,
+      amount: Number(values.amount)
+    })
   ),
   validate: reduceReducers(
     elementFilterFormConfig.validate,

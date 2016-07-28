@@ -1,5 +1,21 @@
+import { mount } from 'enzyme';
 import TrafficSource from '../trafficSource';
-import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import Textfield from '@coralui/react-coral/lib/Textfield';
+import { ValidationWrapper } from '@reactor/react-components';
+import RegexToggle from '../../components/regexToggle';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+
+const getReactComponents = (wrapper) => {
+  const sourceField = wrapper.find(Textfield).node;
+  const valueRegexToggle = wrapper.find(RegexToggle).node;
+  const sourceWrapper = wrapper.find(ValidationWrapper).node;
+
+  return {
+    sourceField,
+    valueRegexToggle,
+    sourceWrapper
+  };
+};
 
 describe('traffic source view', () => {
   let extensionBridge;
@@ -7,7 +23,7 @@ describe('traffic source view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = getFormInstance(TrafficSource, extensionBridge);
+    instance = mount(getFormComponent(TrafficSource, extensionBridge));
   });
 
   it('sets form values from settings', () => {
@@ -18,7 +34,7 @@ describe('traffic source view', () => {
       }
     });
 
-    const { sourceField, valueRegexToggle } = instance.refs;
+    const { sourceField, valueRegexToggle } = getReactComponents(instance);
 
     expect(sourceField.props.value).toBe('foo');
     expect(valueRegexToggle.props.value).toBe('foo');
@@ -28,7 +44,7 @@ describe('traffic source view', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { sourceField, valueRegexToggle } = instance.refs;
+    const { sourceField, valueRegexToggle } = getReactComponents(instance);
 
     sourceField.props.onChange('foo');
     valueRegexToggle.props.onValueIsRegexChange(true);
@@ -43,7 +59,7 @@ describe('traffic source view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { sourceWrapper } = instance.refs;
+    const { sourceWrapper } = getReactComponents(instance);
 
     expect(sourceWrapper.props.error).toEqual(jasmine.any(String));
   });

@@ -10,17 +10,16 @@ const browserOptions = [
   'Opera',
   'Mobile Safari',
   'IE Mobile',
+  'IE Mobile',
   'Opera Mini',
   'Opera Mobile',
   'OmniWeb'
 ];
 
-class Browser extends React.Component {
-  render() {
-    const { browsers } = this.props.fields;
-    return <CheckboxList ref="browsersCheckboxList" options={browserOptions} {...browsers}/>;
-  }
-}
+const Browser = ({ ...props }) => {
+  const { browsers } = props.fields;
+  return <CheckboxList options={ browserOptions } { ...browsers } />;
+};
 
 const formConfig = {
   fields: ['browsers'],

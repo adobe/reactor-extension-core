@@ -1,5 +1,5 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-react';
+import Checkbox from '@coralui/react-coral/lib/Checkbox';
 
 export default class CheckboxList extends React.Component {
   onChange = event => {
@@ -33,20 +33,21 @@ export default class CheckboxList extends React.Component {
       }
 
       return (
-        <li key={value}>
-          <Coral.Checkbox
-            value={value}
-            checked={this.props.value && this.props.value.indexOf(value) > -1}
-            onChange={this.onChange}>
-            {label}
-          </Coral.Checkbox>
+        <li key={ value }>
+          <Checkbox
+            value={ value }
+            checked={ this.props.value && this.props.value.indexOf(value) > -1 }
+            onChange={ this.onChange }
+          >
+            { label }
+          </Checkbox>
         </li>
       );
     });
 
     return (
       <ul className="CheckboxList">
-        {options}
+        { options }
       </ul>
     );
   }

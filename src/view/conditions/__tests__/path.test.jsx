@@ -1,5 +1,23 @@
-import Path from '../path';
-import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import Path from '../path';import { mount } from 'enzyme';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import RegexToggle from '../../components/regexToggle';
+import { ValidationWrapper } from '@reactor/react-components';
+import Textfield from '@coralui/react-coral/lib/Textfield';
+import MultipleItemEditor from '../components/multipleItemEditor';
+
+const getReactComponents = (wrapper) => {
+  const pathFields = wrapper.find(Textfield).nodes;
+  const pathRegexToggles = wrapper.find(RegexToggle).nodes;
+  const pathWrappers = wrapper.find(ValidationWrapper).nodes;
+  const multipleItemEditor = wrapper.find(MultipleItemEditor).node;
+
+  return {
+    pathFields,
+    pathRegexToggles,
+    pathWrappers,
+    multipleItemEditor
+  };
+};
 
 const testProps = {
   settings: {
@@ -21,32 +39,30 @@ describe('path view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = getFormInstance(Path, extensionBridge);
+    instance = mount(getFormComponent(Path, extensionBridge));
   });
 
   it('sets form values from settings', () => {
     extensionBridge.init(testProps);
 
     const {
-      pathField0,
-      pathField1,
-      pathRegexToggle0,
-      pathRegexToggle1
-    } = instance.refs.multipleItemEditor.refs;
+      pathFields,
+      pathRegexToggles
+    } = getReactComponents(instance);
 
-    expect(pathField0.props.value).toBe('foo');
-    expect(pathField1.props.value).toBe('bar');
-    expect(pathRegexToggle0.props.valueIsRegex).toBe('');
-    expect(pathRegexToggle1.props.valueIsRegex).toBe(true);
+    expect(pathFields[0].props.value).toBe('foo');
+    expect(pathFields[1].props.value).toBe('bar');
+    expect(pathRegexToggles[0].props.valueIsRegex).toBe('');
+    expect(pathRegexToggles[1].props.valueIsRegex).toBe(true);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { pathField0, pathRegexToggle0 } = instance.refs.multipleItemEditor.refs;
+    const { pathFields, pathRegexToggles } = getReactComponents(instance);
 
-    pathField0.props.onChange('goo');
-    pathRegexToggle0.props.onValueIsRegexChange(true);
+    pathFields[0].props.onChange('goo');
+    pathRegexToggles[0].props.onValueIsRegexChange(true);
 
     expect(extensionBridge.getSettings()).toEqual({
       paths: [
@@ -61,45 +77,37 @@ describe('path view', () => {
   it('adds a row', () => {
     extensionBridge.init(testProps);
 
-    const { multipleItemEditor } = instance.refs;
+    const { multipleItemEditor } = getReactComponents(instance);
 
     multipleItemEditor.props.onAddItem();
-    
-    const {
-      pathField0,
-      pathField1,
-      pathField2,
-      pathField3
-    } = instance.refs.multipleItemEditor.refs;
 
-    expect(pathField0).toBeDefined();
-    expect(pathField1).toBeDefined();
-    expect(pathField2).toBeDefined();
-    expect(pathField3).toBeUndefined();
+    const { pathFields } = getReactComponents(instance);
+
+    expect(pathFields[0]).toBeDefined();
+    expect(pathFields[1]).toBeDefined();
+    expect(pathFields[2]).toBeDefined();
+    expect(pathFields[3]).toBeUndefined();
   });
 
   it('removes a row', () => {
     extensionBridge.init(testProps);
 
-    const { multipleItemEditor } = instance.refs;
+    const { multipleItemEditor } = getReactComponents(instance);
 
     multipleItemEditor.props.onRemoveItem(1);
 
-    const {
-      pathField0,
-      pathField1
-    } = instance.refs.multipleItemEditor.refs;
+    const { pathFields } = getReactComponents(instance);
 
-    expect(pathField0).toBeDefined();
-    expect(pathField1).toBeUndefined();
+    expect(pathFields[0]).toBeDefined();
+    expect(pathFields[1]).toBeUndefined();
   });
-  
+
   it('sets errors if required values are not provided', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { pathWrapper0 } = instance.refs.multipleItemEditor.refs;
+    const { pathWrappers } = getReactComponents(instance);
 
-    expect(pathWrapper0.props.error).toBeDefined();
+    expect(pathWrappers[0].props.error).toBeDefined();
   });
 });

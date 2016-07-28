@@ -17,12 +17,10 @@ const settingsToFormValuesBaseReducer = (values, options) => {
 /**
  * Assigns everything inside state to settings.
  */
-const formValuesToSettingsBaseReducer = (settings, values) => {
-  return {
-    ...settings,
-    ...values
-  };
-};
+const formValuesToSettingsBaseReducer = (settings, values) => ({
+  ...settings,
+  ...values
+});
 
 export default (extensionBridge, store) => {
   let reducersForRoute;
@@ -57,19 +55,19 @@ export default (extensionBridge, store) => {
       let valid = false;
       // handleSubmit comes from redux-form. The function passed in will only be called if the
       // form passes validation.
-      handleSubmit(() => valid = true)();
+      handleSubmit(() => { valid = true; })();
       return valid;
     }
   });
 
   return formSettings => {
-    const settingsToFormValuesReducers = [ settingsToFormValuesBaseReducer ];
+    const settingsToFormValuesReducers = [settingsToFormValuesBaseReducer];
 
     if (formSettings.settingsToFormValues) {
       settingsToFormValuesReducers.push(formSettings.settingsToFormValues);
     }
 
-    const formValuesToSettingsReducers = [ formValuesToSettingsBaseReducer ];
+    const formValuesToSettingsReducers = [formValuesToSettingsBaseReducer];
 
     if (formSettings.formValuesToSettings) {
       formValuesToSettingsReducers.push(formSettings.formValuesToSettings);

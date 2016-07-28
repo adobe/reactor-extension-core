@@ -1,5 +1,4 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-reduxform';
 import CheckboxList from '../components/checkboxList';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
@@ -15,15 +14,13 @@ const operatingSystemOptions = [
   'Maemo'
 ];
 
-class OperatingSystem extends React.Component {
-  render() {
-    const { operatingSystems } = this.props.fields;
-    return <CheckboxList
-      ref="operatingSystemsCheckboxList"
-      options={operatingSystemOptions}
-      {...operatingSystems}/>;
-  }
-}
+const OperatingSystem = ({ ...props }) => {
+  const { operatingSystems } = props.fields;
+  return (<CheckboxList
+    options={ operatingSystemOptions }
+    { ...operatingSystems }
+  />);
+};
 
 const formConfig = {
   fields: ['operatingSystems'],

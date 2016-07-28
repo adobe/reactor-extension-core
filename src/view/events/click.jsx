@@ -1,27 +1,25 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-reduxform';
+import Checkbox from '@coralui/react-coral/lib/Checkbox';
 import ElementFilter, { formConfig as elementFilterFormConfig } from './components/elementFilter';
 import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import reduceReducers from 'reduce-reducers';
 
-class Click extends React.Component {
-  render() {
-    const { delayLinkActivation } = this.props.fields;
+function Click({ ...props }) {
+  const { delayLinkActivation } = props.fields;
 
-    return (
-      <div>
-        <ElementFilter ref="elementFilter" fields={this.props.fields}/>
-        <Coral.Checkbox
-          ref="delayLinkActivationCheckbox"
-          className="u-block"
-          {...delayLinkActivation}>
-          If the element is a link, delay navigation until rule runs
-        </Coral.Checkbox>
-        <AdvancedEventOptions ref="advancedEventOptions" fields={this.props.fields}/>
-      </div>
-    );
-  }
+  return (
+    <div>
+      <ElementFilter fields={ props.fields } />
+      <Checkbox
+        className="u-block"
+        { ...delayLinkActivation }
+      >
+        If the element is a link, delay navigation until rule runs
+      </Checkbox>
+      <AdvancedEventOptions fields={ props.fields } />
+    </div>
+  );
 }
 
 const formConfig = {

@@ -1,5 +1,22 @@
+import { mount } from 'enzyme';
 import Click from '../click';
-import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import Checkbox from '@coralui/react-coral/lib/Checkbox';
+import ElementFilter from '../components/elementFilter';
+import AdvancedEventOptions from '../components/advancedEventOptions';
+
+const getReactComponents = (wrapper) => {
+  const delayLinkActivationCheckbox =
+    wrapper.find(Checkbox).filterWhere(n => n.prop('name') === 'delayLinkActivation').node;
+  const elementFilter = wrapper.find(ElementFilter).node;
+  const advancedEventOptions = wrapper.find(AdvancedEventOptions).node;
+
+  return {
+    delayLinkActivationCheckbox,
+    elementFilter,
+    advancedEventOptions
+  };
+};
 
 describe('click view', () => {
   let extensionBridge;
@@ -7,7 +24,7 @@ describe('click view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = getFormInstance(Click, extensionBridge);
+    instance = mount(getFormComponent(Click, extensionBridge));
   });
 
   it('sets form values from settings', () => {
@@ -19,7 +36,11 @@ describe('click view', () => {
       }
     });
 
-    const { delayLinkActivationCheckbox, elementFilter, advancedEventOptions } = instance.refs;
+    const {
+      delayLinkActivationCheckbox,
+      elementFilter,
+      advancedEventOptions
+    } = getReactComponents(instance);
 
     expect(delayLinkActivationCheckbox.props.value).toBe(true);
     expect(elementFilter.props.fields.elementSelector.value).toBe('.foo');
@@ -29,7 +50,11 @@ describe('click view', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { delayLinkActivationCheckbox, elementFilter, advancedEventOptions } = instance.refs;
+    const {
+      delayLinkActivationCheckbox,
+      elementFilter,
+      advancedEventOptions
+    } = getReactComponents(instance);
 
     delayLinkActivationCheckbox.props.onChange(true);
     elementFilter.props.fields.elementSelector.onChange('.foo');
@@ -45,7 +70,7 @@ describe('click view', () => {
   it('sets validation errors', () => {
     extensionBridge.init();
 
-    const { elementFilter } = instance.refs;
+    const { elementFilter } = getReactComponents(instance);
 
     expect(elementFilter.props.fields.elementSelector.error).toEqual(jasmine.any(String));
   });

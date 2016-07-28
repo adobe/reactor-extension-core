@@ -1,18 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Coral from '@coralui/coralui-support-reduxform';
 import { ValidationWrapper } from '@reactor/react-components';
 import { isPositiveNumber } from '../../utils/validators';
+import Radio from '@coralui/react-coral/lib/Radio';
+import Textfield from '@coralui/react-coral/lib/Textfield';
 
 export default class DelayType extends React.Component {
-  onDelayTypeClick = () => {
-    ReactDOM.findDOMNode(this.refs.delayTextfield).focus();
-  };
-
-  onDelayFieldClick = () => {
-    this.refs.delayRadio.props.onChange('delay');
-  };
-
   render() {
     const { delayType, delay } = this.props.fields;
 
@@ -21,28 +13,28 @@ export default class DelayType extends React.Component {
         <label>
           <span className="u-label u-gapRight">Trigger</span>
         </label>
-        <Coral.Radio
-          ref="immediateRadio"
-          {...delayType}
+        <Radio
+          { ...delayType }
           value="immediate"
-          checked={delayType.value === 'immediate'}>
+          checked={ delayType.value === 'immediate' }
+        >
           immediately
-        </Coral.Radio>
-        <Coral.Radio
-          ref="delayRadio"
-          {...delayType}
+        </Radio>
+        <Radio
+          { ...delayType }
           value="delay"
-          checked={delayType.value === 'delay'}
-          onClick={this.onDelayTypeClick}>
+          checked={ delayType.value === 'delay' }
+          onClick={ this.onDelayTypeClick }
+        >
           after
-        </Coral.Radio>
+        </Radio>
         <ValidationWrapper
-          ref="delayValidationWrapper"
-          error={delay.touched && delay.error}>
-          <Coral.Textfield
-            ref="delayTextfield"
-            {...delay}
-            onClick={this.onDelayFieldClick}/>
+          error={ delay.touched && delay.error }
+        >
+          <Textfield
+            { ...delay }
+            onClick={ this.onDelayFieldClick }
+          />
         </ValidationWrapper>
         <label>
           <span className="u-label u-gapLeft">milliseconds</span>

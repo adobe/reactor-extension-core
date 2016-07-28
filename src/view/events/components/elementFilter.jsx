@@ -1,39 +1,36 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-reduxform';
 import SpecificElements, { formConfig as specificElementsFormConfig } from './specificElements';
 import reduceReducers from 'reduce-reducers';
+import Radio from '@coralui/react-coral/lib/Radio';
 
-export default class ElementFilter extends React.Component {
+export default ({ ...props }) => {
+  const { elementSpecificity } = props.fields;
 
-  render() {
-    const { elementSpecificity } = this.props.fields;
-
-    return (
+  return (
+    <div>
       <div>
-        <div>
-          <Coral.Radio
-              ref="specificElementsRadio"
-              {...elementSpecificity}
-              value="specific"
-              checked={elementSpecificity.value === 'specific'}>
-            specific elements
-          </Coral.Radio>
-          <Coral.Radio
-              ref="anyElementRadio"
-              {...elementSpecificity}
-              value="any"
-              checked={elementSpecificity.value === 'any'}>
-            any element
-          </Coral.Radio>
-        </div>
-        {
-          elementSpecificity.value === 'specific' ?
-            <SpecificElements ref="specificElements" fields={this.props.fields}/> : null
-        }
+        <Radio
+          { ...elementSpecificity }
+          value="specific"
+          checked={ elementSpecificity.value === 'specific' }
+        >
+          specific elements
+        </Radio>
+        <Radio
+          { ...elementSpecificity }
+          value="any"
+          checked={ elementSpecificity.value === 'any' }
+        >
+          any element
+        </Radio>
       </div>
-    );
-  }
-}
+      {
+        elementSpecificity.value === 'specific' ?
+          <SpecificElements fields={ props.fields } /> : null
+      }
+    </div>
+  );
+};
 
 export const formConfig = {
   fields: [
@@ -58,7 +55,7 @@ export const formConfig = {
         ...settings
       };
 
-      let { elementSpecificity } = values;
+      const { elementSpecificity } = values;
 
       if (elementSpecificity === 'any') {
         delete settings.elementSelector;

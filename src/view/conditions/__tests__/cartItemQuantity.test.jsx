@@ -1,5 +1,31 @@
 import CartItemQuantity from '../cartItemQuantity';
-import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import { mount } from 'enzyme';
+import Textfield from '@coralui/react-coral/lib/Textfield';
+import { ValidationWrapper, DataElementSelectorButton } from '@reactor/react-components';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import ComparisonOperatorField from '../components/comparisonOperatorField';
+
+const getReactComponents = (wrapper) => {
+  const dataElementField =
+    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'dataElement').node;
+  const quantityField =
+    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'quantity').node;
+  const dataElementButton = wrapper.find(DataElementSelectorButton).node;
+  const operatorField = wrapper.find(ComparisonOperatorField).node;
+  const dataElementWrapper = wrapper.find(ValidationWrapper)
+    .filterWhere(n => n.prop('type') === 'dataElement').node;
+  const quantityWrapper = wrapper.find(ValidationWrapper)
+    .filterWhere(n => n.prop('type') === 'quantity').node;
+
+  return {
+    dataElementField,
+    dataElementButton,
+    operatorField,
+    quantityField,
+    dataElementWrapper,
+    quantityWrapper
+  };
+};
 
 describe('cart item quantity view', () => {
   let extensionBridge;
@@ -8,7 +34,7 @@ describe('cart item quantity view', () => {
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
     window.extensionBridge = extensionBridge;
-    instance = getFormInstance(CartItemQuantity, extensionBridge);
+    instance = mount(getFormComponent(CartItemQuantity, extensionBridge));
   });
 
   afterAll(() => {
@@ -16,7 +42,7 @@ describe('cart item quantity view', () => {
   });
 
   it('opens the data element selector from data element button', () => {
-    const { dataElementField, dataElementButton } = instance.refs;
+    const { dataElementField, dataElementButton } = getReactComponents(instance);
 
     spyOn(window.extensionBridge, 'openDataElementSelector').and.callFake(callback => {
       callback('foo');
@@ -31,7 +57,7 @@ describe('cart item quantity view', () => {
   it('sets operator to greater than by default', () => {
     extensionBridge.init();
 
-    const { operatorField } = instance.refs;
+    const { operatorField } = getReactComponents(instance);
 
     expect(operatorField.props.value).toBe('>');
   });
@@ -45,7 +71,7 @@ describe('cart item quantity view', () => {
       }
     });
 
-    const { dataElementField, operatorField, quantityField } = instance.refs;
+    const { dataElementField, operatorField, quantityField } = getReactComponents(instance);
 
     expect(dataElementField.props.value).toBe('foo');
     expect(operatorField.props.value).toBe('=');
@@ -55,7 +81,7 @@ describe('cart item quantity view', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { dataElementField, operatorField, quantityField } = instance.refs;
+    const { dataElementField, operatorField, quantityField } = getReactComponents(instance);
 
     dataElementField.props.onChange('foo');
     operatorField.props.onChange('=');
@@ -72,7 +98,7 @@ describe('cart item quantity view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { dataElementWrapper, quantityWrapper } = instance.refs;
+    const { dataElementWrapper, quantityWrapper } = getReactComponents(instance);
 
     expect(dataElementWrapper.props.error).toEqual(jasmine.any(String));
     expect(quantityWrapper.props.error).toEqual(jasmine.any(String));
@@ -82,7 +108,7 @@ describe('cart item quantity view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { quantityField, quantityWrapper } = instance.refs;
+    const { quantityField, quantityWrapper } = getReactComponents(instance);
 
     quantityField.props.onChange('12.abc');
 

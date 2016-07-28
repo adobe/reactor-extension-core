@@ -1,5 +1,28 @@
+import { mount } from 'enzyme';
 import DOM from '../dom';
-import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import { ReduxFormSelect as Select, ValidationWrapper } from '@reactor/react-components';
+import Textfield from '@coralui/react-coral/lib/Textfield';
+
+const getReactComponents = (wrapper) => {
+  const elementPropertyPresetsSelect = wrapper.find(Select).node;
+  const elementSelectorField =
+    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'elementSelector').node;
+  const customElementPropertyField =
+    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'customElementProperty').node;
+  const elementSelectorWrapper =
+    wrapper.find(ValidationWrapper).filterWhere(n => n.prop('type') === 'elementSelector').node;
+  const customElementPropertyWrapper = wrapper
+    .find(ValidationWrapper).filterWhere(n => n.prop('type') === 'customElementProperty').node;
+
+  return {
+    elementPropertyPresetsSelect,
+    elementSelectorField,
+    customElementPropertyField,
+    elementSelectorWrapper,
+    customElementPropertyWrapper
+  };
+};
 
 describe('DOM view', () => {
   let extensionBridge;
@@ -7,13 +30,13 @@ describe('DOM view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = getFormInstance(DOM, extensionBridge);
+    instance = mount(getFormComponent(DOM, extensionBridge));
   });
 
   it('selects ID preset for new settings', () => {
     extensionBridge.init();
 
-    const { elementPropertyPresetsSelect } = instance.refs;
+    const { elementPropertyPresetsSelect } = getReactComponents(instance);
 
     expect(elementPropertyPresetsSelect.props.value).toBe('id');
   });
@@ -27,7 +50,7 @@ describe('DOM view', () => {
       }
     });
 
-    const { elementSelectorField, elementPropertyPresetsSelect} = instance.refs;
+    const { elementSelectorField, elementPropertyPresetsSelect } = getReactComponents(instance);
 
     expect(elementSelectorField.props.value).toBe('foo');
     expect(elementPropertyPresetsSelect.props.value).toBe('innerHTML');
@@ -45,7 +68,7 @@ describe('DOM view', () => {
       elementSelectorField,
       elementPropertyPresetsSelect,
       customElementPropertyField
-    } = instance.refs;
+    } = getReactComponents(instance);
 
     expect(elementSelectorField.props.value).toBe('foo');
     expect(elementPropertyPresetsSelect.props.value).toBe('custom');
@@ -57,7 +80,7 @@ describe('DOM view', () => {
 
     expect(extensionBridge.validate()).toBe(false);
 
-    const { elementSelectorWrapper } = instance.refs;
+    const { elementSelectorWrapper } = getReactComponents(instance);
 
     expect(elementSelectorWrapper.props.error).toEqual(jasmine.any(String));
   });
@@ -65,7 +88,7 @@ describe('DOM view', () => {
   it('sets settings from form values using element property preset', () => {
     extensionBridge.init();
 
-    const { elementSelectorField, elementPropertyPresetsSelect } = instance.refs;
+    const { elementSelectorField, elementPropertyPresetsSelect } = getReactComponents(instance);
 
     elementSelectorField.props.onChange('foo');
     elementPropertyPresetsSelect.props.onChange('innerHTML');
@@ -82,14 +105,14 @@ describe('DOM view', () => {
     const {
       elementSelectorField,
       elementPropertyPresetsSelect
-      } = instance.refs;
+      } = getReactComponents(instance);
 
     elementSelectorField.props.onChange('foo');
     elementPropertyPresetsSelect.props.onChange('custom');
 
     const {
       customElementPropertyField
-    } = instance.refs;
+    } = getReactComponents(instance);
 
     customElementPropertyField.props.onChange('bar');
 
@@ -109,7 +132,7 @@ describe('DOM view', () => {
 
     expect(extensionBridge.validate()).toBe(false);
 
-    const { customElementPropertyWrapper } = instance.refs;
+    const { customElementPropertyWrapper } = getReactComponents(instance);
 
     expect(customElementPropertyWrapper.props.error).toEqual(jasmine.any(String));
   });

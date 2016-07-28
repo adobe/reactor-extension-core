@@ -1,43 +1,43 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-reduxform';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import RegexToggle from '../components/regexToggle';
 import { ValidationWrapper } from '@reactor/react-components';
+import Textfield from '@coralui/react-coral/lib/Textfield';
 
-class Cookie extends React.Component {
-  render() {
-    const { name, value, valueIsRegex } = this.props.fields;
+const Cookie = ({ ...props }) => {
+  const { name, value, valueIsRegex } = props.fields;
 
-    return (
-      <div>
-        <ValidationWrapper
-          ref="nameWrapper"
-          className="u-gapRight"
-          error={name.touched && name.error}>
-          <label>
-            <span className="u-label">Cookie Name</span>
-            <Coral.Textfield ref="nameField" {...name}/>
-          </label>
-        </ValidationWrapper>
-        <ValidationWrapper
-          ref="valueWrapper"
-          className="u-gapRight"
-          error={value.touched && value.error}>
-          <label>
-            <span className="u-label">Cookie Value</span>
-            <Coral.Textfield ref="valueField" {...value}/>
-          </label>
-        </ValidationWrapper>
-        <RegexToggle
-          ref="valueRegexToggle"
-          value={value.value}
-          valueIsRegex={valueIsRegex.value}
-          onValueChange={value.onChange}
-          onValueIsRegexChange={valueIsRegex.onChange}/>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <ValidationWrapper
+        type="name"
+        className="u-gapRight"
+        error={ name.touched && name.error }
+      >
+        <label>
+          <span className="u-label">Cookie Name</span>
+          <Textfield { ...name } />
+        </label>
+      </ValidationWrapper>
+      <ValidationWrapper
+        className="u-gapRight"
+        type="value"
+        error={ value.touched && value.error }
+      >
+        <label>
+          <span className="u-label">Cookie Value</span>
+          <Textfield { ...value } />
+        </label>
+      </ValidationWrapper>
+      <RegexToggle
+        value={ value.value }
+        valueIsRegex={ valueIsRegex.value }
+        onValueChange={ value.onChange }
+        onValueIsRegexChange={ valueIsRegex.onChange }
+      />
+    </div>
+  );
+};
 
 const formConfig = {
   fields: [

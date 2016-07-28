@@ -1,19 +1,12 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-react';
 import extensionViewReduxForm from '../../extensionViewReduxForm';
+import Alert from '@coralui/react-coral/lib/Alert';
 
-class NoConfig extends React.Component {
-  render() {
-    return (
-      <Coral.Alert>
-        <Coral.Alert.Header>INFO</Coral.Alert.Header>
-        <Coral.Alert.Content>
-          This delegate doesn't have any configuration properties.
-        </Coral.Alert.Content>
-      </Coral.Alert>
-    );
-  }
-}
+const NoConfig = () => (
+  <Alert header="INFO">
+    This delegate doesn't have any configuration properties.
+  </Alert>
+);
 
 const formConfig = {
   fields: []

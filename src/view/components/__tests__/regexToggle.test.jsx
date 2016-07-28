@@ -1,10 +1,19 @@
 import React from 'react';
-import TestUtils from 'react-addons-test-utils';
+import { mount } from 'enzyme';
 import RegexToggle from '../regexToggle';
+import Switch from '@coralui/react-coral/lib/Switch';
 
-const render = props => {
-  return TestUtils.renderIntoDocument(<RegexToggle {...props}/>);
+const getReactComponents = (wrapper) => {
+  const regexSwitch = wrapper.find(Switch).node;
+  const testButton = wrapper.find('button');
+
+  return {
+    regexSwitch,
+    testButton
+  };
 };
+
+const render = props => mount(<RegexToggle { ...props } />);
 
 describe('regex toggle', () => {
   beforeEach(() => {
@@ -20,18 +29,18 @@ describe('regex toggle', () => {
   });
 
   it('sets switch to checked when valueIsRegex=true', () => {
-    const { regexSwitch } = render({
+    const { regexSwitch } = getReactComponents(render({
       valueIsRegex: true
-    }).refs;
+    }));
 
     expect(regexSwitch.props.checked).toBe(true);
   });
 
   it('calls onValueIsRegexChange when switch is toggled', () => {
     const onValueIsRegexChange = jasmine.createSpy();
-    const { regexSwitch } = render({
+    const { regexSwitch } = getReactComponents(render({
       onValueIsRegexChange
-    }).refs;
+    }));
 
     regexSwitch.props.onChange({
       target: {
@@ -44,13 +53,13 @@ describe('regex toggle', () => {
 
   it('supports regex testing+updating workflow', () => {
     const onValueChange = jasmine.createSpy();
-    const { testButton } = render({
+    const { testButton } = getReactComponents(render({
       valueIsRegex: true,
       value: 'foo',
       onValueChange
-    }).refs;
+    }));
 
-    TestUtils.Simulate.click(testButton);
+    testButton.simulate('click');
 
     expect(window.extensionBridge.openRegexTester)
       .toHaveBeenCalledWith('foo', jasmine.any(Function));
@@ -58,18 +67,18 @@ describe('regex toggle', () => {
   });
 
   it('shows test link when valueIsRegex=true', () => {
-    const { testButton } = render({
+    const { testButton } = getReactComponents(render({
       valueIsRegex: true
-    }).refs;
+    }));
 
-    expect(testButton.style.visibility).toBe('visible');
+    expect(testButton.node.style.visibility).toBe('visible');
   });
 
   it('hides test link when valueIsRegex=false', () => {
-    const { testButton } = render({
+    const { testButton } = getReactComponents(render({
       valueIsRegex: false
-    }).refs;
+    }));
 
-    expect(testButton.style.visibility).toBe('hidden');
+    expect(testButton.node.style.visibility).toBe('hidden');
   });
 });

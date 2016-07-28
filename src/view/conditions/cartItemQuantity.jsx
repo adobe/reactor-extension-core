@@ -1,9 +1,9 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-reduxform';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import { ValidationWrapper, DataElementSelectorButton } from '@reactor/react-components';
 import ComparisonOperatorField from './components/comparisonOperatorField';
 import { isNumber } from '../utils/validators';
+import Textfield from '@coralui/react-coral/lib/Textfield';
 
 class CartItemQuantity extends React.Component {
   onOpenDataElementSelector = () => {
@@ -17,25 +17,25 @@ class CartItemQuantity extends React.Component {
       <div>
         <div>
           <ValidationWrapper
-            ref="dataElementWrapper"
-            error={dataElement.touched && dataElement.error}>
+            type="dataElement"
+            error={ dataElement.touched && dataElement.error }
+          >
             <label>
               <span className="u-label">The cart item quantity identified by the data element</span>
-              <Coral.Textfield ref="dataElementField" {...dataElement}/>
-              <DataElementSelectorButton ref="dataElementButton"
-                onClick={this.onOpenDataElementSelector}/>
+              <Textfield { ...dataElement } />
+              <DataElementSelectorButton onClick={ this.onOpenDataElementSelector } />
             </label>
           </ValidationWrapper>
         </div>
         <div className="u-gapTop">
           <label className="u-gapRight">
             <span className="u-label">is</span>
-            <ComparisonOperatorField ref="operatorField" {...operator}/>
+            <ComparisonOperatorField { ...operator } />
           </label>
-          <ValidationWrapper ref="quantityWrapper" error={quantity.touched && quantity.error}>
+          <ValidationWrapper type="quantity" error={ quantity.touched && quantity.error }>
             <label>
               <span className="u-label">the value</span>
-              <Coral.Textfield className="u-smallTextfield" ref="quantityField" {...quantity}/>
+              <Textfield className="u-smallTextfield" { ...quantity } />
             </label>
           </ValidationWrapper>
         </div>

@@ -1,32 +1,37 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-reduxform';
+import Button from '@coralui/react-coral/lib/Button';
+import Icon from '@coralui/react-coral/lib/Icon';
+import Tooltip from '@coralui/react-coral/lib/Tooltip';
 import { ErrorTip } from '@reactor/react-components';
 
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
 class Custom extends React.Component {
   onOpenEditor = () => {
-    let sourceField = this.props.fields.source;
+    const sourceField = this.props.fields.source;
     window.extensionBridge.openCodeEditor(sourceField.value, sourceField.onChange);
   };
 
   render() {
-    let source = this.props.fields.source;
+    const source = this.props.fields.source;
 
     return (
       <div>
-        <Coral.Button ref="openEditorButton" icon="code" onClick={this.onOpenEditor}>
+        <Button icon="code" onClick={ this.onOpenEditor }>
           Open Editor
-        </Coral.Button>
-        {source.touched && source.error ?
-          <ErrorTip ref="sourceErrorIcon" message={source.error}/> : null
+        </Button>
+        { source.touched && source.error ?
+          <ErrorTip>{ source.error }</ErrorTip> : null
         }
-        <Coral.Icon icon="infoCircle" className="u-inline-tooltip u-gapLeft"/>
-        <Coral.Tooltip className="u-tooltipMaxWidth" placement="right" target="_prev">
-          Enter a script that must evaluate true/false to control whether this rule executes.
-          Use this field to check for certain values like shopping cart size or item price,
-          whether a user is logged in or registered, or anything else you can dream up.
-        </Coral.Tooltip>
+        <Tooltip
+          className="u-tooltipMaxWidth"
+          openOn="hover"
+          content="Enter a script that must evaluate true/false to control whether this rule
+          executes. Use this field to check for certain values like shopping cart size or item
+          price, whether a user is logged in or registered, or anything else you can dream up."
+        >
+          <Icon icon="infoCircle" className="u-inline-tooltip u-gapLeft" />
+        </Tooltip>
       </div>
     );
   }

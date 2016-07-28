@@ -1,5 +1,28 @@
 import PageViews from '../pageViews';
-import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import { mount } from 'enzyme';
+import ComparisonOperatorField from '../components/comparisonOperatorField';
+import Textfield from '@coralui/react-coral/lib/Textfield';
+import Radio from '@coralui/react-coral/lib/Radio';
+import { ValidationWrapper } from '@reactor/react-components';
+
+const getReactComponents = (wrapper) => {
+  const lifetimeRadio =
+    wrapper.find(Radio).filterWhere(n => n.prop('value') === 'lifetime').node;
+  const sessionRadio =
+    wrapper.find(Radio).filterWhere(n => n.prop('value') === 'session').node;
+  const operatorField = wrapper.find(ComparisonOperatorField).node;
+  const countField = wrapper.find(Textfield).node;
+  const countWrapper = wrapper.find(ValidationWrapper).node;
+
+  return {
+    lifetimeRadio,
+    sessionRadio,
+    operatorField,
+    countField,
+    countWrapper
+  };
+};
 
 describe('page views view', () => {
   let extensionBridge;
@@ -7,13 +30,13 @@ describe('page views view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = getFormInstance(PageViews, extensionBridge);
+    instance = mount(getFormComponent(PageViews, extensionBridge));
   });
 
   it('sets operator to greater than by default', () => {
     extensionBridge.init();
 
-    const { operatorField } = instance.refs;
+    const { operatorField } = getReactComponents(instance);
 
     expect(operatorField.props.value).toBe('>');
   });
@@ -27,7 +50,7 @@ describe('page views view', () => {
       }
     });
 
-    const { operatorField, countField, lifetimeRadio, sessionRadio } = instance.refs;
+    const { operatorField, countField, lifetimeRadio, sessionRadio } = getReactComponents(instance);
 
     expect(operatorField.props.value).toBe('=');
     expect(countField.props.value).toBe(100);
@@ -38,7 +61,7 @@ describe('page views view', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { operatorField, countField, sessionRadio } = instance.refs;
+    const { operatorField, countField, sessionRadio } = getReactComponents(instance);
 
     operatorField.props.onChange('=');
     countField.props.onChange(100);
@@ -55,7 +78,7 @@ describe('page views view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { countWrapper } = instance.refs;
+    const { countWrapper } = getReactComponents(instance);
 
     expect(countWrapper.props.error).toEqual(jasmine.any(String));
   });
@@ -64,7 +87,7 @@ describe('page views view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { countField, countWrapper } = instance.refs;
+    const { countField, countWrapper } = getReactComponents(instance);
 
     countField.props.onChange('12.abc');
 

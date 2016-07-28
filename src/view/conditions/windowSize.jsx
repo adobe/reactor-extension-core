@@ -1,49 +1,53 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-reduxform';
+import Textfield from '@coralui/react-coral/lib/Textfield';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import { ValidationWrapper } from '@reactor/react-components';
 import ComparisonOperatorField from './components/comparisonOperatorField';
 import { isNumber } from '../utils/validators';
 
-class WindowSize extends React.Component {
-  render() {
-    const { widthOperator, width, heightOperator, height } = this.props.fields;
+function WindowSize({ ...props }) {
+  const { widthOperator, width, heightOperator, height } = props.fields;
 
-    return (
+  return (
+    <div>
       <div>
-        <div>
-          <label className="u-gapRight">
-            <span className="u-label">The user's window size width is</span>
-            <ComparisonOperatorField ref="widthOperatorField" {...widthOperator}/>
+        <label className="u-gapRight">
+          <span className="u-label">The user's window size width is</span>
+          <ComparisonOperatorField { ...widthOperator } />
+        </label>
+        <ValidationWrapper
+          type="width"
+          error={ width.touched && width.error }
+        >
+          <label>
+            <Textfield
+              className="u-gapRight u-smallTextfield"
+              { ...width }
+            />
+            <span>px</span>
           </label>
-          <ValidationWrapper ref="widthWrapper" error={width.touched && width.error}>
-            <label>
-              <Coral.Textfield
-                ref="widthField"
-                className="u-gapRight u-smallTextfield"
-                {...width}/>
-              <span>px</span>
-            </label>
-          </ValidationWrapper>
-        </div>
-        <div className="u-gapTop">
-          <label className="u-gapRight">
-            <span className="u-label">and height is</span>
-            <ComparisonOperatorField ref="heightOperatorField" {...heightOperator}/>
-          </label>
-          <ValidationWrapper ref="heightWrapper" error={height.touched && height.error}>
-            <label>
-              <Coral.Textfield
-                ref="heightField"
-                className="u-gapRight u-smallTextfield"
-                {...height}/>
-              <span>px</span>
-            </label>
-          </ValidationWrapper>
-        </div>
+        </ValidationWrapper>
       </div>
-    );
-  }
+      <div className="u-gapTop">
+        <label className="u-gapRight">
+          <span className="u-label">and height is</span>
+          <ComparisonOperatorField { ...heightOperator } />
+        </label>
+        <ValidationWrapper
+          type="height"
+          error={ height.touched && height.error }
+        >
+          <label>
+            <Textfield
+              className="u-gapRight u-smallTextfield"
+              { ...height }
+            />
+            <span>px</span>
+          </label>
+        </ValidationWrapper>
+      </div>
+    </div>
+  );
 }
 
 const formConfig = {

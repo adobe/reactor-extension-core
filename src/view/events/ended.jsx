@@ -1,2 +1,2 @@
-import StandardEvent  from './components/standardEvent';
+import StandardEvent from './components/standardEvent';
 export default StandardEvent;

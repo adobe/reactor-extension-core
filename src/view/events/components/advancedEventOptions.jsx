@@ -1,6 +1,6 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-reduxform';
 import DisclosureButton from '../../components/disclosureButton';
+import Checkbox from '@coralui/react-coral/lib/Checkbox';
 
 export default class AdvancedEventOptions extends React.Component {
   constructor() {
@@ -19,33 +19,24 @@ export default class AdvancedEventOptions extends React.Component {
   render() {
     const { bubbleFireIfParent, bubbleFireIfChildFired, bubbleStop } = this.props.fields;
 
-    var advancedPanel;
+    let advancedPanel;
 
     if (this.state.expanded) {
       advancedPanel = (
         <div className="u-gapTop">
           <h4 className="coral-Heading coral-Heading--4">Bubbling</h4>
 
-          <Coral.Checkbox
-            ref="bubbleFireIfParentCheckbox"
-            className="u-block"
-            {...bubbleFireIfParent}>
+          <Checkbox className="u-block" { ...bubbleFireIfParent }>
               Run this rule even when the event originates from a descendant element
-          </Coral.Checkbox>
-          <Coral.Checkbox
-            ref="bubbleFireIfChildFiredCheckbox"
-            className="u-block"
-            {...bubbleFireIfChildFired}>
+          </Checkbox>
+          <Checkbox className="u-block" { ...bubbleFireIfChildFired }>
               Allow this rule to run even if the event already triggered a
               rule targeting a descendant element
-          </Coral.Checkbox>
-          <Coral.Checkbox
-            ref="bubbleStopCheckbox"
-            className="u-block"
-            {...bubbleStop}>
+          </Checkbox>
+          <Checkbox className="u-block" { ...bubbleStop }>
               After the rule runs, prevent the event from triggering rules
               targeting ancestor elements
-          </Coral.Checkbox>
+          </Checkbox>
         </div>
       );
     }
@@ -54,12 +45,12 @@ export default class AdvancedEventOptions extends React.Component {
       <div>
         <div className="AdvancedEventOptions-disclosureButtonContainer">
           <DisclosureButton
-            ref="disclosureButton"
             label="Advanced"
-            selected={this.state.expanded}
-            onClick={this.toggleSelected}/>
+            selected={ this.state.expanded }
+            onClick={ this.toggleSelected }
+          />
         </div>
-        {advancedPanel}
+        { advancedPanel }
       </div>
     );
   }

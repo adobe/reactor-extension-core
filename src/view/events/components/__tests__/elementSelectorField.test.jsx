@@ -1,14 +1,22 @@
 import React from 'react';
-import TestUtils from 'react-addons-test-utils';
-import Coral from '@coralui/coralui-support-reduxform';
-import { ValidationWrapper } from '@reactor/react-components';
+import { mount } from 'enzyme';
 import ElementSelectorField from '../../components/elementSelectorField';
+import { ValidationWrapper } from '@reactor/react-components';
+import Textfield from '@coralui/react-coral/lib/Textfield';
 
-const render = props => {
-  return TestUtils.renderIntoDocument(<ElementSelectorField {...props}/>);
+const getReactComponents = (wrapper) => {
+  const textfield = wrapper.find(Textfield).node;
+  const validationWrapper = wrapper.find(ValidationWrapper).node;
+
+  return {
+    textfield,
+    validationWrapper
+  };
 };
 
-var mockProps;
+const render = props => mount(<ElementSelectorField { ...props } />);
+
+let mockProps;
 
 describe('elementSelectorField', () => {
   beforeEach(() => {
@@ -25,13 +33,13 @@ describe('elementSelectorField', () => {
     it('receives value', () => {
       mockProps.fields.elementSelector.value = 'foo';
 
-      const { textfield } = render(mockProps).refs;
+      const { textfield } = getReactComponents(render(mockProps));
 
       expect(textfield.props.value).toBe('foo');
     });
 
     it('calls onChange', () => {
-      const { textfield } = render(mockProps).refs;
+      const { textfield } = getReactComponents(render(mockProps));
 
       textfield.props.onChange('foo');
       expect(mockProps.fields.elementSelector.onChange).toHaveBeenCalledWith('foo');
@@ -42,7 +50,7 @@ describe('elementSelectorField', () => {
     it('receives error', () => {
       mockProps.fields.elementSelector.touched = true;
       mockProps.fields.elementSelector.error = 'Test error.';
-      const { validationWrapper } = render(mockProps).refs;
+      const { validationWrapper } = getReactComponents(render(mockProps));
 
       expect(validationWrapper.props.error).toEqual(jasmine.any(String));
     });

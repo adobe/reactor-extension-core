@@ -1,6 +1,10 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-reduxform';
 import { ValidationWrapper, InfoTip, ErrorTip } from '@reactor/react-components';
+import Alert from '@coralui/react-coral/lib/Alert';
+import Button from '@coralui/react-coral/lib/Button';
+import Checkbox from '@coralui/react-coral/lib/Checkbox';
+import Radio from '@coralui/react-coral/lib/Radio';
+import Textfield from '@coralui/react-coral/lib/Textfield';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
 const LANGUAGES = {
@@ -14,7 +18,7 @@ const containsInlineScriptRegex = /<script(?![^>]*\bsrc\b)/i;
 
 class Custom extends React.Component {
   onOpenEditor = () => {
-    let scriptField = this.props.fields.source;
+    const scriptField = this.props.fields.source;
     window.extensionBridge.openCodeEditor(scriptField.value, scriptField.onChange);
   };
 
@@ -29,10 +33,10 @@ class Custom extends React.Component {
 
     return (
       <div>
-        <ValidationWrapper ref="nameWrapper" error={name.touched && name.error}>
+        <ValidationWrapper error={ name.touched && name.error }>
           <label>
             <span className="u-label">Name</span>
-            <Coral.Textfield ref="nameField" {...name}/>
+            <Textfield { ...name } />
           </label>
         </ValidationWrapper>
 
@@ -40,26 +44,26 @@ class Custom extends React.Component {
           <legend className="u-inlineBlock">
             <span className="u-label u-gapRight">Language</span>
           </legend>
-          <Coral.Radio
-            ref="javaScriptLanguageRadio"
-            {...language}
-            value={LANGUAGES.JAVASCRIPT}
-            checked={language.value === LANGUAGES.JAVASCRIPT}>
+          <Radio
+            { ...language }
+            value={ LANGUAGES.JAVASCRIPT }
+            checked={ language.value === LANGUAGES.JAVASCRIPT }
+          >
             JavaScript
-          </Coral.Radio>
-          <Coral.Radio
-            ref="htmlLanguageRadio"
-            {...language}
-            value={LANGUAGES.HTML}
-            checked={language.value === LANGUAGES.HTML}>
+          </Radio>
+          <Radio
+            { ...language }
+            value={ LANGUAGES.HTML }
+            checked={ language.value === LANGUAGES.HTML }
+          >
             HTML
-          </Coral.Radio>
+          </Radio>
         </fieldset>
 
         <div>
-          <Coral.Checkbox ref="sequentialCheckbox" {...sequential}>
+          <Checkbox { ...sequential }>
             Sequential
-          </Coral.Checkbox>
+          </Checkbox>
           <InfoTip className="CustomAction-checkboxErrorTip">
             When sequential is enabled, the code in this action will be executed sequentially in
             relation to other custom actions that have sequential enabled. For example, if custom
@@ -71,9 +75,9 @@ class Custom extends React.Component {
         {
           language.value === LANGUAGES.JAVASCRIPT ?
             <div>
-              <Coral.Checkbox ref="globalCheckbox" {...global}>
+              <Checkbox { ...global }>
                 Execute globally
-              </Coral.Checkbox>
+              </Checkbox>
               <InfoTip className="CustomAction-checkboxErrorTip">
                 Global execution is only necessary when the script needs its
                 own variables to be globally visible. Enabling this will disable binding of
@@ -84,38 +88,34 @@ class Custom extends React.Component {
 
         {
           language.value === LANGUAGES.HTML && sequential.value ?
-            <Coral.Alert ref="sequentialHtmlAlert" variant="warning">
-              <Coral.Alert.Content>
-                Please note that sequential HTML will only work for rules that fire before the
-                page's HTML document has been loaded and parsed. Such rules typically use either
-                the Top of Page or Bottom of Page event.
-              </Coral.Alert.Content>
-            </Coral.Alert> : null
+            <Alert variant="warning" type="sequential">
+              Please note that sequential HTML will only work for rules that fire before the
+              page's HTML document has been loaded and parsed. Such rules typically use either
+              the Top of Page or Bottom of Page event.
+            </Alert> : null
         }
 
         {
           // Remove when we drop IE9 support.
           language.value === LANGUAGES.HTML && sequential.value &&
               containsInlineScriptRegex.test(source.value) ?
-            <Coral.Alert ref="inlineScriptAlert" variant="warning">
-              <Coral.Alert.Content>
-                Please note that if this rule is fired in Internet Explorer 9 before the page's
-                HTML document has been loaded and parsed, any inline script
-                (e.g., &lt;script&gt;console.log('test');&lt;script&gt;)
-                within your HTML will be executed before prior sequential JavaScript custom actions.
-              </Coral.Alert.Content>
-            </Coral.Alert> : null
+            <Alert variant="warning" type="inline">
+              Please note that if this rule is fired in Internet Explorer 9 before the page's
+              HTML document has been loaded and parsed, any inline script
+              (e.g., &lt;script&gt;console.log('test');&lt;script&gt;)
+              within your HTML will be executed before prior sequential JavaScript custom actions.
+            </Alert> : null
         }
 
         <div className="u-gapTop">
-          <Coral.Button
-            ref="openEditorButton"
+          <Button
             icon="code"
-            onClick={this.onOpenEditor}>
+            onClick={ this.onOpenEditor }
+          >
             Open Editor
-          </Coral.Button>
-          {source.touched && source.error ?
-            <ErrorTip ref="scriptErrorIcon" message={source.error}/> : null
+          </Button>
+          { source.touched && source.error ?
+            <ErrorTip>{ source.error }</ErrorTip> : null
           }
         </div>
       </div>
@@ -131,7 +131,7 @@ const formConfig = {
     'global',
     'source'
   ],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values) {
     values = {
       ...values
     };

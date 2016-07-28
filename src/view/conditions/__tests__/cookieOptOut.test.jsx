@@ -1,5 +1,15 @@
 import CookieOptOut from '../cookieOptOut';
-import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import { mount } from 'enzyme';
+import Checkbox from '@coralui/react-coral/lib/Checkbox';
+
+const getReactComponents = (wrapper) => {
+  const acceptCookiesCheckbox = wrapper.find(Checkbox).node;
+
+  return {
+    acceptCookiesCheckbox
+  };
+};
 
 describe('cookie out-out view', () => {
   let extensionBridge;
@@ -7,7 +17,7 @@ describe('cookie out-out view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = getFormInstance(CookieOptOut, extensionBridge);
+    instance = mount(getFormComponent(CookieOptOut, extensionBridge));
   });
 
   it('sets form values from settings', () => {
@@ -17,7 +27,7 @@ describe('cookie out-out view', () => {
       }
     });
 
-    const { acceptCookiesCheckbox } = instance.refs;
+    const { acceptCookiesCheckbox } = getReactComponents(instance);
 
     expect(acceptCookiesCheckbox.props.checked).toBe(true);
   });
@@ -25,7 +35,7 @@ describe('cookie out-out view', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { acceptCookiesCheckbox } = instance.refs;
+    const { acceptCookiesCheckbox } = getReactComponents(instance);
 
     acceptCookiesCheckbox.props.onChange(true);
 

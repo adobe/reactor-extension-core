@@ -1,5 +1,6 @@
+/* eslint import/no-mutable-exports: 0 */
 import React from 'react';
-import { reduxForm, getValues } from 'redux-form';
+import { reduxForm } from 'redux-form';
 
 /**
  * The handleSubmit function for the most recently updated form. This is exposed as a workaround
@@ -66,7 +67,7 @@ export default (config, mapStateToProps, mapDispatchToProps, mergeProps, options
 
       render() {
         // This has a ref so we can access it from tests.
-        return <WrappedComponent ref="extensionViewWrappedComponent" {...this.props}/>;
+        return <WrappedComponent { ...this.props } />;
       }
     }
 

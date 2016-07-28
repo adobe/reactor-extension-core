@@ -1,5 +1,5 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-reduxform';
+import Textfield from '@coralui/react-coral/lib/Textfield';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import RegexToggle from '../components/regexToggle';
 import { ValidationWrapper } from '@reactor/react-components';
@@ -7,45 +7,42 @@ import createId from '../utils/createId';
 import MultipleItemEditor from './components/multipleItemEditor';
 
 class Subdomain extends React.Component {
-  addRow = () => this.props.fields.subdomains.addField({ id: createId() });
-  removeRow = index => this.props.fields.subdomains.removeField(index);
   getKey = subdomain => subdomain.id.value;
+  removeRow = index => this.props.fields.subdomains.removeField(index);
+  addRow = () => this.props.fields.subdomains.addField({ id: createId() });
 
-  renderItem = (subdomain, index) => {
-    return (
-      <div className="u-inlineBlock">
-        <ValidationWrapper
-          ref={`subdomainWrapper${index}`}
-          className="u-gapRight"
-          error={subdomain.value.touched && subdomain.value.error}>
-          <label>
-            <span className="u-label">Subdomain</span>
-            <Coral.Textfield ref={`subdomainField${index}`} {...subdomain.value}/>
-          </label>
-        </ValidationWrapper>
-        <RegexToggle
-          ref={`subdomainRegexToggle${index}`}
-          value={subdomain.value.value}
-          valueIsRegex={subdomain.valueIsRegex.value}
-          onValueChange={subdomain.value.onChange}
-          onValueIsRegexChange={subdomain.valueIsRegex.onChange}/>
-      </div>
-    );
-  };
+  renderItem = (subdomain) => (
+    <div className="u-inlineBlock">
+      <ValidationWrapper
+        className="u-gapRight"
+        error={ subdomain.value.touched && subdomain.value.error }
+      >
+        <label>
+          <span className="u-label">Subdomain</span>
+          <Textfield { ...subdomain.value } />
+        </label>
+      </ValidationWrapper>
+      <RegexToggle
+        value={ subdomain.value.value }
+        valueIsRegex={ subdomain.valueIsRegex.value }
+        onValueChange={ subdomain.value.onChange }
+        onValueIsRegexChange={ subdomain.valueIsRegex.onChange }
+      />
+    </div>
+  );
 
   render() {
     const { subdomains } = this.props.fields;
 
     return (
       <MultipleItemEditor
-        ref="multipleItemEditor"
-        items={subdomains}
-        renderItem={this.renderItem}
-        getKey={this.getKey}
-        onAddItem={this.addRow}
-        onRemoveItem={this.removeRow}/>
+        items={ subdomains }
+        renderItem={ this.renderItem }
+        getKey={ this.getKey }
+        onAddItem={ this.addRow }
+        onRemoveItem={ this.removeRow }
+      />
     );
-
   }
 }
 
@@ -55,7 +52,7 @@ const formConfig = {
     'subdomains[].value',
     'subdomains[].valueIsRegex'
   ],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values) {
     values = {
       ...values
     };
@@ -68,12 +65,10 @@ const formConfig = {
       values.subdomains.push({});
     }
 
-    values.subdomains = values.subdomains.map(subdomain => {
-      return {
-        ...subdomain,
-        id: createId()
-      };
-    });
+    values.subdomains = values.subdomains.map(subdomain => ({
+      ...subdomain,
+      id: createId()
+    }));
 
     return values;
   },
@@ -82,13 +77,11 @@ const formConfig = {
       ...settings
     };
 
-    settings.subdomains = values.subdomains.map(subdomain => {
-      // Don't let ID get into the settings since it's only used in the view.
-      return {
-        value: subdomain.value,
-        valueIsRegex: subdomain.valueIsRegex
-      };
-    });
+    // Don't let ID get into the settings since it's only used in the view.
+    settings.subdomains = values.subdomains.map(subdomain => ({
+      value: subdomain.value,
+      valueIsRegex: subdomain.valueIsRegex
+    }));
 
     return settings;
   },

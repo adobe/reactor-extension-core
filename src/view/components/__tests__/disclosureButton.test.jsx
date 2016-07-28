@@ -1,35 +1,44 @@
 import React from 'react';
-import TestUtils from 'react-addons-test-utils';
+import { mount } from 'enzyme';
 import DisclosureButton from '../disclosureButton';
+import Icon from '@coralui/react-coral/lib/Icon';
 
-const render = props => {
-  return TestUtils.renderIntoDocument(<DisclosureButton {...props}/>);
+const getReactComponents = (wrapper) => {
+  const icon = wrapper.find(Icon).node;
+  const button = wrapper.find('button');
+
+  return {
+    icon,
+    button
+  };
 };
+
+const render = props => mount(<DisclosureButton { ...props } />);
 
 describe('disclosure button', () => {
   it('shows down chevron when selected', () => {
-    const { icon } = render({
+    const { icon } = getReactComponents(render({
       selected: true
-    }).refs;
+    }));
 
     expect(icon.props.icon).toEqual('chevronDown');
   });
 
   it('shows right chevron when not selected', () => {
-    const { icon } = render({
+    const { icon } = getReactComponents(render({
       selected: false
-    }).refs;
+    }));
 
     expect(icon.props.icon).toEqual('chevronRight');
   });
 
   it('calls onClick when clicked', () => {
     const onClick = jasmine.createSpy();
-    const { button } = render({
+    const { button } = getReactComponents(render({
       onClick
-    }).refs;
+    }));
 
-    TestUtils.Simulate.click(button);
+    button.simulate('click');
 
     expect(onClick).toHaveBeenCalled();
   });

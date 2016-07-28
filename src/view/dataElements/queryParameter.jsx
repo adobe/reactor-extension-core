@@ -1,29 +1,28 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-reduxform';
+import Checkbox from '@coralui/react-coral/lib/Checkbox';
+import Textfield from '@coralui/react-coral/lib/Textfield';
 import { ValidationWrapper } from '@reactor/react-components';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
-class QueryParameter extends React.Component {
-  render() {
-    const { name, caseInsensitive } = this.props.fields;
+function QueryParameter({ ...props }) {
+  const { name, caseInsensitive } = props.fields;
 
-    return (
-      <div>
-        <ValidationWrapper
-          ref="nameWrapper"
-          error={name.touched && name.error}
-          className="u-gapRight">
-          <label>
-            <span className="u-label">URL Querystring Parameter Name</span>
-            <Coral.Textfield ref="nameField" {...name}/>
-          </label>
-        </ValidationWrapper>
-        <Coral.Checkbox ref="caseInsensitiveCheckbox" {...caseInsensitive}>
-          Ignore capitalization differences
-        </Coral.Checkbox>
-      </div>
-    );
-  }
+  return (
+    <div>
+      <ValidationWrapper
+        error={ name.touched && name.error }
+        className="u-gapRight"
+      >
+        <label>
+          <span className="u-label">URL Querystring Parameter Name</span>
+          <Textfield { ...name } />
+        </label>
+      </ValidationWrapper>
+      <Checkbox { ...caseInsensitive }>
+        Ignore capitalization differences
+      </Checkbox>
+    </div>
+  );
 }
 
 const formConfig = {

@@ -1,7 +1,8 @@
 import React from 'react';
-import Coral from '@coralui/coralui-support-react';
 import RegexToggle from '../../components/regexToggle';
 import { ValidationWrapper } from '@reactor/react-components';
+import Textfield from '@coralui/react-coral/lib/Textfield';
+import Button from '@coralui/react-coral/lib/Button';
 
 export default class ElementPropertyEditor extends React.Component {
   remove = () => {
@@ -13,34 +14,34 @@ export default class ElementPropertyEditor extends React.Component {
     return (
       <div className="u-gapBottom">
         <ValidationWrapper
-          ref="nameValidationWrapper"
-          error={name.touched && name.error}>
-          <Coral.Textfield
-            ref="nameField"
+          error={ name.touched && name.error }
+        >
+          <Textfield
             placeholder="Property"
-            onKeyPress={this.props.onKeyPress}
-            {...name}/>
+            onKeyPress={ this.props.onKeyPress }
+            { ...name }
+          />
         </ValidationWrapper>
         <span className="u-label u-gapLeft">=</span>
-        <Coral.Textfield
-          ref="valueField"
+        <Textfield
           className="u-gapRight"
           placeholder="Value"
-          onKeyPress={this.props.onKeyPress}
-          {...value}/>
+          onKeyPress={ this.props.onKeyPress }
+          { ...value }
+        />
         <RegexToggle
-          ref="regexToggle"
-          value={value.value}
-          valueIsRegex={valueIsRegex.value}
-          onValueChange={value.onChange}
-          onValueIsRegexChange={valueIsRegex.onChange}/>
-        <Coral.Button
-          ref="removeButton"
+          value={ value.value }
+          valueIsRegex={ valueIsRegex.value }
+          onValueChange={ value.onChange }
+          onValueIsRegexChange={ valueIsRegex.onChange }
+        />
+        <Button
           className="u-gapBottom"
           variant="quiet"
           icon="close"
-          iconsize="S"
-          onClick={this.remove}/>
+          iconSize="S"
+          onClick={ this.remove }
+        />
       </div>
     );
   }

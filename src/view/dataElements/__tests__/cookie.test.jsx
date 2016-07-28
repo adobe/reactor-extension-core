@@ -1,5 +1,18 @@
+import { mount } from 'enzyme';
 import Cookie from '../cookie';
-import { getFormInstance, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import Textfield from '@coralui/react-coral/lib/Textfield';
+import { ValidationWrapper } from '@reactor/react-components';
+
+const getReactComponents = (wrapper) => {
+  const nameField = wrapper.find(Textfield).node;
+  const nameWrapper = wrapper.find(ValidationWrapper).node;
+
+  return {
+    nameField,
+    nameWrapper
+  };
+};
 
 describe('cookie view', () => {
   let extensionBridge;
@@ -7,7 +20,7 @@ describe('cookie view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = getFormInstance(Cookie, extensionBridge);
+    instance = mount(getFormComponent(Cookie, extensionBridge));
   });
 
   it('sets form values from settings', () => {
@@ -17,7 +30,7 @@ describe('cookie view', () => {
       }
     });
 
-    const { nameField } = instance.refs;
+    const { nameField } = getReactComponents(instance);
 
     expect(nameField.props.value).toBe('foo');
   });
@@ -25,7 +38,7 @@ describe('cookie view', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { nameField } = instance.refs;
+    const { nameField } = getReactComponents(instance);
     nameField.props.onChange('foo');
 
     expect(extensionBridge.getSettings()).toEqual({
@@ -37,7 +50,7 @@ describe('cookie view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { nameWrapper } = instance.refs;
+    const { nameWrapper } = getReactComponents(instance);
 
     expect(nameWrapper.props.error).toEqual(jasmine.any(String));
   });

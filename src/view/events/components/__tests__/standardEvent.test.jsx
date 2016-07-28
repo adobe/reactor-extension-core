@@ -1,5 +1,18 @@
+import { mount } from 'enzyme';
 import StandardEvent from '../../components/standardEvent';
-import { getFormInstance, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
+import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
+import ElementFilter from '../elementFilter';
+import AdvancedEventOptions from '../advancedEventOptions';
+
+const getReactComponents = (wrapper) => {
+  const elementFilter = wrapper.find(ElementFilter).node;
+  const advancedEventOptions = wrapper.find(AdvancedEventOptions).node;
+
+  return {
+    elementFilter,
+    advancedEventOptions
+  };
+};
 
 describe('standard event view', () => {
   let extensionBridge;
@@ -7,7 +20,7 @@ describe('standard event view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = getFormInstance(StandardEvent, extensionBridge);
+    instance = mount(getFormComponent(StandardEvent, extensionBridge));
   });
 
   it('sets form values from settings', () => {
@@ -18,7 +31,7 @@ describe('standard event view', () => {
       }
     });
 
-    const { elementFilter, advancedEventOptions } = instance.refs;
+    const { elementFilter, advancedEventOptions } = getReactComponents(instance);
 
     expect(elementFilter.props.fields.elementSelector.value).toBe('.foo');
     expect(advancedEventOptions.props.fields.bubbleStop.value).toBe(true);
@@ -27,7 +40,7 @@ describe('standard event view', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { elementFilter, advancedEventOptions } = instance.refs;
+    const { elementFilter, advancedEventOptions } = getReactComponents(instance);
 
     elementFilter.props.fields.elementSelector.onChange('.foo');
     advancedEventOptions.props.fields.bubbleStop.onChange(true);
@@ -40,7 +53,7 @@ describe('standard event view', () => {
   it('sets validation errors', () => {
     extensionBridge.init();
 
-    const { elementFilter } = instance.refs;
+    const { elementFilter } = getReactComponents(instance);
 
     expect(extensionBridge.validate()).toBe(false);
     expect(elementFilter.props.fields.elementSelector.error).toEqual(jasmine.any(String));
