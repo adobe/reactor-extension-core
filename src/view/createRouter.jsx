@@ -4,6 +4,7 @@ import { Router, Route, hashHistory } from 'react-router';
 
 // Events
 import BlurEvent from './events/blur';
+import CustomEvent from './events/custom';
 import ClickEvent from './events/click';
 import DirectCallEvent from './events/directCall';
 import DomReadyEvent from './events/domReady';
@@ -78,6 +79,7 @@ export default (setFormConfigForCurrentRoute) => {
     <Router history={ hashHistory }>
       <Route path="/events/blur" component={ BlurEvent } onEnter={ onEnter } />
       <Route path="/events/click" component={ ClickEvent } onEnter={ onEnter } />
+      <Route path="/events/custom" component={ CustomEvent } onEnter={ onEnter } />
       <Route path="/events/directCall" component={ DirectCallEvent } onEnter={ onEnter } />
       <Route path="/events/domReady" component={ DomReadyEvent } onEnter={ onEnter } />
       <Route path="/events/elementExists" component={ ElementExistsEvent } onEnter={ onEnter } />
