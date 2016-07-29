@@ -14,7 +14,6 @@ var argv = require('yargs')
 require('@reactor/extension-support-packager')(gulp, {
   dependencyTasks: ['buildView']
 });
-require('@reactor/extension-support-testrunner')(gulp);
 
 // Shows an growl notification saying that building failed and then logs the error to the console.
 var errorAlert = function(error) {
@@ -100,12 +99,3 @@ gulp.task('watch', function() {
 });
 
 gulp.task('buildView', ['buildJS', 'copyHTML']);
-
-var dependencyTasks = ['buildView'];
-if (argv.watch && !argv.withoutWatch) {
-  dependencyTasks.push('watch');
-}
-
-require('@reactor/extension-support-sandbox')(gulp, {
-  dependencyTasks: dependencyTasks
-});
