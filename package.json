@@ -22,8 +22,9 @@
     "test": "reactor-testrunner",
     "lint": "reactor-testrunner lint",
     "sandbox": "(gulp buildView watch &) && reactor-sandbox",
+    "packager": "gulp buildView && reactor-packager",
     "bootstrap": "reactor-sandbox init",
-    "ci-job": "xvfb-run reactor-testrunner --ci --browser all && reactor-testrunner lint && gulp package"
+    "ci-job": "xvfb-run npm test -- --ci --browser all && npm run lint && npm run packager"
   },
   "dependencies": {
     "@coralui/react-coral": "<1.0.0",
@@ -47,9 +48,9 @@
     "stylus-loader": "^2.1.1"
   },
   "devDependencies": {
-    "@reactor/extension-support-packager": "^1.1.0",
+    "@reactor/extension-support-packager": "^2.0.0",
     "@reactor/extension-support-sandbox": "^7.1.0",
-    "@reactor/extension-support-testrunner": "^5.2.0",
+    "@reactor/extension-support-testrunner": "^5.3.0",
     "@reactor/turbine": "^14.1.1",
     "babel-core": "^6.11.4",
     "babel-loader": "^6.2.4",

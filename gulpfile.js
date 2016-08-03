@@ -11,10 +11,6 @@ var argv = require('yargs')
   .alias('source-maps', 'with-source-maps')
   .argv;
 
-require('@reactor/extension-support-packager')(gulp, {
-  dependencyTasks: ['buildView']
-});
-
 // Shows an growl notification saying that building failed and then logs the error to the console.
 var errorAlert = function(error) {
   notify.onError({
