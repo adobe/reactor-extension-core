@@ -109,6 +109,58 @@
       }
     },
     {
+      "name": "custom",
+      "categoryName": "Other",
+      "displayName": "Custom",
+      "libPath": "events/custom.js",
+      "viewPath": "index.html#/events/custom",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "elementSelector": {
+            "type": "string",
+            "minLength": 1
+          },
+          "elementProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "value": {
+                  "type": "string"
+                },
+                "valueIsRegex": {
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": false,
+              "required": ["name", "value"]
+            }
+          },
+          "bubbleFireIfParent": {
+            "type": "boolean"
+          },
+          "bubbleFireIfChildFired": {
+            "type": "boolean"
+          },
+          "bubbleStop": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": ["type"]
+      }
+    },
+    {
       "name": "direct-call",
       "categoryName": "Other",
       "displayName": "Direct Call",
