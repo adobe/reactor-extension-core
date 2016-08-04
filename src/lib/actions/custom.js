@@ -267,7 +267,7 @@ module.exports = function(settings, relatedElement, event) {
   }
 };
 
-if (ENV_TEST) {
+if (typeof ENV_TEST !== 'undefined' && ENV_TEST) {
   module.exports.__isMemoryCleanedUp = function() {
     return !Object.keys(actionsAwaitingJSCallback._actionsByCodeId).length &&
         !sequentialQueue._queue.length;
