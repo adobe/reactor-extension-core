@@ -1038,7 +1038,7 @@
         "additionalProperties": false,
         "required": ["source"]
       },
-      "transform": [
+      "transforms": [
         {
           "type": "function",
           "propertyPath": "source",
@@ -1646,7 +1646,7 @@
         "additionalProperties": false,
         "required": ["source"]
       },
-      "transform": [
+      "transforms": [
         {
           "type": "function",
           "propertyPath": "source"
@@ -1750,7 +1750,7 @@
           "source"
         ]
       },
-      "transform": [
+      "transforms": [
         {
           "type": "customCode"
         }
