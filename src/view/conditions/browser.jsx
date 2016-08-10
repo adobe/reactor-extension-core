@@ -10,7 +10,6 @@ const browserOptions = [
   'Opera',
   'Mobile Safari',
   'IE Mobile',
-  'IE Mobile',
   'Opera Mini',
   'Opera Mobile',
   'OmniWeb'

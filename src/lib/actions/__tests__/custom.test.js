@@ -10,10 +10,7 @@ var getInjectedDelegate = function(options) {
     'load-script': options.loadScript || publicRequire('load-script'),
     'get-var': options.getVar || publicRequire('get-var'),
     'logger': options.logger || publicRequire('logger'),
-    'once': publicRequire('once'),
-    'build-info': {
-      hostedFilesBaseUrl: '//aaronhardy.com/files/'
-    }
+    'once': publicRequire('once')
   });
 };
 
@@ -54,7 +51,7 @@ describe('custom action delegate', function() {
     delegate({
       name: 'A Code',
       codeId: 'a',
-      source: 'a.js',
+      source: '//example.com/files/a.js',
       language: 'javascript',
       global: false,
       sequential: true
@@ -67,7 +64,7 @@ describe('custom action delegate', function() {
     delegate({
       name: 'B Code',
       codeId: 'b',
-      source: 'b.js',
+      source: '//example.com/files/b.js',
       language: 'javascript',
       sequential: false
     }, bRelatedElement, bEvent);
@@ -79,7 +76,7 @@ describe('custom action delegate', function() {
     delegate({
       name: 'C Code',
       codeId: 'c',
-      source: 'c.js',
+      source: '//example.com/files/c.js',
       language: 'javascript',
       global: true,
       sequential: true
@@ -92,7 +89,7 @@ describe('custom action delegate', function() {
     delegate({
       name: 'D Code',
       codeId: 'd',
-      source: 'd.html',
+      source: '//example.com/files/d.html',
       language: 'html',
       sequential: false,
       tokens: ['foo']
@@ -115,17 +112,17 @@ describe('custom action delegate', function() {
 
     // Item A
     expect(document.write.calls.argsFor(0)).toEqual([
-      '<script src="//aaronhardy.com/files/a.js" data-dtmblockingcodeid="a"></script>'
+      '<script src="//example.com/files/a.js" data-dtmblockingcodeid="a"></script>'
     ]);
 
     // Item B
     expect(mockLoadScript.calls.argsFor(0)).toEqual([
-      '//aaronhardy.com/files/b.js'
+      '//example.com/files/b.js'
     ]);
 
     // Item C
     expect(document.write.calls.argsFor(1)).toEqual([
-      '<script src="//aaronhardy.com/files/c.js" data-dtmblockingcodeid="c"></script>'
+      '<script src="//example.com/files/c.js" data-dtmblockingcodeid="c"></script>'
     ]);
 
     // Item D
@@ -175,7 +172,7 @@ describe('custom action delegate', function() {
     // available.
     var iframe = document.body.appendChild.calls.argsFor(0)[0];
     expect(iframe).toEqual(jasmine.any(HTMLIFrameElement));
-    expect(iframe.src).toEqual('http://aaronhardy.com/files/d.html?foo=bar');
+    expect(iframe.src).toEqual('http://example.com/files/d.html?foo=bar');
 
     setTimeout(function() {
       expect(delegate.__isMemoryCleanedUp()).toBe(true);
@@ -218,7 +215,7 @@ describe('custom action delegate', function() {
     delegate({
       name: 'A Code',
       codeId: 'a',
-      source: 'a.js',
+      source: '//example.com/files/a.js',
       language: 'javascript',
       global: false,
       sequential: true
@@ -231,7 +228,7 @@ describe('custom action delegate', function() {
     delegate({
       name: 'B Code',
       codeId: 'b',
-      source: 'b.js',
+      source: '//example.com/files/b.js',
       language: 'javascript',
       sequential: false
     }, bRelatedElement, bEvent);
@@ -243,7 +240,7 @@ describe('custom action delegate', function() {
     delegate({
       name: 'C Code',
       codeId: 'c',
-      source: 'c.js',
+      source: '//example.com/files/c.js',
       language: 'javascript',
       global: true,
       sequential: true
@@ -256,7 +253,7 @@ describe('custom action delegate', function() {
     delegate({
       name: 'D Code',
       codeId: 'd',
-      source: 'd.html',
+      source: '//example.com/files/d.html',
       language: 'html',
       sequential: false,
       tokens: ['foo']
@@ -279,12 +276,12 @@ describe('custom action delegate', function() {
     // be created and added to the document (via loadScript) and subsequent sequential items won't
     // be executed until the first script finishes loading.
     expect(mockLoadScript.calls.argsFor(0)).toEqual([
-      '//aaronhardy.com/files/a.js'
+      '//example.com/files/a.js'
     ]);
 
     // Item B should begin loading immediately because it's non-sequential
     expect(mockLoadScript.calls.argsFor(1)).toEqual([
-      '//aaronhardy.com/files/b.js'
+      '//example.com/files/b.js'
     ]);
 
     // Item C should not have started loading yet.
@@ -331,7 +328,7 @@ describe('custom action delegate', function() {
       // Item C should have started loading now that A is complete
       expect(mockLoadScript.calls.count()).toBe(3);
       expect(mockLoadScript.calls.argsFor(2)).toEqual([
-        '//aaronhardy.com/files/c.js'
+        '//example.com/files/c.js'
       ]);
 
       // Made sure Item E hasn't started yet.
@@ -387,7 +384,7 @@ describe('custom action delegate', function() {
     delegate({
       name: 'A Code',
       codeId: 'a',
-      source: 'a.js',
+      source: '//example.com/files/a.js',
       language: 'javascript',
       sequential: true
     });
@@ -403,7 +400,7 @@ describe('custom action delegate', function() {
     delegate({
       name: 'C Code',
       codeId: 'c',
-      source: 'c.js',
+      source: '//example.com/files/c.js',
       language: 'javascript',
       sequential: true
     });
@@ -460,7 +457,7 @@ describe('custom action delegate', function() {
     delegate({
       name: 'A Code',
       codeId: 'a',
-      source: 'a.js',
+      source: '//example.com/files/a.js',
       language: 'javascript',
       sequential: true
     });
@@ -485,13 +482,13 @@ describe('custom action delegate', function() {
     delegate({
       name: 'A Code',
       codeId: 'a',
-      source: 'a.js',
+      source: '//example.com/files/a.js',
       language: 'javascript',
       sequential: false
     });
 
     expect(mockLoadScript.calls.argsFor(0)).toEqual([
-      '//aaronhardy.com/files/a.js'
+      '//example.com/files/a.js'
     ]);
 
     setTimeout(function() {
