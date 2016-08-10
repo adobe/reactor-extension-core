@@ -8,14 +8,13 @@
     "name": "Adobe Systems",
     "email": "DTM-Engineering@adobe.com"
   },
-  "viewBasePath": "dist",
-  "libBasePath": "src/lib",
+  "viewBasePath": "dist/",
   "events": [
     {
       "name": "blur",
       "categoryName": "Form",
       "displayName": "Blur",
-      "libPath": "events/blur.js",
+      "libPath": "src/lib/events/blur.js",
       "viewPath": "index.html#/events/blur",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -62,7 +61,7 @@
       "name": "click",
       "categoryName": "Mouse",
       "displayName": "Click",
-      "libPath": "events/click.js",
+      "libPath": "src/lib/events/click.js",
       "viewPath": "index.html#/events/click",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -112,7 +111,7 @@
       "name": "custom",
       "categoryName": "Other",
       "displayName": "Custom",
-      "libPath": "events/custom.js",
+      "libPath": "src/lib/events/custom.js",
       "viewPath": "index.html#/events/custom",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -164,7 +163,7 @@
       "name": "direct-call",
       "categoryName": "Other",
       "displayName": "Direct Call",
-      "libPath": "events/directCall.js",
+      "libPath": "src/lib/events/directCall.js",
       "viewPath": "index.html#/events/directCall",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -183,7 +182,7 @@
       "name": "dom-ready",
       "categoryName": "Page Load",
       "displayName": "DOM Ready",
-      "libPath": "events/domReady.js",
+      "libPath": "src/lib/events/domReady.js",
       "viewPath": "index.html#/events/domReady",
       "schema": {}
     },
@@ -191,7 +190,7 @@
       "name": "element-exists",
       "categoryName": "Other",
       "displayName": "Element Exists",
-      "libPath": "events/elementExists.js",
+      "libPath": "src/lib/events/elementExists.js",
       "viewPath": "index.html#/events/elementExists",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -230,7 +229,7 @@
       "name": "media-ended",
       "categoryName": "Media",
       "displayName": "Media Ended",
-      "libPath": "events/ended.js",
+      "libPath": "src/lib/events/ended.js",
       "viewPath": "index.html#/events/ended",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -277,7 +276,7 @@
       "name": "enters-viewport",
       "categoryName": "Other",
       "displayName": "Enters Viewport",
-      "libPath": "events/entersViewport.js",
+      "libPath": "src/lib/events/entersViewport.js",
       "viewPath": "index.html#/events/entersViewport",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -320,7 +319,7 @@
       "name": "focus",
       "categoryName": "Form",
       "displayName": "Focus",
-      "libPath": "events/focus.js",
+      "libPath": "src/lib/events/focus.js",
       "viewPath": "index.html#/events/focus",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -367,7 +366,7 @@
       "name": "hover",
       "categoryName": "Mouse",
       "displayName": "Hover",
-      "libPath": "events/hover.js",
+      "libPath": "src/lib/events/hover.js",
       "viewPath": "index.html#/events/hover",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -419,7 +418,7 @@
       "name": "key-press",
       "categoryName": "Keyboard",
       "displayName": "Key Press",
-      "libPath": "events/keyPress.js",
+      "libPath": "src/lib/events/keyPress.js",
       "viewPath": "index.html#/events/keyPress",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -466,7 +465,7 @@
       "name": "media-loaded-data",
       "categoryName": "Media",
       "displayName": "Media Loaded Data",
-      "libPath": "events/loadedData.js",
+      "libPath": "src/lib/events/loadedData.js",
       "viewPath": "index.html#/events/loadedData",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -513,7 +512,7 @@
       "name": "location-change",
       "categoryName": "Other",
       "displayName": "pushState or hashchange",
-      "libPath": "events/locationChange.js",
+      "libPath": "src/lib/events/locationChange.js",
       "viewPath": "index.html#/events/locationChange",
       "schema": {}
     },
@@ -521,7 +520,7 @@
       "name": "on-load",
       "categoryName": "Page Load",
       "displayName": "On Load",
-      "libPath": "events/onLoad.js",
+      "libPath": "src/lib/events/onLoad.js",
       "viewPath": "index.html#/events/onLoad",
       "schema": {}
     },
@@ -529,7 +528,7 @@
       "name": "orientation-change",
       "categoryName": "Mobile",
       "displayName": "Orientation Change",
-      "libPath": "events/orientationChange.js",
+      "libPath": "src/lib/events/orientationChange.js",
       "viewPath": "index.html#/events/orientationChange",
       "schema": {}
     },
@@ -537,7 +536,7 @@
       "name": "page-bottom",
       "categoryName": "Page Load",
       "displayName": "Page Bottom",
-      "libPath": "events/pageBottom.js",
+      "libPath": "src/lib/events/pageBottom.js",
       "viewPath": "index.html#/events/pageBottom",
       "schema": {}
     },
@@ -545,7 +544,7 @@
       "name": "page-top",
       "categoryName": "Page Load",
       "displayName": "Page Top",
-      "libPath": "events/pageTop.js",
+      "libPath": "src/lib/events/pageTop.js",
       "viewPath": "index.html#/events/pageTop",
       "schema": {}
     },
@@ -553,7 +552,7 @@
       "name": "media-pause",
       "categoryName": "Media",
       "displayName": "Media Pause",
-      "libPath": "events/pause.js",
+      "libPath": "src/lib/events/pause.js",
       "viewPath": "index.html#/events/pause",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -600,7 +599,7 @@
       "name": "media-play",
       "categoryName": "Media",
       "displayName": "Media Play",
-      "libPath": "events/play.js",
+      "libPath": "src/lib/events/play.js",
       "viewPath": "index.html#/events/play",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -647,7 +646,7 @@
       "name": "media-stalled",
       "categoryName": "Media",
       "displayName": "Media Stalled",
-      "libPath": "events/stalled.js",
+      "libPath": "src/lib/events/stalled.js",
       "viewPath": "index.html#/events/stalled",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -694,7 +693,7 @@
       "name": "submit",
       "categoryName": "Form",
       "displayName": "Submit",
-      "libPath": "events/submit.js",
+      "libPath": "src/lib/events/submit.js",
       "viewPath": "index.html#/events/submit",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -741,7 +740,7 @@
       "name": "tab-blur",
       "categoryName": "Browser",
       "displayName": "Tab Blur",
-      "libPath": "events/tabBlur.js",
+      "libPath": "src/lib/events/tabBlur.js",
       "viewPath": "index.html#/events/tabBlur",
       "schema": {}
     },
@@ -749,7 +748,7 @@
       "name": "tab-focus",
       "categoryName": "Browser",
       "displayName": "Tab Focus",
-      "libPath": "events/tabFocus.js",
+      "libPath": "src/lib/events/tabFocus.js",
       "viewPath": "index.html#/events/tabFocus",
       "schema": {}
     },
@@ -757,7 +756,7 @@
       "name": "time-spent-on-page",
       "categoryName": "Other",
       "displayName": "Time Spent On Page",
-      "libPath": "events/timeSpentOnPage.js",
+      "libPath": "src/lib/events/timeSpentOnPage.js",
       "viewPath": "index.html#/events/timeSpentOnPage",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -776,7 +775,7 @@
       "name": "media-time-played",
       "categoryName": "Media",
       "displayName": "Media Time Played",
-      "libPath": "events/timePlayed.js",
+      "libPath": "src/lib/events/timePlayed.js",
       "viewPath": "index.html#/events/timePlayed",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -832,7 +831,7 @@
       "name": "media-volume-change",
       "categoryName": "Media",
       "displayName": "Media Volume Change",
-      "libPath": "events/volumeChange.js",
+      "libPath": "src/lib/events/volumeChange.js",
       "viewPath": "index.html#/events/volumeChange",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -879,7 +878,7 @@
       "name": "zoom-change",
       "categoryName": "Mobile",
       "displayName": "Zoom Change",
-      "libPath": "events/zoomChange.js",
+      "libPath": "src/lib/events/zoomChange.js",
       "viewPath": "index.html#/events/zoomChange",
       "schema": {}
     }
@@ -889,7 +888,7 @@
       "name": "browser",
       "categoryName": "Technology",
       "displayName": "Browser",
-      "libPath": "conditions/browser.js",
+      "libPath": "src/lib/conditions/browser.js",
       "viewPath": "index.html#/conditions/browser",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -922,7 +921,7 @@
       "name": "cart-amount",
       "categoryName": "Engagement",
       "displayName": "Cart Amount",
-      "libPath": "conditions/cartAmount.js",
+      "libPath": "src/lib/conditions/cartAmount.js",
       "viewPath": "index.html#/conditions/cartAmount",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -952,7 +951,7 @@
       "name": "cart-item-quantity",
       "categoryName": "Engagement",
       "displayName": "Cart Item Quantity",
-      "libPath": "conditions/cartItemQuantity.js",
+      "libPath": "src/lib/conditions/cartItemQuantity.js",
       "viewPath": "index.html#/conditions/cartItemQuantity",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -982,7 +981,7 @@
       "name": "cookie",
       "categoryName": "Data",
       "displayName": "Cookie",
-      "libPath": "conditions/cookie.js",
+      "libPath": "src/lib/conditions/cookie.js",
       "viewPath": "index.html#/conditions/cookie",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1008,7 +1007,7 @@
       "name": "cookie-opt-out",
       "categoryName": "Data",
       "displayName": "Cookie Opt-out",
-      "libPath": "conditions/cookieOptOut.js",
+      "libPath": "src/lib/conditions/cookieOptOut.js",
       "viewPath": "index.html#/conditions/cookieOptOut",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1025,7 +1024,7 @@
       "name": "custom-script",
       "categoryName": "Data",
       "displayName": "Custom Script",
-      "libPath": "conditions/custom.js",
+      "libPath": "src/lib/conditions/custom.js",
       "viewPath": "index.html#/conditions/custom",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1054,7 +1053,7 @@
       "name": "data-element",
       "categoryName": "Data",
       "displayName": "Data Element",
-      "libPath": "conditions/dataElement.js",
+      "libPath": "src/lib/conditions/dataElement.js",
       "viewPath": "index.html#/conditions/dataElement",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1079,7 +1078,7 @@
       "name": "device-type",
       "categoryName": "Technology",
       "displayName": "Device Type",
-      "libPath": "conditions/deviceType.js",
+      "libPath": "src/lib/conditions/deviceType.js",
       "viewPath": "index.html#/conditions/deviceType",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1110,7 +1109,7 @@
       "name": "domain",
       "categoryName": "URL",
       "displayName": "Domain",
-      "libPath": "conditions/domain.js",
+      "libPath": "src/lib/conditions/domain.js",
       "viewPath": "index.html#/conditions/domain",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1131,7 +1130,7 @@
       "name": "hash",
       "categoryName": "URL",
       "displayName": "Hash",
-      "libPath": "conditions/hash.js",
+      "libPath": "src/lib/conditions/hash.js",
       "viewPath": "index.html#/conditions/hash",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1164,7 +1163,7 @@
       "name": "landing-page",
       "categoryName": "Engagement",
       "displayName": "Landing Page",
-      "libPath": "conditions/landingPage.js",
+      "libPath": "src/lib/conditions/landingPage.js",
       "viewPath": "index.html#/conditions/landingPage",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1186,7 +1185,7 @@
       "name": "logged-in",
       "categoryName": "Engagement",
       "displayName": "Logged In",
-      "libPath": "conditions/loggedIn.js",
+      "libPath": "src/lib/conditions/loggedIn.js",
       "viewPath": "index.html#/conditions/loggedIn",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1205,7 +1204,7 @@
       "name": "new-returning-visitor",
       "categoryName": "Engagement",
       "displayName": "New/Returning Visitor",
-      "libPath": "conditions/newReturning.js",
+      "libPath": "src/lib/conditions/newReturning.js",
       "viewPath": "index.html#/conditions/newReturning",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1223,7 +1222,7 @@
       "name": "operating-system",
       "categoryName": "Technology",
       "displayName": "Operating System",
-      "libPath": "conditions/operatingSystem.js",
+      "libPath": "src/lib/conditions/operatingSystem.js",
       "viewPath": "index.html#/conditions/operatingSystem",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1255,7 +1254,7 @@
       "name": "page-views",
       "categoryName": "Engagement",
       "displayName": "Page Views",
-      "libPath": "conditions/pageViews.js",
+      "libPath": "src/lib/conditions/pageViews.js",
       "viewPath": "index.html#/conditions/pageViews",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1288,7 +1287,7 @@
       "name": "path",
       "categoryName": "URL",
       "displayName": "Path",
-      "libPath": "conditions/path.js",
+      "libPath": "src/lib/conditions/path.js",
       "viewPath": "index.html#/conditions/path",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1321,7 +1320,7 @@
       "name": "previous-converter",
       "categoryName": "Engagement",
       "displayName": "Previous Converter",
-      "libPath": "conditions/previousConverter.js",
+      "libPath": "src/lib/conditions/previousConverter.js",
       "viewPath": "index.html#/conditions/previousConverter",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1340,7 +1339,7 @@
       "name": "protocol",
       "categoryName": "URL",
       "displayName": "Protocol",
-      "libPath": "conditions/protocol.js",
+      "libPath": "src/lib/conditions/protocol.js",
       "viewPath": "index.html#/conditions/protocol",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1362,7 +1361,7 @@
       "name": "registered-user",
       "categoryName": "Engagement",
       "displayName": "Registered User",
-      "libPath": "conditions/registeredUser.js",
+      "libPath": "src/lib/conditions/registeredUser.js",
       "viewPath": "index.html#/conditions/registeredUser",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1381,7 +1380,7 @@
       "name": "screen-resolution",
       "categoryName": "Technology",
       "displayName": "Screen Resolution",
-      "libPath": "conditions/screenResolution.js",
+      "libPath": "src/lib/conditions/screenResolution.js",
       "viewPath": "index.html#/conditions/screenResolution",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1418,7 +1417,7 @@
       "name": "sessions",
       "categoryName": "Engagement",
       "displayName": "Sessions",
-      "libPath": "conditions/sessions.js",
+      "libPath": "src/lib/conditions/sessions.js",
       "viewPath": "index.html#/conditions/sessions",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1444,7 +1443,7 @@
       "name": "subdomain",
       "categoryName": "Technology",
       "displayName": "Subdomain",
-      "libPath": "conditions/subdomain.js",
+      "libPath": "src/lib/conditions/subdomain.js",
       "viewPath": "index.html#/conditions/subdomain",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1477,7 +1476,7 @@
       "name": "time-on-site",
       "categoryName": "Engagement",
       "displayName": "Time On Site",
-      "libPath": "conditions/timeOnSite.js",
+      "libPath": "src/lib/conditions/timeOnSite.js",
       "viewPath": "index.html#/conditions/timeOnSite",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1503,7 +1502,7 @@
       "name": "traffic-source",
       "categoryName": "Engagement",
       "displayName": "Traffic Source",
-      "libPath": "conditions/trafficSource.js",
+      "libPath": "src/lib/conditions/trafficSource.js",
       "viewPath": "index.html#/conditions/trafficSource",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1525,7 +1524,7 @@
       "name": "url-parameter",
       "categoryName": "URL",
       "displayName": "URL Parameter",
-      "libPath": "conditions/urlParameter.js",
+      "libPath": "src/lib/conditions/urlParameter.js",
       "viewPath": "index.html#/conditions/urlParameter",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1551,7 +1550,7 @@
       "name": "variable",
       "categoryName": "Data",
       "displayName": "Variable",
-      "libPath": "conditions/variable.js",
+      "libPath": "src/lib/conditions/variable.js",
       "viewPath": "index.html#/conditions/variable",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1577,7 +1576,7 @@
       "name": "window-size",
       "categoryName": "Technology",
       "displayName": "Window Size",
-      "libPath": "conditions/windowSize.js",
+      "libPath": "src/lib/conditions/windowSize.js",
       "viewPath": "index.html#/conditions/windowSize",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1615,7 +1614,7 @@
     {
       "name": "cookie",
       "displayName": "Cookie",
-      "libPath": "dataElements/cookie.js",
+      "libPath": "src/lib/dataElements/cookie.js",
       "viewPath": "index.html#/dataElements/cookie",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1633,7 +1632,7 @@
     {
       "name": "custom-script",
       "displayName": "Custom Script",
-      "libPath": "dataElements/custom.js",
+      "libPath": "src/lib/dataElements/custom.js",
       "viewPath": "index.html#/dataElements/custom",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1657,7 +1656,7 @@
     {
       "name": "dom-attribute",
       "displayName": "DOM Attribute",
-      "libPath": "dataElements/dom.js",
+      "libPath": "src/lib/dataElements/dom.js",
       "viewPath": "index.html#/dataElements/dom",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1679,7 +1678,7 @@
     {
       "name": "url-querystring-parameter",
       "displayName": "URL Querystring Parameter",
-      "libPath": "dataElements/queryParameter.js",
+      "libPath": "src/lib/dataElements/queryParameter.js",
       "viewPath": "index.html#/dataElements/queryParameter",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1697,7 +1696,7 @@
     {
       "name": "javascript-variable",
       "displayName": "JavaScript Variable",
-      "libPath": "dataElements/variable.js",
+      "libPath": "src/lib/dataElements/variable.js",
       "viewPath": "index.html#/dataElements/variable",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
@@ -1717,7 +1716,7 @@
     {
       "name": "custom",
       "displayName": "Custom",
-      "libPath": "actions/custom.js",
+      "libPath": "src/lib/actions/custom.js",
       "viewPath": "index.html#/actions/custom",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
