@@ -35,10 +35,6 @@ var getQueryStringForTokens = function(tokens, relatedElement, event) {
     .join('&');
 };
 
-var getFileUrl = function(relativePath) {
-  return buildInfo.hostedFilesBaseUrl + relativePath;
-};
-
 // A map used to store everything necessary to provide the
 // "this", "event", and "target" variables to non-global JavaScript.
 var actionsAwaitingJSCallback = {
@@ -123,7 +119,7 @@ var watchForBlockingJavaScriptError = once(function() {
 var loadJavaScriptSequential = function(action) {
   actionsAwaitingJSCallback.addAction(action);
 
-  var source = getFileUrl(action.settings.source);
+  var source = action.settings.source;
   var codeId = action.settings.codeId;
 
   // We first try to document.write because if the page is still loading we want the script to
@@ -180,7 +176,7 @@ var loadJavaScriptSequential = function(action) {
 };
 
 var loadJavaScriptNonSequential = function(action) {
-  var source = getFileUrl(action.settings.source);
+  var source = action.settings.source;
 
   actionsAwaitingJSCallback.addAction(action);
   loadScript(source).catch(function() {
@@ -208,7 +204,7 @@ var loadHtmlSequential = function(action) {
 };
 
 var loadHtmlNonSequential = function(action) {
-  var source = getFileUrl(action.settings.source);
+  var source = action.settings.source;
   var tokens = action.settings.tokens;
 
   if (tokens && tokens.length) {
@@ -241,7 +237,7 @@ var processAction = function(action) {
 /**
  * The custom action event. This loads and executes custom JavaScript or HTML provided by the user.
  * @param {Object} settings Action settings.
- * @param {number} settings.name The name of the action. Typically used by users to remind 
+ * @param {number} settings.name The name of the action. Typically used by users to remind
  * themselves what the code is intended to do.
  * @param {string} settings.source If <code>settings.language</code> is <code>html</code> and
  * <code>settings.sequential</code> is <code>true</code>, then this will be the user's code.
