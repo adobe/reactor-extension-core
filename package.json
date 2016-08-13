@@ -19,20 +19,19 @@
     "dtm"
   ],
   "scripts": {
+    "build": "webpack",
     "test": "reactor-testrunner",
     "lint": "reactor-testrunner lint",
-    "sandbox": "(gulp buildView watch &) && reactor-sandbox",
-    "packager": "gulp buildView && reactor-packager",
+    "sandbox": "(webpack --watch &) && reactor-sandbox",
+    "package": "webpack && reactor-packager",
     "bootstrap": "reactor-sandbox init",
-    "ci-job": "xvfb-run npm test -- --ci --browser all && npm run lint && npm run packager"
+    "ci-job": "xvfb-run npm test -- --ci --browser all && npm run lint && npm run package"
   },
   "dependencies": {
     "@coralui/react-coral": "<1.0.0",
     "@reactor/react-components": "^2.3.0",
     "classnames": "^2.2.5",
     "css-loader": "^0.23.1",
-    "gulp-notify": "^2.2.0",
-    "gulp-plumber": "^1.1.0",
     "history": "^2.1.2",
     "import-glob-loader": "^1.1.0",
     "nib": "^1.1.0",
@@ -57,10 +56,8 @@
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-0": "^6.5.0",
-    "gulp": "^3.9.1",
-    "gulp-sourcemaps": "^2.0.0-alpha",
+    "html-webpack-plugin": "^2.22.0",
     "react-addons-test-utils": "^15.2.1",
-    "webpack-stream": "^3.2.0",
-    "yargs": "^4.8.1"
+    "webpack": "^1.13.1"
   }
 }
