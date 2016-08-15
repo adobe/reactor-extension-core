@@ -1,6 +1,7 @@
 import React from 'react';
-import extensionViewReduxForm from '../../extensionViewReduxForm';
 import Alert from '@coralui/react-coral/lib/Alert';
+
+import extensionViewReduxForm from '../../extensionViewReduxForm';
 
 const NoConfig = () => (
   <Alert header="INFO">

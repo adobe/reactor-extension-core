@@ -1,6 +1,7 @@
 import React from 'react';
-import DisclosureButton from '../../components/disclosureButton';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
+
+import DisclosureButton from '../../components/disclosureButton';
 
 export default class AdvancedEventOptions extends React.Component {
   constructor() {

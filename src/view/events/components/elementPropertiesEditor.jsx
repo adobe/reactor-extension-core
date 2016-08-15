@@ -1,7 +1,8 @@
 import React from 'react';
+import Button from '@coralui/react-coral/lib/Button';
+
 import ElementPropertyEditor from './elementPropertyEditor';
 import createId from '../../utils/createId';
-import Button from '@coralui/react-coral/lib/Button';
 
 export default class ElementPropertiesEditor extends React.Component {
   add = () => {

@@ -2,9 +2,11 @@ import React from 'react';
 import Icon from '@coralui/react-coral/lib/Icon';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Tooltip from '@coralui/react-coral/lib/Tooltip';
+import { ValidationWrapper } from '@reactor/react-components';
+
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import RegexToggle from '../components/regexToggle';
-import { ValidationWrapper } from '@reactor/react-components';
+
 
 function Variable({ ...props }) {
   const { name, value, valueIsRegex } = props.fields;

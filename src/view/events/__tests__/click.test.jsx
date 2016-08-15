@@ -1,7 +1,8 @@
 import { mount } from 'enzyme';
+import Checkbox from '@coralui/react-coral/lib/Checkbox';
+
 import Click from '../click';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
-import Checkbox from '@coralui/react-coral/lib/Checkbox';
 import ElementFilter from '../components/elementFilter';
 import AdvancedEventOptions from '../components/advancedEventOptions';
 

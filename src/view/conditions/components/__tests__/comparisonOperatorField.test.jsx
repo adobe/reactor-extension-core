@@ -1,7 +1,8 @@
 import { mount } from 'enzyme';
 import React from 'react';
-import ComparisonOperatorField from '../comparisonOperatorField';
 import { ReduxFormSelect as Select } from '@reactor/react-components';
+
+import ComparisonOperatorField from '../comparisonOperatorField';
 
 const getReactComponents = (wrapper) => {
   const select = wrapper.find(Select).node;

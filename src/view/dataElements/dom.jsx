@@ -1,6 +1,7 @@
 import React from 'react';
 import { ReduxFormSelect as Select, ValidationWrapper } from '@reactor/react-components';
 import Textfield from '@coralui/react-coral/lib/Textfield';
+
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
 const elementPropertyPresets = [

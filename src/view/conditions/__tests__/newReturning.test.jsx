@@ -1,7 +1,8 @@
 import { mount } from 'enzyme';
+import Radio from '@coralui/react-coral/lib/Radio';
+
 import NewReturning from '../newReturning';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
-import Radio from '@coralui/react-coral/lib/Radio';
 
 const getReactComponents = (wrapper) => {
   const newVisitorRadio =

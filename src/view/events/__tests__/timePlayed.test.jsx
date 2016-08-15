@@ -1,9 +1,10 @@
 import { mount } from 'enzyme';
+import Textfield from '@coralui/react-coral/lib/Textfield';
+import { ReduxFormSelect as Select } from '@reactor/react-components';
+
+import ElementFilter from '../components/elementFilter';
 import TimePlayed from '../timePlayed';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import ElementFilter from '../components/elementFilter';
-import { ReduxFormSelect as Select } from '@reactor/react-components';
 import AdvancedEventOptions from '../components/advancedEventOptions';
 
 const getReactComponents = (wrapper) => {

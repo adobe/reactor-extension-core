@@ -1,10 +1,11 @@
-import extensionViewReduxForm from '../../../extensionViewReduxForm';
 import { mount } from 'enzyme';
-import DelayType, { formConfig } from '../delayType';
-import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
 import Radio from '@coralui/react-coral/lib/Radio';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import { ValidationWrapper } from '@reactor/react-components';
+
+import extensionViewReduxForm from '../../../extensionViewReduxForm';
+import DelayType, { formConfig } from '../delayType';
+import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
   const delayRadio =

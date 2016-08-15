@@ -1,9 +1,10 @@
 import React from 'react';
-import extensionViewReduxForm from '../extensionViewReduxForm';
+import Textfield from '@coralui/react-coral/lib/Textfield';
 import { ValidationWrapper, DataElementSelectorButton } from '@reactor/react-components';
+
+import extensionViewReduxForm from '../extensionViewReduxForm';
 import ComparisonOperatorField from './components/comparisonOperatorField';
 import { isNumber } from '../utils/validators';
-import Textfield from '@coralui/react-coral/lib/Textfield';
 
 class CartItemQuantity extends React.Component {
   onOpenDataElementSelector = () => {

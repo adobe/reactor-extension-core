@@ -1,8 +1,9 @@
 import React from 'react';
-import extensionViewReduxForm from '../extensionViewReduxForm';
-import RegexToggle from '../components/regexToggle';
 import { ValidationWrapper } from '@reactor/react-components';
 import Textfield from '@coralui/react-coral/lib/Textfield';
+
+import extensionViewReduxForm from '../extensionViewReduxForm';
+import RegexToggle from '../components/regexToggle';
 
 const Cookie = ({ ...props }) => {
   const { name, value, valueIsRegex } = props.fields;

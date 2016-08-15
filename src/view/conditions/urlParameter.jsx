@@ -1,40 +1,39 @@
 import React from 'react';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-import RegexToggle from '../components/regexToggle';
 import { ValidationWrapper } from '@reactor/react-components';
+
+import RegexToggle from '../components/regexToggle';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
-class URLParameter extends React.Component {
-  render() {
-    const { name, value, valueIsRegex } = this.props.fields;
+function URLParameter({ ...props }) {
+  const { name, value, valueIsRegex } = props.fields;
 
-    return (
-      <div>
-        <ValidationWrapper
-          type="name"
-          className="u-gapRight"
-          error={ name.touched && name.error }
-        >
-          <span className="u-label">URL Parameter Name</span>
-          <Textfield ref="nameField" { ...name } />
-        </ValidationWrapper>
-        <ValidationWrapper
-          type="value"
-          className="u-gapRight"
-          error={ value.touched && value.error }
-        >
-          <span className="u-label">URL Parameter Value</span>
-          <Textfield { ...value } />
-        </ValidationWrapper>
-        <RegexToggle
-          value={ value.value }
-          valueIsRegex={ valueIsRegex.value }
-          onValueChange={ value.onChange }
-          onValueIsRegexChange={ valueIsRegex.onChange }
-        />
-      </div>
-    );
-  }
+  return (
+    <div>
+      <ValidationWrapper
+        type="name"
+        className="u-gapRight"
+        error={ name.touched && name.error }
+      >
+        <span className="u-label">URL Parameter Name</span>
+        <Textfield { ...name } />
+      </ValidationWrapper>
+      <ValidationWrapper
+        type="value"
+        className="u-gapRight"
+        error={ value.touched && value.error }
+      >
+        <span className="u-label">URL Parameter Value</span>
+        <Textfield { ...value } />
+      </ValidationWrapper>
+      <RegexToggle
+        value={ value.value }
+        valueIsRegex={ valueIsRegex.value }
+        onValueChange={ value.onChange }
+        onValueIsRegexChange={ valueIsRegex.onChange }
+      />
+    </div>
+  );
 }
 
 const formConfig = {

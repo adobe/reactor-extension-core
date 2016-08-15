@@ -1,7 +1,8 @@
 import React from 'react';
-import extensionViewReduxForm from '../extensionViewReduxForm';
 import Button from '@coralui/react-coral/lib/Button';
 import { ErrorTip } from '@reactor/react-components';
+
+import extensionViewReduxForm from '../extensionViewReduxForm';
 
 class Custom extends React.Component {
   onOpenEditor = () => {

@@ -1,7 +1,8 @@
 import { mount } from 'enzyme';
-import URLParameter from '../urlParameter';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import { ValidationWrapper } from '@reactor/react-components';
+
+import URLParameter from '../urlParameter';
 import RegexToggle from '../../components/regexToggle';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 

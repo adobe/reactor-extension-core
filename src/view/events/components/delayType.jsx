@@ -1,8 +1,9 @@
 import React from 'react';
 import { ValidationWrapper } from '@reactor/react-components';
-import { isPositiveNumber } from '../../utils/validators';
 import Radio from '@coralui/react-coral/lib/Radio';
 import Textfield from '@coralui/react-coral/lib/Textfield';
+
+import { isPositiveNumber } from '../../utils/validators';
 
 export default class DelayType extends React.Component {
   render() {

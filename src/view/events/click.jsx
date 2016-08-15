@@ -1,9 +1,10 @@
 import React from 'react';
+import reduceReducers from 'reduce-reducers';
+
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
 import ElementFilter, { formConfig as elementFilterFormConfig } from './components/elementFilter';
 import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
 import extensionViewReduxForm from '../extensionViewReduxForm';
-import reduceReducers from 'reduce-reducers';
 
 function Click({ ...props }) {
   const { delayLinkActivation } = props.fields;

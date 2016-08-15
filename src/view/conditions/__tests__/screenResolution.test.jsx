@@ -1,9 +1,10 @@
 import { mount } from 'enzyme';
+import Textfield from '@coralui/react-coral/lib/Textfield';
+import { ValidationWrapper } from '@reactor/react-components';
+
 import ScreenResolution from '../screenResolution';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 import ComparisonOperatorField from '../components/comparisonOperatorField';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import { ValidationWrapper } from '@reactor/react-components';
 
 const getReactComponents = (wrapper) => {
   const widthOperatorField =

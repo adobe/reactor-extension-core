@@ -1,8 +1,9 @@
 import { mount } from 'enzyme';
-import Custom from '../custom';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import { ValidationWrapper } from '@reactor/react-components';
+
+import Custom from '../custom';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 import ElementFilter from '../components/elementFilter';
 import AdvancedEventOptions from '../components/advancedEventOptions';
 

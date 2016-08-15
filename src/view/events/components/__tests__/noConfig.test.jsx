@@ -1,6 +1,7 @@
+import { mount } from 'enzyme';
+
 import NoConfig from '../noConfig';
 import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
-import { mount } from 'enzyme';
 
 describe('dom ready view', () => {
   let extensionBridge;

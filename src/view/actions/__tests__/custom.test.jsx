@@ -1,14 +1,15 @@
 /* eslint no-useless-concat: 0 */
 
 import { mount } from 'enzyme';
-import Custom from '../custom';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Radio from '@coralui/react-coral/lib/Radio';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
 import Button from '@coralui/react-coral/lib/Button';
 import Alert from '@coralui/react-coral/lib/Alert';
 import { ValidationWrapper, ErrorTip } from '@reactor/react-components';
+
+import Custom from '../custom';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
   const nameField =

@@ -1,7 +1,8 @@
 import { mount } from 'enzyme';
-import TimeOnSite from '../timeOnSite';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import { ValidationWrapper } from '@reactor/react-components';
+
+import TimeOnSite from '../timeOnSite';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 import ComparisonOperatorField from '../components/comparisonOperatorField';
 

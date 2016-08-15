@@ -1,7 +1,8 @@
-import CartItemQuantity from '../cartItemQuantity';
 import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import { ValidationWrapper, DataElementSelectorButton } from '@reactor/react-components';
+
+import CartItemQuantity from '../cartItemQuantity';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 import ComparisonOperatorField from '../components/comparisonOperatorField';
 

@@ -1,8 +1,9 @@
 import { mount } from 'enzyme';
-import Variable from '../variable';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import { ValidationWrapper } from '@reactor/react-components';
+
+import Variable from '../variable';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
   const pathField = wrapper.find(Textfield).node;

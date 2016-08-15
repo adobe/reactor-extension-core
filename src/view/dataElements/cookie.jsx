@@ -1,6 +1,7 @@
 import React from 'react';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import { ValidationWrapper } from '@reactor/react-components';
+
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
 function Cookie({ ...props }) {

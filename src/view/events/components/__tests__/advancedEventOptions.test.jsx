@@ -1,8 +1,9 @@
-import extensionViewReduxForm from '../../../extensionViewReduxForm';
 import { mount } from 'enzyme';
+import Checkbox from '@coralui/react-coral/lib/Checkbox';
+
+import extensionViewReduxForm from '../../../extensionViewReduxForm';
 import AdvancedEventOptions, { formConfig } from '../advancedEventOptions';
 import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
-import Checkbox from '@coralui/react-coral/lib/Checkbox';
 
 const getReactComponents = (wrapper) => {
   const bubbleFireIfParentCheckbox =

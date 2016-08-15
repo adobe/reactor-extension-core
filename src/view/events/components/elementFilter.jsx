@@ -1,7 +1,8 @@
 import React from 'react';
-import SpecificElements, { formConfig as specificElementsFormConfig } from './specificElements';
 import reduceReducers from 'reduce-reducers';
 import Radio from '@coralui/react-coral/lib/Radio';
+
+import SpecificElements, { formConfig as specificElementsFormConfig } from './specificElements';
 
 export default ({ ...props }) => {
   const { elementSpecificity } = props.fields;

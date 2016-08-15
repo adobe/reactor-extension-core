@@ -1,9 +1,10 @@
-import extensionViewReduxForm from '../../../extensionViewReduxForm';
 import { mount } from 'enzyme';
+import Button from '@coralui/react-coral/lib/Button';
+
+import extensionViewReduxForm from '../../../extensionViewReduxForm';
 import ElementPropertiesEditor, { formConfig } from '../elementPropertiesEditor';
 import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
 import ElementPropertyEditor from '../elementPropertyEditor';
-import Button from '@coralui/react-coral/lib/Button';
 
 const getReactComponents = (wrapper) => {
   const elementPropertyEditors = wrapper.find(ElementPropertyEditor).nodes;

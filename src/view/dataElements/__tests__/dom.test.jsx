@@ -1,8 +1,9 @@
 import { mount } from 'enzyme';
-import DOM from '../dom';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 import { ReduxFormSelect as Select, ValidationWrapper } from '@reactor/react-components';
 import Textfield from '@coralui/react-coral/lib/Textfield';
+
+import DOM from '../dom';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
   const elementPropertyPresetsSelect = wrapper.find(Select).node;

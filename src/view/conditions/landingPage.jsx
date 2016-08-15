@@ -1,8 +1,9 @@
 import React from 'react';
 import Textfield from '@coralui/react-coral/lib/Textfield';
+import { ValidationWrapper } from '@reactor/react-components';
+
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import RegexToggle from '../components/regexToggle';
-import { ValidationWrapper } from '@reactor/react-components';
 
 const LandingPage = ({ ...props }) => {
   const { page, pageIsRegex } = props.fields;
