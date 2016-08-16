@@ -1,8 +1,9 @@
-import Custom from '../custom';
 import { mount } from 'enzyme';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 import Button from '@coralui/react-coral/lib/Button';
 import { ErrorTip } from '@reactor/react-components';
+
+import Custom from '../custom';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
   const openEditorButton = wrapper.find(Button).filterWhere(n => n.prop('icon') === 'code').node;

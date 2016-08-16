@@ -1,31 +1,30 @@
 import React from 'react';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-import extensionViewReduxForm from '../extensionViewReduxForm';
 import { ValidationWrapper } from '@reactor/react-components';
+
+import extensionViewReduxForm from '../extensionViewReduxForm';
 import ComparisonOperatorField from './components/comparisonOperatorField';
 import { isNumber } from '../utils/validators';
 
-class TimeOnSite extends React.Component {
-  render() {
-    const { operator, minutes } = this.props.fields;
+function TimeOnSite({ ...props }) {
+  const { operator, minutes } = props.fields;
 
-    return (
+  return (
+    <div>
       <div>
-        <div>
-          <label className="u-gapRight">
-            <span className="u-label">User has spent</span>
-            <ComparisonOperatorField ref="operatorField" { ...operator } />
+        <label className="u-gapRight">
+          <span className="u-label">User has spent</span>
+          <ComparisonOperatorField { ...operator } />
+        </label>
+        <ValidationWrapper error={ minutes.touched && minutes.error }>
+          <label>
+            <Textfield className="u-smallTextfield" { ...minutes } />
+            <span className="u-label u-gapLeft">minutes on site</span>
           </label>
-          <ValidationWrapper ref="minutesWrapper" error={ minutes.touched && minutes.error }>
-            <label>
-              <Textfield className="u-smallTextfield" ref="minutesField" { ...minutes } />
-              <span className="u-label u-gapLeft">minutes on site</span>
-            </label>
-          </ValidationWrapper>
-        </div>
+        </ValidationWrapper>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 const formConfig = {

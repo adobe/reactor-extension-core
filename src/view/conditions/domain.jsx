@@ -1,4 +1,5 @@
 import React from 'react';
+
 import CheckboxList from '../components/checkboxList';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 

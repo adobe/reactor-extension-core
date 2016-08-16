@@ -1,7 +1,8 @@
 import { mount } from 'enzyme';
-import TrafficSource from '../trafficSource';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import { ValidationWrapper } from '@reactor/react-components';
+
+import TrafficSource from '../trafficSource';
 import RegexToggle from '../../components/regexToggle';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 

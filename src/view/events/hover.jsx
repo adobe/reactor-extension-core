@@ -1,7 +1,7 @@
 import React from 'react';
+import reduceReducers from 'reduce-reducers';
 
 import extensionViewReduxForm from '../extensionViewReduxForm';
-import reduceReducers from 'reduce-reducers';
 import DelayType, { formConfig as delayTypeFormConfig } from './components/delayType';
 import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
 import SpecificElements, { formConfig as specificElementsFormConfig } from './components/specificElements';

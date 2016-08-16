@@ -1,7 +1,8 @@
-import { actionCreators } from './reduxActions/bridgeAdapterActions';
-import { handleSubmit } from './extensionViewReduxForm';
 import { getValues, reset } from 'redux-form';
 import reduceReducers from 'reduce-reducers';
+
+import { actionCreators } from './reduxActions/bridgeAdapterActions';
+import { handleSubmit } from './extensionViewReduxForm';
 
 /**
  * Assigns everything inside settings to state.

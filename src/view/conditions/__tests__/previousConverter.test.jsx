@@ -1,8 +1,9 @@
 import { mount } from 'enzyme';
-import PreviousConverter from '../previousConverter';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 import { ValidationWrapper, DataElementSelectorButton } from '@reactor/react-components';
 import Textfield from '@coralui/react-coral/lib/Textfield';
+
+import PreviousConverter from '../previousConverter';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
   const dataElementField = wrapper.find(Textfield).node;

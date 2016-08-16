@@ -1,4 +1,5 @@
 import { mount } from 'enzyme';
+
 import Domain from '../domain';
 import CheckboxList from '../../components/checkboxList';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';

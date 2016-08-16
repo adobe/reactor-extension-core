@@ -1,7 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import DisclosureButton from '../disclosureButton';
 import Icon from '@coralui/react-coral/lib/Icon';
+
+import DisclosureButton from '../disclosureButton';
 
 const getReactComponents = (wrapper) => {
   const icon = wrapper.find(Icon).node;

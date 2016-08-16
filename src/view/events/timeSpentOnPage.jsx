@@ -1,8 +1,8 @@
 import React from 'react';
-
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import extensionViewReduxForm from '../extensionViewReduxForm';
 import { ValidationWrapper } from '@reactor/react-components';
+import Textfield from '@coralui/react-coral/lib/Textfield';
+
+import extensionViewReduxForm from '../extensionViewReduxForm';
 import { isPositiveNumber } from '../utils/validators';
 
 const TimeSpentOnPage = ({ ...props }) => {

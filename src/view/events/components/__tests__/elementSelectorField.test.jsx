@@ -1,8 +1,9 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import ElementSelectorField from '../../components/elementSelectorField';
 import { ValidationWrapper } from '@reactor/react-components';
 import Textfield from '@coralui/react-coral/lib/Textfield';
+
+import ElementSelectorField from '../../components/elementSelectorField';
 
 const getReactComponents = (wrapper) => {
   const textfield = wrapper.find(Textfield).node;

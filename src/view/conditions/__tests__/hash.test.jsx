@@ -1,9 +1,10 @@
 import { mount } from 'enzyme';
+import { ValidationWrapper } from '@reactor/react-components';
+import Textfield from '@coralui/react-coral/lib/Textfield';
+
 import Hash from '../hash';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 import RegexToggle from '../../components/regexToggle';
-import { ValidationWrapper } from '@reactor/react-components';
-import Textfield from '@coralui/react-coral/lib/Textfield';
 import MultipleItemEditor from '../components/multipleItemEditor';
 
 const getReactComponents = (wrapper) => {

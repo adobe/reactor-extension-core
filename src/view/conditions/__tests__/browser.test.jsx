@@ -1,5 +1,6 @@
-import Browser from '../browser';
 import { mount } from 'enzyme';
+
+import Browser from '../browser';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 import CheckboxList from '../../components/checkboxList';
 

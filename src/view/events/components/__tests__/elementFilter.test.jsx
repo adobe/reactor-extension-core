@@ -1,8 +1,9 @@
-import extensionViewReduxForm from '../../../extensionViewReduxForm';
 import { mount } from 'enzyme';
+import Radio from '@coralui/react-coral/lib/Radio';
+
+import extensionViewReduxForm from '../../../extensionViewReduxForm';
 import ElementFilter, { formConfig } from '../elementFilter';
 import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
-import Radio from '@coralui/react-coral/lib/Radio';
 import SpecificElements from '../specificElements';
 
 const getReactComponents = (wrapper) => {

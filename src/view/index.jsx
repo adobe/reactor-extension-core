@@ -1,10 +1,10 @@
-import './style.pattern';
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-import bridgeAdapter from './bridgeAdapter';
 import { createStore, compose } from 'redux';
 import { Provider } from 'react-redux';
+
+import './style.pattern';
+import bridgeAdapter from './bridgeAdapter';
 import reducer from './reduxActions/reducer';
 import createRouter from './createRouter';
 

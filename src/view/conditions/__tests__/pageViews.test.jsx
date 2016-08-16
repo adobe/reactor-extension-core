@@ -1,10 +1,11 @@
-import PageViews from '../pageViews';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 import { mount } from 'enzyme';
-import ComparisonOperatorField from '../components/comparisonOperatorField';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Radio from '@coralui/react-coral/lib/Radio';
 import { ValidationWrapper } from '@reactor/react-components';
+
+import PageViews from '../pageViews';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import ComparisonOperatorField from '../components/comparisonOperatorField';
 
 const getReactComponents = (wrapper) => {
   const lifetimeRadio =

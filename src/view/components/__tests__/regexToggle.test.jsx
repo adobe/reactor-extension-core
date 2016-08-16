@@ -1,7 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import RegexToggle from '../regexToggle';
 import Switch from '@coralui/react-coral/lib/Switch';
+
+import RegexToggle from '../regexToggle';
 
 const getReactComponents = (wrapper) => {
   const regexSwitch = wrapper.find(Switch).node;

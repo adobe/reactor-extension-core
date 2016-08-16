@@ -1,6 +1,7 @@
 import { mount } from 'enzyme';
-import SpecificElements, { formConfig } from '../specificElements';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
+
+import SpecificElements, { formConfig } from '../specificElements';
 import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
 import ElementPropertiesEditor from '../elementPropertiesEditor';
 import ElementSelectorField from '../elementSelectorField';

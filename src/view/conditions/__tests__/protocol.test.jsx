@@ -1,7 +1,8 @@
 import { mount } from 'enzyme';
+import Radio from '@coralui/react-coral/lib/Radio';
+
 import Protocol from '../protocol';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
-import Radio from '@coralui/react-coral/lib/Radio';
 
 const getReactComponents = (wrapper) => {
   const httpRadio =

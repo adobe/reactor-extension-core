@@ -5,10 +5,9 @@ This is the DTM extension for Reactor. It provides the default event types, cond
 
 ## Development Setup
 1. Install [node.js](https://nodejs.org/).
-2. Install [gulp.js](http://gulpjs.com/) globally by running `npm install -g gulp`.
-3. Clone this repository.
-4. After navigating into the project directory, install project dependencies by running `npm install`.
-5. Test the project by running `gulp test`.
+1. Clone this repository.
+1. After navigating into the project directory, install project dependencies by running `npm install`.
+1. See the `scripts` node within package.json for a list of scripts you may run using `node run`.
 
 See the [extension-support-sandbox README](https://git.corp.adobe.com/reactor/extension-support-sandbox/blob/master/README.md) and the [extension-support-testrunner README](https://git.corp.adobe.com/reactor/extension-support-testrunner/blob/master/README.md) for more information on how to build and test this project.
 

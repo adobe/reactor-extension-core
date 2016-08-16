@@ -1,8 +1,10 @@
-import Path from '../path';import { mount } from 'enzyme';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
-import RegexToggle from '../../components/regexToggle';
+import { mount } from 'enzyme';
 import { ValidationWrapper } from '@reactor/react-components';
 import Textfield from '@coralui/react-coral/lib/Textfield';
+
+import Path from '../path';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import RegexToggle from '../../components/regexToggle';
 import MultipleItemEditor from '../components/multipleItemEditor';
 
 const getReactComponents = (wrapper) => {

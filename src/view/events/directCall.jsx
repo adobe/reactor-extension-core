@@ -1,7 +1,8 @@
 import React from 'react';
+import { ValidationWrapper } from '@reactor/react-components';
+
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import extensionViewReduxForm from '../extensionViewReduxForm';
-import { ValidationWrapper } from '@reactor/react-components';
 
 function DirectCall({ ...props }) {
   const { name } = props.fields;

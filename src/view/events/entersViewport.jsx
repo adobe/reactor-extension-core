@@ -1,8 +1,9 @@
 import React from 'react';
+import reduceReducers from 'reduce-reducers';
+
 import SpecificElements, { formConfig as specificElementsFormConfig } from './components/specificElements';
 import DelayType, { formConfig as delayTypeFormConfig } from './components/delayType';
 import extensionViewReduxForm from '../extensionViewReduxForm';
-import reduceReducers from 'reduce-reducers';
 
 const EntersViewport = ({ ...props }) => (
   <div>

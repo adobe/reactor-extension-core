@@ -1,11 +1,11 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import ElementPropertyEditor from '../../components/elementPropertyEditor';
-import RegexToggle from '../../../components/regexToggle';
 import { ValidationWrapper } from '@reactor/react-components';
 import Button from '@coralui/react-coral/lib/Button';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 
+import ElementPropertyEditor from '../../components/elementPropertyEditor';
+import RegexToggle from '../../../components/regexToggle';
 
 const render = props => mount(<ElementPropertyEditor { ...props } />);
 

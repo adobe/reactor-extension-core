@@ -1,7 +1,8 @@
 import React from 'react';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-import extensionViewReduxForm from '../extensionViewReduxForm';
 import { ValidationWrapper, DataElementSelectorButton } from '@reactor/react-components';
+
+import extensionViewReduxForm from '../extensionViewReduxForm';
 
 class LoggedIn extends React.Component {
   onOpenDataElementSelector = () => {
