@@ -4,5 +4,5 @@ try {
     var nsg1 = "This is the `nsg1` object";
     alert("Non Sequential Global script 1");
 } finally {
-    _satellite._customJSLoaded('abc');
+    _satellite._customJSLoaded('def');
 }

@@ -4,5 +4,5 @@ try {
     var nsg2 = "This is the `nsg2` object";
     console.log("DE_One Value : " + _satellite.getVar("DE_One"));
 } finally {
-    _satellite._customJSLoaded('def');
+    _satellite._customJSLoaded('efg');
 }

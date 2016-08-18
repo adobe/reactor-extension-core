@@ -4,5 +4,5 @@ try {
     var sg2 = "This is the `sg2` object";
     console.log("DE_One Value : " + _satellite.getVar("DE_One"));
 } finally {
-    _satellite._customJSLoaded('def');
+    _satellite._customJSLoaded('bcd');
 }
