@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="UTF-8">
+    <title>Reactor Extension Library Sandbox</title>
+
+    <script>
+      window.Coral = window.Coral || {};
+      Coral.options = { typeKitId: 'buj6cmr'};
+    </script>
+
+    <script>
+      var _dl = {
+        test : "My Data Element"
+      }
+    </script>
+
+    <link rel="stylesheet" href="//assets.adobedtm.com/activation/reactor/coralui/3.11.0/css/coral.css">
+    <script src="//assets.adobedtm.com/activation/reactor/coralui/3.11.0/js/libs/jquery.js"></script>
+    <script src="//assets.adobedtm.com/activation/reactor/coralui/3.11.0/js/coral.js"></script>
+
+    <link href="sandbox.css" rel="stylesheet" type="text/css">
+    <script src="container.js"></script>
+    <script src="engine.js"></script>
+
+    <style>
+      table, th, td {
+        border: none;
+      }
+
+      th, td {
+        padding: 3px;
+      }
+      th {
+        border-radius: 5px;
+        background: #566573;
+        color: #ECF0F1;
+      }
+    </style>
+  </head>
+  <body class="coral--light">
+    <a class="nav" is="coral-anchorbutton" variant="quiet" href="viewSandbox.html">Go to view sandbox</a>
+
+    <h1 class="coral-Heading coral-Heading--1">Reactor Extension Library Sandbox</h1>
+
+    Modify sandboxTemplate/container.js and sandboxTemplate/libSandbox.html then test the result here.
+
+    <div name="top">
+      <ul>
+        <li><a href="http://google.com">Google</a></li>
+        <li><a href="http://bing.com">Bing</a></li>
+      </ul>
+    </div>
+
+    <a href="#bottom">Link to bottom of the page</a><br />
+    <a name="top">Landing link from bottom of the page</a><br /><br />
+
+    <table cell>
+      <tr>
+        <th colspan=2>These Amazing buttons are setup to test various forms of custom Javascript code.
+        </th>
+      <tr>
+        <td><button onclick="_satellite.track('SG')" id="SG">Sequential Global JS</button></td>
+        <td><button onclick="_satellite.track('NSG')" id="NSG">Non-sequential Global JS</button></td>
+      </tr><tr>
+        <td><button onclick="_satellite.track('SNG')" id="SNG">Sequenital Non-global JS</button></td>
+        <td><button onclick="_satellite.track('NSNG')" id="NSNG">Non-sequential Non-global JS</button></td>
+      </tr><tr>
+        <td><button onclick="_satellite.track('HTML')" id="HTML">Sequential HTML</button></td>
+        <td><button onclick="_satellite.track('NHTML')" id="NHTML">Non-seqential HTML</button></td>
+      </tr><tr>
+        <td><button onclick="_satellite.track('ALL-ALL')" id="ALL">All Custom Scripts</button></td>
+        <td><button onclick="_satellite.track('RANDOM')" id="RANDOM">Semi-random assortment</button></td>
+      </tr>
+    </table>
+    <hr />
+
+    <table cellpadding="5">
+      <tr><td>
+      <form id="favorite_form" action="https://jaarchib-dtm.corp.adobe.com/demoapp/processor.php" method="post" encoding="multipart/form-data">
+        <table>
+          <tr><th colspan=2 align="center">
+            Super Form:
+          </th></tr>
+
+          <tr><td>
+          Name:
+        </td><td>
+          <input id="user_name" type="text" name="name" value="Jason">
+        </td></tr>
+          <tr><td>
+          Password:
+        </td><td>
+          <input id="user_password" type="password" name="password" value="Password!">
+        </td></tr>
+          <tr><td colspan=2>
+          <input id="order_action" type="submit" formtarget="iframe_submit" onclick="order(this.form)">
+        </td></tr>
+        </table>
+      </form>
+
+      </td>
+      <td>
+        <iframe name="iframe_submit"> </iframe>
+      </td>
+      </tr>
+    </table>
+
+    <hr />
+    <br />
+
+    <a name="bottom">did the page load event happen when the bottom anchor is selected?</a><br />
+    <a href="#top">Link to top of the page</a><br /><br />
+
+    <hr />
+    <script>_satellite.pageBottom();</script>
+  </body>
+</html>
