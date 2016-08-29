@@ -1,0 +1,46 @@
+
+<!doctype html>
+<html>
+  <body>
+    <script>
+      (function(){
+        function escapeForHtml(str){
+          if (!str) return str
+          return str
+            .replace(/\&/g, '&amp;')
+            .replace(/\</g, '&lt;')
+            .replace(/\>/g, '&gt;')
+            .replace(/\"/g, '&quot;')
+            .replace(/\'/g, '&#x27;')
+            .replace(/\//g, '&#x2F;')
+        }
+
+        var regexChars = /[.*+?^${}()|[\]\\]/g;
+        function escapeForRegex(str) {
+          return str.replace(regexChars, "\\$&");
+        }
+
+        function parseQueryString(){
+          var ret = {}, parts = location.search.substring(1).split('&');
+          for (var i = parts.length; i--;) {
+            var vardef = parts[i].split('='), varname = vardef[0], value = vardef[1];
+            ret[varname] = unescape(value);
+          }
+          return ret;
+        }
+
+        var queryParams = parseQueryString();
+
+        var markup = "<h1> Should this H1 get emitted on the page?</h1>\n<script>\n\tconsole.log(\"PL Non Sequential HTML 1\");\n  window.plnshtml = \"This is the 'plnshtml' String\";\nconsole.log(\"Window object 'plnshtml' should now be set in the iframe\");\nconsole.log(\"DE_One Data Element Value  %DE_One%\");\nconsole.log(\"Invalid Data Element %DoesNotExist%\");\n</scr"+"ipt>";
+
+        for (var name in queryParams){
+          var regex = new RegExp('%' + escapeForRegex(name) + '%', 'ig');
+          markup = markup.replace(regex,
+            escapeForHtml(queryParams[name]));
+        }
+
+        document.write(markup)
+      })();
+    </script>
+  </body>
+</html>
