@@ -118,6 +118,6 @@ describe('hash view', () => {
 
     const { hashWrappers } = getReactComponents(instance);
 
-    expect(hashWrappers[0].props.error).toBeDefined();
+    expect(hashWrappers[0].props.error).toEqual(jasmine.any(String));
   });
 });

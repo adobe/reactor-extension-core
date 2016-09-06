@@ -113,6 +113,6 @@ describe('subdomain view', () => {
 
     const { subdomainWrappers } = getReactComponents(instance);
 
-    expect(subdomainWrappers[0].props.error).toBeDefined();
+    expect(subdomainWrappers[0].props.error).toEqual(jasmine.any(String));
   });
 });

@@ -110,6 +110,6 @@ describe('path view', () => {
 
     const { pathWrappers } = getReactComponents(instance);
 
-    expect(pathWrappers[0].props.error).toBeDefined();
+    expect(pathWrappers[0].props.error).toEqual(jasmine.any(String));
   });
 });
