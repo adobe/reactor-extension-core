@@ -1,6 +1,7 @@
 import { mount } from 'enzyme';
+import { ValidationWrapper } from '@reactor/react-components';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-import { ReduxFormSelect as Select } from '@reactor/react-components';
+import Select from '@coralui/react-coral/lib/Select';
 
 import ElementFilter from '../components/elementFilter';
 import TimePlayed from '../timePlayed';
@@ -12,12 +13,14 @@ const getReactComponents = (wrapper) => {
   const unitSelect = wrapper.find(Select).node;
   const elementFilter = wrapper.find(ElementFilter).node;
   const advancedEventOptions = wrapper.find(AdvancedEventOptions).node;
+  const amountWrapper = wrapper.find(ValidationWrapper).node;
 
   return {
     amountField,
     unitSelect,
     elementFilter,
-    advancedEventOptions
+    advancedEventOptions,
+    amountWrapper
   };
 };
 
@@ -72,10 +75,10 @@ describe('time played view', () => {
   it('sets validation errors', () => {
     extensionBridge.init();
 
-    const { amountField, elementFilter } = getReactComponents(instance);
+    const { amountWrapper, elementFilter } = getReactComponents(instance);
 
     expect(extensionBridge.validate()).toBe(false);
-    expect(amountField.props.error).toEqual(jasmine.any(String));
+    expect(amountWrapper.props.error).toEqual(jasmine.any(String));
     expect(elementFilter.props.fields.elementSelector.error).toEqual(jasmine.any(String));
   });
 });

@@ -1,7 +1,8 @@
 import React from 'react';
 import Textfield from '@coralui/react-coral/lib/Textfield';
+import Select from '@coralui/react-coral/lib/Select';
 import reduceReducers from 'reduce-reducers';
-import { ReduxFormSelect as Select, ValidationWrapper } from '@reactor/react-components';
+import { ValidationWrapper } from '@reactor/react-components';
 
 import ElementFilter, { formConfig as elementFilterFormConfig } from './components/elementFilter';
 import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
