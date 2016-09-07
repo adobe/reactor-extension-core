@@ -1,6 +1,6 @@
 import { mount } from 'enzyme';
 import React from 'react';
-import { ReduxFormSelect as Select } from '@reactor/react-components';
+import Select from '@coralui/react-coral/lib/Select';
 
 import ComparisonOperatorField from '../comparisonOperatorField';
 

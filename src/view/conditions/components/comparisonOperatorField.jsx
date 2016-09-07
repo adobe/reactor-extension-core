@@ -1,5 +1,5 @@
 import React from 'react';
-import { ReduxFormSelect as Select } from '@reactor/react-components';
+import Select from '@coralui/react-coral/lib/Select';
 
 const options = [{
   label: 'greater than',
