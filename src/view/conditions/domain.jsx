@@ -21,7 +21,7 @@ const formConfig = {
 };
 
 const stateToProps = state => ({
-  domainOptions: state.propertySettings ? state.propertySettings.domainList : []
+  domainOptions: state.propertySettings ? state.propertySettings.domains : []
 });
 
 export default extensionViewReduxForm(formConfig, stateToProps)(Domain);
