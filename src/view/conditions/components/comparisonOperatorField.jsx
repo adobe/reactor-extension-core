@@ -15,7 +15,7 @@ const options = [{
 export default class ComparisonOperatorSelect extends React.Component {
   onChange = event => {
     if (this.props.onChange) {
-      this.props.onChange(event.target.value);
+      this.props.onChange(event.value);
     }
   };
 

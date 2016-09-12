@@ -29,9 +29,8 @@ describe('comparison operator field', () => {
     }));
 
     select.props.onChange({
-      target: {
-        value: '<'
-      }
+      label: 'less than',
+      value: '<'
     });
 
     expect(onChange).toHaveBeenCalledWith('<');
