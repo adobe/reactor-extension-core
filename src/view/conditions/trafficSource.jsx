@@ -34,6 +34,19 @@ const formConfig = {
     'source',
     'sourceIsRegex'
   ],
+  settingsToFormValues(values, options) {
+    return {
+      ...values,
+      ...options.settings,
+      protocol: options.settings.protocol || 'http:'
+    };
+  },
+  formValuesToSettings(settings, values) {
+    return {
+      ...settings,
+      ...values
+    };
+  },
   validate(errors, values) {
     errors = {
       ...errors

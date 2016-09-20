@@ -1,30 +1,9 @@
 import { getValues, reset } from 'redux-form';
-import reduceReducers from 'reduce-reducers';
-
 import { actionCreators } from './reduxActions/bridgeAdapterActions';
 import { handleSubmit } from './extensionViewReduxForm';
 
-/**
- * Assigns everything inside settings to state.
- */
-const settingsToFormValuesBaseReducer = (values, options) => {
-  const { settings } = options;
-  return {
-    ...values,
-    ...settings
-  };
-};
-
-/**
- * Assigns everything inside state to settings.
- */
-const formValuesToSettingsBaseReducer = (settings, values) => ({
-  ...settings,
-  ...values
-});
-
 export default (extensionBridge, store) => {
-  let reducersForRoute;
+  let currentRouteFormSettings;
 
   extensionBridge.register({
     init(options = {}) {
@@ -34,10 +13,11 @@ export default (extensionBridge, store) => {
         settingsIsNew: !options.settings
       };
 
-      const initialValues = reducersForRoute.settingsToFormValues({}, options);
+      const initialValues = currentRouteFormSettings.settingsToFormValues({}, options);
 
       store.dispatch(actionCreators.init({
         propertySettings: options.propertySettings,
+        extensionConfigurations: options.extensionConfigurations,
 
         // initialValues will get set on the state and eventually picked up by redux-form.
         // See extensionViewReduxForm for how they get from the state into redux-form.
@@ -50,33 +30,20 @@ export default (extensionBridge, store) => {
     },
     getSettings() {
       const values = getValues(store.getState().form.default) || {};
-      return reducersForRoute.formValuesToSettings({}, values);
+      return currentRouteFormSettings.formValuesToSettings({}, values);
     },
     validate() {
       let valid = false;
       // handleSubmit comes from redux-form. The function passed in will only be called if the
       // form passes validation.
-      handleSubmit(() => { valid = true; })();
+      handleSubmit(() => {
+        valid = true;
+      })();
       return valid;
     }
   });
 
   return formSettings => {
-    const settingsToFormValuesReducers = [settingsToFormValuesBaseReducer];
-
-    if (formSettings.settingsToFormValues) {
-      settingsToFormValuesReducers.push(formSettings.settingsToFormValues);
-    }
-
-    const formValuesToSettingsReducers = [formValuesToSettingsBaseReducer];
-
-    if (formSettings.formValuesToSettings) {
-      formValuesToSettingsReducers.push(formSettings.formValuesToSettings);
-    }
-
-    reducersForRoute = {
-      settingsToFormValues: reduceReducers(...settingsToFormValuesReducers),
-      formValuesToSettings: reduceReducers(...formValuesToSettingsReducers)
-    };
+    currentRouteFormSettings = formSettings;
   };
 };

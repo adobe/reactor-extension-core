@@ -61,6 +61,7 @@ const formConfig = {
   settingsToFormValues(values, options) {
     return {
       ...values,
+      ...options.settings,
       widthOperator: options.settings.widthOperator || '>',
       heightOperator: options.settings.heightOperator || '>'
     };
@@ -68,6 +69,7 @@ const formConfig = {
   formValuesToSettings(settings, values) {
     return {
       ...settings,
+      ...values,
       width: Number(values.width),
       height: Number(values.height)
     };

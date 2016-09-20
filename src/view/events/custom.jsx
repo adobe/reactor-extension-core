@@ -30,9 +30,20 @@ const formConfig = {
   ].concat(elementFilterFormConfig.fields, advancedEventOptionsFormConfig.fields),
   settingsToFormValues: reduceReducers(
     elementFilterFormConfig.settingsToFormValues,
-    advancedEventOptionsFormConfig.settingsToFormValues
+    advancedEventOptionsFormConfig.settingsToFormValues,
+    (values, options) => ({
+      ...values,
+      type: options.settings.type
+    })
   ),
-  formValuesToSettings: elementFilterFormConfig.formValuesToSettings,
+  formValuesToSettings: reduceReducers(
+    elementFilterFormConfig.formValuesToSettings,
+    advancedEventOptionsFormConfig.formValuesToSettings,
+    (settings, values) => ({
+      ...settings,
+      type: values.type
+    })
+  ),
   validate: reduceReducers(
     (errors, values) => {
       errors = {

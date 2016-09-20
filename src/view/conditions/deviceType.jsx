@@ -24,8 +24,16 @@ const DeviceType = ({ ...props }) => {
 
 const formConfig = {
   fields: ['deviceTypes'],
+  settingsToFormValues(values, options) {
+    return {
+      ...values,
+      ...options.settings
+    };
+  },
   formValuesToSettings(settings, values) {
     return {
+      ...settings,
+      ...values,
       deviceTypes: values.deviceTypes || [] // An array is required.
     };
   }

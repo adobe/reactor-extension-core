@@ -10,7 +10,19 @@ const NoConfig = () => (
 );
 
 const formConfig = {
-  fields: []
+  fields: [],
+  settingsToFormValues(values, options) {
+    return {
+      ...values,
+      ...options.settings
+    };
+  },
+  formValuesToSettings(settings, values) {
+    return {
+      ...settings,
+      ...values
+    };
+  }
 };
 
 export default extensionViewReduxForm(formConfig)(NoConfig);

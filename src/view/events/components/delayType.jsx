@@ -64,11 +64,8 @@ export const formConfig = {
 
     if (values.delayType === 'delay') {
       settings.delay = Number(values.delay);
-    } else {
-      delete settings.delay;
     }
 
-    delete settings.delayType;
     return settings;
   },
   validate(errors, values) {

@@ -70,8 +70,10 @@ const formConfig = {
   ),
   formValuesToSettings: reduceReducers(
     elementFilterFormConfig.formValuesToSettings,
+    advancedEventOptionsFormConfig.formValuesToSettings,
     (settings, values) => ({
       ...settings,
+      unit: values.unit,
       amount: Number(values.amount)
     })
   ),

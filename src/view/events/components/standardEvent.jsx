@@ -18,7 +18,10 @@ const formConfig = {
     elementFilterFormConfig.settingsToFormValues,
     advancedEventOptionsFormConfig.settingsToFormValues
   ),
-  formValuesToSettings: elementFilterFormConfig.formValuesToSettings,
+  formValuesToSettings: reduceReducers(
+    elementFilterFormConfig.formValuesToSettings,
+    advancedEventOptionsFormConfig.formValuesToSettings
+  ),
   validate: elementFilterFormConfig.validate
 };
 

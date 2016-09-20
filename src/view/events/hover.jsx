@@ -24,7 +24,8 @@ const formConfig = {
   ),
   formValuesToSettings: reduceReducers(
     specificElementsFormConfig.formValuesToSettings,
-    delayTypeFormConfig.formValuesToSettings
+    delayTypeFormConfig.formValuesToSettings,
+    advancedEventOptionsFormConfig.formValuesToSettings
   ),
   validate: reduceReducers(
     specificElementsFormConfig.validate,

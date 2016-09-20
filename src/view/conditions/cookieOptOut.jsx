@@ -12,7 +12,19 @@ const CookieOptOut = ({ ...props }) => {
 const formConfig = {
   fields: [
     'acceptsCookies'
-  ]
+  ],
+  settingsToFormValues(values, options) {
+    return {
+      ...values,
+      ...options.settings
+    };
+  },
+  formValuesToSettings(settings, values) {
+    return {
+      ...settings,
+      ...values
+    };
+  }
 };
 
 export default extensionViewReduxForm(formConfig)(CookieOptOut);
