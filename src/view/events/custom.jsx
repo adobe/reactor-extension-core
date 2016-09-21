@@ -1,11 +1,11 @@
 import React from 'react';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-import reduceReducers from 'reduce-reducers';
 import { ValidationWrapper } from '@reactor/react-components';
 
 import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
 import ElementFilter, { formConfig as elementFilterFormConfig } from './components/elementFilter';
 import extensionViewReduxForm from '../extensionViewReduxForm';
+import mergeFormConfigs from '../utils/mergeFormConfigs';
 
 function Custom({ ...props }) {
   const type = props.fields.type;
@@ -24,28 +24,22 @@ function Custom({ ...props }) {
   );
 }
 
-const formConfig = {
-  fields: [
-    'type'
-  ].concat(elementFilterFormConfig.fields, advancedEventOptionsFormConfig.fields),
-  settingsToFormValues: reduceReducers(
-    elementFilterFormConfig.settingsToFormValues,
-    advancedEventOptionsFormConfig.settingsToFormValues,
-    (values, options) => ({
+const formConfig = mergeFormConfigs(
+  elementFilterFormConfig,
+  advancedEventOptionsFormConfig,
+  {
+    fields: [
+      'type'
+    ],
+    settingsToFormValues: (values, options) => ({
       ...values,
       type: options.settings.type
-    })
-  ),
-  formValuesToSettings: reduceReducers(
-    elementFilterFormConfig.formValuesToSettings,
-    advancedEventOptionsFormConfig.formValuesToSettings,
-    (settings, values) => ({
+    }),
+    formValuesToSettings: (settings, values) => ({
       ...settings,
       type: values.type
-    })
-  ),
-  validate: reduceReducers(
-    (errors, values) => {
+    }),
+    validate: (errors, values) => {
       errors = {
         ...errors
       };
@@ -55,9 +49,8 @@ const formConfig = {
       }
 
       return errors;
-    },
-    elementFilterFormConfig.validate
-  )
-};
+    }
+  }
+);
 
 export default extensionViewReduxForm(formConfig)(Custom);

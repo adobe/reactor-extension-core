@@ -1,10 +1,10 @@
 import React from 'react';
-import reduceReducers from 'reduce-reducers';
 
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import DelayType, { formConfig as delayTypeFormConfig } from './components/delayType';
 import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
 import SpecificElements, { formConfig as specificElementsFormConfig } from './components/specificElements';
+import mergeFormConfigs from '../utils/mergeFormConfigs';
 
 const Hover = ({ ...props }) => (
   <div>
@@ -14,23 +14,10 @@ const Hover = ({ ...props }) => (
   </div>
 );
 
-const formConfig = {
-  fields: delayTypeFormConfig.fields
-    .concat(specificElementsFormConfig.fields, advancedEventOptionsFormConfig.fields),
-  settingsToFormValues: reduceReducers(
-    specificElementsFormConfig.settingsToFormValues,
-    delayTypeFormConfig.settingsToFormValues,
-    advancedEventOptionsFormConfig.settingsToFormValues
-  ),
-  formValuesToSettings: reduceReducers(
-    specificElementsFormConfig.formValuesToSettings,
-    delayTypeFormConfig.formValuesToSettings,
-    advancedEventOptionsFormConfig.formValuesToSettings
-  ),
-  validate: reduceReducers(
-    specificElementsFormConfig.validate,
-    delayTypeFormConfig.validate
-  )
-};
+const formConfig = mergeFormConfigs(
+  delayTypeFormConfig,
+  specificElementsFormConfig,
+  advancedEventOptionsFormConfig
+);
 
 export default extensionViewReduxForm(formConfig)(Hover);
