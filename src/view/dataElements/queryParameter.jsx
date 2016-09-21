@@ -33,7 +33,14 @@ const formConfig = {
   settingsToFormValues(values, options) {
     return {
       ...values,
+      ...options.settings,
       caseInsensitive: options.settingsIsNew || options.settings.caseInsensitive
+    };
+  },
+  formValuesToSettings(settings, values) {
+    return {
+      ...settings,
+      ...values
     };
   },
   validate(errors, values) {

@@ -13,8 +13,15 @@ const Domain = ({ ...props }) => {
 
 const formConfig = {
   fields: ['domains'],
+  settingsToFormValues(values, options) {
+    return {
+      ...values,
+      ...options.settings
+    };
+  },
   formValuesToSettings(settings, values) {
     return {
+      ...settings,
       domains: values.domains || [] // An array is required.
     };
   }

@@ -25,8 +25,15 @@ const OperatingSystem = ({ ...props }) => {
 
 const formConfig = {
   fields: ['operatingSystems'],
+  settingsToFormValues(values, options) {
+    return {
+      ...values,
+      ...options.settings
+    };
+  },
   formValuesToSettings(settings, values) {
     return {
+      ...settings,
       operatingSystems: values.operatingSystems || [] // An array is required.
     };
   }

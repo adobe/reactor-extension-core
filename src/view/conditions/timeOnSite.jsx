@@ -35,12 +35,14 @@ const formConfig = {
   settingsToFormValues(values, options) {
     return {
       ...values,
+      ...options.settings,
       operator: options.settings.operator || '>'
     };
   },
   formValuesToSettings(settings, values) {
     return {
       ...settings,
+      ...values,
       minutes: Number(values.minutes)
     };
   },

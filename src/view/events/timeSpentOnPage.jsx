@@ -28,6 +28,12 @@ const TimeSpentOnPage = ({ ...props }) => {
 
 const formConfig = {
   fields: ['timeOnPage'],
+  settingsToFormValues(values, options) {
+    return {
+      ...values,
+      ...options.settings
+    };
+  },
   formValuesToSettings: (settings, values) => ({
     ...settings,
     timeOnPage: Number(values.timeOnPage)

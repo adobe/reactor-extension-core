@@ -70,5 +70,13 @@ export const formConfig = {
       bubbleFireIfChildFired: options.settings.bubbleFireIfChildFired !== false,
       bubbleStop: options.settings.bubbleStop
     };
+  },
+  formValuesToSettings(settings, values) {
+    return {
+      ...settings,
+      bubbleFireIfParent: values.bubbleFireIfParent,
+      bubbleFireIfChildFired: values.bubbleFireIfChildFired,
+      bubbleStop: values.bubbleStop
+    };
   }
 };

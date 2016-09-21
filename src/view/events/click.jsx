@@ -29,9 +29,20 @@ const formConfig = {
   ].concat(elementFilterFormConfig.fields, advancedEventOptionsFormConfig.fields),
   settingsToFormValues: reduceReducers(
     elementFilterFormConfig.settingsToFormValues,
-    advancedEventOptionsFormConfig.settingsToFormValues
+    advancedEventOptionsFormConfig.settingsToFormValues,
+    (values, options) => ({
+      ...values,
+      delayLinkActivation: options.settings.delayLinkActivation
+    })
   ),
-  formValuesToSettings: elementFilterFormConfig.formValuesToSettings,
+  formValuesToSettings: reduceReducers(
+    elementFilterFormConfig.formValuesToSettings,
+    advancedEventOptionsFormConfig.formValuesToSettings,
+    (settings, values) => ({
+      ...settings,
+      delayLinkActivation: values.delayLinkActivation
+    })
+  ),
   validate: elementFilterFormConfig.validate
 };
 

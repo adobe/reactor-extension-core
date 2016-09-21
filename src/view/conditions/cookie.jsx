@@ -46,6 +46,18 @@ const formConfig = {
     'value',
     'valueIsRegex'
   ],
+  settingsToFormValues(values, options) {
+    return {
+      ...values,
+      ...options.settings
+    };
+  },
+  formValuesToSettings(settings, values) {
+    return {
+      ...settings,
+      ...values
+    };
+  },
   validate(errors, values) {
     errors = {
       ...errors

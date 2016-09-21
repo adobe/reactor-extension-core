@@ -131,16 +131,18 @@ const formConfig = {
     'global',
     'source'
   ],
-  settingsToFormValues(values) {
-    values = {
+  settingsToFormValues(values, options) {
+    return {
+      ...values,
+      ...options.settings,
+      language: options.settings.language || LANGUAGES.JAVASCRIPT
+    };
+  },
+  formValuesToSettings(settings, values) {
+    return {
+      ...settings,
       ...values
     };
-
-    if (!values.language) {
-      values.language = LANGUAGES.JAVASCRIPT;
-    }
-
-    return values;
   },
   validate(errors, values) {
     errors = {

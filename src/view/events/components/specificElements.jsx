@@ -35,6 +35,7 @@ export const formConfig = {
     'showElementPropertiesFilter'
   ].concat(elementSelectorFieldFormConfig.fields, elementPropertiesEditorFormConfig.fields),
   settingsToFormValues: reduceReducers(
+    elementSelectorFieldFormConfig.settingsToFormValues,
     elementPropertiesEditorFormConfig.settingsToFormValues,
     (values, options) => {
       const { elementProperties } = options.settings;
@@ -46,6 +47,7 @@ export const formConfig = {
     }
   ),
   formValuesToSettings: reduceReducers(
+    elementSelectorFieldFormConfig.formValuesToSettings,
     elementPropertiesEditorFormConfig.formValuesToSettings,
     (settings, values) => {
       settings = {

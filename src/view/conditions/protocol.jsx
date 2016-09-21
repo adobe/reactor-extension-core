@@ -33,6 +33,12 @@ const formConfig = {
       ...values,
       protocol: options.settings.protocol || 'http:'
     };
+  },
+  formValuesToSettings(settings, values) {
+    return {
+      ...settings,
+      ...values
+    };
   }
 };
 

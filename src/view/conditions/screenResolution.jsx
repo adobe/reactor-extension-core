@@ -46,6 +46,22 @@ const formConfig = {
     'heightOperator',
     'height'
   ],
+  settingsToFormValues(values, options) {
+    return {
+      ...values,
+      ...options.settings,
+      widthOperator: options.settings.widthOperator || '>',
+      heightOperator: options.settings.heightOperator || '>'
+    };
+  },
+  formValuesToSettings(settings, values) {
+    return {
+      ...settings,
+      ...values,
+      width: Number(values.width),
+      height: Number(values.height)
+    };
+  },
   validate(errors, values) {
     errors = {
       ...errors
@@ -60,20 +76,6 @@ const formConfig = {
     }
 
     return errors;
-  },
-  settingsToFormValues(values, options) {
-    return {
-      ...values,
-      widthOperator: options.settings.widthOperator || '>',
-      heightOperator: options.settings.heightOperator || '>'
-    };
-  },
-  formValuesToSettings(settings, values) {
-    return {
-      ...settings,
-      width: Number(values.width),
-      height: Number(values.height)
-    };
   }
 };
 

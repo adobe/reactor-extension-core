@@ -22,8 +22,15 @@ const Browser = ({ ...props }) => {
 
 const formConfig = {
   fields: ['browsers'],
+  settingsToFormValues(values, options) {
+    return {
+      ...values,
+      ...options.settings
+    };
+  },
   formValuesToSettings(settings, values) {
     return {
+      ...settings,
       browsers: values.browsers || [] // An array is required.
     };
   }

@@ -51,12 +51,14 @@ const formConfig = {
   settingsToFormValues(values, options) {
     return {
       ...values,
+      ...options.settings,
       operator: options.settings.operator || '>'
     };
   },
   formValuesToSettings(settings, values) {
     return {
       ...settings,
+      ...values,
       amount: Number(values.amount)
     };
   },

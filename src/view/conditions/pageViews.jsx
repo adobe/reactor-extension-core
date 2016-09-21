@@ -56,6 +56,7 @@ const formConfig = {
   settingsToFormValues(values, options) {
     return {
       ...values,
+      ...options.settings,
       operator: options.settings.operator || '>',
       duration: options.settings.duration || 'lifetime'
     };
@@ -63,6 +64,7 @@ const formConfig = {
   formValuesToSettings(settings, values) {
     return {
       ...settings,
+      ...values,
       count: Number(values.count)
     };
   },

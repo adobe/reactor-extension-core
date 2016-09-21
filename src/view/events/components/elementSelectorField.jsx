@@ -18,5 +18,17 @@ export default ({ ...props }) => {
 export const formConfig = {
   fields: [
     'elementSelector'
-  ]
+  ],
+  settingsToFormValues(values, options) {
+    return {
+      ...values,
+      ...options.settings
+    };
+  },
+  formValuesToSettings(settings, values) {
+    return {
+      ...settings,
+      elementSelector: values.elementSelector
+    };
+  }
 };

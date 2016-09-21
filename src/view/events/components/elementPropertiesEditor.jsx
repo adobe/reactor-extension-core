@@ -95,8 +95,6 @@ export const formConfig = {
 
     if (elementProperties.length) {
       settings.elementProperties = elementProperties;
-    } else {
-      delete settings.elementProperties;
     }
 
     return settings;
