@@ -139,10 +139,16 @@ const formConfig = {
     };
   },
   formValuesToSettings(settings, values) {
-    return {
+    settings = {
       ...settings,
       ...values
     };
+
+    if (settings.language === LANGUAGES.HTML) {
+      delete settings.global;
+    }
+
+    return settings;
   },
   validate(errors, values) {
     errors = {

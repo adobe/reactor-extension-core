@@ -1724,33 +1724,62 @@
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "minLength": 1
-          },
-          "language": {
-            "enum": [
-              "javascript",
-              "html"
+        "oneOf": [
+          {
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "language": {
+                "enum": [
+                  "javascript"
+                ]
+              },
+              "sequential": {
+                "type": "boolean"
+              },
+              "global": {
+                "type": "boolean"
+              },
+              "source": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "language",
+              "source"
             ]
           },
-          "sequential": {
-            "type": "boolean"
-          },
-          "global": {
-            "type": "boolean"
-          },
-          "source": {
-            "type": "string",
-            "minLength": 1
+          {
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "language": {
+                "enum": [
+                  "html"
+                ]
+              },
+              "sequential": {
+                "type": "boolean"
+              },
+              "source": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "language",
+              "source"
+            ]
           }
-        },
-        "additionalProperties": false,
-        "required": [
-          "name",
-          "language",
-          "source"
         ]
       },
       "transforms": [

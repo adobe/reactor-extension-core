@@ -124,6 +124,7 @@ describe('custom action view', () => {
     nameField.props.onChange('foo');
     htmlLanguageRadio.props.onChange('html');
     sequentialCheckbox.props.onChange(true);
+    globalCheckbox.props.onChange(true);
 
     expect(extensionBridge.getSettings()).toEqual({
       name: 'foo',
@@ -132,7 +133,6 @@ describe('custom action view', () => {
     });
 
     javaScriptLanguageRadio.props.onChange('javascript');
-    globalCheckbox.props.onChange(true);
 
     expect(extensionBridge.getSettings()).toEqual({
       name: 'foo',
