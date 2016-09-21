@@ -1,13 +1,13 @@
 import React from 'react';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Select from '@coralui/react-coral/lib/Select';
-import reduceReducers from 'reduce-reducers';
 import { ValidationWrapper } from '@reactor/react-components';
 
 import ElementFilter, { formConfig as elementFilterFormConfig } from './components/elementFilter';
 import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import { isPositiveNumber } from '../utils/validators';
+import mergeFormConfigs from '../utils/mergeFormConfigs';
 
 const timePlayedUnit = {
   SECOND: 'second',
@@ -55,31 +55,24 @@ const TimePlayed = ({ ...props }) => {
   );
 };
 
-const formConfig = {
-  fields: [
-    'amount',
-    'unit'
-  ].concat(elementFilterFormConfig.fields, advancedEventOptionsFormConfig.fields),
-  settingsToFormValues: reduceReducers(
-    elementFilterFormConfig.settingsToFormValues,
-    advancedEventOptionsFormConfig.settingsToFormValues,
-    (values, options) => ({
+const formConfig = mergeFormConfigs(
+  elementFilterFormConfig,
+  advancedEventOptionsFormConfig,
+  {
+    fields: [
+      'amount',
+      'unit'
+    ],
+    settingsToFormValues: (values, options) => ({
       ...values,
       unit: options.settings.unit || timePlayedUnit.SECOND
-    })
-  ),
-  formValuesToSettings: reduceReducers(
-    elementFilterFormConfig.formValuesToSettings,
-    advancedEventOptionsFormConfig.formValuesToSettings,
-    (settings, values) => ({
+    }),
+    formValuesToSettings: (settings, values) => ({
       ...settings,
       unit: values.unit,
       amount: Number(values.amount)
-    })
-  ),
-  validate: reduceReducers(
-    elementFilterFormConfig.validate,
-    (errors, values) => {
+    }),
+    validate: (errors, values) => {
       errors = {
         ...errors
       };
@@ -90,8 +83,8 @@ const formConfig = {
 
       return errors;
     }
-  )
-};
+  }
+);
 
 
 export default extensionViewReduxForm(formConfig)(TimePlayed);

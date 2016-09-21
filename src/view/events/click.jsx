@@ -1,10 +1,10 @@
 import React from 'react';
-import reduceReducers from 'reduce-reducers';
 
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
 import ElementFilter, { formConfig as elementFilterFormConfig } from './components/elementFilter';
 import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
 import extensionViewReduxForm from '../extensionViewReduxForm';
+import mergeFormConfigs from '../utils/mergeFormConfigs';
 
 function Click({ ...props }) {
   const { delayLinkActivation } = props.fields;
@@ -23,27 +23,22 @@ function Click({ ...props }) {
   );
 }
 
-const formConfig = {
-  fields: [
-    'delayLinkActivation'
-  ].concat(elementFilterFormConfig.fields, advancedEventOptionsFormConfig.fields),
-  settingsToFormValues: reduceReducers(
-    elementFilterFormConfig.settingsToFormValues,
-    advancedEventOptionsFormConfig.settingsToFormValues,
-    (values, options) => ({
+const formConfig = mergeFormConfigs(
+  elementFilterFormConfig,
+  advancedEventOptionsFormConfig,
+  {
+    fields: [
+      'delayLinkActivation'
+    ],
+    settingsToFormValues: (values, options) => ({
       ...values,
       delayLinkActivation: options.settings.delayLinkActivation
-    })
-  ),
-  formValuesToSettings: reduceReducers(
-    elementFilterFormConfig.formValuesToSettings,
-    advancedEventOptionsFormConfig.formValuesToSettings,
-    (settings, values) => ({
+    }),
+    formValuesToSettings: (settings, values) => ({
       ...settings,
       delayLinkActivation: values.delayLinkActivation
     })
-  ),
-  validate: elementFilterFormConfig.validate
-};
+  }
+);
 
 export default extensionViewReduxForm(formConfig)(Click);

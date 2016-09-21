@@ -1,9 +1,9 @@
 import React from 'react';
-import reduceReducers from 'reduce-reducers';
 
 import SpecificElements, { formConfig as specificElementsFormConfig } from './components/specificElements';
 import DelayType, { formConfig as delayTypeFormConfig } from './components/delayType';
 import extensionViewReduxForm from '../extensionViewReduxForm';
+import mergeFormConfigs from '../utils/mergeFormConfigs';
 
 const EntersViewport = ({ ...props }) => (
   <div>
@@ -12,20 +12,9 @@ const EntersViewport = ({ ...props }) => (
   </div>
 );
 
-const formConfig = {
-  fields: specificElementsFormConfig.fields.concat(delayTypeFormConfig.fields),
-  validate: reduceReducers(
-    specificElementsFormConfig.validate,
-    delayTypeFormConfig.validate
-  ),
-  settingsToFormValues: reduceReducers(
-    specificElementsFormConfig.settingsToFormValues,
-    delayTypeFormConfig.settingsToFormValues
-  ),
-  formValuesToSettings: reduceReducers(
-    specificElementsFormConfig.formValuesToSettings,
-    delayTypeFormConfig.formValuesToSettings
-  )
-};
+const formConfig = mergeFormConfigs(
+  specificElementsFormConfig,
+  delayTypeFormConfig
+);
 
 export default extensionViewReduxForm(formConfig)(EntersViewport);

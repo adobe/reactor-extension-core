@@ -1,9 +1,9 @@
 import React from 'react';
-import reduceReducers from 'reduce-reducers';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
 
 import ElementSelectorField, { formConfig as elementSelectorFieldFormConfig } from './elementSelectorField';
 import ElementPropertiesEditor, { formConfig as elementPropertiesEditorFormConfig } from './elementPropertiesEditor';
+import mergeFormConfigs from '../../utils/mergeFormConfigs';
 
 export default ({ ...props }) => {
   const {
@@ -30,26 +30,22 @@ export default ({ ...props }) => {
   );
 };
 
-export const formConfig = {
-  fields: [
-    'showElementPropertiesFilter'
-  ].concat(elementSelectorFieldFormConfig.fields, elementPropertiesEditorFormConfig.fields),
-  settingsToFormValues: reduceReducers(
-    elementSelectorFieldFormConfig.settingsToFormValues,
-    elementPropertiesEditorFormConfig.settingsToFormValues,
-    (values, options) => {
+export const formConfig = mergeFormConfigs(
+  elementSelectorFieldFormConfig,
+  elementPropertiesEditorFormConfig,
+  {
+    fields: [
+      'showElementPropertiesFilter'
+    ],
+    settingsToFormValues: (values, options) => {
       const { elementProperties } = options.settings;
 
       return {
         ...values,
         showElementPropertiesFilter: Boolean(elementProperties)
       };
-    }
-  ),
-  formValuesToSettings: reduceReducers(
-    elementSelectorFieldFormConfig.formValuesToSettings,
-    elementPropertiesEditorFormConfig.formValuesToSettings,
-    (settings, values) => {
+    },
+    formValuesToSettings: (settings, values) => {
       settings = {
         ...settings
       };
@@ -61,11 +57,8 @@ export const formConfig = {
       delete settings.showElementPropertiesFilter;
 
       return settings;
-    }
-  ),
-  validate: reduceReducers(
-    elementPropertiesEditorFormConfig.validate,
-    (errors, values) => {
+    },
+    validate: (errors, values) => {
       errors = {
         ...errors
       };
@@ -80,5 +73,5 @@ export const formConfig = {
 
       return errors;
     }
-  )
-};
+  }
+);

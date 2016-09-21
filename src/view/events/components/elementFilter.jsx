@@ -1,8 +1,8 @@
 import React from 'react';
-import reduceReducers from 'reduce-reducers';
 import Radio from '@coralui/react-coral/lib/Radio';
 
 import SpecificElements, { formConfig as specificElementsFormConfig } from './specificElements';
+import mergeFormConfigs from '../../utils/mergeFormConfigs';
 
 export default ({ ...props }) => {
   const { elementSpecificity } = props.fields;
@@ -33,13 +33,13 @@ export default ({ ...props }) => {
   );
 };
 
-export const formConfig = {
-  fields: [
-    'elementSpecificity'
-  ].concat(specificElementsFormConfig.fields),
-  settingsToFormValues: reduceReducers(
-    specificElementsFormConfig.settingsToFormValues,
-    (values, options) => {
+export const formConfig = mergeFormConfigs(
+  specificElementsFormConfig,
+  {
+    fields: [
+      'elementSpecificity'
+    ],
+    settingsToFormValues: (values, options) => {
       const { settings: { elementSelector, elementProperties }, settingsIsNew } = options;
 
       return {
@@ -47,11 +47,8 @@ export const formConfig = {
         elementSpecificity: settingsIsNew || elementSelector || elementProperties ?
           'specific' : 'any'
       };
-    }
-  ),
-  formValuesToSettings: reduceReducers(
-    specificElementsFormConfig.formValuesToSettings,
-    (settings, values) => {
+    },
+    formValuesToSettings: (settings, values) => {
       settings = {
         ...settings
       };
@@ -66,17 +63,18 @@ export const formConfig = {
       delete settings.elementSpecificity;
 
       return settings;
-    }
-  ),
-  validate(errors, values) {
-    errors = {
-      ...errors
-    };
+    },
+    validate(errors, values) {
+      errors = {
+        ...errors
+      };
 
-    if (values.elementSpecificity === 'specific') {
       errors = specificElementsFormConfig.validate(errors, values);
-    }
+      if (values.elementSpecificity !== 'specific') {
+        delete errors.elementSelector;
+      }
 
-    return errors;
+      return errors;
+    }
   }
-};
+);
