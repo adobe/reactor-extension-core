@@ -31,10 +31,10 @@ class RegisteredUser extends React.Component {
 
 const formConfig = {
   fields: ['dataElement'],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings) {
     return {
       ...values,
-      ...options.settings
+      ...settings
     };
   },
   formValuesToSettings(settings, values) {

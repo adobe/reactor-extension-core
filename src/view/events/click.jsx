@@ -30,9 +30,9 @@ const formConfig = mergeFormConfigs(
     fields: [
       'delayLinkActivation'
     ],
-    settingsToFormValues: (values, options) => ({
+    settingsToFormValues: (values, settings) => ({
       ...values,
-      delayLinkActivation: options.settings.delayLinkActivation
+      delayLinkActivation: settings.delayLinkActivation
     }),
     formValuesToSettings: (settings, values) => ({
       ...settings,

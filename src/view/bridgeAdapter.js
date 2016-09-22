@@ -7,18 +7,24 @@ export default (extensionBridge, store) => {
 
   extensionBridge.register({
     init(options = {}) {
-      options = {
-        ...options,
-        settings: options.settings || {},
-        settingsIsNew: !options.settings
-      };
+      let {
+        settings,
+        ...meta
+      } = options;
 
-      const initialValues = currentRouteFormSettings.settingsToFormValues({}, options);
+      meta.isNew = !settings;
+      settings = settings || {};
+
+      // Populate the state with all the metadata coming in. This includes things like
+      // extension configurations, tokens, org ID, etc. We need to populate state with this
+      // information before passing it to settingsToFormValues below.
+      store.dispatch(actionCreators.reset());
+      store.dispatch(actionCreators.populateMeta(meta));
+
+      const initialValues =
+        currentRouteFormSettings.settingsToFormValues({}, settings, store.getState());
 
       store.dispatch(actionCreators.init({
-        propertySettings: options.propertySettings,
-        extensionConfigurations: options.extensionConfigurations,
-
         // initialValues will get set on the state and eventually picked up by redux-form.
         // See extensionViewReduxForm for how they get from the state into redux-form.
         initialValues
@@ -29,8 +35,9 @@ export default (extensionBridge, store) => {
       store.dispatch(reset('default'));
     },
     getSettings() {
+      const state = store.getState();
       const values = getValues(store.getState().form.default) || {};
-      return currentRouteFormSettings.formValuesToSettings({}, values);
+      return currentRouteFormSettings.formValuesToSettings({}, values, state);
     },
     validate() {
       let valid = false;

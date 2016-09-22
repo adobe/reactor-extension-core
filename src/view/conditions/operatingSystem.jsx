@@ -25,10 +25,10 @@ const OperatingSystem = ({ ...props }) => {
 
 const formConfig = {
   fields: ['operatingSystems'],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings) {
     return {
       ...values,
-      ...options.settings
+      ...settings
     };
   },
   formValuesToSettings(settings, values) {

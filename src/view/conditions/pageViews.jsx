@@ -53,12 +53,12 @@ const formConfig = {
     'count',
     'duration'
   ],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings) {
     return {
       ...values,
-      ...options.settings,
-      operator: options.settings.operator || '>',
-      duration: options.settings.duration || 'lifetime'
+      ...settings,
+      operator: settings.operator || '>',
+      duration: settings.duration || 'lifetime'
     };
   },
   formValuesToSettings(settings, values) {

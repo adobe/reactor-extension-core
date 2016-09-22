@@ -34,11 +34,11 @@ const formConfig = {
     'source',
     'sourceIsRegex'
   ],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings) {
     return {
       ...values,
-      ...options.settings,
-      protocol: options.settings.protocol || 'http:'
+      ...settings,
+      protocol: settings.protocol || 'http:'
     };
   },
   formValuesToSettings(settings, values) {

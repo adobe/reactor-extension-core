@@ -30,11 +30,11 @@ const formConfig = {
     'name',
     'caseInsensitive'
   ],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings, state) {
     return {
       ...values,
-      ...options.settings,
-      caseInsensitive: options.settingsIsNew || options.settings.caseInsensitive
+      ...settings,
+      caseInsensitive: state.isNew || settings.caseInsensitive
     };
   },
   formValuesToSettings(settings, values) {

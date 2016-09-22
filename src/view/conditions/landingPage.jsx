@@ -34,10 +34,10 @@ const formConfig = {
     'page',
     'pageIsRegex'
   ],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings) {
     return {
       ...values,
-      ...options.settings
+      ...settings
     };
   },
   formValuesToSettings(settings, values) {

@@ -54,10 +54,10 @@ const formConfig = {
     'hashes[].value',
     'hashes[].valueIsRegex'
   ],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings) {
     values = {
       ...values,
-      ...options.settings
+      ...settings
     };
 
     if (!values.hashes) {

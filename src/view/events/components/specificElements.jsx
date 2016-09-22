@@ -37,8 +37,8 @@ export const formConfig = mergeFormConfigs(
     fields: [
       'showElementPropertiesFilter'
     ],
-    settingsToFormValues: (values, options) => {
-      const { elementProperties } = options.settings;
+    settingsToFormValues: (values, settings) => {
+      const { elementProperties } = settings;
 
       return {
         ...values,

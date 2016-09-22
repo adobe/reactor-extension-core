@@ -22,10 +22,10 @@ const Browser = ({ ...props }) => {
 
 const formConfig = {
   fields: ['browsers'],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings) {
     return {
       ...values,
-      ...options.settings
+      ...settings
     };
   },
   formValuesToSettings(settings, values) {

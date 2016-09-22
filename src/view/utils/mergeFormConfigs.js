@@ -15,24 +15,24 @@ module.exports = (...formConfigs) => {
 
   return {
     fields,
-    settingsToFormValues(values, options) {
+    settingsToFormValues(values, settings, state) {
       return formConfigs.reduce((values, formConfig) => {
         return formConfig.settingsToFormValues ?
-          formConfig.settingsToFormValues(values, options) :
+          formConfig.settingsToFormValues(values, settings, state) :
           values;
       }, values);
     },
-    formValuesToSettings(settings, values) {
+    formValuesToSettings(settings, values, state) {
       return formConfigs.reduce((settings, formConfig) => {
         return formConfig.formValuesToSettings ?
-          formConfig.formValuesToSettings(settings, values) :
+          formConfig.formValuesToSettings(settings, values, state) :
           settings;
       }, settings);
     },
     validate(errors, values) {
-      return formConfigs.reduce((errors, formConfig) => {
+      return formConfigs.reduce((errors, formConfig, state) => {
         return formConfig.validate ?
-          formConfig.validate(errors, values) :
+          formConfig.validate(errors, values, state) :
           errors;
       }, errors);
     }

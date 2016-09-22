@@ -131,11 +131,11 @@ const formConfig = {
     'global',
     'source'
   ],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings) {
     return {
       ...values,
-      ...options.settings,
-      language: options.settings.language || LANGUAGES.JAVASCRIPT
+      ...settings,
+      language: settings.language || LANGUAGES.JAVASCRIPT
     };
   },
   formValuesToSettings(settings, values) {

@@ -19,10 +19,10 @@ function DirectCall({ ...props }) {
 
 const formConfig = {
   fields: ['name'],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings) {
     return {
       ...values,
-      ...options.settings
+      ...settings
     };
   },
   formValuesToSettings(settings, values) {

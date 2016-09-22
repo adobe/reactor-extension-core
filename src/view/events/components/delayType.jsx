@@ -50,11 +50,11 @@ export const formConfig = {
     'delayType',
     'delay'
   ],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings) {
     return {
       ...values,
-      delayType: options.settings.delay > 0 ? 'delay' : 'immediate',
-      delay: options.settings.delay > 0 ? options.settings.delay : ''
+      delayType: settings.delay > 0 ? 'delay' : 'immediate',
+      delay: settings.delay > 0 ? settings.delay : ''
     };
   },
   formValuesToSettings(settings, values) {

@@ -30,10 +30,10 @@ export const formConfig = {
   fields: [
     'elementSelector'
   ],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings) {
     return {
       ...values,
-      ...options.settings
+      ...settings
     };
   },
   formValuesToSettings(settings, values) {

@@ -53,10 +53,10 @@ const formConfig = {
     'subdomains[].value',
     'subdomains[].valueIsRegex'
   ],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings) {
     values = {
       ...values,
-      ...options.settings
+      ...settings
     };
 
     if (!values.subdomains) {

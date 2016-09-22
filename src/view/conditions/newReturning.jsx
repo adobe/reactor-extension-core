@@ -30,10 +30,10 @@ const formConfig = {
   fields: [
     'visitorType'
   ],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings, state) {
     return {
       ...values,
-      visitorType: options.settingsIsNew || options.settings.isNewVisitor ? 'new' : 'returning'
+      visitorType: state.isNew || settings.isNewVisitor ? 'new' : 'returning'
     };
   },
   formValuesToSettings(settings, values) {

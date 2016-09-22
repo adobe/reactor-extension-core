@@ -51,9 +51,7 @@ export const formConfig = {
     'elementProperties[].value',
     'elementProperties[].valueIsRegex'
   ],
-  settingsToFormValues(values, options) {
-    const { settings } = options;
-
+  settingsToFormValues(values, settings) {
     const elementProperties = settings.elementProperties || [];
 
     // Make sure there's always at least one element property. This is just so the view

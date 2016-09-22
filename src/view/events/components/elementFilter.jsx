@@ -39,12 +39,12 @@ export const formConfig = mergeFormConfigs(
     fields: [
       'elementSpecificity'
     ],
-    settingsToFormValues: (values, options) => {
-      const { settings: { elementSelector, elementProperties }, settingsIsNew } = options;
+    settingsToFormValues: (values, settings, state) => {
+      const { elementSelector, elementProperties } = settings;
 
       return {
         ...values,
-        elementSpecificity: settingsIsNew || elementSelector || elementProperties ?
+        elementSpecificity: state.isNew || elementSelector || elementProperties ?
           'specific' : 'any'
       };
     },

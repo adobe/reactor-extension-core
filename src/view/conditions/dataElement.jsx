@@ -53,10 +53,10 @@ const formConfig = {
     'value',
     'valueIsRegex'
   ],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings) {
     return {
       ...values,
-      ...options.settings
+      ...settings
     };
   },
   formValuesToSettings(settings, values) {

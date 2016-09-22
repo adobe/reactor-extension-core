@@ -28,10 +28,10 @@ const Protocol = ({ ...props }) => {
 
 const formConfig = {
   fields: ['protocol'],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings) {
     return {
       ...values,
-      protocol: options.settings.protocol || 'http:'
+      protocol: settings.protocol || 'http:'
     };
   },
   formValuesToSettings(settings, values) {

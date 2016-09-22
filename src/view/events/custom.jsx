@@ -31,9 +31,9 @@ const formConfig = mergeFormConfigs(
     fields: [
       'type'
     ],
-    settingsToFormValues: (values, options) => ({
+    settingsToFormValues: (values, settings) => ({
       ...values,
-      type: options.settings.type
+      type: settings.type
     }),
     formValuesToSettings: (settings, values) => ({
       ...settings,

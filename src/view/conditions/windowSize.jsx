@@ -58,12 +58,12 @@ const formConfig = {
     'heightOperator',
     'height'
   ],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings) {
     return {
       ...values,
-      ...options.settings,
-      widthOperator: options.settings.widthOperator || '>',
-      heightOperator: options.settings.heightOperator || '>'
+      ...settings,
+      widthOperator: settings.widthOperator || '>',
+      heightOperator: settings.heightOperator || '>'
     };
   },
   formValuesToSettings(settings, values) {

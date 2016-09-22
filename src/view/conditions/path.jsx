@@ -54,10 +54,10 @@ const formConfig = {
     'paths[].value',
     'paths[].valueIsRegex'
   ],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings) {
     values = {
       ...values,
-      ...options.settings
+      ...settings
     };
 
     if (!values.paths) {

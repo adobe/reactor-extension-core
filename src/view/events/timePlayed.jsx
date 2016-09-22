@@ -63,9 +63,9 @@ const formConfig = mergeFormConfigs(
       'amount',
       'unit'
     ],
-    settingsToFormValues: (values, options) => ({
+    settingsToFormValues: (values, settings) => ({
       ...values,
-      unit: options.settings.unit || timePlayedUnit.SECOND
+      unit: settings.unit || timePlayedUnit.SECOND
     }),
     formValuesToSettings: (settings, values) => ({
       ...settings,

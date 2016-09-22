@@ -24,10 +24,10 @@ const DeviceType = ({ ...props }) => {
 
 const formConfig = {
   fields: ['deviceTypes'],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings) {
     return {
       ...values,
-      ...options.settings
+      ...settings
     };
   },
   formValuesToSettings(settings, values) {
