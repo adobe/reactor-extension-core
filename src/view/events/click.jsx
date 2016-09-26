@@ -5,31 +5,26 @@ import ElementFilter, { formConfig as elementFilterFormConfig } from './componen
 import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import mergeFormConfigs from '../utils/mergeFormConfigs';
+import Field from '../components/field';
 
-function Click({ ...props }) {
-  const { delayLinkActivation } = props.fields;
-
-  return (
-    <div>
-      <ElementFilter fields={ props.fields } />
-      <Checkbox
-        className="u-block"
-        { ...delayLinkActivation }
-      >
-        If the element is a link, delay navigation until rule runs
-      </Checkbox>
-      <AdvancedEventOptions fields={ props.fields } />
-    </div>
-  );
-}
+const Click = ({ fields }) => (
+  <div>
+    <ElementFilter fields={ fields } />
+    <Field
+      name="delayLinkActivation"
+      className="u-block"
+      component={ Checkbox }
+    >
+      If the element is a link, delay navigation until rule runs
+    </Field>
+    <AdvancedEventOptions fields={ fields } />
+  </div>
+);
 
 const formConfig = mergeFormConfigs(
   elementFilterFormConfig,
   advancedEventOptionsFormConfig,
   {
-    fields: [
-      'delayLinkActivation'
-    ],
     settingsToFormValues: (values, settings) => ({
       ...values,
       delayLinkActivation: settings.delayLinkActivation

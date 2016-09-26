@@ -10,7 +10,6 @@ const NoConfig = () => (
 );
 
 const formConfig = {
-  fields: [],
   settingsToFormValues(values, settings) {
     return {
       ...values,

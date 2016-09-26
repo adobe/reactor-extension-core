@@ -1,18 +1,14 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import CheckboxList from '../components/checkboxList';
 import extensionViewReduxForm from '../extensionViewReduxForm';
+import Field from '../components/field';
 
-const Domain = ({ ...props }) => {
-  const { domains } = props.fields;
-  return (<CheckboxList
-    options={ props.domainOptions }
-    { ...domains }
-  />);
-};
+const Domain = (props) =>
+  (<Field name="domains" component={ CheckboxList } options={ props.domainOptions } />);
 
 const formConfig = {
-  fields: ['domains'],
   settingsToFormValues(values, settings) {
     return {
       ...values,
@@ -28,7 +24,7 @@ const formConfig = {
 };
 
 const stateToProps = state => ({
-  domainOptions: state.propertySettings ? state.propertySettings.domains : []
+  domainOptions: state.meta.propertySettings ? state.meta.propertySettings.domains : []
 });
 
-export default extensionViewReduxForm(formConfig, stateToProps)(Domain);
+export default extensionViewReduxForm(formConfig)(connect(stateToProps)(Domain));

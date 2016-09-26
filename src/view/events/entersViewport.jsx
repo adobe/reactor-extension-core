@@ -5,10 +5,10 @@ import DelayType, { formConfig as delayTypeFormConfig } from './components/delay
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import mergeFormConfigs from '../utils/mergeFormConfigs';
 
-const EntersViewport = ({ ...props }) => (
+const EntersViewport = ({ fields }) => (
   <div>
-    <SpecificElements fields={ props.fields } />
-    <DelayType fields={ props.fields } />
+    <SpecificElements fields={ fields } />
+    <DelayType fields={ fields } />
   </div>
 );
 

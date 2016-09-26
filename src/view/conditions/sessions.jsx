@@ -1,37 +1,32 @@
 import React from 'react';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-import { ValidationWrapper } from '@reactor/react-components';
 
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import ComparisonOperatorField from './components/comparisonOperatorField';
 import { isNumber } from '../utils/validators';
+import Field from '../components/field';
 
-const Sessions = ({ ...props }) => {
-  const { operator, count } = props.fields;
-
-  return (
+const Sessions = () => (
+  <div>
     <div>
-      <div>
-        <label className="u-gapRight">
-          <span className="u-label">The user's number of sessions is</span>
-          <ComparisonOperatorField { ...operator } />
-        </label>
-        <ValidationWrapper error={ count.touched && count.error }>
-          <label>
-            <span className="u-label">the value</span>
-            <Textfield className="u-smallTextfield" { ...count } />
-          </label>
-        </ValidationWrapper>
-      </div>
+      <label className="u-gapRight">
+        <span className="u-label">The user's number of sessions is</span>
+        <Field name="operator" component={ ComparisonOperatorField } />
+      </label>
+      <label>
+        <span className="u-label">the value</span>
+        <Field
+          className="u-smallTextfield"
+          name="count"
+          component={ Textfield }
+          supportValidation
+        />
+      </label>
     </div>
-  );
-};
+  </div>
+);
 
 const formConfig = {
-  fields: [
-    'operator',
-    'count'
-  ],
   settingsToFormValues(values, settings) {
     return {
       ...values,

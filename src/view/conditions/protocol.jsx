@@ -2,32 +2,28 @@ import React from 'react';
 import Radio from '@coralui/react-coral/lib/Radio';
 
 import extensionViewReduxForm from '../extensionViewReduxForm';
+import Field from '../components/field';
 
-const Protocol = ({ ...props }) => {
-  const { protocol } = props.fields;
-
-  return (
-    <div>
-      <Radio
-        { ...protocol }
-        value="http:"
-        checked={ protocol.value === 'http:' }
-      >
-        HTTP
-      </Radio>
-      <Radio
-        { ...protocol }
-        value="https:"
-        checked={ protocol.value === 'https:' }
-      >
-        HTTPS
-      </Radio>
-    </div>
-  );
-};
+const Protocol = () => (
+  <div>
+    <Field
+      name="protocol"
+      component={ Radio }
+      value="http:"
+    >
+      HTTP
+    </Field>
+    <Field
+      name="protocol"
+      component={ Radio }
+      value="https:"
+    >
+      HTTPS
+    </Field>
+  </div>
+);
 
 const formConfig = {
-  fields: ['protocol'],
   settingsToFormValues(values, settings) {
     return {
       ...values,

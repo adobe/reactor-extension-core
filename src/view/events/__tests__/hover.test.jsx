@@ -1,19 +1,36 @@
 import { mount } from 'enzyme';
+import Textfield from '@coralui/react-coral/lib/Textfield';
+import Checkbox from '@coralui/react-coral/lib/Checkbox';
+import Radio from '@coralui/react-coral/lib/Radio';
+import { ValidationWrapper } from '@reactor/react-components';
+
+import DelayType from '../components/delayType';
 import Hover from '../hover';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
-import SpecificElements from '../components/specificElements';
-import DelayType from '../components/delayType';
 import AdvancedEventOptions from '../components/advancedEventOptions';
+import ElementSelector from '../components/elementSelector';
 
 const getReactComponents = (wrapper) => {
-  const specificElements = wrapper.find(SpecificElements).node;
-  const delayType = wrapper.find(DelayType).node;
+  const elementSelectorTextfield =
+    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'elementSelector').node;
+  const bubbleStopCheckbox =
+    wrapper.find(Checkbox).filterWhere(n => n.prop('name') === 'bubbleStop').node;
+  const delayTextfield =
+    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'delay').node;
+  const delayRadio =
+    wrapper.find(Radio).filterWhere(n => n.prop('value') === 'delay').node;
   const advancedEventOptions = wrapper.find(AdvancedEventOptions).node;
+  const elementSelectorWrapper = wrapper.find(ElementSelector).find(ValidationWrapper).node;
+  const delayValidationWrapper = wrapper.find(DelayType).find(ValidationWrapper).node;
 
   return {
-    specificElements,
-    delayType,
-    advancedEventOptions
+    elementSelectorTextfield,
+    bubbleStopCheckbox,
+    delayTextfield,
+    delayRadio,
+    advancedEventOptions,
+    delayValidationWrapper,
+    elementSelectorWrapper
   };
 };
 
@@ -21,9 +38,14 @@ describe('hover view', () => {
   let extensionBridge;
   let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
     instance = mount(getFormComponent(Hover, extensionBridge));
+
+    extensionBridge.init();
+
+    const { advancedEventOptions } = getReactComponents(instance);
+    advancedEventOptions.toggleSelected();
   });
 
   it('sets form values from settings', () => {
@@ -35,22 +57,30 @@ describe('hover view', () => {
       }
     });
 
-    const { specificElements, delayType, advancedEventOptions } = getReactComponents(instance);
+    const {
+      elementSelectorTextfield,
+      delayTextfield,
+      bubbleStopCheckbox
+    } = getReactComponents(instance);
 
-    expect(specificElements.props.fields.elementSelector.value).toBe('.foo');
-    expect(delayType.props.fields.delay.value).toBe(100);
-    expect(advancedEventOptions.props.fields.bubbleStop.value).toBe(true);
+    expect(elementSelectorTextfield.props.value).toBe('.foo');
+    expect(delayTextfield.props.value).toBe(100);
+    expect(bubbleStopCheckbox.props.value).toBe(true);
   });
 
   it('sets settings from form values', () => {
-    extensionBridge.init();
+    const { delayRadio } = getReactComponents(instance);
+    delayRadio.props.onChange('delay');
 
-    const { specificElements, delayType, advancedEventOptions } = getReactComponents(instance);
+    const {
+      elementSelectorTextfield,
+      delayTextfield,
+      bubbleStopCheckbox
+    } = getReactComponents(instance);
 
-    specificElements.props.fields.elementSelector.onChange('.foo');
-    delayType.props.fields.delayType.onChange('delay');
-    delayType.props.fields.delay.onChange(100);
-    advancedEventOptions.props.fields.bubbleStop.onChange(true);
+    elementSelectorTextfield.props.onChange('.foo');
+    delayTextfield.props.onChange(100);
+    bubbleStopCheckbox.props.onChange(true);
 
     const { elementSelector, delay, bubbleStop } = extensionBridge.getSettings();
 
@@ -60,15 +90,16 @@ describe('hover view', () => {
   });
 
   it('sets validation errors', () => {
-    extensionBridge.init();
-
-    const { specificElements, delayType } = getReactComponents(instance);
-
-    delayType.props.fields.delayType.onChange('delay');
+    const {
+      delayRadio,
+      delayValidationWrapper,
+      elementSelectorWrapper
+    } = getReactComponents(instance);
+    delayRadio.props.onChange('delay');
 
     expect(extensionBridge.validate()).toBe(false);
 
-    expect(delayType.props.fields.delay.error).toEqual(jasmine.any(String));
-    expect(specificElements.props.fields.elementSelector.error).toEqual(jasmine.any(String));
+    expect(delayValidationWrapper.props.error).toEqual(jasmine.any(String));
+    expect(elementSelectorWrapper.props.error).toEqual(jasmine.any(String));
   });
 });

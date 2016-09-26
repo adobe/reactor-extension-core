@@ -55,8 +55,8 @@ describe('hash view', () => {
 
     expect(hashFields[0].props.value).toBe('foo');
     expect(hashFields[1].props.value).toBe('bar');
-    expect(hashRegexToggles[0].props.valueIsRegex).toBe('');
-    expect(hashRegexToggles[1].props.valueIsRegex).toBe(true);
+    expect(hashRegexToggles[0].props.hashes[0].valueIsRegex.input.value).toBe('');
+    expect(hashRegexToggles[1].props.hashes[1].valueIsRegex.input.value).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -68,7 +68,7 @@ describe('hash view', () => {
     } = getReactComponents(instance);
 
     hashFields[0].props.onChange('goo');
-    hashRegexToggles[0].props.onValueIsRegexChange(true);
+    hashRegexToggles[0].props.hashes[0].valueIsRegex.input.onChange(true);
 
     expect(extensionBridge.getSettings()).toEqual({
       hashes: [
@@ -78,38 +78,6 @@ describe('hash view', () => {
         }
       ]
     });
-  });
-
-  it('adds a row', () => {
-    extensionBridge.init(testProps);
-
-    const { multipleItemEditor } = getReactComponents(instance);
-
-    multipleItemEditor.props.onAddItem();
-
-    const {
-      hashFields
-    } = getReactComponents(instance);
-
-    expect(hashFields[0]).toBeDefined();
-    expect(hashFields[1]).toBeDefined();
-    expect(hashFields[2]).toBeDefined();
-    expect(hashFields[3]).toBeUndefined();
-  });
-
-  it('removes a row', () => {
-    extensionBridge.init(testProps);
-
-    const { multipleItemEditor } = getReactComponents(instance);
-
-    multipleItemEditor.props.onRemoveItem(1);
-
-    const {
-      hashFields
-    } = getReactComponents(instance);
-
-    expect(hashFields[0]).toBeDefined();
-    expect(hashFields[1]).toBeUndefined();
   });
 
   it('sets errors if required values are not provided', () => {

@@ -38,8 +38,8 @@ describe('landing page view', () => {
     const { pageField, valueRegexToggle } = getReactComponents(instance);
 
     expect(pageField.props.value).toBe('foo');
-    expect(valueRegexToggle.props.value).toBe('foo');
-    expect(valueRegexToggle.props.valueIsRegex).toBe(true);
+    expect(valueRegexToggle.props.page.input.value).toBe('foo');
+    expect(valueRegexToggle.props.pageIsRegex.input.value).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -48,7 +48,7 @@ describe('landing page view', () => {
     const { pageField, valueRegexToggle } = getReactComponents(instance);
 
     pageField.props.onChange('foo');
-    valueRegexToggle.props.onValueIsRegexChange(true);
+    valueRegexToggle.props.pageIsRegex.input.onChange(true);
 
     expect(extensionBridge.getSettings()).toEqual({
       page: 'foo',

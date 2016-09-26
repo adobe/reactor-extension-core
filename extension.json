@@ -1441,7 +1441,7 @@
     },
     {
       "name": "subdomain",
-      "categoryName": "Technology",
+      "categoryName": "URL",
       "displayName": "Subdomain",
       "libPath": "src/lib/conditions/subdomain.js",
       "viewPath": "index.html#/conditions/subdomain",

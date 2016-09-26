@@ -28,6 +28,7 @@ describe('advancedEventOptions', () => {
     const FormComponent = extensionViewReduxForm(formConfig)(AdvancedEventOptions);
     extensionBridge = createExtensionBridge();
     instance = mount(getFormComponent(FormComponent, extensionBridge));
+    extensionBridge.init();
   });
 
   beforeEach(() => {

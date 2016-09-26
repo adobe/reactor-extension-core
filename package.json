@@ -40,7 +40,7 @@
     "react-redux": "^4.4.5",
     "react-router": "^2.8.1",
     "reduce-reducers": "^0.1.2",
-    "redux-form": "^5.3.2",
+    "redux-form": "^6.0.5",
     "redux": "^3.6.0",
     "redux-actions": "^0.12.0",
     "style-loader": "^0.13.1",

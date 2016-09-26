@@ -10,6 +10,7 @@
   },
   "extends": "airbnb",
   "rules": {
+    "space-before-function-paren": [2, "never"],
     "max-len": [2, 100, 4, {"ignoreUrls": true, "ignorePattern": "^(\\s*(var|let|const)\\s.+=\\s*require\\s*\\()|(^\\s*import)"}],
     "comma-dangle": ["error", "never"],
     "react/prop-types": 0,

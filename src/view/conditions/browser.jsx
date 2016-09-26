@@ -1,6 +1,7 @@
 import React from 'react';
 import CheckboxList from '../components/checkboxList';
 import extensionViewReduxForm from '../extensionViewReduxForm';
+import Field from '../components/field';
 
 const browserOptions = [
   'Chrome',
@@ -15,13 +16,10 @@ const browserOptions = [
   'OmniWeb'
 ];
 
-const Browser = ({ ...props }) => {
-  const { browsers } = props.fields;
-  return <CheckboxList options={ browserOptions } { ...browsers } />;
-};
+const Browser = () =>
+  (<Field name="browsers" component={ CheckboxList } options={ browserOptions } />);
 
 const formConfig = {
-  fields: ['browsers'],
   settingsToFormValues(values, settings) {
     return {
       ...values,

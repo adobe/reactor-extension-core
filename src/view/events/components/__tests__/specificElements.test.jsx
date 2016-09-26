@@ -1,21 +1,23 @@
 import { mount } from 'enzyme';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
+import { ValidationWrapper } from '@reactor/react-components';
 
 import SpecificElements, { formConfig } from '../specificElements';
 import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
 import ElementPropertiesEditor from '../elementPropertiesEditor';
-import ElementSelectorField from '../elementSelectorField';
+import ElementSelector from '../elementSelector';
 import extensionViewReduxForm from '../../../extensionViewReduxForm';
 
 const getReactComponents = (wrapper) => {
   const showElementPropertiesCheckbox = wrapper.find(Checkbox).node;
   const elementPropertiesEditor = wrapper.find(ElementPropertiesEditor).node;
-  const elementSelectorField = wrapper.find(ElementSelectorField).node;
+  const elementSelectorValidationWrapper =
+    wrapper.find(ElementSelector).find(ValidationWrapper).node;
 
   return {
     showElementPropertiesCheckbox,
     elementPropertiesEditor,
-    elementSelectorField
+    elementSelectorValidationWrapper
   };
 };
 
@@ -37,6 +39,10 @@ describe('specificElements', () => {
           {
             name: 'a',
             value: 'b'
+          },
+          {
+            name: 'b',
+            value: 'c'
           }
         ]
       }
@@ -45,7 +51,7 @@ describe('specificElements', () => {
     const { showElementPropertiesCheckbox, elementPropertiesEditor } = getReactComponents(instance);
     expect(showElementPropertiesCheckbox.props.checked).toBe(true);
     expect(elementPropertiesEditor).toBeDefined();
-    expect(elementPropertiesEditor.props.fields.elementProperties).toBeDefined();
+    expect(elementPropertiesEditor.props.fields.length).toBe(2);
   });
 
   it('updates view properly when elementProperties not provided', () => {
@@ -85,9 +91,9 @@ describe('specificElements', () => {
 
     expect(extensionBridge.validate()).toBe(false);
 
-    const { elementSelectorField } = getReactComponents(instance);
+    const { elementSelectorValidationWrapper } = getReactComponents(instance);
 
-    expect(elementSelectorField.props.fields.elementSelector.error).toEqual(jasmine.any(String));
+    expect(elementSelectorValidationWrapper.props.error).toEqual(jasmine.any(String));
   });
 
   it('removes elementProperties error if element properties not shown', () => {

@@ -1,47 +1,37 @@
 import React from 'react';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-import { ValidationWrapper } from '@reactor/react-components';
+import { Fields } from 'redux-form';
 
+import Field from '../components/field';
 import RegexToggle from '../components/regexToggle';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
-function URLParameter({ ...props }) {
-  const { name, value, valueIsRegex } = props.fields;
-
-  return (
-    <div>
-      <ValidationWrapper
-        type="name"
-        className="u-gapRight"
-        error={ name.touched && name.error }
-      >
-        <span className="u-label">URL Parameter Name</span>
-        <Textfield { ...name } />
-      </ValidationWrapper>
-      <ValidationWrapper
-        type="value"
-        className="u-gapRight"
-        error={ value.touched && value.error }
-      >
-        <span className="u-label">URL Parameter Value</span>
-        <Textfield { ...value } />
-      </ValidationWrapper>
-      <RegexToggle
-        value={ value.value }
-        valueIsRegex={ valueIsRegex.value }
-        onValueChange={ value.onChange }
-        onValueIsRegexChange={ valueIsRegex.onChange }
+const URLParameter = () => (
+  <div>
+    <span className="u-label">URL Parameter Name</span>
+    <label className="u-gapRight">
+      <Field
+        name="name"
+        component={ Textfield }
+        supportValidation
       />
-    </div>
-  );
-}
+    </label>
+    <label className="u-gapRight">
+      <span className="u-label">URL Parameter Value</span>
+      <Field
+        name="value"
+        component={ Textfield }
+        supportValidation
+      />
+    </label>
+    <Fields
+      names={ ['value', 'valueIsRegex'] }
+      component={ RegexToggle }
+    />
+  </div>
+);
 
 const formConfig = {
-  fields: [
-    'name',
-    'value',
-    'valueIsRegex'
-  ],
   settingsToFormValues(values, settings) {
     return {
       ...values,

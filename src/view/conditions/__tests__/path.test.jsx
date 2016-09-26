@@ -54,8 +54,8 @@ describe('path view', () => {
 
     expect(pathFields[0].props.value).toBe('foo');
     expect(pathFields[1].props.value).toBe('bar');
-    expect(pathRegexToggles[0].props.valueIsRegex).toBe('');
-    expect(pathRegexToggles[1].props.valueIsRegex).toBe(true);
+    expect(pathRegexToggles[0].props.paths[0].valueIsRegex.input.value).toBe('');
+    expect(pathRegexToggles[1].props.paths[1].valueIsRegex.input.value).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -64,7 +64,7 @@ describe('path view', () => {
     const { pathFields, pathRegexToggles } = getReactComponents(instance);
 
     pathFields[0].props.onChange('goo');
-    pathRegexToggles[0].props.onValueIsRegexChange(true);
+    pathRegexToggles[0].props.paths[0].valueIsRegex.input.onChange(true);
 
     expect(extensionBridge.getSettings()).toEqual({
       paths: [
@@ -74,34 +74,6 @@ describe('path view', () => {
         }
       ]
     });
-  });
-
-  it('adds a row', () => {
-    extensionBridge.init(testProps);
-
-    const { multipleItemEditor } = getReactComponents(instance);
-
-    multipleItemEditor.props.onAddItem();
-
-    const { pathFields } = getReactComponents(instance);
-
-    expect(pathFields[0]).toBeDefined();
-    expect(pathFields[1]).toBeDefined();
-    expect(pathFields[2]).toBeDefined();
-    expect(pathFields[3]).toBeUndefined();
-  });
-
-  it('removes a row', () => {
-    extensionBridge.init(testProps);
-
-    const { multipleItemEditor } = getReactComponents(instance);
-
-    multipleItemEditor.props.onRemoveItem(1);
-
-    const { pathFields } = getReactComponents(instance);
-
-    expect(pathFields[0]).toBeDefined();
-    expect(pathFields[1]).toBeUndefined();
   });
 
   it('sets errors if required values are not provided', () => {

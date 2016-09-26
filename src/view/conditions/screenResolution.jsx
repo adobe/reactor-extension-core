@@ -1,51 +1,47 @@
 import React from 'react';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-import { ValidationWrapper } from '@reactor/react-components';
 
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import ComparisonOperatorField from './components/comparisonOperatorField';
 import { isNumber } from '../utils/validators';
+import Field from '../components/field';
 
-const ScreenResolution = ({ ...props }) => {
-  const { widthOperator, width, heightOperator, height } = props.fields;
-
-  return (
+const ScreenResolution = () => (
+  <div>
     <div>
-      <div>
-        <label className="u-gapRight">
-          <span className="u-label">The user's screen resolution width is</span>
-          <ComparisonOperatorField { ...widthOperator } />
-        </label>
-        <ValidationWrapper type="width" error={ width.touched && width.error }>
-          <label>
-            <Textfield className="u-gapRight u-smallTextfield" { ...width } />
-            <span>px</span>
-          </label>
-        </ValidationWrapper>
-      </div>
-      <div className="u-gapTop">
-        <label className="u-gapRight">
-          <span className="u-label">and height is</span>
-          <ComparisonOperatorField { ...heightOperator } />
-        </label>
-        <ValidationWrapper type="height" error={ height.touched && height.error }>
-          <label>
-            <Textfield className="u-gapRight u-smallTextfield" { ...height } />
-            <span>px</span>
-          </label>
-        </ValidationWrapper>
-      </div>
+      <label className="u-gapRight">
+        <span className="u-label">The user's screen resolution width is</span>
+        <Field name="widthOperator" component={ ComparisonOperatorField } />
+      </label>
+      <label>
+        <Field
+          className="u-smallTextfield u-gapRight"
+          name="width"
+          component={ Textfield }
+          supportValidation
+        />
+        <span>px</span>
+      </label>
     </div>
-  );
-};
+    <div className="u-gapTop">
+      <label className="u-gapRight">
+        <span className="u-label">and height is</span>
+        <Field name="heightOperator" component={ ComparisonOperatorField } />
+      </label>
+      <label>
+        <Field
+          className="u-smallTextfield u-gapRight"
+          name="height"
+          component={ Textfield }
+          supportValidation
+        />
+        <span>px</span>
+      </label>
+    </div>
+  </div>
+);
 
 const formConfig = {
-  fields: [
-    'widthOperator',
-    'width',
-    'heightOperator',
-    'height'
-  ],
   settingsToFormValues(values, settings) {
     return {
       ...values,

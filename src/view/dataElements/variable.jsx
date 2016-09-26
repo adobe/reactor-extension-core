@@ -1,25 +1,20 @@
 import React from 'react';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-import { ValidationWrapper } from '@reactor/react-components';
 import extensionViewReduxForm from '../extensionViewReduxForm';
+import Field from '../components/field';
 
-function Variable({ ...props }) {
-  const { path } = props.fields;
-
-  return (
-    <ValidationWrapper error={ path.touched && path.error }>
-      <label>
-        <span className="u-label">Path to variable</span>
-        <Textfield { ...path } />
-      </label>
-    </ValidationWrapper>
-  );
-}
+const Variable = () => (
+  <label>
+    <span className="u-label">Path to variable</span>
+    <Field
+      name="path"
+      component={ Textfield }
+      supportValidation
+    />
+  </label>
+);
 
 const formConfig = {
-  fields: [
-    'path'
-  ],
   settingsToFormValues(values, settings) {
     return {
       ...values,

@@ -2,6 +2,7 @@ import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import { ValidationWrapper, DataElementSelectorButton } from '@reactor/react-components';
 
+import Field from '../../components/field';
 import DataElement from '../dataElement';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 import RegexToggle from '../../components/regexToggle';
@@ -12,10 +13,10 @@ const getReactComponents = (wrapper) => {
   const valueField =
     wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'value').node;
   const valueRegexToggle = wrapper.find(RegexToggle).node;
-  const nameWrapper = wrapper.find(ValidationWrapper)
-    .filterWhere(n => n.prop('type') === 'name').node;
-  const valueWrapper = wrapper.find(ValidationWrapper)
-    .filterWhere(n => n.prop('type') === 'value').node;
+  const nameWrapper = wrapper.find(Field)
+    .filterWhere(n => n.prop('name') === 'name').find(ValidationWrapper).node;
+  const valueWrapper = wrapper.find(Field)
+    .filterWhere(n => n.prop('name') === 'value').find(ValidationWrapper).node;
   const nameButton = wrapper.find(DataElementSelectorButton).node;
 
   return {
@@ -43,6 +44,8 @@ describe('data element view', () => {
   });
 
   it('opens the data element selector from data element button', () => {
+    extensionBridge.init();
+
     const { nameField, nameButton } = getReactComponents(instance);
 
     spyOn(window.extensionBridge, 'openDataElementSelector').and.callFake(callback => {
@@ -68,8 +71,8 @@ describe('data element view', () => {
 
     expect(nameField.props.value).toBe('foo');
     expect(valueField.props.value).toBe('bar');
-    expect(valueRegexToggle.props.value).toBe('bar');
-    expect(valueRegexToggle.props.valueIsRegex).toBe(true);
+    expect(valueRegexToggle.props.value.input.value).toBe('bar');
+    expect(valueRegexToggle.props.valueIsRegex.input.value).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -79,7 +82,7 @@ describe('data element view', () => {
 
     nameField.props.onChange('foo');
     valueField.props.onChange('bar');
-    valueRegexToggle.props.onValueIsRegexChange(true);
+    valueRegexToggle.props.valueIsRegex.input.onChange(true);
 
     expect(extensionBridge.getSettings()).toEqual({
       name: 'foo',

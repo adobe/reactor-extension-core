@@ -1,44 +1,33 @@
 import React from 'react';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-import { ValidationWrapper } from '@reactor/react-components';
+import { Fields } from 'redux-form';
 
+import Field from '../components/field';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import RegexToggle from '../components/regexToggle';
 
-const TrafficSource = ({ ...props }) => {
-  const { source, sourceIsRegex } = props.fields;
-
-  return (
-    <div>
-      <ValidationWrapper
-        className="u-gapRight"
-        error={ source.touched && source.error }
-      >
-        <label>
-          <span className="u-label">Traffic Source</span>
-          <Textfield { ...source } />
-        </label>
-      </ValidationWrapper>
-      <RegexToggle
-        value={ source.value }
-        valueIsRegex={ sourceIsRegex.value }
-        onValueChange={ source.onChange }
-        onValueIsRegexChange={ sourceIsRegex.onChange }
+const TrafficSource = () => (
+  <div>
+    <label className="u-gapRight">
+      <span className="u-label">Traffic Source</span>
+      <Field
+        name="source"
+        component={ Textfield }
+        supportValidation
       />
-    </div>
-  );
-};
+    </label>
+    <Fields
+      names={ ['source', 'sourceIsRegex'] }
+      component={ RegexToggle }
+    />
+  </div>
+);
 
 const formConfig = {
-  fields: [
-    'source',
-    'sourceIsRegex'
-  ],
   settingsToFormValues(values, settings) {
     return {
       ...values,
-      ...settings,
-      protocol: settings.protocol || 'http:'
+      ...settings
     };
   },
   formValuesToSettings(settings, values) {

@@ -84,10 +84,6 @@ describe('elementFilter', () => {
     specificElementsRadio.props.onChange(specificElementsRadio.props.value);
 
     expect(extensionBridge.validate()).toBe(false);
-
-    const { specificElements } = getReactComponents(instance);
-
-    expect(specificElements.props.fields.elementSelector.error).toEqual(jasmine.any(String));
   });
 
   it('excludes specificElements errors if any element radio is selected', () => {

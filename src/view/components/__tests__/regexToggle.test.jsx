@@ -31,16 +31,26 @@ describe('regex toggle', () => {
 
   it('sets switch to checked when valueIsRegex=true', () => {
     const { regexSwitch } = getReactComponents(render({
-      valueIsRegex: true
+      names: ['value', 'valueIsRegex'],
+      valueIsRegex: {
+        input: {
+          value: true
+        }
+      }
     }));
 
     expect(regexSwitch.props.checked).toBe(true);
   });
 
-  it('calls onValueIsRegexChange when switch is toggled', () => {
+  it('calls onChange from ValueIsRegex field when switch is toggled', () => {
     const onValueIsRegexChange = jasmine.createSpy();
     const { regexSwitch } = getReactComponents(render({
-      onValueIsRegexChange
+      names: ['value', 'valueIsRegex'],
+      valueIsRegex: {
+        input: {
+          onChange: onValueIsRegexChange
+        }
+      }
     }));
 
     regexSwitch.props.onChange({
@@ -55,9 +65,18 @@ describe('regex toggle', () => {
   it('supports regex testing+updating workflow', () => {
     const onValueChange = jasmine.createSpy();
     const { testButton } = getReactComponents(render({
-      valueIsRegex: true,
-      value: 'foo',
-      onValueChange
+      names: ['value', 'valueIsRegex'],
+      value: {
+        input: {
+          value: 'foo',
+          onChange: onValueChange
+        }
+      },
+      valueIsRegex: {
+        input: {
+          value: true
+        }
+      }
     }));
 
     testButton.simulate('click');
@@ -69,7 +88,12 @@ describe('regex toggle', () => {
 
   it('shows test link when valueIsRegex=true', () => {
     const { testButton } = getReactComponents(render({
-      valueIsRegex: true
+      names: ['value', 'valueIsRegex'],
+      valueIsRegex: {
+        input: {
+          value: true
+        }
+      }
     }));
 
     expect(testButton.node.style.visibility).toBe('visible');
@@ -77,7 +101,12 @@ describe('regex toggle', () => {
 
   it('hides test link when valueIsRegex=false', () => {
     const { testButton } = getReactComponents(render({
-      valueIsRegex: false
+      names: ['value', 'valueIsRegex'],
+      valueIsRegex: {
+        input: {
+          value: false
+        }
+      }
     }));
 
     expect(testButton.node.style.visibility).toBe('hidden');

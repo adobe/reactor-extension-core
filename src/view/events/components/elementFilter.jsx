@@ -1,50 +1,57 @@
 import React from 'react';
 import Radio from '@coralui/react-coral/lib/Radio';
+import { formValueSelector } from 'redux-form';
+import { connect } from 'react-redux';
 
 import SpecificElements, { formConfig as specificElementsFormConfig } from './specificElements';
 import mergeFormConfigs from '../../utils/mergeFormConfigs';
+import Field from '../../components/field';
 
-export default ({ ...props }) => {
-  const { elementSpecificity } = props.fields;
+const ElementFilter = ({ ...props }) => {
+  const { elementSpecificity } = props;
 
   return (
     <div>
       <div>
-        <Radio
-          { ...elementSpecificity }
+        <Field
+          name="elementSpecificity"
+          component={ Radio }
           value="specific"
-          checked={ elementSpecificity.value === 'specific' }
         >
           specific elements
-        </Radio>
-        <Radio
-          { ...elementSpecificity }
+        </Field>
+        <Field
+          name="elementSpecificity"
+          component={ Radio }
           value="any"
-          checked={ elementSpecificity.value === 'any' }
         >
           any element
-        </Radio>
+        </Field>
       </div>
       {
-        elementSpecificity.value === 'specific' ?
+        elementSpecificity === 'specific' ?
           <SpecificElements fields={ props.fields } /> : null
       }
     </div>
   );
 };
 
+const valueSelector = formValueSelector('default');
+const stateToProps = state => ({
+  elementSpecificity: valueSelector(state, 'elementSpecificity')
+});
+
+export default connect(stateToProps)(ElementFilter);
+
 export const formConfig = mergeFormConfigs(
   specificElementsFormConfig,
   {
-    fields: [
-      'elementSpecificity'
-    ],
     settingsToFormValues: (values, settings, state) => {
       const { elementSelector, elementProperties } = settings;
 
       return {
         ...values,
-        elementSpecificity: state.isNew || elementSelector || elementProperties ?
+        elementSpecificity: state.meta.isNew || elementSelector || elementProperties ?
           'specific' : 'any'
       };
     },

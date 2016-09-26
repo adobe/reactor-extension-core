@@ -1,8 +1,11 @@
 import React from 'react';
-import { ValidationWrapper } from '@reactor/react-components';
+import { formValueSelector } from 'redux-form';
+import { connect } from 'react-redux';
+
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Select from '@coralui/react-coral/lib/Select';
 
+import Field from '../components/field';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
 const elementPropertyPresets = [
@@ -52,59 +55,53 @@ const elementPropertyPresets = [
   }
 ];
 
-function DOM({ ...props }) {
-  const {
-    fields: {
-      elementSelector,
-      selectedElementPropertyPreset,
-      customElementProperty
-    }
-  } = props;
+const DOM = ({ ...props }) => {
+  const { selectedElementPropertyPreset } = props;
 
   return (
     <div>
       <div className="u-gapBottom">
-        <ValidationWrapper
-          type="elementSelector"
-          error={ elementSelector.touched && elementSelector.error }
-        >
-          <label>
-            <span className="u-label">From the DOM element matching the CSS Selector</span>
-            <Textfield { ...elementSelector } />
-          </label>
-        </ValidationWrapper>
+        <label>
+          <span className="u-label">From the DOM element matching the CSS Selector</span>
+          <Field
+            name="elementSelector"
+            component={ Textfield }
+            supportValidation
+            supportCssSelector
+          />
+        </label>
       </div>
       <div>
-        <label>
+        <label className="u-gapRight">
           <span className="u-label">Use the value of</span>
-          <Select
-            { ...selectedElementPropertyPreset }
-            className="u-gapRight"
+          <Field
+            name="selectedElementPropertyPreset"
+            component={ Select }
             options={ elementPropertyPresets }
           />
         </label>
         {
-          (selectedElementPropertyPreset.value === 'custom') ?
-            <ValidationWrapper
-              type="customElementProperty"
-              error={ customElementProperty.touched && customElementProperty.error }
-            >
-              <Textfield { ...customElementProperty } />
-            </ValidationWrapper>
+          (selectedElementPropertyPreset === 'custom') ?
+            <Field
+              name="customElementProperty"
+              component={ Textfield }
+              supportValidation
+            />
             : null
         }
       </div>
     </div>
   );
-}
+};
+
+const valueSelector = formValueSelector('default');
+const stateToProps = state => ({
+  selectedElementPropertyPreset: valueSelector(state, 'selectedElementPropertyPreset')
+});
+
+const ConnectedDOM = connect(stateToProps)(DOM);
 
 const formConfig = {
-  fields: [
-    'elementSelector',
-    'selectedElementPropertyPreset',
-    'customElementProperty',
-    'elementPropertyPresets'
-  ],
   settingsToFormValues(values, settings) {
     const { elementSelector, elementProperty } = settings;
 
@@ -162,4 +159,4 @@ const formConfig = {
   }
 };
 
-export default extensionViewReduxForm(formConfig)(DOM);
+export default extensionViewReduxForm(formConfig)(ConnectedDOM);

@@ -1,10 +1,11 @@
 import { mount } from 'enzyme';
 import Button from '@coralui/react-coral/lib/Button';
+import { FieldArray } from 'redux-form';
+import React from 'react';
 
 import extensionViewReduxForm from '../../../extensionViewReduxForm';
-import ElementPropertiesEditor, { formConfig } from '../elementPropertiesEditor';
+import ElementPropertiesEditor, { formConfig, ElementPropertyEditor } from '../elementPropertiesEditor';
 import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
-import ElementPropertyEditor from '../elementPropertyEditor';
 
 const getReactComponents = (wrapper) => {
   const elementPropertyEditors = wrapper.find(ElementPropertyEditor).nodes;
@@ -21,7 +22,12 @@ describe('elementPropertiesEditor', () => {
   let instance;
 
   beforeAll(() => {
-    const FormComponent = extensionViewReduxForm(formConfig)(ElementPropertiesEditor);
+    const FormComponent = extensionViewReduxForm(formConfig)(() => (
+      <FieldArray
+        component={ ElementPropertiesEditor }
+        name="elementProperties"
+      />
+    ));
     extensionBridge = createExtensionBridge();
     instance = mount(getFormComponent(FormComponent, extensionBridge));
   });
@@ -40,9 +46,11 @@ describe('elementPropertiesEditor', () => {
     });
 
     const { elementPropertyEditors } = getReactComponents(instance);
-    expect(elementPropertyEditors[0].props.fields.name.value).toBe('some prop');
-    expect(elementPropertyEditors[0].props.fields.value.value).toBe('some value');
-    expect(elementPropertyEditors[0].props.fields.valueIsRegex.value).toBe(true);
+    expect(elementPropertyEditors[0].props.elementProperties[0].name.input.value).toBe('some prop');
+    expect(elementPropertyEditors[0].props.elementProperties[0].value.input.value)
+      .toBe('some value');
+    expect(elementPropertyEditors[0].props.elementProperties[0].valueIsRegex.input.value)
+      .toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -50,9 +58,9 @@ describe('elementPropertiesEditor', () => {
 
     const { elementPropertyEditors } = getReactComponents(instance);
 
-    elementPropertyEditors[0].props.fields.name.onChange('some prop set');
-    elementPropertyEditors[0].props.fields.value.onChange('some value set');
-    elementPropertyEditors[0].props.fields.valueIsRegex.onChange(true);
+    elementPropertyEditors[0].props.elementProperties[0].name.input.onChange('some prop set');
+    elementPropertyEditors[0].props.elementProperties[0].value.input.onChange('some value set');
+    elementPropertyEditors[0].props.elementProperties[0].valueIsRegex.input.onChange(true);
 
     const { elementProperties } = extensionBridge.getSettings();
     expect(elementProperties).toEqual([
@@ -69,12 +77,13 @@ describe('elementPropertiesEditor', () => {
 
     const { elementPropertyEditors } = getReactComponents(instance);
 
-    elementPropertyEditors[0].props.fields.value.onChange('foo');
+    elementPropertyEditors[0].props.elementProperties[0].value.input.onChange('foo');
 
     expect(extensionBridge.validate()).toBe(false);
 
-    expect(elementPropertyEditors[0].props.fields.name.touched).toBe(true);
-    expect(elementPropertyEditors[0].props.fields.name.error).toEqual(jasmine.any(String));
+    expect(elementPropertyEditors[0].props.elementProperties[0].name.meta.touched).toBe(true);
+    expect(elementPropertyEditors[0].props.elementProperties[0].name.meta.error)
+      .toEqual(jasmine.any(String));
   });
 
   it('creates a new row when the add button is clicked', () => {
@@ -118,7 +127,7 @@ describe('elementPropertiesEditor', () => {
     expect(elementPropertyEditors[0]).toBeDefined();
     expect(elementPropertyEditors[1]).toBeUndefined();
 
-    expect(elementPropertyEditors[0].props.fields.name.value).toBe('some prop2');
-    expect(elementPropertyEditors[0].props.fields.value.value).toBe('some value2');
+    elementPropertyEditors[0].props.elementProperties[0].name.input.onChange('some prop2');
+    elementPropertyEditors[0].props.elementProperties[0].value.input.onChange('some value2');
   });
 });

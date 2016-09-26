@@ -1,37 +1,32 @@
 import React from 'react';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-import { ValidationWrapper } from '@reactor/react-components';
 
+import Field from '../components/field';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import ComparisonOperatorField from './components/comparisonOperatorField';
 import { isNumber } from '../utils/validators';
 
-function TimeOnSite({ ...props }) {
-  const { operator, minutes } = props.fields;
-
-  return (
+const TimeOnSite = () => (
+  <div>
     <div>
-      <div>
-        <label className="u-gapRight">
-          <span className="u-label">User has spent</span>
-          <ComparisonOperatorField { ...operator } />
-        </label>
-        <ValidationWrapper error={ minutes.touched && minutes.error }>
-          <label>
-            <Textfield className="u-smallTextfield" { ...minutes } />
-            <span className="u-label u-gapLeft">minutes on site</span>
-          </label>
-        </ValidationWrapper>
-      </div>
+      <label className="u-gapRight">
+        <span className="u-label">User has spent</span>
+        <Field name="operator" component={ ComparisonOperatorField } />
+      </label>
+      <label>
+        <Field
+          className="u-smallTextfield"
+          name="minutes"
+          component={ Textfield }
+          supportValidation
+        />
+        <span className="u-label u-gapLeft">minutes on site</span>
+      </label>
     </div>
-  );
-}
+  </div>
+);
 
 const formConfig = {
-  fields: [
-    'operator',
-    'minutes'
-  ],
   settingsToFormValues(values, settings) {
     return {
       ...values,

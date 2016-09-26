@@ -32,6 +32,7 @@ describe('logged in view', () => {
   });
 
   it('opens the data element selector from data element button', () => {
+    extensionBridge.init();
     const { dataElementField, dataElementButton } = getReactComponents(instance);
 
     spyOn(window.extensionBridge, 'openDataElementSelector').and.callFake(callback => {

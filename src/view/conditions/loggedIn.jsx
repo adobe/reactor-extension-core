@@ -1,38 +1,22 @@
 import React from 'react';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-import { ValidationWrapper, DataElementSelectorButton } from '@reactor/react-components';
 
 import extensionViewReduxForm from '../extensionViewReduxForm';
+import Field from '../components/field';
 
-class LoggedIn extends React.Component {
-  onOpenDataElementSelector = () => {
-    window.extensionBridge.openDataElementSelector(this.props.fields.dataElement.onChange);
-  };
-
-  render() {
-    const { dataElement } = this.props.fields;
-
-    return (
-      <ValidationWrapper
-        className="u-gapRight"
-        error={ dataElement.touched && dataElement.error }
-      >
-        <label>
-          <span className="u-label">
-            Data element identifying whether the user is logged in
-          </span>
-          <Textfield { ...dataElement } />
-          <DataElementSelectorButton onClick={ this.onOpenDataElementSelector } />
-        </label>
-      </ValidationWrapper>
-    );
-  }
-}
+const LoggedIn = () => (
+  <label className="u-gapRight">
+    <span className="u-label">Data element identifying whether the user is logged in</span>
+    <Field
+      name="dataElement"
+      component={ Textfield }
+      supportValidation
+      supportDataElementName
+    />
+  </label>
+);
 
 const formConfig = {
-  fields: [
-    'dataElement'
-  ],
   settingsToFormValues(values, settings) {
     return {
       ...values,

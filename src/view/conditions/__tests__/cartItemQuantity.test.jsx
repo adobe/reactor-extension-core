@@ -2,6 +2,7 @@ import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import { ValidationWrapper, DataElementSelectorButton } from '@reactor/react-components';
 
+import Field from '../../components/field';
 import CartItemQuantity from '../cartItemQuantity';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 import ComparisonOperatorField from '../components/comparisonOperatorField';
@@ -13,10 +14,10 @@ const getReactComponents = (wrapper) => {
     wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'quantity').node;
   const dataElementButton = wrapper.find(DataElementSelectorButton).node;
   const operatorField = wrapper.find(ComparisonOperatorField).node;
-  const dataElementWrapper = wrapper.find(ValidationWrapper)
-    .filterWhere(n => n.prop('type') === 'dataElement').node;
-  const quantityWrapper = wrapper.find(ValidationWrapper)
-    .filterWhere(n => n.prop('type') === 'quantity').node;
+  const dataElementWrapper = wrapper.find(Field)
+    .filterWhere(n => n.prop('name') === 'dataElement').find(ValidationWrapper).node;
+  const quantityWrapper = wrapper.find(Field)
+    .filterWhere(n => n.prop('name') === 'quantity').find(ValidationWrapper).node;
 
   return {
     dataElementField,
@@ -43,6 +44,8 @@ describe('cart item quantity view', () => {
   });
 
   it('opens the data element selector from data element button', () => {
+    extensionBridge.init();
+
     const { dataElementField, dataElementButton } = getReactComponents(instance);
 
     spyOn(window.extensionBridge, 'openDataElementSelector').and.callFake(callback => {

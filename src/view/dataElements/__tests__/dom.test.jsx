@@ -4,22 +4,23 @@ import Textfield from '@coralui/react-coral/lib/Textfield';
 import Select from '@coralui/react-coral/lib/Select';
 
 import DOM from '../dom';
+import Field from '../../components/field';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
   const elementPropertyPresetsSelect = wrapper.find(Select).node;
-  const elementSelectorField =
+  const elementSelectorTextfield =
     wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'elementSelector').node;
   const customElementPropertyField =
     wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'customElementProperty').node;
-  const elementSelectorWrapper =
-    wrapper.find(ValidationWrapper).filterWhere(n => n.prop('type') === 'elementSelector').node;
-  const customElementPropertyWrapper = wrapper
-    .find(ValidationWrapper).filterWhere(n => n.prop('type') === 'customElementProperty').node;
+  const elementSelectorWrapper = wrapper.find(Field)
+    .filterWhere(n => n.prop('name') === 'elementSelector').find(ValidationWrapper).node;
+  const customElementPropertyWrapper = wrapper.find(Field)
+    .filterWhere(n => n.prop('name') === 'customElementProperty').find(ValidationWrapper).node;
 
   return {
     elementPropertyPresetsSelect,
-    elementSelectorField,
+    elementSelectorTextfield,
     customElementPropertyField,
     elementSelectorWrapper,
     customElementPropertyWrapper
@@ -52,9 +53,9 @@ describe('DOM view', () => {
       }
     });
 
-    const { elementSelectorField, elementPropertyPresetsSelect } = getReactComponents(instance);
+    const { elementSelectorTextfield, elementPropertyPresetsSelect } = getReactComponents(instance);
 
-    expect(elementSelectorField.props.value).toBe('foo');
+    expect(elementSelectorTextfield.props.value).toBe('foo');
     expect(elementPropertyPresetsSelect.props.value).toBe('innerHTML');
   });
 
@@ -67,12 +68,12 @@ describe('DOM view', () => {
     });
 
     const {
-      elementSelectorField,
+      elementSelectorTextfield,
       elementPropertyPresetsSelect,
       customElementPropertyField
     } = getReactComponents(instance);
 
-    expect(elementSelectorField.props.value).toBe('foo');
+    expect(elementSelectorTextfield.props.value).toBe('foo');
     expect(elementPropertyPresetsSelect.props.value).toBe('custom');
     expect(customElementPropertyField.props.value).toBe('bar');
   });
@@ -90,10 +91,13 @@ describe('DOM view', () => {
   it('sets settings from form values using element property preset', () => {
     extensionBridge.init();
 
-    const { elementSelectorField, elementPropertyPresetsSelect } = getReactComponents(instance);
+    const { elementSelectorTextfield, elementPropertyPresetsSelect } = getReactComponents(instance);
 
-    elementSelectorField.props.onChange('foo');
-    elementPropertyPresetsSelect.props.onChange('innerHTML');
+    elementSelectorTextfield.props.onChange('foo');
+    elementPropertyPresetsSelect.props.onChange({
+      value: 'innerHTML',
+      label: 'HTML'
+    });
 
     expect(extensionBridge.getSettings()).toEqual({
       elementSelector: 'foo',
@@ -105,12 +109,15 @@ describe('DOM view', () => {
     extensionBridge.init();
 
     const {
-      elementSelectorField,
+      elementSelectorTextfield,
       elementPropertyPresetsSelect
       } = getReactComponents(instance);
 
-    elementSelectorField.props.onChange('foo');
-    elementPropertyPresetsSelect.props.onChange('custom');
+    elementSelectorTextfield.props.onChange('foo');
+    elementPropertyPresetsSelect.props.onChange({
+      value: 'custom',
+      label: 'other attribute'
+    });
 
     const {
       customElementPropertyField

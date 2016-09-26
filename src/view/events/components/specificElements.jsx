@@ -1,28 +1,34 @@
 import React from 'react';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
+import { formValueSelector, FieldArray } from 'redux-form';
+import { connect } from 'react-redux';
 
-import ElementSelectorField, { formConfig as elementSelectorFieldFormConfig } from './elementSelectorField';
+import ElementSelector, { formConfig as elementSelectorFormConfig } from './elementSelector';
 import ElementPropertiesEditor, { formConfig as elementPropertiesEditorFormConfig } from './elementPropertiesEditor';
 import mergeFormConfigs from '../../utils/mergeFormConfigs';
+import Field from '../../components/field';
 
-export default ({ ...props }) => {
+const SpecificElements = ({ ...props }) => {
   const {
     showElementPropertiesFilter
-  } = props.fields;
+  } = props;
 
   return (
     <div>
-      <ElementSelectorField fields={ props.fields } />
+      <ElementSelector fields={ props.fields } />
       <div>
-        <Checkbox
-          { ...showElementPropertiesFilter }
+        <Field
+          name="showElementPropertiesFilter"
+          className="u-block"
+          component={ Checkbox }
         >
           and having certain property values...
-        </Checkbox>
+        </Field>
         {
-          showElementPropertiesFilter.value ?
-            <ElementPropertiesEditor
-              fields={ props.fields }
+          showElementPropertiesFilter ?
+            <FieldArray
+              component={ ElementPropertiesEditor }
+              name="elementProperties"
             /> : null
         }
       </div>
@@ -30,13 +36,17 @@ export default ({ ...props }) => {
   );
 };
 
+const valueSelector = formValueSelector('default');
+const stateToProps = state => ({
+  showElementPropertiesFilter: valueSelector(state, 'showElementPropertiesFilter')
+});
+
+export default connect(stateToProps)(SpecificElements);
+
 export const formConfig = mergeFormConfigs(
-  elementSelectorFieldFormConfig,
+  elementSelectorFormConfig,
   elementPropertiesEditorFormConfig,
   {
-    fields: [
-      'showElementPropertiesFilter'
-    ],
     settingsToFormValues: (values, settings) => {
       const { elementProperties } = settings;
 
@@ -62,10 +72,6 @@ export const formConfig = mergeFormConfigs(
       errors = {
         ...errors
       };
-
-      if (!values.elementSelector) {
-        errors.elementSelector = 'Please specify a CSS selector.';
-      }
 
       if (!values.showElementPropertiesFilter) {
         delete errors.elementProperties;

@@ -6,11 +6,11 @@ import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } fr
 import SpecificElements, { formConfig as specificElementsFormConfig } from './components/specificElements';
 import mergeFormConfigs from '../utils/mergeFormConfigs';
 
-const Hover = ({ ...props }) => (
+const Hover = ({ fields }) => (
   <div>
-    <SpecificElements fields={ props.fields } />
-    <DelayType fields={ props.fields } />
-    <AdvancedEventOptions fields={ props.fields } />
+    <SpecificElements fields={ fields } />
+    <DelayType fields={ fields } />
+    <AdvancedEventOptions fields={ fields } />
   </div>
 );
 

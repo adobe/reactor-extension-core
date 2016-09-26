@@ -38,8 +38,8 @@ describe('traffic source view', () => {
     const { sourceField, valueRegexToggle } = getReactComponents(instance);
 
     expect(sourceField.props.value).toBe('foo');
-    expect(valueRegexToggle.props.value).toBe('foo');
-    expect(valueRegexToggle.props.valueIsRegex).toBe(true);
+    expect(valueRegexToggle.props.source.input.value).toBe('foo');
+    expect(valueRegexToggle.props.sourceIsRegex.input.value).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -48,7 +48,7 @@ describe('traffic source view', () => {
     const { sourceField, valueRegexToggle } = getReactComponents(instance);
 
     sourceField.props.onChange('foo');
-    valueRegexToggle.props.onValueIsRegexChange(true);
+    valueRegexToggle.props.sourceIsRegex.input.onChange(true);
 
     expect(extensionBridge.getSettings()).toEqual({
       source: 'foo',
