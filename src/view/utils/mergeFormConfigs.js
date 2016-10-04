@@ -2,7 +2,7 @@
  * Merges multiple form configurations into one.
  */
 
-const isDefined = value => typeof value !== 'undefined'
+const isDefined = value => typeof value !== 'undefined';
 
 module.exports = (...formConfigs) => {
   const settingsToFormValuesFunctions = formConfigs
