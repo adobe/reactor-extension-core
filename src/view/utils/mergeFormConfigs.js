@@ -1,27 +1,27 @@
-/* eslint arrow-body-style: 0, no-shadow: 0 */
+/* eslint arrow-body-style: 0 */
 /**
  * Merges multiple form configurations into one.
  */
 module.exports = (...formConfigs) => ({
   settingsToFormValues(values, settings, state) {
-    return formConfigs.reduce((values, formConfig) => {
+    return formConfigs.reduce((reducedValues, formConfig) => {
       return formConfig.settingsToFormValues ?
-        formConfig.settingsToFormValues(values, settings, state) :
-        values;
+        formConfig.settingsToFormValues(reducedValues, settings, state) :
+        reducedValues;
     }, values);
   },
   formValuesToSettings(settings, values, state) {
-    return formConfigs.reduce((settings, formConfig) => {
+    return formConfigs.reduce((reducedSettings, formConfig) => {
       return formConfig.formValuesToSettings ?
-        formConfig.formValuesToSettings(settings, values, state) :
-        settings;
+        formConfig.formValuesToSettings(reducedSettings, values, state) :
+        reducedSettings;
     }, settings);
   },
   validate(errors, values) {
-    return formConfigs.reduce((errors, formConfig, state) => {
+    return formConfigs.reduce((reducedErrors, formConfig, state) => {
       return formConfig.validate ?
-        formConfig.validate(errors, values, state) :
-        errors;
+        formConfig.validate(reducedErrors, values, state) :
+        reducedErrors;
     }, errors);
   }
 });
