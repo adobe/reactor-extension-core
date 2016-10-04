@@ -16,7 +16,7 @@ const Sessions = () => (
       <label>
         <span className="u-label">the value</span>
         <Field
-          className="u-smallTextfield"
+          componentClassName="u-smallTextfield"
           name="count"
           component={ Textfield }
           supportValidation

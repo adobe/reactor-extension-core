@@ -38,7 +38,8 @@ const TimePlayed = ({ fields }) => (
         supportValidation
       />
       <Field
-        className="u-gapLeft TimePlayed-unitSelect"
+        className="u-gapLeft"
+        componentClassName="TimePlayed-unitSelect"
         name="unit"
         component={ Select }
         options={ timePlayedUnitOptions }

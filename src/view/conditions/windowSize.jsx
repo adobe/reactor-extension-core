@@ -15,7 +15,8 @@ const WindowSize = () => (
       </label>
       <label>
         <Field
-          className="u-smallTextfield u-gapRight"
+          className="u-gapRight"
+          componentClassName="u-smallTextfield"
           name="width"
           component={ Textfield }
           supportValidation
@@ -30,7 +31,8 @@ const WindowSize = () => (
       </label>
       <label>
         <Field
-          className="u-smallTextfield u-gapRight"
+          className="u-gapRight"
+          componentClassName="u-smallTextfield"
           name="height"
           component={ Textfield }
           supportValidation

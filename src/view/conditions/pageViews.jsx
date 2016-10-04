@@ -19,7 +19,7 @@ const PageViews = () => (
         <Field
           name="count"
           component={ Textfield }
-          className="u-smallTextfield"
+          componentClassName="u-smallTextfield"
           supportValidation
         />
       </label>

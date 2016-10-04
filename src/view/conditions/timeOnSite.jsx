@@ -15,7 +15,7 @@ const TimeOnSite = () => (
       </label>
       <label>
         <Field
-          className="u-smallTextfield"
+          componentClassName="u-smallTextfield"
           name="minutes"
           component={ Textfield }
           supportValidation

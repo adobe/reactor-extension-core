@@ -29,7 +29,7 @@ const CartAmount = () => (
         <Field
           name="amount"
           component={ Textfield }
-          className="u-smallTextfield"
+          componentClassName="u-smallTextfield"
           supportValidation
         />
       </label>
