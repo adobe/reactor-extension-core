@@ -14,21 +14,14 @@ import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers
 const getReactComponents = (wrapper) => {
   const nameField =
     wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'name').node;
-  const javaScriptLanguageRadio =
-    wrapper.find(Radio).filterWhere(n => n.prop('value') === 'javascript').node;
-  const htmlLanguageRadio =
-    wrapper.find(Radio).filterWhere(n => n.prop('value') === 'html').node;
-  const sequentialCheckbox =
-    wrapper.find(Checkbox).filterWhere(n => n.prop('name').includes('sequential')).node;
-  const globalCheckbox =
-    wrapper.find(Checkbox).filterWhere(n => n.prop('name').includes('global')).node;
+  const [javaScriptLanguageRadio, htmlLanguageRadio] =
+    wrapper.find(Radio).filterWhere(n => ['javascript', 'html'].includes(n.prop('value'))).nodes;
+  const [sequentialCheckbox, globalCheckbox] = wrapper.find(Checkbox)
+    .filterWhere(n => ['sequential', 'global'].includes(n.prop('name'))).nodes;
   const nameWrapper = wrapper.find(ValidationWrapper).node;
   const sourceErrorIcon = wrapper.find(ErrorTip).node;
   const openEditorButton = wrapper.find(Button).filterWhere(n => n.prop('icon') === 'code').node;
-  const sequentialHtmlAlert =
-    wrapper.find(Alert).filterWhere(n => n.prop('type') === 'sequential').node;
-  const inlineScriptAlert =
-    wrapper.find(Alert).filterWhere(n => n.prop('type') === 'inline').node;
+  const [sequentialHtmlAlert, inlineScriptAlert] = wrapper.find(Alert).nodes;
 
   return {
     nameField,

@@ -84,7 +84,7 @@ const Custom = ({ language, sequential, source }) => (
 
     {
       language === LANGUAGES.HTML && sequential ?
-        <Alert variant="warning" type="sequential">
+        <Alert variant="warning">
           Please note that sequential HTML will only work for rules that fire before the
           page's HTML document has been loaded and parsed. Such rules typically use either
           the Top of Page or Bottom of Page event.
@@ -95,7 +95,7 @@ const Custom = ({ language, sequential, source }) => (
       // Remove when we drop IE9 support.
       language === LANGUAGES.HTML && sequential &&
           containsInlineScriptRegex.test(source) ?
-        <Alert variant="warning" type="inline">
+        <Alert variant="warning">
           Please note that if this rule is fired in Internet Explorer 9 before the page's
           HTML document has been loaded and parsed, any inline script
           (e.g., &lt;script&gt;console.log('test');&lt;script&gt;)
