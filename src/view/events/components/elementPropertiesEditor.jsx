@@ -6,11 +6,11 @@ import { Fields } from 'redux-form';
 import Field from '../../components/field';
 import RegexToggle from '../../components/regexToggle';
 
-export const ElementPropertyEditor = (fields) => (
+export const ElementPropertyEditor = ({ field, remove }) => (
   <div className="u-gapBottom">
     <Field
       placeholder="Property"
-      name={ fields.names[0] }
+      name={ `${field}.name` }
       component={ Textfield }
       supportValidation
     />
@@ -18,11 +18,11 @@ export const ElementPropertyEditor = (fields) => (
     <Field
       className="u-gapRight"
       placeholder="Value"
-      name={ fields.names[1] }
+      name={ `${field}.value` }
       component={ Textfield }
     />
     <Fields
-      names={ [fields.names[1], fields.names[2]] }
+      names={ [`${field}.value`, `${field}.valueIsRegex`] }
       component={ RegexToggle }
     />
     <Button
@@ -30,7 +30,7 @@ export const ElementPropertyEditor = (fields) => (
       variant="minimal"
       icon="close"
       iconSize="XS"
-      onClick={ fields.remove }
+      onClick={ remove }
     />
   </div>
 );
@@ -39,9 +39,9 @@ export default ({ fields = [] }) => (
   <div>
     {
       fields.map((field, index) => (
-        <Fields
+        <ElementPropertyEditor
           key={ field }
-          names={ [`${field}.name`, `${field}.value`, `${field}.valueIsRegex`] }
+          field={ field }
           component={ ElementPropertyEditor }
           remove={ fields.remove.bind(this, index) }
         />

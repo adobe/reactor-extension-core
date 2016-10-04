@@ -1,5 +1,10 @@
 import { mount } from 'enzyme';
 import Button from '@coralui/react-coral/lib/Button';
+import Textfield from '@coralui/react-coral/lib/Textfield';
+import RegexToggle from '../../../components/regexToggle';
+import Field from '../../../components/field';
+import { ValidationWrapper } from '@reactor/react-components';
+
 import { FieldArray } from 'redux-form';
 import React from 'react';
 
@@ -8,11 +13,22 @@ import ElementPropertiesEditor, { formConfig, ElementPropertyEditor } from '../e
 import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
-  const elementPropertyEditors = wrapper.find(ElementPropertyEditor).nodes;
+  const rows = wrapper.find(ElementPropertyEditor).map(row => {
+    const textfields = row.find(Textfield).nodes;
+    return {
+      nameTextfield: textfields[0],
+      nameWrapper: row.find(Field).filterWhere(n => n.prop('name').includes('.name'))
+        .find(ValidationWrapper).node,
+      valueTextfield: textfields[1],
+      regexToggle: row.find(RegexToggle).node,
+      removeButton: row.find(Button).filterWhere(n => n.prop('icon') === 'close').node
+    };
+  });
+
   const addButton = wrapper.find(Button).filterWhere(n => n.prop('icon') !== 'close').node;
 
   return {
-    elementPropertyEditors,
+    rows,
     addButton
   };
 };
@@ -45,22 +61,20 @@ describe('elementPropertiesEditor', () => {
       }
     });
 
-    const { elementPropertyEditors } = getReactComponents(instance);
-    expect(elementPropertyEditors[0].props.elementProperties[0].name.input.value).toBe('some prop');
-    expect(elementPropertyEditors[0].props.elementProperties[0].value.input.value)
-      .toBe('some value');
-    expect(elementPropertyEditors[0].props.elementProperties[0].valueIsRegex.input.value)
-      .toBe(true);
+    const { rows } = getReactComponents(instance);
+    expect(rows[0].nameTextfield.props.value).toBe('some prop');
+    expect(rows[0].valueTextfield.props.value).toBe('some value');
+    expect(rows[0].regexToggle.props.elementProperties[0].valueIsRegex.input.value).toBe(true);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { elementPropertyEditors } = getReactComponents(instance);
+    const { rows } = getReactComponents(instance);
 
-    elementPropertyEditors[0].props.elementProperties[0].name.input.onChange('some prop set');
-    elementPropertyEditors[0].props.elementProperties[0].value.input.onChange('some value set');
-    elementPropertyEditors[0].props.elementProperties[0].valueIsRegex.input.onChange(true);
+    rows[0].nameTextfield.props.onChange('some prop set');
+    rows[0].valueTextfield.props.onChange('some value set');
+    rows[0].regexToggle.props.elementProperties[0].valueIsRegex.input.onChange(true);
 
     const { elementProperties } = extensionBridge.getSettings();
     expect(elementProperties).toEqual([
@@ -75,15 +89,13 @@ describe('elementPropertiesEditor', () => {
   it('sets error if element property name field is empty and value is not empty', () => {
     extensionBridge.init();
 
-    const { elementPropertyEditors } = getReactComponents(instance);
+    const { rows } = getReactComponents(instance);
 
-    elementPropertyEditors[0].props.elementProperties[0].value.input.onChange('foo');
+    rows[0].valueTextfield.props.onChange('foo');
 
     expect(extensionBridge.validate()).toBe(false);
 
-    expect(elementPropertyEditors[0].props.elementProperties[0].name.meta.touched).toBe(true);
-    expect(elementPropertyEditors[0].props.elementProperties[0].name.meta.error)
-      .toEqual(jasmine.any(String));
+    expect(rows[0].nameWrapper.props.error).toEqual(jasmine.any(String));
   });
 
   it('creates a new row when the add button is clicked', () => {
@@ -92,12 +104,10 @@ describe('elementPropertiesEditor', () => {
     const { addButton } = getReactComponents(instance);
     addButton.props.onClick();
 
-    const { elementPropertyEditors } = getReactComponents(instance);
+    const { rows } = getReactComponents(instance);
 
     // First row is visible by default.
-    expect(elementPropertyEditors[0]).toBeDefined();
-    expect(elementPropertyEditors[1]).toBeDefined();
-    expect(elementPropertyEditors[2]).toBeUndefined();
+    expect(rows.length).toBe(2)
   });
 
   it('deletes a row when requested from row', () => {
@@ -118,16 +128,12 @@ describe('elementPropertiesEditor', () => {
       }
     });
 
-    let { elementPropertyEditors } = getReactComponents(instance);
-    elementPropertyEditors[0].props.remove();
+    let { rows } = getReactComponents(instance);
+    rows[0].removeButton.props.onClick();
 
-    ({ elementPropertyEditors } = getReactComponents(instance));
+    ({ rows } = getReactComponents(instance));
 
-    // First row is visible by default.
-    expect(elementPropertyEditors[0]).toBeDefined();
-    expect(elementPropertyEditors[1]).toBeUndefined();
-
-    elementPropertyEditors[0].props.elementProperties[0].name.input.onChange('some prop2');
-    elementPropertyEditors[0].props.elementProperties[0].value.input.onChange('some value2');
+    expect(rows.length).toBe(1);
+    expect(rows[0].nameTextfield.props.value).toBe('some prop2');
   });
 });
