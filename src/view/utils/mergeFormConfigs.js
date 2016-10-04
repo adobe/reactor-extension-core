@@ -2,20 +2,20 @@
  * Merges multiple form configurations into one.
  */
 
-const isDefined = value => typeof value !== 'undefined';
+const isFunction = value => typeof value === 'function';
 
 module.exports = (...formConfigs) => {
   const settingsToFormValuesFunctions = formConfigs
     .map(formConfig => formConfig.settingsToFormValues)
-    .filter(isDefined);
+    .filter(isFunction);
 
   const formValuesToSettingsFunctions = formConfigs
     .map(formConfig => formConfig.formValuesToSettings)
-    .filter(isDefined);
+    .filter(isFunction);
 
   const validateFunctions = formConfigs
     .map(formConfig => formConfig.validate)
-    .filter(isDefined);
+    .filter(isFunction);
 
   return {
     settingsToFormValues(values, settings, state) {
