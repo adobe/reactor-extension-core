@@ -1,12 +1,12 @@
+import React from 'react';
+import { FieldArray } from 'redux-form';
 import { mount } from 'enzyme';
 import Button from '@coralui/react-coral/lib/Button';
 import Textfield from '@coralui/react-coral/lib/Textfield';
+import { ValidationWrapper } from '@reactor/react-components';
 import RegexToggle from '../../../components/regexToggle';
 import Field from '../../../components/field';
-import { ValidationWrapper } from '@reactor/react-components';
 
-import { FieldArray } from 'redux-form';
-import React from 'react';
 
 import extensionViewReduxForm from '../../../extensionViewReduxForm';
 import ElementPropertiesEditor, { formConfig, ElementPropertyEditor } from '../elementPropertiesEditor';
@@ -107,7 +107,7 @@ describe('elementPropertiesEditor', () => {
     const { rows } = getReactComponents(instance);
 
     // First row is visible by default.
-    expect(rows.length).toBe(2)
+    expect(rows.length).toBe(2);
   });
 
   it('deletes a row when requested from row', () => {
