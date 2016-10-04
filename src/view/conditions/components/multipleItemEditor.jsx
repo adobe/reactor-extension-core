@@ -11,12 +11,11 @@ export default ({ fields, renderItem }) => {
           <Button
             className="u-gapLeft"
             icon="close"
-            iconSize="S"
-            variant="quiet"
+            iconSize="XS"
+            variant="minimal"
+            square
             onClick={ fields.remove.bind(this, index) }
-          >
-            Remove Pattern
-          </Button> : null
+          /> : null
       }
     </div>
   ));
@@ -27,9 +26,6 @@ export default ({ fields, renderItem }) => {
       <div>
         <Button
           className="MultipleItemEditor-addPatternButton"
-          icon="addCircle"
-          iconSize="S"
-          variant="quiet"
           onClick={ () => fields.push({}) }
         >
           Add Pattern
