@@ -25,9 +25,9 @@ const timePlayedUnitOptions = [
   }
 ];
 
-const TimePlayed = ({ fields }) => (
+const TimePlayed = () => (
   <div>
-    <ElementFilter fields={ fields } />
+    <ElementFilter />
     <div className="u-gapTop">
       <label>
         <span className="u-label u-gapRight">Trigger when</span>
@@ -48,7 +48,7 @@ const TimePlayed = ({ fields }) => (
         <span className="u-label u-gapLeft">have passed</span>
       </label>
     </div>
-    <AdvancedEventOptions fields={ fields } />
+    <AdvancedEventOptions />
   </div>
 );
 

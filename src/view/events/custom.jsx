@@ -7,7 +7,7 @@ import extensionViewReduxForm from '../extensionViewReduxForm';
 import mergeFormConfigs from '../utils/mergeFormConfigs';
 import Field from '../components/field';
 
-const Custom = ({ fields }) => (
+const Custom = () => (
   <div>
     <label>
       <span className="u-label">Custom Event Type</span>
@@ -17,8 +17,8 @@ const Custom = ({ fields }) => (
         supportValidation
       />
     </label>
-    <ElementFilter fields={ fields } />
-    <AdvancedEventOptions fields={ fields } />
+    <ElementFilter />
+    <AdvancedEventOptions />
   </div>
 );
 

@@ -7,9 +7,9 @@ import extensionViewReduxForm from '../extensionViewReduxForm';
 import mergeFormConfigs from '../utils/mergeFormConfigs';
 import Field from '../components/field';
 
-const Click = ({ fields }) => (
+const Click = () => (
   <div>
-    <ElementFilter fields={ fields } />
+    <ElementFilter />
     <Field
       name="delayLinkActivation"
       className="u-block"
@@ -17,7 +17,7 @@ const Click = ({ fields }) => (
     >
       If the element is a link, delay navigation until rule runs
     </Field>
-    <AdvancedEventOptions fields={ fields } />
+    <AdvancedEventOptions />
   </div>
 );
 
