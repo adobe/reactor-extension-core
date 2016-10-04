@@ -15,7 +15,7 @@ const Custom = () => (
       executes. Use this field to check for certain values like shopping cart size or item
       price, whether a user is logged in or registered, or anything else you can dream up."
     >
-      <Icon icon="infoCircle" className="u-inline-tooltip u-gapLeft" />
+      <Icon icon="infoCircle" size="XS" className="u-inline-tooltip u-gapLeft" />
     </Tooltip>
   </div>
 );

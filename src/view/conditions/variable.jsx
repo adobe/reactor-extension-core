@@ -34,7 +34,7 @@ const Variable = () => (
       variable contains this string. Note: If your variable contains a number, this will not
       work as expected."
     >
-      <Icon icon="infoCircle" className="u-inline-tooltip u-gapRight" />
+      <Icon icon="infoCircle" size="XS" className="u-inline-tooltip u-gapRight" />
     </Tooltip>
     <Fields
       names={ ['value', 'valueIsRegex'] }
