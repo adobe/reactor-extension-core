@@ -47,17 +47,10 @@ const getReactComponents = (wrapper) => {
 describe('custom action view', () => {
   let extensionBridge;
   let instance;
-  let backupExtensionBridge;
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
     instance = mount(getFormComponent(Custom, extensionBridge));
-
-    backupExtensionBridge = window.extensionBridge;
-  });
-
-  afterAll(() => {
-    window.extensionBridge = backupExtensionBridge;
   });
 
   it('sets form values from settings', () => {
@@ -156,6 +149,10 @@ describe('custom action view', () => {
   });
 
   it('opens code editor with source value when button is clicked and stores result', () => {
+    const openCodeEditorSpy = jasmine.createSpy().and.callFake((script, callback) => {
+      callback('bar');
+    });
+
     extensionBridge.init({
       settings: {
         name: 'test',
@@ -165,17 +162,14 @@ describe('custom action view', () => {
     });
 
     window.extensionBridge = {
-      openCodeEditor: jasmine.createSpy().and.callFake((script, callback) => {
-        callback('bar');
-      })
+      openCodeEditor: openCodeEditorSpy
     };
 
     const { openEditorButton } = getReactComponents(instance);
 
     openEditorButton.props.onClick();
 
-    expect(window.extensionBridge.openCodeEditor)
-      .toHaveBeenCalledWith('foo', jasmine.any(Function));
+    expect(openCodeEditorSpy).toHaveBeenCalledWith('foo', jasmine.any(Function));
     expect(extensionBridge.validate()).toBe(true);
     expect(extensionBridge.getSettings()).toEqual({
       name: 'test',
