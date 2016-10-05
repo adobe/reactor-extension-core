@@ -21,7 +21,8 @@ const getReactComponents = (wrapper) => {
 };
 
 describe('field', () => {
-  it('opens the data element selector from data element button', () => {
+  it('opens the data element selector from data element button and sets a data element to the ' +
+    'field', () => {
     const FormComponent = extensionViewReduxForm({
       settingsToFormValues: () => {}
     })(CoralField);
@@ -55,6 +56,43 @@ describe('field', () => {
 
     delete window.extensionBridge;
   });
+
+  it('opens the data element selector from data element button and sets a data element name ' +
+    'to the field', () => {
+    const FormComponent = extensionViewReduxForm({
+      settingsToFormValues: () => {}
+    })(CoralField);
+    const extensionBridge = createExtensionBridge();
+    window.extensionBridge = extensionBridge;
+
+    const instance = mount(
+      getFormComponent(FormComponent, extensionBridge, {
+        name: 'field',
+        supportDataElementName: true,
+        component: Textfield
+      })
+    );
+
+    extensionBridge.init();
+
+    const {
+      dataElementButton,
+      textfield
+    } = getReactComponents(instance);
+
+    extensionBridge.openDataElementSelector = jasmine.createSpy('openDataElementSelector')
+      .and.callFake(callback => {
+        callback('foo');
+      });
+
+    dataElementButton.props.onClick();
+
+    expect(extensionBridge.openDataElementSelector).toHaveBeenCalled();
+    expect(textfield.props.value).toBe('foo');
+
+    delete window.extensionBridge;
+  });
+
 
   it('opens the css element selector from data element button', () => {
     const FormComponent = extensionViewReduxForm({
