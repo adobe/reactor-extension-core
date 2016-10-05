@@ -1,9 +1,36 @@
 import React from 'react';
 import { ValidationWrapper, DataElementSelectorButton } from '@reactor/react-components';
+import { Field } from 'redux-form';
 import Button from '@coralui/react-coral/lib/Button';
-import { Field as ReduxFormField } from 'redux-form';
-import adaptReactCoral from '../adaptReactCoral';
+import ReduxFormAutocompleteSelect from './reduxFormAutocompleteSelect';
 import addDataElementToken from '../utils/addDataElementToken';
+
+const eventHandlerRegex = /^on[A-Z]/;
+
+/**
+ * If a consumer specifies an event handler (say, onChange), we need to merge it with any handler
+ * that redux-form provides for the same event type otherwise it will get overridden by redux-forms
+ * handler. We do this by providing a wrapper handler which calls redux-form's handler first,
+ * then the consumer-defined handler.
+ * @param reduxFormProvidedProps
+ * @param consumerProvidedProps
+ */
+const mergeHandlers = (reduxFormProvidedProps, consumerProvidedProps) => {
+  Object.keys(consumerProvidedProps).forEach(consumerProvidedPropName => {
+    if (reduxFormProvidedProps[consumerProvidedPropName] &&
+      eventHandlerRegex.test(consumerProvidedPropName)) {
+      const reduxFormHandler = reduxFormProvidedProps[consumerProvidedPropName];
+      const consumerHandler = consumerProvidedProps[consumerProvidedPropName];
+
+      reduxFormProvidedProps[consumerProvidedPropName] = (...args) => {
+        reduxFormHandler(...args);
+        consumerHandler(...args);
+      };
+
+      delete consumerProvidedProps[consumerProvidedPropName];
+    }
+  });
+};
 
 class InputWrapper extends React.Component {
   openCssSelector = () => {
@@ -37,29 +64,48 @@ class InputWrapper extends React.Component {
     const {
       input,
       meta,
-      reactCoralComponent,
+      reactCoralComponent: ReactCoralComponent,
       supportValidation,
       supportDataElement,
       supportDataElementName,
       supportCssSelector,
       className,
-      componentClassName,
       suffixLabel,
-      ...rest
+      componentClassName,
+      ...otherProps
     } = this.props;
 
-    const AdaptedReactCoralComponent = adaptReactCoral(reactCoralComponent);
+    mergeHandlers(input, otherProps);
 
     // I bet there's a way to cut down on the number of span wrappers.
 
+    let inputComponent;
+
+    // We match the name instead of Component === Autocomplete because that would require us to
+    // require in the React-Coral class (and therefore it would end up in the app build)
+    // even if we never ended up using the class.
+    if (ReactCoralComponent.name === 'Select' || ReactCoralComponent.name === 'Autocomplete') {
+      inputComponent = (
+        <ReduxFormAutocompleteSelect
+          component={ ReactCoralComponent }
+          className={ componentClassName }
+          { ...otherProps }
+          { ...input }
+        />
+      );
+    } else {
+      inputComponent = (
+        <ReactCoralComponent
+          className={ componentClassName }
+          { ...otherProps }
+          { ...input }
+        />
+      );
+    }
+
     let result = (
       <span>
-        <AdaptedReactCoralComponent
-          className={ componentClassName }
-          input={ input }
-          meta={ meta }
-          { ...rest }
-        />
+        { inputComponent }
         {
           suffixLabel ? <span className="Label u-gapLeft">{ suffixLabel }</span> : null
         }
@@ -121,7 +167,7 @@ const CoralField = ({ component, ...otherProps }) => {
   }
 
   return (
-    <ReduxFormField
+    <Field
       reactCoralComponent={ component }
       component={ InputWrapper }
       { ...otherProps }
