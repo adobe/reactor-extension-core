@@ -1,5 +1,5 @@
 import React from 'react';
-import { Field as ReduxFormField } from 'redux-form';
+import { Field } from 'redux-form';
 import { Button } from '@coralui/react-coral';
 import { ErrorTip } from '@reactor/react-components';
 
@@ -36,7 +36,7 @@ class EditorButton extends React.Component {
 }
 
 const CodeField = props => (
-  <ReduxFormField component={ EditorButton } { ...props } />
+  <Field component={ EditorButton } { ...props } />
 );
 
 export default CodeField;
