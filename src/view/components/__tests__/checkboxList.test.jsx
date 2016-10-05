@@ -58,7 +58,9 @@ describe('checkbox list', () => {
   it('checks checkboxes based on value', () => {
     const { checkboxes } = getParts(render({
       options: stringOptions,
-      value: ['b']
+      input: {
+        value: ['b']
+      }
     }));
 
     expect(checkboxes[1].props.checked).toBe(true);
@@ -68,8 +70,10 @@ describe('checkbox list', () => {
     const onChange = jasmine.createSpy();
     const { checkboxes } = getParts(render({
       options: stringOptions,
-      value: ['b'],
-      onChange
+      input: {
+        value: ['b'],
+        onChange
+      }
     }));
 
     const testCheckbox = checkboxes[2];
@@ -88,8 +92,10 @@ describe('checkbox list', () => {
     const onChange = jasmine.createSpy();
     const { checkboxes } = getParts(render({
       options: stringOptions,
-      value: ['b', 'c'],
-      onChange
+      input: {
+        value: ['b', 'c'],
+        onChange
+      }
     }));
 
     const testCheckbox = checkboxes[2];

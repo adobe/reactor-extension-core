@@ -1,7 +1,7 @@
 import React from 'react';
+import { Field } from 'redux-form';
 import CheckboxList from '../components/checkboxList';
 import extensionViewReduxForm from '../extensionViewReduxForm';
-import CoralField from '../components/coralField';
 
 const browserOptions = [
   'Chrome',
@@ -17,7 +17,7 @@ const browserOptions = [
 ];
 
 const Browser = () =>
-  (<CoralField name="browsers" component={ CheckboxList } options={ browserOptions } />);
+  (<Field name="browsers" component={ CheckboxList } options={ browserOptions } />);
 
 const formConfig = {
   settingsToFormValues(values, settings) {

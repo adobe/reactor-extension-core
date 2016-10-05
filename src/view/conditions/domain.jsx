@@ -1,12 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
+import { Field } from 'redux-form';
 import CheckboxList from '../components/checkboxList';
 import extensionViewReduxForm from '../extensionViewReduxForm';
-import CoralField from '../components/coralField';
 
 const Domain = (props) =>
-  (<CoralField name="domains" component={ CheckboxList } options={ props.domainOptions } />);
+  (<Field name="domains" component={ CheckboxList } options={ props.domainOptions } />);
 
 const formConfig = {
   settingsToFormValues(values, settings) {

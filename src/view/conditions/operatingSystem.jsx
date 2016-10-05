@@ -1,8 +1,7 @@
 import React from 'react';
-
+import { Field } from 'redux-form';
 import CheckboxList from '../components/checkboxList';
 import extensionViewReduxForm from '../extensionViewReduxForm';
-import CoralField from '../components/coralField';
 
 const operatingSystemOptions = [
   'Windows',
@@ -17,7 +16,7 @@ const operatingSystemOptions = [
 ];
 
 const OperatingSystem = () =>
-  (<CoralField
+  (<Field
     name="operatingSystems"
     component={ CheckboxList }
     options={ operatingSystemOptions }
