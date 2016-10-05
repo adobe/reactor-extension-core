@@ -47,7 +47,7 @@ describe('traffic source view', () => {
     const { sourceField, valueRegexSwitch } = getReactComponents(instance);
 
     sourceField.props.onChange('foo');
-    valueRegexSwitch.props.onChange({ target: { checked: true }});
+    valueRegexSwitch.props.onChange({ target: { checked: true } });
 
     expect(extensionBridge.getSettings()).toEqual({
       source: 'foo',

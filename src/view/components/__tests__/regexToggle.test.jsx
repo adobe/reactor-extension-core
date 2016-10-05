@@ -19,28 +19,26 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-let ConnectedRegexToggle = () => {
-  return (
-    <Field
-      name="valueIsRegex"
-      component={ RegexToggle }
-      valueFieldName="value"
-    />
-  );
-};
+let ConnectedRegexToggle = () => (
+  <Field
+    name="valueIsRegex"
+    component={ RegexToggle }
+    valueFieldName="value"
+  />
+);
 
 const formConfig = {
   settingsToFormValues(values, settings) {
     return {
       ...values,
       ...settings
-    }
+    };
   },
   formValuesToSettings(settings, values) {
     return {
       ...settings,
       ...values
-    }
+    };
   }
 };
 
@@ -54,7 +52,7 @@ describe('regex toggle', () => {
     extensionBridge = createExtensionBridge();
 
     spyOn(extensionBridge, 'openRegexTester').and.callFake((value, callback) => {
-        callback('bar');
+      callback('bar');
     });
 
     window.extensionBridge = extensionBridge;
@@ -110,7 +108,7 @@ describe('regex toggle', () => {
     expect(extensionBridge.getSettings()).toEqual({
       valueIsRegex: true,
       value: 'bar'
-    })
+    });
   });
 
   it('shows test link when valueIsRegex=true', () => {

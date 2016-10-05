@@ -74,7 +74,7 @@ describe('elementPropertiesEditor', () => {
 
     rows[0].nameTextfield.props.onChange('some prop set');
     rows[0].valueTextfield.props.onChange('some value set');
-    rows[0].valueRegexSwitch.props.onChange({ target: { checked: true }});
+    rows[0].valueRegexSwitch.props.onChange({ target: { checked: true } });
 
     const { elementProperties } = extensionBridge.getSettings();
     expect(elementProperties).toEqual([

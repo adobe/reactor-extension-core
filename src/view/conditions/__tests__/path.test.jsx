@@ -58,7 +58,7 @@ describe('path view', () => {
     const { rows } = getReactComponents(instance);
 
     rows[0].pathTextfield.props.onChange('goo');
-    rows[0].pathRegexSwitch.props.onChange({ target: { checked: true }});
+    rows[0].pathRegexSwitch.props.onChange({ target: { checked: true } });
 
     expect(extensionBridge.getSettings()).toEqual({
       paths: [

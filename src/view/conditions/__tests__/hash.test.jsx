@@ -59,7 +59,7 @@ describe('hash view', () => {
     const { rows } = getReactComponents(instance);
 
     rows[0].hashTextfield.props.onChange('goo');
-    rows[0].hashRegexSwitch.props.onChange({ target: { checked: true }});
+    rows[0].hashRegexSwitch.props.onChange({ target: { checked: true } });
 
     expect(extensionBridge.getSettings()).toEqual({
       hashes: [

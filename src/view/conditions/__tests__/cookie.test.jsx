@@ -59,7 +59,7 @@ describe('cookie view', () => {
 
     nameField.props.onChange('foo');
     valueField.props.onChange('bar');
-    valueRegexSwitch.props.onChange({ target: { checked: true }});
+    valueRegexSwitch.props.onChange({ target: { checked: true } });
 
     expect(extensionBridge.getSettings()).toEqual({
       name: 'foo',

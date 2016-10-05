@@ -47,7 +47,7 @@ describe('landing page view', () => {
     const { pageField, pageRegexSwitch } = getReactComponents(instance);
 
     pageField.props.onChange('foo');
-    pageRegexSwitch.props.onChange({ target: { checked: true }});
+    pageRegexSwitch.props.onChange({ target: { checked: true } });
 
     expect(extensionBridge.getSettings()).toEqual({
       page: 'foo',
