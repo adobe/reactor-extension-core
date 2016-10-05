@@ -1,23 +1,20 @@
 import { mount } from 'enzyme';
 import { ValidationWrapper } from '@reactor/react-components';
 import Textfield from '@coralui/react-coral/lib/Textfield';
+import Switch from '@coralui/react-coral/lib/Switch';
 
 import Subdomain from '../subdomain';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
-import RegexToggle from '../../components/regexToggle';
-import MultipleItemEditor from '../components/multipleItemEditor';
 
 const getReactComponents = (wrapper) => {
-  const subdomainFields = wrapper.find(Textfield).nodes;
-  const subdomainRegexToggles = wrapper.find(RegexToggle).nodes;
-  const subdomainWrappers = wrapper.find(ValidationWrapper).nodes;
-  const multipleItemEditor = wrapper.find(MultipleItemEditor).node;
+  const rows = wrapper.find('[data-row]').map(row => ({
+    subdomainTextfield: row.find(Textfield).node,
+    subdomainWrapper: row.find(ValidationWrapper).node,
+    subdomainRegexSwitch: row.find(Switch).node
+  }));
 
   return {
-    subdomainFields,
-    subdomainRegexToggles,
-    subdomainWrappers,
-    multipleItemEditor
+    rows
   };
 };
 
@@ -47,27 +44,21 @@ describe('subdomain view', () => {
   it('sets form values from settings', () => {
     extensionBridge.init(testProps);
 
-    const {
-      subdomainFields,
-      subdomainRegexToggles
-    } = getReactComponents(instance);
+    const { rows } = getReactComponents(instance);
 
-    expect(subdomainFields[0].props.value).toBe('foo');
-    expect(subdomainFields[1].props.value).toBe('bar');
-    expect(subdomainRegexToggles[0].props.subdomains[0].valueIsRegex.input.value).toBe('');
-    expect(subdomainRegexToggles[1].props.subdomains[1].valueIsRegex.input.value).toBe(true);
+    expect(rows[0].subdomainTextfield.props.value).toBe('foo');
+    expect(rows[1].subdomainTextfield.props.value).toBe('bar');
+    expect(rows[0].subdomainRegexSwitch.props.checked).toBe(false);
+    expect(rows[1].subdomainRegexSwitch.props.checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const {
-      subdomainFields,
-      subdomainRegexToggles
-    } = getReactComponents(instance);
+    const { rows } = getReactComponents(instance);
 
-    subdomainFields[0].props.onChange('goo');
-    subdomainRegexToggles[0].props.subdomains[0].valueIsRegex.input.onChange(true);
+    rows[0].subdomainTextfield.props.onChange('goo');
+    rows[0].subdomainRegexSwitch.props.onChange({ target: { checked: true }});
 
 
     expect(extensionBridge.getSettings()).toEqual({
@@ -84,8 +75,8 @@ describe('subdomain view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { subdomainWrappers } = getReactComponents(instance);
+    const { rows } = getReactComponents(instance);
 
-    expect(subdomainWrappers[0].props.error).toEqual(jasmine.any(String));
+    expect(rows[0].subdomainWrapper.props.error).toEqual(jasmine.any(String));
   });
 });

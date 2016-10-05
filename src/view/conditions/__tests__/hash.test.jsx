@@ -1,23 +1,20 @@
 import { mount } from 'enzyme';
 import { ValidationWrapper } from '@reactor/react-components';
 import Textfield from '@coralui/react-coral/lib/Textfield';
+import Switch from '@coralui/react-coral/lib/Switch';
 
 import Hash from '../hash';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
-import RegexToggle from '../../components/regexToggle';
-import MultipleItemEditor from '../components/multipleItemEditor';
 
 const getReactComponents = (wrapper) => {
-  const hashFields = wrapper.find(Textfield).nodes;
-  const hashRegexToggles = wrapper.find(RegexToggle).nodes;
-  const hashWrappers = wrapper.find(ValidationWrapper).nodes;
-  const multipleItemEditor = wrapper.find(MultipleItemEditor).node;
+  const rows = wrapper.find('[data-row]').map(row => ({
+    hashTextfield: row.find(Textfield).node,
+    hashRegexSwitch: row.find(Switch).node,
+    hashWrapper: row.find(ValidationWrapper).node
+  }));
 
   return {
-    hashFields,
-    hashRegexToggles,
-    hashWrappers,
-    multipleItemEditor
+    rows
   };
 };
 
@@ -48,27 +45,21 @@ describe('hash view', () => {
   it('sets form values from settings', () => {
     extensionBridge.init(testProps);
 
-    const {
-      hashFields,
-      hashRegexToggles
-    } = getReactComponents(instance);
+    const { rows } = getReactComponents(instance);
 
-    expect(hashFields[0].props.value).toBe('foo');
-    expect(hashFields[1].props.value).toBe('bar');
-    expect(hashRegexToggles[0].props.hashes[0].valueIsRegex.input.value).toBe('');
-    expect(hashRegexToggles[1].props.hashes[1].valueIsRegex.input.value).toBe(true);
+    expect(rows[0].hashTextfield.props.value).toBe('foo');
+    expect(rows[1].hashTextfield.props.value).toBe('bar');
+    expect(rows[0].hashRegexSwitch.props.checked).toBe(false);
+    expect(rows[1].hashRegexSwitch.props.checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const {
-      hashFields,
-      hashRegexToggles
-    } = getReactComponents(instance);
+    const { rows } = getReactComponents(instance);
 
-    hashFields[0].props.onChange('goo');
-    hashRegexToggles[0].props.hashes[0].valueIsRegex.input.onChange(true);
+    rows[0].hashTextfield.props.onChange('goo');
+    rows[0].hashRegexSwitch.props.onChange({ target: { checked: true }});
 
     expect(extensionBridge.getSettings()).toEqual({
       hashes: [
@@ -84,8 +75,8 @@ describe('hash view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { hashWrappers } = getReactComponents(instance);
+    const { rows } = getReactComponents(instance);
 
-    expect(hashWrappers[0].props.error).toEqual(jasmine.any(String));
+    expect(rows[0].hashWrapper.props.error).toEqual(jasmine.any(String));
   });
 });

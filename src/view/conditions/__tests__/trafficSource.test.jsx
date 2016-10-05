@@ -1,19 +1,19 @@
 import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
+import Switch from '@coralui/react-coral/lib/Switch';
 import { ValidationWrapper } from '@reactor/react-components';
 
 import TrafficSource from '../trafficSource';
-import RegexToggle from '../../components/regexToggle';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
   const sourceField = wrapper.find(Textfield).node;
-  const valueRegexToggle = wrapper.find(RegexToggle).node;
+  const valueRegexSwitch = wrapper.find(Switch).node;
   const sourceWrapper = wrapper.find(ValidationWrapper).node;
 
   return {
     sourceField,
-    valueRegexToggle,
+    valueRegexSwitch,
     sourceWrapper
   };
 };
@@ -35,20 +35,19 @@ describe('traffic source view', () => {
       }
     });
 
-    const { sourceField, valueRegexToggle } = getReactComponents(instance);
+    const { sourceField, valueRegexSwitch } = getReactComponents(instance);
 
     expect(sourceField.props.value).toBe('foo');
-    expect(valueRegexToggle.props.source.input.value).toBe('foo');
-    expect(valueRegexToggle.props.sourceIsRegex.input.value).toBe(true);
+    expect(valueRegexSwitch.props.checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { sourceField, valueRegexToggle } = getReactComponents(instance);
+    const { sourceField, valueRegexSwitch } = getReactComponents(instance);
 
     sourceField.props.onChange('foo');
-    valueRegexToggle.props.sourceIsRegex.input.onChange(true);
+    valueRegexSwitch.props.onChange({ target: { checked: true }});
 
     expect(extensionBridge.getSettings()).toEqual({
       source: 'foo',

@@ -1,23 +1,20 @@
 import { mount } from 'enzyme';
 import { ValidationWrapper } from '@reactor/react-components';
 import Textfield from '@coralui/react-coral/lib/Textfield';
+import Switch from '@coralui/react-coral/lib/Switch';
 
 import Path from '../path';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
-import RegexToggle from '../../components/regexToggle';
-import MultipleItemEditor from '../components/multipleItemEditor';
 
 const getReactComponents = (wrapper) => {
-  const pathFields = wrapper.find(Textfield).nodes;
-  const pathRegexToggles = wrapper.find(RegexToggle).nodes;
-  const pathWrappers = wrapper.find(ValidationWrapper).nodes;
-  const multipleItemEditor = wrapper.find(MultipleItemEditor).node;
+  const rows = wrapper.find('[data-row]').map(row => ({
+    pathTextfield: row.find(Textfield).node,
+    pathWrapper: row.find(ValidationWrapper).node,
+    pathRegexSwitch: row.find(Switch).node
+  }));
 
   return {
-    pathFields,
-    pathRegexToggles,
-    pathWrappers,
-    multipleItemEditor
+    rows
   };
 };
 
@@ -47,24 +44,21 @@ describe('path view', () => {
   it('sets form values from settings', () => {
     extensionBridge.init(testProps);
 
-    const {
-      pathFields,
-      pathRegexToggles
-    } = getReactComponents(instance);
+    const { rows } = getReactComponents(instance);
 
-    expect(pathFields[0].props.value).toBe('foo');
-    expect(pathFields[1].props.value).toBe('bar');
-    expect(pathRegexToggles[0].props.paths[0].valueIsRegex.input.value).toBe('');
-    expect(pathRegexToggles[1].props.paths[1].valueIsRegex.input.value).toBe(true);
+    expect(rows[0].pathTextfield.props.value).toBe('foo');
+    expect(rows[1].pathTextfield.props.value).toBe('bar');
+    expect(rows[0].pathRegexSwitch.props.checked).toBe(false);
+    expect(rows[1].pathRegexSwitch.props.checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { pathFields, pathRegexToggles } = getReactComponents(instance);
+    const { rows } = getReactComponents(instance);
 
-    pathFields[0].props.onChange('goo');
-    pathRegexToggles[0].props.paths[0].valueIsRegex.input.onChange(true);
+    rows[0].pathTextfield.props.onChange('goo');
+    rows[0].pathRegexSwitch.props.onChange({ target: { checked: true }});
 
     expect(extensionBridge.getSettings()).toEqual({
       paths: [
@@ -80,8 +74,8 @@ describe('path view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { pathWrappers } = getReactComponents(instance);
+    const { rows } = getReactComponents(instance);
 
-    expect(pathWrappers[0].props.error).toEqual(jasmine.any(String));
+    expect(rows[0].pathWrapper.props.error).toEqual(jasmine.any(String));
   });
 });

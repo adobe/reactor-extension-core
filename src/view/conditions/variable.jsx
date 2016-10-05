@@ -2,7 +2,7 @@ import React from 'react';
 import Icon from '@coralui/react-coral/lib/Icon';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Tooltip from '@coralui/react-coral/lib/Tooltip';
-import { Fields } from 'redux-form';
+import { Field } from 'redux-form';
 
 import CoralField from '../components/coralField';
 import extensionViewReduxForm from '../extensionViewReduxForm';
@@ -36,9 +36,10 @@ const Variable = () => (
     >
       <Icon icon="infoCircle" size="XS" className="u-inline-tooltip u-gapRight" />
     </Tooltip>
-    <Fields
-      names={ ['value', 'valueIsRegex'] }
+    <Field
+      name="valueIsRegex"
       component={ RegexToggle }
+      valueFieldName="value"
     />
   </div>
 );

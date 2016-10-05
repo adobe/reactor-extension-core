@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '@coralui/react-coral/lib/Button';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-import { Fields } from 'redux-form';
+import { Field } from 'redux-form';
 
 import CoralField from '../../components/coralField';
 import RegexToggle from '../../components/regexToggle';
@@ -21,9 +21,10 @@ export const ElementPropertyEditor = ({ field, remove }) => (
       name={ `${field}.value` }
       component={ Textfield }
     />
-    <Fields
-      names={ [`${field}.value`, `${field}.valueIsRegex`] }
+    <Field
+      name={ `${field}.valueIsRegex` }
       component={ RegexToggle }
+      valueFieldName={ `${field}.value` }
     />
     <Button
       className="u-gapBottom"

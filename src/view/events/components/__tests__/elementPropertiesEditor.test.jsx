@@ -3,8 +3,8 @@ import { FieldArray } from 'redux-form';
 import { mount } from 'enzyme';
 import Button from '@coralui/react-coral/lib/Button';
 import Textfield from '@coralui/react-coral/lib/Textfield';
+import Switch from '@coralui/react-coral/lib/Switch';
 import { ValidationWrapper } from '@reactor/react-components';
-import RegexToggle from '../../../components/regexToggle';
 import CoralField from '../../../components/coralField';
 
 
@@ -20,7 +20,7 @@ const getReactComponents = (wrapper) => {
       nameWrapper: row.find(CoralField).filterWhere(n => n.prop('name').includes('.name'))
         .find(ValidationWrapper).node,
       valueTextfield: textfields[1],
-      regexToggle: row.find(RegexToggle).node,
+      valueRegexSwitch: row.find(Switch).node,
       removeButton: row.find(Button).filterWhere(n => n.prop('icon') === 'close').node
     };
   });
@@ -64,7 +64,7 @@ describe('elementPropertiesEditor', () => {
     const { rows } = getReactComponents(instance);
     expect(rows[0].nameTextfield.props.value).toBe('some prop');
     expect(rows[0].valueTextfield.props.value).toBe('some value');
-    expect(rows[0].regexToggle.props.elementProperties[0].valueIsRegex.input.value).toBe(true);
+    expect(rows[0].valueRegexSwitch.props.checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -74,7 +74,7 @@ describe('elementPropertiesEditor', () => {
 
     rows[0].nameTextfield.props.onChange('some prop set');
     rows[0].valueTextfield.props.onChange('some value set');
-    rows[0].regexToggle.props.elementProperties[0].valueIsRegex.input.onChange(true);
+    rows[0].valueRegexSwitch.props.onChange({ target: { checked: true }});
 
     const { elementProperties } = extensionBridge.getSettings();
     expect(elementProperties).toEqual([

@@ -1,72 +1,54 @@
 import React from 'react';
 import classNames from 'classnames';
 import Switch from '@coralui/react-coral/lib/Switch';
+import { Field } from 'redux-form';
 
-const fieldNameRegEx = /(.*)\[([0-9]+)\]\.(.*)/;
-const getReduxFormFields = (names = [], props = {}) => names.map((name) => {
-  const match = fieldNameRegEx.exec(name);
-  if (match) {
-    const [, fieldsProperty, index, propertyName] = match;
-    return props[fieldsProperty][index][propertyName];
-  }
-
-  return props[name];
-});
-
-export default class RegexToggle extends React.Component {
-  onToggleChange = event => {
-    const valueIsRegexField = getReduxFormFields(this.props.names, this.props)[1];
-
-    const {
-      input: {
-        onChange
-      }
-    } = valueIsRegexField;
-
-    onChange(event.target.checked);
-  };
-
-  onTestRegex = () => {
-    const [valueField] = getReduxFormFields(this.props.names, this.props);
-
-    const {
-      input: {
-        value,
-        onChange
-      }
-    } = valueField;
-
-    window.extensionBridge.openRegexTester(
+const TestRegexButton = props => {
+  const {
+    input: {
       value,
-      onChange || (() => {})
-    );
-  };
+      onChange
+    }
+  } = props;
 
-  render() {
-    const valueIsRegexField = getReduxFormFields(this.props.names, this.props)[1];
+  return (
+    <button
+      className="u-buttonReset coral-Link"
+      onClick={ () => window.extensionBridge.openRegexTester(value, onChange) }
+    >
+      Test
+    </button>
+  );
+};
 
-    const {
-      input: {
-        value: valueIsRegex
-      }
-    } = valueIsRegexField;
+export default props => {
+  const {
+    input: {
+      value: valueIsRegex,
+      onChange
+    },
+    valueFieldName,
+    className
+  } = props;
 
-    return (
-      <div className={ classNames(this.props.className, 'u-inlineBlock') }>
-        <label>
-          <Switch
-            className="u-gapRight"
-            checked={ valueIsRegex }
-            onChange={ this.onToggleChange }
+  return (
+    <div className={ classNames(className, 'u-inlineBlock') }>
+      <label>
+        <Switch
+          className="u-gapRight"
+          checked={ Boolean(valueIsRegex) }
+          onChange={ event => onChange(event.target.checked) }
+        />
+        <span className="u-label">Regex</span>
+        <span
+          style={ { visibility: valueIsRegex ? 'visible' : 'hidden' } }
+        >
+          <Field
+            name={ valueFieldName }
+            component={ TestRegexButton }
           />
-          <span className="u-label">Regex</span>
-          <button
-            className="u-buttonReset coral-Link"
-            onClick={ this.onTestRegex }
-            style={ { visibility: valueIsRegex ? 'visible' : 'hidden' } }
-          >Test</button>
-        </label>
-      </div>
-    );
-  }
-}
+        </span>
+      </label>
+    </div>
+  );
+};

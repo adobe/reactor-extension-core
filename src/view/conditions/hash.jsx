@@ -1,6 +1,6 @@
 import React from 'react';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-import { Fields, FieldArray } from 'redux-form';
+import { Field, FieldArray } from 'redux-form';
 
 import CoralField from '../components/coralField';
 import MultipleItemEditor from './components/multipleItemEditor';
@@ -8,7 +8,7 @@ import extensionViewReduxForm from '../extensionViewReduxForm';
 import RegexToggle from '../components/regexToggle';
 
 const renderItem = (field) => (
-  <div className="u-inlineBlock">
+  <div data-row className="u-inlineBlock">
     <label className="u-gapRight">
       <span className="u-label">Hash</span>
       <CoralField
@@ -17,9 +17,11 @@ const renderItem = (field) => (
         supportValidation
       />
     </label>
-    <Fields
-      names={ [`${field}.value`, `${field}.valueIsRegex`] }
+
+    <Field
+      name={ `${field}.valueIsRegex` }
       component={ RegexToggle }
+      valueFieldName={ `${field}.value` }
     />
   </div>
 );

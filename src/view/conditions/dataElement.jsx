@@ -1,6 +1,6 @@
 import React from 'react';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-import { Fields } from 'redux-form';
+import { Field } from 'redux-form';
 
 import CoralField from '../components/coralField';
 import extensionViewReduxForm from '../extensionViewReduxForm';
@@ -25,9 +25,10 @@ const DataElement = () => (
         supportValidation
       />
     </label>
-    <Fields
-      names={ ['value', 'valueIsRegex'] }
+    <Field
+      name="valueIsRegex"
       component={ RegexToggle }
+      valueFieldName="value"
     />
   </div>
 );

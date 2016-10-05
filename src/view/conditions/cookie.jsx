@@ -1,5 +1,5 @@
 import React from 'react';
-import { Fields } from 'redux-form';
+import { Field } from 'redux-form';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 
 import extensionViewReduxForm from '../extensionViewReduxForm';
@@ -24,9 +24,11 @@ const Cookie = () => (
         supportValidation
       />
     </label>
-    <Fields
-      names={ ['value', 'valueIsRegex'] }
+
+    <Field
+      name="valueIsRegex"
       component={ RegexToggle }
+      valueFieldName="value"
     />
   </div>
 );
