@@ -41,6 +41,7 @@ export default props => {
         />
         <span className="u-label">Regex</span>
         <span
+          id="testButtonContainer"
           style={ { visibility: valueIsRegex ? 'visible' : 'hidden' } }
         >
           <Field
