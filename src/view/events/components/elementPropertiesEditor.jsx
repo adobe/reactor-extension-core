@@ -80,6 +80,11 @@ export const formConfig = {
           ...elementProperty
         };
 
+        // If this seems strange, check http://eslint.org/docs/rules/no-prototype-builtins.
+        if (!{}.hasOwnProperty.call(elementProperty, 'value')) {
+          elementProperty.value = '';
+        }
+
         return elementProperty;
       });
 
