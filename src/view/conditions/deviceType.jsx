@@ -2,7 +2,7 @@ import React from 'react';
 
 import CheckboxList from '../components/checkboxList';
 import extensionViewReduxForm from '../extensionViewReduxForm';
-import Field from '../components/field';
+import CoralField from '../components/coralField';
 
 const deviceTypeOptions = [
   'Desktop',
@@ -16,7 +16,7 @@ const deviceTypeOptions = [
 ];
 
 const DeviceType = () =>
-  (<Field name="deviceTypes" component={ CheckboxList } options={ deviceTypeOptions } />);
+  (<CoralField name="deviceTypes" component={ CheckboxList } options={ deviceTypeOptions } />);
 
 const formConfig = {
   settingsToFormValues(values, settings) {

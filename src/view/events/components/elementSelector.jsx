@@ -1,11 +1,11 @@
 import React from 'react';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-import Field from '../../components/field';
+import CoralField from '../../components/coralField';
 
 export default () => (
   <label>
     <span className="u-label">Elements matching the CSS selector</span>
-    <Field
+    <CoralField
       name="elementSelector"
       component={ Textfield }
       supportValidation

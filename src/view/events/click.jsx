@@ -5,18 +5,18 @@ import ElementFilter, { formConfig as elementFilterFormConfig } from './componen
 import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import mergeFormConfigs from '../utils/mergeFormConfigs';
-import Field from '../components/field';
+import CoralField from '../components/coralField';
 
 const Click = () => (
   <div>
     <ElementFilter />
-    <Field
+    <CoralField
       name="delayLinkActivation"
       className="u-block"
       component={ Checkbox }
     >
       If the element is a link, delay navigation until rule runs
-    </Field>
+    </CoralField>
     <AdvancedEventOptions />
   </div>
 );

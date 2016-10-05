@@ -4,13 +4,13 @@ import { Fields } from 'redux-form';
 
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import RegexToggle from '../components/regexToggle';
-import Field from '../components/field';
+import CoralField from '../components/coralField';
 
 const LandingPage = () => (
   <div>
     <label className="u-gapRight">
       <span className="u-label">Landing Page</span>
-      <Field
+      <CoralField
         name="page"
         component={ Textfield }
         supportValidation

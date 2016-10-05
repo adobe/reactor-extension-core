@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Select from '@coralui/react-coral/lib/Select';
 
-import Field from '../components/field';
+import CoralField from '../components/coralField';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
 const elementPropertyPresets = [
@@ -63,7 +63,7 @@ const DOM = ({ ...props }) => {
       <div className="u-gapBottom">
         <label>
           <span className="u-label">From the DOM element matching the CSS Selector</span>
-          <Field
+          <CoralField
             name="elementSelector"
             component={ Textfield }
             supportValidation
@@ -74,7 +74,7 @@ const DOM = ({ ...props }) => {
       <div>
         <label className="u-gapRight">
           <span className="u-label">Use the value of</span>
-          <Field
+          <CoralField
             name="selectedElementPropertyPreset"
             component={ Select }
             options={ elementPropertyPresets }
@@ -82,7 +82,7 @@ const DOM = ({ ...props }) => {
         </label>
         {
           (selectedElementPropertyPreset === 'custom') ?
-            <Field
+            <CoralField
               name="customElementProperty"
               component={ Textfield }
               supportValidation

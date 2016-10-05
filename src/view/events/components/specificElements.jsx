@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import ElementSelector, { formConfig as elementSelectorFormConfig } from './elementSelector';
 import ElementPropertiesEditor, { formConfig as elementPropertiesEditorFormConfig } from './elementPropertiesEditor';
 import mergeFormConfigs from '../../utils/mergeFormConfigs';
-import Field from '../../components/field';
+import CoralField from '../../components/coralField';
 
 const SpecificElements = ({ ...props }) => {
   const {
@@ -17,13 +17,13 @@ const SpecificElements = ({ ...props }) => {
     <div>
       <ElementSelector fields={ props.fields } />
       <div>
-        <Field
+        <CoralField
           name="showElementPropertiesFilter"
           className="u-block"
           component={ Checkbox }
         >
           and having certain property values...
-        </Field>
+        </CoralField>
         {
           showElementPropertiesFilter ?
             <FieldArray

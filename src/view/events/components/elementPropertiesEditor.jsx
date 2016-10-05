@@ -3,19 +3,19 @@ import Button from '@coralui/react-coral/lib/Button';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import { Fields } from 'redux-form';
 
-import Field from '../../components/field';
+import CoralField from '../../components/coralField';
 import RegexToggle from '../../components/regexToggle';
 
 export const ElementPropertyEditor = ({ field, remove }) => (
   <div className="u-gapBottom">
-    <Field
+    <CoralField
       placeholder="Property"
       name={ `${field}.name` }
       component={ Textfield }
       supportValidation
     />
     <span className="u-label u-gapLeft">=</span>
-    <Field
+    <CoralField
       className="u-gapRight"
       placeholder="Value"
       name={ `${field}.value` }

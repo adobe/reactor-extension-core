@@ -4,13 +4,13 @@ import Textfield from '@coralui/react-coral/lib/Textfield';
 
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import RegexToggle from '../components/regexToggle';
-import Field from '../components/field';
+import CoralField from '../components/coralField';
 
 const Cookie = () => (
   <div>
     <label className="u-gapRight">
       <span className="u-label">Cookie Name</span>
-      <Field
+      <CoralField
         name="name"
         component={ Textfield }
         supportValidation
@@ -18,7 +18,7 @@ const Cookie = () => (
     </label>
     <label className="u-gapRight">
       <span className="u-label">Cookie Value</span>
-      <Field
+      <CoralField
         name="value"
         component={ Textfield }
         supportValidation

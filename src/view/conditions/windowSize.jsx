@@ -4,17 +4,17 @@ import Textfield from '@coralui/react-coral/lib/Textfield';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import ComparisonOperatorField from './components/comparisonOperatorField';
 import { isNumber } from '../utils/validators';
-import Field from '../components/field';
+import CoralField from '../components/coralField';
 
 const WindowSize = () => (
   <div>
     <div>
       <label className="u-gapRight">
         <span className="u-label">The user's window size width is</span>
-        <Field name="widthOperator" component={ ComparisonOperatorField } />
+        <CoralField name="widthOperator" component={ ComparisonOperatorField } />
       </label>
       <label>
-        <Field
+        <CoralField
           className="u-gapRight"
           componentClassName="u-smallTextfield"
           name="width"
@@ -27,10 +27,10 @@ const WindowSize = () => (
     <div className="u-gapTop">
       <label className="u-gapRight">
         <span className="u-label">and height is</span>
-        <Field name="heightOperator" component={ ComparisonOperatorField } />
+        <CoralField name="heightOperator" component={ ComparisonOperatorField } />
       </label>
       <label>
-        <Field
+        <CoralField
           className="u-gapRight"
           componentClassName="u-smallTextfield"
           name="height"

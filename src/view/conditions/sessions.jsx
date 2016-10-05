@@ -4,18 +4,18 @@ import Textfield from '@coralui/react-coral/lib/Textfield';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import ComparisonOperatorField from './components/comparisonOperatorField';
 import { isNumber } from '../utils/validators';
-import Field from '../components/field';
+import CoralField from '../components/coralField';
 
 const Sessions = () => (
   <div>
     <div>
       <label className="u-gapRight">
         <span className="u-label">The user's number of sessions is</span>
-        <Field name="operator" component={ ComparisonOperatorField } />
+        <CoralField name="operator" component={ ComparisonOperatorField } />
       </label>
       <label>
         <span className="u-label">the value</span>
-        <Field
+        <CoralField
           componentClassName="u-smallTextfield"
           name="count"
           component={ Textfield }

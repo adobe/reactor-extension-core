@@ -1,7 +1,7 @@
 import React from 'react';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 
-import Field from '../components/field';
+import CoralField from '../components/coralField';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import ComparisonOperatorField from './components/comparisonOperatorField';
 import { isNumber } from '../utils/validators';
@@ -11,10 +11,10 @@ const TimeOnSite = () => (
     <div>
       <label className="u-gapRight">
         <span className="u-label">User has spent</span>
-        <Field name="operator" component={ ComparisonOperatorField } />
+        <CoralField name="operator" component={ ComparisonOperatorField } />
       </label>
       <label>
-        <Field
+        <CoralField
           componentClassName="u-smallTextfield"
           name="minutes"
           component={ Textfield }

@@ -5,7 +5,7 @@ import Button from '@coralui/react-coral/lib/Button';
 
 import extensionViewReduxForm from '../../extensionViewReduxForm';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
-import Field from '../field';
+import CoralField from '../coralField';
 
 const getReactComponents = (wrapper) => {
   const dataElementButton = wrapper.find(DataElementSelectorButton).node;
@@ -26,7 +26,7 @@ describe('field', () => {
   it('opens the data element selector from data element button', () => {
     const FormComponent = extensionViewReduxForm({
       settingsToFormValues: () => {}
-    })(Field);
+    })(CoralField);
     const extensionBridge = createExtensionBridge();
     window.extensionBridge = extensionBridge;
 
@@ -61,7 +61,7 @@ describe('field', () => {
   it('opens the css element selector from data element button', () => {
     const FormComponent = extensionViewReduxForm({
       settingsToFormValues: () => {}
-    })(Field);
+    })(CoralField);
     const extensionBridge = createExtensionBridge();
     window.extensionBridge = extensionBridge;
 
@@ -97,7 +97,7 @@ describe('field', () => {
   it('adds a suffix label', () => {
     const FormComponent = extensionViewReduxForm({
       settingsToFormValues: () => {}
-    })(Field);
+    })(CoralField);
 
     const extensionBridge = createExtensionBridge();
     const instance = mount(

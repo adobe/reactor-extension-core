@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import SpecificElements, { formConfig as specificElementsFormConfig } from './specificElements';
 import mergeFormConfigs from '../../utils/mergeFormConfigs';
-import Field from '../../components/field';
+import CoralField from '../../components/coralField';
 
 const ElementFilter = ({ ...props }) => {
   const { elementSpecificity } = props;
@@ -13,20 +13,20 @@ const ElementFilter = ({ ...props }) => {
   return (
     <div>
       <div>
-        <Field
+        <CoralField
           name="elementSpecificity"
           component={ Radio }
           value="specific"
         >
           specific elements
-        </Field>
-        <Field
+        </CoralField>
+        <CoralField
           name="elementSpecificity"
           component={ Radio }
           value="any"
         >
           any element
-        </Field>
+        </CoralField>
       </div>
       {
         elementSpecificity === 'specific' ?

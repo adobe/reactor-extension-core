@@ -1,7 +1,7 @@
 import React from 'react';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
 
-import Field from '../../components/field';
+import CoralField from '../../components/coralField';
 import DisclosureButton from '../../components/disclosureButton';
 
 export default class AdvancedEventOptions extends React.Component {
@@ -26,31 +26,31 @@ export default class AdvancedEventOptions extends React.Component {
         <div className="u-gapTop">
           <h4 className="coral-Heading coral-Heading--4">Bubbling</h4>
 
-          <Field
+          <CoralField
             name="bubbleFireIfParent"
             className="u-block"
             component={ Checkbox }
           >
             Run this rule even when the event originates from a descendant element
-          </Field>
+          </CoralField>
 
-          <Field
+          <CoralField
             name="bubbleFireIfChildFired"
             className="u-block"
             component={ Checkbox }
           >
             Allow this rule to run even if the event already triggered a
             rule targeting a descendant element
-          </Field>
+          </CoralField>
 
-          <Field
+          <CoralField
             name="bubbleStop"
             className="u-block"
             component={ Checkbox }
           >
             After the rule runs, prevent the event from triggering rules
             targeting ancestor elements
-          </Field>
+          </CoralField>
         </div>
       );
     }

@@ -5,13 +5,13 @@ import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } fr
 import ElementFilter, { formConfig as elementFilterFormConfig } from './components/elementFilter';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import mergeFormConfigs from '../utils/mergeFormConfigs';
-import Field from '../components/field';
+import CoralField from '../components/coralField';
 
 const Custom = () => (
   <div>
     <label>
       <span className="u-label">Custom Event Type</span>
-      <Field
+      <CoralField
         name="type"
         component={ Textfield }
         supportValidation

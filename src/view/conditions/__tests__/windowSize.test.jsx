@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import { ValidationWrapper } from '@reactor/react-components';
 
-import Field from '../../components/field';
+import CoralField from '../../components/coralField';
 import WindowSize from '../windowSize';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 import ComparisonOperatorField from '../components/comparisonOperatorField';
@@ -14,9 +14,9 @@ const getReactComponents = (wrapper) => {
     .find(ComparisonOperatorField).filterWhere(n => n.prop('name') === 'heightOperator').node;
   const widthField = wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'width').node;
   const heightField = wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'height').node;
-  const widthWrapper = wrapper.find(Field)
+  const widthWrapper = wrapper.find(CoralField)
     .filterWhere(n => n.prop('name') === 'width').find(ValidationWrapper).node;
-  const heightWrapper = wrapper.find(Field)
+  const heightWrapper = wrapper.find(CoralField)
     .filterWhere(n => n.prop('name') === 'height').find(ValidationWrapper).node;
 
   return {

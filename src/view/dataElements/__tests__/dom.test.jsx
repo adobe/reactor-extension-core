@@ -4,7 +4,7 @@ import Textfield from '@coralui/react-coral/lib/Textfield';
 import Select from '@coralui/react-coral/lib/Select';
 
 import DOM from '../dom';
-import Field from '../../components/field';
+import CoralField from '../../components/coralField';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
@@ -13,9 +13,9 @@ const getReactComponents = (wrapper) => {
     wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'elementSelector').node;
   const customElementPropertyField =
     wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'customElementProperty').node;
-  const elementSelectorWrapper = wrapper.find(Field)
+  const elementSelectorWrapper = wrapper.find(CoralField)
     .filterWhere(n => n.prop('name') === 'elementSelector').find(ValidationWrapper).node;
-  const customElementPropertyWrapper = wrapper.find(Field)
+  const customElementPropertyWrapper = wrapper.find(CoralField)
     .filterWhere(n => n.prop('name') === 'customElementProperty').find(ValidationWrapper).node;
 
   return {

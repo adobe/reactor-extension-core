@@ -1,7 +1,7 @@
 import React from 'react';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 
-import Field from '../components/field';
+import CoralField from '../components/coralField';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
 const RegisteredUser = () => (
@@ -9,7 +9,7 @@ const RegisteredUser = () => (
     <span className="u-label">
       Data element identifying whether the user is registered
     </span>
-    <Field
+    <CoralField
       name="dataElement"
       component={ Textfield }
       supportDataElementName

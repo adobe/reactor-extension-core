@@ -2,24 +2,24 @@ import React from 'react';
 import Radio from '@coralui/react-coral/lib/Radio';
 
 import extensionViewReduxForm from '../extensionViewReduxForm';
-import Field from '../components/field';
+import CoralField from '../components/coralField';
 
 const Protocol = () => (
   <div>
-    <Field
+    <CoralField
       name="protocol"
       component={ Radio }
       value="http:"
     >
       HTTP
-    </Field>
-    <Field
+    </CoralField>
+    <CoralField
       name="protocol"
       component={ Radio }
       value="https:"
     >
       HTTPS
-    </Field>
+    </CoralField>
   </div>
 );
 

@@ -111,7 +111,7 @@ class InputWrapper extends React.Component {
   }
 }
 
-const Field = ({ component, ...otherProps }) => {
+const CoralField = ({ component, ...otherProps }) => {
   // Redux-form will only provide a "checked" property if you specify type="radio" or
   // type="checkbox". We'll do that automatically here so we don't have to remember to do it
   // every time we use radio or checkbox.
@@ -129,4 +129,4 @@ const Field = ({ component, ...otherProps }) => {
   );
 };
 
-export default Field;
+export default CoralField;

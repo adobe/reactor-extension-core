@@ -5,7 +5,7 @@ import Button from '@coralui/react-coral/lib/Button';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import { ValidationWrapper } from '@reactor/react-components';
 import RegexToggle from '../../../components/regexToggle';
-import Field from '../../../components/field';
+import CoralField from '../../../components/coralField';
 
 
 import extensionViewReduxForm from '../../../extensionViewReduxForm';
@@ -17,7 +17,7 @@ const getReactComponents = (wrapper) => {
     const textfields = row.find(Textfield).nodes;
     return {
       nameTextfield: textfields[0],
-      nameWrapper: row.find(Field).filterWhere(n => n.prop('name').includes('.name'))
+      nameWrapper: row.find(CoralField).filterWhere(n => n.prop('name').includes('.name'))
         .find(ValidationWrapper).node,
       valueTextfield: textfields[1],
       regexToggle: row.find(RegexToggle).node,

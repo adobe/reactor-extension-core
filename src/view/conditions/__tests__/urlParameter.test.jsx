@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import { ValidationWrapper } from '@reactor/react-components';
 
-import Field from '../../components/field';
+import CoralField from '../../components/coralField';
 import URLParameter from '../urlParameter';
 import RegexToggle from '../../components/regexToggle';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
@@ -13,9 +13,9 @@ const getReactComponents = (wrapper) => {
   const valueField =
     wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'value').node;
   const valueRegexToggle = wrapper.find(RegexToggle).node;
-  const nameWrapper = wrapper.find(Field)
+  const nameWrapper = wrapper.find(CoralField)
     .filterWhere(n => n.prop('name') === 'name').find(ValidationWrapper).node;
-  const valueWrapper = wrapper.find(Field)
+  const valueWrapper = wrapper.find(CoralField)
     .filterWhere(n => n.prop('name') === 'value').find(ValidationWrapper).node;
   return {
     nameField,

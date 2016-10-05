@@ -2,7 +2,7 @@ import React from 'react';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import { Fields } from 'redux-form';
 
-import Field from '../components/field';
+import CoralField from '../components/coralField';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import RegexToggle from '../components/regexToggle';
 
@@ -10,7 +10,7 @@ const DataElement = () => (
   <div>
     <label className="u-gapRight">
       <span className="u-label">Data element</span>
-      <Field
+      <CoralField
         component={ Textfield }
         name="name"
         supportValidation
@@ -19,7 +19,7 @@ const DataElement = () => (
     </label>
     <label className="u-gapRight">
       <span className="u-label">has the value</span>
-      <Field
+      <CoralField
         component={ Textfield }
         name="value"
         supportValidation

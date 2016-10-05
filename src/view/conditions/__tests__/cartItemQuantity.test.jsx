@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import { ValidationWrapper, DataElementSelectorButton } from '@reactor/react-components';
 
-import Field from '../../components/field';
+import CoralField from '../../components/coralField';
 import CartItemQuantity from '../cartItemQuantity';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 import ComparisonOperatorField from '../components/comparisonOperatorField';
@@ -14,9 +14,9 @@ const getReactComponents = (wrapper) => {
     wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'quantity').node;
   const dataElementButton = wrapper.find(DataElementSelectorButton).node;
   const operatorField = wrapper.find(ComparisonOperatorField).node;
-  const dataElementWrapper = wrapper.find(Field)
+  const dataElementWrapper = wrapper.find(CoralField)
     .filterWhere(n => n.prop('name') === 'dataElement').find(ValidationWrapper).node;
-  const quantityWrapper = wrapper.find(Field)
+  const quantityWrapper = wrapper.find(CoralField)
     .filterWhere(n => n.prop('name') === 'quantity').find(ValidationWrapper).node;
 
   return {

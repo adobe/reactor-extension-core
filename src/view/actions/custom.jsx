@@ -7,7 +7,7 @@ import Checkbox from '@coralui/react-coral/lib/Checkbox';
 import Radio from '@coralui/react-coral/lib/Radio';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import extensionViewReduxForm from '../extensionViewReduxForm';
-import Field from '../components/field';
+import CoralField from '../components/coralField';
 import CodeField from '../components/codeField';
 
 const LANGUAGES = {
@@ -23,7 +23,7 @@ const Custom = ({ language, sequential, source }) => (
   <div>
     <label>
       <span className="u-label">Name</span>
-      <Field
+      <CoralField
         name="name"
         component={ Textfield }
         supportValidation
@@ -34,29 +34,29 @@ const Custom = ({ language, sequential, source }) => (
         <span className="u-label u-gapRight">Language</span>
       </legend>
 
-      <Field
+      <CoralField
         name="language"
         component={ Radio }
         value={ LANGUAGES.JAVASCRIPT }
       >
         JavaScript
-      </Field>
-      <Field
+      </CoralField>
+      <CoralField
         name="language"
         component={ Radio }
         value={ LANGUAGES.HTML }
       >
         HTML
-      </Field>
+      </CoralField>
     </fieldset>
 
     <div>
-      <Field
+      <CoralField
         name="sequential"
         component={ Checkbox }
       >
         Sequential
-      </Field>
+      </CoralField>
       <InfoTip className="CustomAction-checkboxErrorTip">
         When sequential is enabled, the code in this action will be executed sequentially in
         relation to other custom actions that have sequential enabled. For example, if custom
@@ -68,12 +68,12 @@ const Custom = ({ language, sequential, source }) => (
     {
       language === LANGUAGES.JAVASCRIPT ?
         <div>
-          <Field
+          <CoralField
             name="global"
             component={ Checkbox }
           >
             Execute globally
-          </Field>
+          </CoralField>
           <InfoTip className="CustomAction-checkboxErrorTip">
             Global execution is only necessary when the script needs its
             own variables to be globally visible. Enabling this will disable binding of

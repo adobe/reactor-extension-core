@@ -2,12 +2,12 @@ import React from 'react';
 
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import extensionViewReduxForm from '../extensionViewReduxForm';
-import Field from '../components/field';
+import CoralField from '../components/coralField';
 
 const DirectCall = () => (
   <label>
     <span className="u-label">_satellite.track string</span>
-    <Field
+    <CoralField
       name="name"
       component={ Textfield }
       supportValidation

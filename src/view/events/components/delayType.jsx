@@ -2,7 +2,7 @@ import React from 'react';
 import Radio from '@coralui/react-coral/lib/Radio';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 
-import Field from '../../components/field';
+import CoralField from '../../components/coralField';
 import { isPositiveNumber } from '../../utils/validators';
 
 export default () => (
@@ -10,21 +10,21 @@ export default () => (
     <label>
       <span className="u-label u-gapRight">Trigger</span>
     </label>
-    <Field
+    <CoralField
       name="delayType"
       component={ Radio }
       value="immediate"
     >
       immediately
-    </Field>
-    <Field
+    </CoralField>
+    <CoralField
       name="delayType"
       component={ Radio }
       value="delay"
     >
       after
-    </Field>
-    <Field
+    </CoralField>
+    <CoralField
       name="delay"
       component={ Textfield }
       supportValidation

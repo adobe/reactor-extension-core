@@ -2,7 +2,7 @@ import React from 'react';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import { Fields } from 'redux-form';
 
-import Field from '../components/field';
+import CoralField from '../components/coralField';
 import RegexToggle from '../components/regexToggle';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
@@ -10,7 +10,7 @@ const URLParameter = () => (
   <div>
     <span className="u-label">URL Parameter Name</span>
     <label className="u-gapRight">
-      <Field
+      <CoralField
         name="name"
         component={ Textfield }
         supportValidation
@@ -18,7 +18,7 @@ const URLParameter = () => (
     </label>
     <label className="u-gapRight">
       <span className="u-label">URL Parameter Value</span>
-      <Field
+      <CoralField
         name="value"
         component={ Textfield }
         supportValidation

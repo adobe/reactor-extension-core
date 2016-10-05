@@ -1,25 +1,25 @@
 import React from 'react';
 import Radio from '@coralui/react-coral/lib/Radio';
 
-import Field from '../components/field';
+import CoralField from '../components/coralField';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
 const NewReturning = () => (
   <div>
-    <Field
+    <CoralField
       name="visitorType"
       component={ Radio }
       value="new"
     >
       New Visitor
-    </Field>
-    <Field
+    </CoralField>
+    <CoralField
       name="visitorType"
       component={ Radio }
       value="returning"
     >
       Returning Visitor
-    </Field>
+    </CoralField>
   </div>
 );
 
