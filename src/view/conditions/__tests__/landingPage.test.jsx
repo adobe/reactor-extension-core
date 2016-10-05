@@ -2,7 +2,6 @@ import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Switch from '@coralui/react-coral/lib/Switch';
 import { ValidationWrapper } from '@reactor/react-components';
-
 import LandingPage from '../landingPage';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 

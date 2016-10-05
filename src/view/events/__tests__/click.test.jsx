@@ -2,19 +2,19 @@ import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
 import { ValidationWrapper } from '@reactor/react-components';
-
 import Click from '../click';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 import AdvancedEventOptions from '../components/advancedEventOptions';
 import ElementSelector from '../components/elementSelector';
 
 const getReactComponents = (wrapper) => {
-  const delayLinkActivationCheckbox =
-    wrapper.find(Checkbox).filterWhere(n => n.prop('name') === 'delayLinkActivation').node;
-  const elementSelectorTextfield =
-    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'elementSelector').node;
-  const bubbleStopCheckbox =
-    wrapper.find(Checkbox).filterWhere(n => n.prop('name') === 'bubbleStop').node;
+  const checkboxes = wrapper.find(Checkbox);
+
+  const delayLinkActivationCheckbox = checkboxes
+    .filterWhere(n => n.prop('name') === 'delayLinkActivation').node;
+  const elementSelectorTextfield = wrapper.find(Textfield)
+    .filterWhere(n => n.prop('name') === 'elementSelector').node;
+  const bubbleStopCheckbox = checkboxes.filterWhere(n => n.prop('name') === 'bubbleStop').node;
   const advancedEventOptions = wrapper.find(AdvancedEventOptions).node;
   const elementSelectorWrapper = wrapper.find(ElementSelector).find(ValidationWrapper).node;
 

@@ -1,7 +1,6 @@
 import { mount } from 'enzyme';
 import React from 'react';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
-
 import CheckboxList from '../checkboxList';
 
 const render = props => mount(<CheckboxList { ...props } />);

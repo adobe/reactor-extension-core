@@ -3,17 +3,18 @@ import { ValidationWrapper } from '@reactor/react-components';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
 import Select from '@coralui/react-coral/lib/Select';
-
 import ElementSelector from '../components/elementSelector';
 import AdvancedEventOptions from '../components/advancedEventOptions';
 import TimePlayed from '../timePlayed';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
-  const amountField = wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'amount').node;
+  const textFields = wrapper.find(Textfield);
+
+  const amountTextfield = textFields.filterWhere(n => n.prop('name') === 'amount').node;
   const unitSelect = wrapper.find(Select).node;
-  const elementSelectorTextfield =
-    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'elementSelector').node;
+  const elementSelectorTextfield = textFields.filterWhere(n => n.prop('name') === 'elementSelector')
+    .node;
   const bubbleStopCheckbox =
     wrapper.find(Checkbox).filterWhere(n => n.prop('name') === 'bubbleStop').node;
   const amountWrapper = wrapper.find(ValidationWrapper).node;
@@ -21,7 +22,7 @@ const getReactComponents = (wrapper) => {
   const advancedEventOptions = wrapper.find(AdvancedEventOptions).node;
 
   return {
-    amountField,
+    amountTextfield,
     unitSelect,
     elementSelectorTextfield,
     bubbleStopCheckbox,
@@ -54,13 +55,13 @@ describe('time played view', () => {
     advancedEventOptions.toggleSelected();
 
     const {
-      amountField,
+      amountTextfield,
       unitSelect,
       elementSelectorTextfield,
       bubbleStopCheckbox
     } = getReactComponents(instance);
 
-    expect(amountField.props.value).toBe(55);
+    expect(amountTextfield.props.value).toBe(55);
     expect(unitSelect.props.value).toBe('percent');
     expect(elementSelectorTextfield.props.value).toBe('.foo');
     expect(bubbleStopCheckbox.props.value).toBe(true);
@@ -70,12 +71,12 @@ describe('time played view', () => {
     extensionBridge.init();
 
     const {
-      amountField,
+      amountTextfield,
       elementSelectorTextfield,
       advancedEventOptions
     } = getReactComponents(instance);
 
-    amountField.props.onChange(45);
+    amountTextfield.props.onChange(45);
     elementSelectorTextfield.props.onChange('.foo');
 
     advancedEventOptions.toggleSelected();

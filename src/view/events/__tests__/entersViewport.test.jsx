@@ -2,19 +2,18 @@ import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Radio from '@coralui/react-coral/lib/Radio';
 import { ValidationWrapper } from '@reactor/react-components';
-
 import EntersViewport from '../entersViewport';
 import DelayType from '../components/delayType';
 import ElementSelector from '../components/elementSelector';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
-  const elementSelectorTextfield =
-    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'elementSelector').node;
-  const delayTextfield =
-    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'delay').node;
-  const delayRadio =
-    wrapper.find(Radio).filterWhere(n => n.prop('value') === 'delay').node;
+  const textFields = wrapper.find(Textfield);
+
+  const elementSelectorTextfield = textFields
+    .filterWhere(n => n.prop('name') === 'elementSelector').node;
+  const delayTextfield = textFields.filterWhere(n => n.prop('name') === 'delay').node;
+  const delayRadio = wrapper.find(Radio).filterWhere(n => n.prop('value') === 'delay').node;
   const delayValidationWrapper = wrapper.find(DelayType).find(ValidationWrapper).node;
   const elementSelectorWrapper = wrapper.find(ElementSelector).find(ValidationWrapper).node;
 

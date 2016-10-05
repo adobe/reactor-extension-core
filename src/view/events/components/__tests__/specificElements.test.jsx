@@ -1,7 +1,6 @@
 import { mount } from 'enzyme';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
 import { ValidationWrapper } from '@reactor/react-components';
-
 import SpecificElements, { formConfig } from '../specificElements';
 import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
 import ElementPropertiesEditor from '../elementPropertiesEditor';
@@ -11,8 +10,8 @@ import extensionViewReduxForm from '../../../extensionViewReduxForm';
 const getReactComponents = (wrapper) => {
   const showElementPropertiesCheckbox = wrapper.find(Checkbox).node;
   const elementPropertiesEditor = wrapper.find(ElementPropertiesEditor).node;
-  const elementSelectorValidationWrapper =
-    wrapper.find(ElementSelector).find(ValidationWrapper).node;
+  const elementSelectorValidationWrapper = wrapper.find(ElementSelector).find(ValidationWrapper)
+    .node;
 
   return {
     showElementPropertiesCheckbox,

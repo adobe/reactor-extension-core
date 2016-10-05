@@ -1,23 +1,23 @@
 import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import { ValidationWrapper, DataElementSelectorButton } from '@reactor/react-components';
-
 import CoralField from '../../components/coralField';
 import CartItemQuantity from '../cartItemQuantity';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 import ComparisonOperatorField from '../components/comparisonOperatorField';
 
 const getReactComponents = (wrapper) => {
-  const dataElementField =
-    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'dataElement').node;
-  const quantityField =
-    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'quantity').node;
+  const textFields = wrapper.find(Textfield);
+  const coralFields = wrapper.find(CoralField);
+
+  const dataElementField = textFields.filterWhere(n => n.prop('name') === 'dataElement').node;
+  const quantityField = textFields.filterWhere(n => n.prop('name') === 'quantity').node;
   const dataElementButton = wrapper.find(DataElementSelectorButton).node;
   const operatorField = wrapper.find(ComparisonOperatorField).node;
-  const dataElementWrapper = wrapper.find(CoralField)
-    .filterWhere(n => n.prop('name') === 'dataElement').find(ValidationWrapper).node;
-  const quantityWrapper = wrapper.find(CoralField)
-    .filterWhere(n => n.prop('name') === 'quantity').find(ValidationWrapper).node;
+  const dataElementWrapper = coralFields.filterWhere(n => n.prop('name') === 'dataElement')
+    .find(ValidationWrapper).node;
+  const quantityWrapper = coralFields.filterWhere(n => n.prop('name') === 'quantity')
+    .find(ValidationWrapper).node;
 
   return {
     dataElementField,
@@ -35,27 +35,7 @@ describe('cart item quantity view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    window.extensionBridge = extensionBridge;
     instance = mount(getFormComponent(CartItemQuantity, extensionBridge));
-  });
-
-  afterAll(() => {
-    delete window.extensionBridge;
-  });
-
-  it('opens the data element selector from data element button', () => {
-    extensionBridge.init();
-
-    const { dataElementField, dataElementButton } = getReactComponents(instance);
-
-    spyOn(window.extensionBridge, 'openDataElementSelector').and.callFake(callback => {
-      callback('foo');
-    });
-
-    dataElementButton.props.onClick();
-
-    expect(window.extensionBridge.openDataElementSelector).toHaveBeenCalled();
-    expect(dataElementField.props.value).toBe('foo');
   });
 
   it('sets operator to greater than by default', () => {

@@ -2,21 +2,21 @@ import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Switch from '@coralui/react-coral/lib/Switch';
 import { ValidationWrapper } from '@reactor/react-components';
-
 import CoralField from '../../components/coralField';
 import Cookie from '../cookie';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
-  const nameField =
-    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'name').node;
-  const valueField =
-    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'value').node;
+  const textFields = wrapper.find(Textfield);
+  const coralFields = wrapper.find(CoralField);
+
+  const nameField = textFields.filterWhere(n => n.prop('name') === 'name').node;
+  const valueField = textFields.filterWhere(n => n.prop('name') === 'value').node;
   const valueRegexSwitch = wrapper.find(Switch).node;
-  const nameWrapper = wrapper.find(CoralField)
-    .filterWhere(n => n.prop('name') === 'name').find(ValidationWrapper).node;
-  const valueWrapper = wrapper.find(CoralField)
-    .filterWhere(n => n.prop('name') === 'value').find(ValidationWrapper).node;
+  const nameWrapper = coralFields.filterWhere(n => n.prop('name') === 'name')
+    .find(ValidationWrapper).node;
+  const valueWrapper = coralFields.filterWhere(n => n.prop('name') === 'value')
+    .find(ValidationWrapper).node;
 
   return {
     nameField,

@@ -1,17 +1,17 @@
 import { mount } from 'enzyme';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
-
 import extensionViewReduxForm from '../../../extensionViewReduxForm';
 import AdvancedEventOptions, { formConfig } from '../advancedEventOptions';
 import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
-  const bubbleFireIfParentCheckbox =
-    wrapper.find(Checkbox).filterWhere(n => n.prop('name') === 'bubbleFireIfParent').node;
-  const bubbleFireIfChildFiredCheckbox =
-    wrapper.find(Checkbox).filterWhere(n => n.prop('name') === 'bubbleFireIfChildFired').node;
-  const bubbleStopCheckbox =
-    wrapper.find(Checkbox).filterWhere(n => n.prop('name') === 'bubbleStop').node;
+  const checkboxes = wrapper.find(Checkbox);
+
+  const bubbleFireIfParentCheckbox = checkboxes
+    .filterWhere(n => n.prop('name') === 'bubbleFireIfParent').node;
+  const bubbleFireIfChildFiredCheckbox = checkboxes
+    .filterWhere(n => n.prop('name') === 'bubbleFireIfChildFired').node;
+  const bubbleStopCheckbox = checkboxes.filterWhere(n => n.prop('name') === 'bubbleStop').node;
 
   return {
     bubbleFireIfParentCheckbox,

@@ -1,5 +1,4 @@
 import { mount } from 'enzyme';
-
 import NoConfig from '../noConfig';
 import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
 

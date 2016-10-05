@@ -2,20 +2,23 @@ import { mount } from 'enzyme';
 import { ValidationWrapper } from '@reactor/react-components';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Select from '@coralui/react-coral/lib/Select';
-
 import DOM from '../dom';
 import CoralField from '../../components/coralField';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
+  const textFields = wrapper.find(Textfield);
+  const coralFields = wrapper.find(CoralField);
+
+
   const elementPropertyPresetsSelect = wrapper.find(Select).node;
-  const elementSelectorTextfield =
-    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'elementSelector').node;
-  const customElementPropertyField =
-    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'customElementProperty').node;
-  const elementSelectorWrapper = wrapper.find(CoralField)
-    .filterWhere(n => n.prop('name') === 'elementSelector').find(ValidationWrapper).node;
-  const customElementPropertyWrapper = wrapper.find(CoralField)
+  const elementSelectorTextfield = textFields.filterWhere(n => n.prop('name') === 'elementSelector')
+    .node;
+  const customElementPropertyField = textFields
+    .filterWhere(n => n.prop('name') === 'customElementProperty').node;
+  const elementSelectorWrapper = coralFields.filterWhere(n => n.prop('name') === 'elementSelector')
+    .find(ValidationWrapper).node;
+  const customElementPropertyWrapper = coralFields
     .filterWhere(n => n.prop('name') === 'customElementProperty').find(ValidationWrapper).node;
 
   return {

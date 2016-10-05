@@ -2,15 +2,13 @@ import { mount } from 'enzyme';
 import { Textfield } from '@coralui/react-coral';
 import { DataElementSelectorButton } from '@reactor/react-components';
 import Button from '@coralui/react-coral/lib/Button';
-
 import extensionViewReduxForm from '../../extensionViewReduxForm';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 import CoralField from '../coralField';
 
 const getReactComponents = (wrapper) => {
   const dataElementButton = wrapper.find(DataElementSelectorButton).node;
-  const cssElementButton = wrapper.find(Button)
-    .filterWhere(n => n.prop('icon') === 'target').node;
+  const cssElementButton = wrapper.find(Button).filterWhere(n => n.prop('icon') === 'target').node;
   const textfield = wrapper.find(Textfield).node;
   const suffixLabel = wrapper.find('span.Label');
 

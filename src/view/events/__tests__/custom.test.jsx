@@ -2,24 +2,28 @@ import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import { ValidationWrapper } from '@reactor/react-components';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
-
 import Custom from '../custom';
+import CoralField from '../../components/coralField';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 import AdvancedEventOptions from '../components/advancedEventOptions';
 import ElementSelector from '../components/elementSelector';
 
 const getReactComponents = (wrapper) => {
-  const typeField = wrapper.find(Textfield).node;
-  const typeWrapper = wrapper.find(ValidationWrapper).node;
-  const elementSelectorTextfield =
-    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'elementSelector').node;
-  const bubbleStopCheckbox =
-    wrapper.find(Checkbox).filterWhere(n => n.prop('name') === 'bubbleStop').node;
+  const textFields = wrapper.find(Textfield);
+
+  const typeTextfield = textFields.filterWhere(n => n.prop('name') === 'type').node;
+
+  const elementSelectorTextfield = textFields
+    .filterWhere(n => n.prop('name') === 'elementSelector').node;
+  const bubbleStopCheckbox = wrapper.find(Checkbox)
+    .filterWhere(n => n.prop('name') === 'bubbleStop').node;
   const advancedEventOptions = wrapper.find(AdvancedEventOptions).node;
+  const typeWrapper = wrapper.find(CoralField).filterWhere(n => n.prop('name') === 'type')
+    .find(ValidationWrapper).node;
   const elementSelectorWrapper = wrapper.find(ElementSelector).find(ValidationWrapper).node;
 
   return {
-    typeField,
+    typeTextfield,
     typeWrapper,
     elementSelectorTextfield,
     bubbleStopCheckbox,
@@ -50,12 +54,12 @@ describe('custom event view', () => {
     advancedEventOptions.toggleSelected();
 
     const {
-      typeField,
+      typeTextfield,
       elementSelectorTextfield,
       bubbleStopCheckbox
     } = getReactComponents(instance);
 
-    expect(typeField.props.value).toBe('bar');
+    expect(typeTextfield.props.value).toBe('bar');
     expect(elementSelectorTextfield.props.value).toBe('.foo');
     expect(bubbleStopCheckbox.props.value).toBe(true);
   });
@@ -67,12 +71,12 @@ describe('custom event view', () => {
     advancedEventOptions.toggleSelected();
 
     const {
-      typeField,
+      typeTextfield,
       elementSelectorTextfield,
       bubbleStopCheckbox
     } = getReactComponents(instance);
 
-    typeField.props.onChange('bar');
+    typeTextfield.props.onChange('bar');
     elementSelectorTextfield.props.onChange('.foo');
     bubbleStopCheckbox.props.onChange(true);
 

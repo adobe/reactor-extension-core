@@ -1,5 +1,4 @@
 import { mount } from 'enzyme';
-
 import DeviceType from '../deviceType';
 import CheckboxList from '../../components/checkboxList';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';

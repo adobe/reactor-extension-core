@@ -2,7 +2,6 @@ import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
 import { ValidationWrapper } from '@reactor/react-components';
-
 import StandardEvent from '../../components/standardEvent';
 import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
 import AdvancedEventOptions from '../advancedEventOptions';
@@ -10,10 +9,10 @@ import ElementSelector from '../elementSelector';
 
 const getReactComponents = (wrapper) => {
   const advancedEventOptions = wrapper.find(AdvancedEventOptions).node;
-  const elementSelectorTextfield =
-    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'elementSelector').node;
-  const bubbleStopCheckbox =
-    wrapper.find(Checkbox).filterWhere(n => n.prop('name') === 'bubbleStop').node;
+  const elementSelectorTextfield = wrapper.find(Textfield)
+    .filterWhere(n => n.prop('name') === 'elementSelector').node;
+  const bubbleStopCheckbox = wrapper.find(Checkbox)
+    .filterWhere(n => n.prop('name') === 'bubbleStop').node;
   const elementSelectorWrapper = wrapper.find(ElementSelector).find(ValidationWrapper).node;
 
   return {

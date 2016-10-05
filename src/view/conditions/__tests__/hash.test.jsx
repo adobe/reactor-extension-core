@@ -18,7 +18,6 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-
 const testProps = {
   settings: {
     hashes: [

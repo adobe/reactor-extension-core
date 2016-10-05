@@ -1,7 +1,6 @@
 import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import { ValidationWrapper } from '@reactor/react-components';
-
 import TimeSpentOnPage from '../timeSpentOnPage';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 

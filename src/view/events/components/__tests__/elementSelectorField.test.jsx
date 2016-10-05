@@ -2,7 +2,6 @@ import { mount } from 'enzyme';
 import { ValidationWrapper } from '@reactor/react-components';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Button from '@coralui/react-coral/lib/Button';
-
 import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
 import ElementSelector, { formConfig } from '../elementSelector';
 import extensionViewReduxForm from '../../../extensionViewReduxForm';

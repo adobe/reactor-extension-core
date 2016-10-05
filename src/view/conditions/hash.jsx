@@ -52,17 +52,10 @@ const formConfig = {
     return values;
   },
   formValuesToSettings(settings, values) {
-    settings = {
-      ...settings
+    return {
+      ...settings,
+      ...values
     };
-
-    // Don't let ID get into the settings since it's only used in the view.
-    settings.hashes = values.hashes.map(hash => ({
-      value: hash.value,
-      valueIsRegex: hash.valueIsRegex
-    }));
-
-    return settings;
   },
   validate(errors, values) {
     errors = {

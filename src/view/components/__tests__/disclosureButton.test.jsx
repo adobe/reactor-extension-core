@@ -1,16 +1,15 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import Icon from '@coralui/react-coral/lib/Icon';
-
 import DisclosureButton from '../disclosureButton';
 
 const getReactComponents = (wrapper) => {
   const icon = wrapper.find(Icon).node;
-  const button = wrapper.find('button');
+  const buttonWrapper = wrapper.find('button');
 
   return {
     icon,
-    button
+    buttonWrapper
   };
 };
 
@@ -35,11 +34,11 @@ describe('disclosure button', () => {
 
   it('calls onClick when clicked', () => {
     const onClick = jasmine.createSpy();
-    const { button } = getReactComponents(render({
+    const { buttonWrapper } = getReactComponents(render({
       onClick
     }));
 
-    button.simulate('click');
+    buttonWrapper.simulate('click');
 
     expect(onClick).toHaveBeenCalled();
   });

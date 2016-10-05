@@ -1,14 +1,13 @@
 import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import { ValidationWrapper } from '@reactor/react-components';
-
 import ElementExists from '../elementExists';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 import ElementSelector from '../components/elementSelector';
 
 const getReactComponents = (wrapper) => {
-  const elementSelectorTextfield =
-    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'elementSelector').node;
+  const elementSelectorTextfield = wrapper.find(Textfield)
+    .filterWhere(n => n.prop('name') === 'elementSelector').node;
   const elementSelectorWrapper = wrapper.find(ElementSelector).find(ValidationWrapper).node;
 
   return {

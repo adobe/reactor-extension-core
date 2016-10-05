@@ -1,14 +1,13 @@
 import { mount } from 'enzyme';
 import Radio from '@coralui/react-coral/lib/Radio';
-
 import Protocol from '../protocol';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
-  const httpRadio =
-    wrapper.find(Radio).filterWhere(n => n.prop('value') === 'http:').node;
-  const httpsRadio =
-    wrapper.find(Radio).filterWhere(n => n.prop('value') === 'https:').node;
+  const radios = wrapper.find(Radio);
+
+  const httpRadio = radios.filterWhere(n => n.prop('value') === 'http:').node;
+  const httpsRadio = radios.filterWhere(n => n.prop('value') === 'https:').node;
 
   return {
     httpRadio,

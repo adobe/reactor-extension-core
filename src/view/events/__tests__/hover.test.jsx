@@ -3,7 +3,6 @@ import Textfield from '@coralui/react-coral/lib/Textfield';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
 import Radio from '@coralui/react-coral/lib/Radio';
 import { ValidationWrapper } from '@reactor/react-components';
-
 import DelayType from '../components/delayType';
 import Hover from '../hover';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
@@ -11,14 +10,14 @@ import AdvancedEventOptions from '../components/advancedEventOptions';
 import ElementSelector from '../components/elementSelector';
 
 const getReactComponents = (wrapper) => {
-  const elementSelectorTextfield =
-    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'elementSelector').node;
-  const bubbleStopCheckbox =
-    wrapper.find(Checkbox).filterWhere(n => n.prop('name') === 'bubbleStop').node;
-  const delayTextfield =
-    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'delay').node;
-  const delayRadio =
-    wrapper.find(Radio).filterWhere(n => n.prop('value') === 'delay').node;
+  const textFields = wrapper.find(Textfield);
+
+  const elementSelectorTextfield = textFields
+    .filterWhere(n => n.prop('name') === 'elementSelector').node;
+  const bubbleStopCheckbox = wrapper
+    .find(Checkbox).filterWhere(n => n.prop('name') === 'bubbleStop').node;
+  const delayTextfield = textFields.filterWhere(n => n.prop('name') === 'delay').node;
+  const delayRadio = wrapper.find(Radio).filterWhere(n => n.prop('value') === 'delay').node;
   const advancedEventOptions = wrapper.find(AdvancedEventOptions).node;
   const elementSelectorWrapper = wrapper.find(ElementSelector).find(ValidationWrapper).node;
   const delayValidationWrapper = wrapper.find(DelayType).find(ValidationWrapper).node;

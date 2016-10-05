@@ -6,8 +6,6 @@ import Textfield from '@coralui/react-coral/lib/Textfield';
 import Switch from '@coralui/react-coral/lib/Switch';
 import { ValidationWrapper } from '@reactor/react-components';
 import CoralField from '../../../components/coralField';
-
-
 import extensionViewReduxForm from '../../../extensionViewReduxForm';
 import ElementPropertiesEditor, { formConfig, ElementPropertyEditor } from '../elementPropertiesEditor';
 import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
