@@ -6,7 +6,8 @@ import MultipleItemEditor from '../multipleItemEditor';
 const getReactComponents = (wrapper) => {
   const rows = wrapper.find('div[data-type="row"]').nodes;
   const removeButtons = wrapper.find(Button).filterWhere(n => n.prop('icon') === 'close').nodes;
-  const addButton = wrapper.find(Button).filterWhere(n => n.prop('icon') === 'addCircle').node;
+  const addButton = wrapper.find(Button)
+    .filterWhere(n => n.prop('className') === 'MultipleItemEditor-addPatternButton').node;
 
   return {
     rows,
