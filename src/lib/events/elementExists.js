@@ -19,6 +19,9 @@ setInterval(function() {
       if (!seenElements.has(element)) {
         seenElements.set(element, true);
 
+        // We want to try to execute the rules in the order they were in the turbine container.
+        // This is why we try to loop from 0 to N. We do k-- in order to not mess up looping
+        // as we splice items from the array.
         for (var k = 0; k < listeners.length; k++) {
           var listener = listeners[k];
           if (matchesProperties(element, listener.settings.elementProperties)) {
