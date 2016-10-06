@@ -88,6 +88,28 @@ describe('elementExists event type', function() {
     expect(a2Trigger.calls.count()).toEqual(1);
   });
 
+  it('triggers multiple rules targeting the same element in the defined order', function() {
+    var result = null;
+    var aTrigger = jasmine.createSpy().and.callFake(function() {
+      result = 'aTrigger';
+    });
+    var a2Trigger = jasmine.createSpy().and.callFake(function() {
+      result = 'a2Trigger';
+    });
+
+    delegate({
+      elementSelector: '#a'
+    }, aTrigger);
+
+    delegate({
+      elementSelector: '#a'
+    }, a2Trigger);
+
+    jasmine.clock().tick(POLL_INTERVAL);
+
+    expect(result).toEqual('a2Trigger');
+  });
+
   it('triggers a rule if elementProperties match', function() {
     var trigger = jasmine.createSpy();
 
