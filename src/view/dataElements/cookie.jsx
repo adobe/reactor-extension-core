@@ -1,28 +1,25 @@
 import React from 'react';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-import { ValidationWrapper } from '@reactor/react-components';
 
+import CoralField from '../components/coralField';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
-function Cookie({ ...props }) {
-  const name = props.fields.name;
-
-  return (
-    <ValidationWrapper error={ name.touched && name.error }>
-      <label>
-        <span className="u-label">Cookie Name</span>
-        <Textfield { ...name } />
-      </label>
-    </ValidationWrapper>
-  );
-}
+const Cookie = () => (
+  <label>
+    <span className="u-label">Cookie Name</span>
+    <CoralField
+      name="name"
+      component={ Textfield }
+      supportValidation
+    />
+  </label>
+);
 
 const formConfig = {
-  fields: ['name'],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings) {
     return {
       ...values,
-      ...options.settings
+      ...settings
     };
   },
   formValuesToSettings(settings, values) {

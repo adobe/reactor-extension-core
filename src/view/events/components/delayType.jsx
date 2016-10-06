@@ -1,60 +1,46 @@
 import React from 'react';
-import { ValidationWrapper } from '@reactor/react-components';
 import Radio from '@coralui/react-coral/lib/Radio';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 
+import CoralField from '../../components/coralField';
 import { isPositiveNumber } from '../../utils/validators';
 
-export default class DelayType extends React.Component {
-  render() {
-    const { delayType, delay } = this.props.fields;
-
-    return (
-      <div>
-        <label>
-          <span className="u-label u-gapRight">Trigger</span>
-        </label>
-        <Radio
-          { ...delayType }
-          value="immediate"
-          checked={ delayType.value === 'immediate' }
-        >
-          immediately
-        </Radio>
-        <Radio
-          { ...delayType }
-          value="delay"
-          checked={ delayType.value === 'delay' }
-          onClick={ this.onDelayTypeClick }
-        >
-          after
-        </Radio>
-        <ValidationWrapper
-          error={ delay.touched && delay.error }
-        >
-          <Textfield
-            { ...delay }
-            onClick={ this.onDelayFieldClick }
-          />
-        </ValidationWrapper>
-        <label>
-          <span className="u-label u-gapLeft">milliseconds</span>
-        </label>
-      </div>
-    );
-  }
-}
+export default () => (
+  <div>
+    <label>
+      <span className="u-label u-gapRight">Trigger</span>
+    </label>
+    <CoralField
+      name="delayType"
+      component={ Radio }
+      value="immediate"
+    >
+      immediately
+    </CoralField>
+    <CoralField
+      name="delayType"
+      component={ Radio }
+      value="delay"
+    >
+      after
+    </CoralField>
+    <CoralField
+      name="delay"
+      component={ Textfield }
+      supportValidation
+    />
+    <label>
+      <span className="u-label u-gapLeft">milliseconds</span>
+    </label>
+  </div>
+);
 
 export const formConfig = {
-  fields: [
-    'delayType',
-    'delay'
-  ],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings) {
     return {
       ...values,
-      delayType: options.settings.delay > 0 ? 'delay' : 'immediate',
-      delay: options.settings.delay > 0 ? options.settings.delay : ''
+      delayType: settings.delay > 0 ? 'delay' : 'immediate',
+      delay: settings.delay > 0 ? settings.delay : ''
     };
   },
   formValuesToSettings(settings, values) {

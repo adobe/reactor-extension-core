@@ -1,37 +1,19 @@
 import React from 'react';
-import Button from '@coralui/react-coral/lib/Button';
-import { ErrorTip } from '@reactor/react-components';
 
+import CodeField from '../components/codeField';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
-class Custom extends React.Component {
-  onOpenEditor = () => {
-    const sourceField = this.props.fields.source;
-    window.extensionBridge.openCodeEditor(sourceField.value, sourceField.onChange);
-  };
-
-  render() {
-    const source = this.props.fields.source;
-
-    return (
-      <div>
-        <Button icon="code" onClick={ this.onOpenEditor }>
-          Open Editor
-        </Button>
-        { source.touched && source.error ?
-          <ErrorTip>{ source.error }</ErrorTip> : null
-        }
-      </div>
-    );
-  }
-}
+const Custom = () => (
+  <div>
+    <CodeField name="source" />
+  </div>
+);
 
 const formConfig = {
-  fields: ['source'],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings) {
     return {
       ...values,
-      ...options.settings
+      ...settings
     };
   },
   formValuesToSettings(settings, values) {

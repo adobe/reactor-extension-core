@@ -2,16 +2,15 @@ import { mount } from 'enzyme';
 import Radio from '@coralui/react-coral/lib/Radio';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import { ValidationWrapper } from '@reactor/react-components';
-
 import extensionViewReduxForm from '../../../extensionViewReduxForm';
 import DelayType, { formConfig } from '../delayType';
 import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
-  const delayRadio =
-    wrapper.find(Radio).filterWhere(n => n.prop('value') === 'delay').node;
-  const immediateRadio =
-    wrapper.find(Radio).filterWhere(n => n.prop('value') === 'immediate').node;
+  const radios = wrapper.find(Radio);
+
+  const delayRadio = radios.filterWhere(n => n.prop('value') === 'delay').node;
+  const immediateRadio = radios.filterWhere(n => n.prop('value') === 'immediate').node;
   const delayTextfield = wrapper.find(Textfield).node;
   const delayValidationWrapper = wrapper.find(ValidationWrapper).node;
 

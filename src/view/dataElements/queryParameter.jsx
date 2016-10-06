@@ -1,40 +1,35 @@
 import React from 'react';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-import { ValidationWrapper } from '@reactor/react-components';
+
+import CoralField from '../components/coralField';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
-function QueryParameter({ ...props }) {
-  const { name, caseInsensitive } = props.fields;
-
-  return (
-    <div>
-      <ValidationWrapper
-        error={ name.touched && name.error }
-        className="u-gapRight"
-      >
-        <label>
-          <span className="u-label">URL Querystring Parameter Name</span>
-          <Textfield { ...name } />
-        </label>
-      </ValidationWrapper>
-      <Checkbox { ...caseInsensitive }>
-        Ignore capitalization differences
-      </Checkbox>
-    </div>
-  );
-}
+const QueryParameter = () => (
+  <div>
+    <label className="u-gapRight">
+      <span className="u-label">URL Querystring Parameter Name</span>
+      <CoralField
+        name="name"
+        component={ Textfield }
+        supportValidation
+      />
+    </label>
+    <CoralField
+      name="caseInsensitive"
+      component={ Checkbox }
+    >
+      Ignore capitalization differences
+    </CoralField>
+  </div>
+);
 
 const formConfig = {
-  fields: [
-    'name',
-    'caseInsensitive'
-  ],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings, state) {
     return {
       ...values,
-      ...options.settings,
-      caseInsensitive: options.settingsIsNew || options.settings.caseInsensitive
+      ...settings,
+      caseInsensitive: state.meta.isNew || settings.caseInsensitive
     };
   },
   formValuesToSettings(settings, values) {

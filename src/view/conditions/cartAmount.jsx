@@ -1,58 +1,48 @@
 import React from 'react';
-import { ValidationWrapper, DataElementSelectorButton } from '@reactor/react-components';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import ComparisonOperatorField from './components/comparisonOperatorField';
 import { isNumber } from '../utils/validators';
+import CoralField from '../components/coralField';
 
-class CartAmount extends React.Component {
-  onOpenDataElementSelector = () => {
-    window.extensionBridge.openDataElementSelector(this.props.fields.dataElement.onChange);
-  };
-
-  render() {
-    const { dataElement, operator, amount } = this.props.fields;
-
-    return (
-      <div>
-        <div>
-          <ValidationWrapper type="dataElement" error={ dataElement.touched && dataElement.error }>
-            <label>
-              <span className="u-label">The cart amount identified by the data element</span>
-              <Textfield { ...dataElement } />
-            </label>
-            <DataElementSelectorButton onClick={ this.onOpenDataElementSelector } />
-          </ValidationWrapper>
-        </div>
-        <div className="u-gapTop">
-          <label className="u-gapRight">
-            <span className="u-label">is</span>
-            <ComparisonOperatorField { ...operator } />
-          </label>
-          <ValidationWrapper type="amount" error={ amount.touched && amount.error }>
-            <label>
-              <span className="u-label">the value</span>
-              <Textfield className="u-smallTextfield" { ...amount } />
-            </label>
-          </ValidationWrapper>
-        </div>
-      </div>
-    );
-  }
-}
+const CartAmount = () => (
+  <div>
+    <div>
+      <label>
+        <span className="u-label">The cart amount identified by the data element</span>
+        <CoralField
+          name="dataElement"
+          component={ Textfield }
+          supportValidation
+          supportDataElementName
+        />
+      </label>
+    </div>
+    <div className="u-gapTop">
+      <label className="u-gapRight">
+        <span className="u-label">is</span>
+        <CoralField name="operator" component={ ComparisonOperatorField } />
+      </label>
+      <label>
+        <span className="u-label">the value</span>
+        <CoralField
+          name="amount"
+          component={ Textfield }
+          componentClassName="u-smallTextfield"
+          supportValidation
+        />
+      </label>
+    </div>
+  </div>
+);
 
 const formConfig = {
-  fields: [
-    'dataElement',
-    'operator',
-    'amount'
-  ],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings) {
     return {
       ...values,
-      ...options.settings,
-      operator: options.settings.operator || '>'
+      ...settings,
+      operator: settings.operator || '>'
     };
   },
   formValuesToSettings(settings, values) {

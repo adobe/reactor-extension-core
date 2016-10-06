@@ -1,22 +1,26 @@
 import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import { ValidationWrapper } from '@reactor/react-components';
-
+import CoralField from '../../components/coralField';
 import WindowSize from '../windowSize';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 import ComparisonOperatorField from '../components/comparisonOperatorField';
 
 const getReactComponents = (wrapper) => {
-  const widthOperatorField =
-    wrapper.find(ComparisonOperatorField).filterWhere(n => n.prop('name') === 'widthOperator').node;
-  const heightOperatorField = wrapper
-    .find(ComparisonOperatorField).filterWhere(n => n.prop('name') === 'heightOperator').node;
-  const widthField = wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'width').node;
-  const heightField = wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'height').node;
-  const widthWrapper =
-    wrapper.find(ValidationWrapper).filterWhere(n => n.prop('type') === 'width').node;
-  const heightWrapper =
-    wrapper.find(ValidationWrapper).filterWhere(n => n.prop('type') === 'height').node;
+  const comparisonOperatorFields = wrapper.find(ComparisonOperatorField);
+  const textFields = wrapper.find(Textfield);
+  const coralFields = wrapper.find(CoralField);
+
+  const widthOperatorField = comparisonOperatorFields
+    .filterWhere(n => n.prop('name') === 'widthOperator').node;
+  const heightOperatorField = comparisonOperatorFields
+    .filterWhere(n => n.prop('name') === 'heightOperator').node;
+  const widthField = textFields.filterWhere(n => n.prop('name') === 'width').node;
+  const heightField = textFields.filterWhere(n => n.prop('name') === 'height').node;
+  const widthWrapper = coralFields.filterWhere(n => n.prop('name') === 'width')
+    .find(ValidationWrapper).node;
+  const heightWrapper = coralFields.filterWhere(n => n.prop('name') === 'height')
+    .find(ValidationWrapper).node;
 
   return {
     widthOperatorField,

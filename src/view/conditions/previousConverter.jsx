@@ -1,40 +1,28 @@
 import React from 'react';
-import { ValidationWrapper, DataElementSelectorButton } from '@reactor/react-components';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 
 import extensionViewReduxForm from '../extensionViewReduxForm';
+import CoralField from '../components/coralField';
 
-class PreviousConverter extends React.Component {
-  onOpenDataElementSelector = () => {
-    window.extensionBridge.openDataElementSelector(this.props.fields.dataElement.onChange);
-  };
-
-  render() {
-    const { dataElement } = this.props.fields;
-
-    return (
-      <ValidationWrapper
-        className="u-gapRight"
-        error={ dataElement.touched && dataElement.error }
-      >
-        <label>
-          <span className="u-label">
-            Data element identifying whether the user is a previous converter
-          </span>
-          <Textfield { ...dataElement } />
-          <DataElementSelectorButton onClick={ this.onOpenDataElementSelector } />
-        </label>
-      </ValidationWrapper>
-    );
-  }
-}
+const PreviousConverter = () => (
+  <label className="u-gapRight">
+    <span className="u-label">
+      Data element identifying whether the user is a previous converter
+    </span>
+    <CoralField
+      name="dataElement"
+      component={ Textfield }
+      supportDataElementName
+      supportValidation
+    />
+  </label>
+);
 
 const formConfig = {
-  fields: ['dataElement'],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings) {
     return {
       ...values,
-      ...options.settings
+      ...settings
     };
   },
   formValuesToSettings(settings, values) {

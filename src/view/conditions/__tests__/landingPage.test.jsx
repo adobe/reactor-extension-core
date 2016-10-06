@@ -1,19 +1,18 @@
 import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
+import Switch from '@coralui/react-coral/lib/Switch';
 import { ValidationWrapper } from '@reactor/react-components';
-
 import LandingPage from '../landingPage';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
-import RegexToggle from '../../components/regexToggle';
 
 const getReactComponents = (wrapper) => {
   const pageField = wrapper.find(Textfield).node;
-  const valueRegexToggle = wrapper.find(RegexToggle).node;
+  const pageRegexSwitch = wrapper.find(Switch).node;
   const pageWrapper = wrapper.find(ValidationWrapper).node;
 
   return {
     pageField,
-    valueRegexToggle,
+    pageRegexSwitch,
     pageWrapper
   };
 };
@@ -35,20 +34,19 @@ describe('landing page view', () => {
       }
     });
 
-    const { pageField, valueRegexToggle } = getReactComponents(instance);
+    const { pageField, pageRegexSwitch } = getReactComponents(instance);
 
     expect(pageField.props.value).toBe('foo');
-    expect(valueRegexToggle.props.value).toBe('foo');
-    expect(valueRegexToggle.props.valueIsRegex).toBe(true);
+    expect(pageRegexSwitch.props.checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { pageField, valueRegexToggle } = getReactComponents(instance);
+    const { pageField, pageRegexSwitch } = getReactComponents(instance);
 
     pageField.props.onChange('foo');
-    valueRegexToggle.props.onValueIsRegexChange(true);
+    pageRegexSwitch.props.onChange({ target: { checked: true } });
 
     expect(extensionBridge.getSettings()).toEqual({
       page: 'foo',

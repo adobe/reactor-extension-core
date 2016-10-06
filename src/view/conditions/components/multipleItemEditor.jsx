@@ -1,24 +1,21 @@
 import React from 'react';
 import Button from '@coralui/react-coral/lib/Button';
 
-export default function MultipleItemEditor({ ...props }) {
-  const { items, renderItem, getKey, onAddItem, onRemoveItem } = props;
-
-  const rows = items.map((item, i) => (
-    <div data-type="row" key={ getKey(item) }>
-      { i !== 0 ? <div className="MultipleItemEditor-orLabel">or</div> : null }
-      { renderItem(item, i) }
+export default ({ fields, renderItem }) => {
+  const rows = fields.map((field, index) => (
+    <div data-type="row" key={ field }>
+      { index !== 0 ? <div className="MultipleItemEditor-orLabel">or</div> : null }
+      { renderItem(field) }
       {
-        items.length > 1 ?
+        fields.length > 1 ?
           <Button
             className="u-gapLeft"
             icon="close"
-            iconSize="S"
-            variant="quiet"
-            onClick={ onRemoveItem.bind(this, i) }
-          >
-            Remove Pattern
-          </Button> : null
+            iconSize="XS"
+            variant="minimal"
+            square
+            onClick={ fields.remove.bind(this, index) }
+          /> : null
       }
     </div>
   ));
@@ -29,14 +26,11 @@ export default function MultipleItemEditor({ ...props }) {
       <div>
         <Button
           className="MultipleItemEditor-addPatternButton"
-          icon="addCircle"
-          iconSize="S"
-          variant="quiet"
-          onClick={ onAddItem }
+          onClick={ () => fields.push({}) }
         >
           Add Pattern
         </Button>
       </div>
     </div>
   );
-}
+};

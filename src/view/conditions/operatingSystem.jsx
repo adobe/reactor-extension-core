@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Field } from 'redux-form';
 import CheckboxList from '../components/checkboxList';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
@@ -15,20 +15,18 @@ const operatingSystemOptions = [
   'Maemo'
 ];
 
-const OperatingSystem = ({ ...props }) => {
-  const { operatingSystems } = props.fields;
-  return (<CheckboxList
+const OperatingSystem = () =>
+  (<Field
+    name="operatingSystems"
+    component={ CheckboxList }
     options={ operatingSystemOptions }
-    { ...operatingSystems }
   />);
-};
 
 const formConfig = {
-  fields: ['operatingSystems'],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings) {
     return {
       ...values,
-      ...options.settings
+      ...settings
     };
   },
   formValuesToSettings(settings, values) {

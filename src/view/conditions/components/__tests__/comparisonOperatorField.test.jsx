@@ -1,7 +1,6 @@
 import { mount } from 'enzyme';
 import React from 'react';
 import Select from '@coralui/react-coral/lib/Select';
-
 import ComparisonOperatorField from '../comparisonOperatorField';
 
 const getReactComponents = (wrapper) => {

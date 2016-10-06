@@ -1,72 +1,66 @@
 import React from 'react';
 import Button from '@coralui/react-coral/lib/Button';
+import Textfield from '@coralui/react-coral/lib/Textfield';
+import { Field } from 'redux-form';
 
-import ElementPropertyEditor from './elementPropertyEditor';
-import createId from '../../utils/createId';
+import CoralField from '../../components/coralField';
+import RegexToggle from '../../components/regexToggle';
 
-export default class ElementPropertiesEditor extends React.Component {
-  add = () => {
-    this.props.fields.elementProperties.addField({
-      id: createId(),
-      name: '',
-      value: ''
-    });
-  };
+export const ElementPropertyEditor = ({ field, remove }) => (
+  <div className="u-gapBottom">
+    <CoralField
+      placeholder="Property"
+      name={ `${field}.name` }
+      component={ Textfield }
+      supportValidation
+    />
+    <span className="u-label u-gapLeft">=</span>
+    <CoralField
+      className="u-gapRight"
+      placeholder="Value"
+      name={ `${field}.value` }
+      component={ Textfield }
+    />
+    <Field
+      name={ `${field}.valueIsRegex` }
+      component={ RegexToggle }
+      valueFieldName={ `${field}.value` }
+    />
+    <Button
+      className="u-gapBottom"
+      variant="minimal"
+      icon="close"
+      iconSize="XS"
+      onClick={ remove }
+    />
+  </div>
+);
 
-  handleKeyPress = event => {
-    if (event.keyCode === 13 && !event.shiftKey && !event.ctrlKey && !event.altKey) {
-      this.add();
+export default ({ fields = [] }) => (
+  <div>
+    {
+      fields.map((field, index) => (
+        <ElementPropertyEditor
+          key={ field }
+          field={ field }
+          component={ ElementPropertyEditor }
+          remove={ fields.remove.bind(this, index) }
+        />
+      ))
     }
-  };
-
-  remove = index => {
-    this.props.fields.elementProperties.removeField(index);
-  };
-
-  render() {
-    const { elementProperties } = this.props.fields;
-
-    return (
-      <div>
-        {
-          elementProperties.map((elementProperty, index) => (
-            <ElementPropertyEditor
-              key={ elementProperty.id.value }
-              fields={ elementProperty }
-              remove={ this.remove.bind(null, index) }
-              onKeyPress={ this.handleKeyPress }
-            />
-          ))
-        }
-        <Button onClick={ this.add }>Add</Button>
-      </div>
-    );
-  }
-}
+    <Button onClick={ () => fields.push({}) }>Add</Button>
+  </div>
+);
 
 export const formConfig = {
-  fields: [
-    'elementProperties[].id',
-    'elementProperties[].name',
-    'elementProperties[].value',
-    'elementProperties[].valueIsRegex'
-  ],
-  settingsToFormValues(values, options) {
-    const { settings } = options;
-
+  settingsToFormValues(values, settings) {
     const elementProperties = settings.elementProperties || [];
 
     // Make sure there's always at least one element property. This is just so the view
     // always shows at least one row.
     if (!elementProperties.length) {
-      elementProperties.push({
-        name: '',
-        value: ''
-      });
+      elementProperties.push({});
     }
-
-    // ID used as a key when rendering each item.
-    elementProperties.forEach(elementProperty => { elementProperty.id = createId(); });
 
     return {
       ...values,
@@ -87,8 +81,10 @@ export const formConfig = {
           ...elementProperty
         };
 
-        // ID is only used for view rendering.
-        delete elementProperty.id;
+        // If this seems strange, check http://eslint.org/docs/rules/no-prototype-builtins.
+        if (!{}.hasOwnProperty.call(elementProperty, 'value')) {
+          elementProperty.value = '';
+        }
 
         return elementProperty;
       });
@@ -104,7 +100,7 @@ export const formConfig = {
       ...errors
     };
 
-    errors.elementProperties = values.elementProperties.map((item) => {
+    errors.elementProperties = (values.elementProperties || []).map((item) => {
       const result = {};
 
       if (item.value && !item.name) {

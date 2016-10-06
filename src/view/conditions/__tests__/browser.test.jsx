@@ -1,5 +1,4 @@
 import { mount } from 'enzyme';
-
 import Browser from '../browser';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 import CheckboxList from '../../components/checkboxList';
@@ -35,14 +34,14 @@ describe('browser view', () => {
 
     const { browsersCheckboxList } = getReactComponents(instance);
 
-    expect(browsersCheckboxList.props.value).toEqual(selectedBrowsers);
+    expect(browsersCheckboxList.props.input.value).toEqual(selectedBrowsers);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { browsersCheckboxList } = getReactComponents(instance);
-    browsersCheckboxList.props.onChange(selectedBrowsers);
+    browsersCheckboxList.props.input.onChange(selectedBrowsers);
 
     expect(extensionBridge.getSettings()).toEqual({
       browsers: selectedBrowsers

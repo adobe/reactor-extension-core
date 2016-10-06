@@ -1,36 +1,55 @@
 import React from 'react';
 import classNames from 'classnames';
 import Switch from '@coralui/react-coral/lib/Switch';
+import { Field } from 'redux-form';
 
-export default class RegexToggle extends React.Component {
-  onToggleChange = event => {
-    this.props.onValueIsRegexChange(event.target.checked);
-  };
+const TestRegexButton = props => {
+  const {
+    input: {
+      value,
+      onChange
+    }
+  } = props;
 
-  onTestRegex = () => {
-    window.extensionBridge.openRegexTester(
-      this.props.value,
-      this.props.onValueChange || (() => {})
-    );
-  };
+  return (
+    <button
+      className="u-buttonReset coral-Link"
+      onClick={ () => window.extensionBridge.openRegexTester(value, onChange) }
+    >
+      Test
+    </button>
+  );
+};
 
-  render() {
-    return (
-      <div className={ classNames(this.props.className, 'u-inlineBlock') }>
-        <label>
-          <Switch
-            className="u-gapRight"
-            checked={ this.props.valueIsRegex }
-            onChange={ this.onToggleChange }
+export default props => {
+  const {
+    input: {
+      value: valueIsRegex,
+      onChange
+    },
+    valueFieldName,
+    className
+  } = props;
+
+  return (
+    <div className={ classNames(className, 'u-inlineBlock') }>
+      <label>
+        <Switch
+          className="u-gapRight"
+          checked={ Boolean(valueIsRegex) }
+          onChange={ event => onChange(event.target.checked) }
+        />
+        <span className="u-label">Regex</span>
+        <span
+          id="testButtonContainer"
+          style={ { visibility: valueIsRegex ? 'visible' : 'hidden' } }
+        >
+          <Field
+            name={ valueFieldName }
+            component={ TestRegexButton }
           />
-          <span className="u-label">Regex</span>
-          <button
-            className="u-buttonReset coral-Link"
-            onClick={ this.onTestRegex }
-            style={ { visibility: this.props.valueIsRegex ? 'visible' : 'hidden' } }
-          >Test</button>
-        </label>
-      </div>
-    );
-  }
-}
+        </span>
+      </label>
+    </div>
+  );
+};

@@ -1,37 +1,31 @@
 import React from 'react';
-import { ValidationWrapper } from '@reactor/react-components';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 
+import CoralField from '../components/coralField';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import { isPositiveNumber } from '../utils/validators';
 
-const TimeSpentOnPage = ({ ...props }) => {
-  const { timeOnPage } = props.fields;
-  return (
-    <div>
-      <label>
-        <span className="u-label u-gapRight">Trigger after</span>
-      </label>
-      <ValidationWrapper
-        error={ timeOnPage.touched && timeOnPage.error }
-      >
-        <Textfield
-          { ...timeOnPage }
-        />
-      </ValidationWrapper>
-      <label>
-        <span className="u-label u-gapLeft">seconds spent on the page</span>
-      </label>
-    </div>
-  );
-};
+const TimeSpentOnPage = () => (
+  <div>
+    <label>
+      <span className="u-label u-gapRight">Trigger after</span>
+    </label>
+    <CoralField
+      name="timeOnPage"
+      component={ Textfield }
+      supportValidation
+    />
+    <label>
+      <span className="u-label u-gapLeft">seconds spent on the page</span>
+    </label>
+  </div>
+);
 
 const formConfig = {
-  fields: ['timeOnPage'],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings) {
     return {
       ...values,
-      ...options.settings
+      ...settings
     };
   },
   formValuesToSettings: (settings, values) => ({

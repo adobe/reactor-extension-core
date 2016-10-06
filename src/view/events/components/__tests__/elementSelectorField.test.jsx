@@ -1,10 +1,10 @@
-import React from 'react';
 import { mount } from 'enzyme';
 import { ValidationWrapper } from '@reactor/react-components';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Button from '@coralui/react-coral/lib/Button';
-
-import ElementSelectorField from '../../components/elementSelectorField';
+import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
+import ElementSelector, { formConfig } from '../elementSelector';
+import extensionViewReduxForm from '../../../extensionViewReduxForm';
 
 const getReactComponents = (wrapper) => {
   const textfield = wrapper.find(Textfield).node;
@@ -18,77 +18,45 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-const render = props => mount(<ElementSelectorField { ...props } />);
+describe('elementSelector', () => {
+  let extensionBridge;
+  let instance;
 
-let mockProps;
+  beforeAll(() => {
+    const FormComponent = extensionViewReduxForm(formConfig)(ElementSelector);
+    extensionBridge = createExtensionBridge();
+    instance = mount(getFormComponent(FormComponent, extensionBridge));
+  });
 
-describe('elementSelectorField', () => {
-  beforeEach(() => {
-    mockProps = {
-      fields: {
-        elementSelector: {
-          onChange: jasmine.createSpy()
-        }
+  it('sets form values from settings', () => {
+    extensionBridge.init({
+      settings: {
+        elementSelector: 'foo'
       }
-    };
-
-    window.extensionBridge = {
-      openCssSelector: () => {}
-    };
-  });
-
-  afterAll(() => {
-    delete window.extensionBridge;
-  });
-
-  describe('textfield', () => {
-    it('receives value', () => {
-      mockProps.fields.elementSelector.value = 'foo';
-
-      const { textfield } = getReactComponents(render(mockProps));
-
-      expect(textfield.props.value).toBe('foo');
     });
 
-    it('calls onChange', () => {
-      const { textfield } = getReactComponents(render(mockProps));
+    const { textfield } = getReactComponents(instance);
 
-      textfield.props.onChange('foo');
-      expect(mockProps.fields.elementSelector.onChange).toHaveBeenCalledWith('foo');
-    });
-  });
-
-  describe('validation wrapper', () => {
-    it('receives error', () => {
-      mockProps.fields.elementSelector.touched = true;
-      mockProps.fields.elementSelector.error = 'Test error.';
-      const { validationWrapper } = getReactComponents(render(mockProps));
-
-      expect(validationWrapper.props.error).toEqual(jasmine.any(String));
-    });
-  });
-
-  it('opens the css selector modal', () => {
-    mockProps = {
-      fields: {
-        elementSelector: {
-          onChange: jasmine.createSpy().and.callFake(value => {
-            mockProps.fields.elementSelector.value = value;
-          })
-        }
-      }
-    };
-    const { button } = getReactComponents(render(mockProps));
-
-    spyOn(window.extensionBridge, 'openCssSelector').and.callFake(callback => {
-      callback('foo');
-    });
-
-    button.props.onClick();
-
-    const { textfield } = getReactComponents(render(mockProps));
-
-    expect(window.extensionBridge.openCssSelector).toHaveBeenCalled();
     expect(textfield.props.value).toBe('foo');
+  });
+
+  it('sets settings from form values', () => {
+    extensionBridge.init();
+
+    const { textfield } = getReactComponents(instance);
+
+    textfield.props.onChange('some prop set');
+
+    expect(extensionBridge.getSettings()).toEqual({
+      elementSelector: 'some prop set'
+    });
+  });
+
+  it('sets error if element selector field is empty', () => {
+    extensionBridge.init();
+    const { validationWrapper } = getReactComponents(instance);
+
+    expect(extensionBridge.validate()).toBe(false);
+    expect(validationWrapper.props.error).toEqual(jasmine.any(String));
   });
 });

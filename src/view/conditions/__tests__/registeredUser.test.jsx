@@ -1,7 +1,6 @@
 import { mount } from 'enzyme';
 import { ValidationWrapper, DataElementSelectorButton } from '@reactor/react-components';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-
 import RegisteredUser from '../registeredUser';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
@@ -23,25 +22,7 @@ describe('registered user view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    window.extensionBridge = extensionBridge;
     instance = mount(getFormComponent(RegisteredUser, extensionBridge));
-  });
-
-  afterAll(() => {
-    delete window.extensionBridge;
-  });
-
-  it('opens the data element selector from data element button', () => {
-    const { dataElementField, dataElementButton } = getReactComponents(instance);
-
-    spyOn(window.extensionBridge, 'openDataElementSelector').and.callFake(callback => {
-      callback('foo');
-    });
-
-    dataElementButton.props.onClick();
-
-    expect(window.extensionBridge.openDataElementSelector).toHaveBeenCalled();
-    expect(dataElementField.props.value).toBe('foo');
   });
 
   it('sets form values from settings', () => {

@@ -1,16 +1,15 @@
 import { mount } from 'enzyme';
 import Radio from '@coralui/react-coral/lib/Radio';
-
 import extensionViewReduxForm from '../../../extensionViewReduxForm';
 import ElementFilter, { formConfig } from '../elementFilter';
 import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
 import SpecificElements from '../specificElements';
 
 const getReactComponents = (wrapper) => {
-  const specificElementsRadio =
-    wrapper.find(Radio).filterWhere(n => n.prop('value') === 'specific').node;
-  const anyElementRadio =
-    wrapper.find(Radio).filterWhere(n => n.prop('value') === 'any').node;
+  const radios = wrapper.find(Radio);
+
+  const specificElementsRadio = radios.filterWhere(n => n.prop('value') === 'specific').node;
+  const anyElementRadio = radios.filterWhere(n => n.prop('value') === 'any').node;
   const specificElements = wrapper.find(SpecificElements).node;
 
   return {
@@ -84,10 +83,6 @@ describe('elementFilter', () => {
     specificElementsRadio.props.onChange(specificElementsRadio.props.value);
 
     expect(extensionBridge.validate()).toBe(false);
-
-    const { specificElements } = getReactComponents(instance);
-
-    expect(specificElements.props.fields.elementSelector.error).toEqual(jasmine.any(String));
   });
 
   it('excludes specificElements errors if any element radio is selected', () => {

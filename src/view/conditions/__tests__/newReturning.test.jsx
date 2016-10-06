@@ -1,14 +1,13 @@
 import { mount } from 'enzyme';
 import Radio from '@coralui/react-coral/lib/Radio';
-
 import NewReturning from '../newReturning';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
-  const newVisitorRadio =
-    wrapper.find(Radio).filterWhere(n => n.prop('value') === 'new').node;
-  const returningVisitorRadio =
-    wrapper.find(Radio).filterWhere(n => n.prop('value') === 'returning').node;
+  const radios = wrapper.find(Radio);
+
+  const newVisitorRadio = radios.filterWhere(n => n.prop('value') === 'new').node;
+  const returningVisitorRadio = radios.filterWhere(n => n.prop('value') === 'returning').node;
 
   return {
     newVisitorRadio,

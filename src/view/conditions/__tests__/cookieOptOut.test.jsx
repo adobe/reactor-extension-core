@@ -1,6 +1,5 @@
 import { mount } from 'enzyme';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
-
 import CookieOptOut from '../cookieOptOut';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 

@@ -2,16 +2,15 @@ import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Radio from '@coralui/react-coral/lib/Radio';
 import { ValidationWrapper } from '@reactor/react-components';
-
 import PageViews from '../pageViews';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 import ComparisonOperatorField from '../components/comparisonOperatorField';
 
 const getReactComponents = (wrapper) => {
-  const lifetimeRadio =
-    wrapper.find(Radio).filterWhere(n => n.prop('value') === 'lifetime').node;
-  const sessionRadio =
-    wrapper.find(Radio).filterWhere(n => n.prop('value') === 'session').node;
+  const radios = wrapper.find(Radio);
+
+  const lifetimeRadio = radios.filterWhere(n => n.prop('value') === 'lifetime').node;
+  const sessionRadio = radios.filterWhere(n => n.prop('value') === 'session').node;
   const operatorField = wrapper.find(ComparisonOperatorField).node;
   const countField = wrapper.find(Textfield).node;
   const countWrapper = wrapper.find(ValidationWrapper).node;

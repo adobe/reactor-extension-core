@@ -1,22 +1,20 @@
 import React from 'react';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
-import extensionViewReduxForm from '../extensionViewReduxForm';
 
-const CookieOptOut = ({ ...props }) => {
-  const { acceptsCookies } = props.fields;
-  return (<Checkbox { ...acceptsCookies }>
+import extensionViewReduxForm from '../extensionViewReduxForm';
+import CoralField from '../components/coralField';
+
+const CookieOptOut = () => (
+  <CoralField component={ Checkbox } name="acceptsCookies">
     User accepts cookies (EU)
-  </Checkbox>);
-};
+  </CoralField>
+);
 
 const formConfig = {
-  fields: [
-    'acceptsCookies'
-  ],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings) {
     return {
       ...values,
-      ...options.settings
+      ...settings
     };
   },
   formValuesToSettings(settings, values) {

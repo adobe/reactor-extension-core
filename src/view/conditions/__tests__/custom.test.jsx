@@ -1,7 +1,6 @@
 import { mount } from 'enzyme';
 import Button from '@coralui/react-coral/lib/Button';
 import { ErrorTip } from '@reactor/react-components';
-
 import Custom from '../custom';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
@@ -22,33 +21,6 @@ describe('custom view', () => {
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
     instance = mount(getFormComponent(Custom, extensionBridge));
-  });
-
-  it('opens code editor with source value when button is clicked and stores result', () => {
-    extensionBridge.init({
-      settings: {
-        source: 'foo'
-      }
-    });
-
-    window.extensionBridge = {
-      openCodeEditor: jasmine.createSpy().and.callFake((source, callback) => {
-        callback('bar');
-      })
-    };
-
-    const { openEditorButton } = getReactComponents(instance);
-
-    openEditorButton.props.onClick();
-
-    expect(window.extensionBridge.openCodeEditor)
-      .toHaveBeenCalledWith('foo', jasmine.any(Function));
-    expect(extensionBridge.validate()).toBe(true);
-    expect(extensionBridge.getSettings()).toEqual({
-      source: 'bar'
-    });
-
-    delete window.extensionBridge;
   });
 
   it('sets error if source is empty', () => {

@@ -1,8 +1,8 @@
 import React from 'react';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Select from '@coralui/react-coral/lib/Select';
-import { ValidationWrapper } from '@reactor/react-components';
 
+import CoralField from '../components/coralField';
 import ElementFilter, { formConfig as elementFilterFormConfig } from './components/elementFilter';
 import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
 import extensionViewReduxForm from '../extensionViewReduxForm';
@@ -25,47 +25,40 @@ const timePlayedUnitOptions = [
   }
 ];
 
-const TimePlayed = ({ ...props }) => {
-  const { amount, unit } = props.fields;
-  return (
-    <div>
-      <ElementFilter fields={ props.fields } />
-      <div className="u-gapTop">
-        <label>
-          <span className="u-label u-gapRight">Trigger when</span>
-        </label>
-        <ValidationWrapper
-          error={ amount.touched && amount.error }
-        >
-          <Textfield
-            { ...amount }
-          />
-        </ValidationWrapper>
-        <Select
-          { ...unit }
-          className="u-gapLeft TimePlayed-unitSelect"
-          options={ timePlayedUnitOptions }
-        />
-        <label>
-          <span className="u-label u-gapLeft">have passed</span>
-        </label>
-      </div>
-      <AdvancedEventOptions fields={ props.fields } />
+const TimePlayed = () => (
+  <div>
+    <ElementFilter />
+    <div className="u-gapTop">
+      <label>
+        <span className="u-label u-gapRight">Trigger when</span>
+      </label>
+      <CoralField
+        name="amount"
+        component={ Textfield }
+        supportValidation
+      />
+      <CoralField
+        className="u-gapLeft"
+        componentClassName="TimePlayed-unitSelect"
+        name="unit"
+        component={ Select }
+        options={ timePlayedUnitOptions }
+      />
+      <label>
+        <span className="u-label u-gapLeft">have passed</span>
+      </label>
     </div>
-  );
-};
+    <AdvancedEventOptions />
+  </div>
+);
 
 const formConfig = mergeFormConfigs(
   elementFilterFormConfig,
   advancedEventOptionsFormConfig,
   {
-    fields: [
-      'amount',
-      'unit'
-    ],
-    settingsToFormValues: (values, options) => ({
+    settingsToFormValues: (values, settings) => ({
       ...values,
-      unit: options.settings.unit || timePlayedUnit.SECOND
+      unit: settings.unit || timePlayedUnit.SECOND
     }),
     formValuesToSettings: (settings, values) => ({
       ...settings,

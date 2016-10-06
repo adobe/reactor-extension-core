@@ -1,22 +1,23 @@
 import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import { ValidationWrapper, DataElementSelectorButton } from '@reactor/react-components';
-
+import CoralField from '../../components/coralField';
 import CartAmount from '../cartAmount';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 import ComparisonOperatorField from '../components/comparisonOperatorField';
 
 const getReactComponents = (wrapper) => {
-  const dataElementField =
-    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'dataElement').node;
-  const amountField =
-    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'amount').node;
+  const textFields = wrapper.find(Textfield);
+  const coralFields = wrapper.find(CoralField);
+
+  const dataElementField = textFields.filterWhere(n => n.prop('name') === 'dataElement').node;
+  const amountField = textFields.filterWhere(n => n.prop('name') === 'amount').node;
   const dataElementButton = wrapper.find(DataElementSelectorButton).node;
   const operatorField = wrapper.find(ComparisonOperatorField).node;
-  const dataElementWrapper = wrapper.find(ValidationWrapper)
-    .filterWhere(n => n.prop('type') === 'dataElement').node;
-  const amountWrapper = wrapper.find(ValidationWrapper)
-    .filterWhere(n => n.prop('type') === 'amount').node;
+  const dataElementWrapper = coralFields.filterWhere(n => n.prop('name') === 'dataElement')
+    .find(ValidationWrapper).node;
+  const amountWrapper = coralFields.filterWhere(n => n.prop('name') === 'amount')
+    .find(ValidationWrapper).node;
 
   return {
     dataElementField,
@@ -34,25 +35,7 @@ describe('cart amount view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    window.extensionBridge = extensionBridge;
     instance = mount(getFormComponent(CartAmount, extensionBridge));
-  });
-
-  afterAll(() => {
-    delete window.extensionBridge;
-  });
-
-  it('opens the data element selector from data element button', () => {
-    const { dataElementField, dataElementButton } = getReactComponents(instance);
-
-    spyOn(window.extensionBridge, 'openDataElementSelector').and.callFake(callback => {
-      callback('foo');
-    });
-
-    dataElementButton.props.onClick();
-
-    expect(window.extensionBridge.openDataElementSelector).toHaveBeenCalled();
-    expect(dataElementField.props.value).toBe('foo');
   });
 
   it('sets operator to greater than by default', () => {

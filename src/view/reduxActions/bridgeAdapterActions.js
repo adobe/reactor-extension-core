@@ -1,18 +1,22 @@
 import { createAction, handleActions } from 'redux-actions';
 
-const INIT = 'bridgeAdapter/INIT';
+const POPULATE_META = 'bridgeAdapter/POPULATE_META';
+const MARK_INIT_COMPLETE = 'bridgeAdapter/MARK_INIT_COMPLETE';
 
 export const actionCreators = {
-  init: createAction(INIT)
+  populateMeta: createAction(POPULATE_META),
+  markInitComplete: createAction(MARK_INIT_COMPLETE)
 };
 
 export default handleActions({
-  [INIT]: (state, action) => {
-    const { payload } = action;
-
-    return {
-      ...state,
-      ...payload
-    };
-  }
+  [POPULATE_META]: (state, action) => ({
+    ...state,
+    meta: {
+      ...action.payload
+    }
+  }),
+  [MARK_INIT_COMPLETE]: (state) => ({
+    ...state,
+    initializedByBridge: true
+  })
 });

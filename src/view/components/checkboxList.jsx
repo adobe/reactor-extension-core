@@ -4,7 +4,7 @@ import Checkbox from '@coralui/react-coral/lib/Checkbox';
 export default class CheckboxList extends React.Component {
   onChange = event => {
     const checkboxValue = event.target.value;
-    const value = this.props.value ? this.props.value.slice() : [];
+    const value = this.props.input.value ? this.props.input.value.slice() : [];
 
     if (event.target.checked) {
       value.push(checkboxValue);
@@ -13,9 +13,7 @@ export default class CheckboxList extends React.Component {
       value.splice(index, 1);
     }
 
-    if (this.props.onChange) {
-      this.props.onChange(value);
-    }
+    this.props.input.onChange(value);
   };
 
   render() {
@@ -36,7 +34,11 @@ export default class CheckboxList extends React.Component {
         <li key={ value }>
           <Checkbox
             value={ value }
-            checked={ this.props.value && this.props.value.indexOf(value) > -1 }
+            checked={
+              this.props.input &&
+              this.props.input.value &&
+              this.props.input.value.indexOf(value) > -1
+            }
             onChange={ this.onChange }
           >
             { label }

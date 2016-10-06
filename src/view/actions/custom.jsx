@@ -1,11 +1,14 @@
 import React from 'react';
-import { ValidationWrapper, InfoTip, ErrorTip } from '@reactor/react-components';
+import { connect } from 'react-redux';
+import { formValueSelector } from 'redux-form';
+import { InfoTip } from '@reactor/react-components';
 import Alert from '@coralui/react-coral/lib/Alert';
-import Button from '@coralui/react-coral/lib/Button';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
 import Radio from '@coralui/react-coral/lib/Radio';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import extensionViewReduxForm from '../extensionViewReduxForm';
+import CoralField from '../components/coralField';
+import CodeField from '../components/codeField';
 
 const LANGUAGES = {
   JAVASCRIPT: 'javascript',
@@ -16,126 +19,107 @@ const LANGUAGES = {
 // a src attribute.
 const containsInlineScriptRegex = /<script(?![^>]*\bsrc\b)/i;
 
-class Custom extends React.Component {
-  onOpenEditor = () => {
-    const scriptField = this.props.fields.source;
-    window.extensionBridge.openCodeEditor(scriptField.value, scriptField.onChange);
-  };
+const Custom = ({ language, sequential, source }) => (
+  <div>
+    <label>
+      <span className="u-label">Name</span>
+      <CoralField
+        name="name"
+        component={ Textfield }
+        supportValidation
+      />
+    </label>
+    <fieldset>
+      <legend className="u-inlineBlock">
+        <span className="u-label u-gapRight">Language</span>
+      </legend>
 
-  render() {
-    const {
-      name,
-      language,
-      sequential,
-      global,
-      source
-    } = this.props.fields;
+      <CoralField
+        name="language"
+        component={ Radio }
+        value={ LANGUAGES.JAVASCRIPT }
+      >
+        JavaScript
+      </CoralField>
+      <CoralField
+        name="language"
+        component={ Radio }
+        value={ LANGUAGES.HTML }
+      >
+        HTML
+      </CoralField>
+    </fieldset>
 
-    return (
-      <div>
-        <ValidationWrapper error={ name.touched && name.error }>
-          <label>
-            <span className="u-label">Name</span>
-            <Textfield { ...name } />
-          </label>
-        </ValidationWrapper>
+    <div>
+      <CoralField
+        name="sequential"
+        component={ Checkbox }
+      >
+        Sequential
+      </CoralField>
+      <InfoTip className="CustomAction-checkboxErrorTip">
+        When sequential is enabled, the code in this action will be executed sequentially in
+        relation to other custom actions that have sequential enabled. For example, if custom
+        action A is sequential, B is not sequential, and C is sequential, A is guaranteed to be
+        executed before C while B may be executed first, second, or third.
+      </InfoTip>
+    </div>
 
-        <fieldset>
-          <legend className="u-inlineBlock">
-            <span className="u-label u-gapRight">Language</span>
-          </legend>
-          <Radio
-            { ...language }
-            value={ LANGUAGES.JAVASCRIPT }
-            checked={ language.value === LANGUAGES.JAVASCRIPT }
-          >
-            JavaScript
-          </Radio>
-          <Radio
-            { ...language }
-            value={ LANGUAGES.HTML }
-            checked={ language.value === LANGUAGES.HTML }
-          >
-            HTML
-          </Radio>
-        </fieldset>
-
+    {
+      language === LANGUAGES.JAVASCRIPT ?
         <div>
-          <Checkbox { ...sequential }>
-            Sequential
-          </Checkbox>
-          <InfoTip className="CustomAction-checkboxErrorTip">
-            When sequential is enabled, the code in this action will be executed sequentially in
-            relation to other custom actions that have sequential enabled. For example, if custom
-            action A is sequential, B is not sequential, and C is sequential, A is guaranteed to be
-            executed before C while B may be executed first, second, or third.
-          </InfoTip>
-        </div>
-
-        {
-          language.value === LANGUAGES.JAVASCRIPT ?
-            <div>
-              <Checkbox { ...global }>
-                Execute globally
-              </Checkbox>
-              <InfoTip className="CustomAction-checkboxErrorTip">
-                Global execution is only necessary when the script needs its
-                own variables to be globally visible. Enabling this will disable binding of
-                the variables "this", "event", and "target" within the script.
-              </InfoTip>
-            </div> : null
-        }
-
-        {
-          language.value === LANGUAGES.HTML && sequential.value ?
-            <Alert variant="warning" type="sequential">
-              Please note that sequential HTML will only work for rules that fire before the
-              page's HTML document has been loaded and parsed. Such rules typically use either
-              the Top of Page or Bottom of Page event.
-            </Alert> : null
-        }
-
-        {
-          // Remove when we drop IE9 support.
-          language.value === LANGUAGES.HTML && sequential.value &&
-              containsInlineScriptRegex.test(source.value) ?
-            <Alert variant="warning" type="inline">
-              Please note that if this rule is fired in Internet Explorer 9 before the page's
-              HTML document has been loaded and parsed, any inline script
-              (e.g., &lt;script&gt;console.log('test');&lt;script&gt;)
-              within your HTML will be executed before prior sequential JavaScript custom actions.
-            </Alert> : null
-        }
-
-        <div className="u-gapTop">
-          <Button
-            icon="code"
-            onClick={ this.onOpenEditor }
+          <CoralField
+            name="global"
+            component={ Checkbox }
           >
-            Open Editor
-          </Button>
-          { source.touched && source.error ?
-            <ErrorTip>{ source.error }</ErrorTip> : null
-          }
-        </div>
-      </div>
-    );
-  }
-}
+            Execute globally
+          </CoralField>
+          <InfoTip className="CustomAction-checkboxErrorTip">
+            Global execution is only necessary when the script needs its
+            own variables to be globally visible. Enabling this will disable binding of
+            the variables "this", "event", and "target" within the script.
+          </InfoTip>
+        </div> : null
+    }
+
+    {
+      language === LANGUAGES.HTML && sequential ?
+        <Alert variant="warning">
+          Please note that sequential HTML will only work for rules that fire before the
+          page's HTML document has been loaded and parsed. Such rules typically use either
+          the Top of Page or Bottom of Page event.
+        </Alert> : null
+    }
+
+    {
+      // Remove when we drop IE9 support.
+      language === LANGUAGES.HTML && sequential &&
+          containsInlineScriptRegex.test(source) ?
+        <Alert variant="warning">
+          Please note that if this rule is fired in Internet Explorer 9 before the page's
+          HTML document has been loaded and parsed, any inline script
+          (e.g., &lt;script&gt;console.log('test');&lt;script&gt;)
+          within your HTML will be executed before prior sequential JavaScript custom actions.
+        </Alert> : null
+    }
+
+    <div className="u-gapTop">
+      <CodeField name="source" />
+    </div>
+  </div>
+);
+
+const valueSelector = formValueSelector('default');
+const stateToProps = state => valueSelector(state, 'language', 'sequential', 'source');
+
+const ConnectedCustom = connect(stateToProps)(Custom);
 
 const formConfig = {
-  fields: [
-    'name',
-    'language',
-    'sequential',
-    'global',
-    'source'
-  ],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings) {
     return {
       ...values,
-      ...options.settings,
-      language: options.settings.language || LANGUAGES.JAVASCRIPT
+      ...settings,
+      language: settings.language || LANGUAGES.JAVASCRIPT
     };
   },
   formValuesToSettings(settings, values) {
@@ -167,4 +151,4 @@ const formConfig = {
   }
 };
 
-export default extensionViewReduxForm(formConfig)(Custom);
+export default extensionViewReduxForm(formConfig)(ConnectedCustom);

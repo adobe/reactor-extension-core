@@ -1,40 +1,39 @@
-/* eslint arrow-body-style: 0, no-shadow: 0 */
 /**
  * Merges multiple form configurations into one.
  */
-module.exports = (...formConfigs) => {
-  const fields = [];
 
-  formConfigs.forEach(formConfig => {
-    formConfig.fields.forEach(field => {
-      if (fields.indexOf(field) === -1) {
-        fields.push(field);
-      }
-    });
-  });
+const isFunction = value => typeof value === 'function';
+
+module.exports = (...formConfigs) => {
+  const settingsToFormValuesFunctions = formConfigs
+    .map(formConfig => formConfig.settingsToFormValues)
+    .filter(isFunction);
+
+  const formValuesToSettingsFunctions = formConfigs
+    .map(formConfig => formConfig.formValuesToSettings)
+    .filter(isFunction);
+
+  const validateFunctions = formConfigs
+    .map(formConfig => formConfig.validate)
+    .filter(isFunction);
 
   return {
-    fields,
-    settingsToFormValues(values, options) {
-      return formConfigs.reduce((values, formConfig) => {
-        return formConfig.settingsToFormValues ?
-          formConfig.settingsToFormValues(values, options) :
-          values;
-      }, values);
+    settingsToFormValues(values, settings, state) {
+      return settingsToFormValuesFunctions.reduce(
+        (reducedValues, settingsToFormValues) =>
+          settingsToFormValues(reducedValues, settings, state)
+        , values);
     },
-    formValuesToSettings(settings, values) {
-      return formConfigs.reduce((settings, formConfig) => {
-        return formConfig.formValuesToSettings ?
-          formConfig.formValuesToSettings(settings, values) :
-          settings;
-      }, settings);
+    formValuesToSettings(settings, values, state) {
+      return formValuesToSettingsFunctions.reduce(
+        (reducedSettings, formValuesToSettings) =>
+          formValuesToSettings(reducedSettings, values, state)
+        , settings);
     },
     validate(errors, values) {
-      return formConfigs.reduce((errors, formConfig) => {
-        return formConfig.validate ?
-          formConfig.validate(errors, values) :
-          errors;
-      }, errors);
+      return validateFunctions.reduce(
+        (reducedErrors, validate) => validate(reducedErrors, values)
+        , errors);
     }
   };
 };

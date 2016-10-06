@@ -7,28 +7,23 @@ import Checkbox from '@coralui/react-coral/lib/Checkbox';
 import Button from '@coralui/react-coral/lib/Button';
 import Alert from '@coralui/react-coral/lib/Alert';
 import { ValidationWrapper, ErrorTip } from '@reactor/react-components';
-
 import Custom from '../custom';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
+  const radios = wrapper.find(Radio);
+  const checkboxes = wrapper.find(Checkbox);
+
   const nameField =
     wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'name').node;
-  const javaScriptLanguageRadio =
-    wrapper.find(Radio).filterWhere(n => n.prop('value') === 'javascript').node;
-  const htmlLanguageRadio =
-    wrapper.find(Radio).filterWhere(n => n.prop('value') === 'html').node;
-  const sequentialCheckbox =
-    wrapper.find(Checkbox).filterWhere(n => n.prop('name').includes('sequential')).node;
-  const globalCheckbox =
-    wrapper.find(Checkbox).filterWhere(n => n.prop('name').includes('global')).node;
+  const javaScriptLanguageRadio = radios.filterWhere(n => n.prop('value') === 'javascript').node;
+  const htmlLanguageRadio = radios.filterWhere(n => n.prop('value') === 'html').node;
+  const sequentialCheckbox = checkboxes.filterWhere(n => n.prop('name') === 'sequential').node;
+  const globalCheckbox = checkboxes.filterWhere(n => n.prop('name') === 'global').node;
   const nameWrapper = wrapper.find(ValidationWrapper).node;
   const sourceErrorIcon = wrapper.find(ErrorTip).node;
   const openEditorButton = wrapper.find(Button).filterWhere(n => n.prop('icon') === 'code').node;
-  const sequentialHtmlAlert =
-    wrapper.find(Alert).filterWhere(n => n.prop('type') === 'sequential').node;
-  const inlineScriptAlert =
-    wrapper.find(Alert).filterWhere(n => n.prop('type') === 'inline').node;
+  const [sequentialHtmlAlert, inlineScriptAlert] = wrapper.find(Alert).nodes;
 
   return {
     nameField,
@@ -47,17 +42,10 @@ const getReactComponents = (wrapper) => {
 describe('custom action view', () => {
   let extensionBridge;
   let instance;
-  let backupExtensionBridge;
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
     instance = mount(getFormComponent(Custom, extensionBridge));
-
-    backupExtensionBridge = window.extensionBridge;
-  });
-
-  afterAll(() => {
-    window.extensionBridge = backupExtensionBridge;
   });
 
   it('sets form values from settings', () => {
@@ -153,37 +141,6 @@ describe('custom action view', () => {
 
     expect(nameWrapper.props.error).toEqual(jasmine.any(String));
     expect(sourceErrorIcon.props.children).toBeDefined();
-  });
-
-  it('opens code editor with source value when button is clicked and stores result', () => {
-    extensionBridge.init({
-      settings: {
-        name: 'test',
-        language: 'javascript',
-        source: 'foo'
-      }
-    });
-
-    window.extensionBridge = {
-      openCodeEditor: jasmine.createSpy().and.callFake((script, callback) => {
-        callback('bar');
-      })
-    };
-
-    const { openEditorButton } = getReactComponents(instance);
-
-    openEditorButton.props.onClick();
-
-    expect(window.extensionBridge.openCodeEditor)
-      .toHaveBeenCalledWith('foo', jasmine.any(Function));
-    expect(extensionBridge.validate()).toBe(true);
-    expect(extensionBridge.getSettings()).toEqual({
-      name: 'test',
-      language: 'javascript',
-      source: 'bar'
-    });
-
-    delete window.extensionBridge;
   });
 
   it('shows sequential html alert when HTML and sequential are selected', () => {

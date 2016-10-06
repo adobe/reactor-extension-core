@@ -1,64 +1,58 @@
 import React from 'react';
 import Radio from '@coralui/react-coral/lib/Radio';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-import { ValidationWrapper } from '@reactor/react-components';
 
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import ComparisonOperatorField from './components/comparisonOperatorField';
 import { isNumber } from '../utils/validators';
+import CoralField from '../components/coralField';
 
-const PageViews = ({ ...props }) => {
-  const { operator, count, duration } = props.fields;
-
-  return (
+const PageViews = () => (
+  <div>
     <div>
-      <div>
-        <label className="u-gapRight">
-          <span className="u-label">The user's number of page views is</span>
-          <ComparisonOperatorField { ...operator } />
+      <label className="u-gapRight">
+        <span className="u-label">The user's number of page views is</span>
+        <CoralField name="operator" component={ ComparisonOperatorField } />
+      </label>
+      <label className="u-gapRight">
+        <span className="u-label">the value</span>
+        <CoralField
+          name="count"
+          component={ Textfield }
+          componentClassName="u-smallTextfield"
+          supportValidation
+        />
+      </label>
+      <span className="u-noWrap">
+        <label>
+          <span className="u-label">over</span>
         </label>
-        <ValidationWrapper error={ count.touched && count.error }>
-          <label className="u-gapRight">
-            <span className="u-label">the value</span>
-            <Textfield className="u-smallTextfield" { ...count } />
-          </label>
-        </ValidationWrapper>
-        <span className="u-noWrap">
-          <label>
-            <span className="u-label">over</span>
-          </label>
-          <Radio
-            { ...duration }
-            value="lifetime"
-            checked={ duration.value === 'lifetime' }
-          >
-            Lifetime
-          </Radio>
-          <Radio
-            { ...duration }
-            value="session"
-            checked={ duration.value === 'session' }
-          >
-            Current Session
-          </Radio>
-        </span>
-      </div>
+        <CoralField
+          name="duration"
+          component={ Radio }
+          value="lifetime"
+        >
+          Lifetime
+        </CoralField>
+        <CoralField
+          name="duration"
+          component={ Radio }
+          value="session"
+        >
+          Current Session
+        </CoralField>
+      </span>
     </div>
-  );
-};
+  </div>
+);
 
 const formConfig = {
-  fields: [
-    'operator',
-    'count',
-    'duration'
-  ],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings) {
     return {
       ...values,
-      ...options.settings,
-      operator: options.settings.operator || '>',
-      duration: options.settings.duration || 'lifetime'
+      ...settings,
+      operator: settings.operator || '>',
+      duration: settings.duration || 'lifetime'
     };
   },
   formValuesToSettings(settings, values) {

@@ -1,23 +1,34 @@
 import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import { ValidationWrapper } from '@reactor/react-components';
-
+import Checkbox from '@coralui/react-coral/lib/Checkbox';
 import Custom from '../custom';
+import CoralField from '../../components/coralField';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
-import ElementFilter from '../components/elementFilter';
 import AdvancedEventOptions from '../components/advancedEventOptions';
+import ElementSelector from '../components/elementSelector';
 
 const getReactComponents = (wrapper) => {
-  const typeField = wrapper.find(Textfield).node;
-  const typeWrapper = wrapper.find(ValidationWrapper).node;
-  const elementFilter = wrapper.find(ElementFilter).node;
+  const textFields = wrapper.find(Textfield);
+
+  const typeTextfield = textFields.filterWhere(n => n.prop('name') === 'type').node;
+
+  const elementSelectorTextfield = textFields
+    .filterWhere(n => n.prop('name') === 'elementSelector').node;
+  const bubbleStopCheckbox = wrapper.find(Checkbox)
+    .filterWhere(n => n.prop('name') === 'bubbleStop').node;
   const advancedEventOptions = wrapper.find(AdvancedEventOptions).node;
+  const typeWrapper = wrapper.find(CoralField).filterWhere(n => n.prop('name') === 'type')
+    .find(ValidationWrapper).node;
+  const elementSelectorWrapper = wrapper.find(ElementSelector).find(ValidationWrapper).node;
 
   return {
-    typeField,
+    typeTextfield,
     typeWrapper,
-    elementFilter,
-    advancedEventOptions
+    elementSelectorTextfield,
+    bubbleStopCheckbox,
+    advancedEventOptions,
+    elementSelectorWrapper
   };
 };
 
@@ -25,7 +36,7 @@ describe('custom event view', () => {
   let extensionBridge;
   let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
     instance = mount(getFormComponent(Custom, extensionBridge));
   });
@@ -39,29 +50,35 @@ describe('custom event view', () => {
       }
     });
 
+    const { advancedEventOptions } = getReactComponents(instance);
+    advancedEventOptions.toggleSelected();
+
     const {
-      typeField,
-      elementFilter,
-      advancedEventOptions
+      typeTextfield,
+      elementSelectorTextfield,
+      bubbleStopCheckbox
     } = getReactComponents(instance);
 
-    expect(typeField.props.value).toBe('bar');
-    expect(elementFilter.props.fields.elementSelector.value).toBe('.foo');
-    expect(advancedEventOptions.props.fields.bubbleStop.value).toBe(true);
+    expect(typeTextfield.props.value).toBe('bar');
+    expect(elementSelectorTextfield.props.value).toBe('.foo');
+    expect(bubbleStopCheckbox.props.value).toBe(true);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
+    const { advancedEventOptions } = getReactComponents(instance);
+    advancedEventOptions.toggleSelected();
+
     const {
-      typeField,
-      elementFilter,
-      advancedEventOptions
+      typeTextfield,
+      elementSelectorTextfield,
+      bubbleStopCheckbox
     } = getReactComponents(instance);
 
-    typeField.props.onChange('bar');
-    elementFilter.props.fields.elementSelector.onChange('.foo');
-    advancedEventOptions.props.fields.bubbleStop.onChange(true);
+    typeTextfield.props.onChange('bar');
+    elementSelectorTextfield.props.onChange('.foo');
+    bubbleStopCheckbox.props.onChange(true);
 
     const { type, elementSelector, bubbleStop } = extensionBridge.getSettings();
 
@@ -72,11 +89,11 @@ describe('custom event view', () => {
 
   it('sets errors if required values are not provided', () => {
     extensionBridge.init();
+
+    const { typeWrapper, elementSelectorWrapper } = getReactComponents(instance);
+
     expect(extensionBridge.validate()).toBe(false);
-
-    const { typeWrapper, elementFilter } = getReactComponents(instance);
-
     expect(typeWrapper.props.error).toEqual(jasmine.any(String));
-    expect(elementFilter.props.fields.elementSelector.error).toEqual(jasmine.any(String));
+    expect(elementSelectorWrapper.props.error).toEqual(jasmine.any(String));
   });
 });

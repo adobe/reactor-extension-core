@@ -1,26 +1,27 @@
 import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
+import Switch from '@coralui/react-coral/lib/Switch';
 import { ValidationWrapper } from '@reactor/react-components';
-
+import CoralField from '../../components/coralField';
 import URLParameter from '../urlParameter';
-import RegexToggle from '../../components/regexToggle';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
-  const nameField =
-    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'name').node;
-  const valueField =
-    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'value').node;
-  const valueRegexToggle = wrapper.find(RegexToggle).node;
-  const nameWrapper =
-    wrapper.find(ValidationWrapper).filterWhere(n => n.prop('type') === 'name').node;
-  const valueWrapper =
-    wrapper.find(ValidationWrapper).filterWhere(n => n.prop('type') === 'value').node;
+  const textFields = wrapper.find(Textfield);
+  const coralFields = wrapper.find(CoralField);
+
+  const nameField = textFields.filterWhere(n => n.prop('name') === 'name').node;
+  const valueField = textFields.filterWhere(n => n.prop('name') === 'value').node;
+  const valueRegexSwitch = wrapper.find(Switch).node;
+  const nameWrapper = coralFields.filterWhere(n => n.prop('name') === 'name')
+    .find(ValidationWrapper).node;
+  const valueWrapper = coralFields.filterWhere(n => n.prop('name') === 'value')
+    .find(ValidationWrapper).node;
 
   return {
     nameField,
     valueField,
-    valueRegexToggle,
+    valueRegexSwitch,
     nameWrapper,
     valueWrapper
   };
@@ -44,22 +45,21 @@ describe('url parameter view', () => {
       }
     });
 
-    const { nameField, valueField, valueRegexToggle } = getReactComponents(instance);
+    const { nameField, valueField, valueRegexSwitch } = getReactComponents(instance);
 
     expect(nameField.props.value).toBe('foo');
     expect(valueField.props.value).toBe('bar');
-    expect(valueRegexToggle.props.value).toBe('bar');
-    expect(valueRegexToggle.props.valueIsRegex).toBe(true);
+    expect(valueRegexSwitch.props.checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { nameField, valueField, valueRegexToggle } = getReactComponents(instance);
+    const { nameField, valueField, valueRegexSwitch } = getReactComponents(instance);
 
     nameField.props.onChange('foo');
     valueField.props.onChange('bar');
-    valueRegexToggle.props.onValueIsRegexChange(true);
+    valueRegexSwitch.props.onChange({ target: { checked: true } });
 
     expect(extensionBridge.getSettings()).toEqual({
       name: 'foo',

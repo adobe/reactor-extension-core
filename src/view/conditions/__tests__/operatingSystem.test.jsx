@@ -1,5 +1,4 @@
 import { mount } from 'enzyme';
-
 import OperatingSystem from '../operatingSystem';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 import CheckboxList from '../../components/checkboxList';
@@ -35,14 +34,14 @@ describe('operating system view', () => {
 
     const { operatingSystemsCheckboxList } = getReactComponents(instance);
 
-    expect(operatingSystemsCheckboxList.props.value).toEqual(selectedOperatingSystems);
+    expect(operatingSystemsCheckboxList.props.input.value).toEqual(selectedOperatingSystems);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { operatingSystemsCheckboxList } = getReactComponents(instance);
-    operatingSystemsCheckboxList.props.onChange(selectedOperatingSystems);
+    operatingSystemsCheckboxList.props.input.onChange(selectedOperatingSystems);
 
     expect(extensionBridge.getSettings()).toEqual({
       operatingSystems: selectedOperatingSystems

@@ -1,43 +1,34 @@
 import React from 'react';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-import { ValidationWrapper } from '@reactor/react-components';
+import { Field } from 'redux-form';
 
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import RegexToggle from '../components/regexToggle';
+import CoralField from '../components/coralField';
 
-const LandingPage = ({ ...props }) => {
-  const { page, pageIsRegex } = props.fields;
-
-  return (
-    <div>
-      <ValidationWrapper
-        className="u-gapRight"
-        error={ page.touched && page.error }
-      >
-        <label>
-          <span className="u-label">Landing Page</span>
-          <Textfield { ...page } />
-        </label>
-      </ValidationWrapper>
-      <RegexToggle
-        value={ page.value }
-        valueIsRegex={ pageIsRegex.value }
-        onValueChange={ page.onChange }
-        onValueIsRegexChange={ pageIsRegex.onChange }
+const LandingPage = () => (
+  <div>
+    <label className="u-gapRight">
+      <span className="u-label">Landing Page</span>
+      <CoralField
+        name="page"
+        component={ Textfield }
+        supportValidation
       />
-    </div>
-  );
-};
+    </label>
+    <Field
+      name="pageIsRegex"
+      component={ RegexToggle }
+      valueFieldName="page"
+    />
+  </div>
+);
 
 const formConfig = {
-  fields: [
-    'page',
-    'pageIsRegex'
-  ],
-  settingsToFormValues(values, options) {
+  settingsToFormValues(values, settings) {
     return {
       ...values,
-      ...options.settings
+      ...settings
     };
   },
   formValuesToSettings(settings, values) {

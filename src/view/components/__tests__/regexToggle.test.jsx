@@ -1,28 +1,63 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import Switch from '@coralui/react-coral/lib/Switch';
+import { Field } from 'redux-form';
 
 import RegexToggle from '../regexToggle';
+import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import extensionViewReduxForm from '../../extensionViewReduxForm';
 
 const getReactComponents = (wrapper) => {
   const regexSwitch = wrapper.find(Switch).node;
   const testButton = wrapper.find('button');
+  const testButtonContainer = wrapper.find('#testButtonContainer');
 
   return {
     regexSwitch,
-    testButton
+    testButton,
+    testButtonContainer
   };
 };
 
-const render = props => mount(<RegexToggle { ...props } />);
+let ConnectedRegexToggle = () => (
+  <Field
+    name="valueIsRegex"
+    component={ RegexToggle }
+    valueFieldName="value"
+  />
+);
+
+const formConfig = {
+  settingsToFormValues(values, settings) {
+    return {
+      ...values,
+      ...settings
+    };
+  },
+  formValuesToSettings(settings, values) {
+    return {
+      ...settings,
+      ...values
+    };
+  }
+};
+
+ConnectedRegexToggle = extensionViewReduxForm(formConfig)(ConnectedRegexToggle);
 
 describe('regex toggle', () => {
+  let extensionBridge;
+  let instance;
+
   beforeEach(() => {
-    window.extensionBridge = {
-      openRegexTester: jasmine.createSpy().and.callFake((value, callback) => {
-        callback('bar');
-      })
-    };
+    extensionBridge = createExtensionBridge();
+
+    spyOn(extensionBridge, 'openRegexTester').and.callFake((value, callback) => {
+      callback('bar');
+    });
+
+    window.extensionBridge = extensionBridge;
+
+    instance = mount(getFormComponent(ConnectedRegexToggle, extensionBridge));
   });
 
   afterEach(() => {
@@ -30,18 +65,21 @@ describe('regex toggle', () => {
   });
 
   it('sets switch to checked when valueIsRegex=true', () => {
-    const { regexSwitch } = getReactComponents(render({
-      valueIsRegex: true
-    }));
+    extensionBridge.init({
+      settings: {
+        valueIsRegex: true
+      }
+    });
+
+    const { regexSwitch } = getReactComponents(instance);
 
     expect(regexSwitch.props.checked).toBe(true);
   });
 
-  it('calls onValueIsRegexChange when switch is toggled', () => {
-    const onValueIsRegexChange = jasmine.createSpy();
-    const { regexSwitch } = getReactComponents(render({
-      onValueIsRegexChange
-    }));
+  it('calls onChange from ValueIsRegex field when switch is toggled', () => {
+    extensionBridge.init();
+
+    const { regexSwitch } = getReactComponents(instance);
 
     regexSwitch.props.onChange({
       target: {
@@ -49,37 +87,49 @@ describe('regex toggle', () => {
       }
     });
 
-    expect(onValueIsRegexChange).toHaveBeenCalledWith(true);
+    expect(extensionBridge.getSettings()).toEqual({
+      valueIsRegex: true
+    });
   });
 
   it('supports regex testing+updating workflow', () => {
-    const onValueChange = jasmine.createSpy();
-    const { testButton } = getReactComponents(render({
-      valueIsRegex: true,
-      value: 'foo',
-      onValueChange
-    }));
+    extensionBridge.init({
+      settings: {
+        valueIsRegex: true,
+        value: 'foo'
+      }
+    });
+
+    const { testButton } = getReactComponents(instance);
 
     testButton.simulate('click');
 
-    expect(window.extensionBridge.openRegexTester)
-      .toHaveBeenCalledWith('foo', jasmine.any(Function));
-    expect(onValueChange).toHaveBeenCalledWith('bar');
+    expect(extensionBridge.openRegexTester).toHaveBeenCalledWith('foo', jasmine.any(Function));
+    expect(extensionBridge.getSettings()).toEqual({
+      valueIsRegex: true,
+      value: 'bar'
+    });
   });
 
   it('shows test link when valueIsRegex=true', () => {
-    const { testButton } = getReactComponents(render({
-      valueIsRegex: true
-    }));
+    extensionBridge.init({
+      settings: {
+        valueIsRegex: true
+      }
+    });
 
-    expect(testButton.node.style.visibility).toBe('visible');
+    const { testButtonContainer } = getReactComponents(instance);
+
+    expect(testButtonContainer.node.style.visibility).toBe('visible');
   });
 
   it('hides test link when valueIsRegex=false', () => {
-    const { testButton } = getReactComponents(render({
-      valueIsRegex: false
-    }));
+    extensionBridge.init({
+      settings: {}
+    });
 
-    expect(testButton.node.style.visibility).toBe('hidden');
+    const { testButtonContainer } = getReactComponents(instance);
+
+    expect(testButtonContainer.node.style.visibility).toBe('hidden');
   });
 });
