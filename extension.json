@@ -1,8 +1,8 @@
 {
   "name": "dtm",
   "version": "1.0.0",
-  "displayName": "DTM",
-  "description": "DTM extension provides the default event types, condition types, and data element types available to all DTM users.",
+  "displayName": "Default",
+  "description": "Provides the default event types, condition types, and data element types available to all DTM users.",
   "icon": "http://assets.adobedtm.com/activation/reactor/icons/marketingcloud.svg",
   "author": {
     "name": "Adobe Systems",
