@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field } from 'redux-form';
+import EditorButton from '@reactor/react-components/lib/reduxForm/editorButton';
 
-import EditorButton from '../components/editorButton';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
 const Custom = () => (

@@ -2,8 +2,8 @@ import React from 'react';
 import Icon from '@coralui/react-coral/lib/Icon';
 import Tooltip from '@coralui/react-coral/lib/Tooltip';
 import { Field } from 'redux-form';
+import EditorButton from '@reactor/react-components/lib/reduxForm/editorButton';
 
-import EditorButton from '../components/editorButton';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
 const Custom = () => (
