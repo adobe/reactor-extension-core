@@ -1,11 +1,15 @@
 import React from 'react';
+import { Field } from 'redux-form';
 
-import CodeField from '../components/codeField';
+import EditorButton from '../components/editorButton';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
 const Custom = () => (
   <div>
-    <CodeField name="source" />
+    <Field
+      name="source"
+      component={ EditorButton }
+    />
   </div>
 );
 

@@ -1,13 +1,17 @@
 import React from 'react';
 import Icon from '@coralui/react-coral/lib/Icon';
 import Tooltip from '@coralui/react-coral/lib/Tooltip';
+import { Field } from 'redux-form';
 
-import CodeField from '../components/codeField';
+import EditorButton from '../components/editorButton';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
 const Custom = () => (
   <div>
-    <CodeField name="source" />
+    <Field
+      name="source"
+      component={ EditorButton }
+    />
     <Tooltip
       className="u-tooltipMaxWidth"
       openOn="hover"

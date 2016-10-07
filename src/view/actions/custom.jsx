@@ -8,7 +8,7 @@ import Checkbox from '@coralui/redux-form-react-coral/lib/Checkbox';
 import Radio from '@coralui/redux-form-react-coral/lib/Radio';
 import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
 import extensionViewReduxForm from '../extensionViewReduxForm';
-import CodeField from '../components/codeField';
+import EditorButton from '../components/editorButton';
 
 const LANGUAGES = {
   JAVASCRIPT: 'javascript',
@@ -106,7 +106,10 @@ const Custom = ({ language, sequential, source }) => (
     }
 
     <div className="u-gapTop">
-      <CodeField name="source" />
+      <Field
+        name="source"
+        component={ EditorButton }
+      />
     </div>
   </div>
 );
