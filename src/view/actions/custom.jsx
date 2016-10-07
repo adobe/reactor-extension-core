@@ -1,14 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Field, formValueSelector } from 'redux-form';
-import { InfoTip } from '@reactor/react-components';
+import InfoTip from '@reactor/react-components/lib/infoTip';
+import EditorButton from '@reactor/react-components/lib/reduxForm/editorButton';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 import Alert from '@coralui/react-coral/lib/Alert';
 import Checkbox from '@coralui/redux-form-react-coral/lib/Checkbox';
 import Radio from '@coralui/redux-form-react-coral/lib/Radio';
 import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
 import extensionViewReduxForm from '../extensionViewReduxForm';
-import CodeField from '../components/codeField';
 
 const LANGUAGES = {
   JAVASCRIPT: 'javascript',
@@ -106,7 +106,10 @@ const Custom = ({ language, sequential, source }) => (
     }
 
     <div className="u-gapTop">
-      <CodeField name="source" />
+      <Field
+        name="source"
+        component={ EditorButton }
+      />
     </div>
   </div>
 );
