@@ -1,19 +1,19 @@
 import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Switch from '@coralui/react-coral/lib/Switch';
-import { ValidationWrapper } from '@reactor/react-components';
+import ErrorTip from '@reactor/react-components/lib/errorTip';
 import TrafficSource from '../trafficSource';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
-  const sourceField = wrapper.find(Textfield).node;
+  const sourceTextfield = wrapper.find(Textfield).node;
   const valueRegexSwitch = wrapper.find(Switch).node;
-  const sourceWrapper = wrapper.find(ValidationWrapper).node;
+  const sourceErrorTip = wrapper.find(ErrorTip).node;
 
   return {
-    sourceField,
+    sourceTextfield,
     valueRegexSwitch,
-    sourceWrapper
+    sourceErrorTip
   };
 };
 
@@ -34,18 +34,18 @@ describe('traffic source view', () => {
       }
     });
 
-    const { sourceField, valueRegexSwitch } = getReactComponents(instance);
+    const { sourceTextfield, valueRegexSwitch } = getReactComponents(instance);
 
-    expect(sourceField.props.value).toBe('foo');
+    expect(sourceTextfield.props.value).toBe('foo');
     expect(valueRegexSwitch.props.checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { sourceField, valueRegexSwitch } = getReactComponents(instance);
+    const { sourceTextfield, valueRegexSwitch } = getReactComponents(instance);
 
-    sourceField.props.onChange('foo');
+    sourceTextfield.props.onChange('foo');
     valueRegexSwitch.props.onChange({ target: { checked: true } });
 
     expect(extensionBridge.getSettings()).toEqual({
@@ -58,8 +58,8 @@ describe('traffic source view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { sourceWrapper } = getReactComponents(instance);
+    const { sourceErrorTip } = getReactComponents(instance);
 
-    expect(sourceWrapper.props.error).toEqual(jasmine.any(String));
+    expect(sourceErrorTip).toBeDefined();
   });
 });

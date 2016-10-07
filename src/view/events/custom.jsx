@@ -1,20 +1,21 @@
 import React from 'react';
-import Textfield from '@coralui/react-coral/lib/Textfield';
+import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
+import { Field } from 'redux-form';
+import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
 import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
 import ElementFilter, { formConfig as elementFilterFormConfig } from './components/elementFilter';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import mergeFormConfigs from '../utils/mergeFormConfigs';
-import CoralField from '../components/coralField';
 
 const Custom = () => (
   <div>
     <label>
       <span className="u-label">Custom Event Type</span>
-      <CoralField
+      <Field
         name="type"
-        component={ Textfield }
-        supportValidation
+        component={ DecoratedInput }
+        inputComponent={ Textfield }
       />
     </label>
     <ElementFilter />

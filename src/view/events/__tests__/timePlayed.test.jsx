@@ -1,33 +1,34 @@
 import { mount } from 'enzyme';
-import { ValidationWrapper } from '@reactor/react-components';
+import ErrorTip from '@reactor/react-components/lib/errorTip';
+import { Field } from 'redux-form';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
 import Select from '@coralui/react-coral/lib/Select';
-import ElementSelector from '../components/elementSelector';
 import AdvancedEventOptions from '../components/advancedEventOptions';
 import TimePlayed from '../timePlayed';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
-  const textFields = wrapper.find(Textfield);
+  const fields = wrapper.find(Field);
 
-  const amountTextfield = textFields.filterWhere(n => n.prop('name') === 'amount').node;
+  const amountField = fields.filterWhere(n => n.prop('name') === 'amount');
+  const amountTextfield = amountField.find(Textfield).node;
+  const amountErrorTip = amountField.find(ErrorTip).node;
   const unitSelect = wrapper.find(Select).node;
-  const elementSelectorTextfield = textFields.filterWhere(n => n.prop('name') === 'elementSelector')
-    .node;
+  const elementSelectorField = fields.filterWhere(n => n.prop('name') === 'elementSelector');
+  const elementSelectorTextfield = elementSelectorField.find(Textfield).node;
+  const elementSelectorErrorTip = elementSelectorField.find(ErrorTip).node;
   const bubbleStopCheckbox =
     wrapper.find(Checkbox).filterWhere(n => n.prop('name') === 'bubbleStop').node;
-  const amountWrapper = wrapper.find(ValidationWrapper).node;
-  const elementSelectorWrapper = wrapper.find(ElementSelector).find(ValidationWrapper).node;
   const advancedEventOptions = wrapper.find(AdvancedEventOptions).node;
 
   return {
     amountTextfield,
+    amountErrorTip,
     unitSelect,
     elementSelectorTextfield,
+    elementSelectorErrorTip,
     bubbleStopCheckbox,
-    amountWrapper,
-    elementSelectorWrapper,
     advancedEventOptions
   };
 };
@@ -93,10 +94,11 @@ describe('time played view', () => {
   it('sets validation errors', () => {
     extensionBridge.init();
 
-    const { amountWrapper, elementSelectorWrapper } = getReactComponents(instance);
-
     expect(extensionBridge.validate()).toBe(false);
-    expect(amountWrapper.props.error).toEqual(jasmine.any(String));
-    expect(elementSelectorWrapper.props.error).toEqual(jasmine.any(String));
+
+    const { amountErrorTip, elementSelectorErrorTip } = getReactComponents(instance);
+
+    expect(amountErrorTip).toBeDefined();
+    expect(elementSelectorErrorTip).toBeDefined();
   });
 });

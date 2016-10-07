@@ -1,19 +1,19 @@
 import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-import { ValidationWrapper } from '@reactor/react-components';
+import Select from '@coralui/react-coral/lib/Select';
+import ErrorTip from '@reactor/react-components/lib/errorTip';
 import TimeOnSite from '../timeOnSite';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
-import ComparisonOperatorField from '../components/comparisonOperatorField';
 
 const getReactComponents = (wrapper) => {
-  const operatorField = wrapper.find(ComparisonOperatorField).node;
-  const minutesField = wrapper.find(Textfield).node;
-  const minutesWrapper = wrapper.find(ValidationWrapper).node;
+  const operatorSelect = wrapper.find(Select).node;
+  const minutesTextfield = wrapper.find(Textfield).node;
+  const minutesErrorTip = wrapper.find(ErrorTip).node;
 
   return {
-    operatorField,
-    minutesField,
-    minutesWrapper
+    operatorSelect,
+    minutesTextfield,
+    minutesErrorTip
   };
 };
 
@@ -29,9 +29,9 @@ describe('time on site view', () => {
   it('sets operator to greater than by default', () => {
     extensionBridge.init();
 
-    const { operatorField } = getReactComponents(instance);
+    const { operatorSelect } = getReactComponents(instance);
 
-    expect(operatorField.props.value).toBe('>');
+    expect(operatorSelect.props.value).toBe('>');
   });
 
   it('sets form values from settings', () => {
@@ -42,19 +42,19 @@ describe('time on site view', () => {
       }
     });
 
-    const { operatorField, minutesField } = getReactComponents(instance);
+    const { operatorSelect, minutesTextfield } = getReactComponents(instance);
 
-    expect(operatorField.props.value).toBe('=');
-    expect(minutesField.props.value).toBe(100);
+    expect(operatorSelect.props.value).toBe('=');
+    expect(minutesTextfield.props.value).toBe(100);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { operatorField, minutesField } = getReactComponents(instance);
+    const { operatorSelect, minutesTextfield } = getReactComponents(instance);
 
-    operatorField.props.onChange('=');
-    minutesField.props.onChange(100);
+    operatorSelect.props.onChange({ value: '=' });
+    minutesTextfield.props.onChange(100);
 
     expect(extensionBridge.getSettings()).toEqual({
       operator: '=',
@@ -66,19 +66,19 @@ describe('time on site view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { minutesWrapper } = getReactComponents(instance);
+    const { minutesErrorTip } = getReactComponents(instance);
 
-    expect(minutesWrapper.props.error).toEqual(jasmine.any(String));
+    expect(minutesErrorTip).toBeDefined();
   });
 
   it('sets error if count value is not a number', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { minutesField, minutesWrapper } = getReactComponents(instance);
+    const { minutesTextfield, minutesErrorTip } = getReactComponents(instance);
 
-    minutesField.props.onChange('12.abc');
+    minutesTextfield.props.onChange('12.abc');
 
-    expect(minutesWrapper.props.error).toEqual(jasmine.any(String));
+    expect(minutesErrorTip).toBeDefined();
   });
 });

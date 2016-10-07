@@ -1,5 +1,5 @@
 import { mount } from 'enzyme';
-import { ValidationWrapper } from '@reactor/react-components';
+import ErrorTip from '@reactor/react-components/lib/errorTip';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Switch from '@coralui/react-coral/lib/Switch';
 import Subdomain from '../subdomain';
@@ -8,7 +8,7 @@ import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers
 const getReactComponents = (wrapper) => {
   const rows = wrapper.find('[data-row]').map(row => ({
     subdomainTextfield: row.find(Textfield).node,
-    subdomainWrapper: row.find(ValidationWrapper).node,
+    subdomainErrorTip: row.find(ErrorTip).node,
     subdomainRegexSwitch: row.find(Switch).node
   }));
 
@@ -76,6 +76,6 @@ describe('subdomain view', () => {
 
     const { rows } = getReactComponents(instance);
 
-    expect(rows[0].subdomainWrapper.props.error).toEqual(jasmine.any(String));
+    expect(rows[0].subdomainErrorTip).toBeDefined();
   });
 });

@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { formValueSelector } from 'redux-form';
+import { Field, formValueSelector } from 'redux-form';
 import { InfoTip } from '@reactor/react-components';
+import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 import Alert from '@coralui/react-coral/lib/Alert';
-import Checkbox from '@coralui/react-coral/lib/Checkbox';
-import Radio from '@coralui/react-coral/lib/Radio';
-import Textfield from '@coralui/react-coral/lib/Textfield';
+import Checkbox from '@coralui/redux-form-react-coral/lib/Checkbox';
+import Radio from '@coralui/redux-form-react-coral/lib/Radio';
+import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
 import extensionViewReduxForm from '../extensionViewReduxForm';
-import CoralField from '../components/coralField';
 import CodeField from '../components/codeField';
 
 const LANGUAGES = {
@@ -23,10 +23,10 @@ const Custom = ({ language, sequential, source }) => (
   <div>
     <label>
       <span className="u-label">Name</span>
-      <CoralField
+      <Field
         name="name"
-        component={ Textfield }
-        supportValidation
+        component={ DecoratedInput }
+        inputComponent={ Textfield }
       />
     </label>
     <fieldset>
@@ -34,29 +34,31 @@ const Custom = ({ language, sequential, source }) => (
         <span className="u-label u-gapRight">Language</span>
       </legend>
 
-      <CoralField
+      <Field
         name="language"
         component={ Radio }
+        type="radio"
         value={ LANGUAGES.JAVASCRIPT }
       >
         JavaScript
-      </CoralField>
-      <CoralField
+      </Field>
+      <Field
         name="language"
         component={ Radio }
+        type="radio"
         value={ LANGUAGES.HTML }
       >
         HTML
-      </CoralField>
+      </Field>
     </fieldset>
 
     <div>
-      <CoralField
+      <Field
         name="sequential"
         component={ Checkbox }
       >
         Sequential
-      </CoralField>
+      </Field>
       <InfoTip className="CustomAction-checkboxErrorTip">
         When sequential is enabled, the code in this action will be executed sequentially in
         relation to other custom actions that have sequential enabled. For example, if custom
@@ -68,12 +70,12 @@ const Custom = ({ language, sequential, source }) => (
     {
       language === LANGUAGES.JAVASCRIPT ?
         <div>
-          <CoralField
+          <Field
             name="global"
             component={ Checkbox }
           >
             Execute globally
-          </CoralField>
+          </Field>
           <InfoTip className="CustomAction-checkboxErrorTip">
             Global execution is only necessary when the script needs its
             own variables to be globally visible. Enabling this will disable binding of

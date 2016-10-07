@@ -1,25 +1,31 @@
 import React from 'react';
-import Textfield from '@coralui/react-coral/lib/Textfield';
+import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
+import Select from '@coralui/redux-form-react-coral/lib/Select';
+import { Field } from 'redux-form';
+import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
 import extensionViewReduxForm from '../extensionViewReduxForm';
-import ComparisonOperatorField from './components/comparisonOperatorField';
 import { isNumber } from '../utils/validators';
-import CoralField from '../components/coralField';
+import comparisonOperatorOptions from './comparisonOperatorOptions';
 
 const ScreenResolution = () => (
   <div>
     <div>
       <label className="u-gapRight">
         <span className="u-label">The user's screen resolution width is</span>
-        <CoralField name="widthOperator" component={ ComparisonOperatorField } />
+        <Field
+          name="widthOperator"
+          component={ Select }
+          options={ comparisonOperatorOptions }
+        />
       </label>
       <label>
-        <CoralField
-          className="u-gapRight"
-          componentClassName="u-smallTextfield"
+        <Field
           name="width"
-          component={ Textfield }
-          supportValidation
+          component={ DecoratedInput }
+          inputComponent={ Textfield }
+          className="u-gapRight"
+          inputClassName="u-smallTextfield"
         />
         <span>px</span>
       </label>
@@ -27,15 +33,19 @@ const ScreenResolution = () => (
     <div className="u-gapTop">
       <label className="u-gapRight">
         <span className="u-label">and height is</span>
-        <CoralField name="heightOperator" component={ ComparisonOperatorField } />
+        <Field
+          name="heightOperator"
+          component={ Select }
+          options={ comparisonOperatorOptions }
+        />
       </label>
       <label>
-        <CoralField
-          className="u-gapRight"
-          componentClassName="u-smallTextfield"
+        <Field
           name="height"
-          component={ Textfield }
-          supportValidation
+          component={ DecoratedInput }
+          inputComponent={ Textfield }
+          className="u-gapRight"
+          inputClassName="u-smallTextfield"
         />
         <span>px</span>
       </label>

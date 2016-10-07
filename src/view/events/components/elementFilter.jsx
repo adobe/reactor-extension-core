@@ -1,11 +1,10 @@
 import React from 'react';
-import Radio from '@coralui/react-coral/lib/Radio';
-import { formValueSelector } from 'redux-form';
+import Radio from '@coralui/redux-form-react-coral/lib/Radio';
+import { Field, formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
 
 import SpecificElements, { formConfig as specificElementsFormConfig } from './specificElements';
 import mergeFormConfigs from '../../utils/mergeFormConfigs';
-import CoralField from '../../components/coralField';
 
 const ElementFilter = ({ ...props }) => {
   const { elementSpecificity } = props;
@@ -13,20 +12,22 @@ const ElementFilter = ({ ...props }) => {
   return (
     <div>
       <div>
-        <CoralField
+        <Field
           name="elementSpecificity"
           component={ Radio }
+          type="radio"
           value="specific"
         >
           specific elements
-        </CoralField>
-        <CoralField
+        </Field>
+        <Field
           name="elementSpecificity"
           component={ Radio }
+          type="radio"
           value="any"
         >
           any element
-        </CoralField>
+        </Field>
       </div>
       {
         elementSpecificity === 'specific' ?

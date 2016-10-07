@@ -1,25 +1,26 @@
 import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
-import { ValidationWrapper } from '@reactor/react-components';
+import ErrorTip from '@reactor/react-components/lib/errorTip';
+import { Field } from 'redux-form';
 import StandardEvent from '../../components/standardEvent';
 import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
 import AdvancedEventOptions from '../advancedEventOptions';
-import ElementSelector from '../elementSelector';
 
 const getReactComponents = (wrapper) => {
   const advancedEventOptions = wrapper.find(AdvancedEventOptions).node;
-  const elementSelectorTextfield = wrapper.find(Textfield)
-    .filterWhere(n => n.prop('name') === 'elementSelector').node;
+  const elementSelectorField = wrapper.find(Field)
+    .filterWhere(n => n.prop('name') === 'elementSelector');
+  const elementSelectorTextfield = elementSelectorField.find(Textfield).node;
+  const elementSelectorErrorTip = elementSelectorField.find(ErrorTip).node;
   const bubbleStopCheckbox = wrapper.find(Checkbox)
     .filterWhere(n => n.prop('name') === 'bubbleStop').node;
-  const elementSelectorWrapper = wrapper.find(ElementSelector).find(ValidationWrapper).node;
 
   return {
     elementSelectorTextfield,
     bubbleStopCheckbox,
     advancedEventOptions,
-    elementSelectorWrapper
+    elementSelectorErrorTip
   };
 };
 
@@ -68,9 +69,10 @@ describe('standard event view', () => {
   it('sets validation errors', () => {
     extensionBridge.init();
 
-    const { elementSelectorWrapper } = getReactComponents(instance);
-
     expect(extensionBridge.validate()).toBe(false);
-    expect(elementSelectorWrapper.props.error).toEqual(jasmine.any(String));
+
+    const { elementSelectorErrorTip } = getReactComponents(instance);
+
+    expect(elementSelectorErrorTip).toBeDefined();
   });
 });

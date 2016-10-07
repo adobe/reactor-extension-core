@@ -1,10 +1,10 @@
 import React from 'react';
 import Icon from '@coralui/react-coral/lib/Icon';
-import Textfield from '@coralui/react-coral/lib/Textfield';
+import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
 import Tooltip from '@coralui/react-coral/lib/Tooltip';
 import { Field } from 'redux-form';
+import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
-import CoralField from '../components/coralField';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import RegexToggle from '../components/regexToggle';
 
@@ -13,18 +13,18 @@ const Variable = () => (
   <div>
     <label className="u-gapRight">
       <span className="u-label">JS Variable Name</span>
-      <CoralField
+      <Field
         name="name"
-        component={ Textfield }
-        supportValidation
+        component={ DecoratedInput }
+        inputComponent={ Textfield }
       />
     </label>
     <label className="u-gapRight">
       <span className="u-label">JS Variable Value</span>
-      <CoralField
+      <Field
         name="value"
-        component={ Textfield }
-        supportValidation
+        component={ DecoratedInput }
+        inputComponent={ Textfield }
       />
     </label>
     <Tooltip

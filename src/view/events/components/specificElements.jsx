@@ -1,12 +1,11 @@
 import React from 'react';
-import Checkbox from '@coralui/react-coral/lib/Checkbox';
-import { formValueSelector, FieldArray } from 'redux-form';
+import Checkbox from '@coralui/redux-form-react-coral/lib/Checkbox';
+import { Field, formValueSelector, FieldArray } from 'redux-form';
 import { connect } from 'react-redux';
 
 import ElementSelector, { formConfig as elementSelectorFormConfig } from './elementSelector';
 import ElementPropertiesEditor, { formConfig as elementPropertiesEditorFormConfig } from './elementPropertiesEditor';
 import mergeFormConfigs from '../../utils/mergeFormConfigs';
-import CoralField from '../../components/coralField';
 
 const SpecificElements = ({ ...props }) => {
   const {
@@ -17,13 +16,13 @@ const SpecificElements = ({ ...props }) => {
     <div>
       <ElementSelector fields={ props.fields } />
       <div>
-        <CoralField
+        <Field
           name="showElementPropertiesFilter"
           className="u-block"
           component={ Checkbox }
         >
           and having certain property values...
-        </CoralField>
+        </Field>
         {
           showElementPropertiesFilter ?
             <FieldArray

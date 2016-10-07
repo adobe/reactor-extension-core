@@ -1,19 +1,19 @@
 import React from 'react';
-import Textfield from '@coralui/react-coral/lib/Textfield';
+import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
 import { Field } from 'redux-form';
+import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import RegexToggle from '../components/regexToggle';
-import CoralField from '../components/coralField';
 
 const LandingPage = () => (
   <div>
     <label className="u-gapRight">
       <span className="u-label">Landing Page</span>
-      <CoralField
+      <Field
         name="page"
-        component={ Textfield }
-        supportValidation
+        component={ DecoratedInput }
+        inputComponent={ Textfield }
       />
     </label>
     <Field

@@ -1,29 +1,28 @@
 import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Switch from '@coralui/react-coral/lib/Switch';
-import { ValidationWrapper } from '@reactor/react-components';
-import CoralField from '../../components/coralField';
+import ErrorTip from '@reactor/react-components/lib/errorTip';
+import { Field } from 'redux-form';
 import URLParameter from '../urlParameter';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
-  const textFields = wrapper.find(Textfield);
-  const coralFields = wrapper.find(CoralField);
+  const fields = wrapper.find(Field);
 
-  const nameField = textFields.filterWhere(n => n.prop('name') === 'name').node;
-  const valueField = textFields.filterWhere(n => n.prop('name') === 'value').node;
+  const nameField = fields.filterWhere(n => n.prop('name') === 'name');
+  const nameTextfield = nameField.find(Textfield).node;
+  const nameErrorTip = nameField.find(ErrorTip).node;
+  const valueField = fields.filterWhere(n => n.prop('name') === 'value');
+  const valueTextfield = valueField.find(Textfield).node;
+  const valueErrorTip = valueField.find(ErrorTip).node;
   const valueRegexSwitch = wrapper.find(Switch).node;
-  const nameWrapper = coralFields.filterWhere(n => n.prop('name') === 'name')
-    .find(ValidationWrapper).node;
-  const valueWrapper = coralFields.filterWhere(n => n.prop('name') === 'value')
-    .find(ValidationWrapper).node;
 
   return {
-    nameField,
-    valueField,
-    valueRegexSwitch,
-    nameWrapper,
-    valueWrapper
+    nameTextfield,
+    nameErrorTip,
+    valueTextfield,
+    valueErrorTip,
+    valueRegexSwitch
   };
 };
 
@@ -45,20 +44,20 @@ describe('url parameter view', () => {
       }
     });
 
-    const { nameField, valueField, valueRegexSwitch } = getReactComponents(instance);
+    const { nameTextfield, valueTextfield, valueRegexSwitch } = getReactComponents(instance);
 
-    expect(nameField.props.value).toBe('foo');
-    expect(valueField.props.value).toBe('bar');
+    expect(nameTextfield.props.value).toBe('foo');
+    expect(valueTextfield.props.value).toBe('bar');
     expect(valueRegexSwitch.props.checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { nameField, valueField, valueRegexSwitch } = getReactComponents(instance);
+    const { nameTextfield, valueTextfield, valueRegexSwitch } = getReactComponents(instance);
 
-    nameField.props.onChange('foo');
-    valueField.props.onChange('bar');
+    nameTextfield.props.onChange('foo');
+    valueTextfield.props.onChange('bar');
     valueRegexSwitch.props.onChange({ target: { checked: true } });
 
     expect(extensionBridge.getSettings()).toEqual({
@@ -72,9 +71,9 @@ describe('url parameter view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { nameWrapper, valueWrapper } = getReactComponents(instance);
+    const { nameErrorTip, valueErrorTip } = getReactComponents(instance);
 
-    expect(nameWrapper.props.error).toEqual(jasmine.any(String));
-    expect(valueWrapper.props.error).toEqual(jasmine.any(String));
+    expect(nameErrorTip).toBeDefined();
+    expect(valueErrorTip).toBeDefined();
   });
 });

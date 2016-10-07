@@ -1,20 +1,22 @@
 import React from 'react';
-import Textfield from '@coralui/react-coral/lib/Textfield';
+import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
+import Select from '@coralui/redux-form-react-coral/lib/Select';
+import { Field } from 'redux-form';
+import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
 import extensionViewReduxForm from '../extensionViewReduxForm';
-import ComparisonOperatorField from './components/comparisonOperatorField';
 import { isNumber } from '../utils/validators';
-import CoralField from '../components/coralField';
+import comparisonOperatorOptions from './comparisonOperatorOptions';
 
 const CartAmount = () => (
   <div>
     <div>
       <label>
         <span className="u-label">The cart amount identified by the data element</span>
-        <CoralField
+        <Field
           name="dataElement"
-          component={ Textfield }
-          supportValidation
+          component={ DecoratedInput }
+          inputComponent={ Textfield }
           supportDataElementName
         />
       </label>
@@ -22,15 +24,19 @@ const CartAmount = () => (
     <div className="u-gapTop">
       <label className="u-gapRight">
         <span className="u-label">is</span>
-        <CoralField name="operator" component={ ComparisonOperatorField } />
+        <Field
+          name="operator"
+          component={ Select }
+          options={ comparisonOperatorOptions }
+        />
       </label>
       <label>
         <span className="u-label">the value</span>
-        <CoralField
+        <Field
           name="amount"
-          component={ Textfield }
-          componentClassName="u-smallTextfield"
-          supportValidation
+          component={ DecoratedInput }
+          inputComponent={ Textfield }
+          inputClassName="u-smallTextfield"
         />
       </label>
     </div>

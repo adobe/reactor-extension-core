@@ -1,34 +1,33 @@
 import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-import { ValidationWrapper } from '@reactor/react-components';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
+import ErrorTip from '@reactor/react-components/lib/errorTip';
+import { Field } from 'redux-form';
+
 import Custom from '../custom';
-import CoralField from '../../components/coralField';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 import AdvancedEventOptions from '../components/advancedEventOptions';
-import ElementSelector from '../components/elementSelector';
 
 const getReactComponents = (wrapper) => {
-  const textFields = wrapper.find(Textfield);
+  const fields = wrapper.find(Field);
 
-  const typeTextfield = textFields.filterWhere(n => n.prop('name') === 'type').node;
-
-  const elementSelectorTextfield = textFields
-    .filterWhere(n => n.prop('name') === 'elementSelector').node;
+  const typeField = fields.filterWhere(n => n.prop('name') === 'type');
+  const typeTextfield = typeField.find(Textfield).node;
+  const typeErrorTip = typeField.find(ErrorTip).node;
+  const elementSelectorField = fields.filterWhere(n => n.prop('name') === 'elementSelector');
+  const elementSelectorTextfield = elementSelectorField.find(Textfield).node;
+  const elementSelectorErrorTip = elementSelectorField.find(ErrorTip).node;
   const bubbleStopCheckbox = wrapper.find(Checkbox)
     .filterWhere(n => n.prop('name') === 'bubbleStop').node;
   const advancedEventOptions = wrapper.find(AdvancedEventOptions).node;
-  const typeWrapper = wrapper.find(CoralField).filterWhere(n => n.prop('name') === 'type')
-    .find(ValidationWrapper).node;
-  const elementSelectorWrapper = wrapper.find(ElementSelector).find(ValidationWrapper).node;
 
   return {
     typeTextfield,
-    typeWrapper,
+    typeErrorTip,
     elementSelectorTextfield,
+    elementSelectorErrorTip,
     bubbleStopCheckbox,
-    advancedEventOptions,
-    elementSelectorWrapper
+    advancedEventOptions
   };
 };
 
@@ -89,11 +88,11 @@ describe('custom event view', () => {
 
   it('sets errors if required values are not provided', () => {
     extensionBridge.init();
-
-    const { typeWrapper, elementSelectorWrapper } = getReactComponents(instance);
-
     expect(extensionBridge.validate()).toBe(false);
-    expect(typeWrapper.props.error).toEqual(jasmine.any(String));
-    expect(elementSelectorWrapper.props.error).toEqual(jasmine.any(String));
+
+    const { typeErrorTip, elementSelectorErrorTip } = getReactComponents(instance);
+
+    expect(typeErrorTip).toBeDefined();
+    expect(elementSelectorErrorTip).toBeDefined();
   });
 });

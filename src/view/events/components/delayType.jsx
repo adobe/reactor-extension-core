@@ -1,8 +1,9 @@
 import React from 'react';
-import Radio from '@coralui/react-coral/lib/Radio';
-import Textfield from '@coralui/react-coral/lib/Textfield';
+import Radio from '@coralui/redux-form-react-coral/lib/Radio';
+import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
+import { Field } from 'redux-form';
+import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
-import CoralField from '../../components/coralField';
 import { isPositiveNumber } from '../../utils/validators';
 
 export default () => (
@@ -10,24 +11,26 @@ export default () => (
     <label>
       <span className="u-label u-gapRight">Trigger</span>
     </label>
-    <CoralField
+    <Field
       name="delayType"
       component={ Radio }
+      type="radio"
       value="immediate"
     >
       immediately
-    </CoralField>
-    <CoralField
+    </Field>
+    <Field
       name="delayType"
       component={ Radio }
+      type="radio"
       value="delay"
     >
       after
-    </CoralField>
-    <CoralField
+    </Field>
+    <Field
       name="delay"
-      component={ Textfield }
-      supportValidation
+      component={ DecoratedInput }
+      inputComponent={ Textfield }
     />
     <label>
       <span className="u-label u-gapLeft">milliseconds</span>

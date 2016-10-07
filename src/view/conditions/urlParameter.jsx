@@ -1,8 +1,8 @@
 import React from 'react';
-import Textfield from '@coralui/react-coral/lib/Textfield';
+import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
 import { Field } from 'redux-form';
+import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
-import CoralField from '../components/coralField';
 import RegexToggle from '../components/regexToggle';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
@@ -10,18 +10,18 @@ const URLParameter = () => (
   <div>
     <span className="u-label">URL Parameter Name</span>
     <label className="u-gapRight">
-      <CoralField
+      <Field
         name="name"
-        component={ Textfield }
-        supportValidation
+        component={ DecoratedInput }
+        inputComponent={ Textfield }
       />
     </label>
     <label className="u-gapRight">
       <span className="u-label">URL Parameter Value</span>
-      <CoralField
+      <Field
         name="value"
-        component={ Textfield }
-        supportValidation
+        component={ DecoratedInput }
+        inputComponent={ Textfield }
       />
     </label>
     <Field

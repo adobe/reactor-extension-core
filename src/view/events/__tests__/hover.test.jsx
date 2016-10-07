@@ -2,34 +2,34 @@ import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
 import Radio from '@coralui/react-coral/lib/Radio';
-import { ValidationWrapper } from '@reactor/react-components';
-import DelayType from '../components/delayType';
+import ErrorTip from '@reactor/react-components/lib/errorTip';
+import { Field } from 'redux-form';
 import Hover from '../hover';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 import AdvancedEventOptions from '../components/advancedEventOptions';
-import ElementSelector from '../components/elementSelector';
 
 const getReactComponents = (wrapper) => {
-  const textFields = wrapper.find(Textfield);
+  const fields = wrapper.find(Field);
 
-  const elementSelectorTextfield = textFields
-    .filterWhere(n => n.prop('name') === 'elementSelector').node;
+  const elementSelectorField = fields.filterWhere(n => n.prop('name') === 'elementSelector');
+  const elementSelectorTextfield = elementSelectorField.find(Textfield).node;
+  const elementSelectorErrorTip = elementSelectorField.find(ErrorTip).node;
   const bubbleStopCheckbox = wrapper
     .find(Checkbox).filterWhere(n => n.prop('name') === 'bubbleStop').node;
-  const delayTextfield = textFields.filterWhere(n => n.prop('name') === 'delay').node;
+  const delayField = fields.filterWhere(n => n.prop('name') === 'delay');
+  const delayTextfield = delayField.find(Textfield).node;
+  const delayErrorTip = delayField.find(ErrorTip).node;
   const delayRadio = wrapper.find(Radio).filterWhere(n => n.prop('value') === 'delay').node;
   const advancedEventOptions = wrapper.find(AdvancedEventOptions).node;
-  const elementSelectorWrapper = wrapper.find(ElementSelector).find(ValidationWrapper).node;
-  const delayValidationWrapper = wrapper.find(DelayType).find(ValidationWrapper).node;
 
   return {
     elementSelectorTextfield,
+    elementSelectorErrorTip,
     bubbleStopCheckbox,
     delayTextfield,
+    delayErrorTip,
     delayRadio,
-    advancedEventOptions,
-    delayValidationWrapper,
-    elementSelectorWrapper
+    advancedEventOptions
   };
 };
 
@@ -90,15 +90,18 @@ describe('hover view', () => {
 
   it('sets validation errors', () => {
     const {
-      delayRadio,
-      delayValidationWrapper,
-      elementSelectorWrapper
+      delayRadio
     } = getReactComponents(instance);
-    delayRadio.props.onChange('delay');
 
+    delayRadio.props.onChange('delay');
     expect(extensionBridge.validate()).toBe(false);
 
-    expect(delayValidationWrapper.props.error).toEqual(jasmine.any(String));
-    expect(elementSelectorWrapper.props.error).toEqual(jasmine.any(String));
+    const {
+      delayErrorTip,
+      elementSelectorErrorTip
+    } = getReactComponents(instance);
+
+    expect(delayErrorTip).toBeDefined();
+    expect(elementSelectorErrorTip).toBeDefined();
   });
 });

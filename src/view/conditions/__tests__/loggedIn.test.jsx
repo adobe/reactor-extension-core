@@ -1,18 +1,16 @@
 import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-import { ValidationWrapper, DataElementSelectorButton } from '@reactor/react-components';
+import ErrorTip from '@reactor/react-components/lib/errorTip';
 import LoggedIn from '../loggedIn';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
-  const dataElementField = wrapper.find(Textfield).node;
-  const dataElementButton = wrapper.find(DataElementSelectorButton).node;
-  const dataElementWrapper = wrapper.find(ValidationWrapper).node;
+  const dataElementTextfield = wrapper.find(Textfield).node;
+  const dataElementErrorTip = wrapper.find(ErrorTip).node;
 
   return {
-    dataElementField,
-    dataElementButton,
-    dataElementWrapper
+    dataElementTextfield,
+    dataElementErrorTip
   };
 };
 
@@ -32,17 +30,17 @@ describe('logged in view', () => {
       }
     });
 
-    const { dataElementField } = getReactComponents(instance);
+    const { dataElementTextfield } = getReactComponents(instance);
 
-    expect(dataElementField.props.value).toBe('foo');
+    expect(dataElementTextfield.props.value).toBe('foo');
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { dataElementField } = getReactComponents(instance);
+    const { dataElementTextfield } = getReactComponents(instance);
 
-    dataElementField.props.onChange('foo');
+    dataElementTextfield.props.onChange('foo');
 
     expect(extensionBridge.getSettings()).toEqual({
       dataElement: 'foo'
@@ -53,8 +51,8 @@ describe('logged in view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { dataElementWrapper } = getReactComponents(instance);
+    const { dataElementErrorTip } = getReactComponents(instance);
 
-    expect(dataElementWrapper.props.error).toEqual(jasmine.any(String));
+    expect(dataElementErrorTip).toBeDefined();
   });
 });

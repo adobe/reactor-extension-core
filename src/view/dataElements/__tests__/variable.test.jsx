@@ -1,16 +1,16 @@
 import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-import { ValidationWrapper } from '@reactor/react-components';
+import ErrorTip from '@reactor/react-components/lib/errorTip';
 import Variable from '../variable';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
-  const pathField = wrapper.find(Textfield).node;
-  const pathWrapper = wrapper.find(ValidationWrapper).node;
+  const pathTextfield = wrapper.find(Textfield).node;
+  const pathErrorTip = wrapper.find(ErrorTip).node;
 
   return {
-    pathField,
-    pathWrapper
+    pathTextfield,
+    pathErrorTip
   };
 };
 
@@ -30,17 +30,17 @@ describe('variable view', () => {
       }
     });
 
-    const { pathField } = getReactComponents(instance);
+    const { pathTextfield } = getReactComponents(instance);
 
-    expect(pathField.props.value).toBe('foo');
+    expect(pathTextfield.props.value).toBe('foo');
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { pathField } = getReactComponents(instance);
+    const { pathTextfield } = getReactComponents(instance);
 
-    pathField.props.onChange('foo');
+    pathTextfield.props.onChange('foo');
 
     expect(extensionBridge.getSettings()).toEqual({
       path: 'foo'
@@ -49,10 +49,10 @@ describe('variable view', () => {
 
   it('sets errors if required values are not provided', () => {
     extensionBridge.init();
-
-    const { pathWrapper } = getReactComponents(instance);
-
     expect(extensionBridge.validate()).toBe(false);
-    expect(pathWrapper.props.error).toEqual(jasmine.any(String));
+
+    const { pathErrorTip } = getReactComponents(instance);
+
+    expect(pathErrorTip).toBeDefined();
   });
 });

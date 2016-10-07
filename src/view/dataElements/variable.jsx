@@ -1,15 +1,16 @@
 import React from 'react';
-import Textfield from '@coralui/react-coral/lib/Textfield';
+import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
+import { Field } from 'redux-form';
+import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 import extensionViewReduxForm from '../extensionViewReduxForm';
-import CoralField from '../components/coralField';
 
 const Variable = () => (
   <label>
     <span className="u-label">Path to variable</span>
-    <CoralField
+    <Field
       name="path"
-      component={ Textfield }
-      supportValidation
+      component={ DecoratedInput }
+      inputComponent={ Textfield }
     />
   </label>
 );

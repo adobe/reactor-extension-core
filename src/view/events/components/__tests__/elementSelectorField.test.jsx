@@ -1,5 +1,5 @@
 import { mount } from 'enzyme';
-import { ValidationWrapper } from '@reactor/react-components';
+import ErrorTip from '@reactor/react-components/lib/errorTip';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Button from '@coralui/react-coral/lib/Button';
 import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
@@ -9,12 +9,12 @@ import extensionViewReduxForm from '../../../extensionViewReduxForm';
 const getReactComponents = (wrapper) => {
   const textfield = wrapper.find(Textfield).node;
   const button = wrapper.find(Button).node;
-  const validationWrapper = wrapper.find(ValidationWrapper).node;
+  const errorTip = wrapper.find(ErrorTip).node;
 
   return {
     textfield,
     button,
-    validationWrapper
+    errorTip
   };
 };
 
@@ -54,9 +54,11 @@ describe('elementSelector', () => {
 
   it('sets error if element selector field is empty', () => {
     extensionBridge.init();
-    const { validationWrapper } = getReactComponents(instance);
 
     expect(extensionBridge.validate()).toBe(false);
-    expect(validationWrapper.props.error).toEqual(jasmine.any(String));
+
+    const { errorTip } = getReactComponents(instance);
+
+    expect(errorTip).toBeDefined();
   });
 });

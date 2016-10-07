@@ -1,28 +1,28 @@
 import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Radio from '@coralui/react-coral/lib/Radio';
-import { ValidationWrapper } from '@reactor/react-components';
+import ErrorTip from '@reactor/react-components/lib/errorTip';
+import { Field } from 'redux-form';
 import EntersViewport from '../entersViewport';
-import DelayType from '../components/delayType';
-import ElementSelector from '../components/elementSelector';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
-  const textFields = wrapper.find(Textfield);
+  const fields = wrapper.find(Field);
 
-  const elementSelectorTextfield = textFields
-    .filterWhere(n => n.prop('name') === 'elementSelector').node;
-  const delayTextfield = textFields.filterWhere(n => n.prop('name') === 'delay').node;
+  const elementSelectorField = fields.filterWhere(n => n.prop('name') === 'elementSelector');
+  const elementSelectorTextfield = elementSelectorField.find(Textfield).node;
+  const elementSelectorErrorTip = elementSelectorField.find(ErrorTip).node;
+  const delayField = fields.filterWhere(n => n.prop('name') === 'delay');
+  const delayTextfield = delayField.find(Textfield).node;
+  const delayErrorTip = delayField.find(ErrorTip).node;
   const delayRadio = wrapper.find(Radio).filterWhere(n => n.prop('value') === 'delay').node;
-  const delayValidationWrapper = wrapper.find(DelayType).find(ValidationWrapper).node;
-  const elementSelectorWrapper = wrapper.find(ElementSelector).find(ValidationWrapper).node;
 
   return {
     elementSelectorTextfield,
+    elementSelectorErrorTip,
     delayTextfield,
-    delayRadio,
-    delayValidationWrapper,
-    elementSelectorWrapper
+    delayErrorTip,
+    delayRadio
   };
 };
 
@@ -69,15 +69,19 @@ describe('enters viewport view', () => {
     extensionBridge.init();
 
     const {
-      delayRadio,
-      delayValidationWrapper,
-      elementSelectorWrapper
+      delayRadio
     } = getReactComponents(instance);
+
     delayRadio.props.onChange('delay');
 
     expect(extensionBridge.validate()).toBe(false);
 
-    expect(delayValidationWrapper.props.error).toEqual(jasmine.any(String));
-    expect(elementSelectorWrapper.props.error).toEqual(jasmine.any(String));
+    const {
+      delayErrorTip,
+      elementSelectorErrorTip
+    } = getReactComponents(instance);
+
+    expect(delayErrorTip).toBeDefined();
+    expect(elementSelectorErrorTip).toBeDefined();
   });
 });

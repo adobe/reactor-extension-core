@@ -1,19 +1,19 @@
 import { mount } from 'enzyme';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-import { ValidationWrapper } from '@reactor/react-components';
+import ErrorTip from '@reactor/react-components/lib/errorTip';
 import QueryParameter from '../queryParameter';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
-  const nameField = wrapper.find(Textfield).node;
+  const nameTextfield = wrapper.find(Textfield).node;
+  const nameErrorTip = wrapper.find(ErrorTip).node;
   const caseInsensitiveCheckbox = wrapper.find(Checkbox).node;
-  const nameWrapper = wrapper.find(ValidationWrapper).node;
 
   return {
-    nameField,
-    caseInsensitiveCheckbox,
-    nameWrapper
+    nameTextfield,
+    nameErrorTip,
+    caseInsensitiveCheckbox
   };
 };
 
@@ -42,18 +42,18 @@ describe('query parameter view', () => {
       }
     });
 
-    const { nameField, caseInsensitiveCheckbox } = getReactComponents(instance);
+    const { nameTextfield, caseInsensitiveCheckbox } = getReactComponents(instance);
 
-    expect(nameField.props.value).toBe('foo');
+    expect(nameTextfield.props.value).toBe('foo');
     expect(caseInsensitiveCheckbox.props.checked).toBe(false);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { nameField, caseInsensitiveCheckbox } = getReactComponents(instance);
+    const { nameTextfield, caseInsensitiveCheckbox } = getReactComponents(instance);
 
-    nameField.props.onChange('foo');
+    nameTextfield.props.onChange('foo');
     caseInsensitiveCheckbox.props.onChange(false);
 
     expect(extensionBridge.getSettings()).toEqual({
@@ -64,10 +64,10 @@ describe('query parameter view', () => {
 
   it('sets errors if required values are not provided', () => {
     extensionBridge.init();
-
-    const { nameWrapper } = getReactComponents(instance);
-
     expect(extensionBridge.validate()).toBe(false);
-    expect(nameWrapper.props.error).toEqual(jasmine.any(String));
+
+    const { nameErrorTip } = getReactComponents(instance);
+
+    expect(nameErrorTip).toBeDefined();
   });
 });

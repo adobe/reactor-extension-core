@@ -1,8 +1,8 @@
 import React from 'react';
-import Textfield from '@coralui/react-coral/lib/Textfield';
+import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
 import { Field } from 'redux-form';
+import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
-import CoralField from '../components/coralField';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import RegexToggle from '../components/regexToggle';
 
@@ -10,19 +10,19 @@ const DataElement = () => (
   <div>
     <label className="u-gapRight">
       <span className="u-label">Data element</span>
-      <CoralField
-        component={ Textfield }
+      <Field
         name="name"
-        supportValidation
+        component={ DecoratedInput }
+        inputComponent={ Textfield }
         supportDataElementName
       />
     </label>
     <label className="u-gapRight">
       <span className="u-label">has the value</span>
-      <CoralField
-        component={ Textfield }
+      <Field
         name="value"
-        supportValidation
+        component={ DecoratedInput }
+        inputComponent={ Textfield }
       />
     </label>
     <Field

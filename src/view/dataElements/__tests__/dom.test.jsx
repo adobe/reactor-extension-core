@@ -1,32 +1,29 @@
 import { mount } from 'enzyme';
-import { ValidationWrapper } from '@reactor/react-components';
+import ErrorTip from '@reactor/react-components/lib/errorTip';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Select from '@coralui/react-coral/lib/Select';
+import { Field } from 'redux-form';
 import DOM from '../dom';
-import CoralField from '../../components/coralField';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
-  const textFields = wrapper.find(Textfield);
-  const coralFields = wrapper.find(CoralField);
-
+  const fields = wrapper.find(Field);
 
   const elementPropertyPresetsSelect = wrapper.find(Select).node;
-  const elementSelectorTextfield = textFields.filterWhere(n => n.prop('name') === 'elementSelector')
-    .node;
-  const customElementPropertyField = textFields
-    .filterWhere(n => n.prop('name') === 'customElementProperty').node;
-  const elementSelectorWrapper = coralFields.filterWhere(n => n.prop('name') === 'elementSelector')
-    .find(ValidationWrapper).node;
-  const customElementPropertyWrapper = coralFields
-    .filterWhere(n => n.prop('name') === 'customElementProperty').find(ValidationWrapper).node;
+  const elementSelectorField = fields.filterWhere(n => n.prop('name') === 'elementSelector');
+  const elementSelectorTextfield = elementSelectorField.find(Textfield).node;
+  const elementSelectorErrorTip = elementSelectorField.find(ErrorTip).node;
+  const customElementPropertyField = fields
+    .filterWhere(n => n.prop('name') === 'customElementProperty');
+  const customElementPropertyTextfield = customElementPropertyField.find(Textfield).node;
+  const customElementPropertyErrorTip = customElementPropertyField.find(ErrorTip).node;
 
   return {
     elementPropertyPresetsSelect,
     elementSelectorTextfield,
-    customElementPropertyField,
-    elementSelectorWrapper,
-    customElementPropertyWrapper
+    elementSelectorErrorTip,
+    customElementPropertyTextfield,
+    customElementPropertyErrorTip
   };
 };
 
@@ -73,12 +70,12 @@ describe('DOM view', () => {
     const {
       elementSelectorTextfield,
       elementPropertyPresetsSelect,
-      customElementPropertyField
+      customElementPropertyTextfield
     } = getReactComponents(instance);
 
     expect(elementSelectorTextfield.props.value).toBe('foo');
     expect(elementPropertyPresetsSelect.props.value).toBe('custom');
-    expect(customElementPropertyField.props.value).toBe('bar');
+    expect(customElementPropertyTextfield.props.value).toBe('bar');
   });
 
   it('sets error if element selector not provided', () => {
@@ -86,9 +83,9 @@ describe('DOM view', () => {
 
     expect(extensionBridge.validate()).toBe(false);
 
-    const { elementSelectorWrapper } = getReactComponents(instance);
+    const { elementSelectorErrorTip } = getReactComponents(instance);
 
-    expect(elementSelectorWrapper.props.error).toEqual(jasmine.any(String));
+    expect(elementSelectorErrorTip).toBeDefined();
   });
 
   it('sets settings from form values using element property preset', () => {
@@ -123,10 +120,10 @@ describe('DOM view', () => {
     });
 
     const {
-      customElementPropertyField
+      customElementPropertyTextfield
     } = getReactComponents(instance);
 
-    customElementPropertyField.props.onChange('bar');
+    customElementPropertyTextfield.props.onChange('bar');
 
     expect(extensionBridge.getSettings()).toEqual({
       elementSelector: 'foo',
@@ -144,8 +141,8 @@ describe('DOM view', () => {
 
     expect(extensionBridge.validate()).toBe(false);
 
-    const { customElementPropertyWrapper } = getReactComponents(instance);
+    const { customElementPropertyErrorTip } = getReactComponents(instance);
 
-    expect(customElementPropertyWrapper.props.error).toEqual(jasmine.any(String));
+    expect(customElementPropertyErrorTip).toBeDefined();
   });
 });

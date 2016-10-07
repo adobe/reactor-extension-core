@@ -1,26 +1,26 @@
 import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Radio from '@coralui/react-coral/lib/Radio';
-import { ValidationWrapper } from '@reactor/react-components';
+import Select from '@coralui/react-coral/lib/Select';
+import ErrorTip from '@reactor/react-components/lib/errorTip';
 import PageViews from '../pageViews';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
-import ComparisonOperatorField from '../components/comparisonOperatorField';
 
 const getReactComponents = (wrapper) => {
   const radios = wrapper.find(Radio);
 
   const lifetimeRadio = radios.filterWhere(n => n.prop('value') === 'lifetime').node;
   const sessionRadio = radios.filterWhere(n => n.prop('value') === 'session').node;
-  const operatorField = wrapper.find(ComparisonOperatorField).node;
-  const countField = wrapper.find(Textfield).node;
-  const countWrapper = wrapper.find(ValidationWrapper).node;
+  const operatorSelect = wrapper.find(Select).node;
+  const countTextfield = wrapper.find(Textfield).node;
+  const countErrorTip = wrapper.find(ErrorTip).node;
 
   return {
     lifetimeRadio,
     sessionRadio,
-    operatorField,
-    countField,
-    countWrapper
+    operatorSelect,
+    countTextfield,
+    countErrorTip
   };
 };
 
@@ -36,9 +36,9 @@ describe('page views view', () => {
   it('sets operator to greater than by default', () => {
     extensionBridge.init();
 
-    const { operatorField } = getReactComponents(instance);
+    const { operatorSelect } = getReactComponents(instance);
 
-    expect(operatorField.props.value).toBe('>');
+    expect(operatorSelect.props.value).toBe('>');
   });
 
   it('sets form values from settings', () => {
@@ -50,10 +50,15 @@ describe('page views view', () => {
       }
     });
 
-    const { operatorField, countField, lifetimeRadio, sessionRadio } = getReactComponents(instance);
+    const {
+      operatorSelect,
+      countTextfield,
+      lifetimeRadio,
+      sessionRadio
+    } = getReactComponents(instance);
 
-    expect(operatorField.props.value).toBe('=');
-    expect(countField.props.value).toBe(100);
+    expect(operatorSelect.props.value).toBe('=');
+    expect(countTextfield.props.value).toBe(100);
     expect(lifetimeRadio.props.checked).toBe(false);
     expect(sessionRadio.props.checked).toBe(true);
   });
@@ -61,10 +66,10 @@ describe('page views view', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { operatorField, countField, sessionRadio } = getReactComponents(instance);
+    const { operatorSelect, countTextfield, sessionRadio } = getReactComponents(instance);
 
-    operatorField.props.onChange('=');
-    countField.props.onChange(100);
+    operatorSelect.props.onChange({ value: '=' });
+    countTextfield.props.onChange(100);
     sessionRadio.props.onChange('session');
 
     expect(extensionBridge.getSettings()).toEqual({
@@ -78,19 +83,19 @@ describe('page views view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { countWrapper } = getReactComponents(instance);
+    const { countErrorTip } = getReactComponents(instance);
 
-    expect(countWrapper.props.error).toEqual(jasmine.any(String));
+    expect(countErrorTip).toBeDefined();
   });
 
   it('sets error if count value is not a number', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { countField, countWrapper } = getReactComponents(instance);
+    const { countTextfield, countErrorTip } = getReactComponents(instance);
 
-    countField.props.onChange('12.abc');
+    countTextfield.props.onChange('12.abc');
 
-    expect(countWrapper.props.error).toEqual(jasmine.any(String));
+    expect(countErrorTip).toBeDefined();
   });
 });

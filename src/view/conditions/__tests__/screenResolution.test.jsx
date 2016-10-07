@@ -1,34 +1,33 @@
 import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-import { ValidationWrapper } from '@reactor/react-components';
-import CoralField from '../../components/coralField';
+import Select from '@coralui/react-coral/lib/Select';
+import ErrorTip from '@reactor/react-components/lib/errorTip';
+import { Field } from 'redux-form';
 import ScreenResolution from '../screenResolution';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
-import ComparisonOperatorField from '../components/comparisonOperatorField';
 
 const getReactComponents = (wrapper) => {
-  const comparisonOperatorFields = wrapper.find(ComparisonOperatorField);
-  const textFields = wrapper.find(Textfield);
-  const coralFields = wrapper.find(CoralField);
+  const comparisonOperatorSelects = wrapper.find(Select);
+  const fields = wrapper.find(Field);
 
-  const widthOperatorField = comparisonOperatorFields
+  const widthOperatorSelect = comparisonOperatorSelects
     .filterWhere(n => n.prop('name') === 'widthOperator').node;
-  const heightOperatorField = comparisonOperatorFields
+  const heightOperatorSelect = comparisonOperatorSelects
     .filterWhere(n => n.prop('name') === 'heightOperator').node;
-  const widthField = textFields.filterWhere(n => n.prop('name') === 'width').node;
-  const heightField = textFields.filterWhere(n => n.prop('name') === 'height').node;
-  const widthWrapper = coralFields.filterWhere(n => n.prop('name') === 'width')
-    .find(ValidationWrapper).node;
-  const heightWrapper = coralFields.filterWhere(n => n.prop('name') === 'height')
-    .find(ValidationWrapper).node;
+  const widthField = fields.filterWhere(n => n.prop('name') === 'width');
+  const widthTextfield = widthField.find(Textfield).node;
+  const widthErrorTip = widthField.find(ErrorTip).node;
+  const heightField = fields.filterWhere(n => n.prop('name') === 'height');
+  const heightTextfield = heightField.find(Textfield).node;
+  const heightErrorTip = heightField.find(ErrorTip).node;
 
   return {
-    widthOperatorField,
-    widthField,
-    heightOperatorField,
-    heightField,
-    widthWrapper,
-    heightWrapper
+    widthOperatorSelect,
+    widthTextfield,
+    widthErrorTip,
+    heightOperatorSelect,
+    heightTextfield,
+    heightErrorTip
   };
 };
 
@@ -44,10 +43,10 @@ describe('screen resolution view', () => {
   it('sets operators to greater than by default', () => {
     extensionBridge.init();
 
-    const { widthOperatorField, heightOperatorField } = getReactComponents(instance);
+    const { widthOperatorSelect, heightOperatorSelect } = getReactComponents(instance);
 
-    expect(widthOperatorField.props.value).toBe('>');
-    expect(heightOperatorField.props.value).toBe('>');
+    expect(widthOperatorSelect.props.value).toBe('>');
+    expect(heightOperatorSelect.props.value).toBe('>');
   });
 
   it('sets form values from settings', () => {
@@ -61,32 +60,32 @@ describe('screen resolution view', () => {
     });
 
     const {
-      widthOperatorField,
-      widthField,
-      heightOperatorField,
-      heightField
+      widthOperatorSelect,
+      widthTextfield,
+      heightOperatorSelect,
+      heightTextfield
     } = getReactComponents(instance);
 
-    expect(widthOperatorField.props.value).toBe('=');
-    expect(widthField.props.value).toBe(100);
-    expect(heightOperatorField.props.value).toBe('<');
-    expect(heightField.props.value).toBe(200);
+    expect(widthOperatorSelect.props.value).toBe('=');
+    expect(widthTextfield.props.value).toBe(100);
+    expect(heightOperatorSelect.props.value).toBe('<');
+    expect(heightTextfield.props.value).toBe(200);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
     const {
-      widthOperatorField,
-      widthField,
-      heightOperatorField,
-      heightField
+      widthOperatorSelect,
+      widthTextfield,
+      heightOperatorSelect,
+      heightTextfield
     } = getReactComponents(instance);
 
-    widthOperatorField.props.onChange('=');
-    widthField.props.onChange(100);
-    heightOperatorField.props.onChange('<');
-    heightField.props.onChange(200);
+    widthOperatorSelect.props.onChange({ value: '=' });
+    widthTextfield.props.onChange(100);
+    heightOperatorSelect.props.onChange({ value: '<' });
+    heightTextfield.props.onChange(200);
 
     expect(extensionBridge.getSettings()).toEqual({
       widthOperator: '=',
@@ -100,22 +99,30 @@ describe('screen resolution view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { widthWrapper, heightWrapper } = getReactComponents(instance);
+    const {
+      widthErrorTip,
+      heightErrorTip
+    } = getReactComponents(instance);
 
-    expect(widthWrapper.props.error).toEqual(jasmine.any(String));
-    expect(heightWrapper.props.error).toEqual(jasmine.any(String));
+    expect(widthErrorTip).toBeDefined();
+    expect(heightErrorTip).toBeDefined();
   });
 
   it('sets errors if values are not numbers', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { widthField, widthWrapper, heightField, heightWrapper } = getReactComponents(instance);
+    const {
+      widthTextfield,
+      widthErrorTip,
+      heightTextfield,
+      heightErrorTip
+    } = getReactComponents(instance);
 
-    widthField.props.onChange('12.abc');
-    heightField.props.onChange('12.abc');
+    widthTextfield.props.onChange('12.abc');
+    heightTextfield.props.onChange('12.abc');
 
-    expect(widthWrapper.props.error).toEqual(jasmine.any(String));
-    expect(heightWrapper.props.error).toEqual(jasmine.any(String));
+    expect(widthErrorTip).toBeDefined();
+    expect(heightErrorTip).toBeDefined();
   });
 });

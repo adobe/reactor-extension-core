@@ -1,27 +1,27 @@
 import React from 'react';
 import { Field } from 'redux-form';
-import Textfield from '@coralui/react-coral/lib/Textfield';
+import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
+import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import RegexToggle from '../components/regexToggle';
-import CoralField from '../components/coralField';
 
 const Cookie = () => (
   <div>
     <label className="u-gapRight">
       <span className="u-label">Cookie Name</span>
-      <CoralField
+      <Field
         name="name"
-        component={ Textfield }
-        supportValidation
+        component={ DecoratedInput }
+        inputComponent={ Textfield }
       />
     </label>
     <label className="u-gapRight">
       <span className="u-label">Cookie Value</span>
-      <CoralField
+      <Field
         name="value"
-        component={ Textfield }
-        supportValidation
+        component={ DecoratedInput }
+        inputComponent={ Textfield }
       />
     </label>
 

@@ -1,19 +1,19 @@
 import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Switch from '@coralui/react-coral/lib/Switch';
-import { ValidationWrapper } from '@reactor/react-components';
+import ErrorTip from '@reactor/react-components/lib/errorTip';
 import LandingPage from '../landingPage';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
-  const pageField = wrapper.find(Textfield).node;
+  const pageTextfield = wrapper.find(Textfield).node;
   const pageRegexSwitch = wrapper.find(Switch).node;
-  const pageWrapper = wrapper.find(ValidationWrapper).node;
+  const pageErrorTip = wrapper.find(ErrorTip).node;
 
   return {
-    pageField,
+    pageTextfield,
     pageRegexSwitch,
-    pageWrapper
+    pageErrorTip
   };
 };
 
@@ -34,18 +34,18 @@ describe('landing page view', () => {
       }
     });
 
-    const { pageField, pageRegexSwitch } = getReactComponents(instance);
+    const { pageTextfield, pageRegexSwitch } = getReactComponents(instance);
 
-    expect(pageField.props.value).toBe('foo');
+    expect(pageTextfield.props.value).toBe('foo');
     expect(pageRegexSwitch.props.checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { pageField, pageRegexSwitch } = getReactComponents(instance);
+    const { pageTextfield, pageRegexSwitch } = getReactComponents(instance);
 
-    pageField.props.onChange('foo');
+    pageTextfield.props.onChange('foo');
     pageRegexSwitch.props.onChange({ target: { checked: true } });
 
     expect(extensionBridge.getSettings()).toEqual({
@@ -58,8 +58,8 @@ describe('landing page view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { pageWrapper } = getReactComponents(instance);
+    const { pageErrorTip } = getReactComponents(instance);
 
-    expect(pageWrapper.props.error).toEqual(jasmine.any(String));
+    expect(pageErrorTip).toBeDefined();
   });
 });

@@ -1,8 +1,8 @@
 import React from 'react';
-import Textfield from '@coralui/react-coral/lib/Textfield';
+import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
 import { Field, FieldArray } from 'redux-form';
+import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
-import CoralField from '../components/coralField';
 import MultipleItemEditor from './components/multipleItemEditor';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import RegexToggle from '../components/regexToggle';
@@ -11,10 +11,10 @@ const renderItem = (field) => (
   <div data-row className="u-inlineBlock">
     <label className="u-gapRight">
       <span className="u-label">Hash</span>
-      <CoralField
+      <Field
         name={ `${field}.value` }
-        component={ Textfield }
-        supportValidation
+        component={ DecoratedInput }
+        inputComponent={ Textfield }
       />
     </label>
 

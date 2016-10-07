@@ -1,7 +1,8 @@
 import React from 'react';
-import Textfield from '@coralui/react-coral/lib/Textfield';
+import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
+import { Field } from 'redux-form';
+import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
-import CoralField from '../components/coralField';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
 const RegisteredUser = () => (
@@ -9,11 +10,11 @@ const RegisteredUser = () => (
     <span className="u-label">
       Data element identifying whether the user is registered
     </span>
-    <CoralField
+    <Field
       name="dataElement"
-      component={ Textfield }
+      component={ DecoratedInput }
+      inputComponent={ Textfield }
       supportDataElementName
-      supportValidation
     />
   </label>
 );

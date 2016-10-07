@@ -1,24 +1,30 @@
 import React from 'react';
-import Textfield from '@coralui/react-coral/lib/Textfield';
+import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
+import Select from '@coralui/redux-form-react-coral/lib/Select';
+import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
+import { Field } from 'redux-form';
 
-import CoralField from '../components/coralField';
 import extensionViewReduxForm from '../extensionViewReduxForm';
-import ComparisonOperatorField from './components/comparisonOperatorField';
 import { isNumber } from '../utils/validators';
+import comparisonOperatorOptions from './comparisonOperatorOptions';
 
 const TimeOnSite = () => (
   <div>
     <div>
       <label className="u-gapRight">
         <span className="u-label">User has spent</span>
-        <CoralField name="operator" component={ ComparisonOperatorField } />
+        <Field
+          name="operator"
+          component={ Select }
+          options={ comparisonOperatorOptions }
+        />
       </label>
       <label>
-        <CoralField
-          componentClassName="u-smallTextfield"
+        <Field
           name="minutes"
-          component={ Textfield }
-          supportValidation
+          component={ DecoratedInput }
+          inputComponent={ Textfield }
+          inputClassName="u-smallTextfield"
         />
         <span className="u-label u-gapLeft">minutes on site</span>
       </label>

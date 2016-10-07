@@ -6,32 +6,33 @@ import Radio from '@coralui/react-coral/lib/Radio';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
 import Button from '@coralui/react-coral/lib/Button';
 import Alert from '@coralui/react-coral/lib/Alert';
-import { ValidationWrapper, ErrorTip } from '@reactor/react-components';
+import { Field } from 'redux-form';
+import ErrorTip from '@reactor/react-components/lib/errorTip';
 import Custom from '../custom';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
+  const fields = wrapper.find(Field);
   const radios = wrapper.find(Radio);
   const checkboxes = wrapper.find(Checkbox);
-
-  const nameField =
-    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'name').node;
+  const nameField = fields.filterWhere(n => n.prop('name') === 'name');
+  const nameTextfield = nameField.find(Textfield).node;
+  const nameErrorTip = nameField.find(ErrorTip).node;
   const javaScriptLanguageRadio = radios.filterWhere(n => n.prop('value') === 'javascript').node;
   const htmlLanguageRadio = radios.filterWhere(n => n.prop('value') === 'html').node;
   const sequentialCheckbox = checkboxes.filterWhere(n => n.prop('name') === 'sequential').node;
   const globalCheckbox = checkboxes.filterWhere(n => n.prop('name') === 'global').node;
-  const nameWrapper = wrapper.find(ValidationWrapper).node;
   const sourceErrorIcon = wrapper.find(ErrorTip).node;
   const openEditorButton = wrapper.find(Button).filterWhere(n => n.prop('icon') === 'code').node;
   const [sequentialHtmlAlert, inlineScriptAlert] = wrapper.find(Alert).nodes;
 
   return {
-    nameField,
+    nameTextfield,
+    nameErrorTip,
     javaScriptLanguageRadio,
     htmlLanguageRadio,
     sequentialCheckbox,
     globalCheckbox,
-    nameWrapper,
     sourceErrorIcon,
     openEditorButton,
     sequentialHtmlAlert,
@@ -59,7 +60,7 @@ describe('custom action view', () => {
     });
 
     const {
-      nameField
+      nameTextfield
     } = getReactComponents(instance);
 
     let {
@@ -69,7 +70,7 @@ describe('custom action view', () => {
       globalCheckbox
     } = getReactComponents(instance);
 
-    expect(nameField.props.value).toBe('foo');
+    expect(nameTextfield.props.value).toBe('foo');
     expect(javaScriptLanguageRadio.props.checked).toBe(false);
     expect(htmlLanguageRadio.props.checked).toBe(true);
     expect(sequentialCheckbox.props.checked).toBe(true);
@@ -102,14 +103,14 @@ describe('custom action view', () => {
     extensionBridge.init();
 
     const {
-      nameField,
+      nameTextfield,
       javaScriptLanguageRadio,
       htmlLanguageRadio,
       sequentialCheckbox,
       globalCheckbox
     } = getReactComponents(instance);
 
-    nameField.props.onChange('foo');
+    nameTextfield.props.onChange('foo');
     htmlLanguageRadio.props.onChange('html');
     sequentialCheckbox.props.onChange(true);
     globalCheckbox.props.onChange(true);
@@ -135,11 +136,11 @@ describe('custom action view', () => {
     expect(extensionBridge.validate()).toBe(false);
 
     const {
-      nameWrapper,
+      nameErrorTip,
       sourceErrorIcon
     } = getReactComponents(instance);
 
-    expect(nameWrapper.props.error).toEqual(jasmine.any(String));
+    expect(nameErrorTip.props.children).toEqual(jasmine.any(String));
     expect(sourceErrorIcon.props.children).toBeDefined();
   });
 

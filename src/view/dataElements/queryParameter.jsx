@@ -1,26 +1,27 @@
 import React from 'react';
-import Checkbox from '@coralui/react-coral/lib/Checkbox';
-import Textfield from '@coralui/react-coral/lib/Textfield';
+import Checkbox from '@coralui/redux-form-react-coral/lib/Checkbox';
+import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
+import { Field } from 'redux-form';
+import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
-import CoralField from '../components/coralField';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
 const QueryParameter = () => (
   <div>
     <label className="u-gapRight">
       <span className="u-label">URL Querystring Parameter Name</span>
-      <CoralField
+      <Field
         name="name"
-        component={ Textfield }
-        supportValidation
+        component={ DecoratedInput }
+        inputComponent={ Textfield }
       />
     </label>
-    <CoralField
+    <Field
       name="caseInsensitive"
       component={ Checkbox }
     >
       Ignore capitalization differences
-    </CoralField>
+    </Field>
   </div>
 );
 

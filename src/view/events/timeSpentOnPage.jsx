@@ -1,7 +1,8 @@
 import React from 'react';
-import Textfield from '@coralui/react-coral/lib/Textfield';
+import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
+import { Field } from 'redux-form';
+import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
-import CoralField from '../components/coralField';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import { isPositiveNumber } from '../utils/validators';
 
@@ -10,10 +11,10 @@ const TimeSpentOnPage = () => (
     <label>
       <span className="u-label u-gapRight">Trigger after</span>
     </label>
-    <CoralField
+    <Field
       name="timeOnPage"
-      component={ Textfield }
-      supportValidation
+      component={ DecoratedInput }
+      inputComponent={ Textfield }
     />
     <label>
       <span className="u-label u-gapLeft">seconds spent on the page</span>

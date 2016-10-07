@@ -1,23 +1,24 @@
 import React from 'react';
-import { FieldArray } from 'redux-form';
+import { Field, FieldArray } from 'redux-form';
 import { mount } from 'enzyme';
 import Button from '@coralui/react-coral/lib/Button';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Switch from '@coralui/react-coral/lib/Switch';
-import { ValidationWrapper } from '@reactor/react-components';
-import CoralField from '../../../components/coralField';
+import ErrorTip from '@reactor/react-components/lib/errorTip';
+
 import extensionViewReduxForm from '../../../extensionViewReduxForm';
 import ElementPropertiesEditor, { formConfig, ElementPropertyEditor } from '../elementPropertiesEditor';
 import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
   const rows = wrapper.find(ElementPropertyEditor).map(row => {
-    const textfields = row.find(Textfield).nodes;
+    const fields = row.find(Field);
+    const nameField = fields.filterWhere(n => n.prop('name').includes('.name'));
+    const valueField = fields.filterWhere(n => n.prop('name').includes('.value'));
     return {
-      nameTextfield: textfields[0],
-      nameWrapper: row.find(CoralField).filterWhere(n => n.prop('name').includes('.name'))
-        .find(ValidationWrapper).node,
-      valueTextfield: textfields[1],
+      nameTextfield: nameField.find(Textfield).node,
+      nameErrorTip: nameField.find(ErrorTip).node,
+      valueTextfield: valueField.find(Textfield).node,
       valueRegexSwitch: row.find(Switch).node,
       removeButton: row.find(Button).filterWhere(n => n.prop('icon') === 'close').node
     };
@@ -87,13 +88,15 @@ describe('elementPropertiesEditor', () => {
   it('sets error if element property name field is empty and value is not empty', () => {
     extensionBridge.init();
 
-    const { rows } = getReactComponents(instance);
+    let { rows } = getReactComponents(instance);
 
     rows[0].valueTextfield.props.onChange('foo');
 
     expect(extensionBridge.validate()).toBe(false);
 
-    expect(rows[0].nameWrapper.props.error).toEqual(jasmine.any(String));
+    ({ rows } = getReactComponents(instance));
+
+    expect(rows[0].nameErrorTip).toBeDefined();
   });
 
   it('creates a new row when the add button is clicked', () => {

@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
-import { ValidationWrapper } from '@reactor/react-components';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Switch from '@coralui/react-coral/lib/Switch';
+import ErrorTip from '@reactor/react-components/lib/errorTip';
 
 import Hash from '../hash';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
@@ -10,7 +10,7 @@ const getReactComponents = (wrapper) => {
   const rows = wrapper.find('[data-row]').map(row => ({
     hashTextfield: row.find(Textfield).node,
     hashRegexSwitch: row.find(Switch).node,
-    hashWrapper: row.find(ValidationWrapper).node
+    hashErrorTip: row.find(ErrorTip).node
   }));
 
   return {
@@ -76,6 +76,6 @@ describe('hash view', () => {
 
     const { rows } = getReactComponents(instance);
 
-    expect(rows[0].hashWrapper.props.error).toEqual(jasmine.any(String));
+    expect(rows[0].hashErrorTip).toBeDefined();
   });
 });

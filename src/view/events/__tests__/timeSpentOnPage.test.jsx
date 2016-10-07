@@ -1,16 +1,16 @@
 import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-import { ValidationWrapper } from '@reactor/react-components';
+import ErrorTip from '@reactor/react-components/lib/errorTip';
 import TimeSpentOnPage from '../timeSpentOnPage';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
-  const timeOnPageField = wrapper.find(Textfield).node;
-  const timeOnPageWrapper = wrapper.find(ValidationWrapper).node;
+  const timeOnPageTextfield = wrapper.find(Textfield).node;
+  const timeOnPageErrorTip = wrapper.find(ErrorTip).node;
 
   return {
-    timeOnPageField,
-    timeOnPageWrapper
+    timeOnPageTextfield,
+    timeOnPageErrorTip
   };
 };
 
@@ -30,16 +30,16 @@ describe('time spent on page view', () => {
       }
     });
 
-    const { timeOnPageField } = getReactComponents(instance);
+    const { timeOnPageTextfield } = getReactComponents(instance);
 
-    expect(timeOnPageField.props.value).toBe(44);
+    expect(timeOnPageTextfield.props.value).toBe(44);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { timeOnPageField } = getReactComponents(instance);
-    timeOnPageField.props.onChange('55');
+    const { timeOnPageTextfield } = getReactComponents(instance);
+    timeOnPageTextfield.props.onChange('55');
 
     expect(extensionBridge.getSettings()).toEqual({
       timeOnPage: 55
@@ -50,19 +50,19 @@ describe('time spent on page view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { timeOnPageWrapper } = getReactComponents(instance);
+    const { timeOnPageErrorTip } = getReactComponents(instance);
 
-    expect(timeOnPageWrapper.props.error).toEqual(jasmine.any(String));
+    expect(timeOnPageErrorTip).toBeDefined();
   });
 
   it('sets error if timeOnPage value is not a number', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { timeOnPageField, timeOnPageWrapper } = getReactComponents(instance);
+    const { timeOnPageTextfield, timeOnPageErrorTip } = getReactComponents(instance);
 
-    timeOnPageField.props.onChange('12.abc');
+    timeOnPageTextfield.props.onChange('12.abc');
 
-    expect(timeOnPageWrapper.props.error).toEqual(jasmine.any(String));
+    expect(timeOnPageErrorTip).toBeDefined();
   });
 });

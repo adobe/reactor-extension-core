@@ -1,22 +1,23 @@
 import { mount } from 'enzyme';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
-import { ValidationWrapper } from '@reactor/react-components';
+import ErrorTip from '@reactor/react-components/lib/errorTip';
+import { Field } from 'redux-form';
 import SpecificElements, { formConfig } from '../specificElements';
 import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
 import ElementPropertiesEditor from '../elementPropertiesEditor';
-import ElementSelector from '../elementSelector';
 import extensionViewReduxForm from '../../../extensionViewReduxForm';
 
 const getReactComponents = (wrapper) => {
   const showElementPropertiesCheckbox = wrapper.find(Checkbox).node;
   const elementPropertiesEditor = wrapper.find(ElementPropertiesEditor).node;
-  const elementSelectorValidationWrapper = wrapper.find(ElementSelector).find(ValidationWrapper)
-    .node;
+  const elementSelectorErrorTip = wrapper.find(Field)
+    .filterWhere(n => n.prop('name') === 'elementSelector')
+    .find(ErrorTip).node;
 
   return {
     showElementPropertiesCheckbox,
     elementPropertiesEditor,
-    elementSelectorValidationWrapper
+    elementSelectorErrorTip
   };
 };
 
@@ -90,9 +91,9 @@ describe('specificElements', () => {
 
     expect(extensionBridge.validate()).toBe(false);
 
-    const { elementSelectorValidationWrapper } = getReactComponents(instance);
+    const { elementSelectorErrorTip } = getReactComponents(instance);
 
-    expect(elementSelectorValidationWrapper.props.error).toEqual(jasmine.any(String));
+    expect(elementSelectorErrorTip).toBeDefined();
   });
 
   it('removes elementProperties error if element properties not shown', () => {

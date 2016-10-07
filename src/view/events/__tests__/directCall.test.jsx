@@ -1,16 +1,16 @@
 import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-import { ValidationWrapper } from '@reactor/react-components';
+import ErrorTip from '@reactor/react-components/lib/errorTip';
 import DirectCall from '../directCall';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
-  const nameField = wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'name').node;
-  const nameWrapper = wrapper.find(ValidationWrapper).node;
+  const nameTextfield = wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'name').node;
+  const nameErrorTip = wrapper.find(ErrorTip).node;
 
   return {
-    nameField,
-    nameWrapper
+    nameTextfield,
+    nameErrorTip
   };
 };
 
@@ -30,16 +30,16 @@ describe('direct call view', () => {
       }
     });
 
-    const { nameField } = getReactComponents(instance);
+    const { nameTextfield } = getReactComponents(instance);
 
-    expect(nameField.props.value).toBe('foo');
+    expect(nameTextfield.props.value).toBe('foo');
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { nameField } = getReactComponents(instance);
-    nameField.props.onChange('foo');
+    const { nameTextfield } = getReactComponents(instance);
+    nameTextfield.props.onChange('foo');
 
     expect(extensionBridge.getSettings()).toEqual({
       name: 'foo'
@@ -50,8 +50,8 @@ describe('direct call view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { nameWrapper } = getReactComponents(instance);
+    const { nameErrorTip } = getReactComponents(instance);
 
-    expect(nameWrapper.props.error).toEqual(jasmine.any(String));
+    expect(nameErrorTip).toBeDefined();
   });
 });

@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import Radio from '@coralui/react-coral/lib/Radio';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-import { ValidationWrapper } from '@reactor/react-components';
+import ErrorTip from '@reactor/react-components/lib/errorTip';
 import extensionViewReduxForm from '../../../extensionViewReduxForm';
 import DelayType, { formConfig } from '../delayType';
 import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
@@ -12,13 +12,13 @@ const getReactComponents = (wrapper) => {
   const delayRadio = radios.filterWhere(n => n.prop('value') === 'delay').node;
   const immediateRadio = radios.filterWhere(n => n.prop('value') === 'immediate').node;
   const delayTextfield = wrapper.find(Textfield).node;
-  const delayValidationWrapper = wrapper.find(ValidationWrapper).node;
+  const delayErrorTip = wrapper.find(ErrorTip).node;
 
   return {
     delayRadio,
     delayTextfield,
-    immediateRadio,
-    delayValidationWrapper
+    delayErrorTip,
+    immediateRadio
   };
 };
 
@@ -91,22 +91,29 @@ describe('delayType', () => {
   it('sets error if delay radio is selected and the delay field is empty', () => {
     extensionBridge.init();
 
-    const { delayRadio, delayValidationWrapper } = getReactComponents(instance);
+    const { delayRadio } = getReactComponents(instance);
+
     delayRadio.props.onChange('delay');
 
     expect(extensionBridge.validate()).toBe(false);
-    expect(delayValidationWrapper.props.error).toEqual(jasmine.any(String));
+
+    const { delayErrorTip } = getReactComponents(instance);
+
+    expect(delayErrorTip).toBeDefined();
   });
 
   it('sets error if the delay field is not a number', () => {
     extensionBridge.init();
 
-    const { delayRadio, delayTextfield, delayValidationWrapper } = getReactComponents(instance);
+    const { delayRadio, delayTextfield } = getReactComponents(instance);
+
     delayRadio.props.onChange('delay');
     delayTextfield.props.onChange('aaa');
 
     expect(extensionBridge.validate()).toBe(false);
-    expect(delayValidationWrapper.props.error)
-      .toEqual(jasmine.any(String));
+
+    const { delayErrorTip } = getReactComponents(instance);
+
+    expect(delayErrorTip).toBeDefined();
   });
 });

@@ -1,8 +1,9 @@
 import React from 'react';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import Select from '@coralui/react-coral/lib/Select';
+import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
+import Select from '@coralui/redux-form-react-coral/lib/Select';
+import { Field } from 'redux-form';
+import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
-import CoralField from '../components/coralField';
 import ElementFilter, { formConfig as elementFilterFormConfig } from './components/elementFilter';
 import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
 import extensionViewReduxForm from '../extensionViewReduxForm';
@@ -32,15 +33,14 @@ const TimePlayed = () => (
       <label>
         <span className="u-label u-gapRight">Trigger when</span>
       </label>
-      <CoralField
+      <Field
         name="amount"
-        component={ Textfield }
-        supportValidation
+        component={ DecoratedInput }
+        inputComponent={ Textfield }
       />
-      <CoralField
-        className="u-gapLeft"
-        componentClassName="TimePlayed-unitSelect"
+      <Field
         name="unit"
+        className="u-gapLeft TimePlayed-unitSelect"
         component={ Select }
         options={ timePlayedUnitOptions }
       />

@@ -1,31 +1,27 @@
 import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
-import { ValidationWrapper, DataElementSelectorButton } from '@reactor/react-components';
-import CoralField from '../../components/coralField';
+import Select from '@coralui/react-coral/lib/Select';
+import { Field } from 'redux-form';
+import ErrorTip from '@reactor/react-components/lib/errorTip';
 import CartItemQuantity from '../cartItemQuantity';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
-import ComparisonOperatorField from '../components/comparisonOperatorField';
 
 const getReactComponents = (wrapper) => {
-  const textFields = wrapper.find(Textfield);
-  const coralFields = wrapper.find(CoralField);
-
-  const dataElementField = textFields.filterWhere(n => n.prop('name') === 'dataElement').node;
-  const quantityField = textFields.filterWhere(n => n.prop('name') === 'quantity').node;
-  const dataElementButton = wrapper.find(DataElementSelectorButton).node;
-  const operatorField = wrapper.find(ComparisonOperatorField).node;
-  const dataElementWrapper = coralFields.filterWhere(n => n.prop('name') === 'dataElement')
-    .find(ValidationWrapper).node;
-  const quantityWrapper = coralFields.filterWhere(n => n.prop('name') === 'quantity')
-    .find(ValidationWrapper).node;
+  const fields = wrapper.find(Field);
+  const dataElementField = fields.filterWhere(n => n.prop('name') === 'dataElement');
+  const dataElementTextfield = dataElementField.find(Textfield).node;
+  const dataElementErrorTip = dataElementField.find(ErrorTip).node;
+  const quantityField = fields.filterWhere(n => n.prop('name') === 'quantity');
+  const quantityTextfield = quantityField.find(Textfield).node;
+  const quantityErrorTip = quantityField.find(ErrorTip).node;
+  const operatorField = wrapper.find(Select).node;
 
   return {
-    dataElementField,
-    dataElementButton,
+    dataElementTextfield,
+    dataElementErrorTip,
     operatorField,
-    quantityField,
-    dataElementWrapper,
-    quantityWrapper
+    quantityTextfield,
+    quantityErrorTip
   };
 };
 
@@ -55,21 +51,21 @@ describe('cart item quantity view', () => {
       }
     });
 
-    const { dataElementField, operatorField, quantityField } = getReactComponents(instance);
+    const { dataElementTextfield, operatorField, quantityTextfield } = getReactComponents(instance);
 
-    expect(dataElementField.props.value).toBe('foo');
+    expect(dataElementTextfield.props.value).toBe('foo');
     expect(operatorField.props.value).toBe('=');
-    expect(quantityField.props.value).toBe(12.50);
+    expect(quantityTextfield.props.value).toBe(12.50);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { dataElementField, operatorField, quantityField } = getReactComponents(instance);
+    const { dataElementTextfield, operatorField, quantityTextfield } = getReactComponents(instance);
 
-    dataElementField.props.onChange('foo');
-    operatorField.props.onChange('=');
-    quantityField.props.onChange('12.50');
+    dataElementTextfield.props.onChange('foo');
+    operatorField.props.onChange({ value: '=' });
+    quantityTextfield.props.onChange('12.50');
 
     expect(extensionBridge.getSettings()).toEqual({
       dataElement: 'foo',
@@ -82,20 +78,20 @@ describe('cart item quantity view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { dataElementWrapper, quantityWrapper } = getReactComponents(instance);
+    const { dataElementErrorTip, quantityErrorTip } = getReactComponents(instance);
 
-    expect(dataElementWrapper.props.error).toEqual(jasmine.any(String));
-    expect(quantityWrapper.props.error).toEqual(jasmine.any(String));
+    expect(dataElementErrorTip).toBeDefined();
+    expect(quantityErrorTip).toBeDefined();
   });
 
   it('sets error if quantity value is not a number', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { quantityField, quantityWrapper } = getReactComponents(instance);
+    const { quantityTextfield, quantityErrorTip } = getReactComponents(instance);
 
-    quantityField.props.onChange('12.abc');
+    quantityTextfield.props.onChange('12.abc');
 
-    expect(quantityWrapper.props.error).toEqual(jasmine.any(String));
+    expect(quantityErrorTip).toBeDefined();
   });
 });
