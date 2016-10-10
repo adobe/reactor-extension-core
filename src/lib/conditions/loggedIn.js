@@ -1,6 +1,6 @@
 'use strict';
 
-var getDataElement = require('get-data-element');
+var getDataElementValue = require('get-data-element-value');
 
 /**
  * Logged in condition. Determines if the user is logged in.
@@ -10,6 +10,6 @@ var getDataElement = require('get-data-element');
  * @returns {boolean}
  */
 module.exports = function(settings) {
-  return Boolean(getDataElement(settings.dataElement, true));
+  return Boolean(getDataElementValue(settings.dataElement, true));
 };
 

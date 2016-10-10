@@ -6,12 +6,12 @@ describe('previous converter condition delegate', function() {
   it('returns the data element value', function() {
     var dataElementValue;
 
-    var getDataElement = jasmine.createSpy().and.callFake(function() {
+    var getDataElementValue = jasmine.createSpy().and.callFake(function() {
       return dataElementValue;
     });
 
     var conditionDelegate = conditionDelegateInjector({
-      'get-data-element': getDataElement
+      'get-data-element-value': getDataElementValue
     });
 
     var settings = {
@@ -27,6 +27,6 @@ describe('previous converter condition delegate', function() {
     dataElementValue = undefined;
     expect(conditionDelegate(settings)).toBe(false);
 
-    expect(getDataElement).toHaveBeenCalledWith('foo', true);
+    expect(getDataElementValue).toHaveBeenCalledWith('foo', true);
   });
 });
