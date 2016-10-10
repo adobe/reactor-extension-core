@@ -20,8 +20,13 @@ describe('custom view', () => {
   let instance;
 
   beforeAll(() => {
-    extensionBridge = createExtensionBridge();
+    extensionBridge = window.extensionBridge = createExtensionBridge();
+    spyOn(extensionBridge, 'openCodeEditor').and.callFake((code, cb) => cb(`${code} bar`));
     instance = mount(getFormComponent(Custom, extensionBridge));
+  });
+
+  afterAll(() => {
+    delete window.extensionBridge;
   });
 
   it('sets errors if required values are not provided', () => {
@@ -32,5 +37,23 @@ describe('custom view', () => {
     const { sourceErrorIcon } = getReactComponents(instance);
 
     expect(sourceErrorIcon.props.children).toEqual(jasmine.any(String));
+  });
+
+  it('allows user to provide custom code', () => {
+    extensionBridge.init({
+      settings: {
+        source: 'foo'
+      }
+    });
+
+    const {
+      openEditorButton
+    } = getReactComponents(instance);
+
+    openEditorButton.props.onClick();
+
+    expect(extensionBridge.getSettings()).toEqual({
+      source: 'foo bar'
+    });
   });
 });

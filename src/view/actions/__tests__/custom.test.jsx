@@ -23,7 +23,7 @@ const getReactComponents = (wrapper) => {
   const sequentialCheckbox = checkboxes.filterWhere(n => n.prop('name') === 'sequential').node;
   const globalCheckbox = checkboxes.filterWhere(n => n.prop('name') === 'global').node;
   const sourceErrorIcon = wrapper.find(ErrorTip).node;
-  const openEditorButton = wrapper.find(Button).filterWhere(n => n.prop('icon') === 'code').node;
+  const openEditorButton = fields.filterWhere(n => n.prop('name') === 'source').find(Button).node;
   const [sequentialHtmlAlert, inlineScriptAlert] = wrapper.find(Alert).nodes;
 
   return {
@@ -45,8 +45,13 @@ describe('custom action view', () => {
   let instance;
 
   beforeAll(() => {
-    extensionBridge = createExtensionBridge();
+    extensionBridge = window.extensionBridge = createExtensionBridge();
+    spyOn(extensionBridge, 'openCodeEditor').and.callFake((code, cb) => cb(`${code} bar`));
     instance = mount(getFormComponent(Custom, extensionBridge));
+  });
+
+  afterAll(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
@@ -196,5 +201,25 @@ describe('custom action view', () => {
     } = getReactComponents(instance));
 
     expect(inlineScriptAlert).toBeDefined();
+  });
+
+  it('allows user to provide custom code', () => {
+    extensionBridge.init({
+      settings: {
+        language: 'javascript',
+        source: 'foo'
+      }
+    });
+
+    const {
+      openEditorButton
+    } = getReactComponents(instance);
+
+    openEditorButton.props.onClick();
+
+    expect(extensionBridge.getSettings()).toEqual({
+      language: 'javascript',
+      source: 'foo bar'
+    });
   });
 });

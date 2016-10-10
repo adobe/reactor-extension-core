@@ -95,8 +95,7 @@ const Custom = ({ language, sequential, source }) => (
 
     {
       // Remove when we drop IE9 support.
-      language === LANGUAGES.HTML && sequential &&
-          containsInlineScriptRegex.test(source) ?
+      language === LANGUAGES.HTML && sequential && containsInlineScriptRegex.test(source) ?
         <Alert variant="warning">
           Please note that if this rule is fired in Internet Explorer 9 before the page's
           HTML document has been loaded and parsed, any inline script
