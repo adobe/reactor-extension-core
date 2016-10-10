@@ -49,7 +49,7 @@
   },
   "devDependencies": {
     "@reactor/extension-support-packager": "^2.2.1",
-    "@reactor/extension-support-sandbox": "^7.5.1",
+    "@reactor/extension-support-sandbox": "^7.6.0",
     "@reactor/extension-support-testrunner": "^7.1.0",
     "@reactor/turbine": "^15.0.0",
     "babel-core": "^6.17.0",
