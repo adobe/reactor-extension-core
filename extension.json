@@ -160,6 +160,25 @@
       }
     },
     {
+      "name": "data-element-changed",
+      "categoryName": "Other",
+      "displayName": "Data Element Changed",
+      "libPath": "src/lib/events/dataElementChanged.js",
+      "viewPath": "index.html#/events/dataElementChanged",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false,
+        "required": ["name"]
+      }
+    },
+    {
       "name": "direct-call",
       "categoryName": "Other",
       "displayName": "Direct Call",
