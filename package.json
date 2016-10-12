@@ -22,7 +22,7 @@
     "build": "webpack",
     "test": "reactor-testrunner",
     "lint": "reactor-testrunner lint",
-    "sandbox": "(webpack --watch &) && reactor-sandbox",
+    "sandbox": "webpack --watch --run-sandbox",
     "package": "webpack && reactor-packager",
     "bootstrap": "reactor-sandbox init",
     "ci-job": "xvfb-run npm test -- --ci --browser all && npm run lint && npm run package"
@@ -32,8 +32,8 @@
     "@coralui/redux-form-react-coral": "<1.0.0",
     "@reactor/react-components": "^3.1.1",
     "classnames": "^2.2.5",
-    "history": "^4.3.0",
     "css-loader": "^0.25.0",
+    "history": "^4.3.0",
     "import-glob-loader": "^1.1.0",
     "nib": "^1.1.2",
     "react": "^15.3.2",
@@ -41,9 +41,9 @@
     "react-redux": "^4.4.5",
     "react-router": "^2.8.1",
     "reduce-reducers": "^0.1.2",
-    "redux-form": "^6.1.0",
     "redux": "^3.6.0",
     "redux-actions": "^0.12.0",
+    "redux-form": "^6.1.0",
     "style-loader": "^0.13.1",
     "stylus-loader": "^2.3.1"
   },
@@ -59,6 +59,8 @@
     "babel-preset-stage-0": "^6.16.0",
     "html-webpack-plugin": "^2.22.0",
     "react-addons-test-utils": "^15.3.2",
-    "webpack": "^1.13.2"
+    "webpack": "^1.13.2",
+    "webpack-shell-plugin": "^0.4.3",
+    "yargs": "^6.0.0"
   }
 }
