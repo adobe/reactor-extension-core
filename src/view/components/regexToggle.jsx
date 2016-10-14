@@ -40,16 +40,16 @@ export default props => {
           onChange={ event => onChange(event.target.checked) }
         />
         <span className="u-label">Regex</span>
-        <span
-          id="testButtonContainer"
-          style={ { visibility: valueIsRegex ? 'visible' : 'hidden' } }
-        >
-          <Field
-            name={ valueFieldName }
-            component={ TestRegexButton }
-          />
-        </span>
       </label>
+      <span
+        id="testButtonContainer"
+        style={ { visibility: valueIsRegex ? 'visible' : 'hidden' } }
+      >
+        <Field
+          name={ valueFieldName }
+          component={ TestRegexButton }
+        />
+      </span>
     </div>
   );
 };
