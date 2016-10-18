@@ -1,7 +1,6 @@
 'use strict';
 
 var POLL_INTERVAL = 3000;
-var publicRequire = require('../../__tests__/helpers/publicRequire');
 
 describe('elementExists event type', function() {
   var delegate;
@@ -35,11 +34,7 @@ describe('elementExists event type', function() {
 
   beforeAll(function() {
     jasmine.clock().install();
-
-    var delegateInjector = require('inject!../elementExists');
-    delegate = delegateInjector({
-      'weak-map': publicRequire('weak-map')
-    });
+    delegate = require('../elementExists');
   });
 
   afterAll(function() {

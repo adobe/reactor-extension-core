@@ -1,7 +1,5 @@
 'use strict';
 
-var publicRequire = require('../../__tests__/helpers/publicRequire');
-
 var injector = require('inject!../pageBottom');
 
 describe('pageBottom event type', function() {

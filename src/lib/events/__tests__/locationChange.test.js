@@ -1,7 +1,5 @@
 'use strict';
 
-var publicRequire = require('../../__tests__/helpers/publicRequire');
-
 describe('locationchange event type', function() {
   var delegate;
   var origHref = window.location.href;
@@ -13,12 +11,7 @@ describe('locationchange event type', function() {
   };
 
   beforeAll(function() {
-
-    var delegateInjector = require('inject!../locationChange');
-    delegate = delegateInjector({
-      debounce: publicRequire('debounce'),
-      once: publicRequire('once')
-    });
+    delegate = require('../locationChange');
   });
 
   afterAll(function() {

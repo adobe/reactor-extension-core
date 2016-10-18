@@ -1,12 +1,7 @@
 'use strict';
 
-var publicRequire = require('../../__tests__/helpers/publicRequire');
-
 describe('domReady event type', function() {
-  var delegateInjector = require('inject!../domReady');
-  var delegate = delegateInjector({
-    once: publicRequire('once')
-  });
+  var delegate = require('../domReady');
 
   it('triggers rule when the dom ready event occurs', function() {
     var trigger = jasmine.createSpy();

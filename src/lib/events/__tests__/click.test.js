@@ -1,23 +1,14 @@
 'use strict';
 
-var publicRequire = require('../../__tests__/helpers/publicRequire');
-
 describe('click event type', function() {
   var testStandardEvent = require('./helpers/testStandardEvent');
 
   var mockWindow = {};
   var propertySettings = {};
 
-  var createBubblyInjector = require('inject!../../helpers/createBubbly');
-  var createBubbly = createBubblyInjector({
-    'weak-map': publicRequire('weak-map')
-  });
-
   var delegateInjector = require('inject!../click');
   var delegate = delegateInjector({
-    '../helpers/createBubbly.js': createBubbly,
     'property-settings': propertySettings,
-    'weak-map': publicRequire('weak-map'),
     window: mockWindow
   });
 

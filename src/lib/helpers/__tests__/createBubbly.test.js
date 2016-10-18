@@ -1,12 +1,7 @@
 /*eslint max-len:0*/
 'use strict';
-var publicRequire = require('../../__tests__/helpers/publicRequire');
-
 describe('createBubbly', function() {
-  var createBubblyInjector = require('inject!../createBubbly');
-  var createBubbly = createBubblyInjector({
-    'weak-map': publicRequire('weak-map')
-  });
+  var createBubbly = require('../createBubbly');
 
   var aElement;
   var bElement;

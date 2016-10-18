@@ -2,17 +2,17 @@
 
 var POLL_INTERVAL = 3000;
 
-var publicRequire = require('../../__tests__/helpers/publicRequire');
-
-var liveQuerySelectorInjector = require('inject!../liveQuerySelector');
-var liveQuerySelector = liveQuerySelectorInjector({
-  'once': publicRequire('once'),
-  'weak-map': publicRequire('weak-map')
-});
-
 describe('liveQuerySelector', function() {
+  var liveQuerySelector;
+
   beforeAll(function() {
+    // The module may have been previously required by other another module (namely, hover.js)
+    // which prevents us from installing a clock that is effective unless we clear the cache and
+    // require the module again.
+    delete require.cache[require.resolve('../liveQuerySelector')];
+
     jasmine.clock().install();
+    liveQuerySelector = require('../liveQuerySelector');
   });
 
   afterAll(function() {

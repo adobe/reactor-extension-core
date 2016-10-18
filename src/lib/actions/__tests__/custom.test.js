@@ -1,18 +1,7 @@
 'use strict';
 
-var publicRequire = require('../../__tests__/helpers/publicRequire');
-var Promise = publicRequire('promise');
+var Promise = require('@reactor/turbine/lib/require')('promise');
 var injectDelegate = require('inject!../custom');
-
-var getInjectedDelegate = function(options) {
-  options = options || {};
-  return injectDelegate({
-    'load-script': options.loadScript || publicRequire('load-script'),
-    'get-var': options.getVar || publicRequire('get-var'),
-    'logger': options.logger || publicRequire('logger'),
-    'once': publicRequire('once')
-  });
-};
 
 describe('custom action delegate', function() {
   it('appropriately executes command sequence before page is loaded', function(done) {
@@ -39,9 +28,9 @@ describe('custom action delegate', function() {
 
     var mockGetVar = jasmine.createSpy().and.returnValue('bar');
 
-    var delegate = getInjectedDelegate({
-      loadScript: mockLoadScript,
-      getVar: mockGetVar
+    var delegate = injectDelegate({
+      'load-script': mockLoadScript,
+      'get-var': mockGetVar
     });
 
     var aRelatedElement = {};
@@ -202,10 +191,10 @@ describe('custom action delegate', function() {
       error: jasmine.createSpy()
     };
 
-    var delegate = getInjectedDelegate({
-      loadScript: mockLoadScript,
-      getVar: mockGetVar,
-      logger: mockLogger
+    var delegate = injectDelegate({
+      'load-script': mockLoadScript,
+      'get-var': mockGetVar,
+      'logger': mockLogger
     });
 
     var aRelatedElement = {};
@@ -376,9 +365,9 @@ describe('custom action delegate', function() {
       error: jasmine.createSpy()
     };
 
-    var delegate = getInjectedDelegate({
-      loadScript: mockLoadScript,
-      logger: mockLogger
+    var delegate = injectDelegate({
+      'load-script': mockLoadScript,
+      'logger': mockLogger
     });
 
     delegate({
@@ -452,7 +441,7 @@ describe('custom action delegate', function() {
       callback(event);
     });
 
-    var delegate = getInjectedDelegate();
+    var delegate = injectDelegate({});
 
     delegate({
       name: 'A Code',
@@ -475,8 +464,8 @@ describe('custom action delegate', function() {
       return Promise.reject();
     });
 
-    var delegate = getInjectedDelegate({
-      loadScript: mockLoadScript
+    var delegate = injectDelegate({
+      'load-script': mockLoadScript
     });
 
     delegate({

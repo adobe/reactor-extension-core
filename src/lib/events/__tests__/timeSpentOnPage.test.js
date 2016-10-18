@@ -1,7 +1,5 @@
 'use strict';
 
-var publicRequire = require('../../__tests__/helpers/publicRequire');
-
 var visibilityApi = require('../../helpers/visibilityApi');
 var visibilityApiInstance = visibilityApi();
 var visibilityChangeListener;
@@ -14,14 +12,10 @@ var mockDocument = {
   }
 };
 
-var TimerInjector = require('inject!../../helpers/timer');
-var Timer = TimerInjector({
-  'event-emitter': publicRequire('event-emitter')
-});
+var Timer = require('../../helpers/timer');
 
 var eventDelegateInjector = require('inject!../timeSpentOnPage');
 var delegate = eventDelegateInjector({
-  once: publicRequire('once'),
   '../helpers/timer.js': Timer,
   document: mockDocument
 });

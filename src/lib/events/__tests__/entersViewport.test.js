@@ -1,7 +1,5 @@
 'use strict';
 
-var publicRequire = require('../../__tests__/helpers/publicRequire');
-
 var POLL_INTERVAL = 3000;
 var DEBOUNCE_DELAY = 200;
 
@@ -40,6 +38,10 @@ describe('entersViewport event type', function() {
   };
 
   beforeAll(function() {
+    // The module may have been previously required by other modules which prevents us from
+    // installing a clock that is effective unless we clear the cache and require the
+    // module again.
+    // delete require.cache[require.resolve('../entersViewport')];
     jasmine.clock().install();
 
     spyOn(document, 'addEventListener').and.callFake(function(type, callback) {
@@ -49,11 +51,7 @@ describe('entersViewport event type', function() {
       }
     });
 
-    var delegateInjector = require('inject!../entersViewport');
-    delegate = delegateInjector({
-      'weak-map': publicRequire('weak-map'),
-      'debounce': publicRequire('debounce')
-    });
+    delegate = require('../entersViewport');
   });
 
   afterAll(function() {

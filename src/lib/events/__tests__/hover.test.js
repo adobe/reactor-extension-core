@@ -1,6 +1,5 @@
 'use strict';
 var POLL_INTERVAL = 3000;
-var publicRequire = require('../../__tests__/helpers/publicRequire');
 
 describe('hover event type', function() {
   var delegate;
@@ -35,24 +34,7 @@ describe('hover event type', function() {
 
   beforeAll(function() {
     jasmine.clock().install();
-
-    var createBubblyInjector = require('inject!../../helpers/createBubbly');
-    var createBubbly = createBubblyInjector({
-      'weak-map': publicRequire('weak-map')
-    });
-
-    var liveQuerySelectorInjector = require('inject!../../helpers/liveQuerySelector');
-    var liveQuerySelector = liveQuerySelectorInjector({
-      'weak-map': publicRequire('weak-map'),
-      'once': publicRequire('once')
-    });
-
-    var delegateInjector = require('inject!../hover');
-    delegate = delegateInjector({
-      'weak-map': publicRequire('weak-map'),
-      '../helpers/createBubbly.js': createBubbly,
-      '../helpers/liveQuerySelector.js': liveQuerySelector
-    });
+    delegate = require('../hover');
   });
 
   afterAll(function() {

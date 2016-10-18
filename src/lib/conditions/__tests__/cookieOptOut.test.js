@@ -1,11 +1,10 @@
 'use strict';
 
-var publicRequire = require('../../__tests__/helpers/publicRequire');
 var conditionDelegateInjector = require('inject!../cookieOptOut');
 
 var conditionDelegate;
 
-var cookie = publicRequire('cookie');
+var cookie = require('cookie');
 
 var setCookie = function(name, value, days) {
   var options = {};
@@ -46,8 +45,7 @@ describe('cookie opt-out condition delegate', function() {
         }
         
         conditionDelegate = conditionDelegateInjector({
-          'property-settings': mockPropertySettings,
-          'cookie': cookie
+          'property-settings': mockPropertySettings
         });
       });
 

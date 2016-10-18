@@ -1,7 +1,6 @@
 'use strict';
 
-var publicRequire = require('../../__tests__/helpers/publicRequire');
-var cookie = publicRequire('cookie');
+var cookie = require('cookie');
 
 var getCookieString = function(cookieValues) {
   var cookieString = '';

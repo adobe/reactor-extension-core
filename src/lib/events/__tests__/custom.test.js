@@ -3,8 +3,6 @@
 var outerElement;
 var innerElement;
 
-var publicRequire = require('../../__tests__/helpers/publicRequire');
-
 var triggerCustomEvent = function(element, type) {
   var event = document.createEvent('Event');
   event.initEvent(type, true, true);
@@ -13,15 +11,7 @@ var triggerCustomEvent = function(element, type) {
 };
 
 describe('custom event type', function() {
-  var createBubblyInjector = require('inject!../../helpers/createBubbly');
-  var createBubbly = createBubblyInjector({
-    'weak-map': publicRequire('weak-map')
-  });
-
-  var delegateInjector = require('inject!../custom');
-  var delegate = delegateInjector({
-    '../helpers/createBubbly.js': createBubbly
-  });
+  var delegate = require('../custom');
 
   beforeAll(function() {
     outerElement = document.createElement('div');

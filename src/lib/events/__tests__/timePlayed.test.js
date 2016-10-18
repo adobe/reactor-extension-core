@@ -1,7 +1,5 @@
 'use strict';
 
-var publicRequire = require('../../__tests__/helpers/publicRequire');
-
 describe('timePlayed event type', function() {
   var delegate;
   var aElement;
@@ -35,17 +33,7 @@ describe('timePlayed event type', function() {
 
   beforeAll(function() {
     jasmine.clock().install();
-
-    var createBubblyInjector = require('inject!../../helpers/createBubbly');
-    var createBubbly = createBubblyInjector({
-      'weak-map': publicRequire('weak-map')
-    });
-
-    var delegateInjector = require('inject!../timePlayed');
-    delegate = delegateInjector({
-      'weak-map': publicRequire('weak-map'),
-      '../helpers/createBubbly.js': createBubbly
-    });
+    delegate = require('../timePlayed');
   });
 
   afterAll(function() {

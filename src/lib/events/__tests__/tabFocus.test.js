@@ -1,7 +1,5 @@
 'use strict';
 
-var publicRequire = require('../../__tests__/helpers/publicRequire');
-
 var eventDelegateInjector = require('inject!../tabFocus');
 var visibilityApi = require('../../helpers/visibilityApi');
 var visibilityApiInstance = visibilityApi();
@@ -17,7 +15,6 @@ var mockDocument = {
 };
 
 var delegate = eventDelegateInjector({
-  once: publicRequire('once'),
   document: mockDocument
 });
 
