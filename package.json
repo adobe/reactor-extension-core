@@ -19,11 +19,11 @@
     "dtm"
   ],
   "scripts": {
-    "build": "webpack",
+    "build": "webpack --production",
     "test": "reactor-testrunner",
     "lint": "reactor-testrunner lint",
     "sandbox": "webpack --watch --run-sandbox",
-    "package": "webpack && reactor-packager",
+    "package": "npm run build && reactor-packager",
     "bootstrap": "reactor-sandbox init",
     "ci-job": "xvfb-run npm test -- --ci --browser all && npm run lint && npm run package"
   },
@@ -58,6 +58,7 @@
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-0": "^6.16.0",
     "cookie": "^0.3.1",
+    "html-webpack-externals-plugin": "^2.0.0",
     "html-webpack-plugin": "^2.22.0",
     "react-addons-test-utils": "^15.3.2",
     "webpack": "^1.13.2",
