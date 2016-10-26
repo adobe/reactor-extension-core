@@ -34,13 +34,11 @@ export default (extensionBridge, store) => {
     },
     getSettings() {
       const state = store.getState();
-      const values = getFormValues('default')(state);
 
-      // Values is `undefined` when hitting `Get Settings` inside sandbox right after a page
-      // is loaded.
-      if (values) {
-        delete values['__bogusname__'];
-      }
+      // This sometimes returns undefined: https://github.com/erikras/redux-form/issues/2017
+      const values = getFormValues('default')(state) || {};
+
+      delete values['__bogusname__'];
 
       return currentRouteFormSettings.formValuesToSettings({}, values, state);
     },
