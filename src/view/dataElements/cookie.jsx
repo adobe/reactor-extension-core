@@ -38,6 +38,13 @@ const formConfig = {
       errors.name = 'Please specify a cookie name.';
     }
 
+    // This RegEx is created from:
+    // http://stackoverflow.com/questions/1969232/allowed-characters-in-cookies
+    if (!/^[a-zA-Z0-9!#$%&'*+-.^_"|~]+$/.test(values.name)) {
+      errors.name = 'The cookie name must be a sequence of alphanumeric characters and/or one of ' +
+        'the following special characters: ! # $ % & \' * + - . ^ _ | ~';
+    }
+
     return errors;
   }
 };
