@@ -7,7 +7,7 @@ var mockVisitorTracking = {
 var conditionDelegateInjector = require('inject!../newReturning');
 
 var conditionDelegate = conditionDelegateInjector({
-  '../helpers/visitorTracking.js': mockVisitorTracking
+  '../helpers/visitorTracking': mockVisitorTracking
 });
 
 var getSettings = function(isNewVisitor) {

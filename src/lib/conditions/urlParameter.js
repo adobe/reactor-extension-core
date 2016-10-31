@@ -1,7 +1,7 @@
 'use strict';
 
 var getQueryParam = require('get-query-param');
-var textMatch = require('../helpers/textMatch.js');
+var textMatch = require('../helpers/textMatch');
 
 /**
  * URL parameter condition. Determines if a querystring parameter exists with a name and value that

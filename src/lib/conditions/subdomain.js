@@ -1,7 +1,7 @@
 'use strict';
 
 var document = require('document');
-var textMatch = require('../helpers/textMatch.js');
+var textMatch = require('../helpers/textMatch');
 
 /**
  * Subdomain condition. Determines if the actual subdomain matches at least one acceptable

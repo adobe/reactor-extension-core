@@ -2,7 +2,7 @@
 
 var WeakMap = require('weak-map');
 var debounce = require('debounce');
-var enableWeakMapDefaultValue = require('../helpers/enableWeakMapDefaultValue.js');
+var enableWeakMapDefaultValue = require('../helpers/enableWeakMapDefaultValue');
 
 var POLL_INTERVAL = 3000;
 var DEBOUNCE_DELAY = 200;
@@ -15,7 +15,7 @@ var timeoutIdsByElement = enableWeakMapDefaultValue(new WeakMap(), arrayFactory)
 var delayedListenersByElement = enableWeakMapDefaultValue(new WeakMap(), arrayFactory);
 var completedListenersByElement = enableWeakMapDefaultValue(new WeakMap(), arrayFactory);
 
-var matchesProperties = require('../helpers/matchesProperties.js');
+var matchesProperties = require('../helpers/matchesProperties');
 
 var listenersBySelector = {};
 

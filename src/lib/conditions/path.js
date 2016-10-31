@@ -1,7 +1,7 @@
 'use strict';
 
 var document = require('document');
-var textMatch = require('../helpers/textMatch.js');
+var textMatch = require('../helpers/textMatch');
 
 /**
  * Path condition. Determines if the actual path matches at least one acceptable path.

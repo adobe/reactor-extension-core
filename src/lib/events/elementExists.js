@@ -4,7 +4,7 @@ var POLL_INTERVAL = 3000;
 
 var WeakMap = require('weak-map');
 var seenElements = new WeakMap();
-var matchesProperties = require('../helpers/matchesProperties.js');
+var matchesProperties = require('../helpers/matchesProperties');
 
 var listenersBySelector = {};
 

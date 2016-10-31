@@ -1,8 +1,8 @@
 'use strict';
 var window = require('window');
 
-var getObjectProperty = require('../helpers/getObjectProperty.js');
-var textMatch = require('../helpers/textMatch.js');
+var getObjectProperty = require('../helpers/getObjectProperty');
+var textMatch = require('../helpers/textMatch');
 
 /**
  * Variable condition. Determines if a particular JS variable's actual value matches

@@ -13,7 +13,7 @@ var mockVisitorTracking = {
 var conditionDelegateInjector = require('inject!../pageViews');
 
 var conditionDelegate = conditionDelegateInjector({
-  '../helpers/visitorTracking.js': mockVisitorTracking
+  '../helpers/visitorTracking': mockVisitorTracking
 });
 
 var DURATIONS = [

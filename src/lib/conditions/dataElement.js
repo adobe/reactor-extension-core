@@ -1,7 +1,7 @@
 'use strict';
 
 var getVar = require('get-var');
-var textMatch = require('../helpers/textMatch.js');
+var textMatch = require('../helpers/textMatch');
 
 /**
  * Data element condition. Determines if a particular data element's actual value matches

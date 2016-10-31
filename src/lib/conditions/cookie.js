@@ -2,7 +2,7 @@
 
 var document = require('document');
 var cookie = require('cookie');
-var textMatch = require('../helpers/textMatch.js');
+var textMatch = require('../helpers/textMatch');
 
 /**
  * Cookie condition. Determines if a particular cookie's actual value matches an acceptable value.

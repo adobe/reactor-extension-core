@@ -1,8 +1,8 @@
 'use strict';
 
 var WeakMap = require('weak-map');
-var matchesProperties = require('./matchesProperties.js');
-var matchesSelector = require('./matchesSelector.js');
+var matchesProperties = require('./matchesProperties');
+var matchesSelector = require('./matchesSelector');
 
 /**
  * Handles logic related to bubbling options provided for many event types.

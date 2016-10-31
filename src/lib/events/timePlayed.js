@@ -1,6 +1,6 @@
 'use strict';
 
-var bubbly = require('../helpers/createBubbly.js')();
+var bubbly = require('../helpers/createBubbly')();
 var WeakMap = require('weak-map');
 var lastTriggeredByElement = new WeakMap();
 

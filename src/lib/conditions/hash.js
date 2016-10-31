@@ -1,6 +1,6 @@
 'use strict';
 
-var textMatch = require('../helpers/textMatch.js');
+var textMatch = require('../helpers/textMatch');
 
 /**
  * Hash condition. Determines if the actual hash (URL fragment identifier) matches at least one
