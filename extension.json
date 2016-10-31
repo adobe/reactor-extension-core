@@ -1007,8 +1007,7 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": "string",
-            "minLength": 1
+            "pattern": "^[A-Za-z0-9!#$%&'*+-.^_\"|~]+$"
           },
           "value": {
             "type": "string",
