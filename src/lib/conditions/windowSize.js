@@ -1,7 +1,7 @@
 'use strict';
 
 var document = require('document');
-var compareNumbers = require('../helpers/compareNumbers.js');
+var compareNumbers = require('../helpers/compareNumbers');
 
 /**
  * Window size condition. Determines if the current window size matches constraints.

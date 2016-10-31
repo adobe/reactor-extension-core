@@ -1,7 +1,7 @@
 'use strict';
 
 var getVar = require('get-var');
-var compareNumbers = require('../helpers/compareNumbers.js');
+var compareNumbers = require('../helpers/compareNumbers');
 
 /**
  * Cart amount condition. Determines if the current cart amount matches constraints.

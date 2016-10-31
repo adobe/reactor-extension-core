@@ -2,7 +2,7 @@
 
 var once = require('once');
 var document = require('document');
-var visibilityApi = require('../helpers/visibilityApi.js')();
+var visibilityApi = require('../helpers/visibilityApi')();
 var hiddenProperty = visibilityApi.hiddenProperty;
 var visibilityChangeEventType = visibilityApi.visibilityChangeEventType;
 

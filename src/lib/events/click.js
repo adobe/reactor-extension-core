@@ -3,7 +3,7 @@
 var propertySettings = require('property-settings');
 var WeakMap = require('weak-map');
 var evaluatedEvents = new WeakMap();
-var bubbly = require('../helpers/createBubbly.js')();
+var bubbly = require('../helpers/createBubbly')();
 var window = require('window');
 
 /**

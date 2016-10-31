@@ -1,6 +1,6 @@
 'use strict';
 
-var textMatch = require('./textMatch.js');
+var textMatch = require('./textMatch');
 
 var getElementProperty = function(element, property) {
   if (property === '@text' || property === 'innerText') {

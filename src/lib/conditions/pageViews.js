@@ -1,6 +1,6 @@
 'use strict';
-var visitorTracking = require('../helpers/visitorTracking.js');
-var compareNumbers = require('../helpers/compareNumbers.js');
+var visitorTracking = require('../helpers/visitorTracking');
+var compareNumbers = require('../helpers/compareNumbers');
 
 // Visitor tracking should only run (be enabled) when a rule for the property contains a condition
 // that needs it. The line below will be included in the emitted library if a rule requires this

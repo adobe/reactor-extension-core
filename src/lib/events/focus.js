@@ -1,5 +1,5 @@
 'use strict';
-var bubbly = require('../helpers/createBubbly.js')();
+var bubbly = require('../helpers/createBubbly')();
 
 document.addEventListener('focus', bubbly.evaluateEvent, true);
 

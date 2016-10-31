@@ -9,7 +9,7 @@ var mockVisitorTracking = {
 
 var conditionDelegateInjector = require('inject!../sessions');
 var conditionDelegate = conditionDelegateInjector({
-  '../helpers/visitorTracking.js': mockVisitorTracking
+  '../helpers/visitorTracking': mockVisitorTracking
 });
 
 var getSettings = function(count, operator) {
