@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "displayName": "Default",
   "description": "Provides the default event types, condition types, and data element types available to all DTM users.",
-  "icon": "http://assets.adobedtm.com/activation/reactor/icons/marketingcloud.svg",
+  "icon": "resources/icons/dtm.svg",
   "author": {
     "name": "Adobe Systems",
     "email": "DTM-Engineering@adobe.com"
