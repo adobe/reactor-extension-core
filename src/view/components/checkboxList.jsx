@@ -2,7 +2,7 @@ import React from 'react';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
 
 export default class CheckboxList extends React.Component {
-  onChange = event => {
+  onChange = (event) => {
     const checkboxValue = event.target.value;
     const value = this.props.input.value ? this.props.input.value.slice() : [];
 
@@ -18,7 +18,7 @@ export default class CheckboxList extends React.Component {
 
   render() {
     let options = this.props.options || [];
-    options = options.map(option => {
+    options = options.map((option) => {
       let value;
       let label;
 

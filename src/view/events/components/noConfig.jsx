@@ -5,7 +5,7 @@ import extensionViewReduxForm from '../../extensionViewReduxForm';
 
 const NoConfig = () => (
   <Alert header="INFO">
-    This delegate doesn't have any configuration properties.
+    This delegate doesn&apos;t have any configuration properties.
   </Alert>
 );
 

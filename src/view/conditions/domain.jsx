@@ -4,7 +4,7 @@ import { Field } from 'redux-form';
 import CheckboxList from '../components/checkboxList';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
-const Domain = (props) =>
+const Domain = props =>
   (<Field name="domains" component={ CheckboxList } options={ props.domainOptions } />);
 
 const formConfig = {

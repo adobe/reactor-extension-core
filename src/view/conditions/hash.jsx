@@ -7,7 +7,7 @@ import MultipleItemEditor from './components/multipleItemEditor';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import RegexToggle from '../components/regexToggle';
 
-const renderItem = (field) => (
+const renderItem = field => (
   <div data-row className="u-inlineBlock">
     <label className="u-gapRight">
       <span className="u-label">Hash</span>
@@ -62,7 +62,7 @@ const formConfig = {
       ...errors
     };
 
-    const hashesErrors = (values.hashes || []).map(hash => {
+    const hashesErrors = (values.hashes || []).map((hash) => {
       const result = {};
 
       if (!hash.value) {

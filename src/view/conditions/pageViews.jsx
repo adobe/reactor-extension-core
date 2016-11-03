@@ -13,7 +13,7 @@ const PageViews = () => (
   <div>
     <div>
       <label className="u-gapRight">
-        <span className="u-label">The user's number of page views is</span>
+        <span className="u-label">The user&apos;s number of page views is</span>
         <Field
           name="operator"
           component={ Select }

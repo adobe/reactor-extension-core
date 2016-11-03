@@ -7,7 +7,7 @@ import extensionViewReduxForm from '../extensionViewReduxForm';
 import RegexToggle from '../components/regexToggle';
 import MultipleItemEditor from './components/multipleItemEditor';
 
-const renderItem = (field) => (
+const renderItem = field => (
   <div data-row className="u-inlineBlock">
     <label className="u-gapRight">
       <span className="u-label">Path</span>
@@ -61,7 +61,7 @@ const formConfig = {
       ...errors
     };
 
-    const pathsErrors = (values.paths || []).map(path => {
+    const pathsErrors = (values.paths || []).map((path) => {
       const result = {};
 
       if (!path.value) {

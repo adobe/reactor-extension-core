@@ -79,7 +79,8 @@ const Custom = ({ language, sequential, source }) => (
           <InfoTip className="CustomAction-checkboxErrorTip">
             Global execution is only necessary when the script needs its
             own variables to be globally visible. Enabling this will disable binding of
-            the variables "this", "event", and "target" within the script.
+            the variables &quot;this&quot;, &quot;event&quot;, and &quot;target&quot; within the
+            script.
           </InfoTip>
         </div> : null
     }
@@ -88,7 +89,7 @@ const Custom = ({ language, sequential, source }) => (
       language === LANGUAGES.HTML && sequential ?
         <Alert variant="warning">
           Please note that sequential HTML will only work for rules that fire before the
-          page's HTML document has been loaded and parsed. Such rules typically use either
+          page&apos;s HTML document has been loaded and parsed. Such rules typically use either
           the Top of Page or Bottom of Page event.
         </Alert> : null
     }
@@ -97,9 +98,9 @@ const Custom = ({ language, sequential, source }) => (
       // Remove when we drop IE9 support.
       language === LANGUAGES.HTML && sequential && containsInlineScriptRegex.test(source) ?
         <Alert variant="warning">
-          Please note that if this rule is fired in Internet Explorer 9 before the page's
+          Please note that if this rule is fired in Internet Explorer 9 before the page&apos;s
           HTML document has been loaded and parsed, any inline script
-          (e.g., &lt;script&gt;console.log('test');&lt;script&gt;)
+          (e.g., &lt;script&gt;console.log(&apos;test&apos;);&lt;script&gt;)
           within your HTML will be executed before prior sequential JavaScript custom actions.
         </Alert> : null
     }

@@ -72,7 +72,7 @@ import VariableDataElement from './dataElements/variable';
 import CustomAction from './actions/custom';
 
 export default (setFormConfigForCurrentRoute) => {
-  const onEnter = nextState => {
+  const onEnter = (nextState) => {
     setFormConfigForCurrentRoute(nextState.routes[0].component.formConfig);
   };
 

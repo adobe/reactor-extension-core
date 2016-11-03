@@ -76,7 +76,7 @@ export const formConfig = {
 
     elementProperties = elementProperties
       .filter(elementProperty => elementProperty.name)
-      .map(elementProperty => {
+      .map((elementProperty) => {
         elementProperty = {
           ...elementProperty
         };

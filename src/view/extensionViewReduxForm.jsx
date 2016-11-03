@@ -24,7 +24,7 @@ export let handleSubmit;
  * from the config object.
  * @returns {Function}
  */
-export default (config) => View => {
+export default config => (View) => {
   class ViewWrapper extends React.Component {
     componentDidUpdate() {
       handleSubmit = this.props.handleSubmit;

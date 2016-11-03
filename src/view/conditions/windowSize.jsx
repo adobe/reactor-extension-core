@@ -12,7 +12,7 @@ const WindowSize = () => (
   <div>
     <div>
       <label className="u-gapRight">
-        <span className="u-label">The user's window size width is</span>
+        <span className="u-label">The user&apos;s window size width is</span>
         <Field
           name="widthOperator"
           component={ Select }

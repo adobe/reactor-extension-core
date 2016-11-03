@@ -58,7 +58,7 @@ export default (extensionBridge, store) => {
     }
   });
 
-  return formSettings => {
+  return (formSettings) => {
     currentRouteFormSettings = formSettings;
   };
 };

@@ -11,7 +11,7 @@ import ElementPropertiesEditor, { formConfig, ElementPropertyEditor } from '../e
 import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
-  const rows = wrapper.find(ElementPropertyEditor).map(row => {
+  const rows = wrapper.find(ElementPropertyEditor).map((row) => {
     const fields = row.find(Field);
     const nameField = fields.filterWhere(n => n.prop('name').includes('.name'));
     const valueField = fields.filterWhere(n => n.prop('name').includes('.value'));

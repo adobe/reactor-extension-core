@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import Switch from '@coralui/react-coral/lib/Switch';
 import { Field } from 'redux-form';
 
-const TestRegexButton = props => {
+const TestRegexButton = (props) => {
   const {
     input: {
       value,
@@ -21,7 +21,7 @@ const TestRegexButton = props => {
   );
 };
 
-export default props => {
+export default (props) => {
   const {
     input: {
       value: valueIsRegex,
