@@ -50,7 +50,7 @@
   "devDependencies": {
     "@reactor/extension-support-packager": "^2.3.3",
     "@reactor/extension-support-sandbox": "^7.8.5",
-    "@reactor/extension-support-testrunner": "^8.1.0",
+    "@reactor/extension-support-testrunner": "^8.1.1",
     "@reactor/turbine": "^16.1.2",
     "babel-core": "^6.18.2",
     "babel-loader": "^6.2.7",
