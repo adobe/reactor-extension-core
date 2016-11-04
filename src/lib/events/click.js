@@ -66,6 +66,18 @@ document.addEventListener('click', bubbly.evaluateEvent, true);
  */
 module.exports = function(settings, trigger) {
   bubbly.addListener(settings, function(relatedElement, event) {
+    // AppMeasurement captures the click events, and tries to detect if the element clicked is an A
+    // tag that contains an exit link. When that happens, it stops the initial event, sends a
+    // beacon, clones the initial event and fires it again.
+    // Reactor detects the click events first, because it's listeners are set on the capture phase.
+    // We need to ignore the cloned event, otherwise the same rule will fire twice. AppMeasurement
+    // sets `s_fe` attribute on the cloned event, and that is the flag we'll use to ignore these
+    // fake events.
+    // https://git.corp.adobe.com/analytics-platform/appmeasurement/blob/master/bin/js/src/AppMeasurement.js#L3196
+    if (event.s_fe) {
+      return;
+    }
+
     if (settings.delayLinkActivation) {
       if (!evaluatedEvents.has(event)) {
         if (isNavigationLink(event.target)) {
