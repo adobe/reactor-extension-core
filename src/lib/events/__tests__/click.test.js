@@ -1,5 +1,20 @@
 'use strict';
 
+var getClickEvent = function() {
+  var event;
+
+  if (navigator.userAgent.indexOf('MSIE') !== -1 || navigator.appVersion.indexOf('Trident/') > 0) {
+    event = document.createEvent('MouseEvent');
+    event.initMouseEvent(
+      'click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null
+    );
+  } else {
+    event = new MouseEvent('click');
+  }
+
+  return event;
+};
+
 describe('click event type', function() {
   var testStandardEvent = require('./helpers/testStandardEvent');
 
@@ -203,7 +218,7 @@ describe('click event type', function() {
         bubbleFireIfChildFired: true
       }, trigger);
 
-      var event = new MouseEvent('click');
+      var event = getClickEvent();
       event['s_fe'] = 1;
       document.body.dispatchEvent(event);
 
