@@ -13,8 +13,8 @@ import { getFormComponent, createExtensionBridge } from '../../../__tests__/help
 const getReactComponents = (wrapper) => {
   const rows = wrapper.find(ElementPropertyEditor).map((row) => {
     const fields = row.find(Field);
-    const nameField = fields.filterWhere(n => n.prop('name').includes('.name'));
-    const valueField = fields.filterWhere(n => n.prop('name').includes('.value'));
+    const nameField = fields.filterWhere(n => n.prop('name').indexOf('.name') !== -1);
+    const valueField = fields.filterWhere(n => n.prop('name').indexOf('.value') !== -1);
     return {
       nameTextfield: nameField.find(Textfield).node,
       nameErrorTip: nameField.find(ErrorTip).node,
