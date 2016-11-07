@@ -20,6 +20,11 @@ var delegate = eventDelegateInjector({
   document: mockDocument
 });
 
+var isIE = function() {
+  var myNav = navigator.userAgent.toLowerCase();
+  return (myNav.indexOf('msie') !== -1) ? parseInt(myNav.split('msie')[1]) : false;
+};
+
 describe('time spent on page event type', function() {
   beforeEach(function() {
     jasmine.clock().install();
@@ -43,25 +48,27 @@ describe('time spent on page event type', function() {
     expect(call.args[1].target).toBe(mockDocument);
   });
 
-  it('stops the timer on tab blur', function() {
-    spyOn(Timer.prototype, 'pause');
+  if (!isIE () || isIE() > 9) {
+    it('stops the timer on tab blur', function() {
+      spyOn(Timer.prototype, 'pause');
 
-    delegate({});
+      delegate({});
 
-    mockDocument[visibilityApiInstance.hiddenProperty] = true;
-    visibilityChangeListener.call(location);
+      mockDocument[visibilityApiInstance.hiddenProperty] = true;
+      visibilityChangeListener.call(location);
 
-    expect(Timer.prototype.pause).toHaveBeenCalled();
-  });
+      expect(Timer.prototype.pause).toHaveBeenCalled();
+    });
 
-  it('resumes the timer on tab focus', function() {
-    spyOn(Timer.prototype, 'resume');
+    it('resumes the timer on tab focus', function() {
+      spyOn(Timer.prototype, 'resume');
 
-    delegate({});
+      delegate({});
 
-    mockDocument[visibilityApiInstance.hiddenProperty] = false;
-    visibilityChangeListener.call(location);
+      mockDocument[visibilityApiInstance.hiddenProperty] = false;
+      visibilityChangeListener.call(location);
 
-    expect(Timer.prototype.resume).toHaveBeenCalled();
-  });
+      expect(Timer.prototype.resume).toHaveBeenCalled();
+    });
+  }
 });

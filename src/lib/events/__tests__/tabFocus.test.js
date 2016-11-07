@@ -18,22 +18,28 @@ var delegate = eventDelegateInjector({
   document: mockDocument
 });
 
+var isIE = function() {
+  var myNav = navigator.userAgent.toLowerCase();
+  return (myNav.indexOf('msie') !== -1) ? parseInt(myNav.split('msie')[1]) : false;
+};
 
 describe('tabfocus event type', function() {
-  it('triggers rule when the tabfocus event occurs', function() {
-    var trigger = jasmine.createSpy();
+  if (!isIE () || isIE() > 9) {
+    it('triggers rule when the tabfocus event occurs', function() {
+      var trigger = jasmine.createSpy();
 
-    delegate({}, trigger);
+      delegate({}, trigger);
 
-    expect(trigger.calls.count()).toBe(0);
+      expect(trigger.calls.count()).toBe(0);
 
-    mockDocument[visibilityApiInstance.hiddenProperty] = false;
-    visibilityChangeListener.call(location);
+      mockDocument[visibilityApiInstance.hiddenProperty] = false;
+      visibilityChangeListener.call(location);
 
-    expect(trigger.calls.count()).toBe(1);
-    var call = trigger.calls.mostRecent();
-    expect(call.args[0]).toBe(mockDocument.location);
-    expect(call.args[1].type).toBe('tabfocus');
-    expect(call.args[1].target).toBe(mockDocument);
-  });
+      expect(trigger.calls.count()).toBe(1);
+      var call = trigger.calls.mostRecent();
+      expect(call.args[0]).toBe(mockDocument.location);
+      expect(call.args[1].type).toBe('tabfocus');
+      expect(call.args[1].target).toBe(mockDocument);
+    });
+  }
 });
