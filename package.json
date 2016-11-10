@@ -25,7 +25,7 @@
     "sandbox": "webpack --watch --run-sandbox",
     "package": "npm run build && reactor-packager",
     "bootstrap": "reactor-sandbox init",
-    "ci-job": "xvfb-run npm test -- --ci --browser firefox chrome && npm run lint && npm run package"
+    "ci-job": "xvfb-run npm test -- --ci --browser firefox chrome ie9sg ie10sg ie11sg edgesg && npm run lint && npm run package"
   },
   "dependencies": {
     "@coralui/react-coral": "<1.0.0",

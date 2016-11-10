@@ -13,9 +13,9 @@ See the [extension-support-sandbox README](https://git.corp.adobe.com/reactor/ex
 
 [status-url]: https://dtm-builder.ut1.mcps.adobe.net/job/extension-dtm
 [status-image]: https://dtm-builder.ut1.mcps.adobe.net/buildStatus/icon?job=extension-dtm
-[coverage-url]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-dtm-ubuntu/lastStableBuild/cobertura/
-[coverage-image]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-dtm-ubuntu/ws/badges/coverage.svg
-[npm-dependencies-url]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-dtm-ubuntu/ws/dependencies.txt
-[npm-dependencies-image]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-dtm-ubuntu/ws/badges/dependencies.svg
-[sandbox-url]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-dtm-ubuntu/ws/sandbox/viewSandbox.html
-[sandbox-image]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-dtm-ubuntu/ws/badges/sandbox.svg
+[coverage-url]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-dtm/lastStableBuild/cobertura/
+[coverage-image]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-dtm/ws/badges/coverage.svg
+[npm-dependencies-url]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-dtm/ws/dependencies.txt
+[npm-dependencies-image]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-dtm/ws/badges/dependencies.svg
+[sandbox-url]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-dtm/ws/sandbox/viewSandbox.html
+[sandbox-image]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-dtm/ws/badges/sandbox.svg
