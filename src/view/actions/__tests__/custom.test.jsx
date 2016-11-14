@@ -14,14 +14,12 @@ import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers
 const getReactComponents = (wrapper) => {
   const fields = wrapper.find(Field);
   const radios = wrapper.find(Radio);
-  const checkboxes = wrapper.find(Checkbox);
   const nameField = fields.filterWhere(n => n.prop('name') === 'name');
   const nameTextfield = nameField.find(Textfield).node;
   const nameErrorTip = nameField.find(ErrorTip).node;
   const javaScriptLanguageRadio = radios.filterWhere(n => n.prop('value') === 'javascript').node;
   const htmlLanguageRadio = radios.filterWhere(n => n.prop('value') === 'html').node;
-  const sequentialCheckbox = checkboxes.filterWhere(n => n.prop('name') === 'sequential').node;
-  const globalCheckbox = checkboxes.filterWhere(n => n.prop('name') === 'global').node;
+  const globalCheckbox = wrapper.find(Checkbox).filterWhere(n => n.prop('name') === 'global').node;
   const sourceErrorIcon = wrapper.find(ErrorTip).node;
   const openEditorButton = fields.filterWhere(n => n.prop('name') === 'source').find(Button).node;
   const [sequentialHtmlAlert, inlineScriptAlert] = wrapper.find(Alert).nodes;
@@ -31,7 +29,6 @@ const getReactComponents = (wrapper) => {
     nameErrorTip,
     javaScriptLanguageRadio,
     htmlLanguageRadio,
-    sequentialCheckbox,
     globalCheckbox,
     sourceErrorIcon,
     openEditorButton,
@@ -59,7 +56,6 @@ describe('custom action view', () => {
       settings: {
         name: 'foo',
         language: 'html',
-        sequential: true,
         source: 'bar'
       }
     });
@@ -71,21 +67,18 @@ describe('custom action view', () => {
     let {
       javaScriptLanguageRadio,
       htmlLanguageRadio,
-      sequentialCheckbox,
       globalCheckbox
     } = getReactComponents(instance);
 
     expect(nameTextfield.props.value).toBe('foo');
     expect(javaScriptLanguageRadio.props.checked).toBe(false);
     expect(htmlLanguageRadio.props.checked).toBe(true);
-    expect(sequentialCheckbox.props.checked).toBe(true);
     expect(globalCheckbox).toBeUndefined();
 
     extensionBridge.init({
       settings: {
         name: 'foo',
         language: 'javascript',
-        sequential: false,
         global: true,
         source: 'bar'
       }
@@ -94,13 +87,11 @@ describe('custom action view', () => {
     ({
       javaScriptLanguageRadio,
       htmlLanguageRadio,
-      sequentialCheckbox,
       globalCheckbox
     } = getReactComponents(instance));
 
     expect(javaScriptLanguageRadio.props.checked).toBe(true);
     expect(htmlLanguageRadio.props.checked).toBe(false);
-    expect(sequentialCheckbox.props.checked).toBe(false);
     expect(globalCheckbox.props.checked).toBe(true);
   });
 
@@ -111,19 +102,16 @@ describe('custom action view', () => {
       nameTextfield,
       javaScriptLanguageRadio,
       htmlLanguageRadio,
-      sequentialCheckbox,
       globalCheckbox
     } = getReactComponents(instance);
 
     nameTextfield.props.onChange('foo');
     htmlLanguageRadio.props.onChange('html');
-    sequentialCheckbox.props.onChange(true);
     globalCheckbox.props.onChange(true);
 
     expect(extensionBridge.getSettings()).toEqual({
       name: 'foo',
-      language: 'html',
-      sequential: true
+      language: 'html'
     });
 
     javaScriptLanguageRadio.props.onChange('javascript');
@@ -131,7 +119,6 @@ describe('custom action view', () => {
     expect(extensionBridge.getSettings()).toEqual({
       name: 'foo',
       language: 'javascript',
-      sequential: true,
       global: true
     });
   });
@@ -147,60 +134,6 @@ describe('custom action view', () => {
 
     expect(nameErrorTip.props.children).toEqual(jasmine.any(String));
     expect(sourceErrorIcon.props.children).toBeDefined();
-  });
-
-  it('shows sequential html alert when HTML and sequential are selected', () => {
-    extensionBridge.init();
-
-    let {
-      sequentialHtmlAlert
-    } = getReactComponents(instance);
-
-    expect(sequentialHtmlAlert).toBeUndefined();
-
-    extensionBridge.init({
-      settings: {
-        language: 'html',
-        sequential: true
-      }
-    });
-
-    ({
-      sequentialHtmlAlert
-    } = getReactComponents(instance));
-
-    expect(sequentialHtmlAlert).toBeDefined();
-  });
-
-  it('shows inline script alert when HTML and sequential are selected and ' +
-    'inline script is found', () => {
-    extensionBridge.init({
-      settings: {
-        language: 'html',
-        sequential: true,
-        source: 'foo <script src="abc.js"></scr' + 'ipt> bar'
-      }
-    });
-
-    let {
-      inlineScriptAlert
-    } = getReactComponents(instance);
-
-    expect(inlineScriptAlert).toBeUndefined();
-
-    extensionBridge.init({
-      settings: {
-        language: 'html',
-        sequential: true,
-        source: 'foo <script></scr' + 'ipt> bar'
-      }
-    });
-
-    ({
-      inlineScriptAlert
-    } = getReactComponents(instance));
-
-    expect(inlineScriptAlert).toBeDefined();
   });
 
   it('allows user to provide custom code', () => {
