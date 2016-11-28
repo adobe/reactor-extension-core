@@ -1,6 +1,6 @@
 'use strict';
 
-var visitorTracking = require('../helpers/visitorTracking');
+var visitorTracking = require('./helpers/visitorTracking');
 var textMatch = require('../helpers/textMatch');
 
 // Visitor tracking should only run (be enabled) when a rule for the property contains a condition

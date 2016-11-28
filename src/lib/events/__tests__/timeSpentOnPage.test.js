@@ -1,6 +1,6 @@
 'use strict';
 
-var visibilityApi = require('../../helpers/visibilityApi');
+var visibilityApi = require('../helpers/visibilityApi');
 var visibilityApiInstance = visibilityApi();
 var visibilityChangeListener;
 
@@ -12,7 +12,7 @@ var mockDocument = {
   }
 };
 
-var Timer = require('../../helpers/timer');
+var Timer = require('../helpers/timer');
 
 var eventDelegateInjector = require('inject!../timeSpentOnPage');
 var delegate = eventDelegateInjector({
