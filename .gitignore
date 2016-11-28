@@ -3,3 +3,4 @@ coverage
 test_results
 dist
 .sonar
+.sandbox
