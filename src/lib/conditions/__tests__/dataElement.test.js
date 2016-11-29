@@ -7,7 +7,7 @@ describe('data element condition delegate', function() {
 
   beforeAll(function() {
     conditionDelegate = conditionDelegateInjector({
-      'get-var': function(variableName) {
+      'get-data-element-value': function(variableName) {
         if (variableName) {
           return 'foo';
         }

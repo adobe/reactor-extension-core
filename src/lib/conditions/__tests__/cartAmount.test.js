@@ -15,7 +15,7 @@ describe('cart amount condition delegate', function() {
     var conditionDelegate;
     beforeAll(function() {
       conditionDelegate = conditionDelegateInjector({
-        'get-var': function() {
+        'get-data-element-value': function() {
           return 5.17;
         }
       });
@@ -80,7 +80,7 @@ describe('cart amount condition delegate', function() {
       var conditionDelegate;
       beforeAll(function() {
         conditionDelegate = conditionDelegateInjector({
-          'get-var': function() {
+          'get-data-element-value': function() {
             return nonNumber.dataElementValue;
           }
         });

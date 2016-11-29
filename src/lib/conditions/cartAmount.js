@@ -1,6 +1,6 @@
 'use strict';
 
-var getVar = require('get-var');
+var getDataElementValue = require('get-data-element-value');
 var compareNumbers = require('../helpers/compareNumbers');
 
 /**
@@ -14,7 +14,7 @@ var compareNumbers = require('../helpers/compareNumbers');
  * @returns {boolean}
  */
 module.exports = function(settings) {
-  var amount = Number(getVar(settings.dataElement));
+  var amount = Number(getDataElementValue(settings.dataElement));
 
   if (isNaN(amount)) {
     amount = 0;
