@@ -1,7 +1,7 @@
 'use strict';
 
 var getDataElementValue = require('get-data-element-value');
-var compareNumbers = require('../helpers/compareNumbers');
+var compareNumbers = require('./helpers/compareNumbers');
 
 /**
  * Cart amount condition. Determines if the current cart amount matches constraints.

@@ -1,7 +1,7 @@
 'use strict';
 
 var window = require('window');
-var compareNumbers = require('../helpers/compareNumbers');
+var compareNumbers = require('./helpers/compareNumbers');
 
 /**
  * Screen resolution condition. Determines if the current screen resolution matches constraints.

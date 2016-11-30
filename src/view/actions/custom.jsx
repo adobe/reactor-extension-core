@@ -4,7 +4,6 @@ import { Field, formValueSelector } from 'redux-form';
 import InfoTip from '@reactor/react-components/lib/infoTip';
 import EditorButton from '@reactor/react-components/lib/reduxForm/editorButton';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
-import Alert from '@coralui/react-coral/lib/Alert';
 import Checkbox from '@coralui/redux-form-react-coral/lib/Checkbox';
 import Radio from '@coralui/redux-form-react-coral/lib/Radio';
 import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
@@ -15,11 +14,7 @@ const LANGUAGES = {
   HTML: 'html'
 };
 
-// When tested against a string, it will return true if an opening script tag is found without
-// a src attribute.
-const containsInlineScriptRegex = /<script(?![^>]*\bsrc\b)/i;
-
-const Custom = ({ language, sequential, source }) => (
+const Custom = ({ language }) => (
   <div>
     <label>
       <span className="u-label">Name</span>
@@ -52,21 +47,6 @@ const Custom = ({ language, sequential, source }) => (
       </Field>
     </fieldset>
 
-    <div>
-      <Field
-        name="sequential"
-        component={ Checkbox }
-      >
-        Sequential
-      </Field>
-      <InfoTip className="CustomAction-checkboxErrorTip">
-        When sequential is enabled, the code in this action will be executed sequentially in
-        relation to other custom actions that have sequential enabled. For example, if custom
-        action A is sequential, B is not sequential, and C is sequential, A is guaranteed to be
-        executed before C while B may be executed first, second, or third.
-      </InfoTip>
-    </div>
-
     {
       language === LANGUAGES.JAVASCRIPT ?
         <div>
@@ -85,26 +65,6 @@ const Custom = ({ language, sequential, source }) => (
         </div> : null
     }
 
-    {
-      language === LANGUAGES.HTML && sequential ?
-        <Alert variant="warning">
-          Please note that sequential HTML will only work for rules that fire before the
-          page&apos;s HTML document has been loaded and parsed. Such rules typically use either
-          the Top of Page or Bottom of Page event.
-        </Alert> : null
-    }
-
-    {
-      // Remove when we drop IE9 support.
-      language === LANGUAGES.HTML && sequential && containsInlineScriptRegex.test(source) ?
-        <Alert variant="warning">
-          Please note that if this rule is fired in Internet Explorer 9 before the page&apos;s
-          HTML document has been loaded and parsed, any inline script
-          (e.g., &lt;script&gt;console.log(&apos;test&apos;);&lt;script&gt;)
-          within your HTML will be executed before prior sequential JavaScript custom actions.
-        </Alert> : null
-    }
-
     <div className="u-gapTop">
       <Field
         name="source"
@@ -115,7 +75,7 @@ const Custom = ({ language, sequential, source }) => (
 );
 
 const valueSelector = formValueSelector('default');
-const stateToProps = state => valueSelector(state, 'language', 'sequential', 'source');
+const stateToProps = state => ({ language: valueSelector(state, 'language') });
 
 const ConnectedCustom = connect(stateToProps)(Custom);
 
