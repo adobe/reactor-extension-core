@@ -1,17 +1,10 @@
 'use strict';
 
-var getVar = require('get-var');
-var isVar = require('is-var');
+var replaceTokens = require('replace-tokens');
 var id = 0;
 
-var replaceDataElementsTokens = function(action, source) {
-  return source.replace(/%(.+?)%/g, function(token, tokenName) {
-    if (isVar(tokenName)) {
-      return getVar(tokenName, action.relatedElement, action.event);
-    } else {
-      return token;
-    }
-  });
+var isSourceLoadedFromFile = function(action) {
+  return action.settings.hasOwnProperty('sourceUrl');
 };
 
 var decorateGlobalJavaScriptCode = function(action, source) {
@@ -38,7 +31,13 @@ var decorators = {
       decorateNonGlobalJavaScriptCode(action, source);
   },
   html: function(action, source) {
-    return replaceDataElementsTokens(action, source);
+    // We need to replace tokens only for sources loaded from external files. The sources from
+    // inside the container are automatically taken care by Turbine.
+    if (isSourceLoadedFromFile(action)) {
+      return replaceTokens(source, action.relatedElement, action.event);
+    }
+
+    return source;
   }
 };
 
