@@ -2,11 +2,10 @@
 
 var decorateCodeInjector = require('inject!../decorateCode');
 var decorateCode = decorateCodeInjector({
-  'get-var': function() {
-    return 'data-element-value';
-  },
-  'is-var': function() {
-    return true;
+  'replace-tokens': function(token) {
+    return token.replace(/%(.+?)%/g, function(token, variableName) {
+      return 'replaced - ' + variableName;
+    });
   }
 });
 
@@ -103,7 +102,7 @@ describe('decorate code', function() {
     expect(decoratedCode).toBe('<script>console.log("logging")</script>');
   });
 
-  it('replaces data element tokens from inside an html action', function() {
+  it('does not replace data element tokens for a embeded html action', function() {
     var settings = {
       language: 'html',
       global: true,
@@ -116,6 +115,45 @@ describe('decorate code', function() {
       relatedElement: {}
     }, settings.source);
 
-    expect(decoratedCode).toBe('<div>data-element-value</div>');
+    expect(decoratedCode).toBe('<div>%productname%</div>');
+  });
+
+
+  it('does not replace data element tokens for a embedded html action', function() {
+    var settings = {
+      language: 'html',
+      global: true,
+      source: '<div>productname</div>'
+    };
+
+    var replaceTokensSpy = jasmine.createSpy('replace-tokens');
+
+    var decorateCode = decorateCodeInjector({
+      'replace-tokens': replaceTokensSpy
+    });
+
+    decorateCode({
+      settings: settings,
+      event: {},
+      relatedElement: {}
+    }, settings.source);
+
+    expect(replaceTokensSpy).not.toHaveBeenCalled();
+  });
+
+  it('does replace data element tokens for an html action loaded from a file', function() {
+    var settings = {
+      language: 'html',
+      global: true,
+      sourceUrl: 'url1'
+    };
+
+    var decoratedAction = decorateCode({
+      settings: settings,
+      event: {},
+      relatedElement: {}
+    }, '<div>%productname%</div>');
+
+    expect(decoratedAction).toBe('<div>replaced - productname</div>');
   });
 });
