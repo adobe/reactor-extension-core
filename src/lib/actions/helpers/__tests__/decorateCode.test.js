@@ -102,7 +102,7 @@ describe('decorate code', function() {
     expect(decoratedCode).toBe('<script>console.log("logging")</script>');
   });
 
-  it('does not replace data element tokens for a embeded html action', function() {
+  it('does not replace data element tokens for an embedded html action', function() {
     var settings = {
       language: 'html',
       global: true,
@@ -119,7 +119,7 @@ describe('decorate code', function() {
   });
 
 
-  it('does not replace data element tokens for a embedded html action', function() {
+  it('does not replace data element tokens for an embedded html action', function() {
     var settings = {
       language: 'html',
       global: true,
