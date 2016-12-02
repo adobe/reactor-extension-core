@@ -1796,7 +1796,8 @@
       },
       "transforms": [
         {
-          "type": "customCode"
+          "type": "customCode",
+          "propertyPath": "source"
         }
       ]
     }
