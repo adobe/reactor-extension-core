@@ -4,14 +4,14 @@
 	 viewBox="0 0 383.2 383.2" style="enable-background:new 0 0 383.2 383.2;" xml:space="preserve">
 <style type="text/css">
 	.st0{fill:url(#SVGID_1_);}
-	.st1{fill:none;stroke:#FFFFFF;stroke-width:15;stroke-miterlimit:10;}
-	.st2{fill:none;stroke:#FFFFFF;stroke-width:2;stroke-miterlimit:10;}
-	.st3{fill:none;stroke:#FFFFFF;stroke-width:3.72;stroke-miterlimit:10;}
-	.st4{fill:#AFBC84;}
+	.st1{fill:none;stroke:#76A141;stroke-width:15;stroke-miterlimit:10;}
+	.st2{fill:none;stroke:#76A141;stroke-width:2;stroke-miterlimit:10;}
+	.st3{fill:none;stroke:#76A141;stroke-width:3.72;stroke-miterlimit:10;}
+	.st4{fill:#D2E7A1;}
 </style>
-<radialGradient id="SVGID_1_" cx="-0.2161" cy="550.0281" r="90.1094" gradientTransform="matrix(2.7797 0 0 -2.8444 153.3869 1692.2765)" gradientUnits="userSpaceOnUse">
-	<stop  offset="0" style="stop-color:#094A1D"/>
-	<stop  offset="0.767" style="stop-color:#062E12"/>
+<radialGradient id="SVGID_1_" cx="-72.5642" cy="110.3402" r="90.1094" gradientTransform="matrix(2.7797 0 0 2.8444 354.493 -186.0751)" gradientUnits="userSpaceOnUse">
+	<stop  offset="0" style="stop-color:#005423"/>
+	<stop  offset="0.767" style="stop-color:#003215"/>
 </radialGradient>
 <path class="st0" d="M0,0h383.2v383.2H0V0z"/>
 <title>fdsaf</title>
