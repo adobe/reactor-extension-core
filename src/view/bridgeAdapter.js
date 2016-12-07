@@ -1,8 +1,7 @@
 /* eslint dot-notation: 0 */
 
-import { getFormValues, initialize, change } from 'redux-form';
+import { getFormValues, initialize, change, submit, isValid } from 'redux-form';
 import { actionCreators } from './reduxActions/bridgeAdapterActions';
-import { handleSubmit } from './extensionViewReduxForm';
 
 export default (extensionBridge, store) => {
   let currentRouteFormSettings;
@@ -48,13 +47,9 @@ export default (extensionBridge, store) => {
       // is invalid, it will incorrectly report that it is valid.
       store.dispatch(change('default', '__bogusname__', '__bogusvalue__'));
 
-      let valid = false;
-      // handleSubmit comes from redux-form. The function passed in will only be called if the
-      // form passes validation.
-      handleSubmit(() => {
-        valid = true;
-      })();
-      return valid;
+      store.dispatch(submit('default'));
+
+      return isValid('default')(store.getState());
     }
   });
 

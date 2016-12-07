@@ -71,77 +71,83 @@ import VariableDataElement from './dataElements/variable';
 // Actions
 import CustomAction from './actions/custom';
 
+const componentsByPath = {
+  '/events/blur': BlurEvent,
+  '/events/click': ClickEvent,
+  '/events/custom': CustomEvent,
+  '/events/dataElementChanged': DataElementChanged,
+  '/events/directCall': DirectCallEvent,
+  '/events/domReady': DomReadyEvent,
+  '/events/elementExists': ElementExistsEvent,
+  '/events/ended': EndedEvent,
+  '/events/entersViewport': EntersViewportEvent,
+  '/events/focus': FocusEvent,
+  '/events/hover': HoverEvent,
+  '/events/keyPress': KeyPressEvent,
+  '/events/loadedData': LoadedDataEvent,
+  '/events/locationChange': LocationChangeEvent,
+  '/events/onLoad': OnLoadEvent,
+  '/events/orientationChange': OrientationChangeEvent,
+  '/events/pageBottom': PageBottomEvent,
+  '/events/pageTop': PageTopEvent,
+  '/events/pause': PauseEvent,
+  '/events/play': PlayEvent,
+  '/events/stalled': StalledEvent,
+  '/events/submit': SubmitEvent,
+  '/events/tabBlur': TabBlurEvent,
+  '/events/tabFocus': TabFocusEvent,
+  '/events/timePlayed': TimePlayedEvent,
+  '/events/timeSpentOnPage': TimeSpentOnPageEvent,
+  '/events/volumeChange': VolumeChangeEvent,
+  '/events/zoomChange': ZoomChangeEvent,
+  '/conditions/browser': BrowserCondition,
+  '/conditions/cartAmount': CartAmountCondition,
+  '/conditions/cartItemQuantity': CartItemQuantityCondition,
+  '/conditions/cookie': CookieCondition,
+  '/conditions/cookieOptOut': CookieOptOutCondition,
+  '/conditions/custom': CustomCondition,
+  '/conditions/dataElement': DataElementCondition,
+  '/conditions/deviceType': DeviceTypeCondition,
+  '/conditions/domain': DomainCondition,
+  '/conditions/hash': HashCondition,
+  '/conditions/landingPage': LandingPageCondition,
+  '/conditions/loggedIn': LoggedInCondition,
+  '/conditions/newReturning': NewReturningCondition,
+  '/conditions/operatingSystem': OperatingSystemCondition,
+  '/conditions/pageViews': PageViewsCondition,
+  '/conditions/path': PathCondition,
+  '/conditions/previousConverter': PreviousConverterCondition,
+  '/conditions/protocol': ProtocolCondition,
+  '/conditions/registeredUser': RegisteredUserCondition,
+  '/conditions/screenResolution': ScreenResolutionCondition,
+  '/conditions/sessions': SessionsCondition,
+  '/conditions/urlParameter': URLParameterCondition,
+  '/conditions/subdomain': SubdomainCondition,
+  '/conditions/timeOnSite': TimeOnSiteCondition,
+  '/conditions/trafficSource': TrafficSourceCondition,
+  '/conditions/variable': VariableCondition,
+  '/conditions/windowSize': WindowSizeCondition,
+  '/dataElements/cookie': CookieDataElement,
+  '/dataElements/custom': CustomDataElement,
+  '/dataElements/dom': DOMDataElement,
+  '/dataElements/queryParameter': QueryParameterDataElement,
+  '/dataElements/variable': VariableDataElement,
+  '/actions/custom': CustomAction
+};
+
 export default (setFormConfigForCurrentRoute) => {
   const onEnter = (nextState) => {
     setFormConfigForCurrentRoute(nextState.routes[0].component.formConfig);
   };
 
-  return (
-    <Router history={ hashHistory }>
-      <Route path="/events/blur" component={ BlurEvent } onEnter={ onEnter } />
-      <Route path="/events/click" component={ ClickEvent } onEnter={ onEnter } />
-      <Route path="/events/custom" component={ CustomEvent } onEnter={ onEnter } />
-      <Route path="/events/dataElementChanged" component={ DataElementChanged } onEnter={ onEnter } />
-      <Route path="/events/directCall" component={ DirectCallEvent } onEnter={ onEnter } />
-      <Route path="/events/domReady" component={ DomReadyEvent } onEnter={ onEnter } />
-      <Route path="/events/elementExists" component={ ElementExistsEvent } onEnter={ onEnter } />
-      <Route path="/events/ended" component={ EndedEvent } onEnter={ onEnter } />
-      <Route path="/events/entersViewport" component={ EntersViewportEvent } onEnter={ onEnter } />
-      <Route path="/events/focus" component={ FocusEvent } onEnter={ onEnter } />
-      <Route path="/events/hover" component={ HoverEvent } onEnter={ onEnter } />
-      <Route path="/events/keyPress" component={ KeyPressEvent } onEnter={ onEnter } />
-      <Route path="/events/loadedData" component={ LoadedDataEvent } onEnter={ onEnter } />
-      <Route path="/events/locationChange" component={ LocationChangeEvent } onEnter={ onEnter } />
-      <Route path="/events/onLoad" component={ OnLoadEvent } onEnter={ onEnter } />
-      <Route path="/events/orientationChange" component={ OrientationChangeEvent } onEnter={ onEnter } />
-      <Route path="/events/pageBottom" component={ PageBottomEvent } onEnter={ onEnter } />
-      <Route path="/events/pageTop" component={ PageTopEvent } onEnter={ onEnter } />
-      <Route path="/events/pause" component={ PauseEvent } onEnter={ onEnter } />
-      <Route path="/events/play" component={ PlayEvent } onEnter={ onEnter } />
-      <Route path="/events/stalled" component={ StalledEvent } onEnter={ onEnter } />
-      <Route path="/events/submit" component={ SubmitEvent } onEnter={ onEnter } />
-      <Route path="/events/tabBlur" component={ TabBlurEvent } onEnter={ onEnter } />
-      <Route path="/events/tabFocus" component={ TabFocusEvent } onEnter={ onEnter } />
-      <Route path="/events/timePlayed" component={ TimePlayedEvent } onEnter={ onEnter } />
-      <Route path="/events/timeSpentOnPage" component={ TimeSpentOnPageEvent } onEnter={ onEnter } />
-      <Route path="/events/volumeChange" component={ VolumeChangeEvent } onEnter={ onEnter } />
-      <Route path="/events/zoomChange" component={ ZoomChangeEvent } onEnter={ onEnter } />
-
-      <Route path="/conditions/browser" component={ BrowserCondition } onEnter={ onEnter } />
-      <Route path="/conditions/cartAmount" component={ CartAmountCondition } onEnter={ onEnter } />
-      <Route path="/conditions/cartItemQuantity" component={ CartItemQuantityCondition } onEnter={ onEnter } />
-      <Route path="/conditions/cookie" component={ CookieCondition } onEnter={ onEnter } />
-      <Route path="/conditions/cookieOptOut" component={ CookieOptOutCondition } onEnter={ onEnter } />
-      <Route path="/conditions/custom" component={ CustomCondition } onEnter={ onEnter } />
-      <Route path="/conditions/dataElement" component={ DataElementCondition } onEnter={ onEnter } />
-      <Route path="/conditions/deviceType" component={ DeviceTypeCondition } onEnter={ onEnter } />
-      <Route path="/conditions/domain" component={ DomainCondition } onEnter={ onEnter } />
-      <Route path="/conditions/hash" component={ HashCondition } onEnter={ onEnter } />
-      <Route path="/conditions/landingPage" component={ LandingPageCondition } onEnter={ onEnter } />
-      <Route path="/conditions/loggedIn" component={ LoggedInCondition } onEnter={ onEnter } />
-      <Route path="/conditions/newReturning" component={ NewReturningCondition } onEnter={ onEnter } />
-      <Route path="/conditions/operatingSystem" component={ OperatingSystemCondition } onEnter={ onEnter } />
-      <Route path="/conditions/pageViews" component={ PageViewsCondition } onEnter={ onEnter } />
-      <Route path="/conditions/path" component={ PathCondition } onEnter={ onEnter } />
-      <Route path="/conditions/previousConverter" component={ PreviousConverterCondition } onEnter={ onEnter } />
-      <Route path="/conditions/protocol" component={ ProtocolCondition } onEnter={ onEnter } />
-      <Route path="/conditions/registeredUser" component={ RegisteredUserCondition } onEnter={ onEnter } />
-      <Route path="/conditions/screenResolution" component={ ScreenResolutionCondition } onEnter={ onEnter } />
-      <Route path="/conditions/sessions" component={ SessionsCondition } onEnter={ onEnter } />
-      <Route path="/conditions/urlParameter" component={ URLParameterCondition } onEnter={ onEnter } />
-      <Route path="/conditions/subdomain" component={ SubdomainCondition } onEnter={ onEnter } />
-      <Route path="/conditions/timeOnSite" component={ TimeOnSiteCondition } onEnter={ onEnter } />
-      <Route path="/conditions/trafficSource" component={ TrafficSourceCondition } onEnter={ onEnter } />
-      <Route path="/conditions/variable" component={ VariableCondition } onEnter={ onEnter } />
-      <Route path="/conditions/windowSize" component={ WindowSizeCondition } onEnter={ onEnter } />
-
-      <Route path="/dataElements/cookie" component={ CookieDataElement } onEnter={ onEnter } />
-      <Route path="/dataElements/custom" component={ CustomDataElement } onEnter={ onEnter } />
-      <Route path="/dataElements/dom" component={ DOMDataElement } onEnter={ onEnter } />
-      <Route path="/dataElements/queryParameter" component={ QueryParameterDataElement } onEnter={ onEnter } />
-      <Route path="/dataElements/variable" component={ VariableDataElement } onEnter={ onEnter } />
-
-      <Route path="/actions/custom" component={ CustomAction } onEnter={ onEnter } />
-    </Router>
+  const routes = Object.keys(componentsByPath).map(path =>
+    <Route
+      key={ path }
+      path={ path }
+      component={ componentsByPath[path] }
+      onEnter={ onEnter }
+    />
   );
+
+  return <Router history={ hashHistory }>{ routes }</Router>;
 };

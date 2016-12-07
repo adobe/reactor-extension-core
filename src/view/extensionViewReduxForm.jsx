@@ -1,16 +1,6 @@
-/* eslint import/no-mutable-exports: 0 */
 import React from 'react';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-
-/**
- * The handleSubmit function for the most recently updated form. This is exposed as a workaround
- * for the redux-form issue https://github.com/erikras/redux-form/issues/202. In order to validate
- * a form, the handleSubmit function must be called. handleSubmit is passed by redux-form to the
- * form component as a prop. Since the the parent window is in charge of triggering validation
- * and saving of forms and not the component, we have to expose the function here.
- */
-export let handleSubmit;
 
 /**
  * Decorator for extension view forms. This configures the extension form for use with redux-form.
@@ -25,16 +15,7 @@ export let handleSubmit;
  * @returns {Function}
  */
 export default config => (View) => {
-  class ViewWrapper extends React.Component {
-    componentDidUpdate() {
-      handleSubmit = this.props.handleSubmit;
-    }
-
-    render() {
-      // This has a ref so we can access it from tests.
-      return this.props.initializedByBridge ? <View { ...this.props } /> : null;
-    }
-  }
+  const ViewWrapper = props => (props.initializedByBridge ? <View { ...props } /> : null);
 
   const ReduxView = connect(
     ({ initializedByBridge }) => ({ initializedByBridge })
@@ -42,7 +23,9 @@ export default config => (View) => {
 
   const ReduxForm = reduxForm({
     form: 'default',
-    validate: config.validate ? values => config.validate({}, values) : undefined
+    validate: config.validate ? values => config.validate({}, values) : undefined,
+    // ReduxForm will complain with we try to "submit" the form and don't have onSubmit defined.
+    onSubmit: () => {}
   })(ReduxView);
 
   // Saved on the component class so that bridgeAdapter can get access to settingsToFormValues and
