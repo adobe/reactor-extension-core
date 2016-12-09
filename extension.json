@@ -202,7 +202,6 @@
       "categoryName": "Page Load",
       "displayName": "DOM Ready",
       "libPath": "src/lib/events/domReady.js",
-      "viewPath": "index.html#/events/domReady",
       "schema": {}
     },
     {
@@ -532,7 +531,6 @@
       "categoryName": "Other",
       "displayName": "pushState or hashchange",
       "libPath": "src/lib/events/locationChange.js",
-      "viewPath": "index.html#/events/locationChange",
       "schema": {}
     },
     {
@@ -540,7 +538,6 @@
       "categoryName": "Page Load",
       "displayName": "On Load",
       "libPath": "src/lib/events/onLoad.js",
-      "viewPath": "index.html#/events/onLoad",
       "schema": {}
     },
     {
@@ -548,7 +545,6 @@
       "categoryName": "Mobile",
       "displayName": "Orientation Change",
       "libPath": "src/lib/events/orientationChange.js",
-      "viewPath": "index.html#/events/orientationChange",
       "schema": {}
     },
     {
@@ -556,7 +552,6 @@
       "categoryName": "Page Load",
       "displayName": "Page Bottom",
       "libPath": "src/lib/events/pageBottom.js",
-      "viewPath": "index.html#/events/pageBottom",
       "schema": {}
     },
     {
@@ -564,7 +559,6 @@
       "categoryName": "Page Load",
       "displayName": "Page Top",
       "libPath": "src/lib/events/pageTop.js",
-      "viewPath": "index.html#/events/pageTop",
       "schema": {}
     },
     {
@@ -760,7 +754,6 @@
       "categoryName": "Browser",
       "displayName": "Tab Blur",
       "libPath": "src/lib/events/tabBlur.js",
-      "viewPath": "index.html#/events/tabBlur",
       "schema": {}
     },
     {
@@ -768,7 +761,6 @@
       "categoryName": "Browser",
       "displayName": "Tab Focus",
       "libPath": "src/lib/events/tabFocus.js",
-      "viewPath": "index.html#/events/tabFocus",
       "schema": {}
     },
     {
@@ -898,7 +890,6 @@
       "categoryName": "Mobile",
       "displayName": "Zoom Change",
       "libPath": "src/lib/events/zoomChange.js",
-      "viewPath": "index.html#/events/zoomChange",
       "schema": {}
     }
   ],

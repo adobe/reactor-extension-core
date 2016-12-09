@@ -8,7 +8,6 @@ import CustomEvent from './events/custom';
 import ClickEvent from './events/click';
 import DataElementChanged from './events/dataElementChanged';
 import DirectCallEvent from './events/directCall';
-import DomReadyEvent from './events/domReady';
 import ElementExistsEvent from './events/elementExists';
 import EndedEvent from './events/ended';
 import EntersViewportEvent from './events/entersViewport';
@@ -16,21 +15,13 @@ import FocusEvent from './events/focus';
 import HoverEvent from './events/hover';
 import KeyPressEvent from './events/keyPress';
 import LoadedDataEvent from './events/loadedData';
-import LocationChangeEvent from './events/locationChange';
-import OnLoadEvent from './events/onLoad';
-import OrientationChangeEvent from './events/orientationChange';
-import PageBottomEvent from './events/pageBottom';
-import PageTopEvent from './events/pageTop';
 import PauseEvent from './events/pause';
 import PlayEvent from './events/play';
 import StalledEvent from './events/stalled';
 import SubmitEvent from './events/submit';
-import TabBlurEvent from './events/tabBlur';
-import TabFocusEvent from './events/tabFocus';
 import TimePlayedEvent from './events/timePlayed';
 import TimeSpentOnPageEvent from './events/timeSpentOnPage';
 import VolumeChangeEvent from './events/volumeChange';
-import ZoomChangeEvent from './events/zoomChange';
 
 // Conditions
 import BrowserCondition from './conditions/browser';
@@ -77,7 +68,6 @@ const componentsByPath = {
   '/events/custom': CustomEvent,
   '/events/dataElementChanged': DataElementChanged,
   '/events/directCall': DirectCallEvent,
-  '/events/domReady': DomReadyEvent,
   '/events/elementExists': ElementExistsEvent,
   '/events/ended': EndedEvent,
   '/events/entersViewport': EntersViewportEvent,
@@ -85,21 +75,13 @@ const componentsByPath = {
   '/events/hover': HoverEvent,
   '/events/keyPress': KeyPressEvent,
   '/events/loadedData': LoadedDataEvent,
-  '/events/locationChange': LocationChangeEvent,
-  '/events/onLoad': OnLoadEvent,
-  '/events/orientationChange': OrientationChangeEvent,
-  '/events/pageBottom': PageBottomEvent,
-  '/events/pageTop': PageTopEvent,
   '/events/pause': PauseEvent,
   '/events/play': PlayEvent,
   '/events/stalled': StalledEvent,
   '/events/submit': SubmitEvent,
-  '/events/tabBlur': TabBlurEvent,
-  '/events/tabFocus': TabFocusEvent,
   '/events/timePlayed': TimePlayedEvent,
   '/events/timeSpentOnPage': TimeSpentOnPageEvent,
   '/events/volumeChange': VolumeChangeEvent,
-  '/events/zoomChange': ZoomChangeEvent,
   '/conditions/browser': BrowserCondition,
   '/conditions/cartAmount': CartAmountCondition,
   '/conditions/cartItemQuantity': CartItemQuantityCondition,
