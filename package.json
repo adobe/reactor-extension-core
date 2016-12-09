@@ -44,7 +44,7 @@
     "reduce-reducers": "^0.1.2",
     "redux": "^3.6.0",
     "redux-actions": "^0.13.0",
-    "redux-form": "^6.1.1",
+    "redux-form": "6.2.1",
     "style-loader": "^0.13.1",
     "stylus-loader": "^2.3.1"
   },
@@ -59,7 +59,7 @@
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-0": "^6.16.0",
     "cookie": "^0.3.1",
-    "html-webpack-externals-plugin": "^2.0.0",
+    "html-webpack-externals-plugin": "2.1.2",
     "html-webpack-plugin": "^2.24.1",
     "react-addons-test-utils": "^15.3.2",
     "webpack": "^1.13.3",
