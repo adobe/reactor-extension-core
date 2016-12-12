@@ -46,7 +46,7 @@ describe('custom action delegate', function() {
 
     it('writes the code defined inside an external file', function(done) {
       custom({
-        sourceUrl: 'url1',
+        isExternal: true,
         language: 'javascript'
       }).then(function() {
         expect(writeHtmlSpy).toHaveBeenCalledWith('inside external file');
@@ -90,7 +90,7 @@ describe('custom action delegate', function() {
 
     it('writes the code defined inside an external file', function(done) {
       custom({
-        sourceUrl: 'url2',
+        isExternal: true,
         language: 'javascript'
       }).then(function() {
         expect(writeHtmlSpy).not.toHaveBeenCalled();

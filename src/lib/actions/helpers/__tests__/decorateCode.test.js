@@ -145,7 +145,8 @@ describe('decorate code', function() {
     var settings = {
       language: 'html',
       global: true,
-      sourceUrl: 'url1'
+      source: 'url1',
+      isExternal: true
     };
 
     var decoratedAction = decorateCode({
