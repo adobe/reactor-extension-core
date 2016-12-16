@@ -5,9 +5,9 @@ var getSourceByUrl = require('./getSourceByUrl');
 
 var previousExecuteCodePromise = Promise.resolve();
 
-module.exports = function(action) {
+module.exports = function(sourceUrl) {
   var sequentiallyLoadCodePromise = new Promise(function(resolve) {
-    var loadCodePromise = getSourceByUrl(action.settings.sourceUrl);
+    var loadCodePromise = getSourceByUrl(sourceUrl);
 
     Promise.all([
       loadCodePromise,

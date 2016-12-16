@@ -4,7 +4,7 @@ var replaceTokens = require('replace-tokens');
 var id = 0;
 
 var isSourceLoadedFromFile = function(action) {
-  return action.settings.hasOwnProperty('sourceUrl');
+  return action.settings.isExternal;
 };
 
 var decorateGlobalJavaScriptCode = function(action, source) {

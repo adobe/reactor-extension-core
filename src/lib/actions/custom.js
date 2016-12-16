@@ -37,10 +37,13 @@ module.exports = function(settings, relatedElement, event) {
     event: event
   };
 
-  return Promise.resolve(action.settings.source || loadCodeSequentially(action))
-    .then(function(source) {
-      if (source) {
-        writeToDocument(decorateCode(action, source));
-      }
-    });
+  return Promise.resolve(
+    action.settings.isExternal ?
+      loadCodeSequentially(action.settings.source) :
+      action.settings.source
+  ).then(function(source) {
+    if (source) {
+      writeToDocument(decorateCode(action, source));
+    }
+  });
 };
