@@ -1,7 +1,7 @@
 {
   "name": "dtm",
   "version": "1.0.0",
-  "displayName": "Default",
+  "displayName": "DTM",
   "description": "Provides the default event types, condition types, and data element types available to all DTM users.",
   "iconPath": "resources/icons/dtm.svg",
   "author": {
