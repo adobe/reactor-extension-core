@@ -1,9 +1,9 @@
 'use strict';
 
-var document = require('document');
-var writeHtml = require('write-html');
-var Promise = require('promise');
-var logger = require('logger');
+var document = require('@turbine/document');
+var writeHtml = require('@turbine/write-html');
+var Promise = require('@turbine/promise');
+var logger = require('@turbine/logger');
 var decorateCode = require('./helpers/decorateCode');
 var loadCodeSequentially = require('./helpers/loadCodeSequentially');
 var postscribe = require('../../../node_modules/postscribe/dist/postscribe');

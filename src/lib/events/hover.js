@@ -3,7 +3,7 @@
 var bubbly = require('./helpers/createBubbly')();
 var liveQuerySelector = require('./helpers/liveQuerySelector');
 var matchesProperties = require('./helpers/matchesProperties');
-var WeakMap = require('weak-map');
+var WeakMap = require('@turbine/weak-map');
 var trackedDelaysByElement = new WeakMap();
 
 /**

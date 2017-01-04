@@ -1,6 +1,6 @@
 'use strict';
 
-var logger = require('logger');
+var logger = require('@turbine/logger');
 
 /**
  * Returns whether an element matches a selector.

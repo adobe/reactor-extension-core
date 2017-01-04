@@ -1,6 +1,6 @@
 'use strict';
 
-var logger = require('logger');
+var logger = require('@turbine/logger');
 
 /**
  * Object where the key is the call name and the value is an array of all rule trigger functions

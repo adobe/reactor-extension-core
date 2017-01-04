@@ -1,6 +1,6 @@
 'use strict';
 
-var Promise = require('promise');
+var Promise = require('@turbine/promise');
 var getSourceByUrl = require('./getSourceByUrl');
 
 var previousExecuteCodePromise = Promise.resolve();

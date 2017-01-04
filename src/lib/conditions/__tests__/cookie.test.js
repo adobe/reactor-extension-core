@@ -1,7 +1,7 @@
 'use strict';
 var conditionDelegateInjector = require('inject!../cookie');
 var conditionDelegate = conditionDelegateInjector({
-  'document': {
+  '@turbine/document': {
     cookie: 'test=foo'
   }
 });

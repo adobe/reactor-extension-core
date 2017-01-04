@@ -1,7 +1,7 @@
 'use strict';
 
 var getSourceUrlCodeInjector = require('inject!../getSourceByUrl');
-var Promise = require('@reactor/turbine/lib/require')('promise');
+var Promise = require('@reactor/turbine/lib/require')('@turbine/promise');
 
 describe('get source by url', function() {
   var loadScriptSpy;
@@ -14,7 +14,7 @@ describe('get source by url', function() {
     });
 
     getSourceUrlCode = getSourceUrlCodeInjector({
-      'load-script': loadScriptSpy
+      '@turbine/load-script': loadScriptSpy
     });
   });
 

@@ -2,7 +2,7 @@
 
 var getQueryParamSpy = jasmine.createSpy().and.returnValue('bar');
 var dataElementDelegate = require('inject!../queryParameter')({
-  'get-query-param': getQueryParamSpy
+  '@turbine/get-query-param': getQueryParamSpy
 });
 
 describe('queryParam data element delegate', function() {

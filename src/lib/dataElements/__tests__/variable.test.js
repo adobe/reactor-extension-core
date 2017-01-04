@@ -2,7 +2,7 @@
 
 var dataElementDelegateInjector = require('inject!../variable');
 var dataElementDelegate = dataElementDelegateInjector({
-  window: {
+  '@turbine/window': {
     my: {
       path: 'bar'
     }

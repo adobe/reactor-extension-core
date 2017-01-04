@@ -2,7 +2,7 @@
 
 var decorateCodeInjector = require('inject!../decorateCode');
 var decorateCode = decorateCodeInjector({
-  'replace-tokens': function(token) {
+  '@turbine/replace-tokens': function(token) {
     return token.replace(/%(.+?)%/g, function(token, variableName) {
       return 'replaced - ' + variableName;
     });

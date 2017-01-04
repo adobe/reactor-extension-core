@@ -45,7 +45,7 @@ describe('cookie opt-out condition delegate', function() {
         }
         
         conditionDelegate = conditionDelegateInjector({
-          'property-settings': mockPropertySettings
+          '@turbine/property-settings': mockPropertySettings
         });
       });
 

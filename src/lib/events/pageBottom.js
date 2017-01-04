@@ -1,7 +1,7 @@
 'use strict';
 
-var onPageBottom = require('on-page-bottom');
-var document = require('document');
+var onPageBottom = require('@turbine/on-page-bottom');
+var document = require('@turbine/document');
 
 /**
  * All trigger methods registered for this event type.

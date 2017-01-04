@@ -1,9 +1,9 @@
 'use strict';
 
-var cookie = require('cookie');
-var document = require('document');
-var window = require('window');
-var logger = require('logger');
+var cookie = require('@turbine/cookie');
+var document = require('@turbine/document');
+var window = require('@turbine/window');
+var logger = require('@turbine/logger');
 
 var key = function(name) {
   return '_sdsat_' + name;

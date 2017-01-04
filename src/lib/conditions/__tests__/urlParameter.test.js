@@ -1,7 +1,7 @@
 'use strict';
 
 var conditionDelegate = require('inject!../urlParameter')({
-  'get-query-param': function() {
+  '@turbine/get-query-param': function() {
     return 'foo';
   }
 });

@@ -1,6 +1,6 @@
 'use strict';
-var document = require('document');
-var once = require('once');
+var document = require('@turbine/document');
+var once = require('@turbine/once');
 var visibilityApi = require('./helpers/visibilityApi')();
 var Timer = require('./helpers/timer');
 

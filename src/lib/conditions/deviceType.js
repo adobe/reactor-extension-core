@@ -1,6 +1,6 @@
 'use strict';
 
-var clientInfo = require('client-info');
+var clientInfo = require('@turbine/client-info');
 
 /**
  * Device type condition. Determines if the actual device type matches at least one acceptable

@@ -1,6 +1,6 @@
 'use strict';
 
-var document = require('document');
+var document = require('@turbine/document');
 
 /**
  * Domain condition. Determines if the actual domain matches at least one acceptable domain.

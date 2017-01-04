@@ -1,10 +1,10 @@
 'use strict';
 
-var propertySettings = require('property-settings');
-var WeakMap = require('weak-map');
+var propertySettings = require('@turbine/property-settings');
+var WeakMap = require('@turbine/weak-map');
 var evaluatedEvents = new WeakMap();
 var bubbly = require('./helpers/createBubbly')();
-var window = require('window');
+var window = require('@turbine/window');
 
 /**
  * Determines whether an element is a link that would navigate the user's current window to a

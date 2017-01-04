@@ -8,7 +8,7 @@ var mockDocument = {
 
 var conditionDelegateInjector = require('inject!../domain');
 var conditionDelegate = conditionDelegateInjector({
-  document: mockDocument
+  '@turbine/document': mockDocument
 });
 
 var getSettings = function(domains) {

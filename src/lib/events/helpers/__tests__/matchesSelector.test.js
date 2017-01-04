@@ -33,7 +33,9 @@ describe('matchesSelector', function() {
   it('logs a warning when selector matching fails', function() {
     var logger = jasmine.createSpyObj('logger', ['warn']);
     var matchesSelectorInjector = require('inject!../matchesSelector');
-    var matchesSelector = matchesSelectorInjector({ logger: logger});
+    var matchesSelector = matchesSelectorInjector({
+      '@turbine/logger': logger
+    });
 
     matchesSelector(document.body, 'somewrong#!@$%selector');
     expect(logger.warn).toHaveBeenCalled();

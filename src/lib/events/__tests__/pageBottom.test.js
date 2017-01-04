@@ -16,8 +16,8 @@ describe('pageBottom event type', function() {
     };
 
     var delegate = injector({
-      'document': fakeDocument,
-      'on-page-bottom': onPageBottom
+      '@turbine/document': fakeDocument,
+      '@turbine/on-page-bottom': onPageBottom
     });
 
     var trigger = jasmine.createSpy();

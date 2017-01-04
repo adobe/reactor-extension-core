@@ -1,6 +1,6 @@
 'use strict';
 
-var getDataElementValue = require('get-data-element-value');
+var getDataElementValue = require('@turbine/get-data-element-value');
 
 /**
  * Registered user condition. Determines if the user is a registered user.

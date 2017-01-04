@@ -1,6 +1,6 @@
 'use strict';
 
-var replaceTokens = require('replace-tokens');
+var replaceTokens = require('@turbine/replace-tokens');
 var id = 0;
 
 var isSourceLoadedFromFile = function(action) {

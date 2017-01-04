@@ -1,7 +1,7 @@
 'use strict';
 
 var bubbly = require('./helpers/createBubbly')();
-var WeakMap = require('weak-map');
+var WeakMap = require('@turbine/weak-map');
 var lastTriggeredByElement = new WeakMap();
 
 var relevantMarkers = [];

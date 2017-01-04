@@ -11,7 +11,7 @@ describe('previous converter condition delegate', function() {
     });
 
     var conditionDelegate = conditionDelegateInjector({
-      'get-data-element-value': getDataElementValue
+      '@turbine/get-data-element-value': getDataElementValue
     });
 
     var settings = {

@@ -1,6 +1,6 @@
 'use strict';
 
-var once = require('once');
+var once = require('@turbine/once');
 
 var triggers = [];
 

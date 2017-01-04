@@ -1,6 +1,6 @@
 'use strict';
 
-var window = require('window');
+var window = require('@turbine/window');
 var triggers = [];
 
 window.addEventListener('orientationchange', function(event) {

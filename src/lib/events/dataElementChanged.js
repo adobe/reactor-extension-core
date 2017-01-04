@@ -1,6 +1,6 @@
 'use strict';
 
-var getDataElementValue = require('get-data-element-value');
+var getDataElementValue = require('@turbine/get-data-element-value');
 
 var POLL_INTERVAL = 1000;
 

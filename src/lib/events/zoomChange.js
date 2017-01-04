@@ -1,7 +1,7 @@
 'use strict';
 
-var window = require('window');
-var once = require('once');
+var window = require('@turbine/window');
+var once = require('@turbine/once');
 
 var triggers = [];
 

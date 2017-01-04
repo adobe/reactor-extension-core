@@ -1,6 +1,6 @@
 'use strict';
 
-var document = require('document');
+var document = require('@turbine/document');
 var textMatch = require('../helpers/textMatch');
 
 /**

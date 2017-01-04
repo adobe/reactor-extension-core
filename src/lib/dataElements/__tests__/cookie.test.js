@@ -1,7 +1,7 @@
 'use strict';
 
 var dataElementDelegate = require('inject!../cookie')({
-  'document': {
+  '@turbine/document': {
     cookie: 'foo=bar'
   }
 });

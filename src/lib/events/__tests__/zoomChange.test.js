@@ -21,7 +21,7 @@ describe('zoomchange event type', function() {
 
     var delegateInjector = require('inject!../zoomChange');
     delegate = delegateInjector({
-      window: mockWindow,
+      '@turbine/window': mockWindow,
     });
   });
 

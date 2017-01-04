@@ -1,7 +1,7 @@
 'use strict';
 
-var once = require('once');
-var document = require('document');
+var once = require('@turbine/once');
+var document = require('@turbine/document');
 var visibilityApi = require('./helpers/visibilityApi')();
 var hiddenProperty = visibilityApi.hiddenProperty;
 var visibilityChangeEventType = visibilityApi.visibilityChangeEventType;

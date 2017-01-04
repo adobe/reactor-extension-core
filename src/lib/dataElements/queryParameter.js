@@ -1,6 +1,6 @@
 'use strict';
 
-var getQueryParam = require('get-query-param');
+var getQueryParam = require('@turbine/get-query-param');
 
 /**
  * The query parameter data element.

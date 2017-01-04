@@ -14,7 +14,7 @@ var testValueChange = function(initialValue, getUpdatedValue, shouldTriggerRule)
   var dataElementValue = initialValue;
 
   var delegate = delegateInjector({
-    'get-data-element-value': function() { return dataElementValue; }
+    '@turbine/get-data-element-value': function() { return dataElementValue; }
   });
 
   delegate({
@@ -54,7 +54,7 @@ describe('data element changed event type', function() {
     var trigger = jasmine.createSpy();
 
     var delegate = delegateInjector({
-      'get-data-element-value': function() { return 'foo'; }
+      '@turbine/get-data-element-value': function() { return 'foo'; }
     });
 
     delegate({
@@ -197,7 +197,7 @@ describe('data element changed event type', function() {
     var dataElementValue = 'foo';
 
     var delegate = delegateInjector({
-      'get-data-element-value': function() {
+      '@turbine/get-data-element-value': function() {
         return dataElementValue;
       }
     });

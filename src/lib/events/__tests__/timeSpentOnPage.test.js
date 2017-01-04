@@ -17,7 +17,7 @@ var Timer = require('../helpers/timer');
 var eventDelegateInjector = require('inject!../timeSpentOnPage');
 var delegate = eventDelegateInjector({
   '../helpers/timer.js': Timer,
-  document: mockDocument
+  '@turbine/document': mockDocument
 });
 
 var isIE = function() {

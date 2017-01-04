@@ -1,6 +1,6 @@
 'use strict';
 
-var clientInfo = require('client-info');
+var clientInfo = require('@turbine/client-info');
 
 /**
  * Browser condition. Determines if the actual browser matches at least one acceptable browser.

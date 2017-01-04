@@ -6,7 +6,7 @@ var mockClientInfo = {
 
 var conditionDelegateInjector = require('inject!../browser');
 var conditionDelegate = conditionDelegateInjector({
-  'client-info': mockClientInfo
+  '@turbine/client-info': mockClientInfo
 });
 
 var getSettings = function(browsers) {

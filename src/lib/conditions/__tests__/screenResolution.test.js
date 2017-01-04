@@ -9,7 +9,7 @@ var mockWindow = {
 
 var conditionDelegateInjector = require('inject!../screenResolution');
 var conditionDelegate = conditionDelegateInjector({
-  window: mockWindow
+  '@turbine/window': mockWindow
 });
 
 var getSettings = function(width, widthOperator, height, heightOperator) {

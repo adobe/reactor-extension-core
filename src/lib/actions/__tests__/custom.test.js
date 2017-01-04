@@ -1,6 +1,6 @@
 'use strict';
 
-var Promise = require('@reactor/turbine/lib/require')('promise');
+var Promise = require('@reactor/turbine/lib/require')('@turbine/promise');
 var customInjector = require('inject!../custom');
 
 describe('custom action delegate', function() {
@@ -15,10 +15,10 @@ describe('custom action delegate', function() {
 
       custom = customInjector({
         '../../../node_modules/postscribe/dist/postscribe': postscribeSpy,
-        'document': {
+        '@turbine/document': {
           addEventListener: function(type, callback) {}
         },
-        'write-html': writeHtmlSpy,
+        '@turbine/write-html': writeHtmlSpy,
         './helpers/decorateCode': function(action, source) {
           return source;
         },
@@ -70,7 +70,7 @@ describe('custom action delegate', function() {
         './helpers/decorateCode': function(action, source) {
           return source;
         },
-        'document': {
+        '@turbine/document': {
           addEventListener: function(type, callback) {
             if (type === 'DOMContentLoaded') {
               callback();

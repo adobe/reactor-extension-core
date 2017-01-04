@@ -1,6 +1,6 @@
 'use strict';
 
-var window = require('window');
+var window = require('@turbine/window');
 var compareNumbers = require('./helpers/compareNumbers');
 
 /**

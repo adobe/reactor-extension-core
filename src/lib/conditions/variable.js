@@ -1,5 +1,5 @@
 'use strict';
-var window = require('window');
+var window = require('@turbine/window');
 
 var getObjectProperty = require('../helpers/getObjectProperty');
 var textMatch = require('../helpers/textMatch');

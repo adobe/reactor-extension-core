@@ -1,8 +1,8 @@
 'use strict';
 
-var document = require('document');
-var cookie = require('cookie');
-var propertySettings = require('property-settings');
+var document = require('@turbine/document');
+var cookie = require('@turbine/cookie');
+var propertySettings = require('@turbine/property-settings');
 
 /**
  * Cookie opt-out condition. Determines whether the user has chosen to accept cookies.

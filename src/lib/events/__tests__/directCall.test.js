@@ -6,7 +6,7 @@ describe('directCall event type', function() {
 
   beforeAll(function() {
     delegate = delegateInjector({
-      'logger': {
+      '@turbine/logger': {
         log: function() {}
       }
     });

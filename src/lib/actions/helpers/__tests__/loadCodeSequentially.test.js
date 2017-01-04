@@ -1,7 +1,7 @@
 'use strict';
 
 var sequentiallyLoadCodePromiseInjector = require('inject!../loadCodeSequentially');
-var Promise = require('@reactor/turbine/lib/require')('promise');
+var Promise = require('@reactor/turbine/lib/require')('@turbine/promise');
 
 var sequentiallyLoadCodePromise = sequentiallyLoadCodePromiseInjector({
   './getSourceByUrl': function(sourceUrl) {

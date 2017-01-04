@@ -56,10 +56,10 @@ var visitorTrackingInjector = require('inject!../visitorTracking');
 
 var getVisitorTracking = function(enableTracking) {
   var visitorTracking = visitorTrackingInjector({
-    cookie: mockCookie,
-    document: mockDocument,
-    window: mockWindow,
-    logger: mockLogger
+    '@turbine/cookie': mockCookie,
+    '@turbine/document': mockDocument,
+    '@turbine/window': mockWindow,
+    '@turbine/logger': mockLogger
   });
 
   if (enableTracking) {

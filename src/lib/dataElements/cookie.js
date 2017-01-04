@@ -1,7 +1,7 @@
 'use strict';
 
-var document = require('document');
-var cookie = require('cookie');
+var document = require('@turbine/document');
+var cookie = require('@turbine/cookie');
 
 /**
  * The cookie data element.

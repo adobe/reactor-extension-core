@@ -23,8 +23,8 @@ describe('click event type', function() {
 
   var delegateInjector = require('inject!../click');
   var delegate = delegateInjector({
-    'property-settings': propertySettings,
-    window: mockWindow
+    '@turbine/property-settings': propertySettings,
+    '@turbine/window': mockWindow
   });
 
   testStandardEvent(delegate, 'click');

@@ -1,6 +1,6 @@
 'use strict';
-var loadScript = require('load-script');
-var Promise = require('promise');
+var loadScript = require('@turbine/load-script');
+var Promise = require('@turbine/promise');
 
 var codeBySourceUrl = {};
 var scriptStore = {};

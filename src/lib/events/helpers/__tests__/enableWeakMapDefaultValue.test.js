@@ -1,7 +1,7 @@
 'use strict';
 
 var enableWeakMapDefaultValue = require('../enableWeakMapDefaultValue');
-var WeakMap = require('@reactor/turbine/lib/require')('weak-map');
+var WeakMap = require('@reactor/turbine/lib/require')('@turbine/weak-map');
 
 describe('enableWeakMapDefaultValue', function() {
   it('stores and returns the provided default value', function() {
