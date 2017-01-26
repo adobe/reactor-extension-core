@@ -1,6 +1,6 @@
 'use strict';
 
-var Promise = require('@reactor/turbine/lib/require')('@turbine/promise');
+var Promise = require('@adobe/composer-turbine/lib/require')('@turbine/promise');
 var customInjector = require('inject!../custom');
 
 describe('custom action delegate', function() {

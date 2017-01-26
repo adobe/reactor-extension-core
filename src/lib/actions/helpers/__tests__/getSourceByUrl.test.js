@@ -1,7 +1,7 @@
 'use strict';
 
 var getSourceUrlCodeInjector = require('inject!../getSourceByUrl');
-var Promise = require('@reactor/turbine/lib/require')('@turbine/promise');
+var Promise = require('@adobe/composer-turbine/lib/require')('@turbine/promise');
 
 describe('get source by url', function() {
   var loadScriptSpy;
