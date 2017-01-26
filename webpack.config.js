@@ -57,7 +57,7 @@ if (argv.runSandbox) {
   // (2) The sandbox can validate our extension.json and find that the view files it references
   // actually exist because they have already been built.
   plugins.push(new WebpackShellPlugin({
-    onBuildEnd: ['./node_modules/.bin/reactor-sandbox'],
+    onBuildEnd: ['./node_modules/.bin/composer-sandbox'],
   }));
 }
 
