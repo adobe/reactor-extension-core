@@ -17,7 +17,8 @@
 **************************************************************************/
 
 'use strict';
-var EventEmitter = require('@turbine/event-emitter');
+var assign = require('@turbine/assign');
+var mitt = require('../../../../node_modules/mitt/dist/mitt');
 
 var CHECK_INTERVAL_MS = 1000;
 var onlyUnique = function(value, index, self) {
@@ -32,6 +33,8 @@ var onlyUnique = function(value, index, self) {
  * @constructor
  */
 var Timer = function(checkInterval) {
+  assign(this, mitt());
+
   this._total = 0;
   this._checkInterval = checkInterval || CHECK_INTERVAL_MS;
   this._intervalId = null;
@@ -107,6 +110,5 @@ Timer.prototype = {
     }
   }
 };
-EventEmitter.mixin(Timer);
 
 module.exports = Timer;
