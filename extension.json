@@ -5,8 +5,9 @@
   "description": "Provides the default event types, condition types, and data element types available to all DTM users.",
   "iconPath": "resources/icons/dtm.svg",
   "author": {
-    "name": "Adobe Systems",
-    "email": "DTM-Engineering@adobe.com"
+    "name": "Adobe Systems Incorporated",
+    "url": "http://adobe.com",
+    "email": "reactor@adobe.com"
   },
   "viewBasePath": "dist/",
   "events": [
