@@ -22,7 +22,7 @@ import Checkbox from '@coralui/react-coral/lib/Checkbox';
 import ErrorTip from '@reactor/react-components/lib/errorTip';
 import { Field } from 'redux-form';
 
-import Custom from '../custom';
+import Custom from '../customEvent';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 import AdvancedEventOptions from '../components/advancedEventOptions';
 

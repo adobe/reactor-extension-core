@@ -24,7 +24,7 @@ import EditorButton from '@reactor/react-components/lib/reduxForm/editorButton';
 
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
-const Custom = () => (
+const CustomCode = () => (
   <div>
     <Field
       name="source"
@@ -68,4 +68,4 @@ const formConfig = {
   }
 };
 
-export default extensionViewReduxForm(formConfig)(Custom);
+export default extensionViewReduxForm(formConfig)(CustomCode);

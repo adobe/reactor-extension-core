@@ -18,9 +18,9 @@
 
 'use strict';
 
-var dataElementDelegate = require('../custom');
+var dataElementDelegate = require('../customCode');
 
-describe('custom data element delegate', function() {
+describe('custom code data element delegate', function() {
   it('should return the return value of a user-defined script', function() {
     var settings = {
       source: function() {

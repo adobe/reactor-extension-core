@@ -26,7 +26,7 @@ import Button from '@coralui/react-coral/lib/Button';
 import Alert from '@coralui/react-coral/lib/Alert';
 import { Field } from 'redux-form';
 import ErrorTip from '@reactor/react-components/lib/errorTip';
-import Custom from '../custom';
+import CustomCode from '../customCode';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
@@ -62,7 +62,7 @@ describe('custom action view', () => {
   beforeAll(() => {
     extensionBridge = window.extensionBridge = createExtensionBridge();
     spyOn(extensionBridge, 'openCodeEditor').and.callFake((code, cb) => cb(`${code} bar`));
-    instance = mount(getFormComponent(Custom, extensionBridge));
+    instance = mount(getFormComponent(CustomCode, extensionBridge));
   });
 
   afterAll(() => {

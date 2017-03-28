@@ -22,7 +22,7 @@ import { Router, Route, hashHistory } from 'react-router';
 
 // Events
 import BlurEvent from './events/blur';
-import CustomEvent from './events/custom';
+import CustomEventEvent from './events/customEvent';
 import ClickEvent from './events/click';
 import DataElementChanged from './events/dataElementChanged';
 import DirectCallEvent from './events/directCall';
@@ -47,7 +47,7 @@ import CartAmountCondition from './conditions/cartAmount';
 import CartItemQuantityCondition from './conditions/cartItemQuantity';
 import CookieCondition from './conditions/cookie';
 import CookieOptOutCondition from './conditions/cookieOptOut';
-import CustomCondition from './conditions/custom';
+import CustomCodeCondition from './conditions/customCode';
 import DataElementCondition from './conditions/dataElement';
 import DeviceTypeCondition from './conditions/deviceType';
 import DomainCondition from './conditions/domain';
@@ -72,18 +72,18 @@ import WindowSizeCondition from './conditions/windowSize';
 
 // Data Elements
 import CookieDataElement from './dataElements/cookie';
-import CustomDataElement from './dataElements/custom';
+import CustomCodeDataElement from './dataElements/customCode';
 import DOMDataElement from './dataElements/dom';
 import QueryParameterDataElement from './dataElements/queryParameter';
 import VariableDataElement from './dataElements/variable';
 
 // Actions
-import CustomAction from './actions/custom';
+import CustomCodeAction from './actions/customCode';
 
 const componentsByPath = {
   '/events/blur': BlurEvent,
   '/events/click': ClickEvent,
-  '/events/custom': CustomEvent,
+  '/events/customEvent': CustomEventEvent,
   '/events/dataElementChanged': DataElementChanged,
   '/events/directCall': DirectCallEvent,
   '/events/elementExists': ElementExistsEvent,
@@ -105,7 +105,7 @@ const componentsByPath = {
   '/conditions/cartItemQuantity': CartItemQuantityCondition,
   '/conditions/cookie': CookieCondition,
   '/conditions/cookieOptOut': CookieOptOutCondition,
-  '/conditions/custom': CustomCondition,
+  '/conditions/customCode': CustomCodeCondition,
   '/conditions/dataElement': DataElementCondition,
   '/conditions/deviceType': DeviceTypeCondition,
   '/conditions/domain': DomainCondition,
@@ -128,11 +128,11 @@ const componentsByPath = {
   '/conditions/variable': VariableCondition,
   '/conditions/windowSize': WindowSizeCondition,
   '/dataElements/cookie': CookieDataElement,
-  '/dataElements/custom': CustomDataElement,
+  '/dataElements/customCode': CustomCodeDataElement,
   '/dataElements/dom': DOMDataElement,
   '/dataElements/queryParameter': QueryParameterDataElement,
   '/dataElements/variable': VariableDataElement,
-  '/actions/custom': CustomAction
+  '/actions/customCode': CustomCodeAction
 };
 
 export default (setFormConfigForCurrentRoute) => {

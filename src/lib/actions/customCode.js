@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /**
- * The custom action event. This loads and executes custom JavaScript or HTML provided by the user.
+ * The custom code action. This loads and executes custom JavaScript or HTML provided by the user.
  * @param {Object} settings Action settings.
  * @param {number} settings.name The name of the action. Typically used by users to remind
  * themselves what the code is intended to do.

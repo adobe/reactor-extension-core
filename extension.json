@@ -109,11 +109,11 @@
       }
     },
     {
-      "name": "custom",
+      "name": "custom-event",
       "categoryName": "Other",
-      "displayName": "Custom",
-      "libPath": "src/lib/events/custom.js",
-      "viewPath": "index.html#/events/custom",
+      "displayName": "Custom Event",
+      "libPath": "src/lib/events/customEvent.js",
+      "viewPath": "index.html#/events/customEvent",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
@@ -1031,11 +1031,11 @@
       }
     },
     {
-      "name": "custom-script",
+      "name": "custom-code",
       "categoryName": "Data",
-      "displayName": "Custom Script",
-      "libPath": "src/lib/conditions/custom.js",
-      "viewPath": "index.html#/conditions/custom",
+      "displayName": "Custom Code",
+      "libPath": "src/lib/conditions/customCode.js",
+      "viewPath": "index.html#/conditions/customCode",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
@@ -1640,10 +1640,10 @@
       }
     },
     {
-      "name": "custom-script",
-      "displayName": "Custom Script",
-      "libPath": "src/lib/dataElements/custom.js",
-      "viewPath": "index.html#/dataElements/custom",
+      "name": "custom-code",
+      "displayName": "Custom Code",
+      "libPath": "src/lib/dataElements/customCode.js",
+      "viewPath": "index.html#/dataElements/customCode",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
@@ -1727,10 +1727,10 @@
   ],
   "actions": [
     {
-      "name": "custom",
-      "displayName": "Custom",
-      "libPath": "src/lib/actions/custom.js",
-      "viewPath": "index.html#/actions/custom",
+      "name": "custom-code",
+      "displayName": "Custom Code",
+      "libPath": "src/lib/actions/customCode.js",
+      "viewPath": "index.html#/actions/customCode",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",

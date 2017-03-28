@@ -26,7 +26,7 @@ import ElementFilter, { formConfig as elementFilterFormConfig } from './componen
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import mergeFormConfigs from '../utils/mergeFormConfigs';
 
-const Custom = () => (
+const CustomEvent = () => (
   <div>
     <label>
       <span className="u-label">Custom Event Type</span>
@@ -67,4 +67,4 @@ const formConfig = mergeFormConfigs(
   }
 );
 
-export default extensionViewReduxForm(formConfig)(Custom);
+export default extensionViewReduxForm(formConfig)(CustomEvent);

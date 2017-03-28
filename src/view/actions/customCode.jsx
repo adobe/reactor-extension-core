@@ -32,7 +32,7 @@ const LANGUAGES = {
   HTML: 'html'
 };
 
-const Custom = ({ language }) => (
+const CustomCode = ({ language }) => (
   <div>
     <label>
       <span className="u-label">Name</span>
@@ -95,7 +95,7 @@ const Custom = ({ language }) => (
 const valueSelector = formValueSelector('default');
 const stateToProps = state => ({ language: valueSelector(state, 'language') });
 
-const ConnectedCustom = connect(stateToProps)(Custom);
+const ConnectedCustom = connect(stateToProps)(CustomCode);
 
 const formConfig = {
   settingsToFormValues(values, settings) {

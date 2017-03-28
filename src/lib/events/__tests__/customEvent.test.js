@@ -28,8 +28,8 @@ var triggerCustomEvent = function(element, type) {
   return event;
 };
 
-describe('custom event type', function() {
-  var delegate = require('../custom');
+describe('custom event event type', function() {
+  var delegate = require('../customEvent');
 
   beforeAll(function() {
     outerElement = document.createElement('div');

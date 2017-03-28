@@ -16,32 +16,45 @@
 * from Adobe Systems Incorporated.
 **************************************************************************/
 
-'use strict';
+import React from 'react';
+import { Field } from 'redux-form';
+import EditorButton from '@reactor/react-components/lib/reduxForm/editorButton';
 
-var conditionDelegate = require('../custom');
+import extensionViewReduxForm from '../extensionViewReduxForm';
 
-describe('custom condition delegate', function() {
-  it('should run a user-defined function', function() {
-    var settings = {
-      source: function() {
-        return true;
-      }
+const CustomCode = () => (
+  <div>
+    <Field
+      name="source"
+      component={ EditorButton }
+    />
+  </div>
+);
+
+const formConfig = {
+  settingsToFormValues(values, settings) {
+    return {
+      ...values,
+      ...settings
+    };
+  },
+  formValuesToSettings(settings, values) {
+    return {
+      ...settings,
+      ...values
+    };
+  },
+  validate(errors, values) {
+    errors = {
+      ...errors
     };
 
-    var event = {
-      currentTarget: {},
-      target: {}
-    };
+    if (!values.source) {
+      errors.source = 'Please provide custom script.';
+    }
 
-    var relatedElement = {};
+    return errors;
+  }
+};
 
-    spyOn(settings, 'source').and.callThrough();
-    conditionDelegate(settings, relatedElement, event);
-
-    expect(settings.source.calls.first()).toEqual({
-      object: relatedElement,
-      args: [event, event.target],
-      returnValue: true
-    });
-  });
-});
+export default extensionViewReduxForm(formConfig)(CustomCode);

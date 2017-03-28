@@ -19,11 +19,11 @@
 'use strict';
 
 var Promise = require('@adobe/reactor-turbine/lib/require')('@turbine/promise');
-var customInjector = require('inject!../custom');
+var customCodeInjector = require('inject!../customCode');
 
 describe('custom action delegate', function() {
   describe('before DOMContentLoaded', function() {
-    var custom;
+    var customCode;
     var writeHtmlSpy;
     var postscribeSpy;
 
@@ -31,7 +31,7 @@ describe('custom action delegate', function() {
       postscribeSpy = jasmine.createSpy('postscribe');
       writeHtmlSpy = jasmine.createSpy('writeHtml');
 
-      custom = customInjector({
+      customCode = customCodeInjector({
         '../../../node_modules/postscribe/dist/postscribe': postscribeSpy,
         '@turbine/document': {
           addEventListener: function(type, callback) {}
@@ -52,7 +52,7 @@ describe('custom action delegate', function() {
     });
 
     it('writes the code defined inside the action', function(done) {
-      custom({
+      customCode({
         source: 'inside container',
         language: 'javascript'
       }).then(function() {
@@ -63,7 +63,7 @@ describe('custom action delegate', function() {
     });
 
     it('writes the code defined inside an external file', function(done) {
-      custom({
+      customCode({
         isExternal: true,
         language: 'javascript'
       }).then(function() {
@@ -75,7 +75,7 @@ describe('custom action delegate', function() {
   });
 
   describe('after DOMContentLoaded', function() {
-    var custom;
+    var customCode;
     var postscribeSpy;
     var writeHtmlSpy;
 
@@ -83,7 +83,7 @@ describe('custom action delegate', function() {
       postscribeSpy = jasmine.createSpy('postscribe');
       writeHtmlSpy = jasmine.createSpy('writeHtml');
 
-      custom = customInjector({
+      customCode = customCodeInjector({
         '../../../node_modules/postscribe/dist/postscribe': postscribeSpy,
         './helpers/decorateCode': function(action, source) {
           return source;
@@ -107,7 +107,7 @@ describe('custom action delegate', function() {
     });
 
     it('writes the code defined inside an external file', function(done) {
-      custom({
+      customCode({
         isExternal: true,
         language: 'javascript'
       }).then(function() {

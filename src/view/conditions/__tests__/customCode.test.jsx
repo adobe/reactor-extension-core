@@ -19,8 +19,7 @@
 import { mount } from 'enzyme';
 import Button from '@coralui/react-coral/lib/Button';
 import { ErrorTip } from '@reactor/react-components';
-
-import Custom from '../custom';
+import CustomCode from '../customCode';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
@@ -33,28 +32,28 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-describe('custom view', () => {
+describe('custom code view', () => {
   let extensionBridge;
   let instance;
 
   beforeAll(() => {
     extensionBridge = window.extensionBridge = createExtensionBridge();
     spyOn(extensionBridge, 'openCodeEditor').and.callFake((code, cb) => cb(`${code} bar`));
-    instance = mount(getFormComponent(Custom, extensionBridge));
+    instance = mount(getFormComponent(CustomCode, extensionBridge));
   });
 
   afterAll(() => {
     delete window.extensionBridge;
   });
 
-  it('sets errors if required values are not provided', () => {
+  it('sets error if source is empty', () => {
     extensionBridge.init();
 
     expect(extensionBridge.validate()).toBe(false);
 
     const { sourceErrorIcon } = getReactComponents(instance);
 
-    expect(sourceErrorIcon.props.children).toEqual(jasmine.any(String));
+    expect(sourceErrorIcon.props.children).toBeDefined();
   });
 
   it('allows user to provide custom code', () => {

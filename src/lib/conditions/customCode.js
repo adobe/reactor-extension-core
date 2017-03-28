@@ -16,45 +16,20 @@
 * from Adobe Systems Incorporated.
 **************************************************************************/
 
-import React from 'react';
-import { Field } from 'redux-form';
-import EditorButton from '@reactor/react-components/lib/reduxForm/editorButton';
+'use strict';
 
-import extensionViewReduxForm from '../extensionViewReduxForm';
-
-const Custom = () => (
-  <div>
-    <Field
-      name="source"
-      component={ EditorButton }
-    />
-  </div>
-);
-
-const formConfig = {
-  settingsToFormValues(values, settings) {
-    return {
-      ...values,
-      ...settings
-    };
-  },
-  formValuesToSettings(settings, values) {
-    return {
-      ...settings,
-      ...values
-    };
-  },
-  validate(errors, values) {
-    errors = {
-      ...errors
-    };
-
-    if (!values.source) {
-      errors.source = 'Please provide custom script.';
-    }
-
-    return errors;
-  }
+/**
+ * Custom code condition. This executes condition code provided by the user.
+ * @param {Object} settings Condition settings.
+ * @param {HTMLElement} [relatedElement] The element the rule was targeting.
+ * @param {Function} settings.source The custom script function.
+ * @param {Object} [event] The underlying event object the triggered the rule.
+ * @param {Object} [event.target] The element where the event originated.
+ * @returns {boolean}
+ */
+module.exports = function(settings, relatedElement, event) {
+  return settings.source.call(
+    relatedElement,
+    event,
+    event ? event.target : undefined);
 };
-
-export default extensionViewReduxForm(formConfig)(Custom);
