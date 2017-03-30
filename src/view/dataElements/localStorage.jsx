@@ -23,9 +23,9 @@ import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInp
 
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
-const Cookie = () => (
+const LocalStorage = () => (
   <label>
-    <span className="u-label">Cookie Name</span>
+    <span className="u-label">Local Storage Item Name</span>
     <Field
       name="name"
       component={ DecoratedInput }
@@ -53,18 +53,11 @@ const formConfig = {
     };
 
     if (!values.name) {
-      errors.name = 'Please specify a cookie name.';
-    }
-
-    // This RegEx is created from:
-    // http://stackoverflow.com/questions/1969232/allowed-characters-in-cookies
-    if (!/^[a-zA-Z0-9!#$%&'*+-.^_"|~]+$/.test(values.name)) {
-      errors.name = 'The cookie name must be a sequence of alphanumeric characters and/or ' +
-        'the following special characters: ! # $ % & \' * + - . ^ _ | ~';
+      errors.name = 'Please specify a local storage item name.';
     }
 
     return errors;
   }
 };
 
-export default extensionViewReduxForm(formConfig)(Cookie);
+export default extensionViewReduxForm(formConfig)(LocalStorage);

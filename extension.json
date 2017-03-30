@@ -1686,6 +1686,24 @@
       }
     },
     {
+      "name": "local-storage",
+      "displayName": "Local Storage",
+      "libPath": "src/lib/dataElements/localStorage.js",
+      "viewPath": "index.html#/dataElements/localStorage",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false,
+        "required": ["name"]
+      }
+    },
+    {
       "name": "url-querystring-parameter",
       "displayName": "URL Querystring Parameter",
       "libPath": "src/lib/dataElements/queryParameter.js",

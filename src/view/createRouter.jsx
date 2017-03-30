@@ -74,6 +74,7 @@ import WindowSizeCondition from './conditions/windowSize';
 import CookieDataElement from './dataElements/cookie';
 import CustomCodeDataElement from './dataElements/customCode';
 import DOMDataElement from './dataElements/dom';
+import LocalStorage from './dataElements/localStorage';
 import QueryParameterDataElement from './dataElements/queryParameter';
 import VariableDataElement from './dataElements/variable';
 
@@ -130,6 +131,7 @@ const componentsByPath = {
   '/dataElements/cookie': CookieDataElement,
   '/dataElements/customCode': CustomCodeDataElement,
   '/dataElements/dom': DOMDataElement,
+  '/dataElements/localStorage': LocalStorage,
   '/dataElements/queryParameter': QueryParameterDataElement,
   '/dataElements/variable': VariableDataElement,
   '/actions/customCode': CustomCodeAction
