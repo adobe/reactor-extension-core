@@ -109,6 +109,34 @@
       }
     },
     {
+      "name": "custom-code",
+      "categoryName": "Other",
+      "displayName": "Custom Code",
+      "libPath": "src/lib/events/customCode.js",
+      "viewPath": "index.html#/events/customCode",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false,
+        "required": ["source"]
+      },
+      "transforms": [
+        {
+          "type": "function",
+          "propertyPath": "source",
+          "parameters": [
+            "trigger"
+          ]
+        }
+      ]
+    },
+    {
       "name": "custom-event",
       "categoryName": "Other",
       "displayName": "Custom Event",

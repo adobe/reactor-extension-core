@@ -22,7 +22,10 @@
     "one-var": [2, "never"],
     "brace-style": [2, "1tbs", { "allowSingleLine": true }],
     "consistent-this": [0, "self"],
-    "spaced-comment": 0 // To support our copyright banner.
+    "spaced-comment": 0, // To support our copyright banner.
+    "prefer-const": ["error", {
+      "destructuring": "all"
+    }]
   },
   "globals": {
     "Simulate": true,

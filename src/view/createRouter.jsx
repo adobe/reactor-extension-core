@@ -22,6 +22,7 @@ import { Router, Route, hashHistory } from 'react-router';
 
 // Events
 import BlurEvent from './events/blur';
+import CustomCodeEvent from './events/customCode';
 import CustomEventEvent from './events/customEvent';
 import ClickEvent from './events/click';
 import DataElementChanged from './events/dataElementChanged';
@@ -84,6 +85,7 @@ import CustomCodeAction from './actions/customCode';
 const componentsByPath = {
   '/events/blur': BlurEvent,
   '/events/click': ClickEvent,
+  '/events/customCode': CustomCodeEvent,
   '/events/customEvent': CustomEventEvent,
   '/events/dataElementChanged': DataElementChanged,
   '/events/directCall': DirectCallEvent,
