@@ -21,7 +21,7 @@ import Textfield from '@coralui/react-coral/lib/Textfield';
 import Switch from '@coralui/react-coral/lib/Switch';
 import ErrorTip from '@reactor/react-components/lib/errorTip';
 import { Field } from 'redux-form';
-import URLParameter from '../urlParameter';
+import QueryStringParameter from '../queryStringParameter';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
@@ -44,13 +44,13 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-describe('url parameter view', () => {
+describe('query string parameter view', () => {
   let extensionBridge;
   let instance;
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(URLParameter, extensionBridge));
+    instance = mount(getFormComponent(QueryStringParameter, extensionBridge));
   });
 
   it('sets form values from settings', () => {

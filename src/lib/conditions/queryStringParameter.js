@@ -18,21 +18,21 @@
 
 'use strict';
 
-var getQueryParamSpy = jasmine.createSpy().and.returnValue('bar');
-var dataElementDelegate = require('inject!../queryParameter')({
-  '@turbine/get-query-param': getQueryParamSpy
-});
+var getQueryParam = require('@turbine/get-query-param');
+var textMatch = require('../helpers/textMatch');
 
-describe('queryParam data element delegate', function() {
-  it('should return a query parameter value', function() {
-    var settings = {
-      name: 'foo',
-      caseInsensitive: true
-    };
+/**
+ * Query string parameter condition. Determines if a query string parameter exists with a name and
+ * value that matches the acceptable name and value.
+ * @param {Object} settings Condition settings.
+ * @param {string} settings.name The name of the query string parameter.
+ * @param {string} settings.value An acceptable query string parameter value.
+ * @param {boolean} [settings.valueIsRegex=false] Whether <code>settings.value</code> is intended to
+ * be a regular expression.
+ * @returns {boolean}
+ */
+module.exports = function(settings) {
+  var acceptableValue = settings.valueIsRegex ? new RegExp(settings.value, 'i') : settings.value;
+  return textMatch(getQueryParam(settings.name), acceptableValue);
+};
 
-    var value = dataElementDelegate(settings);
-
-    expect(value).toBe('bar');
-    expect(getQueryParamSpy.calls.argsFor(0)).toEqual(['foo', true]);
-  });
-});

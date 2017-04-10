@@ -18,7 +18,7 @@
 
 'use strict';
 
-var conditionDelegate = require('inject!../urlParameter')({
+var conditionDelegate = require('inject!../queryStringParameter')({
   '@turbine/get-query-param': function() {
     return 'foo';
   }
@@ -32,7 +32,7 @@ var getSettings = function(name, value, valueIsRegex) {
   };
 };
 
-describe('url parameter condition delegate', function() {
+describe('query string parameter condition delegate', function() {
   it('returns true when value matches using regular string', function() {
     var settings = getSettings('testParam', 'foo', false);
     expect(conditionDelegate(settings)).toBe(true);

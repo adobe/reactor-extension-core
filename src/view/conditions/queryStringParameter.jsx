@@ -17,38 +17,44 @@
 **************************************************************************/
 
 import React from 'react';
-import Checkbox from '@coralui/redux-form-react-coral/lib/Checkbox';
 import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
 import { Field } from 'redux-form';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
+import RegexToggle from '../components/regexToggle';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
-const QueryParameter = () => (
+const QueryStringParameter = () => (
   <div>
+    <span className="u-label">URL Parameter Name</span>
     <label className="u-gapRight">
-      <span className="u-label">URL Querystring Parameter Name</span>
       <Field
         name="name"
         component={ DecoratedInput }
         inputComponent={ Textfield }
       />
     </label>
+    <label className="u-gapRight">
+      <span className="u-label">URL Parameter Value</span>
+      <Field
+        name="value"
+        component={ DecoratedInput }
+        inputComponent={ Textfield }
+      />
+    </label>
     <Field
-      name="caseInsensitive"
-      component={ Checkbox }
-    >
-      Ignore capitalization differences
-    </Field>
+      name="valueIsRegex"
+      component={ RegexToggle }
+      valueFieldName="value"
+    />
   </div>
 );
 
 const formConfig = {
-  settingsToFormValues(values, settings, state) {
+  settingsToFormValues(values, settings) {
     return {
       ...values,
-      ...settings,
-      caseInsensitive: state.meta.isNew || settings.caseInsensitive
+      ...settings
     };
   },
   formValuesToSettings(settings, values) {
@@ -63,11 +69,15 @@ const formConfig = {
     };
 
     if (!values.name) {
-      errors.name = 'Please specify a query string parameter name.';
+      errors.name = 'Please enter a URL parameter name.';
+    }
+
+    if (!values.value) {
+      errors.value = 'Please enter a URL parameter value.';
     }
 
     return errors;
   }
 };
 
-export default extensionViewReduxForm(formConfig)(QueryParameter);
+export default extensionViewReduxForm(formConfig)(QueryStringParameter);

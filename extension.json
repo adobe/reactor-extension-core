@@ -1324,9 +1324,42 @@
     {
       "name": "path",
       "categoryName": "URL",
-      "displayName": "Path",
+      "displayName": "Path Without Query String",
       "libPath": "src/lib/conditions/path.js",
       "viewPath": "index.html#/conditions/path",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "paths": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "valueIsRegex": {
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": false,
+              "required": ["value"]
+            },
+            "minItems": 1
+          }
+        },
+        "additionalProperties": false,
+        "required": ["paths"]
+      }
+    },
+    {
+      "name": "path-and-querystring",
+      "categoryName": "URL",
+      "displayName": "Path With Query String",
+      "libPath": "src/lib/conditions/pathAndQueryString.js",
+      "viewPath": "index.html#/conditions/pathAndQueryString",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
@@ -1559,11 +1592,11 @@
       }
     },
     {
-      "name": "url-parameter",
+      "name": "query-string-parameter",
       "categoryName": "URL",
-      "displayName": "URL Parameter",
-      "libPath": "src/lib/conditions/urlParameter.js",
-      "viewPath": "index.html#/conditions/urlParameter",
+      "displayName": "Query String Parameter",
+      "libPath": "src/lib/conditions/queryStringParameter.js",
+      "viewPath": "index.html#/conditions/queryStringParameter",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
@@ -1732,10 +1765,10 @@
       }
     },
     {
-      "name": "url-querystring-parameter",
-      "displayName": "URL Querystring Parameter",
-      "libPath": "src/lib/dataElements/queryParameter.js",
-      "viewPath": "index.html#/dataElements/queryParameter",
+      "name": "query-string-parameter",
+      "displayName": "Query String Parameter",
+      "libPath": "src/lib/dataElements/queryStringParameter.js",
+      "viewPath": "index.html#/dataElements/queryStringParameter",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",

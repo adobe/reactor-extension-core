@@ -59,12 +59,13 @@ import NewReturningCondition from './conditions/newReturning';
 import OperatingSystemCondition from './conditions/operatingSystem';
 import PageViewsCondition from './conditions/pageViews';
 import PathCondition from './conditions/path';
+import PathAndQueryStringCondition from './conditions/pathAndQueryString';
 import PreviousConverterCondition from './conditions/previousConverter';
 import ProtocolCondition from './conditions/protocol';
 import RegisteredUserCondition from './conditions/registeredUser';
 import ScreenResolutionCondition from './conditions/screenResolution';
 import SessionsCondition from './conditions/sessions';
-import URLParameterCondition from './conditions/urlParameter';
+import QueryStringParameterCondition from './conditions/queryStringParameter';
 import SubdomainCondition from './conditions/subdomain';
 import TimeOnSiteCondition from './conditions/timeOnSite';
 import TrafficSourceCondition from './conditions/trafficSource';
@@ -76,7 +77,7 @@ import CookieDataElement from './dataElements/cookie';
 import CustomCodeDataElement from './dataElements/customCode';
 import DOMDataElement from './dataElements/dom';
 import LocalStorage from './dataElements/localStorage';
-import QueryParameterDataElement from './dataElements/queryParameter';
+import QueryStringParameterDataElement from './dataElements/queryStringParameter';
 import VariableDataElement from './dataElements/variable';
 
 // Actions
@@ -119,12 +120,13 @@ const componentsByPath = {
   '/conditions/operatingSystem': OperatingSystemCondition,
   '/conditions/pageViews': PageViewsCondition,
   '/conditions/path': PathCondition,
+  '/conditions/pathAndQueryString': PathAndQueryStringCondition,
   '/conditions/previousConverter': PreviousConverterCondition,
   '/conditions/protocol': ProtocolCondition,
   '/conditions/registeredUser': RegisteredUserCondition,
   '/conditions/screenResolution': ScreenResolutionCondition,
   '/conditions/sessions': SessionsCondition,
-  '/conditions/urlParameter': URLParameterCondition,
+  '/conditions/queryStringParameter': QueryStringParameterCondition,
   '/conditions/subdomain': SubdomainCondition,
   '/conditions/timeOnSite': TimeOnSiteCondition,
   '/conditions/trafficSource': TrafficSourceCondition,
@@ -134,7 +136,7 @@ const componentsByPath = {
   '/dataElements/customCode': CustomCodeDataElement,
   '/dataElements/dom': DOMDataElement,
   '/dataElements/localStorage': LocalStorage,
-  '/dataElements/queryParameter': QueryParameterDataElement,
+  '/dataElements/queryStringParameter': QueryStringParameterDataElement,
   '/dataElements/variable': VariableDataElement,
   '/actions/customCode': CustomCodeAction
 };

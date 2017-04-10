@@ -17,66 +17,73 @@
 **************************************************************************/
 
 import { mount } from 'enzyme';
-import Checkbox from '@coralui/react-coral/lib/Checkbox';
-import Textfield from '@coralui/react-coral/lib/Textfield';
 import ErrorTip from '@reactor/react-components/lib/errorTip';
-import QueryStringParameter from '../queryStringParameter';
+import Textfield from '@coralui/react-coral/lib/Textfield';
+import Switch from '@coralui/react-coral/lib/Switch';
+import PathAndQueryString from '../pathAndQueryString';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
-  const nameTextfield = wrapper.find(Textfield).node;
-  const nameErrorTip = wrapper.find(ErrorTip).node;
-  const caseInsensitiveCheckbox = wrapper.find(Checkbox).node;
+  const rows = wrapper.find('[data-row]').map(row => ({
+    pathTextfield: row.find(Textfield).node,
+    pathErrorTip: row.find(ErrorTip).node,
+    pathRegexSwitch: row.find(Switch).node
+  }));
 
   return {
-    nameTextfield,
-    nameErrorTip,
-    caseInsensitiveCheckbox
+    rows
   };
 };
 
-describe('query string parameter view', () => {
+const testProps = {
+  settings: {
+    paths: [
+      {
+        value: 'foo'
+      },
+      {
+        value: 'bar',
+        valueIsRegex: true
+      }
+    ]
+  }
+};
+
+describe('path and query string view', () => {
   let extensionBridge;
   let instance;
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(QueryStringParameter, extensionBridge));
-  });
-
-  it('checks case insensitive checkbox by default', () => {
-    extensionBridge.init();
-
-    const { caseInsensitiveCheckbox } = getReactComponents(instance);
-
-    expect(caseInsensitiveCheckbox.props.checked).toBe(true);
+    instance = mount(getFormComponent(PathAndQueryString, extensionBridge));
   });
 
   it('sets form values from settings', () => {
-    extensionBridge.init({
-      settings: {
-        name: 'foo',
-        caseInsensitive: false
-      }
-    });
+    extensionBridge.init(testProps);
 
-    const { nameTextfield, caseInsensitiveCheckbox } = getReactComponents(instance);
+    const { rows } = getReactComponents(instance);
 
-    expect(nameTextfield.props.value).toBe('foo');
-    expect(caseInsensitiveCheckbox.props.checked).toBe(false);
+    expect(rows[0].pathTextfield.props.value).toBe('foo');
+    expect(rows[1].pathTextfield.props.value).toBe('bar');
+    expect(rows[0].pathRegexSwitch.props.checked).toBe(false);
+    expect(rows[1].pathRegexSwitch.props.checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { nameTextfield, caseInsensitiveCheckbox } = getReactComponents(instance);
+    const { rows } = getReactComponents(instance);
 
-    nameTextfield.props.onChange('foo');
-    caseInsensitiveCheckbox.props.onChange(false);
+    rows[0].pathTextfield.props.onChange('goo');
+    rows[0].pathRegexSwitch.props.onChange({ target: { checked: true } });
 
     expect(extensionBridge.getSettings()).toEqual({
-      name: 'foo',
-      caseInsensitive: false
+      paths: [
+        {
+          value: 'goo',
+          valueIsRegex: true
+        }
+      ]
     });
   });
 
@@ -84,8 +91,8 @@ describe('query string parameter view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { nameErrorTip } = getReactComponents(instance);
+    const { rows } = getReactComponents(instance);
 
-    expect(nameErrorTip).toBeDefined();
+    expect(rows[0].pathErrorTip).toBeDefined();
   });
 });

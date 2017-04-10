@@ -25,12 +25,12 @@ var mockDocument = {
   }
 };
 
-var conditionDelegateInjector = require('inject!../path');
+var conditionDelegateInjector = require('inject!../pathAndQueryString');
 var conditionDelegate = conditionDelegateInjector({
   '@turbine/document': mockDocument
 });
 
-describe('path condition delegate', function() {
+describe('path and query string condition delegate', function() {
   it('returns true when the path matches an acceptable string', function() {
     var settings = {
       paths: [
@@ -38,7 +38,7 @@ describe('path condition delegate', function() {
           value: 'snowcones.html'
         },
         {
-          value: '/foo/bar.html'
+          value: '/foo/bar.html?mmm=bacon'
         }
       ]
     };
@@ -52,7 +52,7 @@ describe('path condition delegate', function() {
           value: 'snowcones.html'
         },
         {
-          value: 'hotdogs.html'
+          value: 'hotdogs.html?mmm=bacon'
         }
       ]
     };

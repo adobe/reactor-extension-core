@@ -70,6 +70,8 @@ const formConfig = {
     return values;
   },
   formValuesToSettings(settings, values) {
+    // We intentionally don't filter out empty values because a user may be attempting
+    // to match an empty hash.
     return {
       ...settings,
       ...values

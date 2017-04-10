@@ -43,7 +43,7 @@ const renderItem = field => (
   </div>
 );
 
-const Path = () => (
+const PathAndQueryString = () => (
   <FieldArray
     name="paths"
     renderItem={ renderItem }
@@ -97,4 +97,4 @@ const formConfig = {
   }
 };
 
-export default extensionViewReduxForm(formConfig)(Path);
+export default extensionViewReduxForm(formConfig)(PathAndQueryString);

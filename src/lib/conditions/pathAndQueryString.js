@@ -22,7 +22,8 @@ var document = require('@turbine/document');
 var textMatch = require('../helpers/textMatch');
 
 /**
- * Path condition. Determines if the actual path matches at least one acceptable path.
+ * Path and query string condition. Provided for legacy reasons. Determines if the actual path +
+ * query string matches at least one acceptable path + query string.
  * @param {Object} settings Condition settings.
  * @param {Object[]} settings.paths Acceptable paths.
  * @param {string} settings.paths[].value An acceptable path value.
@@ -31,7 +32,7 @@ var textMatch = require('../helpers/textMatch');
  * @returns {boolean}
  */
 module.exports = function(settings) {
-  var path = document.location.pathname;
+  var path = document.location.pathname + document.location.search;
   return settings.paths.some(function(acceptablePath) {
     var acceptableValue = acceptablePath.valueIsRegex ?
       new RegExp(acceptablePath.value, 'i') : acceptablePath.value;
