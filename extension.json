@@ -2,7 +2,7 @@
   "name": "core",
   "version": "1.0.0",
   "displayName": "Core",
-  "description": "Provides default event, condition, and data element types available to all Launch users.",
+  "description": "Core extension for Launch. Provides default event, condition, and data element types available to all Launch users.",
   "iconPath": "resources/icons/core.svg",
   "author": {
     "name": "Adobe Systems",

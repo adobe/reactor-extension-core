@@ -1,7 +1,7 @@
 {
-  "name": "@reactor/extension-dtm",
+  "name": "@reactor/core-extension",
   "version": "2.0.0",
-  "description": "DTM extension",
+  "description": "Core extension for Launch. Provides default event, condition, and data element types available to all Launch users.",
   "author": {
     "name": "Adobe Systems",
     "url": "http://adobe.com",
@@ -9,16 +9,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@git.corp.adobe.com:reactor/extension-dtm.git"
+    "url": "git@github.com:Adobe-Marketing-Cloud/reactor-core-extension.git"
   },
-  "publishConfig": {
-    "registry": "https://artifactory.corp.adobe.com/artifactory/api/npm/npm-mcps-release-local"
-  },
-  "keywords": [
-    "turbine",
-    "extension",
-    "dtm"
-  ],
   "scripts": {
     "build": "webpack --production",
     "test": "reactor-testrunner",
