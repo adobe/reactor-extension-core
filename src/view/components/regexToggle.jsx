@@ -26,7 +26,7 @@ const TestRegexButton = (props) => {
   return (
     <button
       className="u-buttonReset coral-Link"
-      onClick={ () => window.extensionBridge.openRegexTester(value, onChange) }
+      onClick={ () => window.extensionBridge.openRegexTester(onChange, { regex: value }) }
     >
       Test
     </button>

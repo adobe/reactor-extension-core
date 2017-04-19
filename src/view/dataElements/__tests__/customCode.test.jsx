@@ -33,7 +33,9 @@ describe('custom code view', () => {
 
   beforeAll(() => {
     extensionBridge = window.extensionBridge = createExtensionBridge();
-    spyOn(extensionBridge, 'openCodeEditor').and.callFake((code, cb) => cb(`${code} bar`));
+    spyOn(extensionBridge, 'openCodeEditor').and.callFake((cb, options) => {
+      cb(`${options.code} bar`);
+    });
     instance = mount(getFormComponent(CustomCode, extensionBridge));
   });
 
