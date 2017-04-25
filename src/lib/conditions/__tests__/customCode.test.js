@@ -34,6 +34,7 @@ describe('custom code condition delegate', function() {
 
     expect(settings.source.calls.first()).toEqual({
       object: relatedElement,
+      invocationOrder: jasmine.any(Number),
       args: [event, event.target],
       returnValue: true
     });
