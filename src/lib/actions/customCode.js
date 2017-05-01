@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
   writeToDocument = function(source) {
     postscribe(document.body, source, {
       error: function(error) {
-        logger.error(error.message);
+        logger.error(error.msg);
       }
     });
   };
