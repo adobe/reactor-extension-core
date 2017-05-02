@@ -45,24 +45,24 @@ describe('custom action delegate', function() {
       writeHtmlSpy.calls.reset();
     });
 
-    it('writes the code defined inside the action', function(done) {
+    it('writes the code defined inside the action', function() {
       customCode({
         source: 'inside container',
         language: 'javascript'
-      }).then(function() {
-        expect(writeHtmlSpy).toHaveBeenCalledWith('inside container');
-        expect(postscribeSpy).not.toHaveBeenCalled();
-        done();
       });
+
+      expect(writeHtmlSpy).toHaveBeenCalledWith('inside container');
+      expect(postscribeSpy).not.toHaveBeenCalled();
     });
 
     it('writes the code defined inside an external file', function(done) {
       customCode({
         isExternal: true,
+        source: 'http://someurl.com/source.js',
         language: 'javascript'
       }).then(function() {
-        expect(writeHtmlSpy).toHaveBeenCalledWith('inside external file');
-        expect(postscribeSpy).not.toHaveBeenCalled();
+        expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside external file');
+        expect(writeHtmlSpy).not.toHaveBeenCalled();
         done();
       });
     });
@@ -103,6 +103,7 @@ describe('custom action delegate', function() {
     it('writes the code defined inside an external file', function(done) {
       customCode({
         isExternal: true,
+        source: 'http://someurl.com/source.js',
         language: 'javascript'
       }).then(function() {
         expect(writeHtmlSpy).not.toHaveBeenCalled();

@@ -14,22 +14,27 @@
 
 var document = require('@turbine/document');
 var writeHtml = require('@turbine/write-html');
-var Promise = require('@turbine/promise');
 var logger = require('@turbine/logger');
 var decorateCode = require('./helpers/decorateCode');
 var loadCodeSequentially = require('./helpers/loadCodeSequentially');
 var postscribe = require('../../../node_modules/postscribe/dist/postscribe');
 
-var writeToDocument = writeHtml;
-document.addEventListener('DOMContentLoaded', function() {
-  writeToDocument = function(source) {
-    postscribe(document.body, source, {
-      error: function(error) {
-        logger.error(error.msg);
-      }
-    });
-  };
-});
+
+// Initially we were using `document.write` for adding custom code before the `DOMContentLoaded`
+// event was fired. The custom code is embedded in the library only for `pageTop` and
+// `pageBottom` events. For the other events the code would be loaded from external files.
+// For loading the code from external files, we would have been forced to use promises.
+// Calling `document.write` from inside a promise would have erased the page content inside
+// Firefox and IE. The result was similar with what happens if you try to call `document.write`
+// after the `DOMContentLoaded` event is fired. This issue forces us to use `postcribe` for any
+// external custom code no matter if `DOMContentLoaded` event has fired or not.
+var postscribeWrite = function(source) {
+  postscribe(document.body, source, {
+    error: function(error) {
+      logger.error(error.msg);
+    }
+  });
+};
 
 /**
  * The custom code action. This loads and executes custom JavaScript or HTML provided by the user.
@@ -49,13 +54,18 @@ module.exports = function(settings, relatedElement, event) {
     event: event
   };
 
-  return Promise.resolve(
-    action.settings.isExternal ?
-      loadCodeSequentially(action.settings.source) :
-      action.settings.source
-  ).then(function(source) {
-    if (source) {
-      writeToDocument(decorateCode(action, source));
-    }
-  });
+  var source = action.settings.source;
+  if (!source) {
+    return;
+  }
+
+  if (action.settings.isExternal) {
+    return loadCodeSequentially(source).then(function(source) {
+      if (source) {
+        postscribeWrite(decorateCode(action, source));
+      }
+    });
+  } else {
+    writeHtml(decorateCode(action, source));
+  }
 };
