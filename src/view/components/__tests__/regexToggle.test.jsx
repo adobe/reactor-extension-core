@@ -117,7 +117,8 @@ describe('regex toggle', () => {
     testButton.simulate('click');
 
     expect(extensionBridge.openRegexTester).toHaveBeenCalledWith(jasmine.any(Function), {
-      regex: 'foo'
+      pattern: 'foo',
+      flags: 'i'
     });
     expect(extensionBridge.getSettings()).toEqual({
       valueIsRegex: true,
