@@ -13,19 +13,23 @@
 'use strict';
 
 var document = require('@turbine/document');
+var escapeForRegex = require('../../../node_modules/escape-string-regexp/index.js');
 
 /**
  * Domain condition. Determines if the actual domain matches at least one acceptable domain.
  * @param {Object} settings Condition settings.
- * @param {string[]} settings.domains An array of acceptable domains. These are regular expression
- * pattern strings.
+ * @param {string[]} settings.domains An array of acceptable domains.
  * @returns {boolean}
  */
 module.exports = function(settings) {
   var domain = document.location.hostname;
 
   return settings.domains.some(function(acceptableDomain) {
-    return domain.match(new RegExp(acceptableDomain, 'i'));
+    // If document.location.hostname is example.com and the acceptableDomain is ample.com, the
+    // condition would pass without (^|\.), which is incorrect. We can't only use ^ though because
+    // if document.location.hostname is niner.example.com and the acceptableDomain is example.com,
+    // the condition should pass. See the tests for examples of why this pattern is necessary.
+    return domain.match(new RegExp('(^|\\.)' + escapeForRegex(acceptableDomain) + '$', 'i'));
   });
 };
 

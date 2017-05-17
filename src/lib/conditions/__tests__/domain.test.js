@@ -14,7 +14,7 @@
 
 var mockDocument = {
   location: {
-    hostname: 'foo.adobe.com'
+    hostname: 'www.example.com'
   }
 };
 
@@ -31,12 +31,24 @@ var getSettings = function(domains) {
 
 describe('domain condition delegate', function() {
   it('returns true when the domain matches', function() {
-    var settings = getSettings(['example\.com$', 'Adobe\.com$']);
+    var settings = getSettings(['adobe.com', 'Example.com']);
     expect(conditionDelegate(settings)).toBe(true);
   });
 
   it('returns false when the domain does not match', function() {
-    var settings = getSettings(['example\.com$', 'yahoo\.com$']);
+    var settings = getSettings(['example..om', 'adobe.com']);
+    expect(conditionDelegate(settings)).toBe(false);
+
+    settings = getSettings(['adobe.com', 'www.example']);
+    expect(conditionDelegate(settings)).toBe(false);
+
+    settings = getSettings(['ample.com', 'adobe.com']);
+    expect(conditionDelegate(settings)).toBe(false);
+
+    settings = getSettings(['example.combo', 'adobe.com']);
+    expect(conditionDelegate(settings)).toBe(false);
+
+    settings = getSettings(['example.co', 'adobe.com']);
     expect(conditionDelegate(settings)).toBe(false);
   });
 });
