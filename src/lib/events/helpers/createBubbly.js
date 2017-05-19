@@ -40,9 +40,9 @@ module.exports = function() {
      * @param {string} settings.elementProperties[].value The property value.
      * @param {boolean} [settings.elementProperties[].valueIsRegex=false] Whether <code>value</code>
      * on the object instance is intended to be a regular expression.
-     * @param {boolean} [settings.bubbleFireIfParent=false] Whether the rule should fire if the
+     * @param {boolean} [settings.bubbleFireIfParent=true] Whether the rule should fire if the
      * event originated from a descendant element.
-     * @param {boolean} [settings.bubbleFireIfChildFired=false] Whether the rule should fire if the
+     * @param {boolean} [settings.bubbleFireIfChildFired=true] Whether the rule should fire if the
      * same event has already triggered a rule targeting a descendant element.
      * @param {boolean} [settings.bubbleStop=false] Whether the event should not trigger rules on
      * ancestor elements.
@@ -91,11 +91,13 @@ module.exports = function() {
           var elementSelector = listener.settings.elementSelector;
           var elementProperties = listener.settings.elementProperties;
 
-          if (!listener.settings.bubbleFireIfChildFired && childHasTriggeredRule) {
+          // bubbleFireIfChildFired should be considered true by default
+          if (listener.settings.bubbleFireIfChildFired === false && childHasTriggeredRule) {
             continue;
           }
 
-          if (node !== event.target && !listener.settings.bubbleFireIfParent) {
+          // bubbleFireIfParent should be considered true by default
+          if (node !== event.target && listener.settings.bubbleFireIfParent === false) {
             continue;
           }
 

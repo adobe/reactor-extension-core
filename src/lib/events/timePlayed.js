@@ -87,9 +87,9 @@ document.addEventListener('timeupdate', handleTimeUpdate, true);
  * this event is fired. This value may either be number of seconds (20 for 20 seconds) or a
  * percent value (20 for 20%).
  * @param {timePlayedUnit} settings.unit The unit of duration measurement.
- * @param {boolean} [settings.bubbleFireIfParent=false] Whether the rule should fire if
+ * @param {boolean} [settings.bubbleFireIfParent=true] Whether the rule should fire if
  * the event originated from a descendant element.
- * @param {boolean} [settings.bubbleFireIfChildFired=false] Whether the rule should fire
+ * @param {boolean} [settings.bubbleFireIfChildFired=true] Whether the rule should fire
  * if the same event has already triggered a rule targeting a descendant element.
  * @param {boolean} [settings.bubbleStop=false] Whether the event should not trigger
  * rules on ancestor elements.

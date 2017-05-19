@@ -289,6 +289,31 @@ describe('createBubbly', function() {
         aExecuted: true,
         bExecuted: false,
         cExecuted: true
+      },
+      //    Given element A contains element B and element B contains element C
+      //    Given rule A targets element A with:
+      //      "Allow events on child elements to bubble"               checked (bubbleFireIfParent = true)
+      //      "Don't allow if child element already triggers event"    not checked (bubbleFireIfChildFired = true)
+      //      "Don't allow events to bubble upwards to parents"        not checked (bubbleStop = false)
+      //    Given rule B targets element B with:
+      //      "Allow events on child elements to bubble"               checked (bubbleFireIfParent = undefined)
+      //      "Don't allow if child element already triggers event"    checked (bubbleFireIfChildFired = undefined)
+      //      "Don't allow events to bubble upwards to parents"        checked (bubbleStop = undefined)
+      //    Given rule C targets element C with:
+      //      "Allow events on child elements to bubble"               checked  (bubbleFireIfParent = true)
+      //      "Don't allow if child element already triggers event"    not checked (bubbleFireIfChildFired = true)
+      //      "Don't allow events to bubble upwards to parents"        not checked (bubbleStop = false)
+      //    The user clicks on element C then
+      //      Rule A will be                                           processed
+      //      Rule B will be                                           processed
+      //      Rule C will be                                           processed
+      {
+        bubbleFireIfParent: undefined,
+        bubbleFireIfChildFired: undefined,
+        bubbleStop: undefined,
+        aExecuted: true,
+        bExecuted: true,
+        cExecuted: true
       }
     ];
 
@@ -370,7 +395,7 @@ describe('createBubbly', function() {
     bubbly.addListener({
       elementProperties: [{
         name: 'innerHTML',
-        value: '\\w',
+        value: '^C$',
         valueIsRegex: true
       }]
     }, callback);
@@ -390,7 +415,7 @@ describe('createBubbly', function() {
     bubbly.addListener({
       elementProperties: [{
         name: 'innerHTML',
-        value: '\\d',
+        value: '^abc$',
         valueIsRegex: true
       }]
     }, callback);

@@ -31,9 +31,9 @@ document.addEventListener('change', bubbly.evaluateEvent, true);
  * to fire.
  * @param {boolean} [settings.valueIsRegex=false] Whether <code>settings.value</code> is intended to
  * be a regular expression.
- * @param {boolean} [settings.bubbleFireIfParent=false] Whether the rule should fire if
+ * @param {boolean} [settings.bubbleFireIfParent=true] Whether the rule should fire if
  * the event originated from a descendant element.
- * @param {boolean} [settings.bubbleFireIfChildFired=false] Whether the rule should fire
+ * @param {boolean} [settings.bubbleFireIfChildFired=true] Whether the rule should fire
  * if the same event has already triggered a rule targeting a descendant element.
  * @param {boolean} [settings.bubbleStop=false] Whether the event should not trigger
  * rules on ancestor elements.

@@ -88,9 +88,9 @@ var watchElement = function(element, trackedDelays) {
  * on the object instance is intended to be a regular expression.
  * @param {Number} [settings.delay] The number of milliseconds the pointer must be on
  * top of the element before declaring that a hover has occurred.
- * @param {boolean} [settings.bubbleFireIfParent=false] Whether the rule should fire
+ * @param {boolean} [settings.bubbleFireIfParent=true] Whether the rule should fire
  * if the event originated from a descendant element.
- * @param {boolean} [settings.bubbleFireIfChildFired=false] Whether the rule should
+ * @param {boolean} [settings.bubbleFireIfChildFired=true] Whether the rule should
  * fire if the same event has already triggered a rule targeting a descendant element.
  * @param {boolean} [settings.bubbleStop=false] Whether the event should not trigger
  * rules on ancestor elements.
