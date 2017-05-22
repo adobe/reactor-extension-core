@@ -23,10 +23,15 @@ const TestRegexButton = (props) => {
     }
   } = props;
 
+  const options = {
+    pattern: value,
+    flags: 'i' // Currently, we're always executing regex with case-insensitivity.
+  };
+
   return (
     <button
       className="u-buttonReset coral-Link"
-      onClick={ () => window.extensionBridge.openRegexTester(onChange, { regex: value }) }
+      onClick={ () => window.extensionBridge.openRegexTester(onChange, options) }
     >
       Test
     </button>
