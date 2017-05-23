@@ -13,7 +13,7 @@
 'use strict';
 
 var POLL_INTERVAL = 3000;
-var delegateInjector = require('inject!../dataElementChanged');
+var delegateInjector = require('inject!../dataElementChange');
 
 /**
  * Tests whether a rule will be triggered based on a value change.
@@ -53,7 +53,7 @@ var testValueChange = function(initialValue, getUpdatedValue, shouldTriggerRule)
   }
 };
 
-describe('data element changed event type', function() {
+describe('data element change event type', function() {
   beforeAll(function() {
     jasmine.clock().install();
   });

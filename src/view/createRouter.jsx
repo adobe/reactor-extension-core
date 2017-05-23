@@ -19,7 +19,7 @@ import BlurEvent from './events/blur';
 import CustomCodeEvent from './events/customCode';
 import CustomEventEvent from './events/customEvent';
 import ClickEvent from './events/click';
-import DataElementChanged from './events/dataElementChanged';
+import DataElementChange from './events/dataElementChange';
 import DirectCallEvent from './events/directCall';
 import ElementExistsEvent from './events/elementExists';
 import EndedEvent from './events/ended';
@@ -82,7 +82,7 @@ const componentsByPath = {
   '/events/click': ClickEvent,
   '/events/customCode': CustomCodeEvent,
   '/events/customEvent': CustomEventEvent,
-  '/events/dataElementChanged': DataElementChanged,
+  '/events/dataElementChange': DataElementChange,
   '/events/directCall': DirectCallEvent,
   '/events/elementExists': ElementExistsEvent,
   '/events/ended': EndedEvent,

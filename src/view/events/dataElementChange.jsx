@@ -17,7 +17,7 @@ import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
 
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
-const DataElementChanged = () => (
+const DataElementChange = () => (
   <label>
     <span className="u-label">Data Element Name</span>
     <Field
@@ -54,4 +54,4 @@ const formConfig = {
   }
 };
 
-export default extensionViewReduxForm(formConfig)(DataElementChanged);
+export default extensionViewReduxForm(formConfig)(DataElementChange);

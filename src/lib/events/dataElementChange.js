@@ -38,6 +38,12 @@ setInterval(function() {
   });
 }, POLL_INTERVAL);
 
+/**
+ * Data element change event. This event occurs whenever the given data element's value has changed.
+ * @param {Object} settings The event settings object.
+ * @param {string} settings.name The name of the data element.
+ * @param {ruleTrigger} trigger The trigger callback.
+ */
 module.exports = function(settings, trigger) {
   var name = settings.name;
   var triggers = triggersByName[name];
