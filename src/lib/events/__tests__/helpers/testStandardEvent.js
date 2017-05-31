@@ -16,9 +16,11 @@ var outerElement;
 var innerElement;
 
 var assertTriggerCall = function(options) {
-  expect(options.call.args[0]).toBe(options.relatedElement);
-  expect(options.call.args[1].type).toBe(options.type);
-  expect(options.call.args[1].target).toBe(options.target);
+  expect(options.call.args[0]).toEqual({
+    element: options.element,
+    target: options.target,
+    nativeEvent: jasmine.any(Object)
+  });
 };
 
 module.exports = function(delegate, type) {
@@ -62,7 +64,7 @@ module.exports = function(delegate, type) {
       call: trigger.calls.mostRecent(),
       type: type,
       target: innerElement,
-      relatedElement: innerElement
+      element: innerElement
     });
   });
 
@@ -83,7 +85,7 @@ module.exports = function(delegate, type) {
       call: trigger.calls.mostRecent(),
       type: type,
       target: innerElement,
-      relatedElement: outerElement
+      element: outerElement
     });
   });
 
@@ -121,7 +123,7 @@ module.exports = function(delegate, type) {
       call: trigger.calls.mostRecent(),
       type: type,
       target: innerElement,
-      relatedElement: outerElement
+      element: outerElement
     });
   });
 

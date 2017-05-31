@@ -27,13 +27,8 @@ var triggers = [];
 var watchForTabFocus = once(function() {
   document.addEventListener(visibilityChangeEventType, function() {
     if (!document[hiddenProperty]) {
-      var pseudoEvent = {
-        type: 'tabfocus',
-        target: document
-      };
-
       triggers.forEach(function(trigger) {
-        trigger(document.location, pseudoEvent);
+        trigger();
       });
     }
   }, true);

@@ -14,17 +14,25 @@ import React from 'react';
 import { Field } from 'redux-form';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
+import Tooltip from '@coralui/react-coral/lib/Tooltip';
+import Icon from '@coralui/react-coral/lib/Icon';
 
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
 const DirectCall = () => (
   <label>
-    <span className="u-label">_satellite.track string</span>
+    <span className="u-label">Identifier</span>
     <Field
-      name="name"
+      name="identifier"
       component={ DecoratedInput }
       inputComponent={ Textfield }
     />
+    <Tooltip
+      openOn="hover"
+      content="The string you will pass to _satellite.track() to fire the rule."
+    >
+      <Icon icon="infoCircle" size="XS" className="u-inline-tooltip u-gapLeft" />
+    </Tooltip>
   </label>
 );
 
@@ -46,8 +54,8 @@ const formConfig = {
       ...errors
     };
 
-    if (!values.name) {
-      errors.name = 'Please specify a rule name.';
+    if (!values.identifier) {
+      errors.identifier = 'Please specify an identifier.';
     }
 
     return errors;

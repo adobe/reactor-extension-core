@@ -55,7 +55,10 @@ describe('custom event event type', function() {
 
     expect(trigger.calls.count()).toBe(1);
     var call = trigger.calls.mostRecent();
-    expect(call.args[0]).toBe(outerElement);
-    expect(call.args[1]).toBe(event);
+    expect(call.args[0]).toEqual({
+      element: outerElement,
+      target: innerElement,
+      nativeEvent: jasmine.any(Object)
+    });
   });
 });

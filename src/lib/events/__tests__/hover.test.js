@@ -38,10 +38,11 @@ describe('hover event type', function() {
   };
 
   var assertTriggerCall = function(options) {
-    expect(options.call.args[0]).toBe(options.relatedElement);
-    expect(options.call.args[1].type).toBe('hover(' + options.delay + ')');
-    expect(options.call.args[1].target).toBe(options.target);
-    expect(options.call.args[1].delay).toBe(options.delay);
+    expect(options.call.args[0]).toEqual({
+      element: options.element,
+      target: options.target,
+      delay: options.delay
+    });
   };
 
   beforeAll(function() {
@@ -63,7 +64,7 @@ describe('hover event type', function() {
     removeElements();
   });
 
-  it('triggers multiple rules with the no delay targeting nested elements', function() {
+  it('triggers multiple rules with no delay targeting nested elements', function() {
     var aTrigger = jasmine.createSpy();
     var bTrigger = jasmine.createSpy();
 
@@ -89,7 +90,7 @@ describe('hover event type', function() {
 
     assertTriggerCall({
       call: aTrigger.calls.mostRecent(),
-      relatedElement: aElement,
+      element: aElement,
       target: aElement,
       delay: 0
     });
@@ -101,7 +102,7 @@ describe('hover event type', function() {
 
     assertTriggerCall({
       call: aTrigger.calls.mostRecent(),
-      relatedElement: aElement,
+      element: aElement,
       target: bElement,
       delay: 0
     });
@@ -110,7 +111,7 @@ describe('hover event type', function() {
 
     assertTriggerCall({
       call: bTrigger.calls.mostRecent(),
-      relatedElement: bElement,
+      element: bElement,
       target: bElement,
       delay: 0
     });
@@ -142,7 +143,7 @@ describe('hover event type', function() {
 
     assertTriggerCall({
       call: aTrigger.calls.mostRecent(),
-      relatedElement: aElement,
+      element: aElement,
       target: aElement,
       delay: 0
     });
@@ -151,7 +152,7 @@ describe('hover event type', function() {
 
     assertTriggerCall({
       call: a2Trigger.calls.mostRecent(),
-      relatedElement: aElement,
+      element: aElement,
       target: aElement,
       delay: 0
     });
@@ -201,14 +202,14 @@ describe('hover event type', function() {
 
     assertTriggerCall({
       call: aTrigger.calls.first(),
-      relatedElement: aElement,
+      element: aElement,
       target: aElement,
       delay: 1000
     });
 
     assertTriggerCall({
       call: aTrigger.calls.mostRecent(),
-      relatedElement: aElement,
+      element: aElement,
       target: bElement,
       delay: 1000
     });
@@ -217,7 +218,7 @@ describe('hover event type', function() {
 
     assertTriggerCall({
       call: bTrigger.calls.mostRecent(),
-      relatedElement: bElement,
+      element: bElement,
       target: bElement,
       delay: 1000
     });
@@ -267,7 +268,7 @@ describe('hover event type', function() {
 
     assertTriggerCall({
       call: bTrigger.calls.mostRecent(),
-      relatedElement: bElement,
+      element: bElement,
       target: bElement,
       delay: 1000
     });
@@ -281,7 +282,7 @@ describe('hover event type', function() {
 
     assertTriggerCall({
       call: aTrigger.calls.mostRecent(),
-      relatedElement: aElement,
+      element: aElement,
       target: aElement,
       delay: 2000
     });
@@ -326,7 +327,7 @@ describe('hover event type', function() {
 
     assertTriggerCall({
       call: aTrigger.calls.mostRecent(),
-      relatedElement: aElement,
+      element: aElement,
       target: aElement,
       delay: 1000
     });
@@ -335,7 +336,7 @@ describe('hover event type', function() {
 
     assertTriggerCall({
       call: a2Trigger.calls.mostRecent(),
-      relatedElement: aElement,
+      element: aElement,
       target: aElement,
       delay: 1000
     });
@@ -381,7 +382,7 @@ describe('hover event type', function() {
 
     assertTriggerCall({
       call: aTrigger.calls.mostRecent(),
-      relatedElement: aElement,
+      element: aElement,
       target: aElement,
       delay: 1000
     });
@@ -393,7 +394,7 @@ describe('hover event type', function() {
 
     assertTriggerCall({
       call: a2Trigger.calls.mostRecent(),
-      relatedElement: aElement,
+      element: aElement,
       target: aElement,
       delay: 2000
     });

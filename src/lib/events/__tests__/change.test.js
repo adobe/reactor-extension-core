@@ -17,9 +17,11 @@ describe('change event type', function() {
   var delegate = require('../change');
 
   var assertTriggerCall = function(options) {
-    expect(options.call.args[0]).toBe(options.relatedElement);
-    expect(options.call.args[1].type).toBe('change');
-    expect(options.call.args[1].target).toBe(options.target);
+    expect(options.call.args[0]).toEqual({
+      element: options.element,
+      target: options.target,
+      nativeEvent: jasmine.any(Object)
+    });
   };
 
   describe('without value defined', function() {
@@ -64,7 +66,7 @@ describe('change event type', function() {
       assertTriggerCall({
         call: trigger.calls.mostRecent(),
         target: innerElement,
-        relatedElement: outerElement
+        element: outerElement
       });
     });
 
@@ -103,7 +105,7 @@ describe('change event type', function() {
       assertTriggerCall({
         call: trigger.calls.mostRecent(),
         target: innerElement,
-        relatedElement: outerElement
+        element: outerElement
       });
     });
 

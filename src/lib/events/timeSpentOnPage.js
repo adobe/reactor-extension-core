@@ -20,21 +20,13 @@ var hiddenProperty = visibilityApi.hiddenProperty;
 var visibilityChangeEventType = visibilityApi.visibilityChangeEventType;
 var triggers = {};
 
-var getPseudoEventType = function(timeOnPage) {
-  return 'timepassed(' + timeOnPage + ')';
-};
-
-var getPseudoEvent = function(target, timeOnPage) {
-  return {
-    type: getPseudoEventType(timeOnPage),
-    target: target,
-    timeOnPage: timeOnPage
+var onMarkerPassed = function(timeOnPageMilliseconds) {
+  var syntheticEvent = {
+    timeOnPage: timeOnPageMilliseconds / 1000
   };
-};
 
-var onMarkerPassed = function(timeOnPage) {
-  triggers[timeOnPage].forEach(function(trigger) {
-    trigger(null, getPseudoEvent(document, timeOnPage / 1000));
+  triggers[timeOnPageMilliseconds].forEach(function(trigger) {
+    trigger(syntheticEvent);
   });
 };
 

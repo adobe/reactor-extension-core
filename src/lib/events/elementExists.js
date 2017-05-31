@@ -37,8 +37,8 @@ setInterval(function() {
         for (var k = 0; k < listeners.length; k++) {
           var listener = listeners[k];
           if (matchesProperties(element, listener.settings.elementProperties)) {
-            listener.trigger(element, {
-              type: 'elementexists',
+            listener.trigger({
+              element: element,
               target: element
             });
             listeners.splice(k, 1);

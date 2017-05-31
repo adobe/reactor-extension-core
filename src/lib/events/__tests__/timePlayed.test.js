@@ -37,10 +37,12 @@ describe('timePlayed event type', function() {
   };
 
   var assertTriggerCall = function(options) {
-    var unitPrefix = options.unit === 'second' ? 's' : '%';
-    expect(options.call.args[0]).toBe(options.relatedElement);
-    expect(options.call.args[1].type).toBe('videoplayed(' + options.amount + unitPrefix + ')');
-    expect(options.call.args[1].target).toBe(options.target);
+    expect(options.call.args[0]).toEqual({
+      element: options.element,
+      target: options.target,
+      amount: options.amount,
+      unit: options.unit
+    });
   };
 
   beforeAll(function() {
@@ -113,7 +115,7 @@ describe('timePlayed event type', function() {
 
     assertTriggerCall({
       call: aTrigger.calls.first(),
-      relatedElement: aElement,
+      element: aElement,
       target: aElement,
       amount: 5,
       unit: 'second'
@@ -121,7 +123,7 @@ describe('timePlayed event type', function() {
 
     assertTriggerCall({
       call: a2Trigger.calls.first(),
-      relatedElement: aElement,
+      element: aElement,
       target: aElement,
       amount: 5,
       unit: 'second'
@@ -181,7 +183,7 @@ describe('timePlayed event type', function() {
 
     assertTriggerCall({
       call: aTrigger.calls.first(),
-      relatedElement: aElement,
+      element: aElement,
       target: bElement,
       amount: 5,
       unit: 'second'
@@ -189,7 +191,7 @@ describe('timePlayed event type', function() {
 
     assertTriggerCall({
       call: bTrigger.calls.first(),
-      relatedElement: bElement,
+      element: bElement,
       target: bElement,
       amount: 5,
       unit: 'second'
@@ -256,7 +258,7 @@ describe('timePlayed event type', function() {
 
     assertTriggerCall({
       call: aTrigger.calls.first(),
-      relatedElement: aElement,
+      element: aElement,
       target: bElement,
       amount: 5,
       unit: 'second'
@@ -264,7 +266,7 @@ describe('timePlayed event type', function() {
 
     assertTriggerCall({
       call: bTrigger.calls.first(),
-      relatedElement: bElement,
+      element: bElement,
       target: bElement,
       amount: 10,
       unit: 'second'
@@ -331,7 +333,7 @@ describe('timePlayed event type', function() {
 
     assertTriggerCall({
       call: aTrigger.calls.first(),
-      relatedElement: aElement,
+      element: aElement,
       target: aElement,
       amount: 5,
       unit: 'second'
@@ -339,7 +341,7 @@ describe('timePlayed event type', function() {
 
     assertTriggerCall({
       call: a2Trigger.calls.first(),
-      relatedElement: aElement,
+      element: aElement,
       target: aElement,
       amount: 10,
       unit: 'second'
@@ -406,7 +408,7 @@ describe('timePlayed event type', function() {
 
     assertTriggerCall({
       call: aTrigger.calls.first(),
-      relatedElement: aElement,
+      element: aElement,
       target: bElement,
       amount: 5,
       unit: 'percent'
@@ -414,7 +416,7 @@ describe('timePlayed event type', function() {
 
     assertTriggerCall({
       call: bTrigger.calls.first(),
-      relatedElement: bElement,
+      element: bElement,
       target: bElement,
       amount: 10,
       unit: 'percent'
@@ -479,7 +481,7 @@ describe('timePlayed event type', function() {
 
     assertTriggerCall({
       call: aTrigger.calls.first(),
-      relatedElement: aElement,
+      element: aElement,
       target: aElement,
       amount: 5,
       unit: 'second'
@@ -487,7 +489,7 @@ describe('timePlayed event type', function() {
 
     assertTriggerCall({
       call: a2Trigger.calls.first(),
-      relatedElement: aElement,
+      element: aElement,
       target: aElement,
       amount: 5,
       unit: 'percent'

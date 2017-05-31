@@ -53,23 +53,15 @@ var delayHover = function(event, delay, handler) {
   event.target.addEventListener('mouseleave', handleMouseLeave);
 };
 
-var getPseudoEventType = function(delay) {
-  return 'hover(' + delay + ')';
-};
-
-var getPseudoEvent = function(target, delay) {
-  return {
-    type: getPseudoEventType(delay),
-    target: target,
-    delay: delay
-  };
-};
-
 var watchElement = function(element, trackedDelays) {
   element.addEventListener('mouseenter', function(event) {
     trackedDelays.forEach(function(trackedDelay) {
       delayHover(event, trackedDelay, function(event) {
-        bubbly.evaluateEvent(getPseudoEvent(event.target, trackedDelay));
+        bubbly.evaluateEvent({
+          element: event.target,
+          target: event.target,
+          delay: trackedDelay
+        }, true);
       });
     });
   });
@@ -99,13 +91,12 @@ var watchElement = function(element, trackedDelays) {
 module.exports = function(settings, trigger) {
   var delay = settings.delay || 0;
 
-  var pseudoEventType = getPseudoEventType(delay);
-  bubbly.addListener(settings, function(relatedElement, event) {
+  bubbly.addListener(settings, function(syntheticEvent) {
     // Bubbling for this event is dependent upon the delay configured for rules.
     // An event can "bubble up" to other rules with the same delay but not to rules with
     // different delays. See the tests for how this plays out.
-    if (event.type === pseudoEventType) {
-      trigger(relatedElement, event);
+    if (syntheticEvent.delay === delay) {
+      trigger(syntheticEvent);
     } else {
       return false;
     }

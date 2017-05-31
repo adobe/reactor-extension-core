@@ -42,8 +42,6 @@ describe('pageBottom event type', function() {
     expect(trigger.calls.count()).toBe(1);
 
     var call = trigger.calls.mostRecent();
-    expect(call.args[0]).toBe('http://somelocation.com');
-    expect(call.args[1].type).toBe('pagebottom');
-    expect(call.args[1].target).toBe('http://somelocation.com');
+    expect(call.args.length).toBe(0);
   });
 });

@@ -427,6 +427,49 @@ describe('createBubbly', function() {
     expect(callback.calls.count()).toBe(0);
   });
 
+  it('passes a synthetic event to the callback with attached native event', function() {
+    var bubbly = createBubbly();
+    var callback = jasmine.createSpy();
+
+    bubbly.addListener({
+      elementSelector: '#a'
+    }, callback);
+
+    var nativeEvent = {
+      target: cElement
+    };
+
+    bubbly.evaluateEvent(nativeEvent);
+
+    expect(callback.calls.mostRecent().args[0]).toEqual({
+      element: aElement,
+      target: cElement,
+      nativeEvent: nativeEvent
+    });
+  });
+
+  it('passes a synthetic event to the callback with data from passed synthetic event', function() {
+    var bubbly = createBubbly();
+    var callback = jasmine.createSpy();
+
+    bubbly.addListener({
+      elementSelector: '#a'
+    }, callback);
+
+    var nativeEvent = {
+      target: cElement,
+      foo: 'bar'
+    };
+
+    bubbly.evaluateEvent(nativeEvent, true);
+
+    expect(callback.calls.mostRecent().args[0]).toEqual({
+      element: aElement,
+      target: cElement,
+      foo: 'bar'
+    });
+  });
+
   describe('when no element refinements are specified', function() {
     it('calls the callback once if the target is a nested element', function() {
       var bubbly = createBubbly();

@@ -23,7 +23,7 @@ var getCurrentZoom = function() {
 
 var callTriggers = function(event) {
   triggers.forEach(function(trigger) {
-    trigger(document, event);
+    trigger(event);
   });
 };
 
@@ -61,10 +61,8 @@ var watchForZoom = once(function() {
 
         if (lastZoom === zoom) {
           callTriggers({
-            type: 'zoomchange',
             method: 'pinch',
-            zoom: zoom.toFixed(2),
-            target: document
+            zoom: zoom.toFixed(2)
           });
         }
       }, delayFire);
@@ -95,10 +93,8 @@ var watchForZoom = once(function() {
         zoom = getCurrentZoom();
         if (lastZoom === zoom) {
           callTriggers({
-            type: 'zoomchange',
             method: 'double tap',
-            zoom: zoom.toFixed(2),
-            target: document
+            zoom: zoom.toFixed(2)
           });
         }
       }, delayFire);

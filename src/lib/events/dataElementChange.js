@@ -24,13 +24,12 @@ setInterval(function() {
     var stringifiedValue = JSON.stringify(getDataElementValue(name));
 
     if (stringifiedValue !== cachedStringifiedValueByName[name]) {
-      var pseudoEvent = {
-        type: 'dataelementchange(' + name + ')',
-        target: document
+      var syntheticEvent = {
+        dataElementName: name
       };
 
       triggersByName[name].forEach(function(trigger) {
-        trigger(document, pseudoEvent);
+        trigger(syntheticEvent);
       });
 
       cachedStringifiedValueByName[name] = stringifiedValue;

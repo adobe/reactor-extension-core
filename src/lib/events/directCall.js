@@ -19,37 +19,41 @@ var logger = require('@turbine/logger');
  * for that call name.
  * @type {Object}
  */
-var triggersByCallName = {};
+var triggersByIdentifier = {};
 
 window._satellite = window._satellite || {};
 
 /**
  * Public function intended to be called by the user.
- * @param {string} name The string matching a string configured for a rule.
+ * @param {string} identifier The identifier passed to _satellite.track().
  */
-window._satellite.track = function(name) {
-  name = name.trim();
-  var triggers = triggersByCallName[name];
+window._satellite.track = function(identifier) {
+  identifier = identifier.trim();
+  var triggers = triggersByIdentifier[identifier];
   if (triggers) {
+    var syntheticEvent = {
+      identifier: identifier
+    };
+
     triggers.forEach(function(trigger) {
-      trigger();
+      trigger(syntheticEvent);
     });
   } else {
-    logger.log('Direct call rule ' + name + ' not found.');
+    logger.log('"' + identifier + '" does not match any direct call identifiers.');
   }
 };
 
 /**
  * Direct call event. This event occurs as soon as the user calls _satellite.track().
  * @param {Object} settings The event settings object.
- * @param {string} settings.name The string identifier of the direct-call rule.
+ * @param {string} settings.identifier The identifier passed to _satellite.track().
  * @param {ruleTrigger} trigger The trigger callback.
  */
 module.exports = function(settings, trigger) {
-  var triggers = triggersByCallName[settings.name];
+  var triggers = triggersByIdentifier[settings.identifier];
 
   if (!triggers) {
-    triggers = triggersByCallName[settings.name] = [];
+    triggers = triggersByIdentifier[settings.identifier] = [];
   }
 
   triggers.push(trigger);

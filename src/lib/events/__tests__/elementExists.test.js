@@ -39,9 +39,10 @@ describe('elementExists event type', function() {
   };
 
   var assertTriggerCall = function(options) {
-    expect(options.call.args[0]).toBe(options.relatedElement);
-    expect(options.call.args[1].type).toBe('elementexists');
-    expect(options.call.args[1].target).toBe(options.target);
+    expect(options.call.args[0]).toEqual({
+      element: options.element,
+      target: options.element
+    });
   };
 
   beforeAll(function() {
@@ -72,7 +73,7 @@ describe('elementExists event type', function() {
 
     assertTriggerCall({
       call: aTrigger.calls.mostRecent(),
-      relatedElement: aElement,
+      element: aElement,
       target: aElement
     });
   });

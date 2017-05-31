@@ -77,7 +77,9 @@ document.addEventListener('click', bubbly.evaluateEvent, true);
  * @param {ruleTrigger} trigger The trigger callback.
  */
 module.exports = function(settings, trigger) {
-  bubbly.addListener(settings, function(relatedElement, event) {
+  bubbly.addListener(settings, function(syntheticEvent) {
+    var nativeEvent = syntheticEvent.nativeEvent;
+
     // AppMeasurement captures the click events, and tries to detect if the element clicked is an A
     // tag that contains an exit link. When that happens, it stops the initial event, sends a
     // beacon, clones the initial event and fires it again.
@@ -86,23 +88,23 @@ module.exports = function(settings, trigger) {
     // sets `s_fe` attribute on the cloned event, and that is the flag we'll use to ignore these
     // fake events.
     // https://git.corp.adobe.com/analytics-platform/appmeasurement/blob/master/bin/js/src/AppMeasurement.js#L3196
-    if (event.s_fe) {
+    if (nativeEvent.s_fe) {
       return;
     }
 
     if (settings.delayLinkActivation) {
-      if (!evaluatedEvents.has(event)) {
-        if (isNavigationLink(event.target)) {
-          event.preventDefault();
+      if (!evaluatedEvents.has(nativeEvent)) {
+        if (isNavigationLink(nativeEvent.target)) {
+          nativeEvent.preventDefault();
           setTimeout(function() {
-            window.location = event.target.href;
+            window.location = nativeEvent.target.href;
           }, propertySettings.linkDelay || 100);
         }
-        evaluatedEvents.set(event, true);
+        evaluatedEvents.set(nativeEvent, true);
       }
     }
 
-    trigger.call(this, relatedElement, event);
+    trigger(syntheticEvent);
   });
 };
 

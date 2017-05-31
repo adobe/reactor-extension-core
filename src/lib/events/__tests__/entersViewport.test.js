@@ -43,10 +43,11 @@ describe('entersViewport event type', function() {
   };
 
   var assertTriggerCall = function(options) {
-    expect(options.call.args[0]).toBe(options.relatedElement);
-    expect(options.call.args[1].type).toBe('inview');
-    expect(options.call.args[1].target).toBe(options.target);
-    expect(options.call.args[1].inviewDelay).toBe(options.delay);
+    expect(options.call.args[0]).toEqual({
+      element: options.element,
+      target: options.target,
+      delay: options.delay
+    });
   };
 
   beforeAll(function() {
@@ -90,7 +91,7 @@ describe('entersViewport event type', function() {
 
     assertTriggerCall({
       call: aTrigger.calls.mostRecent(),
-      relatedElement: aElement,
+      element: aElement,
       target: aElement
     });
   });
@@ -235,7 +236,7 @@ describe('entersViewport event type', function() {
 
     assertTriggerCall({
       call: bTrigger.calls.mostRecent(),
-      relatedElement: bElement,
+      element: bElement,
       target: bElement
     });
   });
@@ -257,13 +258,13 @@ describe('entersViewport event type', function() {
 
     assertTriggerCall({
       call: trigger.calls.first(),
-      relatedElement: aElement,
+      element: aElement,
       target: aElement
     });
 
     assertTriggerCall({
       call: trigger.calls.mostRecent(),
-      relatedElement: bElement,
+      element: bElement,
       target: bElement
     });
 
@@ -275,7 +276,7 @@ describe('entersViewport event type', function() {
 
     assertTriggerCall({
       call: trigger.calls.mostRecent(),
-      relatedElement: elementAddedLater,
+      element: elementAddedLater,
       target: elementAddedLater
     });
   });

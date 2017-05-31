@@ -111,14 +111,11 @@ var handleElementEnterViewport = function(element, delay, listener) {
   var complete = function() {
     completedListenersByElement.get(element).push(listener);
 
-    var event = {
-      type: 'inview',
+    listener.trigger({
+      element: element,
       target: element,
-      // If the user did not configure a delay, inviewDelay should be undefined.
-      inviewDelay: delay
-    };
-
-    listener.trigger(element, event);
+      delay: delay
+    });
   };
 
   if (delay) {

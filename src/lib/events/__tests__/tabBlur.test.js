@@ -48,10 +48,7 @@ describe('tabblur event type', function() {
       visibilityChangeListener.call(location);
 
       expect(trigger.calls.count()).toBe(1);
-      var call = trigger.calls.mostRecent();
-      expect(call.args[0]).toBe(mockDocument.location);
-      expect(call.args[1].type).toBe('tabblur');
-      expect(call.args[1].target).toBe(mockDocument);
+      expect(trigger.calls.mostRecent().args.length).toBe(0);
     });
   }
 });

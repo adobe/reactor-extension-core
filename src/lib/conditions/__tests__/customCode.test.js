@@ -23,17 +23,15 @@ describe('custom code condition delegate', function() {
     };
 
     var event = {
-      currentTarget: {},
+      element: {},
       target: {}
     };
 
-    var relatedElement = {};
-
     spyOn(settings, 'source').and.callThrough();
-    conditionDelegate(settings, relatedElement, event);
+    conditionDelegate(settings, event);
 
     expect(settings.source.calls.first()).toEqual({
-      object: relatedElement,
+      object: event.element,
       invocationOrder: jasmine.any(Number),
       args: [event, event.target],
       returnValue: true

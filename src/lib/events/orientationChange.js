@@ -17,13 +17,12 @@ var triggers = [];
 
 window.addEventListener('orientationchange', function(event) {
   if (triggers.length) {
-    // This isn't really true though:
-    // http://www.matthewgifford.com/blog/2011/12/22/a-misconception-about-window-orientation/
-    // Also, is it bad that we're adding properties to the original event?
-    event.orientation = window.orientation === 0 ? 'portrait' : 'landscape';
+    var syntheticEvent = {
+      nativeEvent: event
+    };
 
     triggers.forEach(function(trigger) {
-      trigger(window, event);
+      trigger(syntheticEvent);
     });
   }
 });

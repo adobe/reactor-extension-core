@@ -41,9 +41,9 @@ document.addEventListener('change', bubbly.evaluateEvent, true);
  */
 module.exports = function(settings, trigger) {
   var acceptableValue = settings.valueIsRegex ? new RegExp(settings.value, 'i') : settings.value;
-  bubbly.addListener(settings, function(relatedElement, event) {
-    if (acceptableValue === undefined || textMatch(event.target.value, acceptableValue)) {
-      trigger(relatedElement, event);
+  bubbly.addListener(settings, function(syntheticEvent) {
+    if (acceptableValue === undefined || textMatch(syntheticEvent.target.value, acceptableValue)) {
+      trigger(syntheticEvent);
     } else {
       return false;
     }

@@ -17,12 +17,13 @@ import DirectCall from '../directCall';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
-  const nameTextfield = wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'name').node;
-  const nameErrorTip = wrapper.find(ErrorTip).node;
+  const identifierTextfield =
+    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'identifier').node;
+  const identifierErrorTip = wrapper.find(ErrorTip).node;
 
   return {
-    nameTextfield,
-    nameErrorTip
+    identifierTextfield,
+    identifierErrorTip
   };
 };
 
@@ -38,23 +39,23 @@ describe('direct call view', () => {
   it('sets form values from settings', () => {
     extensionBridge.init({
       settings: {
-        name: 'foo'
+        identifier: 'foo'
       }
     });
 
-    const { nameTextfield } = getReactComponents(instance);
+    const { identifierTextfield } = getReactComponents(instance);
 
-    expect(nameTextfield.props.value).toBe('foo');
+    expect(identifierTextfield.props.value).toBe('foo');
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { nameTextfield } = getReactComponents(instance);
-    nameTextfield.props.onChange('foo');
+    const { identifierTextfield } = getReactComponents(instance);
+    identifierTextfield.props.onChange('foo');
 
     expect(extensionBridge.getSettings()).toEqual({
-      name: 'foo'
+      identifier: 'foo'
     });
   });
 
@@ -62,8 +63,8 @@ describe('direct call view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { nameErrorTip } = getReactComponents(instance);
+    const { identifierErrorTip } = getReactComponents(instance);
 
-    expect(nameErrorTip).toBeDefined();
+    expect(identifierErrorTip).toBeDefined();
   });
 });

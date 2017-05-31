@@ -27,20 +27,6 @@ var timePlayedUnit = {
   PERCENT: 'percent'
 };
 
-var getPseudoEventType = function(amount, unit) {
-  var unitSuffix = unit === timePlayedUnit.SECOND ? 's' : '%';
-  return 'videoplayed(' + amount + unitSuffix + ')';
-};
-
-var getPseudoEvent = function(amount, unit, target) {
-  return {
-    type: getPseudoEventType(amount, unit),
-    target: target,
-    amount: amount,
-    unit: unit
-  };
-};
-
 var handleTimeUpdate = function(event) {
   var target = event.target;
 
@@ -55,14 +41,16 @@ var handleTimeUpdate = function(event) {
   var playedSeconds = currentTime - startTime;
 
   var secondsLastTriggered = lastTriggeredByElement.get(target) || 0;
-  var pseudoEvent;
 
   relevantMarkers.forEach(function(relevantMarker) {
     var configuredSeconds = relevantMarker.unit === timePlayedUnit.SECOND ?
       relevantMarker.amount : (endTime - startTime) * (relevantMarker.amount / 100);
     if (configuredSeconds > secondsLastTriggered && configuredSeconds <= playedSeconds) {
-      pseudoEvent = getPseudoEvent(relevantMarker.amount, relevantMarker.unit, target);
-      bubbly.evaluateEvent(pseudoEvent);
+      bubbly.evaluateEvent({
+        target: target,
+        amount: relevantMarker.amount,
+        unit: relevantMarker.unit
+      }, true);
     }
   });
 
@@ -109,14 +97,13 @@ module.exports = function(settings, trigger) {
     });
   }
 
-  var pseudoEventType = getPseudoEventType(settings.amount, settings.unit);
-
-  bubbly.addListener(settings, function(relatedElement, event) {
+  bubbly.addListener(settings, function(syntheticEvent) {
+    debugger;
     // Bubbling for this event is dependent upon the amount and unit configured for rules.
     // An event can "bubble up" to other rules with the same amount and unit but not to rules with
     // a different amount or unit. See the tests for how this plays out.
-    if (event.type === pseudoEventType) {
-      trigger(relatedElement, event);
+    if (syntheticEvent.amount === settings.amount && syntheticEvent.unit === settings.unit) {
+      trigger(syntheticEvent);
     } else {
       return false;
     }

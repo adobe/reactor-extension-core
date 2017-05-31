@@ -45,12 +45,14 @@ var postscribeWrite = function(source) {
  * <code>settings.sequential</code> is <code>true</code>, then this will be the user's code.
  * Otherwise, it will be a relative path to the file containing the users code.
  * @param {string} settings.language The language of the user's code. Must be either
+ * @param {Object} event The underlying event object that triggered the rule.
+ * @param {Object} event.element The element that the rule was targeting.
+ * @param {Object} event.target The element on which the event occurred.
  * <code>javascript</code> or <code>html</code>.
  */
-module.exports = function(settings, relatedElement, event) {
+module.exports = function(settings, event) {
   var action = {
     settings: settings,
-    relatedElement: relatedElement,
     event: event
   };
 

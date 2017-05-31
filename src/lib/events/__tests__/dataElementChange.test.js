@@ -45,9 +45,9 @@ var testValueChange = function(initialValue, getUpdatedValue, shouldTriggerRule)
     expect(trigger.calls.count()).toBe(1);
 
     var call = trigger.calls.mostRecent();
-    expect(call.args[0]).toBe(document);
-    expect(call.args[1].type).toBe('dataelementchange(mydataelement)');
-    expect(call.args[1].target).toBe(document);
+    expect(call.args[0]).toEqual({
+      dataElementName: 'mydataelement'
+    });
   } else {
     expect(trigger.calls.count()).toBe(0);
   }

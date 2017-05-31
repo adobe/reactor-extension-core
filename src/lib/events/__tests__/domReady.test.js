@@ -26,8 +26,6 @@ describe('domReady event type', function() {
 
     expect(trigger.calls.count()).toBe(1);
     var call = trigger.calls.mostRecent();
-    expect(call.args[0]).toBe(document.location);
-    expect(call.args[1].type).toBe('domready');
-    expect(call.args[1].target).toBe(document.location);
+    expect(call.args[0].nativeEvent.type).toBe('DOMContentLoaded');
   });
 });

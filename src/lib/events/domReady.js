@@ -16,16 +16,15 @@ var once = require('@turbine/once');
 
 var triggers = [];
 
-var handleDOMContentLoaded = function() {
+var handleDOMContentLoaded = function(event) {
   document.removeEventListener('DOMContentLoaded', handleDOMContentLoaded, true);
 
-  triggers.forEach(function(trigger) {
-    var pseudoEvent = {
-      type: 'domready',
-      target: document.location
-    };
+  var syntheticEvent = {
+    nativeEvent: event
+  };
 
-    trigger(document.location, pseudoEvent);
+  triggers.forEach(function(trigger) {
+    trigger(syntheticEvent);
   });
 };
 

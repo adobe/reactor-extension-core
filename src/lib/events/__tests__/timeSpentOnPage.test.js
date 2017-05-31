@@ -56,8 +56,9 @@ describe('time spent on page event type', function() {
     jasmine.clock().tick(2000);
 
     var call = trigger.calls.mostRecent();
-    expect(call.args[1].type).toBe('timepassed(2)');
-    expect(call.args[1].target).toBe(mockDocument);
+    expect(call.args[0]).toEqual({
+      timeOnPage: 2
+    });
   });
 
   if (!isIE () || isIE() > 9) {

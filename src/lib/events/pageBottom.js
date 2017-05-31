@@ -22,13 +22,8 @@ var document = require('@turbine/document');
 var triggers = [];
 
 onPageBottom(function() {
-  var pseudoEvent = {
-    type: 'pagebottom',
-    target: document.location
-  };
-
   triggers.forEach(function(trigger) {
-    trigger(document.location, pseudoEvent);
+    trigger();
   });
 });
 

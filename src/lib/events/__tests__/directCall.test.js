@@ -24,11 +24,11 @@ describe('directCall event type', function() {
     });
   });
 
-  it('triggers rule when _satellite.track() is called with matching name', function() {
+  it('triggers rule when _satellite.track() is called with matching identifier', function() {
     var trigger = jasmine.createSpy();
 
     delegate({
-      name: 'foo'
+      identifier: 'foo'
     }, trigger);
 
     expect(trigger.calls.count()).toBe(0);
@@ -36,6 +36,9 @@ describe('directCall event type', function() {
     _satellite.track('foo');
 
     expect(trigger.calls.count()).toBe(1);
+    expect(trigger.calls.mostRecent().args[0]).toEqual({
+      identifier: 'foo'
+    });
 
     _satellite.track('bar');
 

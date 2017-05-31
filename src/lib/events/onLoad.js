@@ -22,13 +22,8 @@ var triggers = [];
 
 var watchForWindowLoad = once(function() {
   window.addEventListener('load', function() {
-    var pseudoEvent = {
-      type: 'windowload',
-      target: document.location
-    };
-
     triggers.forEach(function(trigger) {
-      trigger(document.location, pseudoEvent);
+      trigger();
     });
   }, true);
 });

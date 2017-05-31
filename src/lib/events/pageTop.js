@@ -12,11 +12,6 @@
 
 'use strict';
 
-var pseudoEvent = {
-  type: 'pagetop',
-  target: document.location
-};
-
 /**
  * Page top event. This event occurs as soon as the runtime library is loaded (which is supposed to
  * be at the top of the page).
@@ -24,5 +19,5 @@ var pseudoEvent = {
  * @param {ruleTrigger} trigger The trigger callback.
  */
 module.exports = function(settings, trigger) {
-  trigger(document.location, pseudoEvent);
+  trigger();
 };

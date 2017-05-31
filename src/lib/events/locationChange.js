@@ -41,13 +41,8 @@ var callThrough = function(object, methodName, fn) {
 var callTriggersIfURIChanged = debounce(function() {
   var uri = window.location.href;
   if (lastURI !== uri) {
-    var pseudoEvent = {
-      type: 'locationchange',
-      target: document
-    };
-
     triggers.forEach(function(trigger) {
-      trigger(document, pseudoEvent);
+      trigger();
     });
 
     lastURI = uri;

@@ -58,11 +58,13 @@ module.exports = function() {
     /**
      * Evaluate an event to determine if any rule targeting elements in the event target's DOM
      * hierarchy should be executed. Note that event.type is not inspected. This assumes that
-     * all registered listeners care about this particular event type. Whether they
+     * all registered listeners care about this particular event type.
      * @param {Event} event The event that has occurred.
      * @param {HTMLElement} event.target The HTML element where the event originated.
+     * @param {boolean} [eventIsSynthetic] Whether the event passed in is synthetic (instead of
+     * native).
      */
-    evaluateEvent: function(event) {
+    evaluateEvent: function(event, eventIsSynthetic) {
       if (!listeners.length) {
         return;
       }
@@ -117,8 +119,25 @@ module.exports = function() {
             continue;
           }
 
+          var syntheticEventForCallback = {};
+
+          // We'll attach relevant data depending on whether the passed in event is synthetic
+          // or native.
+          if (eventIsSynthetic) {
+            Object.keys(event).forEach(function(key) {
+              syntheticEventForCallback[key] = event[key];
+            });
+          } else {
+            syntheticEventForCallback.nativeEvent = event;
+          }
+
+          syntheticEventForCallback.element = node;
+          syntheticEventForCallback.target = event.target;
+
+          var callbackResponse = listener.callback(syntheticEventForCallback);
+
           // The callback should return false if it didn't end up triggering a rule.
-          var ruleTriggered = listener.callback(node, event) !== false;
+          var ruleTriggered = callbackResponse !== false;
 
           if (ruleTriggered) {
             nodeTriggeredRule = true;

@@ -27,7 +27,7 @@ var decorateNonGlobalJavaScriptCode = function(action, source) {
   var runScriptFnName = '__runScript' + ++id;
 
   _satellite[runScriptFnName] = function(fn) {
-    fn(action.event, action.relatedElement);
+    fn.call(action.event.element, action.event, action.event.target);
     delete _satellite[runScriptFnName];
   };
 
@@ -46,7 +46,7 @@ var decorators = {
     // We need to replace tokens only for sources loaded from external files. The sources from
     // inside the container are automatically taken care by Turbine.
     if (isSourceLoadedFromFile(action)) {
-      return replaceTokens(source, action.relatedElement, action.event);
+      return replaceTokens(source, action.event);
     }
 
     return source;

@@ -30,8 +30,7 @@ describe('decorate code', function() {
 
     var decoratedCode = decorateCode({
       settings: settings,
-      event: {},
-      relatedElement: {}
+      event: {}
     }, settings.source);
 
     expect(decoratedCode).toBe(
@@ -43,8 +42,10 @@ describe('decorate code', function() {
 
   it('sends the event and target to the random generated method for a javascript action',
     function() {
-      var event = {};
-      var relatedElement = {};
+      var event = {
+        element: {},
+        target: {}
+      };
       var settings = {
         language: 'javascript',
         source: 'console.log("logging")'
@@ -53,13 +54,20 @@ describe('decorate code', function() {
 
       decorateCode({
         settings: settings,
-        event: event,
-        relatedElement: relatedElement
+        event: event
       }, settings.source);
 
       _satellite['__runScript2'](spy);
 
-      expect(spy).toHaveBeenCalledWith(event, relatedElement);
+      expect(spy.calls.mostRecent()).toEqual({
+        object: event.element,
+        args: [
+          event,
+          event.target
+        ],
+        invocationOrder: jasmine.any(Number),
+        returnValue: undefined
+      });
     });
 
   it('clears the random generated method for a javascript action after its execution',
