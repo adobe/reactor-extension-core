@@ -41,7 +41,7 @@
   "devDependencies": {
     "@adobe/reactor-packager": "^2.3.3",
     "@adobe/reactor-sandbox": "^7.8.5",
-    "@adobe/reactor-turbine": "^18.0.0",
+    "@adobe/reactor-turbine": "^19.0.0",
     "@reactor/extension-support-testrunner": "^9.0.0",
     "nib": "^1.1.2",
     "css-loader": "^0.26.0",
