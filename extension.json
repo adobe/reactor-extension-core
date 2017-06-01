@@ -556,10 +556,10 @@
       }
     },
     {
-      "name": "location-change",
+      "name": "history-change",
       "categoryName": "Other",
-      "displayName": "pushState or hashchange",
-      "libPath": "src/lib/events/locationChange.js",
+      "displayName": "History Change",
+      "libPath": "src/lib/events/historyChange.js",
       "schema": {}
     },
     {
@@ -793,11 +793,11 @@
       "schema": {}
     },
     {
-      "name": "time-spent-on-page",
+      "name": "time-on-page",
       "categoryName": "Other",
-      "displayName": "Time Spent On Page",
-      "libPath": "src/lib/events/timeSpentOnPage.js",
-      "viewPath": "index.html#/events/timeSpentOnPage",
+      "displayName": "Time On Page",
+      "libPath": "src/lib/events/timeOnPage.js",
+      "viewPath": "index.html#/events/timeOnPage",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",

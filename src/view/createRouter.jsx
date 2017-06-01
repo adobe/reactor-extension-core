@@ -33,7 +33,7 @@ import PlayEvent from './events/play';
 import StalledEvent from './events/stalled';
 import SubmitEvent from './events/submit';
 import TimePlayedEvent from './events/timePlayed';
-import TimeSpentOnPageEvent from './events/timeSpentOnPage';
+import TimeOnPageEvent from './events/timeOnPage';
 import VolumeChangeEvent from './events/volumeChange';
 
 // Conditions
@@ -96,7 +96,7 @@ const componentsByPath = {
   '/events/stalled': StalledEvent,
   '/events/submit': SubmitEvent,
   '/events/timePlayed': TimePlayedEvent,
-  '/events/timeSpentOnPage': TimeSpentOnPageEvent,
+  '/events/timeOnPage': TimeOnPageEvent,
   '/events/volumeChange': VolumeChangeEvent,
   '/conditions/browser': BrowserCondition,
   '/conditions/cartAmount': CartAmountCondition,

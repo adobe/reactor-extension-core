@@ -12,7 +12,7 @@
 
 'use strict';
 
-describe('locationchange event type', function() {
+describe('historyChange event type', function() {
   var delegate;
   var origHref = window.location.href;
 
@@ -21,7 +21,7 @@ describe('locationchange event type', function() {
   };
 
   beforeAll(function() {
-    delegate = require('../locationChange');
+    delegate = require('../historyChange');
   });
 
   afterAll(function() {

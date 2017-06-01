@@ -50,9 +50,9 @@ var callTriggersIfURIChanged = debounce(function() {
 }, 0);
 
 /**
- * Starts watching for location changes.
+ * Starts watching for history changes.
  */
-var watchForLocationChange = once(function() {
+var watchForHistoryChange = once(function() {
   if (history) {
     if (history.pushState) {
       callThrough(history, 'pushState', callTriggersIfURIChanged);
@@ -68,12 +68,12 @@ var watchForLocationChange = once(function() {
 });
 
 /**
- * Location change event. This event occurs when the URL hash is changed or the URL is changed
+ * History change event. This event occurs when the URL hash is changed or the URL is changed
  * through the <code>history</code> API.
  * @param {Object} settings The event settings object.
  * @param {ruleTrigger} trigger The trigger callback.
  */
 module.exports = function(settings, trigger) {
-  watchForLocationChange();
+  watchForHistoryChange();
   triggers.push(trigger);
 };

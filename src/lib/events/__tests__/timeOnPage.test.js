@@ -26,7 +26,7 @@ var mockDocument = {
 
 var Timer = require('../helpers/timer');
 
-var eventDelegateInjector = require('inject!../timeSpentOnPage');
+var eventDelegateInjector = require('inject!../timeOnPage');
 var delegate = eventDelegateInjector({
   '../helpers/timer.js': Timer,
   '@turbine/document': mockDocument
@@ -37,7 +37,7 @@ var isIE = function() {
   return (myNav.indexOf('msie') !== -1) ? parseInt(myNav.split('msie')[1]) : false;
 };
 
-describe('time spent on page event type', function() {
+describe('time on page event type', function() {
   beforeEach(function() {
     jasmine.clock().install();
 
@@ -50,7 +50,7 @@ describe('time spent on page event type', function() {
   });
 
   it('triggers rule', function() {
-    var trigger = jasmine.createSpy('timeSpentOnPageTrigger');
+    var trigger = jasmine.createSpy('timeOnPageTrigger');
 
     delegate({timeOnPage: 2}, trigger);
     jasmine.clock().tick(2000);

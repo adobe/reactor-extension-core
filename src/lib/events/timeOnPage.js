@@ -47,7 +47,7 @@ var setupTimer = once(function() {
 });
 
 /**
- * Time spent on page event. The event is triggered by a timer. The timer receives a list of markers
+ * Time on page event. The event is triggered by a timer. The timer receives a list of markers
  * that will be used to trigger a callback method. The callback is called whenever the counted time
  * passes the provided markers. The timer will be paused whenever the user will switch to another
  * tab and it will be resumed when the user returns back to the tab.

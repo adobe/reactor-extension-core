@@ -18,7 +18,7 @@ import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInp
 import extensionViewReduxForm from '../extensionViewReduxForm';
 import { isPositiveNumber } from '../utils/validators';
 
-const TimeSpentOnPage = () => (
+const TimeOnPage = () => (
   <div>
     <label>
       <span className="u-label u-gapRight">Trigger after</span>
@@ -58,4 +58,4 @@ const formConfig = {
   }
 };
 
-export default extensionViewReduxForm(formConfig)(TimeSpentOnPage);
+export default extensionViewReduxForm(formConfig)(TimeOnPage);

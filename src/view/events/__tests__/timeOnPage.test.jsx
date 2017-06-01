@@ -13,7 +13,7 @@
 import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import ErrorTip from '@reactor/react-components/lib/errorTip';
-import TimeSpentOnPage from '../timeSpentOnPage';
+import TimeOnPage from '../timeOnPage';
 import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
 
 const getReactComponents = (wrapper) => {
@@ -26,13 +26,13 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-describe('time spent on page view', () => {
+describe('time on page view', () => {
   let extensionBridge;
   let instance;
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(TimeSpentOnPage, extensionBridge));
+    instance = mount(getFormComponent(TimeOnPage, extensionBridge));
   });
 
   it('sets form values from settings', () => {
