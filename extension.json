@@ -1357,7 +1357,7 @@
     {
       "name": "path-and-querystring",
       "categoryName": "URL",
-      "displayName": "Path With Query String",
+      "displayName": "Path And Query String",
       "libPath": "src/lib/conditions/pathAndQueryString.js",
       "viewPath": "index.html#/conditions/pathAndQueryString",
       "schema": {
