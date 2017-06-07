@@ -13,7 +13,6 @@
 /* eslint no-useless-concat: 0 */
 
 import { mount } from 'enzyme';
-import Textfield from '@coralui/react-coral/lib/Textfield';
 import Radio from '@coralui/react-coral/lib/Radio';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
 import Button from '@coralui/react-coral/lib/Button';
@@ -26,9 +25,6 @@ import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers
 const getReactComponents = (wrapper) => {
   const fields = wrapper.find(Field);
   const radios = wrapper.find(Radio);
-  const nameField = fields.filterWhere(n => n.prop('name') === 'name');
-  const nameTextfield = nameField.find(Textfield).node;
-  const nameErrorTip = nameField.find(ErrorTip).node;
   const javaScriptLanguageRadio = radios.filterWhere(n => n.prop('value') === 'javascript').node;
   const htmlLanguageRadio = radios.filterWhere(n => n.prop('value') === 'html').node;
   const globalCheckbox = wrapper.find(Checkbox).filterWhere(n => n.prop('name') === 'global').node;
@@ -37,8 +33,6 @@ const getReactComponents = (wrapper) => {
   const [sequentialHtmlAlert, inlineScriptAlert] = wrapper.find(Alert).nodes;
 
   return {
-    nameTextfield,
-    nameErrorTip,
     javaScriptLanguageRadio,
     htmlLanguageRadio,
     globalCheckbox,
@@ -68,15 +62,10 @@ describe('custom action view', () => {
   it('sets form values from settings', () => {
     extensionBridge.init({
       settings: {
-        name: 'foo',
         language: 'html',
         source: 'bar'
       }
     });
-
-    const {
-      nameTextfield
-    } = getReactComponents(instance);
 
     let {
       javaScriptLanguageRadio,
@@ -84,14 +73,12 @@ describe('custom action view', () => {
       globalCheckbox
     } = getReactComponents(instance);
 
-    expect(nameTextfield.props.value).toBe('foo');
     expect(javaScriptLanguageRadio.props.checked).toBe(false);
     expect(htmlLanguageRadio.props.checked).toBe(true);
     expect(globalCheckbox).toBeUndefined();
 
     extensionBridge.init({
       settings: {
-        name: 'foo',
         language: 'javascript',
         global: true,
         source: 'bar'
@@ -113,25 +100,21 @@ describe('custom action view', () => {
     extensionBridge.init();
 
     const {
-      nameTextfield,
       javaScriptLanguageRadio,
       htmlLanguageRadio,
       globalCheckbox
     } = getReactComponents(instance);
 
-    nameTextfield.props.onChange('foo');
     htmlLanguageRadio.props.onChange('html');
     globalCheckbox.props.onChange(true);
 
     expect(extensionBridge.getSettings()).toEqual({
-      name: 'foo',
       language: 'html'
     });
 
     javaScriptLanguageRadio.props.onChange('javascript');
 
     expect(extensionBridge.getSettings()).toEqual({
-      name: 'foo',
       language: 'javascript',
       global: true
     });
@@ -142,11 +125,9 @@ describe('custom action view', () => {
     expect(extensionBridge.validate()).toBe(false);
 
     const {
-      nameErrorTip,
       sourceErrorIcon
     } = getReactComponents(instance);
 
-    expect(nameErrorTip.props.children).toEqual(jasmine.any(String));
     expect(sourceErrorIcon.props.children).toBeDefined();
   });
 

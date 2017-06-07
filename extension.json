@@ -1816,10 +1816,6 @@
         "oneOf": [
           {
             "properties": {
-              "name": {
-                "type": "string",
-                "minLength": 1
-              },
               "language": {
                 "enum": [
                   "javascript"
@@ -1835,17 +1831,12 @@
             },
             "additionalProperties": false,
             "required": [
-              "name",
               "language",
               "source"
             ]
           },
           {
             "properties": {
-              "name": {
-                "type": "string",
-                "minLength": 1
-              },
               "language": {
                 "enum": [
                   "html"
@@ -1858,7 +1849,6 @@
             },
             "additionalProperties": false,
             "required": [
-              "name",
               "language",
               "source"
             ]

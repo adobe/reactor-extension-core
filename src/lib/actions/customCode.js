@@ -39,8 +39,6 @@ var postscribeWrite = function(source) {
 /**
  * The custom code action. This loads and executes custom JavaScript or HTML provided by the user.
  * @param {Object} settings Action settings.
- * @param {number} settings.name The name of the action. Typically used by users to remind
- * themselves what the code is intended to do.
  * @param {string} settings.source If <code>settings.language</code> is <code>html</code> and
  * <code>settings.sequential</code> is <code>true</code>, then this will be the user's code.
  * Otherwise, it will be a relative path to the file containing the users code.

@@ -15,10 +15,8 @@ import { connect } from 'react-redux';
 import { Field, formValueSelector } from 'redux-form';
 import InfoTip from '@reactor/react-components/lib/infoTip';
 import EditorButton from '@reactor/react-components/lib/reduxForm/editorButton';
-import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 import Checkbox from '@coralui/redux-form-react-coral/lib/Checkbox';
 import Radio from '@coralui/redux-form-react-coral/lib/Radio';
-import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
 const LANGUAGES = {
@@ -28,14 +26,6 @@ const LANGUAGES = {
 
 const CustomCode = ({ language }) => (
   <div>
-    <label>
-      <span className="u-label">Name</span>
-      <Field
-        name="name"
-        component={ DecoratedInput }
-        inputComponent={ Textfield }
-      />
-    </label>
     <fieldset>
       <legend className="u-inlineBlock">
         <span className="u-label u-gapRight">Language</span>
@@ -115,10 +105,6 @@ const formConfig = {
     errors = {
       ...errors
     };
-
-    if (!values.name) {
-      errors.name = 'Please provide a name.';
-    }
 
     if (!values.source) {
       errors.source = 'Please provide custom code.';
