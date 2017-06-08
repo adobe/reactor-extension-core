@@ -18,6 +18,8 @@ var triggers = [];
 window.addEventListener('orientationchange', function(event) {
   if (triggers.length) {
     var syntheticEvent = {
+      element: window,
+      target: window,
       nativeEvent: event
     };
 

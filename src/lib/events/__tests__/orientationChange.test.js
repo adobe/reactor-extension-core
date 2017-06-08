@@ -39,6 +39,8 @@ describe('orientationchange event type', function() {
 
   var assertTriggerCall = function(options) {
     expect(options.call.args[0]).toEqual({
+      element: mockWindow,
+      target: mockWindow,
       nativeEvent: jasmine.any(Object)
     });
   };

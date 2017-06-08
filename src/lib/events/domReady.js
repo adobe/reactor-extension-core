@@ -20,6 +20,8 @@ var handleDOMContentLoaded = function(event) {
   document.removeEventListener('DOMContentLoaded', handleDOMContentLoaded, true);
 
   var syntheticEvent = {
+    element: document,
+    target: document,
     nativeEvent: event
   };
 
