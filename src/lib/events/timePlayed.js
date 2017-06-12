@@ -98,7 +98,6 @@ module.exports = function(settings, trigger) {
   }
 
   bubbly.addListener(settings, function(syntheticEvent) {
-    debugger;
     // Bubbling for this event is dependent upon the amount and unit configured for rules.
     // An event can "bubble up" to other rules with the same amount and unit but not to rules with
     // a different amount or unit. See the tests for how this plays out.

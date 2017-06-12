@@ -51,7 +51,7 @@ describe('custom event event type', function() {
       bubbleFireIfParent: true
     }, trigger);
 
-    var event = triggerCustomEvent(innerElement, CUSTOM_EVENT_TYPE);
+    triggerCustomEvent(innerElement, CUSTOM_EVENT_TYPE);
 
     expect(trigger.calls.count()).toBe(1);
     var call = trigger.calls.mostRecent();
