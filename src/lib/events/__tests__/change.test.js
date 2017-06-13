@@ -125,5 +125,27 @@ describe('change event type', function() {
 
       expect(trigger.calls.count()).toBe(0);
     });
+
+    it('triggers rule when empty string matches', function() {
+      var trigger = jasmine.createSpy();
+
+      delegate({
+        elementSelector: '#outer',
+        value: '',
+        bubbleFireIfParent: true,
+        bubbleFireIfChildFired: true
+      }, trigger);
+
+      innerElement.value = '';
+      Simulate.change(innerElement);
+
+      expect(trigger.calls.count()).toBe(1);
+
+      assertTriggerCall({
+        call: trigger.calls.mostRecent(),
+        target: innerElement,
+        element: outerElement
+      });
+    });
   });
 });

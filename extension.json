@@ -59,6 +59,59 @@
       }
     },
     {
+      "name": "change",
+      "categoryName": "Form",
+      "displayName": "Change",
+      "libPath": "src/lib/events/change.js",
+      "viewPath": "index.html#/events/change",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "elementSelector": {
+            "type": "string",
+            "minLength": 1
+          },
+          "elementProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "value": {
+                  "type": "string"
+                },
+                "valueIsRegex": {
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": false,
+              "required": ["name", "value"]
+            }
+          },
+          "bubbleFireIfParent": {
+            "type": "boolean"
+          },
+          "bubbleFireIfChildFired": {
+            "type": "boolean"
+          },
+          "bubbleStop": {
+            "type": "boolean"
+          },
+          "value": {
+            "type": "string"
+          },
+          "valueIsRegex": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
       "name": "click",
       "categoryName": "Mouse",
       "displayName": "Click",

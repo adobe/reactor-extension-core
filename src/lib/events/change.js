@@ -40,7 +40,12 @@ document.addEventListener('change', bubbly.evaluateEvent, true);
  * @param {ruleTrigger} trigger The trigger callback.
  */
 module.exports = function(settings, trigger) {
-  var acceptableValue = settings.valueIsRegex ? new RegExp(settings.value, 'i') : settings.value;
+  var acceptableValue;
+
+  if (settings.value !== undefined) {
+    acceptableValue = settings.valueIsRegex ? new RegExp(settings.value, 'i') : settings.value;
+  }
+
   bubbly.addListener(settings, function(syntheticEvent) {
     if (acceptableValue === undefined || textMatch(syntheticEvent.target.value, acceptableValue)) {
       trigger(syntheticEvent);
