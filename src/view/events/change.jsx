@@ -13,6 +13,7 @@
 import React from 'react';
 import Checkbox from '@coralui/redux-form-react-coral/lib/Checkbox';
 import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
+import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 import { Field, formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
 
@@ -40,7 +41,9 @@ const Change = ({ showValueField }) => (
               name="value"
               className="u-gapRight"
               placeholder="Value"
-              component={ Textfield }
+              component={ DecoratedInput }
+              inputComponent={ Textfield }
+              supportDataElement
             />
             <Field
               name="valueIsRegex"
