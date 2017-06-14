@@ -1,5 +1,5 @@
 {
-  "name": "dtm",
+  "name": "core",
   "version": "1.0.0",
   "displayName": "Core",
   "description": "Core extension for Launch. Provides default event, condition, and data element types available to all Launch users.",
