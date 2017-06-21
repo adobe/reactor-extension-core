@@ -1,4 +1,4 @@
-# @adobe/extension-dtm
+# @adobe/extension-core
 [![Build Status][status-image]][status-url] [![Coverage Status][coverage-image]][coverage-url] [![NPM Dependencies][npm-dependencies-image]][npm-dependencies-url] [![Sandbox][sandbox-image]][sandbox-url]
 
 Core extension for Launch. Provides default event, condition, and data element types available to all Launch users.
@@ -11,11 +11,11 @@ Core extension for Launch. Provides default event, condition, and data element t
 
 See the [@adobe/reactor-sandbox README](https://github.com/Adobe-Marketing-Cloud/reactor-sandbox) and the [extension-support-testrunner README](https://github.com/Adobe-Marketing-Cloud/reactor-testrunner) for more information on how to build and test this project.
 
-[status-url]: https://dtm-builder.ut1.mcps.adobe.net/job/extension-dtm
-[status-image]: https://dtm-builder.ut1.mcps.adobe.net/buildStatus/icon?job=extension-dtm
-[coverage-url]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-dtm/lastStableBuild/cobertura/
-[coverage-image]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-dtm/ws/badges/coverage.svg
-[npm-dependencies-url]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-dtm/ws/dependencies.txt
-[npm-dependencies-image]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-dtm/ws/badges/dependencies.svg
-[sandbox-url]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-dtm/ws/sandbox/viewSandbox.html
-[sandbox-image]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-dtm/ws/badges/sandbox.svg
+[status-url]: https://dtm-builder.ut1.mcps.adobe.net/job/extension-core
+[status-image]: https://dtm-builder.ut1.mcps.adobe.net/buildStatus/icon?job=extension-core
+[coverage-url]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-core/lastStableBuild/cobertura/
+[coverage-image]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-core/ws/badges/coverage.svg
+[npm-dependencies-url]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-core/ws/dependencies.txt
+[npm-dependencies-image]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-core/ws/badges/dependencies.svg
+[sandbox-url]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-core/ws/sandbox/viewSandbox.html
+[sandbox-image]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-core/ws/badges/sandbox.svg
