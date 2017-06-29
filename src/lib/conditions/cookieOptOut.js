@@ -26,9 +26,9 @@ var propertySettings = require('@turbine/property-settings');
  * @returns {boolean}
  */
 module.exports = function(settings) {
-  var cookieName = propertySettings.euCookieName === undefined ?
+  var cookieName = propertySettings.trackingCookieName === undefined ?
     'sat_track' :
-    propertySettings.euCookieName;
+    propertySettings.trackingCookieName;
   return cookie.parse(document.cookie)[cookieName] === (settings.acceptsCookies ? 'true' : 'false');
 };
 

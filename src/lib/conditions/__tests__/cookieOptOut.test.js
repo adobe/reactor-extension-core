@@ -50,12 +50,12 @@ describe('cookie opt-out condition delegate', function() {
         mockPropertySettings = {};
 
         if (customCookieName) {
-          mockPropertySettings.euCookieName = customCookieName;
+          mockPropertySettings.trackingCookieName = customCookieName;
           cookieName = customCookieName;
         } else {
-          delete mockPropertySettings.euCookieName;
+          delete mockPropertySettings.trackingCookieName;
         }
-        
+
         conditionDelegate = conditionDelegateInjector({
           '@turbine/property-settings': mockPropertySettings
         });
