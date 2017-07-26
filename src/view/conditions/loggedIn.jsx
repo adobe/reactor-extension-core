@@ -12,6 +12,7 @@
 
 import React from 'react';
 import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
+import InfoTip from '@reactor/react-components/lib/infoTip';
 import { Field } from 'redux-form';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
@@ -19,13 +20,19 @@ import extensionViewReduxForm from '../extensionViewReduxForm';
 
 const LoggedIn = () => (
   <label className="u-gapRight">
-    <span className="u-label">Data element identifying whether the user is logged in</span>
+    <span className="u-label">
+      Data element identifying whether the user is logged in
+    </span>
     <Field
       name="dataElement"
       component={ DecoratedInput }
       inputComponent={ Textfield }
       supportDataElementName
     />
+    <InfoTip className="u-noPadding" placement="bottom">
+      Create and/or select the data element that contains the login status. Because this MUST
+      be a data element, only enter the name--no need to add &quot;%&quot; before or after.
+    </InfoTip>
   </label>
 );
 

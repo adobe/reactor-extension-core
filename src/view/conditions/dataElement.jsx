@@ -12,6 +12,7 @@
 
 import React from 'react';
 import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
+import InfoTip from '@reactor/react-components/lib/infoTip';
 import { Field } from 'redux-form';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
@@ -36,6 +37,11 @@ const DataElement = () => (
         component={ DecoratedInput }
         inputComponent={ Textfield }
       />
+      <InfoTip placement="bottom">
+        Specify a text (string) value here. The rule will only fire if the specified data element
+        returns this string. Note: if your data element returns a number, this will not work
+        as expected.
+      </InfoTip>
     </label>
     <Field
       name="valueIsRegex"

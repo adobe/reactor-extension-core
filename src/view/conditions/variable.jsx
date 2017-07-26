@@ -11,9 +11,8 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Icon from '@coralui/react-coral/lib/Icon';
 import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
-import Tooltip from '@coralui/react-coral/lib/Tooltip';
+import InfoTip from '@reactor/react-components/lib/infoTip';
 import { Field } from 'redux-form';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
@@ -31,7 +30,7 @@ const Variable = () => (
         inputComponent={ Textfield }
       />
     </label>
-    <label className="u-gapRight">
+    <label>
       <span className="u-label">JS Variable Value</span>
       <Field
         name="value"
@@ -39,15 +38,11 @@ const Variable = () => (
         inputComponent={ Textfield }
       />
     </label>
-    <Tooltip
-      className="u-tooltipMaxWidth"
-      openOn="hover"
-      content="Specify a text (string) value here. The rule will only fire if the specified
+    <InfoTip className="u-gapRight" placement="bottom">
+      Specify a text (string) value here. The rule will only fire if the specified
       variable contains this string. Note: If your variable contains a number, this will not
-      work as expected."
-    >
-      <Icon icon="infoCircle" size="XS" className="u-inline-tooltip u-gapRight" />
-    </Tooltip>
+      work as expected.
+    </InfoTip>
     <Field
       name="valueIsRegex"
       component={ RegexToggle }

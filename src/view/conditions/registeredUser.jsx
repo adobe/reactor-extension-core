@@ -12,6 +12,7 @@
 
 import React from 'react';
 import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
+import InfoTip from '@reactor/react-components/lib/infoTip';
 import { Field } from 'redux-form';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
@@ -28,6 +29,11 @@ const RegisteredUser = () => (
       inputComponent={ Textfield }
       supportDataElementName
     />
+    <InfoTip className="u-noPadding" placement="bottom">
+      Create and/or select the data element that contains user registration status. Because
+      this MUST be a data element, only enter the name--no need to add &quot;%&quot; before or
+      after.
+    </InfoTip>
   </label>
 );
 

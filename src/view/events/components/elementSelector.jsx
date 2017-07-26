@@ -12,6 +12,8 @@
 
 import React from 'react';
 import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
+import InfoTip from '@reactor/react-components/lib/infoTip';
+import Link from '@coralui/react-coral/lib/Link';
 import { Field } from 'redux-form';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
@@ -22,8 +24,19 @@ export default () => (
       name="elementSelector"
       component={ DecoratedInput }
       inputComponent={ Textfield }
-      supportCssSelector
     />
+    <InfoTip>
+      CSS selectors allow you to target specific elements in a webpage.
+      <br />
+      <Link
+        href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors"
+        rel="noopener noreferrer"
+        target="_blank"
+        subtle
+      >
+        Learn more about CSS selectors.
+      </Link>
+    </InfoTip>
   </label>
 );
 

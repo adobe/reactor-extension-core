@@ -13,6 +13,7 @@
 import React from 'react';
 import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
 import Select from '@coralui/redux-form-react-coral/lib/Select';
+import InfoTip from '@reactor/react-components/lib/infoTip';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 import { Field } from 'redux-form';
 
@@ -24,13 +25,19 @@ const CartItemQuantity = () => (
   <div>
     <div>
       <label>
-        <span className="u-label">The cart item quantity identified by the data element</span>
+        <span className="u-label">
+          The cart item quantity identified by the data element
+        </span>
         <Field
           name="dataElement"
           component={ DecoratedInput }
           inputComponent={ Textfield }
           supportDataElementName
         />
+        <InfoTip className="u-noPadding" placement="bottom">
+          Create and/or select the data element that contains the cart quantity. Because this MUST
+          be a data element, only enter the name--no need to add &quot;%&quot; before or after.
+        </InfoTip>
       </label>
     </div>
     <div className="u-gapTop">

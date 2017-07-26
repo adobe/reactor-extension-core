@@ -12,8 +12,10 @@
 
 import React from 'react';
 import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
+import Link from '@coralui/react-coral/lib/Link';
 import { Field } from 'redux-form';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
+import InfoTip from '@reactor/react-components/lib/infoTip';
 
 import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
 import ElementFilter, { formConfig as elementFilterFormConfig } from './components/elementFilter';
@@ -23,12 +25,26 @@ import mergeFormConfigs from '../utils/mergeFormConfigs';
 const CustomEvent = () => (
   <div>
     <label>
-      <span className="u-label">Custom Event Type</span>
+      <span className="u-label">
+        Custom Event Type
+      </span>
       <Field
         name="type"
         component={ DecoratedInput }
         inputComponent={ Textfield }
       />
+      <InfoTip placement="bottom">
+        This is the name of the event that will be triggered.
+        <br />
+        <Link
+          href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors"
+          rel="noopener noreferrer"
+          target="_blank"
+          subtle
+        >
+          Learn more about custom events.
+        </Link>
+      </InfoTip>
     </label>
     <ElementFilter />
     <AdvancedEventOptions />

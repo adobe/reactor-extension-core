@@ -58,11 +58,10 @@ const CustomCode = ({ language }) => (
           >
             Execute globally
           </Field>
-          <InfoTip className="CustomAction-checkboxErrorTip">
-            Global execution is only necessary when the script needs its
-            own variables to be globally visible. Enabling this will disable binding of
-            the variables &quot;this&quot;, &quot;event&quot;, and &quot;target&quot; within the
-            script.
+          <InfoTip className="u-noPadding">
+            Global execution is needed only in cases when the script relies on its own variables to
+            be globally visible. Turning this on will disable binding of the variables
+            &quot;this&quot;, &quot;event&quot;, and &quot;target&quot; within the script.
           </InfoTip>
         </div> : null
     }
