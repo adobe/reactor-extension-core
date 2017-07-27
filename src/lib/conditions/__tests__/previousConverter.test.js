@@ -39,6 +39,6 @@ describe('previous converter condition delegate', function() {
     dataElementValue = undefined;
     expect(conditionDelegate(settings)).toBe(false);
 
-    expect(getDataElementValue).toHaveBeenCalledWith('foo', true);
+    expect(getDataElementValue).toHaveBeenCalledWith('foo');
   });
 });

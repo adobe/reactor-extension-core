@@ -22,6 +22,6 @@ var getDataElementValue = require('@turbine/get-data-element-value');
  * @returns {boolean}
  */
 module.exports = function(settings) {
-  return Boolean(getDataElementValue(settings.dataElement, true));
+  return Boolean(getDataElementValue(settings.dataElement));
 };
 
