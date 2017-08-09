@@ -73,6 +73,7 @@ import CustomCodeDataElement from './dataElements/customCode';
 import DOMDataElement from './dataElements/dom';
 import LocalStorage from './dataElements/localStorage';
 import QueryStringParameterDataElement from './dataElements/queryStringParameter';
+import SessionStorage from './dataElements/sessionStorage';
 import VariableDataElement from './dataElements/variable';
 
 // Actions
@@ -133,6 +134,7 @@ const componentsByPath = {
   '/dataElements/dom': DOMDataElement,
   '/dataElements/localStorage': LocalStorage,
   '/dataElements/queryStringParameter': QueryStringParameterDataElement,
+  '/dataElements/sessionStorage': SessionStorage,
   '/dataElements/variable': VariableDataElement,
   '/actions/customCode': CustomCodeAction
 };

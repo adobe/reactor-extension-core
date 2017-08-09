@@ -1839,6 +1839,24 @@
       }
     },
     {
+      "name": "session-storage",
+      "displayName": "Session Storage",
+      "libPath": "src/lib/dataElements/sessionStorage.js",
+      "viewPath": "index.html#/dataElements/sessionStorage",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false,
+        "required": ["name"]
+      }
+    },
+    {
       "name": "javascript-variable",
       "displayName": "JavaScript Variable",
       "libPath": "src/lib/dataElements/variable.js",
