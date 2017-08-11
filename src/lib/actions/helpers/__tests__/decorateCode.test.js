@@ -35,7 +35,7 @@ describe('decorate code', function() {
 
     expect(decoratedCode).toBe(
       '<script>_satellite["__runScript1"]' +
-      '(function(event, target) {console.log("logging")});' +
+      '(function(event, target) {\nconsole.log("logging")\n});' +
       '</script>'
     );
   });
@@ -103,7 +103,7 @@ describe('decorate code', function() {
       relatedElement: {}
     }, settings.source);
 
-    expect(decoratedCode).toBe('<script>console.log("logging")</script>');
+    expect(decoratedCode).toBe('<script>\nconsole.log("logging")\n</script>');
   });
 
   it('decorates html action', function() {

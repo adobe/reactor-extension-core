@@ -20,7 +20,8 @@ var isSourceLoadedFromFile = function(action) {
 };
 
 var decorateGlobalJavaScriptCode = function(action, source) {
-  return '<scr' + 'ipt>' + source + '</scr' + 'ipt>';
+  // The line break after the source is important in case their last line of code is a comment.
+  return '<scr' + 'ipt>\n' + source + '\n</scr' + 'ipt>';
 };
 
 var decorateNonGlobalJavaScriptCode = function(action, source) {
@@ -31,9 +32,10 @@ var decorateNonGlobalJavaScriptCode = function(action, source) {
     delete _satellite[runScriptFnName];
   };
 
-  return '<scr' + 'ipt>_satellite["' + runScriptFnName + '"](function(event, target) {' +
+  // The line break after the source is important in case their last line of code is a comment.
+  return '<scr' + 'ipt>_satellite["' + runScriptFnName + '"](function(event, target) {\n' +
     source +
-    '});</scr' + 'ipt>';
+    '\n});</scr' + 'ipt>';
 };
 
 var decorators = {
