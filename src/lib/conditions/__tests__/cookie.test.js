@@ -11,14 +11,18 @@
  ****************************************************************************************/
 
 'use strict';
-var conditionDelegateInjector = require('inject!../cookie');
-var conditionDelegate = conditionDelegateInjector({
-  '@turbine/document': {
-    cookie: 'test=foo'
-  }
-});
+var cookie = require('js-cookie');
+var conditionDelegate = require('../cookie');
 
 describe('cookie condition delegate', function() {
+  beforeAll(function() {
+    cookie.set('test', 'foo');
+  });
+
+  afterAll(function() {
+    cookie.remove('test');
+  });
+
   it('returns true when the cookie matches the string value', function() {
     var settings = { name: 'test', value: 'foo' };
     expect(conditionDelegate(settings)).toBe(true);

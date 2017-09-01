@@ -12,7 +12,6 @@
 
 'use strict';
 
-var document = require('@turbine/document');
 var cookie = require('@turbine/cookie');
 var textMatch = require('../helpers/textMatch');
 
@@ -27,6 +26,6 @@ var textMatch = require('../helpers/textMatch');
  */
 module.exports = function(settings) {
   var acceptableValue = settings.valueIsRegex ? new RegExp(settings.value, 'i') : settings.value;
-  return textMatch(cookie.parse(document.cookie)[settings.name], acceptableValue);
+  return textMatch(cookie.get(settings.name), acceptableValue);
 };
 

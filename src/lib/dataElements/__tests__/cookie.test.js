@@ -12,13 +12,18 @@
 
 'use strict';
 
-var dataElementDelegate = require('inject!../cookie')({
-  '@turbine/document': {
-    cookie: 'foo=bar'
-  }
-});
+var cookie = require('js-cookie');
+var dataElementDelegate = require('../cookie');
 
 describe('cookie data element delegate', function() {
+  beforeAll(function() {
+    cookie.set('foo', 'bar');
+  });
+
+  afterAll(function() {
+    cookie.remove('foo');
+  });
+
   it('should return the value of a cookie', function() {
     var settings = {
       name: 'foo'

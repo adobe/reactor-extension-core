@@ -29,6 +29,6 @@ module.exports = function(settings) {
   var cookieName = propertySettings.trackingCookieName === undefined ?
     'sat_track' :
     propertySettings.trackingCookieName;
-  return cookie.parse(document.cookie)[cookieName] === (settings.acceptsCookies ? 'true' : 'false');
+  return cookie.get(cookieName) === (settings.acceptsCookies ? 'true' : 'false');
 };
 

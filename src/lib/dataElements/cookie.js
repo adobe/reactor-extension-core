@@ -12,7 +12,6 @@
 
 'use strict';
 
-var document = require('@turbine/document');
 var cookie = require('@turbine/cookie');
 
 /**
@@ -22,5 +21,5 @@ var cookie = require('@turbine/cookie');
  * @returns {string}
  */
 module.exports = function(settings) {
-  return cookie.parse(document.cookie)[settings.name];
+  return cookie.get(settings.name);
 };

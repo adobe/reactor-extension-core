@@ -21,43 +21,27 @@ var key = function(name) {
   return '_sdsat_' + name;
 };
 
-var getCookie = function(name) {
-  return cookie.parse(document.cookie)[name];
-};
-
-var setCookie = function(name, value, days) {
-  var options = {};
-
-  if (days) {
-    var date = new Date();
-    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-    options.expires = date;
-  }
-
-  document.cookie = cookie.serialize(name, value, options);
-};
-
 var PAGE_TIME_DELIMITER = '|';
 
 // returns whether this is a new visitor session
 var trackLandingPage = function() {
   var landingPageKey = key('landing_page');
-  var existingLanding = getCookie(landingPageKey);
+  var existingLanding = cookie.get(landingPageKey);
 
   if (!existingLanding) {
-    setCookie(landingPageKey, window.location.href + PAGE_TIME_DELIMITER + (new Date().getTime()));
+    cookie.set(landingPageKey, window.location.href + PAGE_TIME_DELIMITER + (new Date().getTime()));
   }
 
   return !existingLanding;
 };
 
 var getLandingPage = function() {
-  var value = getCookie(key('landing_page'));
+  var value = cookie.get(key('landing_page'));
   return value ? value.substr(0, value.lastIndexOf(PAGE_TIME_DELIMITER)) : null;
 };
 
 var getLandingTime = function() {
-  var value = getCookie(key('landing_page'));
+  var value = cookie.get(key('landing_page'));
   return value ? Number(value.substr(value.lastIndexOf(PAGE_TIME_DELIMITER) + 1)) : null;
 };
 
@@ -71,11 +55,11 @@ var trackSessionCount = function(newSession) {
     return;
   }
   var session = getSessionCount();
-  setCookie(key('session_count'), session + 1, 365 * 2 /* two years */);
+  cookie.set(key('session_count'), session + 1, { expires: 365 * 2 /* two years */ });
 };
 
 var getSessionCount = function() {
-  return Number(getCookie(key('session_count')) || '0');
+  return Number(cookie.get(key('session_count')) || '0');
 };
 
 var getIsNewVisitor = function() {
@@ -83,30 +67,30 @@ var getIsNewVisitor = function() {
 };
 
 var trackSessionPageViewCount = function() {
-  setCookie(key('pages_viewed'), getSessionPageViewCount() + 1);
+  cookie.set(key('pages_viewed'), getSessionPageViewCount() + 1);
 };
 
 var trackLifetimePageViewCount = function() {
-  setCookie(key('lt_pages_viewed'), getLifetimePageViewCount() + 1, 365 * 2);
+  cookie.set(key('lt_pages_viewed'), getLifetimePageViewCount() + 1, { expires: 365 * 2 });
 };
 
 var getLifetimePageViewCount = function() {
-  return Number(getCookie(key('lt_pages_viewed')) || 0);
+  return Number(cookie.get(key('lt_pages_viewed')) || 0);
 };
 
 var getSessionPageViewCount = function() {
-  return Number(getCookie(key('pages_viewed')) || 0);
+  return Number(cookie.get(key('pages_viewed')) || 0);
 };
 
 var trackTrafficSource = function() {
   var k = key('traffic_source');
-  if (!getCookie(k)) {
-    setCookie(k, document.referrer);
+  if (!cookie.get(k)) {
+    cookie.set(k, document.referrer);
   }
 };
 
 var getTrafficSource = function() {
-  return getCookie(key('traffic_source'));
+  return cookie.get(key('traffic_source'));
 };
 
 var trackVisitor = function() {
