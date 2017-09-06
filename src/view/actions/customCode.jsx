@@ -70,6 +70,7 @@ const CustomCode = ({ language }) => (
       <Field
         name="source"
         component={ EditorButton }
+        language={ language }
       />
     </div>
   </div>
