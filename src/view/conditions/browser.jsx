@@ -19,6 +19,7 @@ const browserOptions = [
   'Chrome',
   'Firefox',
   'IE',
+  'Edge',
   'Safari',
   'Opera',
   'Mobile Safari',
