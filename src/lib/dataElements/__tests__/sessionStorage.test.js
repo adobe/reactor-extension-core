@@ -19,7 +19,7 @@
 'use strict';
 
 describe('session storage data element delegate', function() {
-  it('should return the value of a session storage item', function() {
+  it('returns the value of a session storage item', function() {
     var mockWindow = {
       sessionStorage: {
         getItem: jasmine.createSpy().and.returnValue('bar')
@@ -27,7 +27,7 @@ describe('session storage data element delegate', function() {
     };
 
     var dataElementDelegate = require('inject!../sessionStorage')({
-      '@turbine/window': mockWindow
+      '@adobe/reactor-window': mockWindow
     });
 
     var settings = {
@@ -38,11 +38,30 @@ describe('session storage data element delegate', function() {
     expect(mockWindow.sessionStorage.getItem).toHaveBeenCalledWith('foo');
   });
 
+  it('returns null if session storage item is not set', function() {
+    var mockWindow = {
+      sessionStorage: {
+        getItem: jasmine.createSpy().and.returnValue(null)
+      }
+    };
+
+    var dataElementDelegate = require('inject!../sessionStorage')({
+      '@adobe/reactor-window': mockWindow
+    });
+
+    var settings = {
+      name: 'foo'
+    };
+
+    expect(dataElementDelegate(settings)).toBe(null);
+    expect(mockWindow.sessionStorage.getItem).toHaveBeenCalledWith('foo');
+  });
+
   it('returns null if error is thrown (like when session storage is ' +
     'disabled in safari)', function() {
 
     var dataElementDelegate = require('inject!../sessionStorage')({
-      '@turbine/window': {}
+      '@adobe/reactor-window': {}
     });
 
     var settings = {

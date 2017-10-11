@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 'use strict';
-var window = require('@turbine/window');
+var window = require('@adobe/reactor-window');
 
 var getObjectProperty = require('../helpers/getObjectProperty.js');
 

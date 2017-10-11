@@ -12,9 +12,7 @@
 
 'use strict';
 
-var document = require('@turbine/document');
-var cookie = require('@turbine/cookie');
-var propertySettings = require('@turbine/property-settings');
+var cookie = require('@adobe/reactor-cookie');
 
 /**
  * Cookie opt-out condition. Determines whether the user has chosen to accept cookies.
@@ -26,9 +24,7 @@ var propertySettings = require('@turbine/property-settings');
  * @returns {boolean}
  */
 module.exports = function(settings) {
-  var cookieName = propertySettings.trackingCookieName === undefined ?
-    'sat_track' :
-    propertySettings.trackingCookieName;
+  var cookieName = turbine.propertySettings.trackingCookieName || 'sat_track';
   return cookie.get(cookieName) === (settings.acceptsCookies ? 'true' : 'false');
 };
 

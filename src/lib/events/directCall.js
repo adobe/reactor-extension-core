@@ -12,8 +12,6 @@
 
 'use strict';
 
-var logger = require('@turbine/logger');
-
 /**
  * Object where the key is the call name and the value is an array of all rule trigger functions
  * for that call name.
@@ -39,7 +37,7 @@ window._satellite.track = function(identifier) {
       trigger(syntheticEvent);
     });
   } else {
-    logger.log('"' + identifier + '" does not match any direct call identifiers.');
+    turbine.logger.log('"' + identifier + '" does not match any direct call identifiers.');
   }
 };
 

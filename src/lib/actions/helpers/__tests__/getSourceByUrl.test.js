@@ -13,7 +13,7 @@
 'use strict';
 
 var getSourceUrlCodeInjector = require('inject!../getSourceByUrl');
-var Promise = require('@adobe/reactor-turbine/lib/require')('@turbine/promise');
+var Promise = require('@adobe/reactor-promise');
 
 describe('get source by url', function() {
   var loadScriptSpy;
@@ -26,7 +26,7 @@ describe('get source by url', function() {
     });
 
     getSourceUrlCode = getSourceUrlCodeInjector({
-      '@turbine/load-script': loadScriptSpy
+      '@adobe/reactor-load-script': loadScriptSpy
     });
   });
 
@@ -55,7 +55,7 @@ describe('get source by url', function() {
     });
 
     var getSourceUrlCode = getSourceUrlCodeInjector({
-      'load-script': loadScriptSpy
+      '@adobe/reactor-load-script': loadScriptSpy
     });
 
     getSourceUrlCode('url1').then(function(code) {

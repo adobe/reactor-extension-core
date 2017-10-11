@@ -25,7 +25,7 @@ describe('change event type', function() {
   };
 
   describe('without value defined', function() {
-    testStandardEvent(delegate, 'change');
+    testStandardEvent(function() { return delegate; }, 'change');
   });
 
   describe('with value defined', function() {

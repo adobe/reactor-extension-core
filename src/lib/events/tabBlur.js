@@ -12,11 +12,11 @@
 
 'use strict';
 
-var once = require('@turbine/once');
-var document = require('@turbine/document');
+var document = require('@adobe/reactor-document');
 var visibilityApi = require('./helpers/visibilityApi')();
 var hiddenProperty = visibilityApi.hiddenProperty;
 var visibilityChangeEventType = visibilityApi.visibilityChangeEventType;
+var once = require('./helpers/once');
 
 /**
  * All trigger methods registered for this event type.

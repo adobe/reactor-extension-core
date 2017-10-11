@@ -12,7 +12,7 @@
 
 'use strict';
 
-var Promise = require('@adobe/reactor-turbine/lib/require')('@turbine/promise');
+var Promise = require('@adobe/reactor-promise');
 var customCodeInjector = require('inject!../customCode');
 
 describe('custom action delegate', function() {
@@ -27,10 +27,10 @@ describe('custom action delegate', function() {
 
       customCode = customCodeInjector({
         '../../../node_modules/postscribe/dist/postscribe': postscribeSpy,
-        '@turbine/document': {
+        '@adobe/reactor-document': {
           addEventListener: function(type, callback) {}
         },
-        '@turbine/write-html': writeHtmlSpy,
+        './helpers/writeHtml': writeHtmlSpy,
         './helpers/decorateCode': function(action, source) {
           return source;
         },
@@ -82,7 +82,7 @@ describe('custom action delegate', function() {
         './helpers/decorateCode': function(action, source) {
           return source;
         },
-        '@turbine/document': {
+        '@adobe/reactor-document': {
           addEventListener: function(type, callback) {
             if (type === 'DOMContentLoaded') {
               callback();

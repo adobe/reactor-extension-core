@@ -12,9 +12,7 @@
 
 'use strict';
 
-var conditionDelegateInjector = require('inject!../cookieOptOut');
-
-var conditionDelegate;
+var conditionDelegate = require('../cookieOptOut');
 
 var cookie = require('cookie');
 
@@ -56,9 +54,13 @@ describe('cookie opt-out condition delegate', function() {
           delete mockPropertySettings.trackingCookieName;
         }
 
-        conditionDelegate = conditionDelegateInjector({
-          '@turbine/property-settings': mockPropertySettings
+        mockTurbineVariable({
+          propertySettings: mockPropertySettings
         });
+      });
+
+      afterAll(function() {
+        resetTurbineVariable();
       });
 
       it('returns true when the cookie is set to "true" and acceptsCookies is true', function() {

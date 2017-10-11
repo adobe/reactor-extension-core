@@ -12,8 +12,8 @@
 
 'use strict';
 
-var WeakMap = require('@turbine/weak-map');
-var debounce = require('@turbine/debounce');
+var WeakMap = require('./helpers/weakMap');
+var debounce = require('./helpers/debounce');
 var enableWeakMapDefaultValue = require('./helpers/enableWeakMapDefaultValue');
 
 var POLL_INTERVAL = 3000;

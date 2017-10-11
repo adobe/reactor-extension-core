@@ -20,7 +20,7 @@ var mockDocument = {
 
 var conditionDelegateInjector = require('inject!../subdomain');
 var conditionDelegate = conditionDelegateInjector({
-  '@turbine/document': mockDocument
+  '@adobe/reactor-document': mockDocument
 });
 
 describe('subdomain condition delegate', function() {

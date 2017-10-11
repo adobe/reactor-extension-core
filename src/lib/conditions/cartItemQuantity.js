@@ -12,7 +12,6 @@
 
 'use strict';
 
-var getDataElementValue = require('@turbine/get-data-element-value');
 var compareNumbers = require('./helpers/compareNumbers');
 
 /**
@@ -26,7 +25,7 @@ var compareNumbers = require('./helpers/compareNumbers');
  * @returns {boolean}
  */
 module.exports = function(settings) {
-  var quantity = Number(getDataElementValue(settings.dataElement));
+  var quantity = Number(turbine.getDataElementValue(settings.dataElement));
 
   if (isNaN(quantity)) {
     quantity = 0;

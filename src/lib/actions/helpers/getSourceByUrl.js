@@ -11,8 +11,8 @@
  ****************************************************************************************/
 
 'use strict';
-var loadScript = require('@turbine/load-script');
-var Promise = require('@turbine/promise');
+var loadScript = require('@adobe/reactor-load-script');
+var Promise = require('@adobe/reactor-promise');
 
 var codeBySourceUrl = {};
 var scriptStore = {};

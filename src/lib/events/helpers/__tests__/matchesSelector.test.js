@@ -14,6 +14,17 @@
 
 describe('matchesSelector', function() {
   var matchesSelector = require('../matchesSelector');
+  var mockTurbine = {
+    logger: jasmine.createSpyObj('logger', ['warn'])
+  };
+
+  beforeEach(function() {
+    mockTurbineVariable(mockTurbine);
+  });
+
+  afterEach(function() {
+    resetTurbineVariable();
+  });
 
   it('returns true if the selector matches', function() {
     var div = document.createElement('div');
@@ -43,13 +54,7 @@ describe('matchesSelector', function() {
   });
 
   it('logs a warning when selector matching fails', function() {
-    var logger = jasmine.createSpyObj('logger', ['warn']);
-    var matchesSelectorInjector = require('inject!../matchesSelector');
-    var matchesSelector = matchesSelectorInjector({
-      '@turbine/logger': logger
-    });
-
     matchesSelector(document.body, 'somewrong#!@$%selector');
-    expect(logger.warn).toHaveBeenCalled();
+    expect(mockTurbine.logger.warn).toHaveBeenCalled();
   });
 });

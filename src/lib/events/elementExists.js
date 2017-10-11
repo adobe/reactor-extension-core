@@ -14,7 +14,7 @@
 
 var POLL_INTERVAL = 3000;
 
-var WeakMap = require('@turbine/weak-map');
+var WeakMap = require('./helpers/weakMap');
 var seenElements = new WeakMap();
 var matchesProperties = require('./helpers/matchesProperties');
 

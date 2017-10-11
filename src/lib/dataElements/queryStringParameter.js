@@ -12,7 +12,8 @@
 
 'use strict';
 
-var getQueryParam = require('@turbine/get-query-param');
+var window = require('@adobe/reactor-window');
+var queryString = require('@adobe/reactor-query-string');
 
 /**
  * The query string parameter data element.
@@ -22,5 +23,18 @@ var getQueryParam = require('@turbine/get-query-param');
  * @returns {string}
  */
 module.exports = function(settings) {
-  return getQueryParam(settings.name, settings.caseInsensitive || false);
+  var queryParams = queryString.parse(window.location.search);
+
+  if (settings.caseInsensitive) {
+    var lowerCaseName = settings.name.toLowerCase();
+    var keys = Object.keys(queryParams);
+    for (var i = 0; i < keys.length; i++) {
+      var key = keys[i];
+      if (key.toLowerCase() === lowerCaseName) {
+        return queryParams[key];
+      }
+    }
+  } else {
+    return queryParams[settings.name];
+  }
 };

@@ -12,11 +12,10 @@
 
 'use strict';
 
-var propertySettings = require('@turbine/property-settings');
-var WeakMap = require('@turbine/weak-map');
-var evaluatedEvents = new WeakMap();
+var window = require('@adobe/reactor-window');
 var bubbly = require('./helpers/createBubbly')();
-var window = require('@turbine/window');
+var WeakMap = require('./helpers/weakMap');
+var evaluatedEvents = new WeakMap();
 
 /**
  * Determines whether an element is a link that would navigate the user's current window to a
@@ -98,7 +97,7 @@ module.exports = function(settings, trigger) {
           nativeEvent.preventDefault();
           setTimeout(function() {
             window.location = nativeEvent.target.href;
-          }, propertySettings.linkDelay || 100);
+          }, turbine.propertySettings.linkDelay || 100);
         }
         evaluatedEvents.set(nativeEvent, true);
       }

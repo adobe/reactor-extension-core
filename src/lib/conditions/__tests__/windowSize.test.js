@@ -21,7 +21,7 @@ var mockDocument = {
 
 var conditionDelegateInjector = require('inject!../windowSize');
 var conditionDelegate = conditionDelegateInjector({
-  '@turbine/document': mockDocument
+  '@adobe/reactor-document': mockDocument
 });
 
 var getSettings = function(width, widthOperator, height, heightOperator) {

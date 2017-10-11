@@ -12,10 +12,9 @@
 
 'use strict';
 
-var cookie = require('@turbine/cookie');
-var document = require('@turbine/document');
-var window = require('@turbine/window');
-var logger = require('@turbine/logger');
+var cookie = require('@adobe/reactor-cookie');
+var document = require('@adobe/reactor-document');
+var window = require('@adobe/reactor-window');
 
 var key = function(name) {
   return '_sdsat_' + name;
@@ -119,7 +118,7 @@ var enable = function() {
 var wrapForEnablement = function(fn) {
   return function() {
     if (!enabled) {
-      logger.error('Visitor tracking not enabled. Data may be inaccurate.');
+      turbine.logger.error('Visitor tracking not enabled. Data may be inaccurate.');
     }
 
     return fn.apply(this, arguments);

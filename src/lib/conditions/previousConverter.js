@@ -12,8 +12,6 @@
 
 'use strict';
 
-var getDataElementValue = require('@turbine/get-data-element-value');
-
 /**
  * Previous converter condition. Determines if the user is a previous converter.
  * @param {Object} settings Condition settings.
@@ -22,6 +20,6 @@ var getDataElementValue = require('@turbine/get-data-element-value');
  * @returns {boolean}
  */
 module.exports = function(settings) {
-  return Boolean(getDataElementValue(settings.dataElement));
+  return Boolean(turbine.getDataElementValue(settings.dataElement));
 };
 

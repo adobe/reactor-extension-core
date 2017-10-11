@@ -12,16 +12,27 @@
 
 'use strict';
 
-var decorateCodeInjector = require('inject!../decorateCode');
-var decorateCode = decorateCodeInjector({
-  '@turbine/replace-tokens': function(token) {
-    return token.replace(/%(.+?)%/g, function(token, variableName) {
-      return 'replaced - ' + variableName;
-    });
-  }
-});
+var decorateCode = require('../decorateCode');
 
 describe('decorate code', function() {
+  var mockTurbine;
+
+  beforeAll(function() {
+    mockTurbine = {
+      replaceTokens: jasmine.createSpy().and.callFake(function(token) {
+        return token.replace(/%(.+?)%/g, function(token, variableName) {
+          return 'replaced - ' + variableName;
+        });
+      })
+    };
+
+    mockTurbineVariable(mockTurbine);
+  });
+
+  afterAll(function() {
+    resetTurbineVariable();
+  });
+
   it('decorates javascript action', function() {
     var settings = {
       language: 'javascript',
@@ -146,19 +157,13 @@ describe('decorate code', function() {
       source: '<div>productname</div>'
     };
 
-    var replaceTokensSpy = jasmine.createSpy('replace-tokens');
-
-    var decorateCode = decorateCodeInjector({
-      'replace-tokens': replaceTokensSpy
-    });
-
     decorateCode({
       settings: settings,
       event: {},
       relatedElement: {}
     }, settings.source);
 
-    expect(replaceTokensSpy).not.toHaveBeenCalled();
+    expect(mockTurbine.replaceTokens).not.toHaveBeenCalled();
   });
 
   it('does replace data element tokens for an html action loaded from a file', function() {

@@ -12,19 +12,21 @@
 
 'use strict';
 
-var conditionDelegateInjector = require('inject!../dataElement');
+var conditionDelegate = require('../dataElement');
 
 describe('data element condition delegate', function() {
-  var conditionDelegate;
-
   beforeAll(function() {
-    conditionDelegate = conditionDelegateInjector({
-      '@turbine/get-data-element-value': function(variableName) {
+    mockTurbineVariable({
+      getDataElementValue: function(variableName) {
         if (variableName) {
           return 'foo';
         }
       }
     });
+  });
+
+  afterAll(function() {
+    resetTurbineVariable();
   });
 
   it('returns true when the data element matches the string value', function() {

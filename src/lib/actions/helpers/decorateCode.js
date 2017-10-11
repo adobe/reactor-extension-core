@@ -12,7 +12,6 @@
 
 'use strict';
 
-var replaceTokens = require('@turbine/replace-tokens');
 var id = 0;
 
 var isSourceLoadedFromFile = function(action) {
@@ -48,7 +47,7 @@ var decorators = {
     // We need to replace tokens only for sources loaded from external files. The sources from
     // inside the container are automatically taken care by Turbine.
     if (isSourceLoadedFromFile(action)) {
-      return replaceTokens(source, action.event);
+      return turbine.replaceTokens(source, action.event);
     }
 
     return source;

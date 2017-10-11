@@ -12,7 +12,7 @@
 
 'use strict';
 
-var cookie = require('@turbine/cookie');
+var cookie = require('@adobe/reactor-cookie');
 var textMatch = require('../helpers/textMatch');
 
 /**

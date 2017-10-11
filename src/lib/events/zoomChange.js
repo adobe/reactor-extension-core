@@ -12,8 +12,8 @@
 
 'use strict';
 
-var window = require('@turbine/window');
-var once = require('@turbine/once');
+var window = require('@adobe/reactor-window');
+var once = require('./helpers/once');
 
 var triggers = [];
 

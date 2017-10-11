@@ -12,20 +12,27 @@
 
 'use strict';
 
-var conditionDelegateInjector = require('inject!../previousConverter');
+var conditionDelegate = require('../previousConverter');
 
 describe('previous converter condition delegate', function() {
+  var dataElementValue;
+  var mockTurbine;
+
+  beforeAll(function() {
+    mockTurbine = {
+      getDataElementValue: jasmine.createSpy().and.callFake(function() {
+        return dataElementValue;
+      })
+    };
+
+    mockTurbineVariable(mockTurbine);
+  });
+
+  afterAll(function() {
+    resetTurbineVariable();
+  });
+
   it('returns the data element value', function() {
-    var dataElementValue;
-
-    var getDataElementValue = jasmine.createSpy().and.callFake(function() {
-      return dataElementValue;
-    });
-
-    var conditionDelegate = conditionDelegateInjector({
-      '@turbine/get-data-element-value': getDataElementValue
-    });
-
     var settings = {
       dataElement: 'foo'
     };
@@ -39,6 +46,6 @@ describe('previous converter condition delegate', function() {
     dataElementValue = undefined;
     expect(conditionDelegate(settings)).toBe(false);
 
-    expect(getDataElementValue).toHaveBeenCalledWith('foo');
+    expect(mockTurbine.getDataElementValue).toHaveBeenCalledWith('foo');
   });
 });

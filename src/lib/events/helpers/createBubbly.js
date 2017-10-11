@@ -12,7 +12,7 @@
 
 'use strict';
 
-var WeakMap = require('@turbine/weak-map');
+var WeakMap = require('./weakMap');
 var matchesProperties = require('./matchesProperties');
 var matchesSelector = require('./matchesSelector');
 

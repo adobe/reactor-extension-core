@@ -12,7 +12,7 @@
 
 'use strict';
 
-var Promise = require('@turbine/promise');
+var Promise = require('@adobe/reactor-promise');
 var getSourceByUrl = require('./getSourceByUrl');
 
 var previousExecuteCodePromise = Promise.resolve();

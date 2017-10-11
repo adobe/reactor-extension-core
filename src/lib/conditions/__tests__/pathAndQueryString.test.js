@@ -21,7 +21,7 @@ var mockDocument = {
 
 var conditionDelegateInjector = require('inject!../pathAndQueryString');
 var conditionDelegate = conditionDelegateInjector({
-  '@turbine/document': mockDocument
+  '@adobe/reactor-document': mockDocument
 });
 
 describe('path and query string condition delegate', function() {

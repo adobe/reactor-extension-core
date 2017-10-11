@@ -12,7 +12,8 @@
 
 'use strict';
 
-var getQueryParam = require('@turbine/get-query-param');
+var window = require('@adobe/reactor-window');
+var queryString = require('@adobe/reactor-query-string');
 var textMatch = require('../helpers/textMatch');
 
 /**
@@ -27,6 +28,7 @@ var textMatch = require('../helpers/textMatch');
  */
 module.exports = function(settings) {
   var acceptableValue = settings.valueIsRegex ? new RegExp(settings.value, 'i') : settings.value;
-  return textMatch(getQueryParam(settings.name), acceptableValue);
+  var queryParams = queryString.parse(window.location.search);
+  return textMatch(queryParams[settings.name], acceptableValue);
 };
 

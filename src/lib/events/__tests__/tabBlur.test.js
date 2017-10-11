@@ -27,7 +27,7 @@ var mockDocument = {
 };
 
 var delegate = eventDelegateInjector({
-  '@turbine/document': mockDocument
+  '@adobe/reactor-document': mockDocument
 });
 
 var isIE = function() {

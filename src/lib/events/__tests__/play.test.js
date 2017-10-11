@@ -16,5 +16,5 @@ describe('play event type', function() {
   var testStandardEvent = require('./helpers/testStandardEvent');
   var delegate = require('../play');
 
-  testStandardEvent(delegate, 'play');
+  testStandardEvent(function() { return delegate; }, 'play');
 });

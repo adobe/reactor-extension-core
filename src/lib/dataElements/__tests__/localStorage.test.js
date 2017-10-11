@@ -19,7 +19,7 @@
 'use strict';
 
 describe('local storage data element delegate', function() {
-  it('should return the value of a local storage item', function() {
+  it('returns the value of a local storage item', function() {
     var mockWindow = {
       localStorage: {
         getItem: jasmine.createSpy().and.returnValue('bar')
@@ -27,7 +27,7 @@ describe('local storage data element delegate', function() {
     };
 
     var dataElementDelegate = require('inject!../localStorage')({
-      '@turbine/window': mockWindow
+      '@adobe/reactor-window': mockWindow
     });
 
     var settings = {
@@ -38,9 +38,28 @@ describe('local storage data element delegate', function() {
     expect(mockWindow.localStorage.getItem).toHaveBeenCalledWith('foo');
   });
 
+  it('returns null if local storage item is not set', function() {
+    var mockWindow = {
+      localStorage: {
+        getItem: jasmine.createSpy().and.returnValue(null)
+      }
+    };
+
+    var dataElementDelegate = require('inject!../localStorage')({
+      '@adobe/reactor-window': mockWindow
+    });
+
+    var settings = {
+      name: 'foo'
+    };
+
+    expect(dataElementDelegate(settings)).toBe(null);
+    expect(mockWindow.localStorage.getItem).toHaveBeenCalledWith('foo');
+  });
+
   it('returns null if error is thrown (like when local storage is disabled in safari)', function() {
     var dataElementDelegate = require('inject!../localStorage')({
-      '@turbine/window': {}
+      '@adobe/reactor-window': {}
     });
 
     var settings = {
