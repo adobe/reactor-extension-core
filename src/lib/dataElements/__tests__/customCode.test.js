@@ -15,7 +15,7 @@
 var dataElementDelegate = require('../customCode');
 
 describe('custom code data element delegate', function() {
-  it('should return the return value of a user-defined script', function() {
+  it('returns the return value of a user-defined script', function() {
     var settings = {
       source: function() {
         return 'foo';

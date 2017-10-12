@@ -24,11 +24,19 @@ describe('cookie data element delegate', function() {
     cookie.remove('foo');
   });
 
-  it('should return the value of a cookie', function() {
+  it('returns the value of a cookie', function() {
     var settings = {
       name: 'foo'
     };
 
     expect(dataElementDelegate(settings)).toBe('bar');
+  });
+
+  it('returns undefined if the cookie is not set', function() {
+    var settings = {
+      name: 'unicorn'
+    };
+
+    expect(dataElementDelegate(settings)).toBe(undefined);
   });
 });

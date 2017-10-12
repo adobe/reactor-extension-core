@@ -12,7 +12,6 @@
 
 'use strict';
 
-var getDataElementValue = require('@turbine/get-data-element-value');
 var textMatch = require('../helpers/textMatch');
 
 /**
@@ -27,5 +26,5 @@ var textMatch = require('../helpers/textMatch');
  */
 module.exports = function(settings) {
   var acceptableValue = settings.valueIsRegex ? new RegExp(settings.value, 'i') : settings.value;
-  return textMatch(getDataElementValue(settings.name), acceptableValue);
+  return textMatch(turbine.getDataElementValue(settings.name), acceptableValue);
 };

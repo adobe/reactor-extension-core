@@ -12,7 +12,7 @@
 
 'use strict';
 
-var clientInfo = require('@turbine/client-info');
+var clientInfo = require('./helpers/clientInfo');
 
 /**
  * Operating system condition. Determines if the actual operating system matches at least one

@@ -13,12 +13,11 @@
 'use strict';
 
 describe('directCall event type', function() {
-  var delegateInjector = require('inject!../directCall');
-  var delegate;
+  var delegate = require('../directCall');
 
   beforeAll(function() {
-    delegate = delegateInjector({
-      '@turbine/logger': {
+    mockTurbineVariable({
+      logger: {
         log: function() {}
       }
     });

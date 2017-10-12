@@ -12,16 +12,13 @@
 
 'use strict';
 
-var onPageBottom = require('@turbine/on-page-bottom');
-var document = require('@turbine/document');
-
 /**
  * All trigger methods registered for this event type.
  * @type {ruleTrigger[]}
  */
 var triggers = [];
 
-onPageBottom(function() {
+turbine.onPageBottom(function() {
   triggers.forEach(function(trigger) {
     trigger();
   });

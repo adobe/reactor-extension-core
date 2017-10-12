@@ -12,8 +12,6 @@
 
 'use strict';
 
-var getDataElementValue = require('@turbine/get-data-element-value');
-
 var POLL_INTERVAL = 1000;
 
 var triggersByName = {};
@@ -21,7 +19,7 @@ var cachedStringifiedValueByName = {};
 
 setInterval(function() {
   Object.keys(triggersByName).forEach(function(name) {
-    var stringifiedValue = JSON.stringify(getDataElementValue(name));
+    var stringifiedValue = JSON.stringify(turbine.getDataElementValue(name));
 
     if (stringifiedValue !== cachedStringifiedValueByName[name]) {
       var syntheticEvent = {
@@ -49,7 +47,7 @@ module.exports = function(settings, trigger) {
 
   if (!triggers) {
     triggers = triggersByName[name] = [];
-    cachedStringifiedValueByName[name] = JSON.stringify(getDataElementValue(name));
+    cachedStringifiedValueByName[name] = JSON.stringify(turbine.getDataElementValue(name));
   }
 
   triggers.push(trigger);

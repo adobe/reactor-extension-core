@@ -18,7 +18,7 @@ var mockClientInfo = {
 
 var conditionDelegateInjector = require('inject!../operatingSystem');
 var conditionDelegate = conditionDelegateInjector({
-  '@turbine/client-info': mockClientInfo
+  './helpers/clientInfo': mockClientInfo
 });
 
 var getSettings = function(operatingSystems) {

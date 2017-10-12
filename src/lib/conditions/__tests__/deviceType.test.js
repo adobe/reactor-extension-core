@@ -18,7 +18,7 @@ var mockClientInfo = {
 
 var conditionDelegateInjector = require('inject!../deviceType');
 var conditionDelegate = conditionDelegateInjector({
-  '@turbine/client-info': mockClientInfo
+  './helpers/clientInfo': mockClientInfo
 });
 
 var getSettings = function(deviceTypes) {

@@ -12,21 +12,29 @@
 
 'use strict';
 
-var conditionDelegate = require('inject!../queryStringParameter')({
-  '@turbine/get-query-param': function() {
-    return 'foo';
-  }
-});
-
-var getSettings = function(name, value, valueIsRegex) {
-  return {
-    name: name,
-    value: value,
-    valueIsRegex: valueIsRegex
-  };
-};
+var conditionDelegateInjector = require('inject!../queryStringParameter');
 
 describe('query string parameter condition delegate', function() {
+  var conditionDelegate;
+
+  var getSettings = function(name, value, valueIsRegex) {
+    return {
+      name: name,
+      value: value,
+      valueIsRegex: valueIsRegex
+    };
+  };
+
+  beforeAll(function() {
+    conditionDelegate = conditionDelegateInjector({
+      '@adobe/reactor-window': {
+        location: {
+          search: '?testParam=foo'
+        }
+      }
+    });
+  });
+
   it('returns true when value matches using regular string', function() {
     var settings = getSettings('testParam', 'foo', false);
     expect(conditionDelegate(settings)).toBe(true);

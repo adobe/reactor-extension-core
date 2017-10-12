@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 'use strict';
-var assign = require('@turbine/assign');
+var assign = require('@adobe/reactor-object-assign');
 var mitt = require('../../../../node_modules/mitt/dist/mitt');
 
 var CHECK_INTERVAL_MS = 1000;

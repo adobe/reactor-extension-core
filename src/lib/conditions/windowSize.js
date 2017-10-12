@@ -12,7 +12,7 @@
 
 'use strict';
 
-var document = require('@turbine/document');
+var document = require('@adobe/reactor-document');
 var compareNumbers = require('./helpers/compareNumbers');
 
 /**

@@ -12,21 +12,59 @@
 
 'use strict';
 
-var getQueryParamSpy = jasmine.createSpy().and.returnValue('bar');
-var dataElementDelegate = require('inject!../queryStringParameter')({
-  '@turbine/get-query-param': getQueryParamSpy
-});
-
 describe('query string parameter data element delegate', function() {
-  it('should return a query parameter value', function() {
+  var injectDelegate = require('inject!../queryStringParameter');
+  var delegate;
+
+  beforeAll(function() {
+    delegate = injectDelegate({
+      '@adobe/reactor-window': {
+        location: {
+          search: '?foo=bar'
+        }
+      }
+    });
+  });
+
+  it('returns a value when a match is found case-insensitively', function() {
     var settings = {
       name: 'foo',
       caseInsensitive: true
     };
 
-    var value = dataElementDelegate(settings);
+    var value = delegate(settings);
 
     expect(value).toBe('bar');
-    expect(getQueryParamSpy.calls.argsFor(0)).toEqual(['foo', true]);
+  });
+
+  it('returns a value when a match is found case-sensitively', function() {
+    var settings = {
+      name: 'foo'
+    };
+
+    var value = delegate(settings);
+
+    expect(value).toBe('bar');
+  });
+
+  it('returns undefined when a match is not found case-insensitively', function() {
+    var settings = {
+      name: 'unicorn',
+      caseInsensitive: true
+    };
+
+    var value = delegate(settings);
+
+    expect(value).toBe(undefined);
+  });
+
+  it('returns undefined when a match is not found case-sensitively', function() {
+    var settings = {
+      name: 'FOO'
+    };
+
+    var value = delegate(settings);
+
+    expect(value).toBe(undefined);
   });
 });

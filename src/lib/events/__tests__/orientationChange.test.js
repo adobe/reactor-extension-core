@@ -48,7 +48,7 @@ describe('orientationchange event type', function() {
   beforeAll(function() {
     var delegateInjector = require('inject!../orientationChange');
     delegate = delegateInjector({
-      '@turbine/window': mockWindow
+      '@adobe/reactor-window': mockWindow
     });
   });
 

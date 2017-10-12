@@ -12,26 +12,27 @@
 
 'use strict';
 
-var injector = require('inject!../pageBottom');
-
 describe('pageBottom event type', function() {
-  it('triggers rule at the bottom of the page', function() {
-    var fakeDocument;
+  var delegate;
 
-    fakeDocument = {
-      location: 'http://somelocation.com'
-    };
+  var triggerPageBottom;
+  var onPageBottom = function(callback) {
+    triggerPageBottom = callback;
+  };
 
-    var triggerPageBottom;
-    var onPageBottom = function(callback) {
-      triggerPageBottom = callback;
-    };
-
-    var delegate = injector({
-      '@turbine/document': fakeDocument,
-      '@turbine/on-page-bottom': onPageBottom
+  beforeAll(function() {
+    mockTurbineVariable({
+      onPageBottom: onPageBottom
     });
 
+    delegate = require('../pageBottom');
+  });
+
+  afterAll(function() {
+    resetTurbineVariable();
+  });
+
+  it('triggers rule at the bottom of the page', function() {
     var trigger = jasmine.createSpy();
     delegate({}, trigger);
 

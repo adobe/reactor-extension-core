@@ -29,7 +29,7 @@ describe('dom data element delegate', function() {
     document.body.removeChild(testElement);
   });
 
-  it('should return the text value of the first matching element', function() {
+  it('returns the text value of the first matching element', function() {
     var settings = {
       elementSelector: '#domDataElement',
       elementProperty: 'text'
@@ -38,12 +38,30 @@ describe('dom data element delegate', function() {
     expect(dataElementDelegate(settings)).toBe('Foo Content');
   });
 
-  it('should return an attribute of the first matching element', function() {
+  it('returns an attribute of the first matching element', function() {
     var settings = {
       elementSelector: '#domDataElement',
       elementProperty: 'data-cake'
     };
 
     expect(dataElementDelegate(settings)).toBe('delish');
+  });
+
+  it('returns undefined if element doesn\'t exist', function() {
+    var settings = {
+      elementSelector: '#doesntExist',
+      elementProperty: 'data-cake'
+    };
+
+    expect(dataElementDelegate(settings)).toBe(undefined);
+  });
+
+  it('returns null if attribute doesn\'t exist', function() {
+    var settings = {
+      elementSelector: '#domDataElement',
+      elementProperty: 'data-doesntexist'
+    };
+
+    expect(dataElementDelegate(settings)).toBe(null);
   });
 });

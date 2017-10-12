@@ -11,6 +11,8 @@
  ****************************************************************************************/
 
 'use strict';
+var testStandardEvent = require('./helpers/testStandardEvent');
+var delegateInjector = require('inject!../click');
 
 var getClickEvent = function() {
   var event;
@@ -28,18 +30,25 @@ var getClickEvent = function() {
 };
 
 describe('click event type', function() {
-  var testStandardEvent = require('./helpers/testStandardEvent');
-
   var mockWindow = {};
   var propertySettings = {};
+  var delegate;
 
-  var delegateInjector = require('inject!../click');
-  var delegate = delegateInjector({
-    '@turbine/property-settings': propertySettings,
-    '@turbine/window': mockWindow
+  beforeAll(function() {
+    mockTurbineVariable({
+      propertySettings: propertySettings
+    });
+
+    delegate = delegateInjector({
+      '@adobe/reactor-window': mockWindow
+    });
   });
 
-  testStandardEvent(delegate, 'click');
+  afterAll(function() {
+    resetTurbineVariable();
+  });
+
+  testStandardEvent(function() { return delegate; }, 'click');
 
   describe('delay link activation', function() {
     var INITIAL_LOCATION = 'http://clicktests.com/';

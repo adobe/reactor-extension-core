@@ -35,10 +35,9 @@ var visitorTrackingInjector = require('inject!../visitorTracking');
 
 var getVisitorTracking = function(enableTracking) {
   var visitorTracking = visitorTrackingInjector({
-    '@turbine/cookie': cookie,
-    '@turbine/document': mockDocument,
-    '@turbine/window': mockWindow,
-    '@turbine/logger': mockLogger
+    '@adobe/reactor-cookie': cookie,
+    '@adobe/reactor-document': mockDocument,
+    '@adobe/reactor-window': mockWindow
   });
 
   if (enableTracking) {
@@ -66,6 +65,13 @@ describe('visitor tracking', function() {
   beforeAll(function() {
     clearTestCookies();
     spyOn(cookie, 'set').and.callThrough();
+    mockTurbineVariable({
+      logger: mockLogger
+    });
+  });
+
+  afterAll(function() {
+    resetTurbineVariable();
   });
 
   afterEach(clearTestCookies);

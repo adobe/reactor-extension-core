@@ -29,7 +29,7 @@ var Timer = require('../helpers/timer');
 var eventDelegateInjector = require('inject!../timeOnPage');
 var delegate = eventDelegateInjector({
   '../helpers/timer.js': Timer,
-  '@turbine/document': mockDocument
+  '@adobe/reactor-document': mockDocument
 });
 
 var isIE = function() {

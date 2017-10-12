@@ -12,7 +12,7 @@
 
 'use strict';
 
-var conditionDelegateInjector = require('inject!../cartAmount');
+var conditionDelegate = require('../cartAmount');
 
 var getSettings = function(dataElement, operator, amount) {
   return {
@@ -24,13 +24,16 @@ var getSettings = function(dataElement, operator, amount) {
 
 describe('cart amount condition delegate', function() {
   describe('with numerical data element value', function() {
-    var conditionDelegate;
     beforeAll(function() {
-      conditionDelegate = conditionDelegateInjector({
-        '@turbine/get-data-element-value': function() {
+      mockTurbineVariable({
+        getDataElementValue: function() {
           return 5.17;
         }
       });
+    });
+
+    afterAll(function() {
+      resetTurbineVariable();
     });
 
     it('returns true when cart amount is above "greater than" constraint', function() {
@@ -89,13 +92,16 @@ describe('cart amount condition delegate', function() {
 
   nonNumbers.forEach(function(nonNumber) {
     describe('with non-numerical data element value of ' + nonNumber.dataElementValue, function() {
-      var conditionDelegate;
       beforeAll(function() {
-        conditionDelegate = conditionDelegateInjector({
-          '@turbine/get-data-element-value': function() {
+        mockTurbineVariable({
+          getDataElementValue: function() {
             return nonNumber.dataElementValue;
           }
         });
+      });
+
+      afterAll(function() {
+        resetTurbineVariable();
       });
 
       it('coerces the value to ' + nonNumber.coercedValue, function() {

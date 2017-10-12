@@ -14,7 +14,7 @@
 
 var dataElementDelegateInjector = require('inject!../variable');
 var dataElementDelegate = dataElementDelegateInjector({
-  '@turbine/window': {
+  '@adobe/reactor-window': {
     my: {
       path: 'bar'
     }
@@ -22,7 +22,7 @@ var dataElementDelegate = dataElementDelegateInjector({
 });
 
 describe('variable data element delegate', function() {
-  it('should return an object property value', function() {
+  it('returns an object property value', function() {
     var settings = {
       path: 'my.path'
     };
@@ -30,5 +30,15 @@ describe('variable data element delegate', function() {
     var value = dataElementDelegate(settings);
 
     expect(value).toBe('bar');
+  });
+
+  it('returns undefined if path does not exist', function() {
+    var settings = {
+      path: 'path.that.does.not.exist'
+    };
+
+    var value = dataElementDelegate(settings);
+
+    expect(value).toBe(undefined);
   });
 });

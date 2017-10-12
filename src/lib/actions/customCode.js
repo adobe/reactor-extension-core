@@ -12,12 +12,11 @@
 
 'use strict';
 
-var document = require('@turbine/document');
-var writeHtml = require('@turbine/write-html');
-var logger = require('@turbine/logger');
+var document = require('@adobe/reactor-document');
 var decorateCode = require('./helpers/decorateCode');
 var loadCodeSequentially = require('./helpers/loadCodeSequentially');
 var postscribe = require('../../../node_modules/postscribe/dist/postscribe');
+var writeHtml = require('./helpers/writeHtml');
 
 
 // Initially we were using `document.write` for adding custom code before the `DOMContentLoaded`
@@ -31,7 +30,7 @@ var postscribe = require('../../../node_modules/postscribe/dist/postscribe');
 var postscribeWrite = function(source) {
   postscribe(document.body, source, {
     error: function(error) {
-      logger.error(error.msg);
+      turbine.logger.error(error.msg);
     }
   });
 };

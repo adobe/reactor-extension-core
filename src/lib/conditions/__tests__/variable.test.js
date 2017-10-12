@@ -19,7 +19,7 @@ describe('variable condition delegate', function() {
 
   beforeAll(function() {
     conditionDelegate = conditionDelegateInjector({
-      '@turbine/window': {
+      '@adobe/reactor-window': {
         test: 'foo'
       }
     });

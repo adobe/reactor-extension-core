@@ -20,7 +20,7 @@ var mockDocument = {
 
 var conditionDelegateInjector = require('inject!../domain');
 var conditionDelegate = conditionDelegateInjector({
-  '@turbine/document': mockDocument
+  '@adobe/reactor-document': mockDocument
 });
 
 var getSettings = function(domains) {

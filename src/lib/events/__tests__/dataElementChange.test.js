@@ -13,7 +13,18 @@
 'use strict';
 
 var POLL_INTERVAL = 3000;
-var delegateInjector = require('inject!../dataElementChange');
+var delegate;
+var dataElementValue;
+
+// Since we use a single delegate module instance which caches data element values, we use a unique
+// data element name for each test so that subsequent tests aren't affected by cached values.
+var getUniqueDataElementName = (function() {
+  var id = 0;
+  return function() {
+    id++;
+    return 'de' + id;
+  };
+})();
 
 /**
  * Tests whether a rule will be triggered based on a value change.
@@ -23,14 +34,12 @@ var delegateInjector = require('inject!../dataElementChange');
  */
 var testValueChange = function(initialValue, getUpdatedValue, shouldTriggerRule) {
   var trigger = jasmine.createSpy();
-  var dataElementValue = initialValue;
+  dataElementValue = initialValue;
 
-  var delegate = delegateInjector({
-    '@turbine/get-data-element-value': function() { return dataElementValue; }
-  });
+  var name = getUniqueDataElementName();
 
   delegate({
-    name: 'mydataelement'
+    name: name
   }, trigger);
 
   jasmine.clock().tick(POLL_INTERVAL);
@@ -46,7 +55,7 @@ var testValueChange = function(initialValue, getUpdatedValue, shouldTriggerRule)
 
     var call = trigger.calls.mostRecent();
     expect(call.args[0]).toEqual({
-      dataElementName: 'mydataelement'
+      dataElementName: name
     });
   } else {
     expect(trigger.calls.count()).toBe(0);
@@ -56,21 +65,29 @@ var testValueChange = function(initialValue, getUpdatedValue, shouldTriggerRule)
 describe('data element change event type', function() {
   beforeAll(function() {
     jasmine.clock().install();
+
+    mockTurbineVariable({
+      getDataElementValue: function() {
+        return dataElementValue;
+      }
+    });
+
+    delegate = require('../dataElementChange');
   });
 
   afterAll(function() {
     jasmine.clock().uninstall();
+
+    resetTurbineVariable();
   });
 
-  it('doesn\' trigger rule the first time a data element is evaluated', function() {
+  it('doesn\'t trigger rule the first time a data element is evaluated', function() {
     var trigger = jasmine.createSpy();
 
-    var delegate = delegateInjector({
-      '@turbine/get-data-element-value': function() { return 'foo'; }
-    });
+    dataElementValue = 'foo';
 
     delegate({
-      name: 'mydataelement'
+      name: getUniqueDataElementName()
     }, trigger);
 
     jasmine.clock().tick(POLL_INTERVAL);
@@ -206,20 +223,17 @@ describe('data element change event type', function() {
   it('triggers multiple rules when data element changes', function() {
     var trigger = jasmine.createSpy();
     var trigger2 = jasmine.createSpy();
-    var dataElementValue = 'foo';
 
-    var delegate = delegateInjector({
-      '@turbine/get-data-element-value': function() {
-        return dataElementValue;
-      }
-    });
+    dataElementValue = 'foo';
+
+    var name = getUniqueDataElementName();
 
     delegate({
-      name: 'mydataelement'
+      name: name
     }, trigger);
 
     delegate({
-      name: 'mydataelement'
+      name: name
     }, trigger2);
 
     dataElementValue = 'bar';

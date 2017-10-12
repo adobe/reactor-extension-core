@@ -23,124 +23,130 @@ var assertTriggerCall = function(options) {
   });
 };
 
-module.exports = function(delegate, type) {
-  beforeAll(function() {
-    outerElement = document.createElement('div');
-    outerElement.id = 'outer';
-    outerElement.title = 'outer container';
+module.exports = function(getDelegate, type) {
+  describe('standard event functionality', function() {
+    var delegate;
 
-    innerElement = document.createElement('div');
-    innerElement.id = 'inner';
-    innerElement.title = 'inner container';
-    outerElement.appendChild(innerElement);
+    beforeAll(function() {
+      delegate = getDelegate();
 
-    document.body.insertBefore(outerElement, document.body.firstChild);
-  });
+      outerElement = document.createElement('div');
+      outerElement.id = 'outer';
+      outerElement.title = 'outer container';
 
-  afterAll(function() {
-    document.body.removeChild(outerElement);
-  });
+      innerElement = document.createElement('div');
+      innerElement.id = 'inner';
+      innerElement.title = 'inner container';
+      outerElement.appendChild(innerElement);
 
-  var simulateEvent = function() {
-    // We're overloading our usage of Simulate here. The second arg is a character which only
-    // applies for simulating keyboard events but doesn't really do anything in the case of
-    // mouse events.
-    Simulate[type](innerElement, 'A');
-  };
-
-  it('triggers rule when event occurs with no element refinements', function() {
-    var trigger = jasmine.createSpy();
-
-    delegate({
-      bubbleFireIfParent: true,
-      bubbleFireIfChildFired: true
-    }, trigger);
-
-    simulateEvent();
-
-    expect(trigger.calls.count()).toBe(1);
-
-    assertTriggerCall({
-      call: trigger.calls.mostRecent(),
-      type: type,
-      target: innerElement,
-      element: innerElement
+      document.body.insertBefore(outerElement, document.body.firstChild);
     });
-  });
 
-  it('triggers rule when elementSelector matches', function() {
-    var trigger = jasmine.createSpy();
-
-    delegate({
-      elementSelector: '#outer',
-      bubbleFireIfParent: true,
-      bubbleFireIfChildFired: true
-    }, trigger);
-
-    simulateEvent();
-
-    expect(trigger.calls.count()).toBe(1);
-
-    assertTriggerCall({
-      call: trigger.calls.mostRecent(),
-      type: type,
-      target: innerElement,
-      element: outerElement
+    afterAll(function() {
+      document.body.removeChild(outerElement);
     });
-  });
 
-  it('does not trigger rule when elementSelector does not match', function() {
-    var trigger = jasmine.createSpy();
+    var simulateEvent = function() {
+      // We're overloading our usage of Simulate here. The second arg is a character which only
+      // applies for simulating keyboard events but doesn't really do anything in the case of
+      // mouse events.
+      Simulate[type](innerElement, 'A');
+    };
 
-    delegate({
-      elementSelector: '#mismatch',
-      bubbleFireIfParent: true,
-      bubbleFireIfChildFired: true
-    }, trigger);
+    it('triggers rule when event occurs with no element refinements', function() {
+      var trigger = jasmine.createSpy();
 
-    simulateEvent();
+      delegate({
+        bubbleFireIfParent: true,
+        bubbleFireIfChildFired: true
+      }, trigger);
 
-    expect(trigger.calls.count()).toBe(0);
-  });
+      simulateEvent();
 
-  it('triggers rule when elementProperties matches', function() {
-    var trigger = jasmine.createSpy();
+      expect(trigger.calls.count()).toBe(1);
 
-    delegate({
-      elementProperties: [{
-        name: 'title',
-        value: 'outer container'
-      }],
-      bubbleFireIfParent: true,
-      bubbleFireIfChildFired: true
-    }, trigger);
-
-    simulateEvent();
-
-    expect(trigger.calls.count()).toBe(1);
-
-    assertTriggerCall({
-      call: trigger.calls.mostRecent(),
-      type: type,
-      target: innerElement,
-      element: outerElement
+      assertTriggerCall({
+        call: trigger.calls.mostRecent(),
+        type: type,
+        target: innerElement,
+        element: innerElement
+      });
     });
-  });
 
-  it('does not trigger rule when elementProperties does not match', function() {
-    var trigger = jasmine.createSpy();
+    it('triggers rule when elementSelector matches', function() {
+      var trigger = jasmine.createSpy();
 
-    delegate({
-      elementProperties: [{
-        name: 'title',
-        value: 'mismatch container'
-      }],
-      bubbleFireIfParent: true,
-      bubbleFireIfChildFired: true
-    }, trigger);
+      delegate({
+        elementSelector: '#outer',
+        bubbleFireIfParent: true,
+        bubbleFireIfChildFired: true
+      }, trigger);
 
-    simulateEvent();
+      simulateEvent();
 
-    expect(trigger.calls.count()).toBe(0);
+      expect(trigger.calls.count()).toBe(1);
+
+      assertTriggerCall({
+        call: trigger.calls.mostRecent(),
+        type: type,
+        target: innerElement,
+        element: outerElement
+      });
+    });
+
+    it('does not trigger rule when elementSelector does not match', function() {
+      var trigger = jasmine.createSpy();
+
+      delegate({
+        elementSelector: '#mismatch',
+        bubbleFireIfParent: true,
+        bubbleFireIfChildFired: true
+      }, trigger);
+
+      simulateEvent();
+
+      expect(trigger.calls.count()).toBe(0);
+    });
+
+    it('triggers rule when elementProperties matches', function() {
+      var trigger = jasmine.createSpy();
+
+      delegate({
+        elementProperties: [{
+          name: 'title',
+          value: 'outer container'
+        }],
+        bubbleFireIfParent: true,
+        bubbleFireIfChildFired: true
+      }, trigger);
+
+      simulateEvent();
+
+      expect(trigger.calls.count()).toBe(1);
+
+      assertTriggerCall({
+        call: trigger.calls.mostRecent(),
+        type: type,
+        target: innerElement,
+        element: outerElement
+      });
+    });
+
+    it('does not trigger rule when elementProperties does not match', function() {
+      var trigger = jasmine.createSpy();
+
+      delegate({
+        elementProperties: [{
+          name: 'title',
+          value: 'mismatch container'
+        }],
+        bubbleFireIfParent: true,
+        bubbleFireIfChildFired: true
+      }, trigger);
+
+      simulateEvent();
+
+      expect(trigger.calls.count()).toBe(0);
+    });
   });
 };

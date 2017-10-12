@@ -13,8 +13,8 @@
 'use strict';
 var POLL_INTERVAL = 3000;
 
-var once = require('@turbine/once');
-var WeakMap = require('@turbine/weak-map');
+var once = require('./once');
+var WeakMap = require('./weakMap');
 var calledCallbacksByElement = new WeakMap();
 
 // Create a naked object with no prototype so we can safely use it as a map.

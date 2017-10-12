@@ -12,8 +12,8 @@
 
 'use strict';
 
-var debounce = require('@turbine/debounce');
-var once = require('@turbine/once');
+var debounce = require('./helpers/debounce');
+var once = require('./helpers/once');
 
 var history = window.history;
 var lastURI = window.location.href;
