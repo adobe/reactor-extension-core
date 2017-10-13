@@ -21,13 +21,11 @@
  * @returns {string}
  */
 module.exports = function(settings) {
-  var elements = document.querySelectorAll(settings.elementSelector);
-  if (elements.length > 0) {
-    var element = elements[0];
+  var element = document.querySelector(settings.elementSelector);
 
+  if (element) {
     var property = settings.elementProperty;
 
-    // TODO Can we use getObjectProperty() here or at least getElementText()?
     if (property === 'text') {
       return element.innerText || element.textContent;
     } else if (property in element) {
