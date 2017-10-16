@@ -32,7 +32,7 @@ const QueryStringParameter = () => (
       name="caseInsensitive"
       component={ Checkbox }
     >
-      Ignore capitalization differences
+      Allow capitalization differences (case-insensitive)
     </Field>
   </div>
 );
