@@ -639,7 +639,7 @@
     {
       "name": "page-top",
       "categoryName": "Page Load",
-      "displayName": "Page Top",
+      "displayName": "Library Loaded (Page Top)",
       "libPath": "src/lib/events/pageTop.js",
       "schema": {}
     },
