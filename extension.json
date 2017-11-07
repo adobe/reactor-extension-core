@@ -618,7 +618,7 @@
     {
       "name": "on-load",
       "categoryName": "Page Load",
-      "displayName": "On Load",
+      "displayName": "Window Loaded",
       "libPath": "src/lib/events/onLoad.js",
       "schema": {}
     },
