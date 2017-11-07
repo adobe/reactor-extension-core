@@ -14,19 +14,28 @@ import React from 'react';
 import { Field } from 'redux-form';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
+import Alert from '@coralui/react-coral/lib/Alert';
 
 import extensionViewReduxForm from '../extensionViewReduxForm';
 
 const DataElementChange = () => (
-  <label>
-    <span className="u-label">Data Element Name</span>
-    <Field
-      name="name"
-      component={ DecoratedInput }
-      inputComponent={ Textfield }
-      supportDataElementName
-    />
-  </label>
+  <div>
+    <Alert variant="warning" className="DataElementChange-alert">
+      This event type polls the data element value to determine if it has changed. If your rule is
+      time-sensitive, we recommend using other event types (e.g. Custom Event, Direct Call) to
+      manually fire the rule immediately after you have made data element value changes.
+    </Alert>
+
+    <label>
+      <span className="u-label">Data Element Name</span>
+      <Field
+        name="name"
+        component={ DecoratedInput }
+        inputComponent={ Textfield }
+        supportDataElementName
+      />
+    </label>
+  </div>
 );
 
 const formConfig = {
