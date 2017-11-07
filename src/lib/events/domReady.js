@@ -12,27 +12,52 @@
 
 'use strict';
 
+var document = require('@adobe/reactor-document');
 var once = require('./helpers/once');
 
 var triggers = [];
 
-var handleDOMContentLoaded = function(event) {
-  document.removeEventListener('DOMContentLoaded', handleDOMContentLoaded, true);
+var domContentLoadedTriggered = false;
 
-  var syntheticEvent = {
+var createSyntheticEvent = function(event) {
+  return {
     element: document,
     target: document,
     nativeEvent: event
   };
+};
+
+var handleDOMContentLoaded = once(function(event) {
+  domContentLoadedTriggered = true;
+
+  var syntheticEvent = createSyntheticEvent(event);
 
   triggers.forEach(function(trigger) {
     trigger(syntheticEvent);
   });
-};
 
-var watchForContentLoaded  = once(function() {
-  document.addEventListener('DOMContentLoaded', handleDOMContentLoaded, true);
+  // No need to hold onto triggers anymore.
+  triggers = null;
 });
+
+// If DOMContentLoaded has already occurred (possible if the Launch library is loaded
+// asynchronously), we execute the triggers immediately. It's possible this will cause issues
+// on IE10 and lower since readyState can be set to 'interactive' before DOM content
+// has been fully loaded:
+// https://bugs.jquery.com/ticket/12282
+// https://www.drupal.org/node/2235425
+// https://github.com/mobify/mobifyjs/issues/136
+// We are okay with this risk as IE10 usage is very low.
+// Also, when the library is asynchronously loaded, rules could fire seemingly out of order.
+// For example, rules using the DOM Ready event may fire before rules using the Page Bottom event.
+// That is because the underlying event for these rules have all already occurred, so the rules
+// are all immediately firing. The order is therefore dictated by the order that the rules are
+// emitted in the container (and therefore processed by Turbine). We are okay with documenting this
+// for users and suggesting they not use events that may actually occurred before the library has
+// loaded.
+document.readyState === 'loading' ?
+  document.addEventListener('DOMContentLoaded', handleDOMContentLoaded, true) :
+  handleDOMContentLoaded();
 
 /**
  * DOM ready event. This event occurs as soon as HTML document has been completely loaded and
@@ -41,6 +66,5 @@ var watchForContentLoaded  = once(function() {
  * @param {ruleTrigger} trigger The trigger callback.
  */
 module.exports = function(settings, trigger) {
-  watchForContentLoaded();
-  triggers.push(trigger);
+  domContentLoadedTriggered ? trigger(createSyntheticEvent()) : triggers.push(trigger);
 };

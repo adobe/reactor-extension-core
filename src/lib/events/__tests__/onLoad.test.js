@@ -13,8 +13,29 @@
 'use strict';
 
 describe('onload event type', function() {
+  var onLoadInjector = require('inject!../onLoad');
+  var triggerLoad;
+  var mockWindow;
+  var mockDocument;
+
+  beforeEach(function() {
+    mockWindow = {
+      addEventListener: function(type, callback) {
+        if (type === 'load') {
+          triggerLoad = callback;
+        }
+      }
+    };
+    mockDocument = {
+      readyState: 'loading'
+    };
+  });
+
   it('triggers rule when the load event occurs', function() {
-    var delegate = require('../onLoad');
+    var delegate = onLoadInjector({
+      '@adobe/reactor-window': mockWindow,
+      '@adobe/reactor-document': mockDocument
+    });
 
     var trigger = jasmine.createSpy();
 
@@ -22,10 +43,35 @@ describe('onload event type', function() {
 
     expect(trigger.calls.count()).toBe(0);
 
-    Simulate.event(window, 'load');
+    triggerLoad({
+      type: 'load'
+    });
 
     expect(trigger.calls.count()).toBe(1);
     var call = trigger.calls.mostRecent();
-    expect(call.args.length).toBe(0);
+    var syntheticEvent = call.args[0];
+    expect(syntheticEvent.element).toBe(mockWindow);
+    expect(syntheticEvent.target).toBe(mockWindow);
+    expect(syntheticEvent.nativeEvent.type).toBe('load');
+  });
+
+  it('triggers rule when the load event has already occurred', function() {
+    mockDocument.readyState = 'complete';
+
+    var delegate = onLoadInjector({
+      '@adobe/reactor-window': mockWindow,
+      '@adobe/reactor-document': mockDocument
+    });
+
+    var trigger = jasmine.createSpy();
+
+    delegate({}, trigger);
+
+    expect(trigger.calls.count()).toBe(1);
+    var call = trigger.calls.mostRecent();
+    var syntheticEvent = call.args[0];
+    expect(syntheticEvent.element).toBe(mockWindow);
+    expect(syntheticEvent.target).toBe(mockWindow);
+    expect(syntheticEvent.nativeEvent).toBeUndefined();
   });
 });

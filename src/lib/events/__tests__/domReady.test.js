@@ -13,22 +13,60 @@
 'use strict';
 
 describe('domReady event type', function() {
-  var delegate = require('../domReady');
+  var domReadyInjector = require('inject!../domReady');
+  var triggerDOMContentLoaded;
+  var mockDocument;
+
+  beforeEach(function() {
+    mockDocument = {
+      readyState: 'loading',
+      addEventListener: function(type, callback) {
+        if (type === 'DOMContentLoaded') {
+          triggerDOMContentLoaded = callback;
+        }
+      }
+    };
+  });
 
   it('triggers rule when the dom ready event occurs', function() {
+    var delegate = domReadyInjector({
+      '@adobe/reactor-document': mockDocument
+    });
+
     var trigger = jasmine.createSpy();
 
     delegate({}, trigger);
 
     expect(trigger.calls.count()).toBe(0);
 
-    Simulate.event(document, 'DOMContentLoaded');
+    triggerDOMContentLoaded({
+      type: 'DOMContentLoaded'
+    });
 
     expect(trigger.calls.count()).toBe(1);
     var call = trigger.calls.mostRecent();
     var syntheticEvent = call.args[0];
-    expect(syntheticEvent.element).toBe(document);
-    expect(syntheticEvent.target).toBe(document);
+    expect(syntheticEvent.element).toBe(mockDocument);
+    expect(syntheticEvent.target).toBe(mockDocument);
     expect(syntheticEvent.nativeEvent.type).toBe('DOMContentLoaded');
+  });
+
+  it('triggers rule when the dom ready event has already occurred', function() {
+    mockDocument.readyState = 'complete';
+
+    var delegate = domReadyInjector({
+      '@adobe/reactor-document': mockDocument
+    });
+
+    var trigger = jasmine.createSpy();
+
+    delegate({}, trigger);
+
+    expect(trigger.calls.count()).toBe(1);
+    var call = trigger.calls.mostRecent();
+    var syntheticEvent = call.args[0];
+    expect(syntheticEvent.element).toBe(mockDocument);
+    expect(syntheticEvent.target).toBe(mockDocument);
+    expect(syntheticEvent.nativeEvent).toBeUndefined();
   });
 });
