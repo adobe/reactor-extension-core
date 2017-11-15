@@ -15,33 +15,42 @@
 var cookie = require('@adobe/reactor-cookie');
 var document = require('@adobe/reactor-document');
 var window = require('@adobe/reactor-window');
+var getNamespacedStorage = require('../../helpers/getNamespacedStorage');
 
-var key = function(name) {
-  return '_sdsat_' + name;
-};
-
+var COOKIE_PREFIX = '_sdsat_';
+var LOCAL_STORAGE_NAMESPACE = 'visitorTracking.';
+var MIGRATED_KEY = 'cookiesMigrated';
 var PAGE_TIME_DELIMITER = '|';
 
-// returns whether this is a new visitor session
-var trackLandingPage = function() {
-  var landingPageKey = key('landing_page');
-  var existingLanding = cookie.get(landingPageKey);
+var visitorTrackingLocalStorage = getNamespacedStorage('localStorage', LOCAL_STORAGE_NAMESPACE);
+var visitorTrackingSessionStorage = getNamespacedStorage('sessionStorage', LOCAL_STORAGE_NAMESPACE);
 
-  if (!existingLanding) {
-    cookie.set(landingPageKey, window.location.href + PAGE_TIME_DELIMITER + (new Date().getTime()));
+// returns whether this is a new visitor session
+var trackLandingPageAndTime = function() {
+  var existingLandingPage = visitorTrackingSessionStorage.getItem('landingPage');
+
+  if (!existingLandingPage) {
+    visitorTrackingSessionStorage.setItem('landingPage', window.location.href);
+    visitorTrackingSessionStorage.setItem('landingTime', new Date().getTime());
   }
 
-  return !existingLanding;
+  return !existingLandingPage;
 };
 
 var getLandingPage = function() {
-  var value = cookie.get(key('landing_page'));
-  return value ? value.substr(0, value.lastIndexOf(PAGE_TIME_DELIMITER)) : null;
+  return visitorTrackingSessionStorage.getItem('landingPage');
 };
 
 var getLandingTime = function() {
-  var value = cookie.get(key('landing_page'));
-  return value ? Number(value.substr(value.lastIndexOf(PAGE_TIME_DELIMITER) + 1)) : null;
+  return Number(visitorTrackingSessionStorage.getItem('landingTime'));
+};
+
+var getSessionCount = function() {
+  return Number(visitorTrackingLocalStorage.getItem('sessionCount'));
+};
+
+var getLifetimePageViewCount = function() {
+  return Number(visitorTrackingLocalStorage.getItem('pagesViewed'));
 };
 
 var getMinutesOnSite = function() {
@@ -49,51 +58,64 @@ var getMinutesOnSite = function() {
   return Math.floor((now - getLandingTime()) / 1000 / 60);
 };
 
-var trackSessionCount = function(newSession) {
-  if (!newSession) {
-    return;
-  }
-  var session = getSessionCount();
-  cookie.set(key('session_count'), session + 1, { expires: 365 * 2 /* two years */ });
+var getTrafficSource = function() {
+  return visitorTrackingSessionStorage.getItem('trafficSource');
 };
 
-var getSessionCount = function() {
-  return Number(cookie.get(key('session_count')) || '0');
+var getSessionPageViewCount = function() {
+  return Number(visitorTrackingSessionStorage.getItem('pagesViewed'));
 };
 
 var getIsNewVisitor = function() {
   return getSessionCount() === 1;
 };
 
-var trackSessionPageViewCount = function() {
-  cookie.set(key('pages_viewed'), getSessionPageViewCount() + 1);
-};
-
-var trackLifetimePageViewCount = function() {
-  cookie.set(key('lt_pages_viewed'), getLifetimePageViewCount() + 1, { expires: 365 * 2 });
-};
-
-var getLifetimePageViewCount = function() {
-  return Number(cookie.get(key('lt_pages_viewed')) || 0);
-};
-
-var getSessionPageViewCount = function() {
-  return Number(cookie.get(key('pages_viewed')) || 0);
-};
-
-var trackTrafficSource = function() {
-  var k = key('traffic_source');
-  if (!cookie.get(k)) {
-    cookie.set(k, document.referrer);
+var trackSessionCount = function(newSession) {
+  if (newSession) {
+    visitorTrackingLocalStorage.setItem('sessionCount', getSessionCount() + 1);
   }
 };
 
-var getTrafficSource = function() {
-  return cookie.get(key('traffic_source'));
+var trackSessionPageViewCount = function() {
+  visitorTrackingSessionStorage.setItem('pagesViewed', getSessionPageViewCount() + 1);
+};
+
+var trackLifetimePageViewCount = function() {
+  visitorTrackingLocalStorage.setItem('pagesViewed', getLifetimePageViewCount() + 1);
+};
+
+var trackTrafficSource = function() {
+  if (!visitorTrackingSessionStorage.getItem('trafficSource')) {
+    visitorTrackingSessionStorage.setItem('trafficSource', document.referrer);
+  }
+};
+
+// Remove when migration period has ended. We intentionally leave cookies as they are so that if
+// DTM is running on the same domain it can still use the persisted values. Our migration strategy
+// is essentially copying data from cookies and then diverging the storage mechanism between
+// DTM and Launch (DTM uses cookies and Launch uses session and local storage).
+var migrateCookieData = function() {
+  if (!visitorTrackingLocalStorage.getItem(MIGRATED_KEY)) {
+    // We intentially do not migrate sesssion-based data since it would only affect a user that
+    // came from a page running DTM to a page running Launch and only the first visit.
+    var sessionCount = cookie.get(COOKIE_PREFIX + 'session_count');
+
+    if (sessionCount) {
+      visitorTrackingLocalStorage.setItem('sessionCount', sessionCount);
+    }
+
+    var lifetimePagesViewed = cookie.get(COOKIE_PREFIX + 'lt_pages_viewed');
+
+    if (lifetimePagesViewed) {
+      visitorTrackingLocalStorage.setItem('pagesViewed', lifetimePagesViewed);
+    }
+
+    visitorTrackingLocalStorage.setItem(MIGRATED_KEY, true);
+  }
 };
 
 var trackVisitor = function() {
-  var newSession = trackLandingPage();
+  var newSession = trackLandingPageAndTime();
   trackSessionCount(newSession);
   trackLifetimePageViewCount();
   trackSessionPageViewCount();
@@ -105,12 +127,13 @@ var enabled = false;
 /**
  * Enables visitor tracking. To be consistent with prior library versions, visitor tracking should
  * only be enabled (run) if a rule for the property is configured with a condition that needs it.
- * This is primarily to avoid unnecessary cookie storage. Each condition that requires visitor
- * tracking to run must call this function to ensure visitor tracking will run.
+ * This is primarily to avoid unnecessary processing and storage. Each condition that requires
+ * visitor tracking to run must call this function to ensure visitor tracking will run.
  */
 var enable = function() {
   if (!enabled) {
     enabled = true;
+    migrateCookieData();
     trackVisitor();
   }
 };
