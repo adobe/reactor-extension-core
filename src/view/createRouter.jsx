@@ -45,6 +45,7 @@ import CookieCondition from './conditions/cookie';
 import CookieOptOutCondition from './conditions/cookieOptOut';
 import CustomCodeCondition from './conditions/customCode';
 import DataElementCondition from './conditions/dataElement';
+import DateRangeCondition from './conditions/dateRange';
 import DeviceTypeCondition from './conditions/deviceType';
 import DomainCondition from './conditions/domain';
 import HashCondition from './conditions/hash';
@@ -108,6 +109,7 @@ const componentsByPath = {
   '/conditions/cookieOptOut': CookieOptOutCondition,
   '/conditions/customCode': CustomCodeCondition,
   '/conditions/dataElement': DataElementCondition,
+  '/conditions/dateRange': DateRangeCondition,
   '/conditions/deviceType': DeviceTypeCondition,
   '/conditions/domain': DomainCondition,
   '/conditions/hash': HashCondition,

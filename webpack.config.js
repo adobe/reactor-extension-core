@@ -83,6 +83,11 @@ module.exports = {
         test: /\.pattern$/,
         include: /src\/view/,
         loader: 'style-loader!css-loader?sourceMap!stylus-loader!import-glob-loader'
+      },
+      // Needed for moment-timezone.
+      {
+        test: /\.json$/,
+        loader: "json-loader"
       }
     ]
   },
