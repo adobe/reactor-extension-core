@@ -10,7 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import React from 'react';
 import SpecificElements, { formConfig as specificElementsFormConfig } from './components/specificElements';
 
 export default SpecificElements;
