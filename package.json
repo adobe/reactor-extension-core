@@ -21,7 +21,7 @@
     "ci-job": "xvfb-run npm test -- --ci --browser firefox chrome ie9sg ie10sg ie11sg edgesg && npm run lint && npm run package"
   },
   "dependencies": {
-    "@coralui/react-coral": "<1.0.0",
+    "@coralui/react-coral": "^0.19.9",
     "@coralui/redux-form-react-coral": "<1.0.0",
     "@reactor/react-components": "^3.1.1",
     "classnames": "^2.2.5",
