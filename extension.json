@@ -1167,6 +1167,31 @@
       }
     },
     {
+      "name": "date-range",
+      "categoryName": "Other",
+      "displayName": "Date Range",
+      "libPath": "src/lib/conditions/dateRange.js",
+      "viewPath": "index.html#/conditions/dateRange",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "timezone": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
       "name": "device-type",
       "categoryName": "Technology",
       "displayName": "Device Type",
