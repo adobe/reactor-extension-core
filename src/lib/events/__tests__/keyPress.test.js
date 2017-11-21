@@ -12,7 +12,7 @@
 
 'use strict';
 
-describe('keypress event type', function() {
+describe('key press event delegate', function() {
   var testStandardEvent = require('./helpers/testStandardEvent');
   var delegate = require('../keyPress');
 

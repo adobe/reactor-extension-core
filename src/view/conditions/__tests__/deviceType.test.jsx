@@ -11,9 +11,10 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import DeviceType from '../deviceType';
+import DeviceType, { formConfig } from '../deviceType';
 import CheckboxList from '../../components/checkboxList';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../bootstrap';
 
 const selectedDeviceTypes = [
   'Desktop',
@@ -28,13 +29,13 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-describe('device type view', () => {
+describe('device type condition view', () => {
   let extensionBridge;
   let instance;
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(DeviceType, extensionBridge));
+    instance = mount(bootstrap(DeviceType, formConfig, extensionBridge));
   });
 
   it('sets form values from settings', () => {

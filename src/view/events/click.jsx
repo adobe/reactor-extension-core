@@ -16,7 +16,6 @@ import { Field } from 'redux-form';
 
 import ElementFilter, { formConfig as elementFilterFormConfig } from './components/elementFilter';
 import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
-import extensionViewReduxForm from '../extensionViewReduxForm';
 import mergeFormConfigs from '../utils/mergeFormConfigs';
 
 const Click = () => (
@@ -33,7 +32,9 @@ const Click = () => (
   </div>
 );
 
-const formConfig = mergeFormConfigs(
+export default Click;
+
+export const formConfig = mergeFormConfigs(
   elementFilterFormConfig,
   advancedEventOptionsFormConfig,
   {
@@ -47,5 +48,3 @@ const formConfig = mergeFormConfigs(
     })
   }
 );
-
-export default extensionViewReduxForm(formConfig)(Click);

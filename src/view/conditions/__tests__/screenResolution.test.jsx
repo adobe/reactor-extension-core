@@ -15,8 +15,9 @@ import Textfield from '@coralui/react-coral/lib/Textfield';
 import Select from '@coralui/react-coral/lib/Select';
 import ErrorTip from '@reactor/react-components/lib/errorTip';
 import { Field } from 'redux-form';
-import ScreenResolution from '../screenResolution';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import ScreenResolution, { formConfig } from '../screenResolution';
+import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   const comparisonOperatorSelects = wrapper.find(Select);
@@ -43,13 +44,13 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-describe('screen resolution view', () => {
+describe('screen resolution condition view', () => {
   let extensionBridge;
   let instance;
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(ScreenResolution, extensionBridge));
+    instance = mount(bootstrap(ScreenResolution, formConfig, extensionBridge));
   });
 
   it('sets operators to greater than by default', () => {

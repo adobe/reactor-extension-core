@@ -17,7 +17,6 @@ import InfoTip from '@reactor/react-components/lib/infoTip';
 import EditorButton from '@reactor/react-components/lib/reduxForm/editorButton';
 import Checkbox from '@coralui/redux-form-react-coral/lib/Checkbox';
 import Radio from '@coralui/redux-form-react-coral/lib/Radio';
-import extensionViewReduxForm from '../extensionViewReduxForm';
 
 const LANGUAGES = {
   JAVASCRIPT: 'javascript',
@@ -79,9 +78,9 @@ const CustomCode = ({ language }) => (
 const valueSelector = formValueSelector('default');
 const stateToProps = state => ({ language: valueSelector(state, 'language') });
 
-const ConnectedCustom = connect(stateToProps)(CustomCode);
+export default connect(stateToProps)(CustomCode);
 
-const formConfig = {
+export const formConfig = {
   settingsToFormValues(values, settings) {
     return {
       ...values,
@@ -113,5 +112,3 @@ const formConfig = {
     return errors;
   }
 };
-
-export default extensionViewReduxForm(formConfig)(ConnectedCustom);

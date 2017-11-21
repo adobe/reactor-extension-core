@@ -12,7 +12,7 @@
 
 'use strict';
 
-describe('change event type', function() {
+describe('change event delegate', function() {
   var testStandardEvent = require('./helpers/testStandardEvent');
   var delegate = require('../change');
 

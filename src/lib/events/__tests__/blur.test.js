@@ -12,7 +12,7 @@
 
 'use strict';
 
-describe('blur event type', function() {
+describe('blur event delegate', function() {
   var testStandardEvent = require('./helpers/testStandardEvent');
   var delegate = require('../blur');
 

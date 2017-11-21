@@ -15,8 +15,9 @@ import Textfield from '@coralui/react-coral/lib/Textfield';
 import Radio from '@coralui/react-coral/lib/Radio';
 import Select from '@coralui/react-coral/lib/Select';
 import ErrorTip from '@reactor/react-components/lib/errorTip';
-import PageViews from '../pageViews';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import PageViews, { formConfig } from '../pageViews';
+import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   const radios = wrapper.find(Radio);
@@ -36,13 +37,13 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-describe('page views view', () => {
+describe('page views condition view', () => {
   let extensionBridge;
   let instance;
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(PageViews, extensionBridge));
+    instance = mount(bootstrap(PageViews, formConfig, extensionBridge));
   });
 
   it('sets operator to greater than by default', () => {

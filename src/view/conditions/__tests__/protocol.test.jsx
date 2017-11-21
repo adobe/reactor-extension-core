@@ -12,8 +12,9 @@
 
 import { mount } from 'enzyme';
 import Radio from '@coralui/react-coral/lib/Radio';
-import Protocol from '../protocol';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import Protocol, { formConfig } from '../protocol';
+import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   const radios = wrapper.find(Radio);
@@ -27,13 +28,13 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-describe('protocol view', () => {
+describe('protocol condition view', () => {
   let extensionBridge;
   let instance;
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(Protocol, extensionBridge));
+    instance = mount(bootstrap(Protocol, formConfig, extensionBridge));
   });
 
   it('sets http radio as checked by default', () => {

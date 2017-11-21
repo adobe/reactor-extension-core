@@ -15,8 +15,9 @@ import Textfield from '@coralui/react-coral/lib/Textfield';
 import Select from '@coralui/react-coral/lib/Select';
 import ErrorTip from '@reactor/react-components/lib/errorTip';
 import { Field } from 'redux-form';
-import WindowSize from '../windowSize';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import WindowSize, { formConfig } from '../windowSize';
+import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   const comparisonOperatorSelects = wrapper.find(Select);
@@ -43,13 +44,13 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-describe('window size view', () => {
+describe('window size condition view', () => {
   let extensionBridge;
   let instance;
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(WindowSize, extensionBridge));
+    instance = mount(bootstrap(WindowSize, formConfig, extensionBridge));
   });
 
   it('sets operators to greater than by default', () => {

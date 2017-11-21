@@ -14,8 +14,9 @@ import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Switch from '@coralui/react-coral/lib/Switch';
 import ErrorTip from '@reactor/react-components/lib/errorTip';
-import TrafficSource from '../trafficSource';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import TrafficSource, { formConfig } from '../trafficSource';
+import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   const sourceTextfield = wrapper.find(Textfield).node;
@@ -29,13 +30,13 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-describe('traffic source view', () => {
+describe('traffic source condition view', () => {
   let extensionBridge;
   let instance;
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(TrafficSource, extensionBridge));
+    instance = mount(bootstrap(TrafficSource, formConfig, extensionBridge));
   });
 
   it('sets form values from settings', () => {

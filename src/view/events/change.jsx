@@ -19,7 +19,6 @@ import { connect } from 'react-redux';
 
 import ElementFilter, { formConfig as elementFilterFormConfig } from './components/elementFilter';
 import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
-import extensionViewReduxForm from '../extensionViewReduxForm';
 import mergeFormConfigs from '../utils/mergeFormConfigs';
 import RegexToggle from '../components/regexToggle';
 
@@ -63,9 +62,9 @@ const stateToProps = state => ({
   showValueField: valueSelector(state, 'showValueField')
 });
 
-const ConnectedChange = connect(stateToProps)(Change);
+export default connect(stateToProps)(Change);
 
-const formConfig = mergeFormConfigs(
+export const formConfig = mergeFormConfigs(
   elementFilterFormConfig,
   advancedEventOptionsFormConfig,
   {
@@ -90,5 +89,3 @@ const formConfig = mergeFormConfigs(
     }
   }
 );
-
-export default extensionViewReduxForm(formConfig)(ConnectedChange);

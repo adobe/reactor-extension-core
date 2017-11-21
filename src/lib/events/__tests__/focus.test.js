@@ -12,7 +12,7 @@
 
 'use strict';
 
-describe('focus event type', function() {
+describe('focus event delegate', function() {
   var testStandardEvent = require('./helpers/testStandardEvent');
   var delegate = require('../focus');
 

@@ -16,8 +16,8 @@ import Switch from '@coralui/react-coral/lib/Switch';
 import { Field } from 'redux-form';
 
 import RegexToggle from '../regexToggle';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
-import extensionViewReduxForm from '../../extensionViewReduxForm';
+import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   const regexSwitch = wrapper.find(Switch).node;
@@ -31,7 +31,7 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-let ConnectedRegexToggle = () => (
+const ConnectedRegexToggle = () => (
   <Field
     name="valueIsRegex"
     component={ RegexToggle }
@@ -54,8 +54,6 @@ const formConfig = {
   }
 };
 
-ConnectedRegexToggle = extensionViewReduxForm(formConfig)(ConnectedRegexToggle);
-
 describe('regex toggle', () => {
   let extensionBridge;
   let instance;
@@ -69,7 +67,7 @@ describe('regex toggle', () => {
 
     window.extensionBridge = extensionBridge;
 
-    instance = mount(getFormComponent(ConnectedRegexToggle, extensionBridge));
+    instance = mount(bootstrap(ConnectedRegexToggle, formConfig, extensionBridge));
   });
 
   afterEach(() => {

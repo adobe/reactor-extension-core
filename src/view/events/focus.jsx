@@ -10,6 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import StandardEvent from './components/standardEvent';
+import StandardEvent, { formConfig as standardEventFormConfig } from './components/standardEvent';
 
 export default StandardEvent;
+export const formConfig = standardEventFormConfig;

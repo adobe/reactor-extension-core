@@ -15,7 +15,7 @@ import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
 import { Field, FieldArray } from 'redux-form';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
-import extensionViewReduxForm from '../extensionViewReduxForm';
+
 import RegexToggle from '../components/regexToggle';
 import MultipleItemEditor from './components/multipleItemEditor';
 
@@ -45,7 +45,9 @@ const PathAndQueryString = () => (
   />
 );
 
-const formConfig = {
+export default PathAndQueryString;
+
+export const formConfig = {
   settingsToFormValues(values, settings) {
     values = {
       ...values,
@@ -90,5 +92,3 @@ const formConfig = {
     return errors;
   }
 };
-
-export default extensionViewReduxForm(formConfig)(PathAndQueryString);

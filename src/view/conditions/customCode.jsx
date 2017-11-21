@@ -15,8 +15,6 @@ import InfoTip from '@reactor/react-components/lib/infoTip';
 import { Field } from 'redux-form';
 import EditorButton from '@reactor/react-components/lib/reduxForm/editorButton';
 
-import extensionViewReduxForm from '../extensionViewReduxForm';
-
 const CustomCode = () => (
   <div>
     <Field
@@ -31,7 +29,9 @@ const CustomCode = () => (
   </div>
 );
 
-const formConfig = {
+export default CustomCode;
+
+export const formConfig = {
   settingsToFormValues(values, settings) {
     return {
       ...values,
@@ -56,5 +56,3 @@ const formConfig = {
     return errors;
   }
 };
-
-export default extensionViewReduxForm(formConfig)(CustomCode);

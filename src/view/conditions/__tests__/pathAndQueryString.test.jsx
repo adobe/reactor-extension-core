@@ -14,8 +14,9 @@ import { mount } from 'enzyme';
 import ErrorTip from '@reactor/react-components/lib/errorTip';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Switch from '@coralui/react-coral/lib/Switch';
-import PathAndQueryString from '../pathAndQueryString';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import PathAndQueryString, { formConfig } from '../pathAndQueryString';
+import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   const rows = wrapper.find('[data-row]').map(row => ({
@@ -43,13 +44,13 @@ const testProps = {
   }
 };
 
-describe('path and query string view', () => {
+describe('path and query string condition view', () => {
   let extensionBridge;
   let instance;
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(PathAndQueryString, extensionBridge));
+    instance = mount(bootstrap(PathAndQueryString, formConfig, extensionBridge));
   });
 
   it('sets form values from settings', () => {

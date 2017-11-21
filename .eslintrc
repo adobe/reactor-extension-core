@@ -29,8 +29,6 @@
   },
   "globals": {
     "Simulate": true,
-    "TestPage": true,
-    "runTestPage": true,
     "_satellite": true
   }
 }

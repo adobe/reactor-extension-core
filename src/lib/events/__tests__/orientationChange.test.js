@@ -12,7 +12,7 @@
 
 'use strict';
 
-describe('orientationchange event type', function() {
+describe('orientation change event delegate', function() {
   var delegate;
   var orientationChangeCallbacks = [];
 

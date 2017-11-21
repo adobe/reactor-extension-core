@@ -13,6 +13,8 @@
 import React from 'react';
 import Button from '@coralui/react-coral/lib/Button';
 
+import './multipleItemEditor.styl';
+
 export default ({ fields, renderItem }) => {
   const rows = fields.map((field, index) => (
     <div data-type="row" key={ field }>

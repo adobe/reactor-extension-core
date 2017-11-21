@@ -12,7 +12,7 @@
 
 'use strict';
 
-describe('submit event type', function() {
+describe('submit event delegate', function() {
   var testStandardEvent = require('./helpers/testStandardEvent');
   var delegate = require('../submit');
 

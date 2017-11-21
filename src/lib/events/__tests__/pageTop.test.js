@@ -12,7 +12,7 @@
 
 'use strict';
 
-describe('pageTop event type', function() {
+describe('page top event delegate', function() {
   var delegate = require('../pageTop');
 
   it('triggers rule when the engine is loaded', function() {

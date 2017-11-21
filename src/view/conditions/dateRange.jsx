@@ -17,7 +17,8 @@ import moment from 'moment-timezone';
 import { Field } from 'redux-form';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 import InfoTip from '@reactor/react-components/lib/infoTip';
-import extensionViewReduxForm from '../extensionViewReduxForm';
+
+import './dateRange.styl';
 
 const DEFAULT_TIMEZONE = 'GMT';
 const DATETIME_FORMAT = 'YYYY-MM-DD HH:mm';
@@ -72,7 +73,9 @@ const DateRange = () => (
   </div>
 );
 
-const formConfig = {
+export default DateRange;
+
+export const formConfig = {
   settingsToFormValues(values, settings) {
     values = {
       ...values
@@ -132,5 +135,3 @@ const formConfig = {
     return errors;
   }
 };
-
-export default extensionViewReduxForm(formConfig)(DateRange);

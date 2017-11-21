@@ -35,7 +35,7 @@ var isIE = function() {
   return (myNav.indexOf('msie') !== -1) ? parseInt(myNav.split('msie')[1]) : false;
 };
 
-describe('tabfocus event type', function() {
+describe('tab focus event delegate', function() {
   if (!isIE () || isIE() > 9) {
     it('triggers rule when the tabfocus event occurs', function() {
       var trigger = jasmine.createSpy();

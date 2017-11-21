@@ -15,8 +15,9 @@ import Textfield from '@coralui/react-coral/lib/Textfield';
 import Radio from '@coralui/react-coral/lib/Radio';
 import ErrorTip from '@reactor/react-components/lib/errorTip';
 import { Field } from 'redux-form';
-import EntersViewport from '../entersViewport';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import EntersViewport, { formConfig } from '../entersViewport';
+import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   const fields = wrapper.find(Field);
@@ -38,13 +39,13 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-describe('enters viewport view', () => {
+describe('enters viewport event view', () => {
   let extensionBridge;
   let instance;
 
   beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(EntersViewport, extensionBridge));
+    instance = mount(bootstrap(EntersViewport, formConfig, extensionBridge));
   });
 
   it('sets form values from settings', () => {

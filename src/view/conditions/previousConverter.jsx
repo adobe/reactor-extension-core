@@ -16,8 +16,6 @@ import InfoTip from '@reactor/react-components/lib/infoTip';
 import { Field } from 'redux-form';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
-import extensionViewReduxForm from '../extensionViewReduxForm';
-
 const PreviousConverter = () => (
   <label className="u-gapRight">
     <span className="u-label">
@@ -37,7 +35,9 @@ const PreviousConverter = () => (
   </label>
 );
 
-const formConfig = {
+export default PreviousConverter;
+
+export const formConfig = {
   settingsToFormValues(values, settings) {
     return {
       ...values,
@@ -62,5 +62,3 @@ const formConfig = {
     return errors;
   }
 };
-
-export default extensionViewReduxForm(formConfig)(PreviousConverter);

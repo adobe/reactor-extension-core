@@ -13,8 +13,9 @@
 import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import ErrorTip from '@reactor/react-components/lib/errorTip';
-import LoggedIn from '../loggedIn';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import LoggedIn, { formConfig } from '../loggedIn';
+import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   const dataElementTextfield = wrapper.find(Textfield).node;
@@ -26,13 +27,13 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-describe('logged in view', () => {
+describe('logged in condition view', () => {
   let extensionBridge;
   let instance;
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(LoggedIn, extensionBridge));
+    instance = mount(bootstrap(LoggedIn, formConfig, extensionBridge));
   });
 
   it('sets form values from settings', () => {

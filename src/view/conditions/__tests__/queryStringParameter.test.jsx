@@ -15,8 +15,9 @@ import Textfield from '@coralui/react-coral/lib/Textfield';
 import Switch from '@coralui/react-coral/lib/Switch';
 import ErrorTip from '@reactor/react-components/lib/errorTip';
 import { Field } from 'redux-form';
-import QueryStringParameter from '../queryStringParameter';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import QueryStringParameter, { formConfig } from '../queryStringParameter';
+import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   const fields = wrapper.find(Field);
@@ -38,13 +39,13 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-describe('query string parameter view', () => {
+describe('query string parameter condition view', () => {
   let extensionBridge;
   let instance;
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(QueryStringParameter, extensionBridge));
+    instance = mount(bootstrap(QueryStringParameter, formConfig, extensionBridge));
   });
 
   it('sets form values from settings', () => {

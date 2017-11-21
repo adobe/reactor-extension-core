@@ -29,7 +29,7 @@ var getClickEvent = function() {
   return event;
 };
 
-describe('click event type', function() {
+describe('click event delegate', function() {
   var mockWindow = {};
   var propertySettings = {};
   var delegate;

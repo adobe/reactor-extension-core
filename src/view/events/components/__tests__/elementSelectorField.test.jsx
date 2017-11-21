@@ -14,9 +14,9 @@ import { mount } from 'enzyme';
 import ErrorTip from '@reactor/react-components/lib/errorTip';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Button from '@coralui/react-coral/lib/Button';
-import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
 import ElementSelector, { formConfig } from '../elementSelector';
-import extensionViewReduxForm from '../../../extensionViewReduxForm';
+import createExtensionBridge from '../../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   const textfield = wrapper.find(Textfield).node;
@@ -35,9 +35,8 @@ describe('elementSelector', () => {
   let instance;
 
   beforeAll(() => {
-    const FormComponent = extensionViewReduxForm(formConfig)(ElementSelector);
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(FormComponent, extensionBridge));
+    instance = mount(bootstrap(ElementSelector, formConfig, extensionBridge));
   });
 
   it('sets form values from settings', () => {

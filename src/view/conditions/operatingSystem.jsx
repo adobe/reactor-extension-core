@@ -13,7 +13,6 @@
 import React from 'react';
 import { Field } from 'redux-form';
 import CheckboxList from '../components/checkboxList';
-import extensionViewReduxForm from '../extensionViewReduxForm';
 
 const operatingSystemOptions = [
   'Windows',
@@ -34,7 +33,9 @@ const OperatingSystem = () =>
     options={ operatingSystemOptions }
   />);
 
-const formConfig = {
+export default OperatingSystem;
+
+export const formConfig = {
   settingsToFormValues(values, settings) {
     return {
       ...values,
@@ -48,5 +49,3 @@ const formConfig = {
     };
   }
 };
-
-export default extensionViewReduxForm(formConfig)(OperatingSystem);

@@ -15,10 +15,10 @@ import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
 import { Field } from 'redux-form';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
-import extensionViewReduxForm from '../extensionViewReduxForm';
+
 import RegexToggle from '../components/regexToggle';
 
-const LandingPage = () => (
+export default () => (
   <div>
     <label className="u-gapRight">
       <span className="u-label">Landing Page</span>
@@ -36,7 +36,7 @@ const LandingPage = () => (
   </div>
 );
 
-const formConfig = {
+export const formConfig = {
   settingsToFormValues(values, settings) {
     return {
       ...values,
@@ -61,5 +61,3 @@ const formConfig = {
     return errors;
   }
 };
-
-export default extensionViewReduxForm(formConfig)(LandingPage);

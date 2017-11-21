@@ -37,7 +37,7 @@ var isIE = function() {
   return (myNav.indexOf('msie') !== -1) ? parseInt(myNav.split('msie')[1]) : false;
 };
 
-describe('time on page event type', function() {
+describe('time on page event delegate', function() {
   beforeEach(function() {
     jasmine.clock().install();
 

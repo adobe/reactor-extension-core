@@ -13,8 +13,6 @@
 import React from 'react';
 import { Field } from 'redux-form';
 import CheckboxList from '../components/checkboxList';
-import extensionViewReduxForm from '../extensionViewReduxForm';
-
 
 const deviceTypeOptions = [
   'Desktop',
@@ -30,7 +28,9 @@ const deviceTypeOptions = [
 const DeviceType = () =>
   (<Field name="deviceTypes" component={ CheckboxList } options={ deviceTypeOptions } />);
 
-const formConfig = {
+export default DeviceType;
+
+export const formConfig = {
   settingsToFormValues(values, settings) {
     return {
       ...values,
@@ -45,5 +45,3 @@ const formConfig = {
     };
   }
 };
-
-export default extensionViewReduxForm(formConfig)(DeviceType);

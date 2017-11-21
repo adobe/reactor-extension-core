@@ -12,7 +12,7 @@
 
 'use strict';
 
-describe('domReady event type', function() {
+describe('dom ready event delegate', function() {
   var domReadyInjector = require('inject!../domReady');
   var triggerDOMContentLoaded;
   var mockDocument;

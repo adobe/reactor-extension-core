@@ -11,9 +11,10 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Domain from '../domain';
+import Domain, { formConfig } from '../domain';
 import CheckboxList from '../../components/checkboxList';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   const domainsCheckboxList = wrapper.find(CheckboxList).node;
@@ -32,13 +33,13 @@ const selectedDomains = [
   'adobe.com'
 ];
 
-describe('domain view', () => {
+describe('domain condition view', () => {
   let extensionBridge;
   let instance;
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(Domain, extensionBridge));
+    instance = mount(bootstrap(Domain, formConfig, extensionBridge));
   });
 
   it('sets form values from settings', () => {

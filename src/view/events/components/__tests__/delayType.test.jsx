@@ -14,9 +14,9 @@ import { mount } from 'enzyme';
 import Radio from '@coralui/react-coral/lib/Radio';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import ErrorTip from '@reactor/react-components/lib/errorTip';
-import extensionViewReduxForm from '../../../extensionViewReduxForm';
 import DelayType, { formConfig } from '../delayType';
-import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
+import createExtensionBridge from '../../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   const radios = wrapper.find(Radio);
@@ -39,9 +39,8 @@ describe('delayType', () => {
   let instance;
 
   beforeAll(() => {
-    const FormComponent = extensionViewReduxForm(formConfig)(DelayType);
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(FormComponent, extensionBridge));
+    instance = mount(bootstrap(DelayType, formConfig, extensionBridge));
   });
 
   describe('sets form values', () => {
