@@ -14,7 +14,7 @@ import { mount } from 'enzyme';
 import ErrorTip from '@reactor/react-components/lib/errorTip';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Switch from '@coralui/react-coral/lib/Switch';
-import PathAndQueryString, { formConfig } from '../pathAndQueryString';
+import PathAndQueryString, { formConfig } from '../pathAndQuerystring';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 

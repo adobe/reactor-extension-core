@@ -1437,8 +1437,8 @@
       "name": "path-and-querystring",
       "categoryName": "URL",
       "displayName": "Path And Query String",
-      "libPath": "src/lib/conditions/pathAndQueryString.js",
-      "viewPath": "conditions/pathAndQueryString.html",
+      "libPath": "src/lib/conditions/pathAndQuerystring.js",
+      "viewPath": "conditions/pathAndQuerystring.html",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
