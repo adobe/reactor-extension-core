@@ -16,7 +16,7 @@ import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInp
 import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
 import Alert from '@coralui/react-coral/lib/Alert';
 
-import extensionViewReduxForm from '../extensionViewReduxForm';
+import './dataElementChange.styl';
 
 const DataElementChange = () => (
   <div>
@@ -38,7 +38,9 @@ const DataElementChange = () => (
   </div>
 );
 
-const formConfig = {
+export default DataElementChange;
+
+export const formConfig = {
   settingsToFormValues(values, settings) {
     return {
       ...values,
@@ -62,5 +64,3 @@ const formConfig = {
     return errors;
   }
 };
-
-export default extensionViewReduxForm(formConfig)(DataElementChange);

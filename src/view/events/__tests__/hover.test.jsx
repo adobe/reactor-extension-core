@@ -16,8 +16,9 @@ import Checkbox from '@coralui/react-coral/lib/Checkbox';
 import Radio from '@coralui/react-coral/lib/Radio';
 import ErrorTip from '@reactor/react-components/lib/errorTip';
 import { Field } from 'redux-form';
-import Hover from '../hover';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import Hover, { formConfig } from '../hover';
+import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../bootstrap';
 import AdvancedEventOptions from '../components/advancedEventOptions';
 
 const getReactComponents = (wrapper) => {
@@ -45,13 +46,13 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-describe('hover view', () => {
+describe('hover event view', () => {
   let extensionBridge;
   let instance;
 
   beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(Hover, extensionBridge));
+    instance = mount(bootstrap(Hover, formConfig, extensionBridge));
 
     extensionBridge.init();
 

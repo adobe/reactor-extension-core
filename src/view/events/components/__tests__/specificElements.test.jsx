@@ -15,9 +15,9 @@ import Checkbox from '@coralui/react-coral/lib/Checkbox';
 import ErrorTip from '@reactor/react-components/lib/errorTip';
 import { Field } from 'redux-form';
 import SpecificElements, { formConfig } from '../specificElements';
-import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
+import createExtensionBridge from '../../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../../bootstrap';
 import ElementPropertiesEditor from '../elementPropertiesEditor';
-import extensionViewReduxForm from '../../../extensionViewReduxForm';
 
 const getReactComponents = (wrapper) => {
   const showElementPropertiesCheckbox = wrapper.find(Checkbox).node;
@@ -38,9 +38,8 @@ describe('specificElements', () => {
   let instance;
 
   beforeAll(() => {
-    const FormComponent = extensionViewReduxForm(formConfig)(SpecificElements);
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(FormComponent, extensionBridge));
+    instance = mount(bootstrap(SpecificElements, formConfig, extensionBridge));
   });
 
   it('updates view properly when elementProperties provided', () => {
@@ -63,7 +62,6 @@ describe('specificElements', () => {
     const { showElementPropertiesCheckbox, elementPropertiesEditor } = getReactComponents(instance);
     expect(showElementPropertiesCheckbox.props.checked).toBe(true);
     expect(elementPropertiesEditor).toBeDefined();
-    expect(elementPropertiesEditor.props.fields.length).toBe(2);
   });
 
   it('updates view properly when elementProperties not provided', () => {

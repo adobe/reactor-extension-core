@@ -13,6 +13,8 @@
 import React from 'react';
 import Icon from '@coralui/react-coral/lib/Icon';
 
+import './disclosureButton.styl';
+
 export default ({ ...props }) => {
   const iconClass = props.selected ? 'chevronDown' : 'chevronRight';
 

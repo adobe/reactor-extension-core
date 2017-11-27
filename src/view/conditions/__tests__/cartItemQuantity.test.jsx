@@ -15,8 +15,9 @@ import Textfield from '@coralui/react-coral/lib/Textfield';
 import Select from '@coralui/react-coral/lib/Select';
 import { Field } from 'redux-form';
 import ErrorTip from '@reactor/react-components/lib/errorTip';
-import CartItemQuantity from '../cartItemQuantity';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import CartItemQuantity, { formConfig } from '../cartItemQuantity';
+import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   const fields = wrapper.find(Field);
@@ -37,13 +38,13 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-describe('cart item quantity view', () => {
+describe('cart item quantity condition view', () => {
   let extensionBridge;
   let instance;
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(CartItemQuantity, extensionBridge));
+    instance = mount(bootstrap(CartItemQuantity, formConfig, extensionBridge));
   });
 
   it('sets operator to greater than by default', () => {

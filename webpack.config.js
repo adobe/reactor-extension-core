@@ -2,38 +2,52 @@
 
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HTMLWebpackExternalsPlugin = require('html-webpack-externals-plugin');
 const WebpackShellPlugin = require('webpack-shell-plugin');
 const argv = require('yargs').argv;
 const webpack = require('webpack');
-const pkg = require('./package.json');
+const extension = require('./extension');
+const camelCase = require('camelcase');
+const capitalize = require('capitalize');
+const createEntryFile = require('./createEntryFile');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-const plugins = [
-  new HtmlWebpackPlugin({
-    filename: 'index.html',
-    template: 'src/view/index.html'
-  })
-];
+const entries = {};
+const plugins = [];
 
-const reactVersion = pkg.dependencies['react'];
-const reactDOMVersion = pkg.dependencies['react-dom'];
+// Each view becomes its own "app". These are automatically generated based on naming convention.
+['event', 'condition', 'action', 'dataElement'].forEach((type) => {
+  const typePluralized = type + 's';
 
-plugins.push(
-  new HTMLWebpackExternalsPlugin([
-    {
-      name: 'react',
-      var: 'React',
-      url: `//unpkg.com/react@${reactVersion}/dist/react${argv.production ? '.min' : ''}.js`
-    },
-    // If we load react from a CDN, we have to do the same for react-dom without janky business. :(
-    // https://github.com/webpack/webpack/issues/1275#issuecomment-176255624
-    {
-      name: 'react-dom',
-      var: 'ReactDOM',
-      url: `//unpkg.com/react-dom@${reactDOMVersion}/dist/react-dom${argv.production ? '.min' : ''}.js`
+  extension[typePluralized].forEach((itemDescriptor) => {
+    if (itemDescriptor.viewPath) {
+      const itemName = itemDescriptor.name;
+      const itemNameCamelized = camelCase(itemName);
+      const itemNameCapitalized = capitalize(itemNameCamelized);
+      const chunkName = `${typePluralized}/${itemNameCamelized}`;
+      const entryPath = `./.entries/${chunkName}.js`;
+
+      createEntryFile(entryPath, itemNameCapitalized, chunkName);
+
+      entries[chunkName] = entryPath;
+
+      plugins.push(
+        new HtmlWebpackPlugin({
+          chunks: ['common', chunkName],
+          filename: `${chunkName}.html`,
+          template: 'src/view/template.html'
+        })
+      )
     }
-  ])
-);
+  });
+});
+
+// Split out common code from each view into a common file for caching gains.
+plugins.push(new webpack.optimize.CommonsChunkPlugin({
+  name: 'common',
+  filename: 'common.js',
+  // At least this many views must be using a piece of code before it is moved to common chunk.
+  minChunks: Math.round(Object.keys(entries).length / 4)
+}));
 
 if (argv.production) {
   plugins.push(
@@ -61,12 +75,20 @@ if (argv.runSandbox) {
   }));
 }
 
+if (argv.analyze) {
+  plugins.push(new BundleAnalyzerPlugin());
+}
+
+// Excludes locale information from moment. Locale info is unnecessary unless/until we decide
+// to internationalize.
+plugins.push(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
+
 module.exports = {
-  entry: './src/view/index.jsx',
+  entry: entries,
   plugins: plugins,
   output: {
     path: 'dist/',
-    filename: 'view.js'
+    filename: '[name].js'
   },
   module: {
     loaders: [
@@ -80,9 +102,17 @@ module.exports = {
         }
       },
       {
-        test: /\.pattern$/,
+        test: /\.js$/,
+        include: /\.entries/,
+        loader: 'babel-loader',
+        query: {
+          presets: ['es2015', 'stage-0']
+        }
+      },
+      {
+        test: /\.styl/,
         include: /src\/view/,
-        loader: 'style-loader!css-loader?sourceMap!stylus-loader!import-glob-loader'
+        loader: 'style-loader!css-loader!stylus-loader'
       },
       // Needed for moment-timezone.
       {
@@ -108,7 +138,8 @@ module.exports = {
   stylus: {
     use: [require('nib')()],
     import: [
-      path.resolve('./node_modules/nib/lib/nib/index')
+      path.resolve('./node_modules/nib/lib/nib/index'),
+      path.resolve('./src/view/units')
     ]
   }
 };

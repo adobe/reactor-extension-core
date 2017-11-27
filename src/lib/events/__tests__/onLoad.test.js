@@ -12,7 +12,7 @@
 
 'use strict';
 
-describe('onload event type', function() {
+describe('on load event delegate', function() {
   var onLoadInjector = require('inject!../onLoad');
   var triggerLoad;
   var mockWindow;

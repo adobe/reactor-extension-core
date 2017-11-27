@@ -10,13 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import React from 'react';
 import SpecificElements, { formConfig as specificElementsFormConfig } from './components/specificElements';
-import extensionViewReduxForm from '../extensionViewReduxForm';
 
-const ElementExists = () => (
-  <SpecificElements />
-);
-
-
-export default extensionViewReduxForm(specificElementsFormConfig)(ElementExists);
+export default SpecificElements;
+export const formConfig = specificElementsFormConfig;

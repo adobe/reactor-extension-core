@@ -17,7 +17,6 @@ import InfoTip from '@reactor/react-components/lib/infoTip';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 import { Field } from 'redux-form';
 
-import extensionViewReduxForm from '../extensionViewReduxForm';
 import { isNumber } from '../utils/validators';
 import comparisonOperatorOptions from './comparisonOperatorOptions';
 
@@ -62,7 +61,9 @@ const CartItemQuantity = () => (
   </div>
 );
 
-const formConfig = {
+export default CartItemQuantity;
+
+export const formConfig = {
   settingsToFormValues(values, settings) {
     return {
       ...values,
@@ -93,5 +94,3 @@ const formConfig = {
     return errors;
   }
 };
-
-export default extensionViewReduxForm(formConfig)(CartItemQuantity);

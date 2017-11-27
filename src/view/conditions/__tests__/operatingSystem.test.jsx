@@ -11,9 +11,10 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import OperatingSystem from '../operatingSystem';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import OperatingSystem, { formConfig } from '../operatingSystem';
+import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import CheckboxList from '../../components/checkboxList';
+import bootstrap from '../../bootstrap';
 
 const selectedOperatingSystems = [
   'Windows',
@@ -28,13 +29,13 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-describe('operating system view', () => {
+describe('operating system condition view', () => {
   let extensionBridge;
   let instance;
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(OperatingSystem, extensionBridge));
+    instance = mount(bootstrap(OperatingSystem, formConfig, extensionBridge));
   });
 
   it('sets form values from settings', () => {

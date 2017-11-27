@@ -14,8 +14,9 @@ import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Select from '@coralui/react-coral/lib/Select';
 import ErrorTip from '@reactor/react-components/lib/errorTip';
-import Sessions from '../sessions';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import Sessions, { formConfig } from '../sessions';
+import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   const operatorSelect = wrapper.find(Select).node;
@@ -29,13 +30,13 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-describe('sessions view', () => {
+describe('sessions condition view', () => {
   let extensionBridge;
   let instance;
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(Sessions, extensionBridge));
+    instance = mount(bootstrap(Sessions, formConfig, extensionBridge));
   });
 
   it('sets operator to greater than by default', () => {

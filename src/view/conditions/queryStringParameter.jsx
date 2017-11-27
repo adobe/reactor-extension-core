@@ -16,7 +16,6 @@ import { Field } from 'redux-form';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
 import RegexToggle from '../components/regexToggle';
-import extensionViewReduxForm from '../extensionViewReduxForm';
 
 const QueryStringParameter = () => (
   <div>
@@ -44,7 +43,9 @@ const QueryStringParameter = () => (
   </div>
 );
 
-const formConfig = {
+export default QueryStringParameter;
+
+export const formConfig = {
   settingsToFormValues(values, settings) {
     return {
       ...values,
@@ -73,5 +74,3 @@ const formConfig = {
     return errors;
   }
 };
-
-export default extensionViewReduxForm(formConfig)(QueryStringParameter);

@@ -16,8 +16,6 @@ import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInp
 import InfoTip from '@reactor/react-components/lib/infoTip';
 import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
 
-import extensionViewReduxForm from '../extensionViewReduxForm';
-
 const DirectCall = () => (
   <label>
     <span className="u-label">
@@ -35,7 +33,9 @@ const DirectCall = () => (
   </label>
 );
 
-const formConfig = {
+export default DirectCall;
+
+export const formConfig = {
   settingsToFormValues(values, settings) {
     return {
       ...values,
@@ -60,5 +60,3 @@ const formConfig = {
     return errors;
   }
 };
-
-export default extensionViewReduxForm(formConfig)(DirectCall);

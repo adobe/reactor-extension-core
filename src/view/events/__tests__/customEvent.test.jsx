@@ -16,8 +16,9 @@ import Checkbox from '@coralui/react-coral/lib/Checkbox';
 import ErrorTip from '@reactor/react-components/lib/errorTip';
 import { Field } from 'redux-form';
 
-import Custom from '../customEvent';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import CustomEvent, { formConfig } from '../customEvent';
+import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../bootstrap';
 import AdvancedEventOptions from '../components/advancedEventOptions';
 
 const getReactComponents = (wrapper) => {
@@ -43,13 +44,13 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-describe('custom event view', () => {
+describe('custom event event view', () => {
   let extensionBridge;
   let instance;
 
   beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(Custom, extensionBridge));
+    instance = mount(bootstrap(CustomEvent, formConfig, extensionBridge));
   });
 
   it('sets form values from settings', () => {

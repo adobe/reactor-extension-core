@@ -14,8 +14,9 @@ import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Switch from '@coralui/react-coral/lib/Switch';
 import ErrorTip from '@reactor/react-components/lib/errorTip';
-import LandingPage from '../landingPage';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import LandingPage, { formConfig } from '../landingPage';
+import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   const pageTextfield = wrapper.find(Textfield).node;
@@ -29,13 +30,13 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-describe('landing page view', () => {
+describe('landing page condition view', () => {
   let extensionBridge;
   let instance;
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(LandingPage, extensionBridge));
+    instance = mount(bootstrap(LandingPage, formConfig, extensionBridge));
   });
 
   it('sets form values from settings', () => {

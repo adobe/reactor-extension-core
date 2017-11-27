@@ -13,56 +13,56 @@
 import React from 'react';
 import Button from '@coralui/react-coral/lib/Button';
 import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
-import { Field } from 'redux-form';
+import { Field, FieldArray } from 'redux-form';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
 import RegexToggle from '../../components/regexToggle';
 
-export const ElementPropertyEditor = ({ field, remove }) => (
-  <div className="u-gapBottom">
-    <Field
-      name={ `${field}.name` }
-      placeholder="Property"
-      component={ DecoratedInput }
-      inputComponent={ Textfield }
-    />
-    <span className="u-label u-gapLeft">=</span>
-    <Field
-      name={ `${field}.value` }
-      className="u-gapRight"
-      placeholder="Value"
-      component={ Textfield }
-    />
-    <Field
-      name={ `${field}.valueIsRegex` }
-      component={ RegexToggle }
-      valueFieldName={ `${field}.value` }
-    />
-    <Button
-      className="u-gapBottom"
-      variant="minimal"
-      icon="close"
-      iconSize="XS"
-      onClick={ remove }
-    />
-  </div>
-);
-
-export default ({ fields = [] }) => (
+const ElementPropertiesRenderer = ({ fields }) => (
   <div>
     {
       fields.map((field, index) => (
-        <ElementPropertyEditor
-          key={ field }
-          field={ field }
-          component={ ElementPropertyEditor }
-          remove={ fields.remove.bind(this, index) }
-        />
+        <div key={ index } data-row className="u-gapBottom">
+          <Field
+            name={ `${field}.name` }
+            placeholder="Property"
+            component={ DecoratedInput }
+            inputComponent={ Textfield }
+          />
+          <span className="u-label u-gapLeft">=</span>
+          <Field
+            name={ `${field}.value` }
+            className="u-gapRight"
+            placeholder="Value"
+            component={ Textfield }
+          />
+          <Field
+            name={ `${field}.valueIsRegex` }
+            component={ RegexToggle }
+            valueFieldName={ `${field}.value` }
+          />
+          <Button
+            className="u-gapBottom"
+            variant="minimal"
+            icon="close"
+            iconSize="XS"
+            onClick={ fields.remove.bind(this, index) }
+          />
+        </div>
       ))
     }
     <Button onClick={ () => fields.push({}) }>Add</Button>
   </div>
 );
+
+const ElementPropertiesEditor = () => (
+  <FieldArray
+    component={ ElementPropertiesRenderer }
+    name="elementProperties"
+  />
+);
+
+export default ElementPropertiesEditor;
 
 export const formConfig = {
   settingsToFormValues(values, settings) {

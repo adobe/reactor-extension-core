@@ -10,20 +10,19 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import React from 'react';
-import { Field, FieldArray } from 'redux-form';
+import { Field } from 'redux-form';
 import { mount } from 'enzyme';
 import Button from '@coralui/react-coral/lib/Button';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Switch from '@coralui/react-coral/lib/Switch';
 import ErrorTip from '@reactor/react-components/lib/errorTip';
 
-import extensionViewReduxForm from '../../../extensionViewReduxForm';
-import ElementPropertiesEditor, { formConfig, ElementPropertyEditor } from '../elementPropertiesEditor';
-import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
+import ElementPropertiesEditor, { formConfig } from '../elementPropertiesEditor';
+import createExtensionBridge from '../../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const rows = wrapper.find(ElementPropertyEditor).map((row) => {
+  const rows = wrapper.find('[data-row]').map((row) => {
     const fields = row.find(Field);
     const nameField = fields.filterWhere(n => n.prop('name').indexOf('.name') !== -1);
     const valueField = fields.filterWhere(n => n.prop('name').indexOf('.value') !== -1);
@@ -49,14 +48,8 @@ describe('elementPropertiesEditor', () => {
   let instance;
 
   beforeAll(() => {
-    const FormComponent = extensionViewReduxForm(formConfig)(() => (
-      <FieldArray
-        component={ ElementPropertiesEditor }
-        name="elementProperties"
-      />
-    ));
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(FormComponent, extensionBridge));
+    instance = mount(bootstrap(ElementPropertiesEditor, formConfig, extensionBridge));
   });
 
   it('sets form values from settings', () => {

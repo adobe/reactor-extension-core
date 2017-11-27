@@ -12,7 +12,7 @@
 
 'use strict';
 
-describe('pageBottom event type', function() {
+describe('page bottom event delegate', function() {
   var delegate;
 
   var triggerPageBottom;

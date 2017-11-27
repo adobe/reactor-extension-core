@@ -11,8 +11,9 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Browser from '../browser';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import Browser, { formConfig } from '../browser';
+import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../bootstrap';
 import CheckboxList from '../../components/checkboxList';
 
 const selectedBrowsers = [
@@ -28,13 +29,13 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-describe('browser view', () => {
+describe('browser condition view', () => {
   let extensionBridge;
   let instance;
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(Browser, extensionBridge));
+    instance = mount(bootstrap(Browser, formConfig, extensionBridge));
   });
 
   it('sets form values from settings', () => {

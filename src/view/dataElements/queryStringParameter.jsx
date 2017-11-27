@@ -16,8 +16,6 @@ import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
 import { Field } from 'redux-form';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
-import extensionViewReduxForm from '../extensionViewReduxForm';
-
 const QueryStringParameter = () => (
   <div>
     <label className="u-gapRight">
@@ -37,7 +35,9 @@ const QueryStringParameter = () => (
   </div>
 );
 
-const formConfig = {
+export default QueryStringParameter;
+
+export const formConfig = {
   settingsToFormValues(values, settings, state) {
     return {
       ...values,
@@ -63,5 +63,3 @@ const formConfig = {
     return errors;
   }
 };
-
-export default extensionViewReduxForm(formConfig)(QueryStringParameter);

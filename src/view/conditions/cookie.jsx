@@ -15,7 +15,6 @@ import { Field } from 'redux-form';
 import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
-import extensionViewReduxForm from '../extensionViewReduxForm';
 import RegexToggle from '../components/regexToggle';
 
 const Cookie = () => (
@@ -45,7 +44,9 @@ const Cookie = () => (
   </div>
 );
 
-const formConfig = {
+export default Cookie;
+
+export const formConfig = {
   settingsToFormValues(values, settings) {
     return {
       ...values,
@@ -74,5 +75,3 @@ const formConfig = {
     return errors;
   }
 };
-
-export default extensionViewReduxForm(formConfig)(Cookie);

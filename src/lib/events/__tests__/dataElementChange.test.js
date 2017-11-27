@@ -62,7 +62,7 @@ var testValueChange = function(initialValue, getUpdatedValue, shouldTriggerRule)
   }
 };
 
-describe('data element change event type', function() {
+describe('data element change event delegate', function() {
   beforeAll(function() {
     jasmine.clock().install();
 

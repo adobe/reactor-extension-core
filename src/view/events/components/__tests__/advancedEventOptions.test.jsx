@@ -12,9 +12,9 @@
 
 import { mount } from 'enzyme';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
-import extensionViewReduxForm from '../../../extensionViewReduxForm';
 import AdvancedEventOptions, { formConfig } from '../advancedEventOptions';
-import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
+import createExtensionBridge from '../../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   const checkboxes = wrapper.find(Checkbox);
@@ -37,9 +37,8 @@ describe('advancedEventOptions', () => {
   let instance;
 
   beforeAll(() => {
-    const FormComponent = extensionViewReduxForm(formConfig)(AdvancedEventOptions);
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(FormComponent, extensionBridge));
+    instance = mount(bootstrap(AdvancedEventOptions, formConfig, extensionBridge));
     extensionBridge.init();
   });
 

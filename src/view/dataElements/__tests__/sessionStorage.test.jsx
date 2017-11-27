@@ -13,8 +13,9 @@
 import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import ErrorTip from '@reactor/react-components/lib/errorTip';
-import SessionStorage from '../sessionStorage';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import SessionStorage, { formConfig } from '../sessionStorage';
+import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   const nameTextfield = wrapper.find(Textfield).node;
@@ -26,13 +27,13 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-describe('session storage view', () => {
+describe('session storage data element view', () => {
   let extensionBridge;
   let instance;
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(SessionStorage, extensionBridge));
+    instance = mount(bootstrap(SessionStorage, formConfig, extensionBridge));
   });
 
   it('sets form values from settings', () => {

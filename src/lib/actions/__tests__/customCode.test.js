@@ -15,7 +15,7 @@
 var Promise = require('@adobe/reactor-promise');
 var customCodeInjector = require('inject!../customCode');
 
-describe('custom action delegate', function() {
+describe('custom code action delegate', function() {
   describe('before DOMContentLoaded', function() {
     var customCode;
     var writeHtmlSpy;

@@ -17,7 +17,6 @@ import Select from '@coralui/redux-form-react-coral/lib/Select';
 import { Field } from 'redux-form';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
-import extensionViewReduxForm from '../extensionViewReduxForm';
 import { isNumber } from '../utils/validators';
 import comparisonOperatorOptions from './comparisonOperatorOptions';
 
@@ -66,7 +65,9 @@ const PageViews = () => (
   </div>
 );
 
-const formConfig = {
+export default PageViews;
+
+export const formConfig = {
   settingsToFormValues(values, settings) {
     return {
       ...values,
@@ -94,5 +95,3 @@ const formConfig = {
     return errors;
   }
 };
-
-export default extensionViewReduxForm(formConfig)(PageViews);

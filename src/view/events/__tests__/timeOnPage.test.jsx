@@ -13,8 +13,9 @@
 import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import ErrorTip from '@reactor/react-components/lib/errorTip';
-import TimeOnPage from '../timeOnPage';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import TimeOnPage, { formConfig } from '../timeOnPage';
+import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   const timeOnPageTextfield = wrapper.find(Textfield).node;
@@ -26,13 +27,13 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-describe('time on page view', () => {
+describe('time on page event view', () => {
   let extensionBridge;
   let instance;
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(TimeOnPage, extensionBridge));
+    instance = mount(bootstrap(TimeOnPage, formConfig, extensionBridge));
   });
 
   it('sets form values from settings', () => {

@@ -19,7 +19,7 @@ var assertTriggerCall = function(options) {
   });
 };
 
-describe('zoomchange event type', function() {
+describe('zoom change event delegate', function() {
   var delegate;
   var mockWindow = {
     ongestureend: null,

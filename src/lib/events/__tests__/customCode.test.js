@@ -18,7 +18,7 @@
 
 'use strict';
 
-describe('customCode event type', function() {
+describe('custom code event delegate', function() {
   var delegate = require('../customCode');
 
   it('triggers rule when custom code calls trigger', function() {

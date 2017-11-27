@@ -15,8 +15,9 @@ import Textfield from '@coralui/react-coral/lib/Textfield';
 import Switch from '@coralui/react-coral/lib/Switch';
 import ErrorTip from '@reactor/react-components/lib/errorTip';
 import { Field } from 'redux-form';
-import Cookie from '../cookie';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import Cookie, { formConfig } from '../cookie';
+import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   const fields = wrapper.find(Field);
@@ -37,13 +38,13 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-describe('cookie view', () => {
+describe('cookie condition view', () => {
   let extensionBridge;
   let instance;
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(Cookie, extensionBridge));
+    instance = mount(bootstrap(Cookie, formConfig, extensionBridge));
   });
 
   it('sets form values from settings', () => {

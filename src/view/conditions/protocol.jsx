@@ -14,8 +14,6 @@ import React from 'react';
 import Radio from '@coralui/redux-form-react-coral/lib/Radio';
 import { Field } from 'redux-form';
 
-import extensionViewReduxForm from '../extensionViewReduxForm';
-
 const Protocol = () => (
   <div>
     <Field
@@ -37,7 +35,9 @@ const Protocol = () => (
   </div>
 );
 
-const formConfig = {
+export default Protocol;
+
+export const formConfig = {
   settingsToFormValues(values, settings) {
     return {
       ...values,
@@ -51,5 +51,3 @@ const formConfig = {
     };
   }
 };
-
-export default extensionViewReduxForm(formConfig)(Protocol);

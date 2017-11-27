@@ -14,7 +14,7 @@
 
 var POLL_INTERVAL = 3000;
 
-describe('elementExists event type', function() {
+describe('element exists event delegate', function() {
   var delegate;
   var aElement;
   var bElement;

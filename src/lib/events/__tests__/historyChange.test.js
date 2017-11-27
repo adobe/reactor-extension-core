@@ -12,7 +12,7 @@
 
 'use strict';
 
-describe('historyChange event type', function() {
+describe('history change event delegate', function() {
   var delegate;
   var origHref = window.location.href;
 

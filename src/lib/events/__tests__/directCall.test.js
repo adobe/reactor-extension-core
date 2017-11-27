@@ -12,7 +12,7 @@
 
 'use strict';
 
-describe('directCall event type', function() {
+describe('direct call event delegate', function() {
   var delegate = require('../directCall');
 
   beforeAll(function() {

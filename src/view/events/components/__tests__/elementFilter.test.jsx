@@ -12,9 +12,9 @@
 
 import { mount } from 'enzyme';
 import Radio from '@coralui/react-coral/lib/Radio';
-import extensionViewReduxForm from '../../../extensionViewReduxForm';
 import ElementFilter, { formConfig } from '../elementFilter';
-import { getFormComponent, createExtensionBridge } from '../../../__tests__/helpers/formTestUtils';
+import createExtensionBridge from '../../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../../bootstrap';
 import SpecificElements from '../specificElements';
 
 const getReactComponents = (wrapper) => {
@@ -36,9 +36,8 @@ describe('elementFilter', () => {
   let instance;
 
   beforeAll(() => {
-    const FormComponent = extensionViewReduxForm(formConfig)(ElementFilter);
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(FormComponent, extensionBridge));
+    instance = mount(bootstrap(ElementFilter, formConfig, extensionBridge));
   });
 
   it('updates view properly when elementSelector is provided', () => {

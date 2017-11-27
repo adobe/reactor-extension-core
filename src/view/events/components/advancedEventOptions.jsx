@@ -16,6 +16,8 @@ import { Field } from 'redux-form';
 
 import DisclosureButton from '../../components/disclosureButton';
 
+import './advancedEventOptions.styl';
+
 export default class AdvancedEventOptions extends React.Component {
   constructor() {
     super();

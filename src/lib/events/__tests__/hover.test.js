@@ -13,7 +13,7 @@
 'use strict';
 var POLL_INTERVAL = 3000;
 
-describe('hover event type', function() {
+describe('hover event delegate', function() {
   var delegate;
   var aElement;
   var bElement;

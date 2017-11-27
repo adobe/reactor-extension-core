@@ -13,8 +13,9 @@
 import { mount } from 'enzyme';
 import Button from '@coralui/react-coral/lib/Button';
 import { ErrorTip } from '@reactor/react-components';
-import CustomCode from '../customCode';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import CustomCode, { formConfig } from '../customCode';
+import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   const openEditorButton = wrapper.find(Button).node;
@@ -26,7 +27,7 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-describe('custom code view', () => {
+describe('custom code event view', () => {
   let extensionBridge;
   let instance;
 
@@ -35,7 +36,7 @@ describe('custom code view', () => {
     spyOn(extensionBridge, 'openCodeEditor').and.callFake((cb, options) => {
       cb(`${options.code} bar`);
     });
-    instance = mount(getFormComponent(CustomCode, extensionBridge));
+    instance = mount(bootstrap(CustomCode, formConfig, extensionBridge));
   });
 
   afterAll(() => {

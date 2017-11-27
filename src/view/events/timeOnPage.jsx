@@ -15,7 +15,6 @@ import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
 import { Field } from 'redux-form';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
-import extensionViewReduxForm from '../extensionViewReduxForm';
 import { isPositiveNumber } from '../utils/validators';
 
 const TimeOnPage = () => (
@@ -34,7 +33,9 @@ const TimeOnPage = () => (
   </div>
 );
 
-const formConfig = {
+export default TimeOnPage;
+
+export const formConfig = {
   settingsToFormValues(values, settings) {
     return {
       ...values,
@@ -57,5 +58,3 @@ const formConfig = {
     return errors;
   }
 };
-
-export default extensionViewReduxForm(formConfig)(TimeOnPage);

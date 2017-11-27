@@ -12,7 +12,7 @@
 
 import React from 'react';
 import Checkbox from '@coralui/redux-form-react-coral/lib/Checkbox';
-import { Field, formValueSelector, FieldArray } from 'redux-form';
+import { Field, formValueSelector } from 'redux-form';
 import Alert from '@coralui/react-coral/lib/Alert';
 import { connect } from 'react-redux';
 
@@ -44,10 +44,7 @@ const SpecificElements = ({ ...props }) => {
                 library that may adversely affect performance. Adobe recommends using the CSS
                 selector option above whenever possible.
               </Alert>
-              <FieldArray
-                component={ ElementPropertiesEditor }
-                name="elementProperties"
-              />
+              <ElementPropertiesEditor />
             </div> : null
         }
       </div>

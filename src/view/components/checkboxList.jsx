@@ -13,6 +13,8 @@
 import React from 'react';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
 
+import './checkboxList.styl';
+
 export default class CheckboxList extends React.Component {
   onChange = (event) => {
     const checkboxValue = event.target.value;

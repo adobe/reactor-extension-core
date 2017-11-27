@@ -16,8 +16,9 @@ import Checkbox from '@coralui/react-coral/lib/Checkbox';
 import Switch from '@coralui/react-coral/lib/Switch';
 import ErrorTip from '@reactor/react-components/lib/errorTip';
 import { Field } from 'redux-form';
-import Change from '../change';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import Change, { formConfig } from '../change';
+import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../bootstrap';
 import AdvancedEventOptions from '../components/advancedEventOptions';
 
 const getReactComponents = (wrapper) => {
@@ -46,13 +47,13 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-describe('change view', () => {
+describe('change event view', () => {
   let extensionBridge;
   let instance;
 
   beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(Change, extensionBridge));
+    instance = mount(bootstrap(Change, formConfig, extensionBridge));
   });
 
   it('sets form values from settings', () => {

@@ -12,8 +12,9 @@
 
 import { mount } from 'enzyme';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
-import CookieOptOut from '../cookieOptOut';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import CookieOptOut, { formConfig } from '../cookieOptOut';
+import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   const acceptCookiesCheckbox = wrapper.find(Checkbox).node;
@@ -23,13 +24,13 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-describe('cookie out-out view', () => {
+describe('cookie out-out condition view', () => {
   let extensionBridge;
   let instance;
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(CookieOptOut, extensionBridge));
+    instance = mount(bootstrap(CookieOptOut, formConfig, extensionBridge));
   });
 
   it('sets form values from settings', () => {

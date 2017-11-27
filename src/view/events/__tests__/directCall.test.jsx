@@ -13,8 +13,9 @@
 import { mount } from 'enzyme';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import ErrorTip from '@reactor/react-components/lib/errorTip';
-import DirectCall from '../directCall';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import DirectCall, { formConfig } from '../directCall';
+import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   const identifierTextfield =
@@ -27,13 +28,13 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-describe('direct call view', () => {
+describe('direct call event view', () => {
   let extensionBridge;
   let instance;
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(DirectCall, extensionBridge));
+    instance = mount(bootstrap(DirectCall, formConfig, extensionBridge));
   });
 
   it('sets form values from settings', () => {

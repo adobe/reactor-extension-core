@@ -15,7 +15,7 @@
 var POLL_INTERVAL = 3000;
 var DEBOUNCE_DELAY = 200;
 
-describe('entersViewport event type', function() {
+describe('enters viewport event delegate', function() {
   var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
   var delegate;
   var aElement;

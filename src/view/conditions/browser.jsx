@@ -13,7 +13,6 @@
 import React from 'react';
 import { Field } from 'redux-form';
 import CheckboxList from '../components/checkboxList';
-import extensionViewReduxForm from '../extensionViewReduxForm';
 
 const browserOptions = [
   'Chrome',
@@ -32,7 +31,9 @@ const browserOptions = [
 const Browser = () =>
   (<Field name="browsers" component={ CheckboxList } options={ browserOptions } />);
 
-const formConfig = {
+export default Browser;
+
+export const formConfig = {
   settingsToFormValues(values, settings) {
     return {
       ...values,
@@ -46,6 +47,4 @@ const formConfig = {
     };
   }
 };
-
-export default extensionViewReduxForm(formConfig)(Browser);
 

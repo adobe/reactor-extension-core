@@ -15,8 +15,9 @@ import Textfield from '@coralui/react-coral/lib/Textfield';
 import Switch from '@coralui/react-coral/lib/Switch';
 import ErrorTip from '@reactor/react-components/lib/errorTip';
 
-import Hash from '../hash';
-import { getFormComponent, createExtensionBridge } from '../../__tests__/helpers/formTestUtils';
+import Hash, { formConfig } from '../hash';
+import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
+import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   const rows = wrapper.find('[data-row]').map(row => ({
@@ -44,13 +45,13 @@ const testProps = {
   }
 };
 
-describe('hash view', () => {
+describe('hash condition view', () => {
   let extensionBridge;
   let instance;
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(getFormComponent(Hash, extensionBridge));
+    instance = mount(bootstrap(Hash, formConfig, extensionBridge));
   });
 
   it('sets form values from settings', () => {

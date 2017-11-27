@@ -16,7 +16,6 @@ import { Field, FieldArray } from 'redux-form';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
 import MultipleItemEditor from './components/multipleItemEditor';
-import extensionViewReduxForm from '../extensionViewReduxForm';
 import RegexToggle from '../components/regexToggle';
 
 const renderItem = field => (
@@ -38,7 +37,7 @@ const renderItem = field => (
   </div>
 );
 
-const Hash = () => (
+export default () => (
   <FieldArray
     name="hashes"
     renderItem={ renderItem }
@@ -46,7 +45,7 @@ const Hash = () => (
   />
 );
 
-const formConfig = {
+export const formConfig = {
   settingsToFormValues(values, settings) {
     values = {
       ...values,
@@ -91,5 +90,3 @@ const formConfig = {
     return errors;
   }
 };
-
-export default extensionViewReduxForm(formConfig)(Hash);

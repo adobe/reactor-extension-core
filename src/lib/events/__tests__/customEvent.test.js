@@ -22,7 +22,7 @@ var triggerCustomEvent = function(element, type) {
   return event;
 };
 
-describe('custom event event type', function() {
+describe('custom event event delegate', function() {
   var delegate = require('../customEvent');
 
   beforeAll(function() {

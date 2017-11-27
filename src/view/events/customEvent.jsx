@@ -19,7 +19,6 @@ import InfoTip from '@reactor/react-components/lib/infoTip';
 
 import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
 import ElementFilter, { formConfig as elementFilterFormConfig } from './components/elementFilter';
-import extensionViewReduxForm from '../extensionViewReduxForm';
 import mergeFormConfigs from '../utils/mergeFormConfigs';
 
 const CustomEvent = () => (
@@ -51,7 +50,9 @@ const CustomEvent = () => (
   </div>
 );
 
-const formConfig = mergeFormConfigs(
+export default CustomEvent;
+
+export const formConfig = mergeFormConfigs(
   elementFilterFormConfig,
   advancedEventOptionsFormConfig,
   {
@@ -76,5 +77,3 @@ const formConfig = mergeFormConfigs(
     }
   }
 );
-
-export default extensionViewReduxForm(formConfig)(CustomEvent);
