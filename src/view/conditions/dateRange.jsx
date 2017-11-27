@@ -45,7 +45,8 @@ const DateRange = () => (
         type="datetime"
       />
       <InfoTip className="u-noPaddingRight" placement="bottom">
-        Leaving the start date blank will allow the condition to pass anytime before the end date.
+        Time should be specified in 24-hour time. Leaving the start date blank will allow the
+        condition to pass anytime before the end date.
       </InfoTip>
     </label>
     <label className="u-gapRight u-gapBottom u-noWrap u-floatLeft">
@@ -58,7 +59,8 @@ const DateRange = () => (
         type="datetime"
       />
       <InfoTip className="u-noPaddingRight" placement="bottom">
-        Leaving the end date blank will allow the condition to pass anytime before the start date.
+        Time should be specified in 24-hour time. Leaving the end date blank will allow the
+        condition to pass anytime after the start date.
       </InfoTip>
     </label>
     <label className="u-gapRight u-gapBottom u-noWrap u-floatLeft">
