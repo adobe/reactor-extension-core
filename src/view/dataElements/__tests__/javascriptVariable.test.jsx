@@ -27,7 +27,7 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-describe('JavaScript variable data element view', () => {
+describe('javascript variable data element view', () => {
   let extensionBridge;
   let instance;
 
