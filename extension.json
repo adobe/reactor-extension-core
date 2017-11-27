@@ -1844,6 +1844,30 @@
       }
     },
     {
+      "name": "page-info",
+      "displayName": "Page Info",
+      "libPath": "src/lib/dataElements/pageInfo.js",
+      "viewPath": "dataElements/pageInfo.html",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "attribute": {
+            "enum": [
+              "url",
+              "hostname",
+              "pathname",
+              "protocol",
+              "referrer",
+              "title"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": ["attribute"]
+      }
+    },
+    {
       "name": "query-string-parameter",
       "displayName": "Query String Parameter",
       "libPath": "src/lib/dataElements/queryStringParameter.js",
