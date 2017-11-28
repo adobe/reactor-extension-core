@@ -15,11 +15,12 @@
     "build": "webpack --production",
     "build:analyze": "webpack --production --analyze",
     "test": "reactor-testrunner",
+    "test:watch": "reactor-testrunner -- --no-single-run --no-coverage",
     "lint": "reactor-testrunner lint",
     "sandbox": "webpack --watch --run-sandbox",
     "package": "npm run build && reactor-packager",
     "bootstrap": "reactor-sandbox init",
-    "ci-job": "xvfb-run npm test -- --ci --browser firefox chrome ie9sg ie10sg ie11sg edgesg && npm run lint && npm run package"
+    "ci-job": "npm test -- --ci && npm run lint && npm run package"
   },
   "dependencies": {
     "@coralui/react-coral": "^0.19.9",
@@ -44,7 +45,7 @@
     "@adobe/reactor-packager": "^2.3.3",
     "@adobe/reactor-sandbox": "^8.1.0",
     "@adobe/reactor-turbine": "^23.1.0",
-    "@reactor/extension-support-testrunner": "^10.1.0",
+    "@reactor/extension-support-testrunner": "^11.0.0",
     "babel-core": "^6.18.2",
     "babel-loader": "^6.2.7",
     "babel-preset-es2015": "^6.18.0",
