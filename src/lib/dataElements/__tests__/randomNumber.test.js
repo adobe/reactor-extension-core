@@ -10,16 +10,28 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-export const isNumber =
-  value => (!isNaN(value) && (typeof value !== 'string' || value.trim().length > 0));
+'use strict';
 
-export const isPositiveNumber = (value, includeZero) => {
-  const lowerBound = includeZero ? 0 : 1;
-  return isNumber(value) && Number(value) >= lowerBound;
-};
+var dataElementDelegate = require('../randomNumber');
 
-export const isInteger = Number.isInteger || (value => (
-  typeof value === 'number' &&
-    isFinite(value) &&
-    Math.floor(value) === value
-));
+describe('random number data element delegate', function() {
+  it('returns a random number between the min and the max', function() {
+    var settings = {
+      min: 10,
+      max: 20
+    };
+
+    var result = dataElementDelegate(settings);
+    expect(result).toBeGreaterThanOrEqual(10);
+    expect(result).toBeLessThanOrEqual(20);
+  });
+
+  it('returns NaN if min is greater than max', function() {
+    var settings = {
+      min: 20,
+      max: 10
+    };
+
+    expect(dataElementDelegate(settings)).toEqual(NaN);
+  });
+});

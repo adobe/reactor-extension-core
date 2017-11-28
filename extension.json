@@ -1889,6 +1889,26 @@
       }
     },
     {
+      "name": "random-number",
+      "displayName": "Random Number",
+      "libPath": "src/lib/dataElements/randomNumber.js",
+      "viewPath": "dataElements/randomNumber.html",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "min": {
+            "type": "integer"
+          },
+          "max": {
+            "type": "integer"
+          }
+        },
+        "required": ["min", "max"],
+        "additionalProperties": false
+      }
+    },
+    {
       "name": "session-storage",
       "displayName": "Session Storage",
       "libPath": "src/lib/dataElements/sessionStorage.js",
