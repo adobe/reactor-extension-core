@@ -61,4 +61,55 @@ describe('custom event event delegate', function() {
       nativeEvent: jasmine.any(Object)
     });
   });
+
+  it('only triggers rule pertaining to event type', function() {
+    var CUSTOM_EVENT_TYPE_A = 'foo';
+    var CUSTOM_EVENT_TYPE_B = 'bar';
+
+    var triggerA = jasmine.createSpy();
+
+    delegate({
+      elementSelector: '#outer',
+      type: CUSTOM_EVENT_TYPE_A,
+      bubbleFireIfParent: true
+    }, triggerA);
+
+    var triggerB = jasmine.createSpy();
+
+    delegate({
+      elementSelector: '#outer',
+      type: CUSTOM_EVENT_TYPE_B,
+      bubbleFireIfParent: true
+    }, triggerB);
+
+    triggerCustomEvent(outerElement, CUSTOM_EVENT_TYPE_B);
+
+    expect(triggerA.calls.count()).toBe(0);
+    expect(triggerB.calls.count()).toBe(1);
+  });
+
+  it('only triggers each rule once when multiple rules watching for same event type', function() {
+    var CUSTOM_EVENT_TYPE = 'foo';
+
+    var triggerA = jasmine.createSpy();
+
+    delegate({
+      elementSelector: '#outer',
+      type: CUSTOM_EVENT_TYPE,
+      bubbleFireIfParent: true
+    }, triggerA);
+
+    var triggerB = jasmine.createSpy();
+
+    delegate({
+      elementSelector: '#outer',
+      type: CUSTOM_EVENT_TYPE,
+      bubbleFireIfParent: true
+    }, triggerB);
+
+    triggerCustomEvent(outerElement, CUSTOM_EVENT_TYPE);
+
+    expect(triggerA.calls.count()).toBe(1);
+    expect(triggerB.calls.count()).toBe(1);
+  });
 });

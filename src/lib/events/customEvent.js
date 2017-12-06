@@ -43,5 +43,9 @@ module.exports = function(settings, trigger) {
     document.addEventListener(type, bubbly.evaluateEvent, true);
   }
 
-  bubbly.addListener(settings, trigger);
+  bubbly.addListener(settings, function(event) {
+    if (event.nativeEvent.type === type) {
+      trigger(event);
+    }
+  });
 };
