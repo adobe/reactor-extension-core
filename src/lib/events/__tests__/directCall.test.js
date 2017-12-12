@@ -25,6 +25,7 @@ describe('direct call event delegate', function() {
 
   it('triggers rule when _satellite.track() is called with matching identifier', function() {
     var trigger = jasmine.createSpy();
+    var detail = { a: 'b' };
 
     delegate({
       identifier: 'foo'
@@ -32,11 +33,12 @@ describe('direct call event delegate', function() {
 
     expect(trigger.calls.count()).toBe(0);
 
-    _satellite.track('foo');
+    _satellite.track('foo', detail);
 
     expect(trigger.calls.count()).toBe(1);
     expect(trigger.calls.mostRecent().args[0]).toEqual({
-      identifier: 'foo'
+      identifier: 'foo',
+      detail: detail
     });
 
     _satellite.track('bar');

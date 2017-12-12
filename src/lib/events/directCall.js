@@ -24,13 +24,15 @@ window._satellite = window._satellite || {};
 /**
  * Public function intended to be called by the user.
  * @param {string} identifier The identifier passed to _satellite.track().
+ * @param {*} [detail] Any detail that should be passed along to conditions and actions.
  */
-window._satellite.track = function(identifier) {
+window._satellite.track = function(identifier, detail) {
   identifier = identifier.trim();
   var triggers = triggersByIdentifier[identifier];
   if (triggers) {
     var syntheticEvent = {
-      identifier: identifier
+      identifier: identifier,
+      detail: detail
     };
 
     triggers.forEach(function(trigger) {
