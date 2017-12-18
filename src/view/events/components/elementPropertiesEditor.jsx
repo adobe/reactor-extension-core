@@ -29,7 +29,7 @@ const ElementPropertiesRenderer = ({ fields }) => (
             component={ DecoratedInput }
             inputComponent={ Textfield }
           />
-          <span className="u-label u-gapLeft">=</span>
+          <span className="u-label u-gapLeft">&#61;</span>
           <Field
             name={ `${field}.value` }
             className="u-gapRight"
