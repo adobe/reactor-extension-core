@@ -12,12 +12,15 @@
 
 'use strict';
 
-/**
- * Page top event. This event occurs as soon as the runtime library is loaded (which is supposed to
- * be at the top of the page).
- * @param {Object} settings The event settings object.
- * @param {ruleTrigger} trigger The trigger callback.
- */
-module.exports = function(settings, trigger) {
-  trigger();
-};
+describe('library loaded event delegate', function() {
+  var delegate = require('../libraryLoaded');
+
+  it('triggers rule when the engine is loaded', function() {
+    var trigger = jasmine.createSpy();
+    delegate({}, trigger);
+
+    expect(trigger.calls.count()).toBe(1);
+    var call = trigger.calls.mostRecent();
+    expect(call.args.length).toBe(0);
+  });
+});

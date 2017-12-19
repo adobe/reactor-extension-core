@@ -616,10 +616,10 @@
       "schema": {}
     },
     {
-      "name": "on-load",
+      "name": "window-loaded",
       "categoryName": "Page Load",
       "displayName": "Window Loaded",
-      "libPath": "src/lib/events/onLoad.js",
+      "libPath": "src/lib/events/windowLoaded.js",
       "schema": {}
     },
     {
@@ -637,10 +637,10 @@
       "schema": {}
     },
     {
-      "name": "page-top",
+      "name": "library-loaded",
       "categoryName": "Page Load",
       "displayName": "Library Loaded (Page Top)",
-      "libPath": "src/lib/events/pageTop.js",
+      "libPath": "src/lib/events/libraryLoaded.js",
       "schema": {}
     },
     {
