@@ -12,8 +12,8 @@
 
 'use strict';
 
-describe('on load event delegate', function() {
-  var onLoadInjector = require('inject!../onLoad');
+describe('window loaded event delegate', function() {
+  var onLoadInjector = require('inject!../windowLoaded');
   var triggerLoad;
   var mockWindow;
   var mockDocument;
