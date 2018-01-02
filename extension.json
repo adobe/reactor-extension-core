@@ -996,12 +996,7 @@
                 "IE",
                 "Edge",
                 "Safari",
-                "Opera",
-                "Mobile Safari",
-                "IE Mobile",
-                "Opera Mini",
-                "Opera Mobile",
-                "OmniWeb"
+                "Mobile Safari"
               ]
             }
           }
@@ -1354,11 +1349,8 @@
                 "MacOS",
                 "Linux",
                 "Unix",
-                "Blackberry",
                 "iOS",
-                "Android",
-                "Symbian OS",
-                "Maemo"
+                "Android"
               ]
             }
           }

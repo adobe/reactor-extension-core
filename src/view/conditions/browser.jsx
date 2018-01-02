@@ -20,12 +20,7 @@ const browserOptions = [
   'IE',
   'Edge',
   'Safari',
-  'Opera',
-  'Mobile Safari',
-  'IE Mobile',
-  'Opera Mini',
-  'Opera Mobile',
-  'OmniWeb'
+  'Mobile Safari'
 ];
 
 const Browser = () =>
@@ -37,13 +32,17 @@ export const formConfig = {
   settingsToFormValues(values, settings) {
     return {
       ...values,
-      ...settings
+      browsers: settings.browsers ?
+        // We have to take into consideration browser options that previously existed.
+        // If a user saved the condition using those options, we filter them out here.
+        settings.browsers.filter(browser => browserOptions.indexOf(browser) !== -1) :
+        []
     };
   },
   formValuesToSettings(settings, values) {
     return {
       ...settings,
-      browsers: values.browsers || [] // An array is required.
+      ...values
     };
   }
 };

@@ -19,11 +19,8 @@ const operatingSystemOptions = [
   'MacOS',
   'Linux',
   'Unix',
-  'Blackberry',
   'iOS',
-  'Android',
-  'Symbian OS',
-  'Maemo'
+  'Android'
 ];
 
 const OperatingSystem = () =>
@@ -39,13 +36,17 @@ export const formConfig = {
   settingsToFormValues(values, settings) {
     return {
       ...values,
-      ...settings
+      operatingSystems: settings.operatingSystems ?
+        // We have to take into consideration OS options that previously existed.
+        // If a user saved the condition using those options, we filter them out here.
+        settings.operatingSystems.filter(os => operatingSystemOptions.indexOf(os) !== -1) :
+        []
     };
   },
   formValuesToSettings(settings, values) {
     return {
       ...settings,
-      operatingSystems: values.operatingSystems || [] // An array is required.
+      ...values
     };
   }
 };

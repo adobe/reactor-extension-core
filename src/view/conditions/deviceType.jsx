@@ -12,6 +12,7 @@
 
 import React from 'react';
 import { Field } from 'redux-form';
+import Alert from '@coralui/react-coral/lib/Alert';
 import CheckboxList from '../components/checkboxList';
 
 const deviceTypeOptions = [
@@ -25,8 +26,14 @@ const deviceTypeOptions = [
   'Android'
 ];
 
-const DeviceType = () =>
-  (<Field name="deviceTypes" component={ CheckboxList } options={ deviceTypeOptions } />);
+const DeviceType = () => (
+  <div>
+    <Alert variant="warning">
+      This condition type is no longer supported. Please avoid its use.
+    </Alert>
+    <Field name="deviceTypes" component={ CheckboxList } options={ deviceTypeOptions } />
+  </div>
+);
 
 export default DeviceType;
 

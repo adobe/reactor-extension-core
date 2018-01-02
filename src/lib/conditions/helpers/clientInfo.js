@@ -27,23 +27,15 @@ var matchUserAgent = function(regexs) {
 
 var browser = matchUserAgent({
   Edge: /Edge/,
-  OmniWeb: /OmniWeb/,
-  'Opera Mini': /Opera Mini/,
-  'Opera Mobile': /Opera Mobi/,
-  Opera: /Opera/,
   'Mobile Safari': /Mobile(\/[0-9A-z]+)? Safari/,
   Chrome: /Chrome/,
   Firefox: /Firefox/,
-  'IE Mobile': /IEMobile/,
   IE: /MSIE|Trident/,
   Safari: /Safari/
 })(navigator.userAgent);
 
 var os = matchUserAgent({
   iOS: /iPhone|iPad|iPod/,
-  Blackberry: /BlackBerry/,
-  'Symbian OS': /SymbOS/,
-  Maemo: /Maemo/,
   Android: /Android [0-9\.]+;/,
   Linux: / Linux /,
   Unix: /FreeBSD|OpenBSD|CrOS/,
