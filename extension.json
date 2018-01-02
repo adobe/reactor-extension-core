@@ -1556,6 +1556,26 @@
       }
     },
     {
+      "name": "sampling",
+      "categoryName": "Other",
+      "displayName": "Sampling",
+      "libPath": "src/lib/conditions/sampling.js",
+      "viewPath": "conditions/sampling.html",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "rate": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "additionalProperties": false,
+        "required": ["rate"]
+      }
+    },
+    {
       "name": "sessions",
       "categoryName": "Engagement",
       "displayName": "Sessions",
