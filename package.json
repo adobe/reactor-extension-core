@@ -15,7 +15,7 @@
     "build": "webpack --production",
     "build:analyze": "webpack --production --analyze",
     "test": "reactor-testrunner",
-    "test:watch": "reactor-testrunner -- --no-single-run --no-coverage",
+    "test:watch": "reactor-testrunner --no-single-run --no-coverage",
     "lint": "reactor-testrunner lint",
     "sandbox": "webpack --watch --run-sandbox",
     "package": "npm run build && reactor-packager",
@@ -44,7 +44,7 @@
   "devDependencies": {
     "@adobe/reactor-packager": "^2.3.3",
     "@adobe/reactor-sandbox": "^8.1.0",
-    "@adobe/reactor-turbine": "^23.1.0",
+    "@adobe/reactor-turbine": "^24.0.0",
     "@reactor/extension-support-testrunner": "^11.0.0",
     "babel-core": "^6.18.2",
     "babel-loader": "^6.2.7",
