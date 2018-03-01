@@ -1756,6 +1756,107 @@
       }
     },
     {
+      "name": "value-comparison",
+      "categoryName": "Data",
+      "displayName": "Value Comparison",
+      "libPath": "src/lib/dataElements",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "oneOf": [
+          {
+            "properties": {
+              "leftOperand": {
+                "type": "string"
+              },
+              "comparison": {
+                "type": "object",
+                "properties": {
+                  "operator": {
+                    "type": "string",
+                    "enum": [
+                      "equals",
+                      "contains",
+                      "startsWith",
+                      "endsWith",
+                      "matchesRegex"
+                    ]
+                  },
+                  "caseInsensitive": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "rightOperand": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "leftOperand",
+              "comparison",
+              "rightOperand"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "leftOperand": {
+                "type": "string"
+              },
+              "comparison": {
+                "type": "object",
+                "properties": {
+                  "operator": {
+                    "type": "string",
+                    "enum": [
+                      "lessThan",
+                      "lessThanOrEqualTo",
+                      "greaterThan",
+                      "greaterThanOrEqualTo"
+                    ]
+                  }
+                }
+              },
+              "rightOperand": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "leftOperand",
+              "comparison",
+              "rightOperand"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "leftOperand": {
+                "type": "string"
+              },
+              "comparison": {
+                "type": "object",
+                "properties": {
+                  "operator": {
+                    "type": "string",
+                    "enum": [
+                      "isTrue",
+                      "isFalse",
+                      "exists"
+                    ]
+                  }
+                }
+              }
+            },
+            "required": [
+              "leftOperand",
+              "comparison"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    {
       "name": "variable",
       "categoryName": "Data",
       "displayName": "Variable",
