@@ -1759,7 +1759,7 @@
       "name": "value-comparison",
       "categoryName": "Data",
       "displayName": "Value Comparison",
-      "libPath": "src/lib/dataElements",
+      "libPath": "src/lib/valueComparison",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
