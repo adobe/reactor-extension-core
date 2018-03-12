@@ -15,43 +15,56 @@
 var Promise = require('@adobe/reactor-promise');
 var customCodeInjector = require('inject!../customCode');
 
+var LAUNCH_LIB_EXAMPLE_SRC =
+  'assets.adobedtm.com/launch-ENad46b63a40c84a86a0de29087f7ecb24-development.min.js';
+
+var createCustomCodeDelegate = function(mocks) {
+  return customCodeInjector({
+    '../../../node_modules/postscribe/dist/postscribe': mocks.postscribe,
+    '@adobe/reactor-document': mocks.document,
+    './helpers/decorateCode': function(action, source) {
+      return source;
+    },
+    './helpers/loadCodeSequentially': function() {
+      return Promise.resolve('inside external file');
+    }
+  });
+};
+
 describe('custom code action delegate', function() {
+  var documentWriteSpy;
+  var postscribeSpy;
+  var customCode;
+
+  beforeAll(function() {
+    postscribeSpy = jasmine.createSpy('postscribe');
+    documentWriteSpy = jasmine.createSpy('documentWrite');
+  });
+
+  beforeEach(function() {
+    postscribeSpy.calls.reset();
+    documentWriteSpy.calls.reset();
+  });
+
   describe('before DOMContentLoaded', function() {
-    var customCode;
-    var writeHtmlSpy;
-    var postscribeSpy;
-
     beforeAll(function() {
-      postscribeSpy = jasmine.createSpy('postscribe');
-      writeHtmlSpy = jasmine.createSpy('writeHtml');
-
-      customCode = customCodeInjector({
-        '../../../node_modules/postscribe/dist/postscribe': postscribeSpy,
-        '@adobe/reactor-document': {
-          addEventListener: function(type, callback) {}
-        },
-        './helpers/writeHtml': writeHtmlSpy,
-        './helpers/decorateCode': function(action, source) {
-          return source;
-        },
-        './helpers/loadCodeSequentially': function() {
-          return Promise.resolve('inside external file');
+      customCode = createCustomCodeDelegate({
+        postscribe: postscribeSpy,
+        document: {
+          readyState: 'loading',
+          write: documentWriteSpy,
+          documentElement: {}
         }
       });
     });
 
-    beforeEach(function() {
-      postscribeSpy.calls.reset();
-      writeHtmlSpy.calls.reset();
-    });
-
-    it('writes the code defined inside the action', function() {
+    it('writes the code defined inside the main library', function() {
       customCode({
         source: 'inside container',
         language: 'javascript'
       });
 
-      expect(writeHtmlSpy).toHaveBeenCalledWith('inside container');
+      expect(documentWriteSpy).toHaveBeenCalledWith('inside container');
       expect(postscribeSpy).not.toHaveBeenCalled();
     });
 
@@ -62,42 +75,32 @@ describe('custom code action delegate', function() {
         language: 'javascript'
       }).then(function() {
         expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside external file');
-        expect(writeHtmlSpy).not.toHaveBeenCalled();
+        expect(documentWriteSpy).not.toHaveBeenCalled();
         done();
       });
     });
   });
 
   describe('after DOMContentLoaded', function() {
-    var customCode;
-    var postscribeSpy;
-    var writeHtmlSpy;
-
     beforeAll(function() {
-      postscribeSpy = jasmine.createSpy('postscribe');
-      writeHtmlSpy = jasmine.createSpy('writeHtml');
-
-      customCode = customCodeInjector({
-        '../../../node_modules/postscribe/dist/postscribe': postscribeSpy,
-        './helpers/decorateCode': function(action, source) {
-          return source;
-        },
-        '@adobe/reactor-document': {
-          addEventListener: function(type, callback) {
-            if (type === 'DOMContentLoaded') {
-              callback();
-            }
-          }
-        },
-        './helpers/loadCodeSequentially': function() {
-          return Promise.resolve('inside external file');
+      customCode = createCustomCodeDelegate({
+        postscribe: postscribeSpy,
+        document: {
+          readyState: 'interactive',
+          write: documentWriteSpy,
+          documentElement: {}
         }
       });
     });
 
-    beforeEach(function() {
-      postscribeSpy.calls.reset();
-      writeHtmlSpy.calls.reset();
+    it('writes the code defined inside the main library', function() {
+      customCode({
+        source: 'inside container',
+        language: 'javascript'
+      });
+
+      expect(documentWriteSpy).not.toHaveBeenCalled();
+      expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside container');
     });
 
     it('writes the code defined inside an external file', function(done) {
@@ -106,9 +109,145 @@ describe('custom code action delegate', function() {
         source: 'http://someurl.com/source.js',
         language: 'javascript'
       }).then(function() {
-        expect(writeHtmlSpy).not.toHaveBeenCalled();
+        expect(documentWriteSpy).not.toHaveBeenCalled();
         expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside external file');
         done();
+      });
+    });
+  });
+
+  describe('in IE 10', function() {
+    describe('library loaded synchronously', function() {
+      beforeAll(function() {
+        customCode = createCustomCodeDelegate({
+          postscribe: postscribeSpy,
+          document: {
+            // In IE 10, there's a bug that sets readyState to interactive too early.
+            // We need to test that we still function appropriately in this case.
+            readyState: 'interactive',
+            write: documentWriteSpy,
+            documentElement: {
+              doScroll: function() {
+              }
+            },
+            querySelectorAll: function() {
+              return [{
+                src: LAUNCH_LIB_EXAMPLE_SRC
+              }];
+            }
+          }
+        });
+      });
+
+      it('writes the code defined inside the main library', function() {
+        customCode({
+          source: 'inside container',
+          language: 'javascript'
+        });
+
+        expect(documentWriteSpy).toHaveBeenCalledWith('inside container');
+        expect(postscribeSpy).not.toHaveBeenCalled();
+      });
+
+      it('writes the code defined inside an external file', function(done) {
+        customCode({
+          isExternal: true,
+          source: 'http://someurl.com/source.js',
+          language: 'javascript'
+        }).then(function() {
+          expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside external file');
+          expect(documentWriteSpy).not.toHaveBeenCalled();
+          done();
+        });
+      });
+    });
+
+    describe('library loaded asynchronously', function() {
+      beforeAll(function() {
+        customCode = createCustomCodeDelegate({
+          postscribe: postscribeSpy,
+          document: {
+            // In IE 10, there's a bug that sets readyState to interactive too early.
+            // We need to test that we still function appropriately in this case.
+            readyState: 'interactive',
+            write: documentWriteSpy,
+            documentElement: {
+              doScroll: function() {
+              }
+            },
+            querySelectorAll: function() {
+              return [{
+                src: LAUNCH_LIB_EXAMPLE_SRC,
+                async: true
+              }];
+            }
+          }
+        });
+      });
+
+      it('writes the code defined inside the main library', function() {
+        customCode({
+          source: 'inside container',
+          language: 'javascript'
+        });
+
+        expect(documentWriteSpy).not.toHaveBeenCalled();
+        expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside container');
+      });
+
+      it('writes the code defined inside an external file', function(done) {
+        customCode({
+          isExternal: true,
+          source: 'http://someurl.com/source.js',
+          language: 'javascript'
+        }).then(function() {
+          expect(documentWriteSpy).not.toHaveBeenCalled();
+          expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside external file');
+          done();
+        });
+      });
+    });
+
+    describe('library script not found', function() {
+      beforeAll(function() {
+        customCode = createCustomCodeDelegate({
+          postscribe: postscribeSpy,
+          document: {
+            // In IE 10, there's a bug that sets readyState to interactive too early.
+            // We need to test that we still function appropriately in this case.
+            readyState: 'interactive',
+            write: documentWriteSpy,
+            documentElement: {
+              doScroll: function() {
+              }
+            },
+            querySelectorAll: function() {
+              return [];
+            }
+          }
+        });
+      });
+
+      it('writes the code defined inside the main library', function() {
+        customCode({
+          source: 'inside container',
+          language: 'javascript'
+        });
+
+        expect(documentWriteSpy).not.toHaveBeenCalled();
+        expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside container');
+      });
+
+      it('writes the code defined inside an external file', function(done) {
+        customCode({
+          isExternal: true,
+          source: 'http://someurl.com/source.js',
+          language: 'javascript'
+        }).then(function() {
+          expect(documentWriteSpy).not.toHaveBeenCalled();
+          expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside external file');
+          done();
+        });
       });
     });
   });
