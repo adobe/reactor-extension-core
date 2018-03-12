@@ -15,9 +15,9 @@
 var outerElement;
 var innerElement;
 
-var triggerCustomEvent = function(element, type) {
-  var event = document.createEvent('Event');
-  event.initEvent(type, true, true);
+var triggerCustomEvent = function(element, type, detail) {
+  var event = document.createEvent('CustomEvent');
+  event.initCustomEvent(type, true, true, detail);
   element.dispatchEvent(event);
   return event;
 };
@@ -51,14 +51,15 @@ describe('custom event event delegate', function() {
       bubbleFireIfParent: true
     }, trigger);
 
-    triggerCustomEvent(innerElement, CUSTOM_EVENT_TYPE);
+    triggerCustomEvent(innerElement, CUSTOM_EVENT_TYPE, { foo: 'bar' });
 
     expect(trigger.calls.count()).toBe(1);
     var call = trigger.calls.mostRecent();
     expect(call.args[0]).toEqual({
       element: outerElement,
       target: innerElement,
-      nativeEvent: jasmine.any(Object)
+      nativeEvent: jasmine.any(Object),
+      detail: { foo: 'bar' }
     });
   });
 

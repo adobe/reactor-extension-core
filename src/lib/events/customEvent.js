@@ -45,6 +45,9 @@ module.exports = function(settings, trigger) {
 
   bubbly.addListener(settings, function(event) {
     if (event.nativeEvent.type === type) {
+      // Copying detail up to the top-level makes it easier for users to consume and
+      // makes it backward-compatible with DTM.
+      event.detail = event.nativeEvent.detail;
       trigger(event);
     }
   });
