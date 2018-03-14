@@ -59,11 +59,11 @@ export const formConfig = {
       ...errors
     };
 
-    if (!values.min || !isInteger(Number(values.min))) {
+    if (values.min === '' || !isInteger(Number(values.min))) {
       errors.min = 'Please specify a minimum integer.';
     }
 
-    if (!values.max || !isInteger(Number(values.max))) {
+    if (values.max === '' || !isInteger(Number(values.max))) {
       errors.max = 'Please specify a maximum integer.';
     }
 
