@@ -63,8 +63,20 @@ describe('random number data element view', () => {
 
     const { minTextfield, maxTextfield } = getReactComponents(instance);
 
+    expect(extensionBridge.validate()).toBe(true);
     expect(minTextfield.props.value).toBe(0);
     expect(maxTextfield.props.value).toBe(1000000000);
+  });
+
+  it('sets default values and validate passes', () => {
+    extensionBridge.init({
+      settings: {
+        min: 0,
+        max: 1000000000
+      }
+    });
+
+    expect(extensionBridge.validate()).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -92,7 +104,10 @@ describe('random number data element view', () => {
     const { minErrorTip, maxErrorTip } = getReactComponents(instance);
 
     expect(minErrorTip).toBeDefined();
+    expect(minErrorTip.props.children).toBe('Please specify a minimum integer.');
+
     expect(maxErrorTip).toBeDefined();
+    expect(maxErrorTip.props.children).toBe('Please specify a maximum integer.');
   });
 
   it('sets errors if values are not integers', () => {
