@@ -39,7 +39,7 @@ var postscribeWrite = (function() {
   var flushQueue = function() {
     if (document.body) {
       while (queue.length) {
-        write(queue.shift())
+        write(queue.shift());
       }
     } else {
       // 20 is a arbitrarily small amount of time but not too aggressive.
@@ -50,7 +50,7 @@ var postscribeWrite = (function() {
   return function(source) {
     queue.push(source);
     flushQueue();
-  }
+  };
 })();
 
 var libraryWasLoadedAsynchronously = (function() {

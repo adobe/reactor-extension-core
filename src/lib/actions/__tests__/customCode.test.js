@@ -45,7 +45,7 @@ var getMockDocument = function(options) {
   };
 
   if (options.isDocumentBodyAvailable) {
-    document.body = {}
+    document.body = {};
   }
 
   if (!options.isIE) {
