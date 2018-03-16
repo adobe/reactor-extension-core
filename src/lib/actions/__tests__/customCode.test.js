@@ -31,6 +31,32 @@ var createCustomCodeDelegate = function(mocks) {
   });
 };
 
+var getMockDocument = function(options) {
+  var document = {
+    querySelectorAll: function() {
+      return [
+        {
+          src: options.isLibRenamed ? 'renamedlaunchlib.js' : LAUNCH_LIB_EXAMPLE_SRC,
+          async: options.isAsync
+        }
+      ];
+    },
+    write: options.write
+  };
+
+  if (options.isDocumentBodyAvailable) {
+    document.body = {};
+  }
+
+  if (!options.isIE) {
+    document.currentScript = {
+      async: options.isAsync
+    };
+  }
+
+  return document;
+};
+
 describe('custom code action delegate', function() {
   var documentWriteSpy;
   var postscribeSpy;
@@ -46,209 +72,254 @@ describe('custom code action delegate', function() {
     documentWriteSpy.calls.reset();
   });
 
-  describe('before DOMContentLoaded', function() {
-    beforeAll(function() {
-      customCode = createCustomCodeDelegate({
-        postscribe: postscribeSpy,
-        document: {
-          readyState: 'loading',
-          write: documentWriteSpy,
-          documentElement: {}
-        }
-      });
-    });
+  [true, false].forEach(function(isIE) {
+    describe('when browser ' + (isIE ? 'is IE' : 'is not IE'), function() {
+      describe('and library loaded asynchronously', function() {
+        describe('and document.body is available', function() {
+          beforeAll(function() {
+            customCode = createCustomCodeDelegate({
+              postscribe: postscribeSpy,
+              document: getMockDocument({
+                isIE: isIE,
+                isAsync: true,
+                write: documentWriteSpy,
+                isDocumentBodyAvailable: true
+              })
+            });
+          });
 
-    it('writes the code defined inside the main library', function() {
-      customCode({
-        source: 'inside container',
-        language: 'javascript'
-      });
+          it('writes the code defined inside the main library', function() {
+            customCode({
+              source: 'inside container',
+              language: 'javascript'
+            }, {
+              $type: 'core.library-loaded'
+            });
 
-      expect(documentWriteSpy).toHaveBeenCalledWith('inside container');
-      expect(postscribeSpy).not.toHaveBeenCalled();
-    });
+            expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside container');
+            expect(documentWriteSpy).not.toHaveBeenCalled();
+          });
 
-    it('writes the code defined inside an external file', function(done) {
-      customCode({
-        isExternal: true,
-        source: 'http://someurl.com/source.js',
-        language: 'javascript'
-      }).then(function() {
-        expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside external file');
-        expect(documentWriteSpy).not.toHaveBeenCalled();
-        done();
-      });
-    });
-  });
+          it('writes the code defined inside an external file', function(done) {
+            customCode({
+              isExternal: true,
+              source: 'http://someurl.com/source.js',
+              language: 'javascript'
+            }, {
+              $type: 'core.library-loaded'
+            }).then(function() {
+              expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside external file');
+              expect(documentWriteSpy).not.toHaveBeenCalled();
+              done();
+            });
+          });
+        });
 
-  describe('after DOMContentLoaded', function() {
-    beforeAll(function() {
-      customCode = createCustomCodeDelegate({
-        postscribe: postscribeSpy,
-        document: {
-          readyState: 'interactive',
-          write: documentWriteSpy,
-          documentElement: {}
-        }
-      });
-    });
+        describe('and document.body is not available', function() {
+          var mockDocument;
 
-    it('writes the code defined inside the main library', function() {
-      customCode({
-        source: 'inside container',
-        language: 'javascript'
-      });
+          beforeEach(function() {
+            jasmine.clock().install();
 
-      expect(documentWriteSpy).not.toHaveBeenCalled();
-      expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside container');
-    });
+            mockDocument = getMockDocument({
+              isIE: isIE,
+              isAsync: true,
+              write: documentWriteSpy
+            });
 
-    it('writes the code defined inside an external file', function(done) {
-      customCode({
-        isExternal: true,
-        source: 'http://someurl.com/source.js',
-        language: 'javascript'
-      }).then(function() {
-        expect(documentWriteSpy).not.toHaveBeenCalled();
-        expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside external file');
-        done();
-      });
-    });
-  });
+            customCode = createCustomCodeDelegate({
+              postscribe: postscribeSpy,
+              document: mockDocument
+            });
+          });
 
-  describe('in IE 10', function() {
-    describe('library loaded synchronously', function() {
-      beforeAll(function() {
-        customCode = createCustomCodeDelegate({
-          postscribe: postscribeSpy,
-          document: {
-            // In IE 10, there's a bug that sets readyState to interactive too early.
-            // We need to test that we still function appropriately in this case.
-            readyState: 'interactive',
-            write: documentWriteSpy,
-            documentElement: {
-              doScroll: function() {
-              }
-            },
-            querySelectorAll: function() {
-              return [{
-                src: LAUNCH_LIB_EXAMPLE_SRC
-              }];
-            }
-          }
+          afterEach(function() {
+            jasmine.clock().uninstall();
+          });
+
+          it('writes the code defined inside the main library', function() {
+            customCode({
+              source: 'inside container',
+              language: 'javascript'
+            }, {
+              $type: 'core.library-loaded'
+            });
+
+            expect(postscribeSpy).not.toHaveBeenCalled();
+            expect(documentWriteSpy).not.toHaveBeenCalled();
+
+            mockDocument.body = {};
+            jasmine.clock().tick(20);
+
+            expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside container');
+            expect(documentWriteSpy).not.toHaveBeenCalled();
+          });
+
+          it('writes the code defined inside an external file', function(done) {
+            customCode({
+              isExternal: true,
+              source: 'http://someurl.com/source.js',
+              language: 'javascript'
+            }, {
+              $type: 'core.library-loaded'
+            }).then(function() {
+              expect(postscribeSpy).not.toHaveBeenCalled();
+              expect(documentWriteSpy).not.toHaveBeenCalled();
+
+              mockDocument.body = {};
+              jasmine.clock().tick(20);
+
+              expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside external file');
+              expect(documentWriteSpy).not.toHaveBeenCalled();
+              done();
+            });
+          });
+
+          it('flushes queue when body becomes available before timeout is complete', function() {
+            customCode({
+              source: 'inside container',
+              language: 'javascript'
+            }, {
+              $type: 'core.library-loaded'
+            });
+
+            expect(postscribeSpy).not.toHaveBeenCalled();
+            expect(documentWriteSpy).not.toHaveBeenCalled();
+
+            mockDocument.body = {};
+
+            customCode({
+              source: 'inside container2',
+              language: 'javascript'
+            }, {
+              $type: 'core.library-loaded'
+            });
+
+            expect(postscribeSpy.calls.argsFor(0)[1]).toBe('inside container');
+            expect(postscribeSpy.calls.argsFor(1)[1]).toBe('inside container2');
+            expect(documentWriteSpy).not.toHaveBeenCalled();
+          });
         });
       });
 
-      it('writes the code defined inside the main library', function() {
-        customCode({
-          source: 'inside container',
-          language: 'javascript'
+      describe('and library loaded synchronously', function() {
+        beforeAll(function() {
+          customCode = createCustomCodeDelegate({
+            postscribe: postscribeSpy,
+            document: getMockDocument({
+              isIE: isIE,
+              isAsync: false,
+              write: documentWriteSpy,
+              isDocumentBodyAvailable: true
+            })
+          });
         });
 
-        expect(documentWriteSpy).toHaveBeenCalledWith('inside container');
-        expect(postscribeSpy).not.toHaveBeenCalled();
-      });
+        ['core.library-loaded', 'core.page-bottom'].forEach(function(type) {
+          describe('when event is ' + type, function() {
+            it('writes the code defined inside the main library', function() {
+              customCode({
+                source: 'inside container',
+                language: 'javascript'
+              }, {
+                $type: type
+              });
 
-      it('writes the code defined inside an external file', function(done) {
-        customCode({
-          isExternal: true,
-          source: 'http://someurl.com/source.js',
-          language: 'javascript'
-        }).then(function() {
-          expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside external file');
-          expect(documentWriteSpy).not.toHaveBeenCalled();
-          done();
-        });
-      });
-    });
+              expect(postscribeSpy).not.toHaveBeenCalled();
+              expect(documentWriteSpy).toHaveBeenCalledWith('inside container');
+            });
 
-    describe('library loaded asynchronously', function() {
-      beforeAll(function() {
-        customCode = createCustomCodeDelegate({
-          postscribe: postscribeSpy,
-          document: {
-            // In IE 10, there's a bug that sets readyState to interactive too early.
-            // We need to test that we still function appropriately in this case.
-            readyState: 'interactive',
-            write: documentWriteSpy,
-            documentElement: {
-              doScroll: function() {
-              }
-            },
-            querySelectorAll: function() {
-              return [{
-                src: LAUNCH_LIB_EXAMPLE_SRC,
-                async: true
-              }];
-            }
-          }
-        });
-      });
-
-      it('writes the code defined inside the main library', function() {
-        customCode({
-          source: 'inside container',
-          language: 'javascript'
+            it('writes the code defined inside an external file', function(done) {
+              customCode({
+                isExternal: true,
+                source: 'http://someurl.com/source.js',
+                language: 'javascript'
+              }, {
+                $type: type
+              }).then(function() {
+                expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside external file');
+                expect(documentWriteSpy).not.toHaveBeenCalled();
+                done();
+              });
+            });
+          });
         });
 
-        expect(documentWriteSpy).not.toHaveBeenCalled();
-        expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside container');
-      });
+        describe('and event is not core.library-loaded or core.page-bottom', function() {
+          it('writes the code defined inside the main library', function() {
+            customCode({
+              source: 'inside container',
+              language: 'javascript'
+            }, {
+              $type: 'core.click'
+            });
 
-      it('writes the code defined inside an external file', function(done) {
-        customCode({
-          isExternal: true,
-          source: 'http://someurl.com/source.js',
-          language: 'javascript'
-        }).then(function() {
-          expect(documentWriteSpy).not.toHaveBeenCalled();
-          expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside external file');
-          done();
-        });
-      });
-    });
+            expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside container');
+            expect(documentWriteSpy).not.toHaveBeenCalled();
+          });
 
-    describe('library script not found', function() {
-      beforeAll(function() {
-        customCode = createCustomCodeDelegate({
-          postscribe: postscribeSpy,
-          document: {
-            // In IE 10, there's a bug that sets readyState to interactive too early.
-            // We need to test that we still function appropriately in this case.
-            readyState: 'interactive',
-            write: documentWriteSpy,
-            documentElement: {
-              doScroll: function() {
-              }
-            },
-            querySelectorAll: function() {
-              return [];
-            }
-          }
+          it('writes the code defined inside an external file', function(done) {
+            customCode({
+              isExternal: true,
+              source: 'http://someurl.com/source.js',
+              language: 'javascript'
+            }, {
+              $type: 'core.click'
+            }).then(function() {
+              expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside external file');
+              expect(documentWriteSpy).not.toHaveBeenCalled();
+              done();
+            });
+          });
         });
       });
 
-      it('writes the code defined inside the main library', function() {
-        customCode({
-          source: 'inside container',
-          language: 'javascript'
-        });
+      // This just tests the unlikely case where the user is in IE and we can't find the
+      // script element that loaded the Launch library. This could be due to the Launch library
+      // having been renamed, which is unsupported, but something we'll test for anyway.
+      // In these cases, we err on the side of assuming the script is asynchronously loaded.
+      if (isIE) {
+        describe('and the script that loaded Launch cannot be found', function() {
+          beforeAll(function() {
+            customCode = createCustomCodeDelegate({
+              postscribe: postscribeSpy,
+              document: getMockDocument({
+                isIE: isIE,
+                isAsync: false,
+                write: documentWriteSpy,
+                isDocumentBodyAvailable: true,
+                isLibRenamed: true,
+              })
+            });
+          });
 
-        expect(documentWriteSpy).not.toHaveBeenCalled();
-        expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside container');
-      });
+          it('writes the code defined inside the main library', function() {
+            customCode({
+              source: 'inside container',
+              language: 'javascript'
+            }, {
+              $type: 'core.library-loaded'
+            });
 
-      it('writes the code defined inside an external file', function(done) {
-        customCode({
-          isExternal: true,
-          source: 'http://someurl.com/source.js',
-          language: 'javascript'
-        }).then(function() {
-          expect(documentWriteSpy).not.toHaveBeenCalled();
-          expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside external file');
-          done();
+            expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside container');
+            expect(documentWriteSpy).not.toHaveBeenCalled();
+          });
+
+          it('writes the code defined inside an external file', function(done) {
+            customCode({
+              isExternal: true,
+              source: 'http://someurl.com/source.js',
+              language: 'javascript'
+            }, {
+              $type: 'core.library-loaded'
+            }).then(function() {
+              expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside external file');
+              expect(documentWriteSpy).not.toHaveBeenCalled();
+              done();
+            });
+          });
         });
-      });
+      }
     });
   });
 });
