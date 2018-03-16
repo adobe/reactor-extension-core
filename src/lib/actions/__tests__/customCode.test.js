@@ -44,6 +44,10 @@ var getMockDocument = function(options) {
     write: options.write
   };
 
+  if (options.isDocumentBodyAvailable) {
+    document.body = {}
+  }
+
   if (!options.isIE) {
     document.currentScript = {
       async: options.isAsync
@@ -71,40 +75,129 @@ describe('custom code action delegate', function() {
   [true, false].forEach(function(isIE) {
     describe('when browser ' + (isIE ? 'is IE' : 'is not IE'), function() {
       describe('and library loaded asynchronously', function() {
-        beforeAll(function() {
-          customCode = createCustomCodeDelegate({
-            postscribe: postscribeSpy,
-            document: getMockDocument({
+        describe('and document.body is available', function() {
+          beforeAll(function() {
+            customCode = createCustomCodeDelegate({
+              postscribe: postscribeSpy,
+              document: getMockDocument({
+                isIE: isIE,
+                isAsync: true,
+                write: documentWriteSpy,
+                isDocumentBodyAvailable: true
+              })
+            });
+          });
+
+          it('writes the code defined inside the main library', function() {
+            customCode({
+              source: 'inside container',
+              language: 'javascript'
+            }, {
+              $type: 'core.library-loaded'
+            });
+
+            expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside container');
+            expect(documentWriteSpy).not.toHaveBeenCalled();
+          });
+
+          it('writes the code defined inside an external file', function(done) {
+            customCode({
+              isExternal: true,
+              source: 'http://someurl.com/source.js',
+              language: 'javascript'
+            }, {
+              $type: 'core.library-loaded'
+            }).then(function() {
+              expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside external file');
+              expect(documentWriteSpy).not.toHaveBeenCalled();
+              done();
+            });
+          });
+        });
+
+        describe('and document.body is not available', function() {
+          var mockDocument;
+
+          beforeEach(function() {
+            jasmine.clock().install();
+
+            mockDocument = getMockDocument({
               isIE: isIE,
               isAsync: true,
               write: documentWriteSpy
-            })
-          });
-        });
+            });
 
-        it('writes the code defined inside the main library', function() {
-          customCode({
-            source: 'inside container',
-            language: 'javascript'
-          }, {
-            $type: 'core.library-loaded'
+            customCode = createCustomCodeDelegate({
+              postscribe: postscribeSpy,
+              document: mockDocument
+            });
           });
 
-          expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside container');
-          expect(documentWriteSpy).not.toHaveBeenCalled();
-        });
+          afterEach(function() {
+            jasmine.clock().uninstall();
+          });
 
-        it('writes the code defined inside an external file', function(done) {
-          customCode({
-            isExternal: true,
-            source: 'http://someurl.com/source.js',
-            language: 'javascript'
-          }, {
-            $type: 'core.library-loaded'
-          }).then(function() {
-            expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside external file');
+          it('writes the code defined inside the main library', function() {
+            customCode({
+              source: 'inside container',
+              language: 'javascript'
+            }, {
+              $type: 'core.library-loaded'
+            });
+
+            expect(postscribeSpy).not.toHaveBeenCalled();
             expect(documentWriteSpy).not.toHaveBeenCalled();
-            done();
+
+            mockDocument.body = {};
+            jasmine.clock().tick(20);
+
+            expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside container');
+            expect(documentWriteSpy).not.toHaveBeenCalled();
+          });
+
+          it('writes the code defined inside an external file', function(done) {
+            customCode({
+              isExternal: true,
+              source: 'http://someurl.com/source.js',
+              language: 'javascript'
+            }, {
+              $type: 'core.library-loaded'
+            }).then(function() {
+              expect(postscribeSpy).not.toHaveBeenCalled();
+              expect(documentWriteSpy).not.toHaveBeenCalled();
+
+              mockDocument.body = {};
+              jasmine.clock().tick(20);
+
+              expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside external file');
+              expect(documentWriteSpy).not.toHaveBeenCalled();
+              done();
+            });
+          });
+
+          it('flushes queue when body becomes available before timeout is complete', function() {
+            customCode({
+              source: 'inside container',
+              language: 'javascript'
+            }, {
+              $type: 'core.library-loaded'
+            });
+
+            expect(postscribeSpy).not.toHaveBeenCalled();
+            expect(documentWriteSpy).not.toHaveBeenCalled();
+
+            mockDocument.body = {};
+
+            customCode({
+              source: 'inside container2',
+              language: 'javascript'
+            }, {
+              $type: 'core.library-loaded'
+            });
+
+            expect(postscribeSpy.calls.argsFor(0)[1]).toBe('inside container');
+            expect(postscribeSpy.calls.argsFor(1)[1]).toBe('inside container2');
+            expect(documentWriteSpy).not.toHaveBeenCalled();
           });
         });
       });
@@ -116,7 +209,8 @@ describe('custom code action delegate', function() {
             document: getMockDocument({
               isIE: isIE,
               isAsync: false,
-              write: documentWriteSpy
+              write: documentWriteSpy,
+              isDocumentBodyAvailable: true
             })
           });
         });
@@ -193,7 +287,8 @@ describe('custom code action delegate', function() {
                 isIE: isIE,
                 isAsync: false,
                 write: documentWriteSpy,
-                isLibRenamed: true
+                isDocumentBodyAvailable: true,
+                isLibRenamed: true,
               })
             });
           });
