@@ -112,9 +112,9 @@ module.exports = function(settings, event) {
     //    a click, for example.
     // 2. When users load a library synchronously which has a rule using the Library Loaded
     //    or Page Bottom event with a Custom Code action, they expect the custom code to be written
-    //    in the document immediately after the script tag that loaded the Launch library. In other
-    //    words, they expect document.write to be used. When the library is loaded asynchronously,
-    //    they do not have this expectation.
+    //    to the document in a blocking fashion (prevent the parser from continuing until their
+    //    custom code is executed). In other words, they expect document.write to be used. When
+    //    the library is loaded asynchronously, they do not have this expectation.
     // 3. Calls to document.write will be ignored by the browser if the Launch library is loaded
     //    asynchronously, even if the calls are made before DOMContentLoaded.
     // Because of ^^^, we use document.write if the Launch library was loaded synchronously
