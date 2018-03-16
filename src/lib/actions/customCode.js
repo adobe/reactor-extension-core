@@ -119,7 +119,7 @@ module.exports = function(settings, event) {
     //    asynchronously, even if the calls are made before DOMContentLoaded.
     // Because of ^^^, we use document.write if the Launch library was loaded synchronously
     // and the event that fired the rule is library-loaded or page-bottom. Otherwise, we know we
-    // cann't use document.write and must use postscribe instead.
+    // can't use document.write and must use postscribe instead.
     if (libraryWasLoadedAsynchronously ||
         (event.$type !== 'core.library-loaded' && event.$type !== 'core.page-bottom')) {
       postscribeWrite(decorateCode(action, source));
