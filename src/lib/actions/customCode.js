@@ -42,7 +42,7 @@ var postscribeWrite = (function() {
         write(queue.shift());
       }
     } else {
-      // 20 is a arbitrarily small amount of time but not too aggressive.
+      // 20 is an arbitrarily small amount of time but not too aggressive.
       setTimeout(flushQueue, 20);
     }
   };
