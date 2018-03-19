@@ -12,39 +12,30 @@
 
 import React from 'react';
 import classNames from 'classnames';
-import Switch from '@coralui/react-coral/lib/Switch';
-import { Field } from 'redux-form';
-import RegexTestButton from './regexTestButton';
 
 export default (props) => {
   const {
     input: {
-      value: valueIsRegex,
+      value,
       onChange
     },
-    valueFieldName,
+    flags = 'i',
     className
   } = props;
 
+  const options = {
+    pattern: value,
+    flags
+  };
+
   return (
     <div className={ classNames(className, 'u-inlineBlock') }>
-      <label>
-        <Switch
-          className="u-gapRight"
-          checked={ Boolean(valueIsRegex) }
-          onChange={ event => onChange(event.target.checked) }
-        />
-        <span className="u-label">Regex</span>
-      </label>
-      <span
-        id="testButtonContainer"
-        style={ { visibility: valueIsRegex ? 'visible' : 'hidden' } }
+      <button
+        className="u-buttonReset coral-Link"
+        onClick={ () => window.extensionBridge.openRegexTester(options).then(onChange) }
       >
-        <Field
-          name={ valueFieldName }
-          component={ RegexTestButton }
-        />
-      </span>
+        Test
+      </button>
     </div>
   );
 };

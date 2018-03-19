@@ -14,7 +14,7 @@
 'use strict';
 
 var isNumber = function(value) {
-  return typeof value === 'number' && Number.isFinite(value);
+  return typeof value === 'number' && isFinite(value); // isFinite weeds out NaNs.
 };
 
 var isString = function(value) {
@@ -27,11 +27,11 @@ var updateCase = function(operand, caseInsensitive) {
 
 var castToStringIfNumber = function(operand) {
   return isNumber(operand) ? String(operand) : operand;
-}
+};
 
 var castToNumberIfString = function(operand) {
   return isString(operand) ? Number(operand) : operand;
-}
+};
 
 var guardStringCompare = function(compare) {
   return function(leftOperand, rightOperand, caseInsensitive) {
@@ -44,7 +44,7 @@ var guardStringCompare = function(compare) {
       compare(leftOperand, rightOperand)
     );
   };
-}
+};
 
 var guardNumberCompare = function(compare) {
   return function(leftOperand, rightOperand) {
@@ -57,7 +57,7 @@ var guardNumberCompare = function(compare) {
       compare(leftOperand, rightOperand)
     );
   };
-}
+};
 
 var conditions = {
   equals: function(leftOperand, rightOperand, caseInsensitive) {
@@ -75,17 +75,11 @@ var conditions = {
       leftOperand.length
     ) === rightOperand;
   }),
-  matchesRegex: function(leftOperand, rightOperand, caseInsensitive) {
-    var flags = caseInsensitive ? 'i' : '';
-
-    return (
-      isString(leftOperand) &&
-      isString(rightOperand) &&
-      // Doing something like new RegExp(/ab+c/, 'i') throws an error in some browsers (e.g., IE11),
-      // so we don't want to instantiate the regex until we know we're working with a string.
-      new RegExp(rightOperand, flags).test(leftOperand)
-    );
-  },
+  matchesRegex: guardStringCompare(function(leftOperand, rightOperand, caseInsensitive) {
+    // Doing something like new RegExp(/ab+c/, 'i') throws an error in some browsers (e.g., IE11),
+    // so we don't want to instantiate the regex until we know we're working with a string.
+    return new RegExp(rightOperand, caseInsensitive ? 'i' : '').test(leftOperand);
+  }),
   lessThan: guardNumberCompare(function(leftOperand, rightOperand) {
     return leftOperand < rightOperand;
   }),
@@ -101,11 +95,8 @@ var conditions = {
   isTrue: function(leftOperand) {
     return leftOperand === true;
   },
-  isFalse: function(leftOperand) {
-    return leftOperand === false;
-  },
-  exists: function(leftOperand) {
-    return leftOperand != null;
+  isTruthy: function(leftOperand) {
+    return Boolean(leftOperand);
   }
 };
 

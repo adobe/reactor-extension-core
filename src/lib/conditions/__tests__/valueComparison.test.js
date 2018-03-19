@@ -143,7 +143,6 @@ describe('value comparison delegate', function() {
     });
 
     it('returns true on number+string match', function() {
-      debugger;
       expect(conditionDelegate({
         leftOperand: 123,
         comparison: {
@@ -228,7 +227,6 @@ describe('value comparison delegate', function() {
     });
 
     it('returns true on number+string match', function() {
-      debugger;
       expect(conditionDelegate({
         leftOperand: 123,
         comparison: {
@@ -313,7 +311,6 @@ describe('value comparison delegate', function() {
     });
 
     it('returns true on number+string match', function() {
-      debugger;
       expect(conditionDelegate({
         leftOperand: 123,
         comparison: {
@@ -387,25 +384,24 @@ describe('value comparison delegate', function() {
       })).toBe(true);
     });
 
-    it('returns false on string+number match', function() {
+    it('returns true on string+number match', function() {
       expect(conditionDelegate({
         leftOperand: '3',
         comparison: {
           operator: 'matchesRegex'
         },
         rightOperand: 3
-      })).toBe(false);
+      })).toBe(true);
     });
 
     it('returns true on number+string match', function() {
-      debugger;
       expect(conditionDelegate({
         leftOperand: 3,
         comparison: {
           operator: 'matchesRegex'
         },
         rightOperand: '3'
-      })).toBe(false);
+      })).toBe(true);
     });
 
     it('returns false on object comparison', function() {
@@ -732,23 +728,50 @@ describe('value comparison delegate', function() {
     });
   });
 
-  describe('isFalse operator', function() {
-    it('returns true when value is false', function() {
-      expect(conditionDelegate({
-        leftOperand: false,
-        comparison: {
-          operator: 'isFalse'
-        }
-      })).toBe(true);
+  var truthyValues = [
+    true,
+    {},
+    [],
+    42,
+    'foo',
+    new Date(),
+    -42,
+    3.14,
+    -3.14,
+    Infinity,
+    -Infinity
+  ];
+
+  var falsyValues = [
+    false,
+    null,
+    undefined,
+    0,
+    NaN,
+    ''
+  ];
+
+  describe('isTruthy operator', function() {
+    truthyValues.forEach(function(value) {
+      it('returns true for ' + value, function() {
+        expect(conditionDelegate({
+          leftOperand: value,
+          comparison: {
+            operator: 'isTruthy'
+          }
+        })).toBe(true);
+      });
     });
 
-    it('returns false when value is anything else', function() {
-      expect(conditionDelegate({
-        leftOperand: 0,
-        comparison: {
-          operator: 'isFalse'
-        }
-      })).toBe(false);
+    falsyValues.forEach(function(value) {
+      it('returns false for ' + value, function() {
+        expect(conditionDelegate({
+          leftOperand: value,
+          comparison: {
+            operator: 'isTruthy'
+          }
+        })).toBe(false);
+      });
     });
   });
 });

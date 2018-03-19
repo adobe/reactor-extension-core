@@ -1759,7 +1759,8 @@
       "name": "value-comparison",
       "categoryName": "Data",
       "displayName": "Value Comparison",
-      "libPath": "src/lib/valueComparison",
+      "libPath": "src/lib/conditions/valueComparison.js",
+      "viewPath": "conditions/valueComparison.html",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
@@ -1775,11 +1776,7 @@
                   "operator": {
                     "type": "string",
                     "enum": [
-                      "equals",
-                      "contains",
-                      "startsWith",
-                      "endsWith",
-                      "matchesRegex"
+                      "equals"
                     ]
                   },
                   "caseInsensitive": {
@@ -1801,7 +1798,43 @@
           {
             "properties": {
               "leftOperand": {
-                "type": "string"
+                "type": "string",
+                "minLength": 1
+              },
+              "comparison": {
+                "type": "object",
+                "properties": {
+                  "operator": {
+                    "type": "string",
+                    "enum": [
+                      "contains",
+                      "startsWith",
+                      "endsWith",
+                      "matchesRegex"
+                    ]
+                  },
+                  "caseInsensitive": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "rightOperand": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "leftOperand",
+              "comparison",
+              "rightOperand"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "leftOperand": {
+                "type": "string",
+                "minLength": 1
               },
               "comparison": {
                 "type": "object",
@@ -1818,7 +1851,8 @@
                 }
               },
               "rightOperand": {
-                "type": "string"
+                "type": "string",
+                "minLength": 1
               }
             },
             "required": [
@@ -1831,7 +1865,8 @@
           {
             "properties": {
               "leftOperand": {
-                "type": "string"
+                "type": "string",
+                "minLength": 1
               },
               "comparison": {
                 "type": "object",
@@ -1840,8 +1875,7 @@
                     "type": "string",
                     "enum": [
                       "isTrue",
-                      "isFalse",
-                      "exists"
+                      "isTruthy"
                     ]
                   }
                 }
