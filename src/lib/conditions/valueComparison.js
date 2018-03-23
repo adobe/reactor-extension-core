@@ -83,13 +83,13 @@ var conditions = {
   lessThan: guardNumberCompare(function(leftOperand, rightOperand) {
     return leftOperand < rightOperand;
   }),
-  lessThanOrEqualTo: guardNumberCompare(function(leftOperand, rightOperand) {
+  lessThanOrEqual: guardNumberCompare(function(leftOperand, rightOperand) {
     return leftOperand <= rightOperand;
   }),
   greaterThan: guardNumberCompare(function(leftOperand, rightOperand) {
     return leftOperand > rightOperand;
   }),
-  greaterThanOrEqualTo: guardNumberCompare(function(leftOperand, rightOperand) {
+  greaterThanOrEqual: guardNumberCompare(function(leftOperand, rightOperand) {
     return leftOperand >= rightOperand;
   }),
   isTrue: function(leftOperand) {

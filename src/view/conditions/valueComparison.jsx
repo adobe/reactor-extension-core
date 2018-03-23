@@ -39,9 +39,9 @@ const operators = {
   ENDS_WITH: 'endsWith',
   MATCHES_REGEX: 'matchesRegex',
   LESS_THAN: 'lessThan',
-  LESS_THAN_OR_EQUAL_TO: 'lessThanOrEqualTo',
+  LESS_THAN_OR_EQUAL: 'lessThanOrEqual',
   GREATER_THAN: 'greaterThan',
-  GREATER_THAN_OR_EQUAL_TO: 'greaterThanOrEqualTo',
+  GREATER_THAN_OR_EQUAL: 'greaterThanOrEqual',
   IS_TRUE: 'isTrue',
   IS_TRUTHY: 'isTruthy'
 };
@@ -84,7 +84,7 @@ const operatorMeta = {
     isRightOperandSupported: true,
     isOperandLengthRequired: true
   },
-  [operators.LESS_THAN_OR_EQUAL_TO]: {
+  [operators.LESS_THAN_OR_EQUAL]: {
     label: 'Is Less Than Or Equal To',
     isRightOperandSupported: true,
     isOperandLengthRequired: true
@@ -94,7 +94,7 @@ const operatorMeta = {
     isRightOperandSupported: true,
     isOperandLengthRequired: true
   },
-  [operators.GREATER_THAN_OR_EQUAL_TO]: {
+  [operators.GREATER_THAN_OR_EQUAL]: {
     label: 'Is Less Than Or Equal To',
     isRightOperandSupported: true,
     isOperandLengthRequired: true

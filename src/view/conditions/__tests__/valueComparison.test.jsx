@@ -158,9 +158,9 @@ describe('value comparison condition view', () => {
   describe('number-based comparisons', () => {
     [
       'lessThan',
-      'lessThanOrEqualTo',
+      'lessThanOrEqual',
       'greaterThan',
-      'greaterThanOrEqualTo'
+      'greaterThanOrEqual'
     ].forEach((operator) => {
       describe(`when operator is ${operator}`, () => {
         it('sets form values from settings', () => {

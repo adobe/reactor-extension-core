@@ -499,12 +499,12 @@ describe('value comparison delegate', function() {
     });
   });
 
-  describe('lessThanOrEqualTo operator', function() {
+  describe('lessThanOrEqual operator', function() {
     it('returns true when left less right', function() {
       expect(conditionDelegate({
         leftOperand: 1,
         comparison: {
-          operator: 'lessThanOrEqualTo'
+          operator: 'lessThanOrEqual'
         },
         rightOperand: 2
       })).toBe(true);
@@ -514,7 +514,7 @@ describe('value comparison delegate', function() {
       expect(conditionDelegate({
         leftOperand: 1,
         comparison: {
-          operator: 'lessThanOrEqualTo'
+          operator: 'lessThanOrEqual'
         },
         rightOperand: 1
       })).toBe(true);
@@ -524,7 +524,7 @@ describe('value comparison delegate', function() {
       expect(conditionDelegate({
         leftOperand: 3,
         comparison: {
-          operator: 'lessThanOrEqualTo'
+          operator: 'lessThanOrEqual'
         },
         rightOperand: 1
       })).toBe(false);
@@ -534,7 +534,7 @@ describe('value comparison delegate', function() {
       expect(conditionDelegate({
         leftOperand: '1',
         comparison: {
-          operator: 'lessThanOrEqualTo'
+          operator: 'lessThanOrEqual'
         },
         rightOperand: '1'
       })).toBe(true);
@@ -545,7 +545,7 @@ describe('value comparison delegate', function() {
       expect(conditionDelegate({
         leftOperand: obj,
         comparison: {
-          operator: 'lessThanOrEqualTo'
+          operator: 'lessThanOrEqual'
         },
         rightOperand: obj
       })).toBe(false);
@@ -555,7 +555,7 @@ describe('value comparison delegate', function() {
       expect(conditionDelegate({
         leftOperand: true,
         comparison: {
-          operator: 'lessThanOrEqualTo'
+          operator: 'lessThanOrEqual'
         },
         rightOperand: true
       })).toBe(false);
@@ -565,7 +565,7 @@ describe('value comparison delegate', function() {
       expect(conditionDelegate({
         leftOperand: null,
         comparison: {
-          operator: 'lessThanOrEqualTo'
+          operator: 'lessThanOrEqual'
         },
         rightOperand: null
       })).toBe(false);
@@ -635,12 +635,12 @@ describe('value comparison delegate', function() {
     });
   });
 
-  describe('greaterThanOrEqualTo operator', function() {
+  describe('greaterThanOrEqual operator', function() {
     it('returns true when left greater than right', function() {
       expect(conditionDelegate({
         leftOperand: 2,
         comparison: {
-          operator: 'greaterThanOrEqualTo'
+          operator: 'greaterThanOrEqual'
         },
         rightOperand: 1
       })).toBe(true);
@@ -650,7 +650,7 @@ describe('value comparison delegate', function() {
       expect(conditionDelegate({
         leftOperand: 1,
         comparison: {
-          operator: 'greaterThanOrEqualTo'
+          operator: 'greaterThanOrEqual'
         },
         rightOperand: 1
       })).toBe(true);
@@ -660,7 +660,7 @@ describe('value comparison delegate', function() {
       expect(conditionDelegate({
         leftOperand: 1,
         comparison: {
-          operator: 'greaterThanOrEqualTo'
+          operator: 'greaterThanOrEqual'
         },
         rightOperand: 2
       })).toBe(false);
@@ -670,7 +670,7 @@ describe('value comparison delegate', function() {
       expect(conditionDelegate({
         leftOperand: '1',
         comparison: {
-          operator: 'greaterThanOrEqualTo'
+          operator: 'greaterThanOrEqual'
         },
         rightOperand: '1'
       })).toBe(true);
@@ -681,7 +681,7 @@ describe('value comparison delegate', function() {
       expect(conditionDelegate({
         leftOperand: obj,
         comparison: {
-          operator: 'greaterThanOrEqualTo'
+          operator: 'greaterThanOrEqual'
         },
         rightOperand: obj
       })).toBe(false);
@@ -691,7 +691,7 @@ describe('value comparison delegate', function() {
       expect(conditionDelegate({
         leftOperand: true,
         comparison: {
-          operator: 'greaterThanOrEqualTo'
+          operator: 'greaterThanOrEqual'
         },
         rightOperand: true
       })).toBe(false);
@@ -701,7 +701,7 @@ describe('value comparison delegate', function() {
       expect(conditionDelegate({
         leftOperand: null,
         comparison: {
-          operator: 'greaterThanOrEqualTo'
+          operator: 'greaterThanOrEqual'
         },
         rightOperand: null
       })).toBe(false);

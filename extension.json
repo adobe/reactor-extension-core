@@ -1843,9 +1843,9 @@
                     "type": "string",
                     "enum": [
                       "lessThan",
-                      "lessThanOrEqualTo",
+                      "lessThanOrEqual",
                       "greaterThan",
-                      "greaterThanOrEqualTo"
+                      "greaterThanOrEqual"
                     ]
                   }
                 }
