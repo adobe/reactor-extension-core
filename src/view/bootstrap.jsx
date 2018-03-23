@@ -45,19 +45,7 @@ module.exports = (View, formConfig, extensionBridge = window.extensionBridge, vi
     // Note that there's no technical reason why config.validate must be a reducer. It does
     // maintain some consistency with settingsToFormValues and formValuesToSettings.
     validate: formConfig.validate ?
-      (values) => {
-        const errors = formConfig.validate({}, values, store.getState().meta);
-
-        return {
-          ...errors,
-          // A general form-wide error can be returned via the special _error key.
-          // From: http://redux-form.com/6.0.5/examples/submitValidation/
-          // If there are no components with errors, we need to set it to undefined instead of an
-          // empty array or redux-form will consider the form invalid.
-          _error: errors.componentsWithErrors && errors.componentsWithErrors.length ?
-            errors.componentsWithErrors : undefined
-        };
-      } :
+      values => formConfig.validate({}, values, store.getState().meta) :
       undefined,
     // ReduxForm will complain with we try to "submit" the form and don't have onSubmit defined.
     onSubmit: () => {}
