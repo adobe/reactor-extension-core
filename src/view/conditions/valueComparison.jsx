@@ -80,22 +80,22 @@ const operatorMeta = {
     isOperandLengthRequired: true
   },
   [operators.LESS_THAN]: {
-    label: 'Less Than',
+    label: 'Is Less Than',
     isRightOperandSupported: true,
     isOperandLengthRequired: true
   },
   [operators.LESS_THAN_OR_EQUAL_TO]: {
-    label: 'Less Than Or Equal To',
+    label: 'Is Less Than Or Equal To',
     isRightOperandSupported: true,
     isOperandLengthRequired: true
   },
   [operators.GREATER_THAN]: {
-    label: 'Greater Than',
+    label: 'Is Greater Than',
     isRightOperandSupported: true,
     isOperandLengthRequired: true
   },
   [operators.GREATER_THAN_OR_EQUAL_TO]: {
-    label: 'Less Than Or Equal To',
+    label: 'Is Less Than Or Equal To',
     isRightOperandSupported: true,
     isOperandLengthRequired: true
   },
