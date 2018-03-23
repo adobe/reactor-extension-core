@@ -1053,66 +1053,6 @@
       }
     },
     {
-      "name": "cart-amount",
-      "categoryName": "Engagement",
-      "displayName": "Cart Amount",
-      "libPath": "src/lib/conditions/cartAmount.js",
-      "viewPath": "conditions/cartAmount.html",
-      "schema": {
-        "$schema": "http://json-schema.org/draft-04/schema#",
-        "type": "object",
-        "properties": {
-          "dataElement": {
-            "type": "string",
-            "minLength": 1
-          },
-          "operator": {
-            "type": "string",
-            "enum": [
-              ">",
-              "=",
-              "<"
-            ]
-          },
-          "amount": {
-            "type": "number"
-          }
-        },
-        "additionalProperties": false,
-        "required": ["dataElement", "operator", "amount"]
-      }
-    },
-    {
-      "name": "cart-item-quantity",
-      "categoryName": "Engagement",
-      "displayName": "Cart Item Quantity",
-      "libPath": "src/lib/conditions/cartItemQuantity.js",
-      "viewPath": "conditions/cartItemQuantity.html",
-      "schema": {
-        "$schema": "http://json-schema.org/draft-04/schema#",
-        "type": "object",
-        "properties": {
-          "dataElement": {
-            "type": "string",
-            "minLength": 1
-          },
-          "operator": {
-            "type": "string",
-            "enum": [
-              ">",
-              "=",
-              "<"
-            ]
-          },
-          "quantity": {
-            "type": "number"
-          }
-        },
-        "additionalProperties": false,
-        "required": ["dataElement", "operator", "quantity"]
-      }
-    },
-    {
       "name": "cookie",
       "categoryName": "Data",
       "displayName": "Cookie",
@@ -1182,31 +1122,6 @@
           ]
         }
       ]
-    },
-    {
-      "name": "data-element",
-      "categoryName": "Data",
-      "displayName": "Data Element",
-      "libPath": "src/lib/conditions/dataElement.js",
-      "viewPath": "conditions/dataElement.html",
-      "schema": {
-        "$schema": "http://json-schema.org/draft-04/schema#",
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "minLength": 1
-          },
-          "value": {
-            "type": "string"
-          },
-          "valueIsRegex": {
-            "type": "boolean"
-          }
-        },
-        "additionalProperties": false,
-        "required": ["name", "value"]
-      }
     },
     {
       "name": "date-range",
@@ -1338,25 +1253,6 @@
         },
         "additionalProperties": false,
         "required": ["page"]
-      }
-    },
-    {
-      "name": "logged-in",
-      "categoryName": "Engagement",
-      "displayName": "Logged In",
-      "libPath": "src/lib/conditions/loggedIn.js",
-      "viewPath": "conditions/loggedIn.html",
-      "schema": {
-        "$schema": "http://json-schema.org/draft-04/schema#",
-        "type": "object",
-        "properties": {
-          "dataElement": {
-            "type": "string",
-            "minLength": 1
-          }
-        },
-        "additionalProperties": false,
-        "required": ["dataElement"]
       }
     },
     {
@@ -1506,25 +1402,6 @@
       }
     },
     {
-      "name": "previous-converter",
-      "categoryName": "Engagement",
-      "displayName": "Previous Converter",
-      "libPath": "src/lib/conditions/previousConverter.js",
-      "viewPath": "conditions/previousConverter.html",
-      "schema": {
-        "$schema": "http://json-schema.org/draft-04/schema#",
-        "type": "object",
-        "properties": {
-          "dataElement": {
-            "type": "string",
-            "minLength": 1
-          }
-        },
-        "additionalProperties": false,
-        "required": ["dataElement"]
-      }
-    },
-    {
       "name": "protocol",
       "categoryName": "URL",
       "displayName": "Protocol",
@@ -1544,25 +1421,6 @@
         },
         "additionalProperties": false,
         "required": ["protocol"]
-      }
-    },
-    {
-      "name": "registered-user",
-      "categoryName": "Engagement",
-      "displayName": "Registered User",
-      "libPath": "src/lib/conditions/registeredUser.js",
-      "viewPath": "conditions/registeredUser.html",
-      "schema": {
-        "$schema": "http://json-schema.org/draft-04/schema#",
-        "type": "object",
-        "properties": {
-          "dataElement": {
-            "type": "string",
-            "minLength": 1
-          }
-        },
-        "additionalProperties": false,
-        "required": ["dataElement"]
       }
     },
     {
