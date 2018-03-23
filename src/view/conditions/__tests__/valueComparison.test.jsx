@@ -14,6 +14,7 @@ import { mount } from 'enzyme';
 import { Field } from 'redux-form';
 import Textfield from '@coralui/react-coral/lib/Textfield';
 import Select from '@coralui/react-coral/lib/Select';
+import Alert from '@coralui/react-coral/lib/Alert';
 import Checkbox from '@coralui/react-coral/lib/Checkbox';
 import ErrorTip from '@reactor/react-components/lib/errorTip';
 import ValueComparison, { formConfig } from '../valueComparison';
@@ -36,13 +37,16 @@ const getReactComponents = (wrapper) => {
   const caseInsensitiveField = fields.filterWhere(n => n.prop('name') === 'caseInsensitive');
   const caseInsensitiveCheckbox = caseInsensitiveField.find(Checkbox).node;
 
+  const noTypeConversionReminders = wrapper.find(Alert);
+
   return {
     leftOperandTextfield,
     leftOperandErrorTip,
     operatorSelect,
     rightOperandTextfield,
     rightOperandErrorTip,
-    caseInsensitiveCheckbox
+    caseInsensitiveCheckbox,
+    noTypeConversionReminders
   };
 };
 
@@ -296,5 +300,24 @@ describe('value comparison condition view', () => {
         });
       });
     });
+  });
+
+  it('warns user about no type conversions for specific string values', () => {
+    extensionBridge.init({
+      settings: {
+        leftOperand: 'true',
+        comparison: {
+          operator: 'equals',
+          caseInsensitive: true
+        },
+        rightOperand: 'undefined'
+      }
+    });
+
+    const {
+      noTypeConversionReminders
+    } = getReactComponents(instance);
+
+    expect(noTypeConversionReminders.length).toBe(2);
   });
 });

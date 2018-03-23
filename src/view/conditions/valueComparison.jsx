@@ -116,8 +116,8 @@ const operatorOptions = Object.keys(operatorMeta).map(operator => (
   }
 ));
 
-const NoConversionReminder = (props) => {
-  const noConversionStrings = [
+const NoTypeConversionReminder = (props) => {
+  const sketchyStrings = [
     'true',
     'false',
     'null',
@@ -125,7 +125,7 @@ const NoConversionReminder = (props) => {
   ];
 
   return props.operator === operators.EQUALS &&
-    noConversionStrings.indexOf(props.value.toLowerCase()) !== -1 ?
+    sketchyStrings.indexOf(props.value.toLowerCase()) !== -1 ?
     (
       <Alert className="u-block" variant="warning">
         Be aware that the value &quot;{props.value}&quot; will be compared as a string.
@@ -160,7 +160,7 @@ const RightOperandFields = (props) => {
             inputComponent={ Textfield }
             supportDataElement
           />
-          <NoConversionReminder operator={ props.operator } value={ props.rightOperand } />
+          <NoTypeConversionReminder operator={ props.operator } value={ props.rightOperand } />
         </div>
       );
   }
@@ -180,7 +180,7 @@ const ValueComparison = props => (
         inputComponent={ Textfield }
         supportDataElement
       />
-      <NoConversionReminder operator={ props.operator } value={ props.leftOperand } />
+      <NoTypeConversionReminder operator={ props.operator } value={ props.leftOperand } />
     </div>
     <div className="u-gapBottom">
       <Field
