@@ -16,7 +16,7 @@ import Select from '@coralui/redux-form-react-coral/lib/Select';
 import { Field } from 'redux-form';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
-import { isNumber } from '../utils/validators';
+import { isNumberLike } from '../utils/validators';
 import comparisonOperatorOptions from './comparisonOperatorOptions';
 
 const ScreenResolution = () => (
@@ -88,11 +88,11 @@ export const formConfig = {
       ...errors
     };
 
-    if (!isNumber(values.width)) {
+    if (!isNumberLike(values.width)) {
       errors.width = 'Please specify a number for width.';
     }
 
-    if (!isNumber(values.height)) {
+    if (!isNumberLike(values.height)) {
       errors.height = 'Please specify a number for height.';
     }
 

@@ -15,13 +15,12 @@
 var mockVisitorTracking = {
   getLandingPage: function() {
     return 'http://landingpage.com/test.html';
-  },
-  enable: jasmine.createSpy()
+  }
 };
 
 var conditionDelegateInjector = require('inject!../landingPage');
 var conditionDelegate = conditionDelegateInjector({
-  './helpers/visitorTracking': mockVisitorTracking
+  '../helpers/visitorTracking': mockVisitorTracking
 });
 
 var getSettings = function(page, pageIsRegex) {
@@ -32,10 +31,6 @@ var getSettings = function(page, pageIsRegex) {
 };
 
 describe('landing page condition delegate', function() {
-  it('calls visitorTracking.enable', function() {
-    expect(mockVisitorTracking.enable).toHaveBeenCalled();
-  });
-
   it('returns true when the landing page matches a string', function() {
     var settings = getSettings('http://landingpage.com/test.html', false);
     expect(conditionDelegate(settings)).toBe(true);

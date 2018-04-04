@@ -15,13 +15,12 @@
 var mockVisitorTracking = {
   getTrafficSource: function() {
     return 'http://trafficsource.com';
-  },
-  enable: jasmine.createSpy()
+  }
 };
 
 var conditionDelegateInjector = require('inject!../trafficSource');
 var conditionDelegate = conditionDelegateInjector({
-  './helpers/visitorTracking': mockVisitorTracking
+  '../helpers/visitorTracking': mockVisitorTracking
 });
 
 var getSettings = function(source, sourceIsRegex) {
@@ -32,10 +31,6 @@ var getSettings = function(source, sourceIsRegex) {
 };
 
 describe('traffic source condition delegate', function() {
-  it('calls visitorTracking.enable', function() {
-    expect(mockVisitorTracking.enable).toHaveBeenCalled();
-  });
-
   it('returns true when the traffic source matches a string', function() {
     var settings = getSettings('http://trafficsource.com', false);
     expect(conditionDelegate(settings)).toBe(true);

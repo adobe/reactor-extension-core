@@ -14,15 +14,26 @@
 var visitorTracking = require('../helpers/visitorTracking');
 
 /**
- * New vs. returning visitor condition. Determines if the visitor is a new or returning visitor.
- * @param {Object} settings Condition settings.
- * @param {boolean} settings.isNewVisitor When true, the condition returns true if the
- * visitor is a new visitor. When false, the condition returns true if the visitor is a returning
- * visitor.
- * @returns {boolean}
+ * The page info data element.
+ * @param {Object} settings The data element settings object.
+ * @param {string} settings.attribute The attribute that should be returned.
+ * @returns {string}
  */
 module.exports = function(settings) {
-  var isNewVisitor = visitorTracking.getIsNewVisitor();
-  return settings.isNewVisitor ? isNewVisitor : !isNewVisitor;
+  switch (settings.attribute) {
+    case 'landingPage':
+      return visitorTracking.getLandingPage();
+    case 'trafficSource':
+      return visitorTracking.getTrafficSource();
+    case 'minutesOnSite':
+      return visitorTracking.getMinutesOnSite();
+    case 'sessionCount':
+      return visitorTracking.getSessionCount();
+    case 'sessionPageViewCount':
+      return visitorTracking.getSessionPageViewCount();
+    case 'lifetimePageViewCount':
+      return visitorTracking.getLifetimePageViewCount();
+    case 'isNewVisitor':
+      return visitorTracking.getIsNewVisitor();
+  }
 };
-

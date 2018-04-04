@@ -11,36 +11,61 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
 import { Field } from 'redux-form';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
+import Select from '@coralui/redux-form-react-coral/lib/Select';
 
+const options = [
+  {
+    value: 'landingPage',
+    label: 'Landing Page'
+  },
+  {
+    value: 'trafficSource',
+    label: 'Traffic Source'
+  },
+  {
+    value: 'minutesOnSite',
+    label: 'Minutes On Site'
+  },
+  {
+    value: 'sessionCount',
+    label: 'Session Count'
+  },
+  {
+    value: 'sessionPageViewCount',
+    label: 'Session Page View Count'
+  },
+  {
+    value: 'lifetimePageViewCount',
+    label: 'Lifetime Page View Count'
+  },
+  {
+    value: 'newVisitor',
+    label: 'Is New Visitor'
+  },
+];
 
-import RegexToggle from '../components/regexToggle';
-
-export default () => (
-  <div>
-    <label className="u-gapRight">
-      <span className="u-label">Landing page equals</span>
-      <Field
-        name="page"
-        component={ DecoratedInput }
-        inputComponent={ Textfield }
-      />
-    </label>
+const VisitorBehavior = () => (
+  <label>
+    <span className="u-label">Attribute</span>
     <Field
-      name="pageIsRegex"
-      component={ RegexToggle }
-      valueFieldName="page"
+      name="attribute"
+      component={ DecoratedInput }
+      inputComponent={ Select }
+      options={ options }
+      backspaceRemoves={ false }
     />
-  </div>
+  </label>
 );
+
+export default VisitorBehavior;
 
 export const formConfig = {
   settingsToFormValues(values, settings) {
     return {
       ...values,
-      ...settings
+      attribute: settings.attribute || 'landingPage'
     };
   },
   formValuesToSettings(settings, values) {
@@ -48,16 +73,5 @@ export const formConfig = {
       ...settings,
       ...values
     };
-  },
-  validate(errors, values) {
-    errors = {
-      ...errors
-    };
-
-    if (!values.page) {
-      errors.page = 'Please specify a landing page.';
-    }
-
-    return errors;
   }
 };

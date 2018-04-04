@@ -1626,7 +1626,8 @@
           {
             "properties": {
               "leftOperand": {
-                "type": "string"
+                "type": "string",
+                "pattern": "^%([^%]+)%$"
               },
               "comparison": {
                 "type": "object",
@@ -1640,10 +1641,21 @@
                   "caseInsensitive": {
                     "type": "boolean"
                   }
-                }
+                },
+                "required": [
+                  "operator"
+                ],
+                "additionalProperties": false
               },
               "rightOperand": {
-                "type": "string"
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
               }
             },
             "required": [
@@ -1657,7 +1669,7 @@
             "properties": {
               "leftOperand": {
                 "type": "string",
-                "minLength": 1
+                "pattern": "^%([^%]+)%$"
               },
               "comparison": {
                 "type": "object",
@@ -1674,7 +1686,11 @@
                   "caseInsensitive": {
                     "type": "boolean"
                   }
-                }
+                },
+                "required": [
+                  "operator"
+                ],
+                "additionalProperties": false
               },
               "rightOperand": {
                 "type": "string",
@@ -1692,7 +1708,7 @@
             "properties": {
               "leftOperand": {
                 "type": "string",
-                "minLength": 1
+                "pattern": "^%([^%]+)%$"
               },
               "comparison": {
                 "type": "object",
@@ -1706,11 +1722,22 @@
                       "greaterThanOrEqual"
                     ]
                   }
-                }
+                },
+                "required": [
+                  "operator"
+                ],
+                "additionalProperties": false
               },
               "rightOperand": {
-                "type": "string",
-                "minLength": 1
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^%([^%]+)%$"
+                  }
+                ]
               }
             },
             "required": [
@@ -1724,7 +1751,7 @@
             "properties": {
               "leftOperand": {
                 "type": "string",
-                "minLength": 1
+                "pattern": "^%([^%]+)%$"
               },
               "comparison": {
                 "type": "object",
@@ -1736,7 +1763,11 @@
                       "isTruthy"
                     ]
                   }
-                }
+                },
+                "required": [
+                  "operator"
+                ],
+                "additionalProperties": false
               }
             },
             "required": [
@@ -1994,6 +2025,31 @@
         },
         "additionalProperties": false,
         "required": ["path"]
+      }
+    },
+    {
+      "name": "visitor-behavior",
+      "displayName": "Visitor Behavior",
+      "libPath": "src/lib/dataElements/visitorBehavior.js",
+      "viewPath": "dataElements/visitorBehavior.html",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "attribute": {
+            "enum": [
+              "landingPage",
+              "trafficSource",
+              "minutesOnSite",
+              "sessionCount",
+              "sessionPageViewCount",
+              "lifetimePageViewCount",
+              "isNewVisitor"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": ["attribute"]
       }
     }
   ],

@@ -20,7 +20,7 @@ import RegexToggle from '../components/regexToggle';
 const Cookie = () => (
   <div>
     <label className="u-gapRight">
-      <span className="u-label">Cookie Name</span>
+      <span className="u-label">Cookie named</span>
       <Field
         name="name"
         component={ DecoratedInput }
@@ -28,7 +28,7 @@ const Cookie = () => (
       />
     </label>
     <label className="u-gapRight">
-      <span className="u-label">Cookie Value</span>
+      <span className="u-label">has the value</span>
       <Field
         name="value"
         component={ DecoratedInput }

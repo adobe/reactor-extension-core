@@ -31,6 +31,7 @@ import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInp
 import Alert from '@coralui/react-coral/lib/Alert';
 import Select from '@coralui/redux-form-react-coral/lib/Select';
 import RegexTestButton from '../components/regexTestButton';
+import {isDataElementToken, isNumberLike} from '../utils/validators';
 
 const operators = {
   EQUALS: 'equals',
@@ -46,73 +47,76 @@ const operators = {
   IS_TRUTHY: 'isTruthy'
 };
 
-const operatorMeta = {
+const metaByOperator = {
   [operators.EQUALS]: {
-    // We don't have isOperandLengthRequired set to true for the equals operator because
+    // We don't have isRightOperandLengthRequired set to true for the equals operator because
     // creating a comparison to determine if a value equals an empty string is a legit
     // use case.
     label: 'Equals',
-    isCaseSensitivitySupported: true,
-    isRightOperandSupported: true
+    supportsCaseSensitivity: true,
+    supportsRightOperand: true,
+    saveOperandAsNumberWhenPossible: true
   },
   [operators.CONTAINS]: {
     label: 'Contains',
-    isCaseSensitivitySupported: true,
-    isRightOperandSupported: true,
-    isOperandLengthRequired: true
+    supportsCaseSensitivity: true,
+    supportsRightOperand: true,
+    rightOperandMustBeNonEmptyString: true
   },
   [operators.STARTS_WITH]: {
     label: 'Starts With',
-    isCaseSensitivitySupported: true,
-    isRightOperandSupported: true,
-    isOperandLengthRequired: true
+    supportsCaseSensitivity: true,
+    supportsRightOperand: true,
+    rightOperandMustBeNonEmptyString: true
   },
   [operators.ENDS_WITH]: {
     label: 'Ends With',
-    isCaseSensitivitySupported: true,
-    isRightOperandSupported: true,
-    isOperandLengthRequired: true
+    supportsCaseSensitivity: true,
+    supportsRightOperand: true,
+    rightOperandMustBeNonEmptyString: true
   },
   [operators.MATCHES_REGEX]: {
     label: 'Matches Regex',
-    isCaseSensitivitySupported: true,
-    isRightOperandSupported: true,
-    isOperandLengthRequired: true
+    supportsCaseSensitivity: true,
+    supportsRightOperand: true,
+    rightOperandMustBeNonEmptyString: true
   },
   [operators.LESS_THAN]: {
     label: 'Is Less Than',
-    isRightOperandSupported: true,
-    isOperandLengthRequired: true
+    supportsRightOperand: true,
+    saveOperandAsNumberWhenPossible: true,
+    rightOperandMustBeNumberOrDataElement: true
   },
   [operators.LESS_THAN_OR_EQUAL]: {
     label: 'Is Less Than Or Equal To',
-    isRightOperandSupported: true,
-    isOperandLengthRequired: true
+    supportsRightOperand: true,
+    saveOperandAsNumberWhenPossible: true,
+    rightOperandMustBeNumberOrDataElement: true
   },
   [operators.GREATER_THAN]: {
     label: 'Is Greater Than',
-    isRightOperandSupported: true,
-    isOperandLengthRequired: true
+    supportsRightOperand: true,
+    saveOperandAsNumberWhenPossible: true,
+    rightOperandMustBeNumberOrDataElement: true
   },
   [operators.GREATER_THAN_OR_EQUAL]: {
-    label: 'Is Less Than Or Equal To',
-    isRightOperandSupported: true,
-    isOperandLengthRequired: true
+    label: 'Is Greater Than Or Equal To',
+    supportsRightOperand: true,
+    saveOperandAsNumberWhenPossible: true,
+    rightOperandMustBeNumberOrDataElement: true
   },
   [operators.IS_TRUE]: {
-    label: 'Is True',
-    isOperandLengthRequired: true
+    label: 'Is True'
   },
   [operators.IS_TRUTHY]: {
-    label: 'Is Truthy',
-    isOperandLengthRequired: true
+    label: 'Is Truthy'
   }
 };
 
-const operatorOptions = Object.keys(operatorMeta).map(operator => (
+const operatorOptions = Object.keys(metaByOperator).map(operator => (
   {
     value: operator,
-    label: operatorMeta[operator].label
+    label: metaByOperator[operator].label
   }
 ));
 
@@ -134,7 +138,7 @@ const NoTypeConversionReminder = (props) => {
 };
 
 const RightOperandFields = (props) => {
-  if (operatorMeta[props.operator].isRightOperandSupported) {
+  if (metaByOperator[props.operator].supportsRightOperand) {
     return props.operator === operators.MATCHES_REGEX ?
       (
         <div>
@@ -180,7 +184,6 @@ const ValueComparison = props => (
         inputComponent={ Textfield }
         supportDataElement
       />
-      <NoTypeConversionReminder operator={ props.operator } value={ props.leftOperand } />
     </div>
     <div className="u-gapBottom">
       <Field
@@ -190,7 +193,7 @@ const ValueComparison = props => (
         options={ operatorOptions }
       />
       {
-        operatorMeta[props.operator].isCaseSensitivitySupported ?
+        metaByOperator[props.operator].supportsCaseSensitivity ?
           (
             <Field
               name="caseInsensitive"
@@ -208,12 +211,12 @@ const ValueComparison = props => (
 );
 
 const valueSelector = formValueSelector('default');
-const stateToProps = state => ({
-  operator: valueSelector(state, 'operator'),
-  caseInsensitive: valueSelector(state, 'caseInsensitive'),
-  leftOperand: valueSelector(state, 'leftOperand'),
-  rightOperand: valueSelector(state, 'rightOperand')
-});
+const stateToProps = state => valueSelector(state,
+  'operator',
+  'caseInsensitive',
+  'leftOperand',
+  'rightOperand'
+);
 
 export default connect(stateToProps)(ValueComparison);
 
@@ -221,10 +224,10 @@ export const formConfig = {
   settingsToFormValues(values, settings) {
     return {
       ...values,
-      leftOperand: settings.leftOperand || '',
+      leftOperand: String(settings.leftOperand || ''),
       operator: (settings.comparison && settings.comparison.operator) || operators.EQUALS,
       caseInsensitive: Boolean(settings.comparison && settings.comparison.caseInsensitive),
-      rightOperand: settings.rightOperand || ''
+      rightOperand: String(settings.rightOperand || '')
     };
   },
   formValuesToSettings(settings, values) {
@@ -236,12 +239,17 @@ export const formConfig = {
       }
     };
 
-    if (operatorMeta[values.operator].isCaseSensitivitySupported && values.caseInsensitive) {
+    const operatorMeta = metaByOperator[values.operator];
+
+    if (operatorMeta.supportsCaseSensitivity && values.caseInsensitive) {
       settings.comparison.caseInsensitive = values.caseInsensitive;
     }
 
-    if (operatorMeta[values.operator].isRightOperandSupported) {
-      settings.rightOperand = values.rightOperand;
+    if (operatorMeta.supportsRightOperand) {
+      settings.rightOperand =
+        operatorMeta.saveOperandAsNumberWhenPossible && isNumberLike(values.rightOperand) ?
+          Number(values.rightOperand) :
+          String(values.rightOperand);
     }
 
     return settings;
@@ -251,17 +259,21 @@ export const formConfig = {
       ...errors
     };
 
+    if (!isDataElementToken(values.leftOperand)) {
+      errors.leftOperand = 'Please specify a data element';
+    }
+
     if (values.operator) {
-      const meta = operatorMeta[values.operator];
+      const operatorMeta = metaByOperator[values.operator];
 
-      if (meta.isOperandLengthRequired) {
-        if (!values.leftOperand) {
-          errors.leftOperand = 'Please specify a value.';
-        }
+      if (operatorMeta.rightOperandMustBeNonEmptyString && !values.rightOperand) {
+        errors.rightOperand = 'Please specify a value';
+      }
 
-        if (meta.isRightOperandSupported && !values.rightOperand) {
-          errors.rightOperand = 'Please specify a value.';
-        }
+      if (operatorMeta.rightOperandMustBeNumberOrDataElement &&
+        !isNumberLike(values.rightOperand) &&
+        !isDataElementToken(values.rightOperand)) {
+        errors.rightOperand = 'Please specify a number or data element';
       }
     }
 

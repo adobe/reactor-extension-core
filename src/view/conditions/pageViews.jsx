@@ -17,7 +17,7 @@ import Select from '@coralui/redux-form-react-coral/lib/Select';
 import { Field } from 'redux-form';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
-import { isNumber } from '../utils/validators';
+import { isNumberLike } from '../utils/validators';
 import comparisonOperatorOptions from './comparisonOperatorOptions';
 
 const PageViews = () => (
@@ -88,7 +88,7 @@ export const formConfig = {
       ...errors
     };
 
-    if (!isNumber(values.count)) {
+    if (!isNumberLike(values.count)) {
       errors.count = 'Please specify a number of page views.';
     }
 
