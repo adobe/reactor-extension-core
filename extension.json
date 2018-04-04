@@ -1635,7 +1635,8 @@
                   "operator": {
                     "type": "string",
                     "enum": [
-                      "equals"
+                      "equals",
+                      "doesNotEqual"
                     ]
                   },
                   "caseInsensitive": {
@@ -1678,9 +1679,13 @@
                     "type": "string",
                     "enum": [
                       "contains",
+                      "doesNotContain",
                       "startsWith",
+                      "doesNotStartWith",
                       "endsWith",
-                      "matchesRegex"
+                      "doesNotEndWith",
+                      "matchesRegex",
+                      "doesNotMatchRegex"
                     ]
                   },
                   "caseInsensitive": {
@@ -1760,7 +1765,9 @@
                     "type": "string",
                     "enum": [
                       "isTrue",
-                      "isTruthy"
+                      "isTruthy",
+                      "isFalse",
+                      "isFalsy"
                     ]
                   }
                 },

@@ -63,23 +63,38 @@ var conditions = {
   equals: function(leftOperand, rightOperand, caseInsensitive) {
     return updateCase(leftOperand, caseInsensitive) == updateCase(rightOperand, caseInsensitive);
   },
+  doesNotEqual: function() {
+    return !conditions.equals.apply(null, arguments);
+  },
   contains: guardStringCompare(function(leftOperand, rightOperand) {
     return leftOperand.indexOf(rightOperand) !== -1;
   }),
+  doesNotContain: function() {
+    return !conditions.contains.apply(null, arguments);
+  },
   startsWith: guardStringCompare(function(leftOperand, rightOperand) {
     return leftOperand.indexOf(rightOperand) === 0;
   }),
+  doesNotStartWith: function() {
+    return !conditions.startsWith.apply(null, arguments);
+  },
   endsWith: guardStringCompare(function(leftOperand, rightOperand) {
     return leftOperand.substring(
       leftOperand.length - rightOperand.length,
       leftOperand.length
     ) === rightOperand;
   }),
+  doesNotEndWith: function() {
+    return !conditions.endsWith.apply(null, arguments);
+  },
   matchesRegex: guardStringCompare(function(leftOperand, rightOperand, caseInsensitive) {
     // Doing something like new RegExp(/ab+c/, 'i') throws an error in some browsers (e.g., IE11),
     // so we don't want to instantiate the regex until we know we're working with a string.
     return new RegExp(rightOperand, caseInsensitive ? 'i' : '').test(leftOperand);
   }),
+  doesNotMatchRegex: function() {
+    return !conditions.matchesRegex.apply(null, arguments);
+  },
   lessThan: guardNumberCompare(function(leftOperand, rightOperand) {
     return leftOperand < rightOperand;
   }),
@@ -97,7 +112,13 @@ var conditions = {
   },
   isTruthy: function(leftOperand) {
     return Boolean(leftOperand);
-  }
+  },
+  isFalse: function(leftOperand) {
+    return leftOperand === false;
+  },
+  isFalsy: function(leftOperand) {
+    return !leftOperand;
+  },
 };
 
 module.exports = function(settings) {

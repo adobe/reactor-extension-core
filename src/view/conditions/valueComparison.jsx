@@ -31,20 +31,27 @@ import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInp
 import Alert from '@coralui/react-coral/lib/Alert';
 import Select from '@coralui/redux-form-react-coral/lib/Select';
 import RegexTestButton from '../components/regexTestButton';
-import {isDataElementToken, isNumberLike} from '../utils/validators';
+import { isDataElementToken, isNumberLike } from '../utils/validators';
 
 const operators = {
   EQUALS: 'equals',
+  DOES_NOT_EQUAL: 'doesNotEqual',
   CONTAINS: 'contains',
+  DOES_NOT_CONTAIN: 'doesNotContain',
   STARTS_WITH: 'startsWith',
+  DOES_NOT_START_WITH: 'doesNotStartWith',
   ENDS_WITH: 'endsWith',
+  DOES_NOT_END_WITH: 'doesNotEndWith',
   MATCHES_REGEX: 'matchesRegex',
+  DOES_NOT_MATCH_REGEX: 'doesNotMatchRegex',
   LESS_THAN: 'lessThan',
   LESS_THAN_OR_EQUAL: 'lessThanOrEqual',
   GREATER_THAN: 'greaterThan',
   GREATER_THAN_OR_EQUAL: 'greaterThanOrEqual',
   IS_TRUE: 'isTrue',
-  IS_TRUTHY: 'isTruthy'
+  IS_TRUTHY: 'isTruthy',
+  IS_FALSE: 'isFalse',
+  IS_FALSY: 'isFalsy'
 };
 
 const metaByOperator = {
@@ -57,8 +64,24 @@ const metaByOperator = {
     supportsRightOperand: true,
     saveOperandAsNumberWhenPossible: true
   },
+  [operators.DOES_NOT_EQUAL]: {
+    // We don't have isRightOperandLengthRequired set to true for the doesNotEqual operator because
+    // We don't have isRightOperandLengthRequired set to true for the doesNotEqual operator because
+    // creating a comparison to determine if a value does not equal an empty string is a legit
+    // use case.
+    label: 'Does Not Equal',
+    supportsCaseSensitivity: true,
+    supportsRightOperand: true,
+    saveOperandAsNumberWhenPossible: true
+  },
   [operators.CONTAINS]: {
     label: 'Contains',
+    supportsCaseSensitivity: true,
+    supportsRightOperand: true,
+    rightOperandMustBeNonEmptyString: true
+  },
+  [operators.DOES_NOT_CONTAIN]: {
+    label: 'Does Not Contain',
     supportsCaseSensitivity: true,
     supportsRightOperand: true,
     rightOperandMustBeNonEmptyString: true
@@ -69,14 +92,32 @@ const metaByOperator = {
     supportsRightOperand: true,
     rightOperandMustBeNonEmptyString: true
   },
+  [operators.DOES_NOT_START_WITH]: {
+    label: 'Does Not Start With',
+    supportsCaseSensitivity: true,
+    supportsRightOperand: true,
+    rightOperandMustBeNonEmptyString: true
+  },
   [operators.ENDS_WITH]: {
     label: 'Ends With',
     supportsCaseSensitivity: true,
     supportsRightOperand: true,
     rightOperandMustBeNonEmptyString: true
   },
+  [operators.DOES_NOT_END_WITH]: {
+    label: 'Does Not End With',
+    supportsCaseSensitivity: true,
+    supportsRightOperand: true,
+    rightOperandMustBeNonEmptyString: true
+  },
   [operators.MATCHES_REGEX]: {
     label: 'Matches Regex',
+    supportsCaseSensitivity: true,
+    supportsRightOperand: true,
+    rightOperandMustBeNonEmptyString: true
+  },
+  [operators.DOES_NOT_MATCH_REGEX]: {
+    label: 'Does Not Match Regex',
     supportsCaseSensitivity: true,
     supportsRightOperand: true,
     rightOperandMustBeNonEmptyString: true
@@ -110,6 +151,12 @@ const metaByOperator = {
   },
   [operators.IS_TRUTHY]: {
     label: 'Is Truthy'
+  },
+  [operators.IS_FALSE]: {
+    label: 'Is False'
+  },
+  [operators.IS_FALSY]: {
+    label: 'Is Falsy'
   }
 };
 
@@ -128,7 +175,7 @@ const NoTypeConversionReminder = (props) => {
     'undefined'
   ];
 
-  return props.operator === operators.EQUALS &&
+  return (props.operator === operators.EQUALS || props.operator === operators.DOES_NOT_EQUAL) &&
     sketchyStrings.indexOf(props.value.toLowerCase()) !== -1 ?
     (
       <Alert className="u-block" variant="warning">
@@ -139,7 +186,8 @@ const NoTypeConversionReminder = (props) => {
 
 const RightOperandFields = (props) => {
   if (metaByOperator[props.operator].supportsRightOperand) {
-    return props.operator === operators.MATCHES_REGEX ?
+    return props.operator === operators.MATCHES_REGEX ||
+      props.operator === operators.DOES_NOT_MATCH_REGEX ?
       (
         <div>
           <Field

@@ -43,7 +43,7 @@ const options = [
   {
     value: 'newVisitor',
     label: 'Is New Visitor'
-  },
+  }
 ];
 
 const VisitorBehavior = () => (

@@ -15,6 +15,29 @@
 
 var conditionDelegate = require('../valueComparison');
 
+var truthyValues = [
+  true,
+  {},
+  [],
+  42,
+  'foo',
+  new Date(),
+  -42,
+  3.14,
+  -3.14,
+  Infinity,
+  -Infinity
+];
+
+var falsyValues = [
+  false,
+  null,
+  undefined,
+  0,
+  NaN,
+  ''
+];
+
 describe('value comparison delegate', function() {
   describe('equals operator', function() {
     it('returns true on string match', function() {
@@ -97,6 +120,90 @@ describe('value comparison delegate', function() {
         },
         rightOperand: 'true'
       })).toBe(false);
+    });
+  });
+
+  describe('doesNotEqual operator', function() {
+    it('returns false on string match', function() {
+      expect(conditionDelegate({
+        leftOperand: 'abc',
+        comparison: {
+          operator: 'doesNotEqual'
+        },
+        rightOperand: 'abc'
+      })).toBe(false);
+    });
+
+    it('returns true on case mismatch', function() {
+      expect(conditionDelegate({
+        leftOperand: 'abc',
+        comparison: {
+          operator: 'doesNotEqual'
+        },
+        rightOperand: 'Abc'
+      })).toBe(true);
+    });
+
+    it('returns false on case mismatch with case insensitivity enabled', function() {
+      expect(conditionDelegate({
+        leftOperand: 'abc',
+        comparison: {
+          operator: 'doesNotEqual',
+          caseInsensitive: true
+        },
+        rightOperand: 'Abc'
+      })).toBe(false);
+    });
+
+    it('returns false on string+number match', function() {
+      expect(conditionDelegate({
+        leftOperand: '123',
+        comparison: {
+          operator: 'doesNotEqual'
+        },
+        rightOperand: 123
+      })).toBe(false);
+    });
+
+    it('returns false on string+number match', function() {
+      expect(conditionDelegate({
+        leftOperand: '123',
+        comparison: {
+          operator: 'doesNotEqual'
+        },
+        rightOperand: 123
+      })).toBe(false);
+    });
+
+    it('returns false on object match', function() {
+      var obj = {};
+      expect(conditionDelegate({
+        leftOperand: obj,
+        comparison: {
+          operator: 'doesNotEqual'
+        },
+        rightOperand: obj
+      })).toBe(false);
+    });
+
+    it('returns false on boolean match', function() {
+      expect(conditionDelegate({
+        leftOperand: true,
+        comparison: {
+          operator: 'doesNotEqual'
+        },
+        rightOperand: true
+      })).toBe(false);
+    });
+
+    it('returns true on string+boolean match', function() {
+      expect(conditionDelegate({
+        leftOperand: true,
+        comparison: {
+          operator: 'doesNotEqual'
+        },
+        rightOperand: 'true'
+      })).toBe(true);
     });
   });
 
@@ -184,6 +291,90 @@ describe('value comparison delegate', function() {
     });
   });
 
+  describe('doesNotContain operator', function() {
+    it('returns false on string match', function() {
+      expect(conditionDelegate({
+        leftOperand: 'abc',
+        comparison: {
+          operator: 'doesNotContain'
+        },
+        rightOperand: 'b'
+      })).toBe(false);
+    });
+
+    it('returns true on string mismatch', function() {
+      expect(conditionDelegate({
+        leftOperand: 'abc',
+        comparison: {
+          operator: 'doesNotContain'
+        },
+        rightOperand: 'd'
+      })).toBe(true);
+    });
+
+    it('returns false on case mismatch with case insensitivity enabled', function() {
+      expect(conditionDelegate({
+        leftOperand: 'abc',
+        comparison: {
+          operator: 'doesNotContain',
+          caseInsensitive: true
+        },
+        rightOperand: 'B'
+      })).toBe(false);
+    });
+
+    it('returns false on string+number match', function() {
+      expect(conditionDelegate({
+        leftOperand: '123',
+        comparison: {
+          operator: 'doesNotContain'
+        },
+        rightOperand: 2
+      })).toBe(false);
+    });
+
+    it('returns false on number+string match', function() {
+      expect(conditionDelegate({
+        leftOperand: 123,
+        comparison: {
+          operator: 'doesNotContain'
+        },
+        rightOperand: '2'
+      })).toBe(false);
+    });
+
+    it('returns true on object match', function() {
+      var obj = {};
+      expect(conditionDelegate({
+        leftOperand: obj,
+        comparison: {
+          operator: 'doesNotContain'
+        },
+        rightOperand: obj
+      })).toBe(true);
+    });
+
+    it('returns true on boolean match', function() {
+      expect(conditionDelegate({
+        leftOperand: true,
+        comparison: {
+          operator: 'doesNotContain'
+        },
+        rightOperand: true
+      })).toBe(true);
+    });
+
+    it('returns true on null match', function() {
+      expect(conditionDelegate({
+        leftOperand: null,
+        comparison: {
+          operator: 'doesNotContain'
+        },
+        rightOperand: null
+      })).toBe(true);
+    });
+  });
+
   describe('startsWith operator', function() {
     it('returns true on string match', function() {
       expect(conditionDelegate({
@@ -265,6 +456,90 @@ describe('value comparison delegate', function() {
         },
         rightOperand: null
       })).toBe(false);
+    });
+  });
+
+  describe('doesNotStartWith operator', function() {
+    it('returns false on string match', function() {
+      expect(conditionDelegate({
+        leftOperand: 'abc',
+        comparison: {
+          operator: 'doesNotStartWith'
+        },
+        rightOperand: 'a'
+      })).toBe(false);
+    });
+
+    it('returns true on string mismatch', function() {
+      expect(conditionDelegate({
+        leftOperand: 'abc',
+        comparison: {
+          operator: 'doesNotStartWith'
+        },
+        rightOperand: 'b'
+      })).toBe(true);
+    });
+
+    it('returns false on case mismatch with case insensitivity enabled', function() {
+      expect(conditionDelegate({
+        leftOperand: 'abc',
+        comparison: {
+          operator: 'doesNotStartWith',
+          caseInsensitive: true
+        },
+        rightOperand: 'A'
+      })).toBe(false);
+    });
+
+    it('returns false on string+number match', function() {
+      expect(conditionDelegate({
+        leftOperand: '123',
+        comparison: {
+          operator: 'doesNotStartWith'
+        },
+        rightOperand: 1
+      })).toBe(false);
+    });
+
+    it('returns false on number+string match', function() {
+      expect(conditionDelegate({
+        leftOperand: 123,
+        comparison: {
+          operator: 'doesNotStartWith'
+        },
+        rightOperand: '1'
+      })).toBe(false);
+    });
+
+    it('returns true on object match', function() {
+      var obj = {};
+      expect(conditionDelegate({
+        leftOperand: obj,
+        comparison: {
+          operator: 'doesNotStartWith'
+        },
+        rightOperand: obj
+      })).toBe(true);
+    });
+
+    it('returns true on boolean match', function() {
+      expect(conditionDelegate({
+        leftOperand: true,
+        comparison: {
+          operator: 'doesNotStartWith'
+        },
+        rightOperand: true
+      })).toBe(true);
+    });
+
+    it('returns true on null match', function() {
+      expect(conditionDelegate({
+        leftOperand: null,
+        comparison: {
+          operator: 'doesNotStartWith'
+        },
+        rightOperand: null
+      })).toBe(true);
     });
   });
 
@@ -352,6 +627,90 @@ describe('value comparison delegate', function() {
     });
   });
 
+  describe('doesNotEndWith operator', function() {
+    it('returns false on string match', function() {
+      expect(conditionDelegate({
+        leftOperand: 'abc',
+        comparison: {
+          operator: 'doesNotEndWith'
+        },
+        rightOperand: 'c'
+      })).toBe(false);
+    });
+
+    it('returns true on string mismatch', function() {
+      expect(conditionDelegate({
+        leftOperand: 'abc',
+        comparison: {
+          operator: 'doesNotEndWith'
+        },
+        rightOperand: 'b'
+      })).toBe(true);
+    });
+
+    it('returns false on case mismatch with case insensitivity enabled', function() {
+      expect(conditionDelegate({
+        leftOperand: 'abc',
+        comparison: {
+          operator: 'doesNotEndWith',
+          caseInsensitive: true
+        },
+        rightOperand: 'C'
+      })).toBe(false);
+    });
+
+    it('returns false on string+number match', function() {
+      expect(conditionDelegate({
+        leftOperand: '123',
+        comparison: {
+          operator: 'doesNotEndWith'
+        },
+        rightOperand: 3
+      })).toBe(false);
+    });
+
+    it('returns false on number+string match', function() {
+      expect(conditionDelegate({
+        leftOperand: 123,
+        comparison: {
+          operator: 'doesNotEndWith'
+        },
+        rightOperand: '3'
+      })).toBe(false);
+    });
+
+    it('returns true on object comparison', function() {
+      var obj = {};
+      expect(conditionDelegate({
+        leftOperand: obj,
+        comparison: {
+          operator: 'doesNotEndWith'
+        },
+        rightOperand: obj
+      })).toBe(true);
+    });
+
+    it('returns true on boolean comparison', function() {
+      expect(conditionDelegate({
+        leftOperand: true,
+        comparison: {
+          operator: 'doesNotEndWith'
+        },
+        rightOperand: true
+      })).toBe(true);
+    });
+
+    it('returns true on null comparison', function() {
+      expect(conditionDelegate({
+        leftOperand: null,
+        comparison: {
+          operator: 'doesNotEndWith'
+        },
+        rightOperand: null
+      })).toBe(true);
+    });
+  });
+
   describe('matchesRegex operator', function() {
     it('returns true on string match', function() {
       expect(conditionDelegate({
@@ -433,6 +792,90 @@ describe('value comparison delegate', function() {
         },
         rightOperand: null
       })).toBe(false);
+    });
+  });
+
+  describe('doesNotMatchRegex operator', function() {
+    it('returns false on string match', function() {
+      expect(conditionDelegate({
+        leftOperand: 'abc',
+        comparison: {
+          operator: 'doesNotMatchRegex'
+        },
+        rightOperand: 'a.c'
+      })).toBe(false);
+    });
+
+    it('returns true on string mismatch', function() {
+      expect(conditionDelegate({
+        leftOperand: 'abc',
+        comparison: {
+          operator: 'doesNotMatchRegex'
+        },
+        rightOperand: 'aBc'
+      })).toBe(true);
+    });
+
+    it('returns false on case mismatch with case insensitivity enabled', function() {
+      expect(conditionDelegate({
+        leftOperand: 'abc',
+        comparison: {
+          operator: 'doesNotMatchRegex',
+          caseInsensitive: true
+        },
+        rightOperand: 'aBc'
+      })).toBe(false);
+    });
+
+    it('returns false on string+number match', function() {
+      expect(conditionDelegate({
+        leftOperand: '3',
+        comparison: {
+          operator: 'doesNotMatchRegex'
+        },
+        rightOperand: 3
+      })).toBe(false);
+    });
+
+    it('returns false on number+string match', function() {
+      expect(conditionDelegate({
+        leftOperand: 3,
+        comparison: {
+          operator: 'doesNotMatchRegex'
+        },
+        rightOperand: '3'
+      })).toBe(false);
+    });
+
+    it('returns true on object comparison', function() {
+      var obj = {};
+      expect(conditionDelegate({
+        leftOperand: obj,
+        comparison: {
+          operator: 'doesNotMatchRegex'
+        },
+        rightOperand: obj
+      })).toBe(true);
+    });
+
+    it('returns true on boolean comparison', function() {
+      expect(conditionDelegate({
+        leftOperand: true,
+        comparison: {
+          operator: 'doesNotMatchRegex'
+        },
+        rightOperand: true
+      })).toBe(true);
+    });
+
+    it('returns true on null comparison', function() {
+      expect(conditionDelegate({
+        leftOperand: null,
+        comparison: {
+          operator: 'doesNotMatchRegex'
+        },
+        rightOperand: null
+      })).toBe(true);
     });
   });
 
@@ -728,29 +1171,6 @@ describe('value comparison delegate', function() {
     });
   });
 
-  var truthyValues = [
-    true,
-    {},
-    [],
-    42,
-    'foo',
-    new Date(),
-    -42,
-    3.14,
-    -3.14,
-    Infinity,
-    -Infinity
-  ];
-
-  var falsyValues = [
-    false,
-    null,
-    undefined,
-    0,
-    NaN,
-    ''
-  ];
-
   describe('isTruthy operator', function() {
     truthyValues.forEach(function(value) {
       it('returns true for ' + value, function() {
@@ -771,6 +1191,50 @@ describe('value comparison delegate', function() {
             operator: 'isTruthy'
           }
         })).toBe(false);
+      });
+    });
+  });
+
+  describe('isFalse operator', function() {
+    it('returns true when value is false', function() {
+      expect(conditionDelegate({
+        leftOperand: false,
+        comparison: {
+          operator: 'isFalse'
+        }
+      })).toBe(true);
+    });
+
+    it('returns false when value is anything else', function() {
+      expect(conditionDelegate({
+        leftOperand: 'false',
+        comparison: {
+          operator: 'isFalse'
+        }
+      })).toBe(false);
+    });
+  });
+
+  describe('isFalsy operator', function() {
+    truthyValues.forEach(function(value) {
+      it('returns false for ' + value, function() {
+        expect(conditionDelegate({
+          leftOperand: value,
+          comparison: {
+            operator: 'isFalsy'
+          }
+        })).toBe(false);
+      });
+    });
+
+    falsyValues.forEach(function(value) {
+      it('returns true for ' + value, function() {
+        expect(conditionDelegate({
+          leftOperand: value,
+          comparison: {
+            operator: 'isFalsy'
+          }
+        })).toBe(true);
       });
     });
   });
