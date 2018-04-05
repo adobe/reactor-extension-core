@@ -41,7 +41,7 @@ const options = [
     label: 'Lifetime Page View Count'
   },
   {
-    value: 'newVisitor',
+    value: 'isNewVisitor',
     label: 'Is New Visitor'
   }
 ];
