@@ -29,6 +29,7 @@ const TimeOnSite = () => (
           name="operator"
           component={ Select }
           options={ comparisonOperatorOptions }
+          backspaceRemoves={ false }
         />
       </label>
       <label>

@@ -29,6 +29,7 @@ const PageViews = () => (
           name="operator"
           component={ Select }
           options={ comparisonOperatorOptions }
+          backspaceRemoves={ false }
         />
       </label>
       <label className="u-gapRight">

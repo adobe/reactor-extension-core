@@ -57,6 +57,7 @@ const MediaTimePlayed = () => (
         className="u-gapLeft TimePlayed-unitSelect"
         component={ Select }
         options={ timePlayedUnitOptions }
+        backspaceRemoves={ false }
       />
       <label>
         <span className="u-label u-gapLeft">have passed</span>

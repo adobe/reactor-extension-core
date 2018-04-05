@@ -28,6 +28,7 @@ const ScreenResolution = () => (
           name="widthOperator"
           component={ Select }
           options={ comparisonOperatorOptions }
+          backspaceRemoves={ false }
         />
       </label>
       <label>
@@ -48,6 +49,7 @@ const ScreenResolution = () => (
           name="heightOperator"
           component={ Select }
           options={ comparisonOperatorOptions }
+          backspaceRemoves={ false }
         />
       </label>
       <label>

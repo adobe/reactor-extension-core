@@ -239,6 +239,7 @@ const ValueComparison = props => (
         className="u-gapRight"
         component={ Select }
         options={ operatorOptions }
+        backspaceRemoves={ false }
       />
       {
         metaByOperator[props.operator].supportsCaseSensitivity ?

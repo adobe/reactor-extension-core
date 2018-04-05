@@ -28,6 +28,7 @@ const WindowSize = () => (
           name="widthOperator"
           component={ Select }
           options={ comparisonOperatorOptions }
+          backspaceRemoves={ false }
         />
       </label>
       <label>
@@ -48,6 +49,7 @@ const WindowSize = () => (
           name="heightOperator"
           component={ Select }
           options={ comparisonOperatorOptions }
+          backspaceRemoves={ false }
         />
       </label>
       <label>
