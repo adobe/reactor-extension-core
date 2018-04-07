@@ -1,5 +1,9 @@
-.idea
 __tests__
-dist
 coverage
-.entries
+test_results
+testrunner
+webpack.config.js
+sonar-project.properties
+src/view
+\.*
+createEntryFile.js
