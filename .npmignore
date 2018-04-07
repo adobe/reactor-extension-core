@@ -5,5 +5,12 @@ testrunner
 webpack.config.js
 sonar-project.properties
 src/view
-\.*
+reactor-core-extension-2.0.0.tgz
 createEntryFile.js
+.entries
+.idea
+.sandbox*
+.editorconfig
+.eslint.rc
+.gitignore
+.npmignore
