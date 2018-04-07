@@ -11,6 +11,6 @@ createEntryFile.js
 .idea
 .sandbox*
 .editorconfig
-.eslint.rc
+.eslintrc
 .gitignore
 .npmignore
