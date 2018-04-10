@@ -20,11 +20,13 @@ import './dataElementChange.styl';
 
 const DataElementChange = () => (
   <div>
-    <Alert variant="warning" className="DataElementChange-alert">
-      This event type polls the data element value to determine if it has changed. If your rule is
-      time-sensitive, we recommend using other event types (e.g. Custom Event, Direct Call) to
-      manually fire the rule immediately after you have made data element value changes.
-    </Alert>
+    <div>
+      <Alert variant="warning" className="DataElementChange-alert">
+        This event type polls the data element value to determine if it has changed. If your rule is
+        time-sensitive, we recommend using other event types (e.g., Custom Event, Direct Call) to
+        manually fire the rule immediately after you have made data element value changes.
+      </Alert>
+    </div>
 
     <label>
       <span className="u-label">Data Element Name</span>
