@@ -13,14 +13,20 @@
 'use strict';
 
 describe('library loaded event delegate', function() {
-  var delegate = require('../libraryLoaded');
+  it('sends the trigger to the pageLifecycleEvents helper module', function() {
+    var libraryLoadedInjector = require('inject!../libraryLoaded');
+    var trigger = function() {};
+    var pageLifecycleEventsSpy = jasmine.createSpyObj('pageLifecycleEvents', [
+      'registerLibraryLoadedTrigger'
+    ]);
 
-  it('triggers rule when the engine is loaded', function() {
-    var trigger = jasmine.createSpy();
+    var delegate = libraryLoadedInjector({
+      './helpers/pageLifecycleEvents': pageLifecycleEventsSpy
+    });
+
     delegate({}, trigger);
-
-    expect(trigger.calls.count()).toBe(1);
-    var call = trigger.calls.mostRecent();
-    expect(call.args.length).toBe(0);
+    expect(pageLifecycleEventsSpy.registerLibraryLoadedTrigger).toHaveBeenCalledWith(
+      trigger
+    );
   });
 });

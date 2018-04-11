@@ -12,6 +12,8 @@
 
 'use strict';
 
+var pageLifecycleEvents = require('./helpers/pageLifecycleEvents');
+
 /**
  * Page bottom event. This event occurs as soon as the user calls _satellite.pageBottom() (which is
  * supposed to be at the bottom of the page).
@@ -19,5 +21,5 @@
  * @param {ruleTrigger} trigger The trigger callback.
  */
 module.exports = function(settings, trigger) {
-  turbine.onPageBottom(trigger);
+  pageLifecycleEvents.registerPageBottomTrigger(trigger);
 };

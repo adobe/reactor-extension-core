@@ -12,11 +12,13 @@
 
 'use strict';
 
+var pageLifecycleEvents = require('./helpers/pageLifecycleEvents');
+
 /**
  * Library loaded event. This event occurs as soon as the runtime library is loaded.
  * @param {Object} settings The event settings object.
  * @param {ruleTrigger} trigger The trigger callback.
  */
 module.exports = function(settings, trigger) {
-  trigger();
+  pageLifecycleEvents.registerLibraryLoadedTrigger(trigger);
 };

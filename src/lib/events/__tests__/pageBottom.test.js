@@ -13,36 +13,20 @@
 'use strict';
 
 describe('page bottom event delegate', function() {
-  var delegate;
+  it('sends the trigger to the pageLifecycleEvents helper module', function() {
+    var pageBottomInjector = require('inject!../pageBottom');
+    var trigger = function() {};
+    var pageLifecycleEventsSpy = jasmine.createSpyObj('pageLifecycleEvents', [
+      'registerPageBottomTrigger'
+    ]);
 
-  var triggerPageBottom;
-  var onPageBottom = function(callback) {
-    triggerPageBottom = callback;
-  };
-
-  beforeAll(function() {
-    mockTurbineVariable({
-      onPageBottom: onPageBottom
+    var delegate = pageBottomInjector({
+      './helpers/pageLifecycleEvents': pageLifecycleEventsSpy
     });
 
-    delegate = require('../pageBottom');
-  });
-
-  afterAll(function() {
-    resetTurbineVariable();
-  });
-
-  it('triggers rule at the bottom of the page', function() {
-    var trigger = jasmine.createSpy();
     delegate({}, trigger);
-
-    expect(trigger.calls.count()).toBe(0);
-
-    triggerPageBottom();
-
-    expect(trigger.calls.count()).toBe(1);
-
-    var call = trigger.calls.mostRecent();
-    expect(call.args.length).toBe(0);
+    expect(pageLifecycleEventsSpy.registerPageBottomTrigger).toHaveBeenCalledWith(
+      trigger
+    );
   });
 });

@@ -13,65 +13,20 @@
 'use strict';
 
 describe('window loaded event delegate', function() {
-  var onLoadInjector = require('inject!../windowLoaded');
-  var triggerLoad;
-  var mockWindow;
-  var mockDocument;
+  it('sends the trigger to the pageLifecycleEvents helper module', function() {
+    var windowLoadedInjector = require('inject!../windowLoaded');
+    var trigger = function() {};
+    var pageLifecycleEventsSpy = jasmine.createSpyObj('pageLifecycleEvents', [
+      'registerWindowLoadedTrigger'
+    ]);
 
-  beforeEach(function() {
-    mockWindow = {
-      addEventListener: function(type, callback) {
-        if (type === 'load') {
-          triggerLoad = callback;
-        }
-      }
-    };
-    mockDocument = {
-      readyState: 'loading'
-    };
-  });
-
-  it('triggers rule when the load event occurs', function() {
-    var delegate = onLoadInjector({
-      '@adobe/reactor-window': mockWindow,
-      '@adobe/reactor-document': mockDocument
+    var delegate = windowLoadedInjector({
+      './helpers/pageLifecycleEvents': pageLifecycleEventsSpy
     });
-
-    var trigger = jasmine.createSpy();
 
     delegate({}, trigger);
-
-    expect(trigger.calls.count()).toBe(0);
-
-    triggerLoad({
-      type: 'load'
-    });
-
-    expect(trigger.calls.count()).toBe(1);
-    var call = trigger.calls.mostRecent();
-    var syntheticEvent = call.args[0];
-    expect(syntheticEvent.element).toBe(mockWindow);
-    expect(syntheticEvent.target).toBe(mockWindow);
-    expect(syntheticEvent.nativeEvent.type).toBe('load');
-  });
-
-  it('triggers rule when the load event has already occurred', function() {
-    mockDocument.readyState = 'complete';
-
-    var delegate = onLoadInjector({
-      '@adobe/reactor-window': mockWindow,
-      '@adobe/reactor-document': mockDocument
-    });
-
-    var trigger = jasmine.createSpy();
-
-    delegate({}, trigger);
-
-    expect(trigger.calls.count()).toBe(1);
-    var call = trigger.calls.mostRecent();
-    var syntheticEvent = call.args[0];
-    expect(syntheticEvent.element).toBe(mockWindow);
-    expect(syntheticEvent.target).toBe(mockWindow);
-    expect(syntheticEvent.nativeEvent).toBeUndefined();
+    expect(pageLifecycleEventsSpy.registerWindowLoadedTrigger).toHaveBeenCalledWith(
+      trigger
+    );
   });
 });
