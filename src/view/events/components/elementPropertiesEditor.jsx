@@ -51,7 +51,7 @@ const ElementPropertiesRenderer = ({ fields }) => (
         </div>
       ))
     }
-    <Button onClick={ () => fields.push({}) }>Add</Button>
+    <Button onClick={ () => fields.push({}) }>Add Another</Button>
   </div>
 );
 
