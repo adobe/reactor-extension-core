@@ -1,5 +1,5 @@
 {
-  "name": "@reactor/core-extension",
+  "name": "@reactor/extension-core",
   "version": "2.0.0",
   "description": "Core extension for Launch. Provides default event, condition, and data element types available to all Launch users.",
   "author": {
