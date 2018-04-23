@@ -42,7 +42,7 @@ export default ({ fields, renderItem }) => {
           className="MultipleItemEditor-addPatternButton"
           onClick={ () => fields.push({}) }
         >
-          Add Pattern
+          Add Another
         </Button>
       </div>
     </div>
