@@ -61,8 +61,12 @@ describe('regex toggle', () => {
   beforeEach(() => {
     extensionBridge = createExtensionBridge();
 
-    spyOn(extensionBridge, 'openRegexTester').and.callFake((callback) => {
-      callback('bar');
+    spyOn(extensionBridge, 'openRegexTester').and.callFake(() => {
+      return {
+        then(resolve) {
+          resolve('bar');
+        }
+      };
     });
 
     window.extensionBridge = extensionBridge;
@@ -114,7 +118,7 @@ describe('regex toggle', () => {
 
     testButton.simulate('click');
 
-    expect(extensionBridge.openRegexTester).toHaveBeenCalledWith(jasmine.any(Function), {
+    expect(extensionBridge.openRegexTester).toHaveBeenCalledWith({
       pattern: 'foo',
       flags: 'i'
     });

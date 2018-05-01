@@ -16,7 +16,7 @@
     "react/prop-types": 0,
     "react/jsx-no-bind": 0,
     "react/jsx-curly-spacing": [2, "always"],
-    "arrow-body-style": ["error", "as-needed"],
+    "arrow-body-style": 0,
     "no-script-url": 0,
     "no-param-reassign": 0,
     "no-prototype-builtins": 0,

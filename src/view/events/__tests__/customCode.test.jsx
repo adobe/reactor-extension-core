@@ -33,8 +33,12 @@ describe('custom code event view', () => {
 
   beforeAll(() => {
     extensionBridge = window.extensionBridge = createExtensionBridge();
-    spyOn(extensionBridge, 'openCodeEditor').and.callFake((cb, options) => {
-      cb(`${options.code} bar`);
+    spyOn(extensionBridge, 'openCodeEditor').and.callFake((options) => {
+      return {
+        then(resolve) {
+          resolve(`${options.code} bar`);
+        }
+      };
     });
     instance = mount(bootstrap(CustomCode, formConfig, extensionBridge));
   });
