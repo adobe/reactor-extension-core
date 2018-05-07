@@ -18,7 +18,7 @@ import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInp
 const Sampling = () => (
   <div>
     <label>
-      <span className="u-label">Allow condition to return true</span>
+      <span className="u-label">Return true</span>
       <Field
         name="rate"
         component={ DecoratedInput }

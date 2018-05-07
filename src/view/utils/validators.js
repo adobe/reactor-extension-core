@@ -13,9 +13,17 @@
 export const isNumberLike =
   value => (!isNaN(value) && (typeof value !== 'string' || value.trim().length > 0));
 
-export const isPositiveNumberLike = (value, includeZero) => {
-  const lowerBound = includeZero ? 0 : 1;
-  return isNumberLike(value) && Number(value) >= lowerBound;
+export const isNumberLikeInRange = (value, options) => {
+  const {
+    min,
+    minInclusive = true,
+    max,
+    maxInclusive = true
+  } = options;
+
+  return isNumberLike(value) &&
+    (min === undefined || (minInclusive ? Number(value) >= min : Number(value) > min)) &&
+    (max === undefined || (maxInclusive ? Number(value) <= max : Number(value) < max));
 };
 
 export const isInteger = Number.isInteger || (value => (

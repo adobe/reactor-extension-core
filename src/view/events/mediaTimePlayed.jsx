@@ -19,7 +19,7 @@ import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInp
 import ElementFilter, { formConfig as elementFilterFormConfig } from './components/elementFilter';
 import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
 
-import { isPositiveNumberLike } from '../utils/validators';
+import { isNumberLikeInRange } from '../utils/validators';
 import mergeFormConfigs from '../utils/mergeFormConfigs';
 
 import './mediaTimePlayed.styl';
@@ -87,7 +87,7 @@ export const formConfig = mergeFormConfigs(
         ...errors
       };
 
-      if (!isPositiveNumberLike(values.amount)) {
+      if (!isNumberLikeInRange(values.amount, { min: 0, minInclusive: false })) {
         errors.amount = 'Please specify a positive number';
       }
 
