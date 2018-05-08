@@ -22,7 +22,6 @@ var millisByUnit = {
   day: 86400000, // 24 hours
   week: 604800000, // 7 days
   month: 2678400000, // 31 days
-  year: 31536000000 // 365 days
 };
 
 /**
@@ -72,13 +71,19 @@ module.exports = function(settings, event) {
         return true;
       }
       break;
-    default:
+    case 'second':
+    case 'minute':
+    case 'hour':
+    case 'day':
+    case 'week':
+    case 'month':
       var time = new Date().getTime();
       var lastRecordedTime = Number(maxFrequencyLocalStorage.getItem(settings.unit) || 0);
       if (lastRecordedTime <= time - (settings.count * millisByUnit[settings.unit])) {
         maxFrequencyLocalStorage.setItem(settings.unit, time);
         return true;
       }
+      break;
   }
 
   return false;

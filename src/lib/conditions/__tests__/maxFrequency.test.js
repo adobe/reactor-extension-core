@@ -19,7 +19,6 @@ var millisByUnit = {
   day: 86400000, // 24 hours
   week: 604800000, // 7 days
   month: 2678400000, // 31 days
-  year: 31536000000 // 365 days
 };
 
 describe('max frequency condition delegate', function() {
@@ -150,8 +149,7 @@ describe('max frequency condition delegate', function() {
     'hour',
     'day',
     'week',
-    'month',
-    'year'
+    'month'
   ].forEach(function(unit) {
     describe(unit + ' unit', function() {
       beforeEach(function() {
