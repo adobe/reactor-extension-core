@@ -68,6 +68,12 @@ export const formConfig = {
       errors.name = 'Please specify a cookie name.';
     }
 
+    if (!/^[A-Za-z0-9!#$%&'*+\-.^_|~]+$/.test(values.name)) {
+      errors.name = 'The cookie name can be any US-ASCII characters except control characters ' +
+        '(CTLs), spaces, or tabs. It also must not contain a separator character like the ' +
+        'following: ( ) < > @ , ; : \\ " /  [ ] ? = { }';
+    }
+
     if (!values.value) {
       errors.value = 'Please specify a cookie value.';
     }
