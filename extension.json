@@ -1256,6 +1256,59 @@
       }
     },
     {
+      "name": "max-frequency",
+      "categoryName": "Other",
+      "displayName": "Max Frequency",
+      "libPath": "src/lib/conditions/maxFrequency.js",
+      "viewPath": "conditions/maxFrequency.html",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "oneOf": [
+          {
+            "properties": {
+              "count": {
+                "type": "number",
+                "minimum": 1
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "pageView",
+                  "session",
+                  "visitor",
+                  "second",
+                  "minute",
+                  "day",
+                  "week",
+                  "month"
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "count",
+              "unit"
+            ]
+          },
+          {
+            "properties": {
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "visitor"
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "unit"
+            ]
+          }
+        ]
+      }
+    },
+    {
       "name": "new-returning-visitor",
       "categoryName": "Engagement",
       "displayName": "New/Returning Visitor",

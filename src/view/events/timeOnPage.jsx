@@ -15,7 +15,7 @@ import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
 import { Field } from 'redux-form';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
-import { isPositiveNumberLike } from '../utils/validators';
+import { isNumberLikeInRange } from '../utils/validators';
 
 const TimeOnPage = () => (
   <div>
@@ -51,8 +51,8 @@ export const formConfig = {
       ...errors
     };
 
-    if (!isPositiveNumberLike(values.timeOnPage)) {
-      errors.timeOnPage = 'Please specify a positive number';
+    if (!isNumberLikeInRange(values.timeOnPage, { min: 1 })) {
+      errors.timeOnPage = 'Please specify a number greater than or equal to 1.';
     }
 
     return errors;
