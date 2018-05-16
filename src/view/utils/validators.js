@@ -10,12 +10,12 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-export const isNumber =
+export const isNumberLike =
   value => (!isNaN(value) && (typeof value !== 'string' || value.trim().length > 0));
 
-export const isPositiveNumber = (value, includeZero) => {
+export const isPositiveNumberLike = (value, includeZero) => {
   const lowerBound = includeZero ? 0 : 1;
-  return isNumber(value) && Number(value) >= lowerBound;
+  return isNumberLike(value) && Number(value) >= lowerBound;
 };
 
 export const isInteger = Number.isInteger || (value => (
@@ -23,3 +23,5 @@ export const isInteger = Number.isInteger || (value => (
     isFinite(value) &&
     Math.floor(value) === value
 ));
+
+export const isDataElementToken = value => /^%([^%]+)%$/.test(value);

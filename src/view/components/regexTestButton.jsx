@@ -10,16 +10,32 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import React from 'react';
+import classNames from 'classnames';
 
-/**
- * Logged in condition. Determines if the user is logged in.
- * @param {Object} settings Condition settings.
- * @param {string} settings.dataElement The name of the data element identifying
- * whether the user is logged in.
- * @returns {boolean}
- */
-module.exports = function(settings) {
-  return Boolean(turbine.getDataElementValue(settings.dataElement));
+export default (props) => {
+  const {
+    input: {
+      value,
+      onChange
+    },
+    flags = 'i',
+    className
+  } = props;
+
+  const options = {
+    pattern: value,
+    flags
+  };
+
+  return (
+    <div className={ classNames(className, 'u-inlineBlock') }>
+      <button
+        className="u-buttonReset coral-Link"
+        onClick={ () => window.extensionBridge.openRegexTester(options).then(onChange) }
+      >
+        Test
+      </button>
+    </div>
+  );
 };
-

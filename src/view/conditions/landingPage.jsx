@@ -21,7 +21,7 @@ import RegexToggle from '../components/regexToggle';
 export default () => (
   <div>
     <label className="u-gapRight">
-      <span className="u-label">Landing Page</span>
+      <span className="u-label">Landing page equals</span>
       <Field
         name="page"
         component={ DecoratedInput }

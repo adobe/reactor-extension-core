@@ -21,7 +21,7 @@ import RegexToggle from '../components/regexToggle';
 const renderItem = field => (
   <div data-row className="u-inlineBlock">
     <label className="u-gapRight">
-      <span className="u-label">Hash</span>
+      <span className="u-label">Hash equals</span>
       <Field
         name={ `${field}.value` }
         component={ DecoratedInput }

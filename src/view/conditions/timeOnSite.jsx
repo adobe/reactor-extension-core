@@ -17,7 +17,7 @@ import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInp
 import { Field } from 'redux-form';
 
 
-import { isNumber } from '../utils/validators';
+import { isNumberLike } from '../utils/validators';
 import comparisonOperatorOptions from './comparisonOperatorOptions';
 
 const TimeOnSite = () => (
@@ -29,6 +29,7 @@ const TimeOnSite = () => (
           name="operator"
           component={ Select }
           options={ comparisonOperatorOptions }
+          backspaceRemoves={ false }
         />
       </label>
       <label>
@@ -66,7 +67,7 @@ export const formConfig = {
       ...errors
     };
 
-    if (!isNumber(values.minutes)) {
+    if (!isNumberLike(values.minutes)) {
       errors.minutes = 'Please specify a positive number of minutes.';
     }
 

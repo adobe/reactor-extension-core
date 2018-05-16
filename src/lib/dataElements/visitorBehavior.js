@@ -11,28 +11,29 @@
  ****************************************************************************************/
 
 'use strict';
-
-var compareNumbers = require('./helpers/compareNumbers');
+var visitorTracking = require('../helpers/visitorTracking');
 
 /**
- * Cart amount condition. Determines if the current cart amount matches constraints.
- * @param {Object} settings Condition settings.
- * @param {number} settings.dataElement The name of the data element identifying
- * the cart amount to compare against.
- * @param {comparisonOperator} settings.operator The comparison operator to use
- * to compare the actual cart amount to the cart amount constraint.
- * @param {Number} settings.amount The cart amount constraint.
- * @returns {boolean}
+ * The page info data element.
+ * @param {Object} settings The data element settings object.
+ * @param {string} settings.attribute The attribute that should be returned.
+ * @returns {string}
  */
 module.exports = function(settings) {
-  var amount = Number(turbine.getDataElementValue(settings.dataElement));
-
-  if (isNaN(amount)) {
-    amount = 0;
+  switch (settings.attribute) {
+    case 'landingPage':
+      return visitorTracking.getLandingPage();
+    case 'trafficSource':
+      return visitorTracking.getTrafficSource();
+    case 'minutesOnSite':
+      return visitorTracking.getMinutesOnSite();
+    case 'sessionCount':
+      return visitorTracking.getSessionCount();
+    case 'sessionPageViewCount':
+      return visitorTracking.getSessionPageViewCount();
+    case 'lifetimePageViewCount':
+      return visitorTracking.getLifetimePageViewCount();
+    case 'isNewVisitor':
+      return visitorTracking.getIsNewVisitor();
   }
-
-  return compareNumbers(
-    amount,
-    settings.operator,
-    settings.amount);
 };

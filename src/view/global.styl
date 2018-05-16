@@ -1,6 +1,7 @@
 @import '~@reactor/react-components/lib/index.css';
 
 $gap = 8px;
+$fieldHeight = 38px;
 
 body {
   padding: 12px;
@@ -26,7 +27,7 @@ code {
 }
 
 .u-label {
-  line-height: 36px !important;
+  line-height: $fieldHeight !important;
   margin-right: $gap !important;
 }
 
@@ -64,6 +65,7 @@ code {
   user-select: none;
   outline: none;
   text-decoration: none;
+  line-height: $fieldHeight;
 
   &:focus,
   &:hover {

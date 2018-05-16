@@ -18,14 +18,13 @@ var mockVisitorTracking = {
   }),
   getSessionPageViewCount: jasmine.createSpy().and.callFake(function() {
     return 5;
-  }),
-  enable: jasmine.createSpy()
+  })
 };
 
 var conditionDelegateInjector = require('inject!../pageViews');
 
 var conditionDelegate = conditionDelegateInjector({
-  './helpers/visitorTracking': mockVisitorTracking
+  '../helpers/visitorTracking': mockVisitorTracking
 });
 
 var DURATIONS = [
@@ -45,10 +44,6 @@ describe('page views condition delegate', function() {
   beforeEach(function() {
     mockVisitorTracking.getLifetimePageViewCount.calls.reset();
     mockVisitorTracking.getSessionPageViewCount.calls.reset();
-  });
-
-  it('calls visitorTracking.enable', function() {
-    expect(mockVisitorTracking.enable).toHaveBeenCalled();
   });
 
   DURATIONS.forEach(function(duration) {

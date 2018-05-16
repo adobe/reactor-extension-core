@@ -11,37 +11,61 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
-import InfoTip from '@reactor/react-components/lib/infoTip';
 import { Field } from 'redux-form';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
+import Select from '@coralui/redux-form-react-coral/lib/Select';
 
-const PreviousConverter = () => (
-  <label className="u-gapRight">
-    <span className="u-label">
-      Data element identifying whether the user is a previous converter
-    </span>
+const options = [
+  {
+    value: 'landingPage',
+    label: 'Landing Page'
+  },
+  {
+    value: 'trafficSource',
+    label: 'Traffic Source'
+  },
+  {
+    value: 'minutesOnSite',
+    label: 'Minutes On Site'
+  },
+  {
+    value: 'sessionCount',
+    label: 'Session Count'
+  },
+  {
+    value: 'sessionPageViewCount',
+    label: 'Session Page View Count'
+  },
+  {
+    value: 'lifetimePageViewCount',
+    label: 'Lifetime Page View Count'
+  },
+  {
+    value: 'isNewVisitor',
+    label: 'Is New Visitor'
+  }
+];
+
+const VisitorBehavior = () => (
+  <label>
+    <span className="u-label">Attribute</span>
     <Field
-      name="dataElement"
+      name="attribute"
       component={ DecoratedInput }
-      inputComponent={ Textfield }
-      supportDataElementName
+      inputComponent={ Select }
+      options={ options }
+      backspaceRemoves={ false }
     />
-    <InfoTip className="u-noPadding" placement="bottom">
-      Create and/or select the data element that contains the visitor conversion status. Because
-      this MUST be a data element, only enter the name--no need to add &quot;%&quot; before or
-      after.
-    </InfoTip>
   </label>
 );
 
-export default PreviousConverter;
+export default VisitorBehavior;
 
 export const formConfig = {
   settingsToFormValues(values, settings) {
     return {
       ...values,
-      ...settings
+      attribute: settings.attribute || 'landingPage'
     };
   },
   formValuesToSettings(settings, values) {
@@ -49,16 +73,5 @@ export const formConfig = {
       ...settings,
       ...values
     };
-  },
-  validate(errors, values) {
-    errors = {
-      ...errors
-    };
-
-    if (!values.dataElement) {
-      errors.dataElement = 'Please specify a data element.';
-    }
-
-    return errors;
   }
 };

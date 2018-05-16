@@ -15,12 +15,11 @@
 var cookie = require('@adobe/reactor-cookie');
 var document = require('@adobe/reactor-document');
 var window = require('@adobe/reactor-window');
-var getNamespacedStorage = require('../../helpers/getNamespacedStorage');
+var getNamespacedStorage = require('./getNamespacedStorage');
 
 var COOKIE_PREFIX = '_sdsat_';
 var LOCAL_STORAGE_NAMESPACE = 'visitorTracking.';
 var MIGRATED_KEY = 'cookiesMigrated';
-var PAGE_TIME_DELIMITER = '|';
 
 var visitorTrackingLocalStorage = getNamespacedStorage('localStorage', LOCAL_STORAGE_NAMESPACE);
 var visitorTrackingSessionStorage = getNamespacedStorage('sessionStorage', LOCAL_STORAGE_NAMESPACE);
@@ -96,7 +95,7 @@ var trackTrafficSource = function() {
 // DTM and Launch (DTM uses cookies and Launch uses session and local storage).
 var migrateCookieData = function() {
   if (!visitorTrackingLocalStorage.getItem(MIGRATED_KEY)) {
-    // We intentially do not migrate sesssion-based data since it would only affect a user that
+    // We intentionally do not migrate session-based data since it would only affect a user that
     // came from a page running DTM to a page running Launch and only the first visit.
     var sessionCount = cookie.get(COOKIE_PREFIX + 'session_count');
 
@@ -122,40 +121,16 @@ var trackVisitor = function() {
   trackTrafficSource();
 };
 
-var enabled = false;
-
-/**
- * Enables visitor tracking. To be consistent with prior library versions, visitor tracking should
- * only be enabled (run) if a rule for the property is configured with a condition that needs it.
- * This is primarily to avoid unnecessary processing and storage. Each condition that requires
- * visitor tracking to run must call this function to ensure visitor tracking will run.
- */
-var enable = function() {
-  if (!enabled) {
-    enabled = true;
-    migrateCookieData();
-    trackVisitor();
-  }
-};
-
-var wrapForEnablement = function(fn) {
-  return function() {
-    if (!enabled) {
-      turbine.logger.error('Visitor tracking not enabled. Data may be inaccurate.');
-    }
-
-    return fn.apply(this, arguments);
-  };
-};
+migrateCookieData();
+trackVisitor();
 
 module.exports = {
-  getLandingPage: wrapForEnablement(getLandingPage),
-  getLandingTime: wrapForEnablement(getLandingTime),
-  getMinutesOnSite: wrapForEnablement(getMinutesOnSite),
-  getSessionCount: wrapForEnablement(getSessionCount),
-  getLifetimePageViewCount: wrapForEnablement(getLifetimePageViewCount),
-  getSessionPageViewCount: wrapForEnablement(getSessionPageViewCount),
-  getTrafficSource: wrapForEnablement(getTrafficSource),
-  getIsNewVisitor: wrapForEnablement(getIsNewVisitor),
-  enable: enable
+  getLandingPage: getLandingPage,
+  getLandingTime: getLandingTime,
+  getMinutesOnSite: getMinutesOnSite,
+  getSessionCount: getSessionCount,
+  getLifetimePageViewCount: getLifetimePageViewCount,
+  getSessionPageViewCount: getSessionPageViewCount,
+  getTrafficSource: getTrafficSource,
+  getIsNewVisitor: getIsNewVisitor
 };

@@ -100,6 +100,7 @@ const DomAttribute = ({ ...props }) => {
             name="selectedElementPropertyPreset"
             component={ Select }
             options={ elementPropertyPresets }
+            backspaceRemoves={ false }
           />
         </label>
         {

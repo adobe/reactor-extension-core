@@ -17,7 +17,7 @@ import { Field } from 'redux-form';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
 
-import { isNumber } from '../utils/validators';
+import { isNumberLike } from '../utils/validators';
 import comparisonOperatorOptions from './comparisonOperatorOptions';
 
 const Sessions = () => (
@@ -29,6 +29,7 @@ const Sessions = () => (
           name="operator"
           component={ Select }
           options={ comparisonOperatorOptions }
+          backspaceRemoves={ false }
         />
       </label>
       <label>
@@ -66,7 +67,7 @@ export const formConfig = {
       ...errors
     };
 
-    if (!isNumber(values.count)) {
+    if (!isNumberLike(values.count)) {
       errors.count = 'Please specify a number of sessions.';
     }
 

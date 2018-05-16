@@ -14,29 +14,7 @@ import React from 'react';
 import classNames from 'classnames';
 import Switch from '@coralui/react-coral/lib/Switch';
 import { Field } from 'redux-form';
-
-const TestRegexButton = (props) => {
-  const {
-    input: {
-      value,
-      onChange
-    }
-  } = props;
-
-  const options = {
-    pattern: value,
-    flags: 'i' // Currently, we're always executing regex with case-insensitivity.
-  };
-
-  return (
-    <button
-      className="u-buttonReset coral-Link"
-      onClick={ () => window.extensionBridge.openRegexTester(options).then(onChange) }
-    >
-      Test
-    </button>
-  );
-};
+import RegexTestButton from './regexTestButton';
 
 export default (props) => {
   const {
@@ -64,7 +42,7 @@ export default (props) => {
       >
         <Field
           name={ valueFieldName }
-          component={ TestRegexButton }
+          component={ RegexTestButton }
         />
       </span>
     </div>

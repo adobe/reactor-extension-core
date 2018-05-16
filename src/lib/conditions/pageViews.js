@@ -11,13 +11,8 @@
  ****************************************************************************************/
 
 'use strict';
-var visitorTracking = require('./helpers/visitorTracking');
+var visitorTracking = require('../helpers/visitorTracking');
 var compareNumbers = require('./helpers/compareNumbers');
-
-// Visitor tracking should only run (be enabled) when a rule for the property contains a condition
-// that needs it. The line below will be included in the emitted library if a rule requires this
-// condition and it will be run regardless of whether the condition ever gets evaluated.
-visitorTracking.enable();
 
 /**
  * Enum for duration.

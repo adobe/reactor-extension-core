@@ -11,61 +11,59 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import PreviousConverter, { formConfig } from '../previousConverter';
+import Select from '@coralui/react-coral/lib/Select';
+import VisitorBehavior, { formConfig } from '../visitorBehavior';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const dataElementTextfield = wrapper.find(Textfield).node;
-  const dataElementErrorTip = wrapper.find(ErrorTip).node;
+  const attributeSelect = wrapper.find(Select).node;
 
   return {
-    dataElementTextfield,
-    dataElementErrorTip
+    attributeSelect
   };
 };
 
-describe('previous converter condition view', () => {
+describe('visitor behavior data element view', () => {
   let extensionBridge;
   let instance;
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(PreviousConverter, formConfig, extensionBridge));
+    instance = mount(bootstrap(VisitorBehavior, formConfig, extensionBridge));
   });
 
   it('sets form values from settings', () => {
     extensionBridge.init({
       settings: {
-        dataElement: 'foo'
+        attribute: 'minutesOnSite'
       }
     });
 
-    const { dataElementTextfield } = getReactComponents(instance);
+    const { attributeSelect } = getReactComponents(instance);
 
-    expect(dataElementTextfield.props.value).toBe('foo');
+    expect(attributeSelect.props.value).toBe('minutesOnSite');
+  });
+
+  it('sets form value defaults', () => {
+    extensionBridge.init();
+
+    const { attributeSelect } = getReactComponents(instance);
+
+    expect(attributeSelect.props.value).toBe('landingPage');
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { dataElementTextfield } = getReactComponents(instance);
-
-    dataElementTextfield.props.onChange('foo');
+    const { attributeSelect } = getReactComponents(instance);
+    attributeSelect.props.onChange({
+      value: 'minutesOnSite',
+      label: 'Minutes On Site'
+    });
 
     expect(extensionBridge.getSettings()).toEqual({
-      dataElement: 'foo'
+      attribute: 'minutesOnSite'
     });
-  });
-
-  it('sets errors if required values are not provided', () => {
-    extensionBridge.init();
-    expect(extensionBridge.validate()).toBe(false);
-
-    const { dataElementErrorTip } = getReactComponents(instance);
-
-    expect(dataElementErrorTip).toBeDefined();
   });
 });

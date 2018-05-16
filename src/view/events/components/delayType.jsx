@@ -16,7 +16,7 @@ import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
 import { Field } from 'redux-form';
 import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
 
-import { isPositiveNumber } from '../../utils/validators';
+import { isPositiveNumberLike } from '../../utils/validators';
 
 export default () => (
   <div>
@@ -74,7 +74,7 @@ export const formConfig = {
       ...errors
     };
 
-    if (values.delayType === 'delay' && !isPositiveNumber(values.delay)) {
+    if (values.delayType === 'delay' && !isPositiveNumberLike(values.delay)) {
       errors.delay = 'Please specify a positive number';
     }
 

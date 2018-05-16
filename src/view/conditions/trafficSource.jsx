@@ -20,7 +20,7 @@ import RegexToggle from '../components/regexToggle';
 const TrafficSource = () => (
   <div>
     <label className="u-gapRight">
-      <span className="u-label">Traffic Source</span>
+      <span className="u-label">Traffic source equals</span>
       <Field
         name="source"
         component={ DecoratedInput }

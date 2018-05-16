@@ -21,7 +21,7 @@ import RegexToggle from '../components/regexToggle';
 const Variable = () => (
   <div>
     <label className="u-gapRight">
-      <span className="u-label">JS Variable Name</span>
+      <span className="u-label">JS variable named</span>
       <Field
         name="name"
         component={ DecoratedInput }
@@ -29,7 +29,7 @@ const Variable = () => (
       />
     </label>
     <label>
-      <span className="u-label">JS Variable Value</span>
+      <span className="u-label">has the value</span>
       <Field
         name="value"
         component={ DecoratedInput }

@@ -19,7 +19,7 @@ import RegexToggle from '../components/regexToggle';
 
 const QueryStringParameter = () => (
   <div>
-    <span className="u-label">URL Parameter Name</span>
+    <span className="u-label">Parameter named</span>
     <label className="u-gapRight">
       <Field
         name="name"
@@ -28,7 +28,7 @@ const QueryStringParameter = () => (
       />
     </label>
     <label className="u-gapRight">
-      <span className="u-label">URL Parameter Value</span>
+      <span className="u-label">has the value</span>
       <Field
         name="value"
         component={ DecoratedInput }

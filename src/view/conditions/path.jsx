@@ -22,7 +22,7 @@ import MultipleItemEditor from './components/multipleItemEditor';
 const renderItem = field => (
   <div data-row className="u-inlineBlock">
     <label className="u-gapRight">
-      <span className="u-label">Path</span>
+      <span className="u-label">Path equals</span>
       <Field
         name={ `${field}.value` }
         component={ DecoratedInput }
