@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Select from '@coralui/react-coral/lib/Select';
+import Select from '@react/react-spectrum/Select';
 import VisitorBehavior, { formConfig } from '../visitorBehavior';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
@@ -57,10 +57,7 @@ describe('visitor behavior data element view', () => {
     extensionBridge.init();
 
     const { attributeSelect } = getReactComponents(instance);
-    attributeSelect.props.onChange({
-      value: 'minutesOnSite',
-      label: 'Minutes On Site'
-    });
+    attributeSelect.props.onChange('minutesOnSite');
 
     expect(extensionBridge.getSettings()).toEqual({
       attribute: 'minutesOnSite'

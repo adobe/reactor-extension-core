@@ -47,14 +47,14 @@ describe('operating system condition view', () => {
 
     const { operatingSystemsCheckboxList } = getReactComponents(instance);
 
-    expect(operatingSystemsCheckboxList.props.input.value).toEqual(selectedOperatingSystems);
+    expect(operatingSystemsCheckboxList.props.value).toEqual(selectedOperatingSystems);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { operatingSystemsCheckboxList } = getReactComponents(instance);
-    operatingSystemsCheckboxList.props.input.onChange(selectedOperatingSystems);
+    operatingSystemsCheckboxList.props.onChange(selectedOperatingSystems);
 
     expect(extensionBridge.getSettings()).toEqual({
       operatingSystems: selectedOperatingSystems

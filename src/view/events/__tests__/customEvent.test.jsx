@@ -11,34 +11,28 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import Checkbox from '@coralui/react-coral/lib/Checkbox';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
-import { Field } from 'redux-form';
-
+import Textfield from '@react/react-spectrum/Textfield';
+import Checkbox from '@react/react-spectrum/Checkbox';
+import WrappedField from '../../components/wrappedField';
 import CustomEvent, { formConfig } from '../customEvent';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 import AdvancedEventOptions from '../components/advancedEventOptions';
 
 const getReactComponents = (wrapper) => {
-  const fields = wrapper.find(Field);
+  const fields = wrapper.find(WrappedField);
 
   const typeField = fields.filterWhere(n => n.prop('name') === 'type');
   const typeTextfield = typeField.find(Textfield).node;
-  const typeErrorTip = typeField.find(ErrorTip).node;
   const elementSelectorField = fields.filterWhere(n => n.prop('name') === 'elementSelector');
   const elementSelectorTextfield = elementSelectorField.find(Textfield).node;
-  const elementSelectorErrorTip = elementSelectorField.find(ErrorTip).node;
   const bubbleStopCheckbox = wrapper.find(Checkbox)
     .filterWhere(n => n.prop('name') === 'bubbleStop').node;
   const advancedEventOptions = wrapper.find(AdvancedEventOptions).node;
 
   return {
     typeTextfield,
-    typeErrorTip,
     elementSelectorTextfield,
-    elementSelectorErrorTip,
     bubbleStopCheckbox,
     advancedEventOptions
   };
@@ -103,9 +97,9 @@ describe('custom event event view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { typeErrorTip, elementSelectorErrorTip } = getReactComponents(instance);
+    const { typeTextfield, elementSelectorTextfield } = getReactComponents(instance);
 
-    expect(typeErrorTip).toBeDefined();
-    expect(elementSelectorErrorTip).toBeDefined();
+    expect(typeTextfield.props.invalid).toBe(true);
+    expect(elementSelectorTextfield.props.invalid).toBe(true);
   });
 });

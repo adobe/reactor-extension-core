@@ -11,17 +11,20 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Icon from '@coralui/react-coral/lib/Icon';
-
-import './disclosureButton.styl';
+import ChevronDown from '@react/react-spectrum/Icon/ChevronDown';
+import ChevronRight from '@react/react-spectrum/Icon/ChevronRight';
 
 export default ({ ...props }) => {
-  const iconClass = props.selected ? 'chevronDown' : 'chevronRight';
-
   return (
     <button className="u-buttonReset" onClick={ props.onClick }>
-      <Icon className="DisclosureButton-icon u-gapRight" icon={ iconClass } />
-      { props.label }
+      {
+        props.selected ?
+          <ChevronDown className="u-verticalAlignMiddle" size="S" /> :
+          <ChevronRight className="u-verticalAlignMiddle" size="S" />
+      }
+      <span className="u-verticalAlignMiddle u-gapLeft">
+        { props.label }
+      </span>
     </button>
   );
 };

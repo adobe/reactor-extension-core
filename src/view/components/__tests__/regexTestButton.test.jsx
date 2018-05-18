@@ -35,7 +35,7 @@ describe('regex test button', () => {
 
     onChange = jasmine.createSpy();
 
-    instance = mount(<RegexTestButton input={ { value: 'foo', onChange } } />);
+    instance = mount(<RegexTestButton value="foo" onChange={ onChange } />);
   });
 
   afterEach(() => {

@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Radio from '@coralui/react-coral/lib/Radio';
+import Radio from '@react/react-spectrum/Radio';
 import Protocol, { formConfig } from '../protocol';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
@@ -55,8 +55,8 @@ describe('protocol condition view', () => {
 
     const { httpRadio, httpsRadio } = getReactComponents(instance);
 
-    expect(httpRadio.props.checked).toBe(false);
-    expect(httpsRadio.props.checked).toBe(true);
+    expect(httpRadio.props.checked).toBe(false, { stopPropagation() {} });
+    expect(httpsRadio.props.checked).toBe(true, { stopPropagation() {} });
   });
 
   it('sets settings from form values', () => {
@@ -64,7 +64,7 @@ describe('protocol condition view', () => {
 
     const { httpsRadio } = getReactComponents(instance);
 
-    httpsRadio.props.onChange('https:');
+    httpsRadio.props.onChange('https:', { stopPropagation() {} });
 
     expect(extensionBridge.getSettings()).toEqual({
       protocol: 'https:'

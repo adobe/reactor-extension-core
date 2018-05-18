@@ -1,0 +1,18 @@
+.InfoTip {
+  display: inline-block;
+  padding: 0 8px;
+  vertical-align: middle;
+}
+
+.InfoTip-icon {
+  vertical-align: middle;
+  color: #707070;
+  // Prevent text cursor in IE.
+  cursor: default;
+}
+
+.InfoTip-tooltip {
+  // Important when using an InfoTip inside a heading so that bold doesn't leak through to
+  // the tooltip text.
+  font-weight: normal !important;
+}

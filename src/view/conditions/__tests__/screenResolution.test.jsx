@@ -11,17 +11,16 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import Select from '@coralui/react-coral/lib/Select';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
-import { Field } from 'redux-form';
+import Textfield from '@react/react-spectrum/Textfield';
+import Select from '@react/react-spectrum/Select';
+import WrappedField from '../../components/wrappedField';
 import ScreenResolution, { formConfig } from '../screenResolution';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   const comparisonOperatorSelects = wrapper.find(Select);
-  const fields = wrapper.find(Field);
+  const fields = wrapper.find(WrappedField);
 
   const widthOperatorSelect = comparisonOperatorSelects
     .filterWhere(n => n.prop('name') === 'widthOperator').node;
@@ -29,18 +28,14 @@ const getReactComponents = (wrapper) => {
     .filterWhere(n => n.prop('name') === 'heightOperator').node;
   const widthField = fields.filterWhere(n => n.prop('name') === 'width');
   const widthTextfield = widthField.find(Textfield).node;
-  const widthErrorTip = widthField.find(ErrorTip).node;
   const heightField = fields.filterWhere(n => n.prop('name') === 'height');
   const heightTextfield = heightField.find(Textfield).node;
-  const heightErrorTip = heightField.find(ErrorTip).node;
 
   return {
     widthOperatorSelect,
     widthTextfield,
-    widthErrorTip,
     heightOperatorSelect,
-    heightTextfield,
-    heightErrorTip
+    heightTextfield
   };
 };
 
@@ -95,9 +90,9 @@ describe('screen resolution condition view', () => {
       heightTextfield
     } = getReactComponents(instance);
 
-    widthOperatorSelect.props.onChange({ value: '=' });
+    widthOperatorSelect.props.onChange('=');
     widthTextfield.props.onChange(100);
-    heightOperatorSelect.props.onChange({ value: '<' });
+    heightOperatorSelect.props.onChange('<');
     heightTextfield.props.onChange(200);
 
     expect(extensionBridge.getSettings()).toEqual({
@@ -113,29 +108,27 @@ describe('screen resolution condition view', () => {
     expect(extensionBridge.validate()).toBe(false);
 
     const {
-      widthErrorTip,
-      heightErrorTip
+      widthTextfield,
+      heightTextfield
     } = getReactComponents(instance);
 
-    expect(widthErrorTip).toBeDefined();
-    expect(heightErrorTip).toBeDefined();
+    expect(widthTextfield.props.invalid).toBe(true);
+    expect(heightTextfield.props.invalid).toBe(true);
   });
 
   it('sets errors if values are not numbers', () => {
     extensionBridge.init();
-    expect(extensionBridge.validate()).toBe(false);
 
     const {
       widthTextfield,
-      widthErrorTip,
-      heightTextfield,
-      heightErrorTip
+      heightTextfield
     } = getReactComponents(instance);
 
     widthTextfield.props.onChange('12.abc');
     heightTextfield.props.onChange('12.abc');
 
-    expect(widthErrorTip).toBeDefined();
-    expect(heightErrorTip).toBeDefined();
+    expect(extensionBridge.validate()).toBe(false);
+    expect(widthTextfield.props.invalid).toBe(true);
+    expect(heightTextfield.props.invalid).toBe(true);
   });
 });

@@ -18,14 +18,15 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Provider from '@react/react-spectrum/Provider';
 import bootstrap from './bootstrap';
 
 import './global.styl';
 
 export default (View, formConfig) => {
   ReactDOM.render((
-    <div>
+    <Provider theme="lightest">
       { bootstrap(View, formConfig) }
-    </div>
+    </Provider>
   ), document.getElementById('content'));
 };

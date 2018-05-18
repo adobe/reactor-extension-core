@@ -11,21 +11,18 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import Select from '@coralui/react-coral/lib/Select';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
+import Textfield from '@react/react-spectrum/Textfield';
+import Select from '@react/react-spectrum/Select';
 import MaxFrequency, { formConfig } from '../maxFrequency';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   const countTextfield = wrapper.find(Textfield).node;
-  const countErrorTip = wrapper.find(ErrorTip).node;
   const unitSelect = wrapper.find(Select).node;
 
   return {
     countTextfield,
-    countErrorTip,
     unitSelect
   };
 };
@@ -73,7 +70,7 @@ describe('max frequency condition view', () => {
       countTextfield
     } = getReactComponents(instance);
 
-    unitSelect.props.onChange({ value: 'session' });
+    unitSelect.props.onChange('session');
     countTextfield.props.onChange('3');
 
     expect(extensionBridge.getSettings()).toEqual({
@@ -98,21 +95,13 @@ describe('max frequency condition view', () => {
 
     expect(extensionBridge.validate()).toBe(false);
 
-    let {
-      countErrorTip
-    } = getReactComponents(instance);
-
-    expect(countErrorTip).toBeDefined();
+    expect(countTextfield.props.invalid).toBe(true);
 
     countTextfield.props.onChange('');
 
     expect(extensionBridge.validate()).toBe(false);
 
-    ({
-      countErrorTip
-    } = getReactComponents(instance));
-
-    expect(countErrorTip).toBeDefined();
+    expect(countTextfield.props.invalid).toBe(true);
   });
 
   describe('visitor unit', () => {
@@ -139,7 +128,7 @@ describe('max frequency condition view', () => {
         unitSelect
       } = getReactComponents(instance);
 
-      unitSelect.props.onChange({ value: 'visitor' });
+      unitSelect.props.onChange('visitor');
 
       expect(extensionBridge.getSettings()).toEqual({
         unit: 'visitor'

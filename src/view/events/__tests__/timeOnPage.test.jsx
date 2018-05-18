@@ -11,19 +11,16 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
+import Textfield from '@react/react-spectrum/Textfield';
 import TimeOnPage, { formConfig } from '../timeOnPage';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   const timeOnPageTextfield = wrapper.find(Textfield).node;
-  const timeOnPageErrorTip = wrapper.find(ErrorTip).node;
 
   return {
-    timeOnPageTextfield,
-    timeOnPageErrorTip
+    timeOnPageTextfield
   };
 };
 
@@ -63,19 +60,19 @@ describe('time on page event view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { timeOnPageErrorTip } = getReactComponents(instance);
+    const { timeOnPageTextfield } = getReactComponents(instance);
 
-    expect(timeOnPageErrorTip).toBeDefined();
+    expect(timeOnPageTextfield.props.invalid).toBe(true);
   });
 
   it('sets error if timeOnPage value is not a number', () => {
     extensionBridge.init();
-    expect(extensionBridge.validate()).toBe(false);
 
-    const { timeOnPageTextfield, timeOnPageErrorTip } = getReactComponents(instance);
+    const { timeOnPageTextfield } = getReactComponents(instance);
 
     timeOnPageTextfield.props.onChange('12.abc');
 
-    expect(timeOnPageErrorTip).toBeDefined();
+    expect(extensionBridge.validate()).toBe(false);
+    expect(timeOnPageTextfield.props.invalid).toBe(true);
   });
 });

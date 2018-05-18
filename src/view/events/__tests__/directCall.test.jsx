@@ -11,8 +11,7 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
+import Textfield from '@react/react-spectrum/Textfield';
 import DirectCall, { formConfig } from '../directCall';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
@@ -20,11 +19,9 @@ import bootstrap from '../../bootstrap';
 const getReactComponents = (wrapper) => {
   const identifierTextfield =
     wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'identifier').node;
-  const identifierErrorTip = wrapper.find(ErrorTip).node;
 
   return {
-    identifierTextfield,
-    identifierErrorTip
+    identifierTextfield
   };
 };
 
@@ -64,8 +61,8 @@ describe('direct call event view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { identifierErrorTip } = getReactComponents(instance);
+    const { identifierTextfield } = getReactComponents(instance);
 
-    expect(identifierErrorTip).toBeDefined();
+    expect(identifierTextfield.props.invalid).toBe(true);
   });
 });

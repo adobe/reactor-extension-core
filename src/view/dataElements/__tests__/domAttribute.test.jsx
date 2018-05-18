@@ -11,32 +11,27 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import Select from '@coralui/react-coral/lib/Select';
-import { Field } from 'redux-form';
+import Textfield from '@react/react-spectrum/Textfield';
+import Select from '@react/react-spectrum/Select';
+import WrappedField from '../../components/wrappedField';
 import DomAttribute, { formConfig } from '../domAttribute';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const fields = wrapper.find(Field);
+  const fields = wrapper.find(WrappedField);
 
   const elementPropertyPresetsSelect = wrapper.find(Select).node;
   const elementSelectorField = fields.filterWhere(n => n.prop('name') === 'elementSelector');
   const elementSelectorTextfield = elementSelectorField.find(Textfield).node;
-  const elementSelectorErrorTip = elementSelectorField.find(ErrorTip).node;
   const customElementPropertyField = fields
     .filterWhere(n => n.prop('name') === 'customElementProperty');
   const customElementPropertyTextfield = customElementPropertyField.find(Textfield).node;
-  const customElementPropertyErrorTip = customElementPropertyField.find(ErrorTip).node;
 
   return {
     elementPropertyPresetsSelect,
     elementSelectorTextfield,
-    elementSelectorErrorTip,
-    customElementPropertyTextfield,
-    customElementPropertyErrorTip
+    customElementPropertyTextfield
   };
 };
 
@@ -96,9 +91,9 @@ describe('DOM attribute data element view', () => {
 
     expect(extensionBridge.validate()).toBe(false);
 
-    const { elementSelectorErrorTip } = getReactComponents(instance);
+    const { elementSelectorTextfield } = getReactComponents(instance);
 
-    expect(elementSelectorErrorTip).toBeDefined();
+    expect(elementSelectorTextfield.props.invalid).toBe(true);
   });
 
   it('sets settings from form values using element property preset', () => {
@@ -107,10 +102,7 @@ describe('DOM attribute data element view', () => {
     const { elementSelectorTextfield, elementPropertyPresetsSelect } = getReactComponents(instance);
 
     elementSelectorTextfield.props.onChange('foo');
-    elementPropertyPresetsSelect.props.onChange({
-      value: 'innerHTML',
-      label: 'HTML'
-    });
+    elementPropertyPresetsSelect.props.onChange('innerHTML');
 
     expect(extensionBridge.getSettings()).toEqual({
       elementSelector: 'foo',
@@ -127,10 +119,7 @@ describe('DOM attribute data element view', () => {
       } = getReactComponents(instance);
 
     elementSelectorTextfield.props.onChange('foo');
-    elementPropertyPresetsSelect.props.onChange({
-      value: 'custom',
-      label: 'other attribute'
-    });
+    elementPropertyPresetsSelect.props.onChange('custom');
 
     const {
       customElementPropertyTextfield
@@ -154,8 +143,8 @@ describe('DOM attribute data element view', () => {
 
     expect(extensionBridge.validate()).toBe(false);
 
-    const { customElementPropertyErrorTip } = getReactComponents(instance);
+    const { customElementPropertyTextfield } = getReactComponents(instance);
 
-    expect(customElementPropertyErrorTip).toBeDefined();
+    expect(customElementPropertyTextfield.props.invalid).toBe(true);
   });
 });

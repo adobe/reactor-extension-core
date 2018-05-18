@@ -11,10 +11,9 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import Radio from '@coralui/react-coral/lib/Radio';
-import Select from '@coralui/react-coral/lib/Select';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
+import Textfield from '@react/react-spectrum/Textfield';
+import Radio from '@react/react-spectrum/Radio';
+import Select from '@react/react-spectrum/Select';
 import PageViews, { formConfig } from '../pageViews';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
@@ -26,14 +25,12 @@ const getReactComponents = (wrapper) => {
   const sessionRadio = radios.filterWhere(n => n.prop('value') === 'session').node;
   const operatorSelect = wrapper.find(Select).node;
   const countTextfield = wrapper.find(Textfield).node;
-  const countErrorTip = wrapper.find(ErrorTip).node;
 
   return {
     lifetimeRadio,
     sessionRadio,
     operatorSelect,
-    countTextfield,
-    countErrorTip
+    countTextfield
   };
 };
 
@@ -81,9 +78,9 @@ describe('page views condition view', () => {
 
     const { operatorSelect, countTextfield, sessionRadio } = getReactComponents(instance);
 
-    operatorSelect.props.onChange({ value: '=' });
+    operatorSelect.props.onChange('=');
     countTextfield.props.onChange(100);
-    sessionRadio.props.onChange('session');
+    sessionRadio.props.onChange('session', { stopPropagation() {} });
 
     expect(extensionBridge.getSettings()).toEqual({
       operator: '=',
@@ -96,19 +93,19 @@ describe('page views condition view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { countErrorTip } = getReactComponents(instance);
+    const { countTextfield } = getReactComponents(instance);
 
-    expect(countErrorTip).toBeDefined();
+    expect(countTextfield.props.invalid).toBe(true);
   });
 
   it('sets error if count value is not a number', () => {
     extensionBridge.init();
-    expect(extensionBridge.validate()).toBe(false);
 
-    const { countTextfield, countErrorTip } = getReactComponents(instance);
+    const { countTextfield } = getReactComponents(instance);
 
     countTextfield.props.onChange('12.abc');
 
-    expect(countErrorTip).toBeDefined();
+    expect(extensionBridge.validate()).toBe(false);
+    expect(countTextfield.props.invalid).toBe(true);
   });
 });

@@ -12,10 +12,10 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
-import Select from '@coralui/redux-form-react-coral/lib/Select';
-import { Field, formValueSelector } from 'redux-form';
-import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
+import Textfield from '@react/react-spectrum/Textfield';
+import Select from '@react/react-spectrum/Select';
+import { formValueSelector } from 'redux-form';
+import WrappedField from '../components/wrappedField';
 
 import { isNumberLikeInRange } from '../utils/validators';
 
@@ -59,24 +59,22 @@ const unitOptions = [
 
 const MaxFrequency = ({ unit }) => (
   <div>
-    <span className="u-label">
+    <span className="u-verticalAlignMiddle u-gapRight">
       Return true no more than once every
     </span>
     {
       unit !== VISITOR ?
-        <Field
+        <WrappedField
           name="count"
-          component={ DecoratedInput }
-          inputComponent={ Textfield }
+          component={ Textfield }
           className="u-gapRight"
-          inputClassName="u-smallTextfield"
+          componentClassName="u-smallTextfield"
         /> : null
     }
-    <Field
+    <WrappedField
       name="unit"
       component={ Select }
       options={ unitOptions }
-      backspaceRemoves={ false }
     />
   </div>
 );

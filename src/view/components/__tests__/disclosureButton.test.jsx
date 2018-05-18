@@ -12,15 +12,18 @@
 
 import React from 'react';
 import { mount } from 'enzyme';
-import Icon from '@coralui/react-coral/lib/Icon';
+import ChevronDown from '@react/react-spectrum/Icon/ChevronDown';
+import ChevronRight from '@react/react-spectrum/Icon/ChevronRight';
 import DisclosureButton from '../disclosureButton';
 
 const getReactComponents = (wrapper) => {
-  const icon = wrapper.find(Icon).node;
+  const chevronDownIcon = wrapper.find(ChevronDown).node;
+  const chevronRightIcon = wrapper.find(ChevronRight).node;
   const buttonWrapper = wrapper.find('button');
 
   return {
-    icon,
+    chevronDownIcon,
+    chevronRightIcon,
     buttonWrapper
   };
 };
@@ -29,19 +32,27 @@ const render = props => mount(<DisclosureButton { ...props } />);
 
 describe('disclosure button', () => {
   it('shows down chevron when selected', () => {
-    const { icon } = getReactComponents(render({
+    const {
+      chevronDownIcon,
+      chevronRightIcon
+    } = getReactComponents(render({
       selected: true
     }));
 
-    expect(icon.props.icon).toEqual('chevronDown');
+    expect(chevronDownIcon).toBeDefined();
+    expect(chevronRightIcon).toBeUndefined();
   });
 
   it('shows right chevron when not selected', () => {
-    const { icon } = getReactComponents(render({
+    const {
+      chevronDownIcon,
+      chevronRightIcon
+    } = getReactComponents(render({
       selected: false
     }));
 
-    expect(icon.props.icon).toEqual('chevronRight');
+    expect(chevronDownIcon).toBeUndefined();
+    expect(chevronRightIcon).toBeDefined();
   });
 
   it('calls onClick when clicked', () => {

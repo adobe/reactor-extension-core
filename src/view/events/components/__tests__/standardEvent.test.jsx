@@ -11,10 +11,9 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import Checkbox from '@coralui/react-coral/lib/Checkbox';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
-import { Field } from 'redux-form';
+import Textfield from '@react/react-spectrum/Textfield';
+import Checkbox from '@react/react-spectrum/Checkbox';
+import WrappedField from '../../../components/wrappedField';
 import StandardEvent, { formConfig } from '../../components/standardEvent';
 import createExtensionBridge from '../../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../../bootstrap';
@@ -22,18 +21,16 @@ import AdvancedEventOptions from '../advancedEventOptions';
 
 const getReactComponents = (wrapper) => {
   const advancedEventOptions = wrapper.find(AdvancedEventOptions).node;
-  const elementSelectorField = wrapper.find(Field)
+  const elementSelectorField = wrapper.find(WrappedField)
     .filterWhere(n => n.prop('name') === 'elementSelector');
   const elementSelectorTextfield = elementSelectorField.find(Textfield).node;
-  const elementSelectorErrorTip = elementSelectorField.find(ErrorTip).node;
   const bubbleStopCheckbox = wrapper.find(Checkbox)
     .filterWhere(n => n.prop('name') === 'bubbleStop').node;
 
   return {
     elementSelectorTextfield,
     bubbleStopCheckbox,
-    advancedEventOptions,
-    elementSelectorErrorTip
+    advancedEventOptions
   };
 };
 
@@ -84,8 +81,8 @@ describe('standard event view', () => {
 
     expect(extensionBridge.validate()).toBe(false);
 
-    const { elementSelectorErrorTip } = getReactComponents(instance);
+    const { elementSelectorTextfield } = getReactComponents(instance);
 
-    expect(elementSelectorErrorTip).toBeDefined();
+    expect(elementSelectorTextfield.props.invalid).toBe(true);
   });
 });

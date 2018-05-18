@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Radio from '@coralui/react-coral/lib/Radio';
+import Radio from '@react/react-spectrum/Radio';
 import ElementFilter, { formConfig } from '../elementFilter';
 import createExtensionBridge from '../../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../../bootstrap';
@@ -78,7 +78,7 @@ describe('elementFilter', () => {
 
     const { anyElementRadio } = getReactComponents(instance);
 
-    anyElementRadio.props.onChange(anyElementRadio.props.value);
+    anyElementRadio.props.onChange(anyElementRadio.props.value, { stopPropagation() {} });
 
     const { elementSelector, elementProperties } = extensionBridge.getSettings();
 
@@ -91,7 +91,10 @@ describe('elementFilter', () => {
 
     const { specificElementsRadio } = getReactComponents(instance);
 
-    specificElementsRadio.props.onChange(specificElementsRadio.props.value);
+    specificElementsRadio.props.onChange(
+      specificElementsRadio.props.value,
+      { stopPropagation() {} }
+    );
 
     expect(extensionBridge.validate()).toBe(false);
   });
@@ -101,7 +104,7 @@ describe('elementFilter', () => {
 
     const { anyElementRadio } = getReactComponents(instance);
 
-    anyElementRadio.props.onChange(anyElementRadio.props.value);
+    anyElementRadio.props.onChange(anyElementRadio.props.value, { stopPropagation() {} });
 
     expect(extensionBridge.validate()).toBe(true);
   });

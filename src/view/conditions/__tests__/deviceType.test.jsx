@@ -47,14 +47,14 @@ describe('device type condition view', () => {
 
     const { deviceOptionsCheckboxList } = getReactComponents(instance);
 
-    expect(deviceOptionsCheckboxList.props.input.value).toEqual(selectedDeviceTypes);
+    expect(deviceOptionsCheckboxList.props.value).toEqual(selectedDeviceTypes);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { deviceOptionsCheckboxList } = getReactComponents(instance);
-    deviceOptionsCheckboxList.props.input.onChange(selectedDeviceTypes);
+    deviceOptionsCheckboxList.props.onChange(selectedDeviceTypes);
 
     expect(extensionBridge.getSettings()).toEqual({
       deviceTypes: selectedDeviceTypes

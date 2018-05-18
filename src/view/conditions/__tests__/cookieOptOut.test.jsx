@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Checkbox from '@coralui/react-coral/lib/Checkbox';
+import Checkbox from '@react/react-spectrum/Checkbox';
 import CookieOptOut, { formConfig } from '../cookieOptOut';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';

@@ -12,8 +12,8 @@
 
 import React from 'react';
 import { mount } from 'enzyme';
-import Switch from '@coralui/react-coral/lib/Switch';
-import { Field } from 'redux-form';
+import Switch from '@react/react-spectrum/Switch';
+import WrappedField from '../wrappedField';
 
 import RegexToggle from '../regexToggle';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
@@ -32,7 +32,7 @@ const getReactComponents = (wrapper) => {
 };
 
 const ConnectedRegexToggle = () => (
-  <Field
+  <WrappedField
     name="valueIsRegex"
     component={ RegexToggle }
     valueFieldName="value"
@@ -81,7 +81,8 @@ describe('regex toggle', () => {
   it('sets switch to checked when valueIsRegex=true', () => {
     extensionBridge.init({
       settings: {
-        valueIsRegex: true
+        valueIsRegex: true,
+        value: 'foo'
       }
     });
 
@@ -95,11 +96,7 @@ describe('regex toggle', () => {
 
     const { regexSwitch } = getReactComponents(instance);
 
-    regexSwitch.props.onChange({
-      target: {
-        checked: true
-      }
-    });
+    regexSwitch.props.onChange(true);
 
     expect(extensionBridge.getSettings()).toEqual({
       valueIsRegex: true

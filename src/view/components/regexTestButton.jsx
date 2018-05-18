@@ -15,10 +15,8 @@ import classNames from 'classnames';
 
 export default (props) => {
   const {
-    input: {
-      value,
-      onChange
-    },
+    value,
+    onChange,
     flags = 'i',
     className
   } = props;

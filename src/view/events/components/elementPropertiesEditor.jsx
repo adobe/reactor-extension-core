@@ -11,41 +11,40 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Button from '@coralui/react-coral/lib/Button';
-import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
-import { Field, FieldArray } from 'redux-form';
-import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
-
+import Button from '@react/react-spectrum/Button';
+import Close from '@react/react-spectrum/Icon/Close';
+import Textfield from '@react/react-spectrum/Textfield';
+import { FieldArray } from 'redux-form';
+import WrappedField from '../../components/wrappedField';
 import RegexToggle from '../../components/regexToggle';
 
 const ElementPropertiesRenderer = ({ fields }) => (
-  <div>
+  <div className="u-gapBottom">
     {
       fields.map((field, index) => (
         <div key={ index } data-row className="u-gapBottom">
-          <Field
+          <WrappedField
             name={ `${field}.name` }
             placeholder="Property"
-            component={ DecoratedInput }
-            inputComponent={ Textfield }
+            component={ Textfield }
           />
-          <span className="u-label u-gapLeft">&#61;</span>
-          <Field
+          <span className="u-verticalAlignMiddle u-gapRight u-gapLeft">&#61;</span>
+          <WrappedField
             name={ `${field}.value` }
             className="u-gapRight"
             placeholder="Value"
             component={ Textfield }
           />
-          <Field
+          <WrappedField
             name={ `${field}.valueIsRegex` }
             component={ RegexToggle }
             valueFieldName={ `${field}.value` }
           />
           <Button
             className="u-gapBottom"
-            variant="minimal"
-            icon="close"
-            iconSize="XS"
+            variant="action"
+            quiet
+            icon={ <Close /> }
             onClick={ fields.remove.bind(this, index) }
           />
         </div>

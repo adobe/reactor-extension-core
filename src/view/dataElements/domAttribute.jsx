@@ -11,13 +11,12 @@
  ****************************************************************************************/
 
 import React from 'react';
-import { Field, formValueSelector } from 'redux-form';
+import { formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
-import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
-import InfoTip from '@reactor/react-components/lib/infoTip';
-import Link from '@coralui/react-coral/lib/Link';
-import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
-import Select from '@coralui/redux-form-react-coral/lib/Select';
+import Link from '@react/react-spectrum/Link';
+import Textfield from '@react/react-spectrum/Textfield';
+import Select from '@react/react-spectrum/Select';
+import WrappedField from '../components/wrappedField';
 
 const elementPropertyPresets = [
   {
@@ -73,42 +72,37 @@ const DomAttribute = ({ ...props }) => {
     <div>
       <div className="u-gapBottom">
         <label>
-          <span className="u-label">From the DOM element matching the CSS Selector</span>
-          <Field
+          <span className="u-verticalAlignMiddle u-gapRight">
+            From the DOM element matching the CSS Selector
+          </span>
+          <WrappedField
             name="elementSelector"
-            component={ DecoratedInput }
-            inputComponent={ Textfield }
+            component={ Textfield }
           />
-          <InfoTip placement="bottom">
-            CSS selectors allow you to target specific elements in a webpage.
-            <br />
-            <Link
-              href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors"
-              rel="noopener noreferrer"
-              target="_blank"
-              subtle
-            >
-              Learn more about CSS selectors.
-            </Link>
-          </InfoTip>
+          <Link
+            className="u-verticalAlignMiddle u-gapLeft"
+            href="https://developer.mozilla.org/en-US/docs/Learn/CSS/Introduction_to_CSS/Selectors"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Learn more
+          </Link>
         </label>
       </div>
       <div>
         <label className="u-gapRight">
-          <span className="u-label">Use the value of</span>
-          <Field
+          <span className="u-verticalAlignMiddle u-gapRight">Use the value of</span>
+          <WrappedField
             name="selectedElementPropertyPreset"
             component={ Select }
             options={ elementPropertyPresets }
-            backspaceRemoves={ false }
           />
         </label>
         {
           (selectedElementPropertyPreset === 'custom') ?
-            <Field
+            <WrappedField
               name="customElementProperty"
-              component={ DecoratedInput }
-              inputComponent={ Textfield }
+              component={ Textfield }
             />
             : null
         }

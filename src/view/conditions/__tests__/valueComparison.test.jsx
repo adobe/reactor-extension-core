@@ -11,40 +11,35 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import { Field } from 'redux-form';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import Select from '@coralui/react-coral/lib/Select';
-import Alert from '@coralui/react-coral/lib/Alert';
-import Checkbox from '@coralui/react-coral/lib/Checkbox';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
+import Textfield from '@react/react-spectrum/Textfield';
+import Select from '@react/react-spectrum/Select';
+import { Toast } from '@react/react-spectrum/Toast';
+import Checkbox from '@react/react-spectrum/Checkbox';
+import WrappedField from '../../components/wrappedField';
 import ValueComparison, { formConfig } from '../valueComparison';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const fields = wrapper.find(Field);
+  const fields = wrapper.find(WrappedField);
   const leftOperandField = fields.filterWhere(n => n.prop('name') === 'leftOperand');
   const leftOperandTextfield = leftOperandField.find(Textfield).node;
-  const leftOperandErrorTip = leftOperandField.find(ErrorTip).node;
 
   const operatorField = fields.filterWhere(n => n.prop('name') === 'operator');
   const operatorSelect = operatorField.find(Select).node;
 
   const rightOperandField = fields.filterWhere(n => n.prop('name') === 'rightOperand');
   const rightOperandTextfield = rightOperandField.find(Textfield).node;
-  const rightOperandErrorTip = rightOperandField.find(ErrorTip).node;
 
   const caseInsensitiveField = fields.filterWhere(n => n.prop('name') === 'caseInsensitive');
   const caseInsensitiveCheckbox = caseInsensitiveField.find(Checkbox).node;
 
-  const noTypeConversionReminders = wrapper.find(Alert);
+  const noTypeConversionReminders = wrapper.find(Toast);
 
   return {
     leftOperandTextfield,
-    leftOperandErrorTip,
     operatorSelect,
     rightOperandTextfield,
-    rightOperandErrorTip,
     caseInsensitiveCheckbox,
     noTypeConversionReminders
   };
@@ -99,7 +94,7 @@ describe('value comparison condition view', () => {
           } = getReactComponents(instance);
 
           leftOperandTextfield.props.onChange('%foo%');
-          operatorSelect.props.onChange({ value: operator });
+          operatorSelect.props.onChange(operator);
 
           const {
             rightOperandTextfield,
@@ -131,15 +126,15 @@ describe('value comparison condition view', () => {
           expect(extensionBridge.validate()).toBe(false);
 
           const {
-            leftOperandErrorTip,
-            rightOperandErrorTip
+            leftOperandTextfield,
+            rightOperandTextfield
           } = getReactComponents(instance);
 
 
-          expect(leftOperandErrorTip).toBeDefined();
+          expect(leftOperandTextfield.props.invalid).toBe(true);
           // We allow empty strings for equals operands because users may want to check to
           // see if a value equals an empty string.
-          expect(rightOperandErrorTip).not.toBeDefined();
+          expect(rightOperandTextfield.props.invalid).toBe(false);
         });
       });
     });
@@ -191,7 +186,7 @@ describe('value comparison condition view', () => {
           } = getReactComponents(instance);
 
           leftOperandTextfield.props.onChange('%foo%');
-          operatorSelect.props.onChange({ value: operator });
+          operatorSelect.props.onChange(operator);
 
           const {
             rightOperandTextfield,
@@ -223,13 +218,12 @@ describe('value comparison condition view', () => {
           expect(extensionBridge.validate()).toBe(false);
 
           const {
-            leftOperandErrorTip,
-            rightOperandErrorTip
+            leftOperandTextfield,
+            rightOperandTextfield
           } = getReactComponents(instance);
 
-
-          expect(leftOperandErrorTip).toBeDefined();
-          expect(rightOperandErrorTip).toBeDefined();
+          expect(leftOperandTextfield.props.invalid).toBe(true);
+          expect(rightOperandTextfield.props.invalid).toBe(true);
         });
       });
     });
@@ -274,7 +268,7 @@ describe('value comparison condition view', () => {
           } = getReactComponents(instance);
 
           leftOperandTextfield.props.onChange('%foo%');
-          operatorSelect.props.onChange({ value: operator });
+          operatorSelect.props.onChange(operator);
 
           const {
             rightOperandTextfield
@@ -305,12 +299,12 @@ describe('value comparison condition view', () => {
           expect(extensionBridge.validate()).toBe(false);
 
           const {
-            leftOperandErrorTip,
-            rightOperandErrorTip
+            leftOperandTextfield,
+            rightOperandTextfield
           } = getReactComponents(instance);
 
-          expect(leftOperandErrorTip).toBeDefined();
-          expect(rightOperandErrorTip).toBeDefined();
+          expect(leftOperandTextfield.props.invalid).toBe(true);
+          expect(rightOperandTextfield.props.invalid).toBe(true);
         });
       });
     });
@@ -352,7 +346,7 @@ describe('value comparison condition view', () => {
           } = getReactComponents(instance);
 
           leftOperandTextfield.props.onChange('%foo%');
-          operatorSelect.props.onChange({ value: operator });
+          operatorSelect.props.onChange(operator);
 
           expect(extensionBridge.getSettings()).toEqual({
             leftOperand: '%foo%',
@@ -373,12 +367,10 @@ describe('value comparison condition view', () => {
           expect(extensionBridge.validate()).toBe(false);
 
           const {
-            leftOperandErrorTip,
-            rightOperandErrorTip
+            leftOperandTextfield
           } = getReactComponents(instance);
 
-          expect(leftOperandErrorTip).toBeDefined();
-          expect(rightOperandErrorTip).not.toBeDefined();
+          expect(leftOperandTextfield.props.invalid).toBe(true);
         });
       });
     });

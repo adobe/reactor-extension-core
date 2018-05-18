@@ -11,23 +11,23 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Checkbox from '@coralui/react-coral/lib/Checkbox';
+import Checkbox from '@react/react-spectrum/Checkbox';
 
 import './checkboxList.styl';
 
 export default class CheckboxList extends React.Component {
-  onChange = (event) => {
-    const checkboxValue = event.target.value;
-    const value = this.props.input.value ? this.props.input.value.slice() : [];
+  onChange = (isChecked, event) => {
+    const checkboxValue = event.nativeEvent.target.value;
+    const value = this.props.value ? this.props.value.slice() : [];
 
-    if (event.target.checked) {
+    if (isChecked) {
       value.push(checkboxValue);
     } else {
       const index = value.indexOf(checkboxValue);
       value.splice(index, 1);
     }
 
-    this.props.input.onChange(value);
+    this.props.onChange(value);
   };
 
   render() {
@@ -49,14 +49,12 @@ export default class CheckboxList extends React.Component {
           <Checkbox
             value={ value }
             checked={
-              this.props.input &&
-              this.props.input.value &&
-              this.props.input.value.indexOf(value) > -1
+              this.props.value &&
+              this.props.value.indexOf(value) > -1
             }
             onChange={ this.onChange }
-          >
-            { label }
-          </Checkbox>
+            label={ label }
+          />
         </li>
       );
     });

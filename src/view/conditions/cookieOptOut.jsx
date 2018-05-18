@@ -11,16 +11,16 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Checkbox from '@coralui/redux-form-react-coral/lib/Checkbox';
-import { Field } from 'redux-form';
+import Checkbox from '@react/react-spectrum/Checkbox';
+import WrappedField from '../components/wrappedField';
 
 const CookieOptOut = () => (
-  <Field
+  <WrappedField
     name="acceptsCookies"
     component={ Checkbox }
   >
     User accepts cookies (EU)
-  </Field>
+  </WrappedField>
 );
 
 export default CookieOptOut;

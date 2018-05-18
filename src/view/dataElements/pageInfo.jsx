@@ -11,9 +11,8 @@
  ****************************************************************************************/
 
 import React from 'react';
-import { Field } from 'redux-form';
-import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
-import Select from '@coralui/redux-form-react-coral/lib/Select';
+import Select from '@react/react-spectrum/Select';
+import WrappedField from '../components/wrappedField';
 
 const options = [
   {
@@ -44,13 +43,11 @@ const options = [
 
 const PageInfo = () => (
   <label>
-    <span className="u-label">Attribute</span>
-    <Field
+    <span className="u-verticalAlignMiddle u-gapRight">Attribute</span>
+    <WrappedField
       name="attribute"
-      component={ DecoratedInput }
-      inputComponent={ Select }
+      component={ Select }
       options={ options }
-      backspaceRemoves={ false }
     />
   </label>
 );

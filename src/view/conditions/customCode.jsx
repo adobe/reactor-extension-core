@@ -11,13 +11,13 @@
  ****************************************************************************************/
 
 import React from 'react';
-import InfoTip from '@reactor/react-components/lib/infoTip';
-import { Field } from 'redux-form';
-import EditorButton from '@reactor/react-components/lib/reduxForm/editorButton';
+import InfoTip from '../components/infoTip';
+import WrappedField from '../components/wrappedField';
+import EditorButton from '../components/editorButton';
 
 const CustomCode = () => (
   <div>
-    <Field
+    <WrappedField
       name="source"
       component={ EditorButton }
     />

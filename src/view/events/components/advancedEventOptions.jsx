@@ -11,12 +11,9 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Checkbox from '@coralui/redux-form-react-coral/lib/Checkbox';
-import { Field } from 'redux-form';
-
+import Checkbox from '@react/react-spectrum/Checkbox';
+import WrappedField from '../../components/wrappedField';
 import DisclosureButton from '../../components/disclosureButton';
-
-import './advancedEventOptions.styl';
 
 export default class AdvancedEventOptions extends React.Component {
   constructor() {
@@ -38,33 +35,28 @@ export default class AdvancedEventOptions extends React.Component {
     if (this.state.expanded) {
       advancedPanel = (
         <div className="u-gapTop">
-          <h4 className="coral-Heading coral-Heading--4">Bubbling</h4>
-
-          <Field
+          <WrappedField
             name="bubbleFireIfParent"
             className="u-block"
             component={ Checkbox }
-          >
-            Run this rule even when the event originates from a descendant element
-          </Field>
+            label="Run this rule even when the event originates from a descendant element"
+          />
 
-          <Field
+          <WrappedField
             name="bubbleFireIfChildFired"
             className="u-block"
             component={ Checkbox }
-          >
-            Allow this rule to run even if the event already triggered a
-            rule targeting a descendant element
-          </Field>
+            label="Allow this rule to run even if the event already triggered a rule targeting
+              a descendant element"
+          />
 
-          <Field
+          <WrappedField
             name="bubbleStop"
             className="u-block"
             component={ Checkbox }
-          >
-            After the rule runs, prevent the event from triggering rules
-            targeting ancestor elements
-          </Field>
+            label="After the rule runs, prevent the event from triggering rules targeting
+              ancestor elements"
+          />
         </div>
       );
     }

@@ -55,14 +55,14 @@ describe('domain condition view', () => {
     const { domainsCheckboxList } = getReactComponents(instance);
 
     expect(domainsCheckboxList.props.options).toEqual(domains);
-    expect(domainsCheckboxList.props.input.value).toEqual(selectedDomains);
+    expect(domainsCheckboxList.props.value).toEqual(selectedDomains);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { domainsCheckboxList } = getReactComponents(instance);
-    domainsCheckboxList.props.input.onChange(selectedDomains);
+    domainsCheckboxList.props.onChange(selectedDomains);
 
     expect(extensionBridge.getSettings()).toEqual({
       domains: selectedDomains

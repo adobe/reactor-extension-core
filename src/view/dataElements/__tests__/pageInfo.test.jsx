@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Select from '@coralui/react-coral/lib/Select';
+import Select from '@react/react-spectrum/Select';
 import PageInfo, { formConfig } from '../pageInfo';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
@@ -57,10 +57,7 @@ describe('page info data element view', () => {
     extensionBridge.init();
 
     const { attributeSelect } = getReactComponents(instance);
-    attributeSelect.props.onChange({
-      value: 'protocol',
-      label: 'Protocol'
-    });
+    attributeSelect.props.onChange('protocol');
 
     expect(extensionBridge.getSettings()).toEqual({
       attribute: 'protocol'

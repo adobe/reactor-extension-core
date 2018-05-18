@@ -11,19 +11,16 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
+import Textfield from '@react/react-spectrum/Textfield';
 import Cookie, { formConfig } from '../cookie';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   const nameTextfield = wrapper.find(Textfield).node;
-  const nameErrorTip = wrapper.find(ErrorTip).node;
 
   return {
-    nameTextfield,
-    nameErrorTip
+    nameTextfield
   };
 };
 
@@ -63,8 +60,8 @@ describe('cookie data element view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { nameErrorTip } = getReactComponents(instance);
+    const { nameTextfield } = getReactComponents(instance);
 
-    expect(nameErrorTip).toBeDefined();
+    expect(nameTextfield.props.invalid).toBe(true);
   });
 });

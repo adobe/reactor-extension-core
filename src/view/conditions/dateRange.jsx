@@ -11,12 +11,11 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Datepicker from '@coralui/redux-form-react-coral/lib/Datepicker';
-import Autocomplete from '@coralui/redux-form-react-coral/lib/Autocomplete';
+import Datepicker from '@react/react-spectrum/Datepicker';
+import ComboBox from '@react/react-spectrum/ComboBox';
 import moment from 'moment-timezone';
-import { Field } from 'redux-form';
-import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
-import InfoTip from '@reactor/react-components/lib/infoTip';
+import InfoTip from '../components/infoTip';
+import WrappedField from '../components/wrappedField';
 
 import './dateRange.styl';
 
@@ -34,14 +33,12 @@ const getTimezoneOptions = (() => {
 })();
 
 const DateRange = () => (
-  <div>
+  <div className="u-clearfix">
     <label className="u-gapRight u-gapBottom u-noWrap u-floatLeft">
-      <span className="u-label">The date and time is after </span>
-      <Field
+      <span className="u-verticalAlignMiddle u-gapRight">The date and time is after </span>
+      <WrappedField
         name="start"
-        component={ DecoratedInput }
-        inputComponent={ Datepicker }
-        inputClassName="DateRange-datePicker"
+        component={ Datepicker }
         type="datetime"
       />
       <InfoTip className="u-noPaddingRight" placement="bottom">
@@ -50,12 +47,10 @@ const DateRange = () => (
       </InfoTip>
     </label>
     <label className="u-gapRight u-gapBottom u-noWrap u-floatLeft">
-      <span className="u-label">and before</span>
-      <Field
+      <span className="u-verticalAlignMiddle u-gapRight">and before</span>
+      <WrappedField
         name="end"
-        component={ DecoratedInput }
-        inputComponent={ Datepicker }
-        inputClassName="DateRange-datePicker"
+        component={ Datepicker }
         type="datetime"
       />
       <InfoTip className="u-noPaddingRight" placement="bottom">
@@ -64,11 +59,10 @@ const DateRange = () => (
       </InfoTip>
     </label>
     <label className="u-gapRight u-gapBottom u-noWrap u-floatLeft">
-      <span className="u-label">in time zone</span>
-      <Field
+      <span className="u-verticalAlignMiddle u-gapRight">in time zone</span>
+      <WrappedField
         name="timezone"
-        component={ DecoratedInput }
-        inputComponent={ Autocomplete }
+        component={ ComboBox }
         options={ getTimezoneOptions() }
       />
     </label>

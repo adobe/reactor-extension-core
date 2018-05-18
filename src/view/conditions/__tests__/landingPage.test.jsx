@@ -11,22 +11,19 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import Switch from '@coralui/react-coral/lib/Switch';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
+import Textfield from '@react/react-spectrum/Textfield';
+import RegexToggle from '../../components/regexToggle';
 import LandingPage, { formConfig } from '../landingPage';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   const pageTextfield = wrapper.find(Textfield).node;
-  const pageRegexSwitch = wrapper.find(Switch).node;
-  const pageErrorTip = wrapper.find(ErrorTip).node;
+  const pageRegexToggle = wrapper.find(RegexToggle).node;
 
   return {
     pageTextfield,
-    pageRegexSwitch,
-    pageErrorTip
+    pageRegexToggle
   };
 };
 
@@ -47,19 +44,19 @@ describe('landing page condition view', () => {
       }
     });
 
-    const { pageTextfield, pageRegexSwitch } = getReactComponents(instance);
+    const { pageTextfield, pageRegexToggle } = getReactComponents(instance);
 
     expect(pageTextfield.props.value).toBe('foo');
-    expect(pageRegexSwitch.props.checked).toBe(true);
+    expect(pageRegexToggle.props.value).toBe(true);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { pageTextfield, pageRegexSwitch } = getReactComponents(instance);
+    const { pageTextfield, pageRegexToggle } = getReactComponents(instance);
 
     pageTextfield.props.onChange('foo');
-    pageRegexSwitch.props.onChange({ target: { checked: true } });
+    pageRegexToggle.props.onChange(true);
 
     expect(extensionBridge.getSettings()).toEqual({
       page: 'foo',
@@ -71,8 +68,8 @@ describe('landing page condition view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { pageErrorTip } = getReactComponents(instance);
+    const { pageTextfield } = getReactComponents(instance);
 
-    expect(pageErrorTip).toBeDefined();
+    expect(pageTextfield.props.invalid).toBe(true);
   });
 });

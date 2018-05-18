@@ -11,12 +11,12 @@
  ****************************************************************************************/
 
 import React from 'react';
-import { Field } from 'redux-form';
-import EditorButton from '@reactor/react-components/lib/reduxForm/editorButton';
+import WrappedField from '../components/wrappedField';
+import EditorButton from '../components/editorButton';
 
 const CustomCode = () => (
   <div>
-    <Field
+    <WrappedField
       name="source"
       component={ EditorButton }
     />

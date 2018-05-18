@@ -11,24 +11,22 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
-import { Field } from 'redux-form';
-import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
+import Textfield from '@react/react-spectrum/Textfield';
+import WrappedField from '../components/wrappedField';
 
 import { isNumberLikeInRange } from '../utils/validators';
 
 const TimeOnPage = () => (
   <div>
     <label>
-      <span className="u-label u-gapRight">Trigger after</span>
+      <span className="u-verticalAlignMiddle u-gapRight u-gapRight">Trigger after</span>
     </label>
-    <Field
+    <WrappedField
       name="timeOnPage"
-      component={ DecoratedInput }
-      inputComponent={ Textfield }
+      component={ Textfield }
     />
     <label>
-      <span className="u-label u-gapLeft">seconds spent on the page</span>
+      <span className="u-verticalAlignMiddle u-gapRight u-gapLeft">seconds spent on the page</span>
     </label>
   </div>
 );

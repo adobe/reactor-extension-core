@@ -11,29 +11,25 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
-import InfoTip from '@reactor/react-components/lib/infoTip';
-import { Field } from 'redux-form';
-import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
-
+import Textfield from '@react/react-spectrum/Textfield';
+import InfoTip from '../components/infoTip';
 import RegexToggle from '../components/regexToggle';
+import WrappedField from '../components/wrappedField';
 
 const Variable = () => (
   <div>
     <label className="u-gapRight">
-      <span className="u-label">JS variable named</span>
-      <Field
+      <span className="u-verticalAlignMiddle u-gapRight">JS variable named</span>
+      <WrappedField
         name="name"
-        component={ DecoratedInput }
-        inputComponent={ Textfield }
+        component={ Textfield }
       />
     </label>
     <label>
-      <span className="u-label">has the value</span>
-      <Field
+      <span className="u-verticalAlignMiddle u-gapRight">has the value</span>
+      <WrappedField
         name="value"
-        component={ DecoratedInput }
-        inputComponent={ Textfield }
+        component={ Textfield }
       />
     </label>
     <InfoTip className="u-gapRight" placement="bottom">
@@ -41,7 +37,7 @@ const Variable = () => (
       variable contains this string. Note: If your variable contains a number, this will not
       work as expected.
     </InfoTip>
-    <Field
+    <WrappedField
       name="valueIsRegex"
       component={ RegexToggle }
       valueFieldName="value"

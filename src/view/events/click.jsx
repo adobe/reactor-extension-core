@@ -11,9 +11,8 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Checkbox from '@coralui/redux-form-react-coral/lib/Checkbox';
-import { Field } from 'redux-form';
-
+import Checkbox from '@react/react-spectrum/Checkbox';
+import WrappedField from '../components/wrappedField';
 import ElementFilter, { formConfig as elementFilterFormConfig } from './components/elementFilter';
 import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
 import mergeFormConfigs from '../utils/mergeFormConfigs';
@@ -21,13 +20,12 @@ import mergeFormConfigs from '../utils/mergeFormConfigs';
 const Click = () => (
   <div>
     <ElementFilter />
-    <Field
+    <WrappedField
       name="delayLinkActivation"
       className="u-block"
       component={ Checkbox }
-    >
-      If the element is a link, delay navigation until rule runs
-    </Field>
+      label="If the element is a link, delay navigation until rule runs"
+    />
     <AdvancedEventOptions />
   </div>
 );

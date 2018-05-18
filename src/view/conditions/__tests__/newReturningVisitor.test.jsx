@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Radio from '@coralui/react-coral/lib/Radio';
+import Radio from '@react/react-spectrum/Radio';
 import NewReturningVisitor, { formConfig } from '../newReturningVisitor';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
@@ -64,7 +64,7 @@ describe('new/returning visitor condition view', () => {
 
     const { returningVisitorRadio } = getReactComponents(instance);
 
-    returningVisitorRadio.props.onChange('returning');
+    returningVisitorRadio.props.onChange('returning', { stopPropagation() {} });
 
     expect(extensionBridge.getSettings()).toEqual({
       isNewVisitor: false

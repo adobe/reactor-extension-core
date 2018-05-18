@@ -11,17 +11,15 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
-import { Field } from 'redux-form';
-import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
+import Textfield from '@react/react-spectrum/Textfield';
+import WrappedField from '../components/wrappedField';
 
 const JavaScriptVariable = () => (
   <label>
-    <span className="u-label">Path to variable</span>
-    <Field
+    <span className="u-verticalAlignMiddle u-gapRight">Path to variable</span>
+    <WrappedField
       name="path"
-      component={ DecoratedInput }
-      inputComponent={ Textfield }
+      component={ Textfield }
     />
   </label>
 );

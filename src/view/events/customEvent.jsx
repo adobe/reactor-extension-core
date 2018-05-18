@@ -11,11 +11,10 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
-import Link from '@coralui/react-coral/lib/Link';
-import { Field } from 'redux-form';
-import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
-import InfoTip from '@reactor/react-components/lib/infoTip';
+import Textfield from '@react/react-spectrum/Textfield';
+import Link from '@react/react-spectrum/Link';
+import WrappedField from '../components/wrappedField';
+import InfoTip from '../components/infoTip';
 
 import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
 import ElementFilter, { formConfig as elementFilterFormConfig } from './components/elementFilter';
@@ -24,26 +23,24 @@ import mergeFormConfigs from '../utils/mergeFormConfigs';
 const CustomEvent = () => (
   <div>
     <label>
-      <span className="u-label">
+      <span className="u-verticalAlignMiddle u-gapRight">
         Custom Event Type
       </span>
-      <Field
+      <WrappedField
         name="type"
-        component={ DecoratedInput }
-        inputComponent={ Textfield }
+        component={ Textfield }
       />
       <InfoTip placement="bottom">
         This is the name of the event that will be triggered.
-        <br />
-        <Link
-          href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors"
-          rel="noopener noreferrer"
-          target="_blank"
-          subtle
-        >
-          Learn more about custom events.
-        </Link>
       </InfoTip>
+      <Link
+        className="u-verticalAlignMiddle u-gapLeft"
+        href="https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Creating_and_triggering_events"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Learn more
+      </Link>
     </label>
     <ElementFilter />
     <AdvancedEventOptions />

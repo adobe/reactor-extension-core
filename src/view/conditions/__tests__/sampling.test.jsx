@@ -11,23 +11,16 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
-import { Field } from 'redux-form';
+import Textfield from '@react/react-spectrum/Textfield';
 import Sampling, { formConfig } from '../sampling';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const fields = wrapper.find(Field);
-  const rateField = fields.filterWhere(n => n.prop('name') === 'rate');
-  const rateTextfield = rateField.find(Textfield).node;
-  const rateErrorTip = rateField.find(ErrorTip).node;
+  const rateTextfield = wrapper.find(Textfield).node;
 
   return {
-    rateField,
-    rateTextfield,
-    rateErrorTip
+    rateTextfield
   };
 };
 
@@ -71,10 +64,7 @@ describe('sampling condition view', () => {
 
     rateTextfield.props.onChange('');
     expect(extensionBridge.validate()).toBe(false);
-
-    const { rateErrorTip } = getReactComponents(instance);
-
-    expect(rateErrorTip).toBeDefined();
+    expect(rateTextfield.props.invalid).toBe(true);
   });
 
   it('sets error if rate is not a number', () => {
@@ -84,10 +74,7 @@ describe('sampling condition view', () => {
 
     rateTextfield.props.onChange('abc');
     expect(extensionBridge.validate()).toBe(false);
-
-    const { rateErrorTip } = getReactComponents(instance);
-
-    expect(rateErrorTip).toBeDefined();
+    expect(rateTextfield.props.invalid).toBe(true);
   });
 
   it('sets error if rate is less than 0', () => {
@@ -97,10 +84,7 @@ describe('sampling condition view', () => {
 
     rateTextfield.props.onChange('-1');
     expect(extensionBridge.validate()).toBe(false);
-
-    const { rateErrorTip } = getReactComponents(instance);
-
-    expect(rateErrorTip).toBeDefined();
+    expect(rateTextfield.props.invalid).toBe(true);
   });
 
   it('sets error if rate is greater than 1', () => {
@@ -110,10 +94,7 @@ describe('sampling condition view', () => {
 
     rateTextfield.props.onChange('101');
     expect(extensionBridge.validate()).toBe(false);
-
-    const { rateErrorTip } = getReactComponents(instance);
-
-    expect(rateErrorTip).toBeDefined();
+    expect(rateTextfield.props.invalid).toBe(true);
   });
 
   it('sets error if rate is not an integer', () => {
@@ -123,9 +104,6 @@ describe('sampling condition view', () => {
 
     rateTextfield.props.onChange('55.55');
     expect(extensionBridge.validate()).toBe(false);
-
-    const { rateErrorTip } = getReactComponents(instance);
-
-    expect(rateErrorTip).toBeDefined();
+    expect(rateTextfield.props.invalid).toBe(true);
   });
 });

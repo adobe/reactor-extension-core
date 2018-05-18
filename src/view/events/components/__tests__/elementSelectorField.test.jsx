@@ -11,9 +11,8 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import Button from '@coralui/react-coral/lib/Button';
+import Textfield from '@react/react-spectrum/Textfield';
+import Button from '@react/react-spectrum/Button';
 import ElementSelector, { formConfig } from '../elementSelector';
 import createExtensionBridge from '../../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../../bootstrap';
@@ -21,12 +20,10 @@ import bootstrap from '../../../bootstrap';
 const getReactComponents = (wrapper) => {
   const textfield = wrapper.find(Textfield).node;
   const button = wrapper.find(Button).node;
-  const errorTip = wrapper.find(ErrorTip).node;
 
   return {
     textfield,
-    button,
-    errorTip
+    button
   };
 };
 
@@ -68,8 +65,8 @@ describe('elementSelector', () => {
 
     expect(extensionBridge.validate()).toBe(false);
 
-    const { errorTip } = getReactComponents(instance);
+    const { textfield } = getReactComponents(instance);
 
-    expect(errorTip).toBeDefined();
+    expect(textfield.props.invalid).toBe(true);
   });
 });

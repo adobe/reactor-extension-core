@@ -11,30 +11,25 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import Switch from '@coralui/react-coral/lib/Switch';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
-import { Field } from 'redux-form';
+import Textfield from '@react/react-spectrum/Textfield';
+import RegexToggle from '../../components/regexToggle';
+import WrappedField from '../../components/wrappedField';
 import Cookie, { formConfig } from '../cookie';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const fields = wrapper.find(Field);
+  const fields = wrapper.find(WrappedField);
   const nameField = fields.filterWhere(n => n.prop('name') === 'name');
   const nameTextfield = nameField.find(Textfield).node;
-  const nameErrorTip = nameField.find(ErrorTip).node;
   const valueField = fields.filterWhere(n => n.prop('name') === 'value');
   const valueTextfield = valueField.find(Textfield).node;
-  const valueErrorTip = valueField.find(ErrorTip).node;
-  const valueRegexSwitch = wrapper.find(Switch).node;
+  const valueRegexToggle = wrapper.find(RegexToggle).node;
 
   return {
     nameTextfield,
-    nameErrorTip,
     valueTextfield,
-    valueRegexSwitch,
-    valueErrorTip
+    valueRegexToggle
   };
 };
 
@@ -56,21 +51,21 @@ describe('cookie condition view', () => {
       }
     });
 
-    const { nameTextfield, valueTextfield, valueRegexSwitch } = getReactComponents(instance);
+    const { nameTextfield, valueTextfield, valueRegexToggle } = getReactComponents(instance);
 
     expect(nameTextfield.props.value).toBe('foo');
     expect(valueTextfield.props.value).toBe('bar');
-    expect(valueRegexSwitch.props.checked).toBe(true);
+    expect(valueRegexToggle.props.value).toBe(true);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { nameTextfield, valueTextfield, valueRegexSwitch } = getReactComponents(instance);
+    const { nameTextfield, valueTextfield, valueRegexToggle } = getReactComponents(instance);
 
     nameTextfield.props.onChange('foo');
     valueTextfield.props.onChange('bar');
-    valueRegexSwitch.props.onChange({ target: { checked: true } });
+    valueRegexToggle.props.onChange(true);
 
     expect(extensionBridge.getSettings()).toEqual({
       name: 'foo',
@@ -83,9 +78,9 @@ describe('cookie condition view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { nameErrorTip, valueErrorTip } = getReactComponents(instance);
+    const { nameTextfield, valueTextfield } = getReactComponents(instance);
 
-    expect(nameErrorTip).toBeDefined();
-    expect(valueErrorTip).toBeDefined();
+    expect(nameTextfield.props.invalid).toBe(true);
+    expect(valueTextfield.props.invalid).toBe(true);
   });
 });

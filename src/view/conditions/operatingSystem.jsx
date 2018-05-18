@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 import React from 'react';
-import { Field } from 'redux-form';
+import WrappedField from '../components/wrappedField';
 import CheckboxList from '../components/checkboxList';
 
 const operatingSystemOptions = [
@@ -24,7 +24,7 @@ const operatingSystemOptions = [
 ];
 
 const OperatingSystem = () =>
-  (<Field
+  (<WrappedField
     name="operatingSystems"
     component={ CheckboxList }
     options={ operatingSystemOptions }
