@@ -19,13 +19,14 @@ import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
+  wrapper.update();
   const fields = wrapper.find(WrappedField);
 
   const elementSelectorField = fields.filterWhere(n => n.prop('name') === 'elementSelector');
-  const elementSelectorTextfield = elementSelectorField.find(Textfield).node;
+  const elementSelectorTextfield = elementSelectorField.find(Textfield);
   const delayField = fields.filterWhere(n => n.prop('name') === 'delay');
-  const delayTextfield = delayField.find(Textfield).node;
-  const delayRadio = wrapper.find(Radio).filterWhere(n => n.prop('value') === 'delay').node;
+  const delayTextfield = delayField.find(Textfield);
+  const delayRadio = wrapper.find(Radio).filterWhere(n => n.prop('value') === 'delay');
 
   return {
     elementSelectorTextfield,
@@ -53,19 +54,19 @@ describe('enters viewport event view', () => {
 
     const { elementSelectorTextfield, delayTextfield } = getReactComponents(instance);
 
-    expect(elementSelectorTextfield.props.value).toBe('.foo');
-    expect(delayTextfield.props.value).toBe(100);
+    expect(elementSelectorTextfield.props().value).toBe('.foo');
+    expect(delayTextfield.props().value).toBe(100);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { delayRadio } = getReactComponents(instance);
-    delayRadio.props.onChange('delay', { stopPropagation() {} });
+    delayRadio.props().onChange('delay', { stopPropagation() {} });
 
     const { elementSelectorTextfield, delayTextfield } = getReactComponents(instance);
-    elementSelectorTextfield.props.onChange('.foo');
-    delayTextfield.props.onChange(100);
+    elementSelectorTextfield.props().onChange('.foo');
+    delayTextfield.props().onChange(100);
 
     const { elementSelector, delay } = extensionBridge.getSettings();
 
@@ -80,7 +81,7 @@ describe('enters viewport event view', () => {
       delayRadio
     } = getReactComponents(instance);
 
-    delayRadio.props.onChange('delay', { stopPropagation() {} });
+    delayRadio.props().onChange('delay', { stopPropagation() {} });
 
     expect(extensionBridge.validate()).toBe(false);
 
@@ -89,7 +90,7 @@ describe('enters viewport event view', () => {
       elementSelectorTextfield
     } = getReactComponents(instance);
 
-    expect(delayTextfield.props.invalid).toBe(true);
-    expect(elementSelectorTextfield.props.invalid).toBe(true);
+    expect(delayTextfield.props().invalid).toBe(true);
+    expect(elementSelectorTextfield.props().invalid).toBe(true);
   });
 });

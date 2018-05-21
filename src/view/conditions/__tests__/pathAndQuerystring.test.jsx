@@ -18,9 +18,10 @@ import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
+  wrapper.update();
   const rows = wrapper.find('[data-row]').map(row => ({
-    pathTextfield: row.find(Textfield).node,
-    pathRegexToggle: row.find(RegexToggle).node
+    pathTextfield: row.find(Textfield),
+    pathRegexToggle: row.find(RegexToggle)
   }));
 
   return {
@@ -56,10 +57,10 @@ describe('path and query string condition view', () => {
 
     const { rows } = getReactComponents(instance);
 
-    expect(rows[0].pathTextfield.props.value).toBe('foo');
-    expect(rows[1].pathTextfield.props.value).toBe('bar');
-    expect(rows[0].pathRegexToggle.props.value).toBe('');
-    expect(rows[1].pathRegexToggle.props.value).toBe(true);
+    expect(rows[0].pathTextfield.props().value).toBe('foo');
+    expect(rows[1].pathTextfield.props().value).toBe('bar');
+    expect(rows[0].pathRegexToggle.props().value).toBe('');
+    expect(rows[1].pathRegexToggle.props().value).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -67,8 +68,8 @@ describe('path and query string condition view', () => {
 
     const { rows } = getReactComponents(instance);
 
-    rows[0].pathTextfield.props.onChange('goo');
-    rows[0].pathRegexToggle.props.onChange(true);
+    rows[0].pathTextfield.props().onChange('goo');
+    rows[0].pathRegexToggle.props().onChange(true);
 
     expect(extensionBridge.getSettings()).toEqual({
       paths: [
@@ -86,6 +87,6 @@ describe('path and query string condition view', () => {
 
     const { rows } = getReactComponents(instance);
 
-    expect(rows[0].pathTextfield.props.invalid).toBe(true);
+    expect(rows[0].pathTextfield.props().invalid).toBe(true);
   });
 });

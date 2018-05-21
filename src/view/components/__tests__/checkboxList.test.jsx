@@ -17,9 +17,12 @@ import CheckboxList from '../checkboxList';
 
 const render = props => mount(<CheckboxList { ...props } />);
 
-const getReactComponents = wrapper => ({
-  checkboxes: wrapper.find(Checkbox).nodes
-});
+const getReactComponents = (wrapper) => {
+  wrapper.update();
+  return {
+    checkboxes: wrapper.find(Checkbox)
+  };
+};
 
 const stringOptions = [
   'a',
@@ -48,8 +51,8 @@ describe('checkbox list', () => {
       options: stringOptions
     }));
 
-    const renderedValues = checkboxes.map(checkbox => checkbox.props.value);
-    const renderedLabels = checkboxes.map(checkbox => checkbox.props.label);
+    const renderedValues = checkboxes.map(checkbox => checkbox.props().value);
+    const renderedLabels = checkboxes.map(checkbox => checkbox.props().label);
 
     expect(renderedValues).toEqual(stringOptions);
     expect(renderedLabels).toEqual(stringOptions);
@@ -60,8 +63,8 @@ describe('checkbox list', () => {
       options: objectOptions
     }));
 
-    const renderedValues = checkboxes.map(checkbox => checkbox.props.value);
-    const renderedLabels = checkboxes.map(checkbox => checkbox.props.label);
+    const renderedValues = checkboxes.map(checkbox => checkbox.props().value);
+    const renderedLabels = checkboxes.map(checkbox => checkbox.props().label);
 
     expect(renderedValues).toEqual(['a', 'b', 'c']);
     expect(renderedLabels).toEqual(['A', 'B', 'C']);
@@ -73,7 +76,7 @@ describe('checkbox list', () => {
       value: ['b']
     }));
 
-    expect(checkboxes[1].props.checked).toBe(true);
+    expect(checkboxes.at(1).props().checked).toBe(true);
   });
 
   it('calls onChange when a checkbox is checked', () => {
@@ -84,14 +87,15 @@ describe('checkbox list', () => {
       onChange
     }));
 
-    const testCheckbox = checkboxes[2];
+    debugger;
+    const testCheckbox = checkboxes.at(2);
 
-    testCheckbox.props.onChange(
+    testCheckbox.props().onChange(
       true,
       {
         nativeEvent: {
           target: {
-            value: testCheckbox.props.value,
+            value: testCheckbox.props().value,
             checked: true
           }
         }
@@ -109,14 +113,14 @@ describe('checkbox list', () => {
       onChange
     }));
 
-    const testCheckbox = checkboxes[2];
+    const testCheckbox = checkboxes.at(2);
 
-    testCheckbox.props.onChange(
+    testCheckbox.props().onChange(
       false,
       {
         nativeEvent: {
           target: {
-            value: testCheckbox.props.value,
+            value: testCheckbox.props().value,
             checked: false
           }
         }

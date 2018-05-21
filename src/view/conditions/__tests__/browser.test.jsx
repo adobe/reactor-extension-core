@@ -22,7 +22,8 @@ const selectedBrowsers = [
 ];
 
 const getReactComponents = (wrapper) => {
-  const browsersCheckboxList = wrapper.find(CheckboxList).node;
+  wrapper.update();
+  const browsersCheckboxList = wrapper.find(CheckboxList);
 
   return {
     browsersCheckboxList
@@ -47,14 +48,14 @@ describe('browser condition view', () => {
 
     const { browsersCheckboxList } = getReactComponents(instance);
 
-    expect(browsersCheckboxList.props.value).toEqual(selectedBrowsers);
+    expect(browsersCheckboxList.props().value).toEqual(selectedBrowsers);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { browsersCheckboxList } = getReactComponents(instance);
-    browsersCheckboxList.props.onChange(selectedBrowsers);
+    browsersCheckboxList.props().onChange(selectedBrowsers);
 
     expect(extensionBridge.getSettings()).toEqual({
       browsers: selectedBrowsers

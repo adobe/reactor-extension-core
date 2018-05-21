@@ -17,7 +17,8 @@ import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const elementSelectorTextfield = wrapper.find(Textfield).node;
+  wrapper.update();
+  const elementSelectorTextfield = wrapper.find(Textfield);
 
   return {
     elementSelectorTextfield
@@ -42,7 +43,7 @@ describe('element exists event view', () => {
 
     const { elementSelectorTextfield } = getReactComponents(instance);
 
-    expect(elementSelectorTextfield.props.value).toBe('.foo');
+    expect(elementSelectorTextfield.props().value).toBe('.foo');
   });
 
   it('sets settings from form values', () => {
@@ -50,7 +51,7 @@ describe('element exists event view', () => {
 
     const { elementSelectorTextfield } = getReactComponents(instance);
 
-    elementSelectorTextfield.props.onChange('.foo');
+    elementSelectorTextfield.props().onChange('.foo');
 
     const { elementSelector } = extensionBridge.getSettings();
 
@@ -63,6 +64,6 @@ describe('element exists event view', () => {
 
     const { elementSelectorTextfield } = getReactComponents(instance);
 
-    expect(elementSelectorTextfield.props.invalid).toBe(true);
+    expect(elementSelectorTextfield.props().invalid).toBe(true);
   });
 });

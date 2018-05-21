@@ -20,15 +20,16 @@ import bootstrap from '../../bootstrap';
 import AdvancedEventOptions from '../components/advancedEventOptions';
 
 const getReactComponents = (wrapper) => {
+  wrapper.update();
   const fields = wrapper.find(WrappedField);
 
   const typeField = fields.filterWhere(n => n.prop('name') === 'type');
-  const typeTextfield = typeField.find(Textfield).node;
+  const typeTextfield = typeField.find(Textfield);
   const elementSelectorField = fields.filterWhere(n => n.prop('name') === 'elementSelector');
-  const elementSelectorTextfield = elementSelectorField.find(Textfield).node;
+  const elementSelectorTextfield = elementSelectorField.find(Textfield);
   const bubbleStopCheckbox = wrapper.find(Checkbox)
-    .filterWhere(n => n.prop('name') === 'bubbleStop').node;
-  const advancedEventOptions = wrapper.find(AdvancedEventOptions).node;
+    .filterWhere(n => n.prop('name') === 'bubbleStop');
+  const advancedEventOptions = wrapper.find(AdvancedEventOptions);
 
   return {
     typeTextfield,
@@ -57,7 +58,7 @@ describe('custom event event view', () => {
     });
 
     const { advancedEventOptions } = getReactComponents(instance);
-    advancedEventOptions.toggleSelected();
+    advancedEventOptions.instance().toggleSelected();
 
     const {
       typeTextfield,
@@ -65,16 +66,16 @@ describe('custom event event view', () => {
       bubbleStopCheckbox
     } = getReactComponents(instance);
 
-    expect(typeTextfield.props.value).toBe('bar');
-    expect(elementSelectorTextfield.props.value).toBe('.foo');
-    expect(bubbleStopCheckbox.props.value).toBe(true);
+    expect(typeTextfield.props().value).toBe('bar');
+    expect(elementSelectorTextfield.props().value).toBe('.foo');
+    expect(bubbleStopCheckbox.props().value).toBe(true);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { advancedEventOptions } = getReactComponents(instance);
-    advancedEventOptions.toggleSelected();
+    advancedEventOptions.instance().toggleSelected();
 
     const {
       typeTextfield,
@@ -82,9 +83,9 @@ describe('custom event event view', () => {
       bubbleStopCheckbox
     } = getReactComponents(instance);
 
-    typeTextfield.props.onChange('bar');
-    elementSelectorTextfield.props.onChange('.foo');
-    bubbleStopCheckbox.props.onChange(true);
+    typeTextfield.props().onChange('bar');
+    elementSelectorTextfield.props().onChange('.foo');
+    bubbleStopCheckbox.props().onChange(true);
 
     const { type, elementSelector, bubbleStop } = extensionBridge.getSettings();
 
@@ -99,7 +100,7 @@ describe('custom event event view', () => {
 
     const { typeTextfield, elementSelectorTextfield } = getReactComponents(instance);
 
-    expect(typeTextfield.props.invalid).toBe(true);
-    expect(elementSelectorTextfield.props.invalid).toBe(true);
+    expect(typeTextfield.props().invalid).toBe(true);
+    expect(elementSelectorTextfield.props().invalid).toBe(true);
   });
 });

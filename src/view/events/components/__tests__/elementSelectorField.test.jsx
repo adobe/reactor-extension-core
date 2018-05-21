@@ -18,8 +18,9 @@ import createExtensionBridge from '../../../__tests__/helpers/createExtensionBri
 import bootstrap from '../../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const textfield = wrapper.find(Textfield).node;
-  const button = wrapper.find(Button).node;
+  wrapper.update();
+  const textfield = wrapper.find(Textfield);
+  const button = wrapper.find(Button);
 
   return {
     textfield,
@@ -45,7 +46,7 @@ describe('elementSelector', () => {
 
     const { textfield } = getReactComponents(instance);
 
-    expect(textfield.props.value).toBe('foo');
+    expect(textfield.props().value).toBe('foo');
   });
 
   it('sets settings from form values', () => {
@@ -53,7 +54,7 @@ describe('elementSelector', () => {
 
     const { textfield } = getReactComponents(instance);
 
-    textfield.props.onChange('some prop set');
+    textfield.props().onChange('some prop set');
 
     expect(extensionBridge.getSettings()).toEqual({
       elementSelector: 'some prop set'
@@ -67,6 +68,6 @@ describe('elementSelector', () => {
 
     const { textfield } = getReactComponents(instance);
 
-    expect(textfield.props.invalid).toBe(true);
+    expect(textfield.props().invalid).toBe(true);
   });
 });

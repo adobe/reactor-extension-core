@@ -18,8 +18,9 @@ import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const operatorSelect = wrapper.find(Select).node;
-  const countTextfield = wrapper.find(Textfield).node;
+  wrapper.update();
+  const operatorSelect = wrapper.find(Select);
+  const countTextfield = wrapper.find(Textfield);
 
   return {
     operatorSelect,
@@ -41,7 +42,7 @@ describe('sessions condition view', () => {
 
     const { operatorSelect } = getReactComponents(instance);
 
-    expect(operatorSelect.props.value).toBe('>');
+    expect(operatorSelect.props().value).toBe('>');
   });
 
   it('sets form values from settings', () => {
@@ -54,8 +55,8 @@ describe('sessions condition view', () => {
 
     const { operatorSelect, countTextfield } = getReactComponents(instance);
 
-    expect(operatorSelect.props.value).toBe('=');
-    expect(countTextfield.props.value).toBe(100);
+    expect(operatorSelect.props().value).toBe('=');
+    expect(countTextfield.props().value).toBe(100);
   });
 
   it('sets settings from form values', () => {
@@ -63,8 +64,8 @@ describe('sessions condition view', () => {
 
     const { operatorSelect, countTextfield } = getReactComponents(instance);
 
-    operatorSelect.props.onChange('=');
-    countTextfield.props.onChange(100);
+    operatorSelect.props().onChange('=');
+    countTextfield.props().onChange(100);
 
     expect(extensionBridge.getSettings()).toEqual({
       operator: '=',
@@ -78,17 +79,20 @@ describe('sessions condition view', () => {
 
     const { countTextfield } = getReactComponents(instance);
 
-    expect(countTextfield.props.invalid).toBe(true);
+    expect(countTextfield.props().invalid).toBe(true);
   });
 
   it('sets error if count value is not a number', () => {
     extensionBridge.init();
 
-    const { countTextfield } = getReactComponents(instance);
+    let { countTextfield } = getReactComponents(instance);
 
-    countTextfield.props.onChange('12.abc');
+    countTextfield.props().onChange('12.abc');
 
     expect(extensionBridge.validate()).toBe(false);
-    expect(countTextfield.props.invalid).toBe(true);
+
+    ({ countTextfield } = getReactComponents(instance));
+
+    expect(countTextfield.props().invalid).toBe(true);
   });
 });

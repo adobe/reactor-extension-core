@@ -17,8 +17,9 @@ import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
+  wrapper.update();
   const identifierTextfield =
-    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'identifier').node;
+    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'identifier');
 
   return {
     identifierTextfield
@@ -43,14 +44,14 @@ describe('direct call event view', () => {
 
     const { identifierTextfield } = getReactComponents(instance);
 
-    expect(identifierTextfield.props.value).toBe('foo');
+    expect(identifierTextfield.props().value).toBe('foo');
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { identifierTextfield } = getReactComponents(instance);
-    identifierTextfield.props.onChange('foo');
+    identifierTextfield.props().onChange('foo');
 
     expect(extensionBridge.getSettings()).toEqual({
       identifier: 'foo'
@@ -63,6 +64,6 @@ describe('direct call event view', () => {
 
     const { identifierTextfield } = getReactComponents(instance);
 
-    expect(identifierTextfield.props.invalid).toBe(true);
+    expect(identifierTextfield.props().invalid).toBe(true);
   });
 });

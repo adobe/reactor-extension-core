@@ -17,7 +17,8 @@ import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const acceptCookiesCheckbox = wrapper.find(Checkbox).node;
+  wrapper.update();
+  const acceptCookiesCheckbox = wrapper.find(Checkbox);
 
   return {
     acceptCookiesCheckbox
@@ -42,7 +43,7 @@ describe('cookie out-out condition view', () => {
 
     const { acceptCookiesCheckbox } = getReactComponents(instance);
 
-    expect(acceptCookiesCheckbox.props.checked).toBe(true);
+    expect(acceptCookiesCheckbox.props().checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -50,7 +51,7 @@ describe('cookie out-out condition view', () => {
 
     const { acceptCookiesCheckbox } = getReactComponents(instance);
 
-    acceptCookiesCheckbox.props.onChange(true);
+    acceptCookiesCheckbox.props().onChange(true);
 
     expect(extensionBridge.getSettings()).toEqual({
       acceptsCookies: true

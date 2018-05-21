@@ -22,7 +22,8 @@ const selectedDeviceTypes = [
 ];
 
 const getReactComponents = (wrapper) => {
-  const deviceOptionsCheckboxList = wrapper.find(CheckboxList).node;
+  wrapper.update();
+  const deviceOptionsCheckboxList = wrapper.find(CheckboxList);
 
   return {
     deviceOptionsCheckboxList
@@ -47,14 +48,14 @@ describe('device type condition view', () => {
 
     const { deviceOptionsCheckboxList } = getReactComponents(instance);
 
-    expect(deviceOptionsCheckboxList.props.value).toEqual(selectedDeviceTypes);
+    expect(deviceOptionsCheckboxList.props().value).toEqual(selectedDeviceTypes);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { deviceOptionsCheckboxList } = getReactComponents(instance);
-    deviceOptionsCheckboxList.props.onChange(selectedDeviceTypes);
+    deviceOptionsCheckboxList.props().onChange(selectedDeviceTypes);
 
     expect(extensionBridge.getSettings()).toEqual({
       deviceTypes: selectedDeviceTypes

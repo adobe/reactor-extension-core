@@ -18,8 +18,9 @@ import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const nameTextfield = wrapper.find(Textfield).node;
-  const caseInsensitiveCheckbox = wrapper.find(Checkbox).node;
+  wrapper.update();
+  const nameTextfield = wrapper.find(Textfield);
+  const caseInsensitiveCheckbox = wrapper.find(Checkbox);
 
   return {
     nameTextfield,
@@ -41,7 +42,7 @@ describe('query string parameter data element view', () => {
 
     const { caseInsensitiveCheckbox } = getReactComponents(instance);
 
-    expect(caseInsensitiveCheckbox.props.checked).toBe(true);
+    expect(caseInsensitiveCheckbox.props().checked).toBe(true);
   });
 
   it('sets form values from settings', () => {
@@ -54,8 +55,8 @@ describe('query string parameter data element view', () => {
 
     const { nameTextfield, caseInsensitiveCheckbox } = getReactComponents(instance);
 
-    expect(nameTextfield.props.value).toBe('foo');
-    expect(caseInsensitiveCheckbox.props.checked).toBe(false);
+    expect(nameTextfield.props().value).toBe('foo');
+    expect(caseInsensitiveCheckbox.props().checked).toBe(false);
   });
 
   it('sets settings from form values', () => {
@@ -63,8 +64,8 @@ describe('query string parameter data element view', () => {
 
     const { nameTextfield, caseInsensitiveCheckbox } = getReactComponents(instance);
 
-    nameTextfield.props.onChange('foo');
-    caseInsensitiveCheckbox.props.onChange(false);
+    nameTextfield.props().onChange('foo');
+    caseInsensitiveCheckbox.props().onChange(false);
 
     expect(extensionBridge.getSettings()).toEqual({
       name: 'foo',
@@ -78,6 +79,6 @@ describe('query string parameter data element view', () => {
 
     const { nameTextfield } = getReactComponents(instance);
 
-    expect(nameTextfield.props.invalid).toBe(true);
+    expect(nameTextfield.props().invalid).toBe(true);
   });
 });

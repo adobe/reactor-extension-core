@@ -20,15 +20,16 @@ import bootstrap from '../../bootstrap';
 import AdvancedEventOptions from '../components/advancedEventOptions';
 
 const getReactComponents = (wrapper) => {
+  wrapper.update();
   const checkboxes = wrapper.find(Checkbox);
   const fields = wrapper.find(WrappedField);
 
   const delayLinkActivationCheckbox = checkboxes
-    .filterWhere(n => n.prop('name') === 'delayLinkActivation').node;
+    .filterWhere(n => n.prop('name') === 'delayLinkActivation');
   const elementSelectorField = fields.filterWhere(n => n.prop('name') === 'elementSelector');
-  const elementSelectorTextfield = elementSelectorField.find(Textfield).node;
-  const bubbleStopCheckbox = checkboxes.filterWhere(n => n.prop('name') === 'bubbleStop').node;
-  const advancedEventOptions = wrapper.find(AdvancedEventOptions).node;
+  const elementSelectorTextfield = elementSelectorField.find(Textfield);
+  const bubbleStopCheckbox = checkboxes.filterWhere(n => n.prop('name') === 'bubbleStop');
+  const advancedEventOptions = wrapper.find(AdvancedEventOptions);
 
   return {
     delayLinkActivationCheckbox,
@@ -57,7 +58,7 @@ describe('click event view', () => {
     });
 
     const { advancedEventOptions } = getReactComponents(instance);
-    advancedEventOptions.toggleSelected();
+    advancedEventOptions.instance().toggleSelected();
 
     const {
       delayLinkActivationCheckbox,
@@ -65,16 +66,16 @@ describe('click event view', () => {
       bubbleStopCheckbox
     } = getReactComponents(instance);
 
-    expect(delayLinkActivationCheckbox.props.value).toBe(true);
-    expect(elementSelectorTextfield.props.value).toBe('.foo');
-    expect(bubbleStopCheckbox.props.value).toBe(true);
+    expect(delayLinkActivationCheckbox.props().value).toBe(true);
+    expect(elementSelectorTextfield.props().value).toBe('.foo');
+    expect(bubbleStopCheckbox.props().value).toBe(true);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { advancedEventOptions } = getReactComponents(instance);
-    advancedEventOptions.toggleSelected();
+    advancedEventOptions.instance().toggleSelected();
 
     const {
       delayLinkActivationCheckbox,
@@ -82,9 +83,9 @@ describe('click event view', () => {
       bubbleStopCheckbox
     } = getReactComponents(instance);
 
-    delayLinkActivationCheckbox.props.onChange(true);
-    elementSelectorTextfield.props.onChange('.foo');
-    bubbleStopCheckbox.props.onChange(true);
+    delayLinkActivationCheckbox.props().onChange(true);
+    elementSelectorTextfield.props().onChange('.foo');
+    bubbleStopCheckbox.props().onChange(true);
 
     const { delayLinkActivation, elementSelector, bubbleStop } = extensionBridge.getSettings();
 
@@ -99,6 +100,6 @@ describe('click event view', () => {
 
     const { elementSelectorTextfield } = getReactComponents(instance);
 
-    expect(elementSelectorTextfield.props.invalid).toBe(true);
+    expect(elementSelectorTextfield.props().invalid).toBe(true);
   });
 });

@@ -21,16 +21,17 @@ import bootstrap from '../../bootstrap';
 import AdvancedEventOptions from '../components/advancedEventOptions';
 
 const getReactComponents = (wrapper) => {
+  wrapper.update();
   const fields = wrapper.find(WrappedField);
 
   const elementSelectorField = fields.filterWhere(n => n.prop('name') === 'elementSelector');
-  const elementSelectorTextfield = elementSelectorField.find(Textfield).node;
+  const elementSelectorTextfield = elementSelectorField.find(Textfield);
   const bubbleStopCheckbox = wrapper
-    .find(Checkbox).filterWhere(n => n.prop('name') === 'bubbleStop').node;
+    .find(Checkbox).filterWhere(n => n.prop('name') === 'bubbleStop');
   const delayField = fields.filterWhere(n => n.prop('name') === 'delay');
-  const delayTextfield = delayField.find(Textfield).node;
-  const delayRadio = wrapper.find(Radio).filterWhere(n => n.prop('value') === 'delay').node;
-  const advancedEventOptions = wrapper.find(AdvancedEventOptions).node;
+  const delayTextfield = delayField.find(Textfield);
+  const delayRadio = wrapper.find(Radio).filterWhere(n => n.prop('value') === 'delay');
+  const advancedEventOptions = wrapper.find(AdvancedEventOptions);
 
   return {
     elementSelectorTextfield,
@@ -52,7 +53,7 @@ describe('hover event view', () => {
     extensionBridge.init();
 
     const { advancedEventOptions } = getReactComponents(instance);
-    advancedEventOptions.toggleSelected();
+    advancedEventOptions.instance().toggleSelected();
   });
 
   it('sets form values from settings', () => {
@@ -70,14 +71,14 @@ describe('hover event view', () => {
       bubbleStopCheckbox
     } = getReactComponents(instance);
 
-    expect(elementSelectorTextfield.props.value).toBe('.foo');
-    expect(delayTextfield.props.value).toBe(100);
-    expect(bubbleStopCheckbox.props.value).toBe(true);
+    expect(elementSelectorTextfield.props().value).toBe('.foo');
+    expect(delayTextfield.props().value).toBe(100);
+    expect(bubbleStopCheckbox.props().value).toBe(true);
   });
 
   it('sets settings from form values', () => {
     const { delayRadio } = getReactComponents(instance);
-    delayRadio.props.onChange('delay', { stopPropagation() {} });
+    delayRadio.props().onChange('delay', { stopPropagation() {} });
 
     const {
       elementSelectorTextfield,
@@ -85,9 +86,9 @@ describe('hover event view', () => {
       bubbleStopCheckbox
     } = getReactComponents(instance);
 
-    elementSelectorTextfield.props.onChange('.foo');
-    delayTextfield.props.onChange(100);
-    bubbleStopCheckbox.props.onChange(true);
+    elementSelectorTextfield.props().onChange('.foo');
+    delayTextfield.props().onChange(100);
+    bubbleStopCheckbox.props().onChange(true);
 
     const { elementSelector, delay, bubbleStop } = extensionBridge.getSettings();
 
@@ -101,7 +102,7 @@ describe('hover event view', () => {
       delayRadio
     } = getReactComponents(instance);
 
-    delayRadio.props.onChange('delay', { stopPropagation() {} });
+    delayRadio.props().onChange('delay', { stopPropagation() {} });
     expect(extensionBridge.validate()).toBe(false);
 
     const {
@@ -109,7 +110,7 @@ describe('hover event view', () => {
       elementSelectorTextfield
     } = getReactComponents(instance);
 
-    expect(delayTextfield.props.invalid).toBe(true);
-    expect(elementSelectorTextfield.props.invalid).toBe(true);
+    expect(delayTextfield.props().invalid).toBe(true);
+    expect(elementSelectorTextfield.props().invalid).toBe(true);
   });
 });

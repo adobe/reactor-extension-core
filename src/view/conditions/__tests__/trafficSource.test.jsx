@@ -18,8 +18,9 @@ import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const sourceTextfield = wrapper.find(Textfield).node;
-  const valueRegexToggle = wrapper.find(RegexToggle).node;
+  wrapper.update();
+  const sourceTextfield = wrapper.find(Textfield);
+  const valueRegexToggle = wrapper.find(RegexToggle);
 
   return {
     sourceTextfield,
@@ -46,8 +47,8 @@ describe('traffic source condition view', () => {
 
     const { sourceTextfield, valueRegexToggle } = getReactComponents(instance);
 
-    expect(sourceTextfield.props.value).toBe('foo');
-    expect(valueRegexToggle.props.value).toBe(true);
+    expect(sourceTextfield.props().value).toBe('foo');
+    expect(valueRegexToggle.props().value).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -55,8 +56,8 @@ describe('traffic source condition view', () => {
 
     const { sourceTextfield, valueRegexToggle } = getReactComponents(instance);
 
-    sourceTextfield.props.onChange('foo');
-    valueRegexToggle.props.onChange(true);
+    sourceTextfield.props().onChange('foo');
+    valueRegexToggle.props().onChange(true);
 
     expect(extensionBridge.getSettings()).toEqual({
       source: 'foo',
@@ -70,6 +71,6 @@ describe('traffic source condition view', () => {
 
     const { sourceTextfield } = getReactComponents(instance);
 
-    expect(sourceTextfield.props.invalid).toBe(true);
+    expect(sourceTextfield.props().invalid).toBe(true);
   });
 });

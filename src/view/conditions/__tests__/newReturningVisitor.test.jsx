@@ -17,10 +17,11 @@ import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
+  wrapper.update();
   const radios = wrapper.find(Radio);
 
-  const newVisitorRadio = radios.filterWhere(n => n.prop('value') === 'new').node;
-  const returningVisitorRadio = radios.filterWhere(n => n.prop('value') === 'returning').node;
+  const newVisitorRadio = radios.filterWhere(n => n.prop('value') === 'new');
+  const returningVisitorRadio = radios.filterWhere(n => n.prop('value') === 'returning');
 
   return {
     newVisitorRadio,
@@ -42,8 +43,8 @@ describe('new/returning visitor condition view', () => {
 
     const { newVisitorRadio, returningVisitorRadio } = getReactComponents(instance);
 
-    expect(newVisitorRadio.props.checked).toBe(true);
-    expect(returningVisitorRadio.props.checked).toBe(false);
+    expect(newVisitorRadio.props().checked).toBe(true);
+    expect(returningVisitorRadio.props().checked).toBe(false);
   });
 
   it('sets form values from settings', () => {
@@ -55,8 +56,8 @@ describe('new/returning visitor condition view', () => {
 
     const { newVisitorRadio, returningVisitorRadio } = getReactComponents(instance);
 
-    expect(newVisitorRadio.props.checked).toBe(false);
-    expect(returningVisitorRadio.props.checked).toBe(true);
+    expect(newVisitorRadio.props().checked).toBe(false);
+    expect(returningVisitorRadio.props().checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -64,7 +65,7 @@ describe('new/returning visitor condition view', () => {
 
     const { returningVisitorRadio } = getReactComponents(instance);
 
-    returningVisitorRadio.props.onChange('returning', { stopPropagation() {} });
+    returningVisitorRadio.props().onChange('returning', { stopPropagation() {} });
 
     expect(extensionBridge.getSettings()).toEqual({
       isNewVisitor: false

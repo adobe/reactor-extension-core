@@ -16,14 +16,13 @@
 * from Adobe Systems Incorporated.
 **************************************************************************/
 
+import 'babel-polyfill';
 import React from 'react';
 import { Provider, connect } from 'react-redux';
 import { createStore, compose } from 'redux';
 import { reduxForm } from 'redux-form';
 import reducer from './reduxActions/reducer';
 import bridgeAdapter from './bridgeAdapter';
-
-require('babel-polyfill');
 
 module.exports = (View, formConfig, extensionBridge = window.extensionBridge, viewProps) => {
   const finalCreateStore = compose(

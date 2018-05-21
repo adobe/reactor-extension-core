@@ -18,8 +18,9 @@ import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const operatorSelect = wrapper.find(Select).node;
-  const minutesTextfield = wrapper.find(Textfield).node;
+  wrapper.update();
+  const operatorSelect = wrapper.find(Select);
+  const minutesTextfield = wrapper.find(Textfield);
 
   return {
     operatorSelect,
@@ -41,7 +42,7 @@ describe('time on site condition view', () => {
 
     const { operatorSelect } = getReactComponents(instance);
 
-    expect(operatorSelect.props.value).toBe('>');
+    expect(operatorSelect.props().value).toBe('>');
   });
 
   it('sets form values from settings', () => {
@@ -54,8 +55,8 @@ describe('time on site condition view', () => {
 
     const { operatorSelect, minutesTextfield } = getReactComponents(instance);
 
-    expect(operatorSelect.props.value).toBe('=');
-    expect(minutesTextfield.props.value).toBe(100);
+    expect(operatorSelect.props().value).toBe('=');
+    expect(minutesTextfield.props().value).toBe(100);
   });
 
   it('sets settings from form values', () => {
@@ -63,8 +64,8 @@ describe('time on site condition view', () => {
 
     const { operatorSelect, minutesTextfield } = getReactComponents(instance);
 
-    operatorSelect.props.onChange('=');
-    minutesTextfield.props.onChange(100);
+    operatorSelect.props().onChange('=');
+    minutesTextfield.props().onChange(100);
 
     expect(extensionBridge.getSettings()).toEqual({
       operator: '=',
@@ -78,17 +79,20 @@ describe('time on site condition view', () => {
 
     const { minutesTextfield } = getReactComponents(instance);
 
-    expect(minutesTextfield.props.invalid).toBe(true);
+    expect(minutesTextfield.props().invalid).toBe(true);
   });
 
   it('sets error if count value is not a number', () => {
     extensionBridge.init();
 
-    const { minutesTextfield } = getReactComponents(instance);
+    let { minutesTextfield } = getReactComponents(instance);
 
-    minutesTextfield.props.onChange('12.abc');
+    minutesTextfield.props().onChange('12.abc');
 
     expect(extensionBridge.validate()).toBe(false);
-    expect(minutesTextfield.props.invalid).toBe(true);
+
+    ({ minutesTextfield } = getReactComponents(instance));
+
+    expect(minutesTextfield.props().invalid).toBe(true);
   });
 });

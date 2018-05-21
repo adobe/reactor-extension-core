@@ -21,11 +21,12 @@ import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
+  wrapper.update();
   const radios = wrapper.find(Radio);
-  const javaScriptLanguageRadio = radios.filterWhere(n => n.prop('value') === 'javascript').node;
-  const htmlLanguageRadio = radios.filterWhere(n => n.prop('value') === 'html').node;
-  const globalCheckbox = wrapper.find(Checkbox).filterWhere(n => n.prop('name') === 'global').node;
-  const openEditorButton = wrapper.find(EditorButton).node;
+  const javaScriptLanguageRadio = radios.filterWhere(n => n.prop('value') === 'javascript');
+  const htmlLanguageRadio = radios.filterWhere(n => n.prop('value') === 'html');
+  const globalCheckbox = wrapper.find(Checkbox).filterWhere(n => n.prop('name') === 'global');
+  const openEditorButton = wrapper.find(EditorButton);
 
   return {
     javaScriptLanguageRadio,
@@ -62,9 +63,9 @@ describe('custom code action view', () => {
       globalCheckbox
     } = getReactComponents(instance);
 
-    expect(javaScriptLanguageRadio.props.checked).toBe(false);
-    expect(htmlLanguageRadio.props.checked).toBe(true);
-    expect(globalCheckbox).toBeUndefined();
+    expect(javaScriptLanguageRadio.props().checked).toBe(false);
+    expect(htmlLanguageRadio.props().checked).toBe(true);
+    expect(globalCheckbox.exists()).toBe(false);
 
     extensionBridge.init({
       settings: {
@@ -80,9 +81,9 @@ describe('custom code action view', () => {
       globalCheckbox
     } = getReactComponents(instance));
 
-    expect(javaScriptLanguageRadio.props.checked).toBe(true);
-    expect(htmlLanguageRadio.props.checked).toBe(false);
-    expect(globalCheckbox.props.checked).toBe(true);
+    expect(javaScriptLanguageRadio.props().checked).toBe(true);
+    expect(htmlLanguageRadio.props().checked).toBe(false);
+    expect(globalCheckbox.props().checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -94,14 +95,14 @@ describe('custom code action view', () => {
       globalCheckbox
     } = getReactComponents(instance);
 
-    htmlLanguageRadio.props.onChange(true, { stopPropagation() {} });
-    globalCheckbox.props.onChange(true);
+    htmlLanguageRadio.props().onChange(true, { stopPropagation() {} });
+    globalCheckbox.props().onChange(true);
 
     expect(extensionBridge.getSettings()).toEqual({
       language: 'html'
     });
 
-    javaScriptLanguageRadio.props.onChange(true, { stopPropagation() {} });
+    javaScriptLanguageRadio.props().onChange(true, { stopPropagation() {} });
 
     expect(extensionBridge.getSettings()).toEqual({
       language: 'javascript',
@@ -117,7 +118,7 @@ describe('custom code action view', () => {
       openEditorButton
     } = getReactComponents(instance);
 
-    expect(openEditorButton.props.invalid).toBe(true);
+    expect(openEditorButton.props().invalid).toBe(true);
   });
 
   it('allows user to provide custom code', () => {
@@ -132,7 +133,7 @@ describe('custom code action view', () => {
       openEditorButton
     } = getReactComponents(instance);
 
-    openEditorButton.props.onChange('foo bar');
+    openEditorButton.props().onChange('foo bar');
 
     expect(extensionBridge.getSettings()).toEqual({
       language: 'javascript',

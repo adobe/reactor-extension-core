@@ -16,13 +16,14 @@ import Button from '@react/react-spectrum/Button';
 import MultipleItemEditor from '../multipleItemEditor';
 
 const getReactComponents = (wrapper) => {
+  wrapper.update();
   const rows = wrapper.find('div[data-type="row"]').map((row) => {
     return {
-      element: row.node,
-      removeButton: row.find(Button).node
+      element: row,
+      removeButton: row.find(Button)
     };
   });
-  const addButton = wrapper.find(Button).last().node;
+  const addButton = wrapper.find(Button).last();
 
   return {
     rows,
@@ -56,7 +57,7 @@ describe('multiple item editor', () => {
     const props = getTestProps();
     const { addButton } = getReactComponents(render(props));
 
-    addButton.props.onClick();
+    addButton.props().onClick();
 
     expect(props.fields.push).toHaveBeenCalled();
   });
@@ -65,7 +66,7 @@ describe('multiple item editor', () => {
     const props = getTestProps();
     const { rows } = getReactComponents(render(props));
 
-    rows[1].removeButton.props.onClick();
+    rows[1].removeButton.props().onClick();
 
     expect(props.fields.remove).toHaveBeenCalledWith(1);
   });

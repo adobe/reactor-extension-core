@@ -21,18 +21,19 @@ import bootstrap from '../../bootstrap';
 import AdvancedEventOptions from '../components/advancedEventOptions';
 
 const getReactComponents = (wrapper) => {
+  wrapper.update();
   const checkboxes = wrapper.find(Checkbox);
   const fields = wrapper.find(WrappedField);
 
   const showValueFieldCheckbox = checkboxes
-    .filterWhere(n => n.prop('name') === 'showValueField').node;
-  const valueTextfield = fields.filterWhere(n => n.prop('name') === 'value').find(Textfield).node;
+    .filterWhere(n => n.prop('name') === 'showValueField');
+  const valueTextfield = fields.filterWhere(n => n.prop('name') === 'value').find(Textfield);
   const valueRegexToggle =
-    fields.filterWhere(n => n.prop('name') === 'valueIsRegex').find(RegexToggle).node;
+    fields.filterWhere(n => n.prop('name') === 'valueIsRegex').find(RegexToggle);
   const elementSelectorField = fields.filterWhere(n => n.prop('name') === 'elementSelector');
-  const elementSelectorTextfield = elementSelectorField.find(Textfield).node;
-  const bubbleStopCheckbox = checkboxes.filterWhere(n => n.prop('name') === 'bubbleStop').node;
-  const advancedEventOptions = wrapper.find(AdvancedEventOptions).node;
+  const elementSelectorTextfield = elementSelectorField.find(Textfield);
+  const bubbleStopCheckbox = checkboxes.filterWhere(n => n.prop('name') === 'bubbleStop');
+  const advancedEventOptions = wrapper.find(AdvancedEventOptions);
 
   return {
     showValueFieldCheckbox,
@@ -64,7 +65,7 @@ describe('change event view', () => {
     });
 
     const { advancedEventOptions } = getReactComponents(instance);
-    advancedEventOptions.toggleSelected();
+    advancedEventOptions.instance().toggleSelected();
 
     const {
       showValueFieldCheckbox,
@@ -74,19 +75,19 @@ describe('change event view', () => {
       bubbleStopCheckbox
     } = getReactComponents(instance);
 
-    expect(showValueFieldCheckbox.props.value).toBe(true);
-    expect(valueTextfield.props.value).toBe('abc');
-    expect(valueRegexToggle.props.value).toBe(true);
-    expect(elementSelectorTextfield.props.value).toBe('.foo');
-    expect(bubbleStopCheckbox.props.value).toBe(true);
+    expect(showValueFieldCheckbox.props().value).toBe(true);
+    expect(valueTextfield.props().value).toBe('abc');
+    expect(valueRegexToggle.props().value).toBe(true);
+    expect(elementSelectorTextfield.props().value).toBe('.foo');
+    expect(bubbleStopCheckbox.props().value).toBe(true);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { showValueFieldCheckbox, advancedEventOptions } = getReactComponents(instance);
-    showValueFieldCheckbox.props.onChange(true);
-    advancedEventOptions.toggleSelected();
+    showValueFieldCheckbox.props().onChange(true);
+    advancedEventOptions.instance().toggleSelected();
 
     const {
       valueTextfield,
@@ -95,10 +96,10 @@ describe('change event view', () => {
       bubbleStopCheckbox
     } = getReactComponents(instance);
 
-    valueTextfield.props.onChange('abc');
-    valueRegexToggle.props.onChange(true);
-    elementSelectorTextfield.props.onChange('.foo');
-    bubbleStopCheckbox.props.onChange(true);
+    valueTextfield.props().onChange('abc');
+    valueRegexToggle.props().onChange(true);
+    elementSelectorTextfield.props().onChange('.foo');
+    bubbleStopCheckbox.props().onChange(true);
 
     const { value, valueIsRegex, elementSelector, bubbleStop } = extensionBridge.getSettings();
 
@@ -114,6 +115,6 @@ describe('change event view', () => {
 
     const { elementSelectorTextfield } = getReactComponents(instance);
 
-    expect(elementSelectorTextfield.props.invalid).toBe(true);
+    expect(elementSelectorTextfield.props().invalid).toBe(true);
   });
 });

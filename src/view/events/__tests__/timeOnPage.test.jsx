@@ -17,7 +17,8 @@ import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const timeOnPageTextfield = wrapper.find(Textfield).node;
+  wrapper.update();
+  const timeOnPageTextfield = wrapper.find(Textfield);
 
   return {
     timeOnPageTextfield
@@ -42,14 +43,14 @@ describe('time on page event view', () => {
 
     const { timeOnPageTextfield } = getReactComponents(instance);
 
-    expect(timeOnPageTextfield.props.value).toBe(44);
+    expect(timeOnPageTextfield.props().value).toBe(44);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { timeOnPageTextfield } = getReactComponents(instance);
-    timeOnPageTextfield.props.onChange('55');
+    timeOnPageTextfield.props().onChange('55');
 
     expect(extensionBridge.getSettings()).toEqual({
       timeOnPage: 55
@@ -62,17 +63,20 @@ describe('time on page event view', () => {
 
     const { timeOnPageTextfield } = getReactComponents(instance);
 
-    expect(timeOnPageTextfield.props.invalid).toBe(true);
+    expect(timeOnPageTextfield.props().invalid).toBe(true);
   });
 
   it('sets error if timeOnPage value is not a number', () => {
     extensionBridge.init();
 
-    const { timeOnPageTextfield } = getReactComponents(instance);
+    let { timeOnPageTextfield } = getReactComponents(instance);
 
-    timeOnPageTextfield.props.onChange('12.abc');
+    timeOnPageTextfield.props().onChange('12.abc');
 
     expect(extensionBridge.validate()).toBe(false);
-    expect(timeOnPageTextfield.props.invalid).toBe(true);
+
+    ({ timeOnPageTextfield } = getReactComponents(instance));
+
+    expect(timeOnPageTextfield.props().invalid).toBe(true);
   });
 });

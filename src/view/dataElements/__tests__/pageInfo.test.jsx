@@ -17,7 +17,8 @@ import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const attributeSelect = wrapper.find(Select).node;
+  wrapper.update();
+  const attributeSelect = wrapper.find(Select);
 
   return {
     attributeSelect
@@ -42,7 +43,7 @@ describe('page info data element view', () => {
 
     const { attributeSelect } = getReactComponents(instance);
 
-    expect(attributeSelect.props.value).toBe('protocol');
+    expect(attributeSelect.props().value).toBe('protocol');
   });
 
   it('sets form value defaults', () => {
@@ -50,14 +51,14 @@ describe('page info data element view', () => {
 
     const { attributeSelect } = getReactComponents(instance);
 
-    expect(attributeSelect.props.value).toBe('url');
+    expect(attributeSelect.props().value).toBe('url');
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { attributeSelect } = getReactComponents(instance);
-    attributeSelect.props.onChange('protocol');
+    attributeSelect.props().onChange('protocol');
 
     expect(extensionBridge.getSettings()).toEqual({
       attribute: 'protocol'

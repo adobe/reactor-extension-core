@@ -17,8 +17,9 @@ import ChevronRight from '@react/react-spectrum/Icon/ChevronRight';
 import DisclosureButton from '../disclosureButton';
 
 const getReactComponents = (wrapper) => {
-  const chevronDownIcon = wrapper.find(ChevronDown).node;
-  const chevronRightIcon = wrapper.find(ChevronRight).node;
+  wrapper.update();
+  const chevronDownIcon = wrapper.find(ChevronDown);
+  const chevronRightIcon = wrapper.find(ChevronRight);
   const buttonWrapper = wrapper.find('button');
 
   return {
@@ -39,8 +40,8 @@ describe('disclosure button', () => {
       selected: true
     }));
 
-    expect(chevronDownIcon).toBeDefined();
-    expect(chevronRightIcon).toBeUndefined();
+    expect(chevronDownIcon.exists()).toBe(true);
+    expect(chevronRightIcon.exists()).toBe(false);
   });
 
   it('shows right chevron when not selected', () => {
@@ -51,8 +52,8 @@ describe('disclosure button', () => {
       selected: false
     }));
 
-    expect(chevronDownIcon).toBeUndefined();
-    expect(chevronRightIcon).toBeDefined();
+    expect(chevronDownIcon.exists()).toBe(false);
+    expect(chevronRightIcon.exists()).toBe(true);
   });
 
   it('calls onClick when clicked', () => {

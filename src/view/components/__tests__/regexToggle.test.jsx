@@ -20,7 +20,8 @@ import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const regexSwitch = wrapper.find(Switch).node;
+  wrapper.update();
+  const regexSwitch = wrapper.find(Switch);
   const testButton = wrapper.find('button');
   const testButtonContainer = wrapper.find('#testButtonContainer');
 
@@ -88,7 +89,7 @@ describe('regex toggle', () => {
 
     const { regexSwitch } = getReactComponents(instance);
 
-    expect(regexSwitch.props.checked).toBe(true);
+    expect(regexSwitch.props().checked).toBe(true);
   });
 
   it('calls onChange from ValueIsRegex field when switch is toggled', () => {
@@ -96,7 +97,7 @@ describe('regex toggle', () => {
 
     const { regexSwitch } = getReactComponents(instance);
 
-    regexSwitch.props.onChange(true);
+    regexSwitch.props().onChange(true);
 
     expect(extensionBridge.getSettings()).toEqual({
       valueIsRegex: true
@@ -134,7 +135,7 @@ describe('regex toggle', () => {
 
     const { testButtonContainer } = getReactComponents(instance);
 
-    expect(testButtonContainer.node.style.visibility).toBe('visible');
+    expect(testButtonContainer.props().style.visibility).toBe('visible');
   });
 
   it('hides test link when valueIsRegex=false', () => {
@@ -144,6 +145,6 @@ describe('regex toggle', () => {
 
     const { testButtonContainer } = getReactComponents(instance);
 
-    expect(testButtonContainer.node.style.visibility).toBe('hidden');
+    expect(testButtonContainer.props().style.visibility).toBe('hidden');
   });
 });

@@ -17,7 +17,8 @@ import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const openEditorButton = wrapper.find(EditorButton).node;
+  wrapper.update();
+  const openEditorButton = wrapper.find(EditorButton);
 
   return {
     openEditorButton
@@ -44,7 +45,7 @@ describe('custom code condition view', () => {
 
     const { openEditorButton } = getReactComponents(instance);
 
-    expect(openEditorButton.props.invalid).toBe(true);
+    expect(openEditorButton.props().invalid).toBe(true);
   });
 
   it('allows user to provide custom code', () => {
@@ -58,7 +59,7 @@ describe('custom code condition view', () => {
       openEditorButton
     } = getReactComponents(instance);
 
-    openEditorButton.props.onChange('foo bar');
+    openEditorButton.props().onChange('foo bar');
 
     expect(extensionBridge.getSettings()).toEqual({
       source: 'foo bar'

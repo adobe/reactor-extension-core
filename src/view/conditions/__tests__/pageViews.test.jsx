@@ -19,12 +19,13 @@ import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
+  wrapper.update();
   const radios = wrapper.find(Radio);
 
-  const lifetimeRadio = radios.filterWhere(n => n.prop('value') === 'lifetime').node;
-  const sessionRadio = radios.filterWhere(n => n.prop('value') === 'session').node;
-  const operatorSelect = wrapper.find(Select).node;
-  const countTextfield = wrapper.find(Textfield).node;
+  const lifetimeRadio = radios.filterWhere(n => n.prop('value') === 'lifetime');
+  const sessionRadio = radios.filterWhere(n => n.prop('value') === 'session');
+  const operatorSelect = wrapper.find(Select);
+  const countTextfield = wrapper.find(Textfield);
 
   return {
     lifetimeRadio,
@@ -48,7 +49,7 @@ describe('page views condition view', () => {
 
     const { operatorSelect } = getReactComponents(instance);
 
-    expect(operatorSelect.props.value).toBe('>');
+    expect(operatorSelect.props().value).toBe('>');
   });
 
   it('sets form values from settings', () => {
@@ -67,10 +68,10 @@ describe('page views condition view', () => {
       sessionRadio
     } = getReactComponents(instance);
 
-    expect(operatorSelect.props.value).toBe('=');
-    expect(countTextfield.props.value).toBe(100);
-    expect(lifetimeRadio.props.checked).toBe(false);
-    expect(sessionRadio.props.checked).toBe(true);
+    expect(operatorSelect.props().value).toBe('=');
+    expect(countTextfield.props().value).toBe(100);
+    expect(lifetimeRadio.props().checked).toBe(false);
+    expect(sessionRadio.props().checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -78,9 +79,9 @@ describe('page views condition view', () => {
 
     const { operatorSelect, countTextfield, sessionRadio } = getReactComponents(instance);
 
-    operatorSelect.props.onChange('=');
-    countTextfield.props.onChange(100);
-    sessionRadio.props.onChange('session', { stopPropagation() {} });
+    operatorSelect.props().onChange('=');
+    countTextfield.props().onChange(100);
+    sessionRadio.props().onChange('session', { stopPropagation() {} });
 
     expect(extensionBridge.getSettings()).toEqual({
       operator: '=',
@@ -95,17 +96,20 @@ describe('page views condition view', () => {
 
     const { countTextfield } = getReactComponents(instance);
 
-    expect(countTextfield.props.invalid).toBe(true);
+    expect(countTextfield.props().invalid).toBe(true);
   });
 
   it('sets error if count value is not a number', () => {
     extensionBridge.init();
 
-    const { countTextfield } = getReactComponents(instance);
+    let { countTextfield } = getReactComponents(instance);
 
-    countTextfield.props.onChange('12.abc');
+    countTextfield.props().onChange('12.abc');
 
     expect(extensionBridge.validate()).toBe(false);
-    expect(countTextfield.props.invalid).toBe(true);
+
+    ({ countTextfield } = getReactComponents(instance));
+
+    expect(countTextfield.props().invalid).toBe(true);
   });
 });

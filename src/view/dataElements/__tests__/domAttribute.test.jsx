@@ -19,14 +19,15 @@ import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
+  wrapper.update();
   const fields = wrapper.find(WrappedField);
 
-  const elementPropertyPresetsSelect = wrapper.find(Select).node;
+  const elementPropertyPresetsSelect = wrapper.find(Select);
   const elementSelectorField = fields.filterWhere(n => n.prop('name') === 'elementSelector');
-  const elementSelectorTextfield = elementSelectorField.find(Textfield).node;
+  const elementSelectorTextfield = elementSelectorField.find(Textfield);
   const customElementPropertyField = fields
     .filterWhere(n => n.prop('name') === 'customElementProperty');
-  const customElementPropertyTextfield = customElementPropertyField.find(Textfield).node;
+  const customElementPropertyTextfield = customElementPropertyField.find(Textfield);
 
   return {
     elementPropertyPresetsSelect,
@@ -49,7 +50,7 @@ describe('DOM attribute data element view', () => {
 
     const { elementPropertyPresetsSelect } = getReactComponents(instance);
 
-    expect(elementPropertyPresetsSelect.props.value).toBe('id');
+    expect(elementPropertyPresetsSelect.props().value).toBe('id');
   });
 
 
@@ -63,8 +64,8 @@ describe('DOM attribute data element view', () => {
 
     const { elementSelectorTextfield, elementPropertyPresetsSelect } = getReactComponents(instance);
 
-    expect(elementSelectorTextfield.props.value).toBe('foo');
-    expect(elementPropertyPresetsSelect.props.value).toBe('innerHTML');
+    expect(elementSelectorTextfield.props().value).toBe('foo');
+    expect(elementPropertyPresetsSelect.props().value).toBe('innerHTML');
   });
 
   it('sets form values from settings using custom element property', () => {
@@ -81,9 +82,9 @@ describe('DOM attribute data element view', () => {
       customElementPropertyTextfield
     } = getReactComponents(instance);
 
-    expect(elementSelectorTextfield.props.value).toBe('foo');
-    expect(elementPropertyPresetsSelect.props.value).toBe('custom');
-    expect(customElementPropertyTextfield.props.value).toBe('bar');
+    expect(elementSelectorTextfield.props().value).toBe('foo');
+    expect(elementPropertyPresetsSelect.props().value).toBe('custom');
+    expect(customElementPropertyTextfield.props().value).toBe('bar');
   });
 
   it('sets error if element selector not provided', () => {
@@ -93,7 +94,7 @@ describe('DOM attribute data element view', () => {
 
     const { elementSelectorTextfield } = getReactComponents(instance);
 
-    expect(elementSelectorTextfield.props.invalid).toBe(true);
+    expect(elementSelectorTextfield.props().invalid).toBe(true);
   });
 
   it('sets settings from form values using element property preset', () => {
@@ -101,8 +102,8 @@ describe('DOM attribute data element view', () => {
 
     const { elementSelectorTextfield, elementPropertyPresetsSelect } = getReactComponents(instance);
 
-    elementSelectorTextfield.props.onChange('foo');
-    elementPropertyPresetsSelect.props.onChange('innerHTML');
+    elementSelectorTextfield.props().onChange('foo');
+    elementPropertyPresetsSelect.props().onChange('innerHTML');
 
     expect(extensionBridge.getSettings()).toEqual({
       elementSelector: 'foo',
@@ -118,14 +119,14 @@ describe('DOM attribute data element view', () => {
       elementPropertyPresetsSelect
       } = getReactComponents(instance);
 
-    elementSelectorTextfield.props.onChange('foo');
-    elementPropertyPresetsSelect.props.onChange('custom');
+    elementSelectorTextfield.props().onChange('foo');
+    elementPropertyPresetsSelect.props().onChange('custom');
 
     const {
       customElementPropertyTextfield
     } = getReactComponents(instance);
 
-    customElementPropertyTextfield.props.onChange('bar');
+    customElementPropertyTextfield.props().onChange('bar');
 
     expect(extensionBridge.getSettings()).toEqual({
       elementSelector: 'foo',
@@ -145,6 +146,6 @@ describe('DOM attribute data element view', () => {
 
     const { customElementPropertyTextfield } = getReactComponents(instance);
 
-    expect(customElementPropertyTextfield.props.invalid).toBe(true);
+    expect(customElementPropertyTextfield.props().invalid).toBe(true);
   });
 });

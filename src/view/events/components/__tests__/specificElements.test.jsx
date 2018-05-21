@@ -20,11 +20,12 @@ import bootstrap from '../../../bootstrap';
 import ElementPropertiesEditor from '../elementPropertiesEditor';
 
 const getReactComponents = (wrapper) => {
-  const showElementPropertiesCheckbox = wrapper.find(Checkbox).node;
-  const elementPropertiesEditor = wrapper.find(ElementPropertiesEditor).node;
+  wrapper.update();
+  const showElementPropertiesCheckbox = wrapper.find(Checkbox);
+  const elementPropertiesEditor = wrapper.find(ElementPropertiesEditor);
   const elementSelectorTextfield = wrapper.find(WrappedField)
     .filterWhere(n => n.prop('name') === 'elementSelector')
-    .find(Textfield).node;
+    .find(Textfield);
 
   return {
     showElementPropertiesCheckbox,
@@ -60,8 +61,8 @@ describe('specificElements', () => {
     });
 
     const { showElementPropertiesCheckbox, elementPropertiesEditor } = getReactComponents(instance);
-    expect(showElementPropertiesCheckbox.props.checked).toBe(true);
-    expect(elementPropertiesEditor).toBeDefined();
+    expect(showElementPropertiesCheckbox.props().checked).toBe(true);
+    expect(elementPropertiesEditor.exists()).toBe(true);
   });
 
   it('updates view properly when elementProperties not provided', () => {
@@ -72,8 +73,8 @@ describe('specificElements', () => {
     });
 
     const { showElementPropertiesCheckbox, elementPropertiesEditor } = getReactComponents(instance);
-    expect(showElementPropertiesCheckbox.props.checked).toBe(false);
-    expect(elementPropertiesEditor).toBeUndefined();
+    expect(showElementPropertiesCheckbox.props().checked).toBe(false);
+    expect(elementPropertiesEditor.exists()).toBe(false);
   });
 
   it('removes elementProperties from settings if element properties hidden', () => {
@@ -91,7 +92,7 @@ describe('specificElements', () => {
 
     const { showElementPropertiesCheckbox } = getReactComponents(instance);
 
-    showElementPropertiesCheckbox.props.onChange(false);
+    showElementPropertiesCheckbox.props().onChange(false);
 
     expect(extensionBridge.getSettings().elementProperties).toBeUndefined();
   });
@@ -103,7 +104,7 @@ describe('specificElements', () => {
 
     const { elementSelectorTextfield } = getReactComponents(instance);
 
-    expect(elementSelectorTextfield.props.invalid).toBe(true);
+    expect(elementSelectorTextfield.props().invalid).toBe(true);
   });
 
   it('removes elementProperties error if element properties not shown', () => {
@@ -122,7 +123,7 @@ describe('specificElements', () => {
 
     const { showElementPropertiesCheckbox } = getReactComponents(instance);
 
-    showElementPropertiesCheckbox.props.onChange(false);
+    showElementPropertiesCheckbox.props().onChange(false);
 
     expect(extensionBridge.validate()).toBe(true);
   });

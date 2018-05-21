@@ -17,7 +17,8 @@ import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const pathTextfield = wrapper.find(Textfield).node;
+  wrapper.update();
+  const pathTextfield = wrapper.find(Textfield);
 
   return {
     pathTextfield
@@ -42,7 +43,7 @@ describe('javascript variable data element view', () => {
 
     const { pathTextfield } = getReactComponents(instance);
 
-    expect(pathTextfield.props.value).toBe('foo');
+    expect(pathTextfield.props().value).toBe('foo');
   });
 
   it('sets settings from form values', () => {
@@ -50,7 +51,7 @@ describe('javascript variable data element view', () => {
 
     const { pathTextfield } = getReactComponents(instance);
 
-    pathTextfield.props.onChange('foo');
+    pathTextfield.props().onChange('foo');
 
     expect(extensionBridge.getSettings()).toEqual({
       path: 'foo'
@@ -63,6 +64,6 @@ describe('javascript variable data element view', () => {
 
     const { pathTextfield } = getReactComponents(instance);
 
-    expect(pathTextfield.props.invalid).toBe(true);
+    expect(pathTextfield.props().invalid).toBe(true);
   });
 });

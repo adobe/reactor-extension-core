@@ -18,9 +18,10 @@ import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
+  wrapper.update();
   const rows = wrapper.find('[data-row]').map(row => ({
-    hashTextfield: row.find(Textfield).node,
-    hashRegexToggle: row.find(RegexToggle).node
+    hashTextfield: row.find(Textfield),
+    hashRegexToggle: row.find(RegexToggle)
   }));
 
   return {
@@ -56,10 +57,10 @@ describe('hash condition view', () => {
 
     const { rows } = getReactComponents(instance);
 
-    expect(rows[0].hashTextfield.props.value).toBe('foo');
-    expect(rows[1].hashTextfield.props.value).toBe('bar');
-    expect(rows[0].hashRegexToggle.props.value).toBe('');
-    expect(rows[1].hashRegexToggle.props.value).toBe(true);
+    expect(rows[0].hashTextfield.props().value).toBe('foo');
+    expect(rows[1].hashTextfield.props().value).toBe('bar');
+    expect(rows[0].hashRegexToggle.props().value).toBe('');
+    expect(rows[1].hashRegexToggle.props().value).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -67,8 +68,8 @@ describe('hash condition view', () => {
 
     const { rows } = getReactComponents(instance);
 
-    rows[0].hashTextfield.props.onChange('goo');
-    rows[0].hashRegexToggle.props.onChange(true);
+    rows[0].hashTextfield.props().onChange('goo');
+    rows[0].hashRegexToggle.props().onChange(true);
 
     expect(extensionBridge.getSettings()).toEqual({
       hashes: [
@@ -86,6 +87,6 @@ describe('hash condition view', () => {
 
     const { rows } = getReactComponents(instance);
 
-    expect(rows[0].hashTextfield.props.invalid).toBe(true);
+    expect(rows[0].hashTextfield.props().invalid).toBe(true);
   });
 });

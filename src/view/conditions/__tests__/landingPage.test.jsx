@@ -18,8 +18,9 @@ import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const pageTextfield = wrapper.find(Textfield).node;
-  const pageRegexToggle = wrapper.find(RegexToggle).node;
+  wrapper.update();
+  const pageTextfield = wrapper.find(Textfield);
+  const pageRegexToggle = wrapper.find(RegexToggle);
 
   return {
     pageTextfield,
@@ -46,8 +47,8 @@ describe('landing page condition view', () => {
 
     const { pageTextfield, pageRegexToggle } = getReactComponents(instance);
 
-    expect(pageTextfield.props.value).toBe('foo');
-    expect(pageRegexToggle.props.value).toBe(true);
+    expect(pageTextfield.props().value).toBe('foo');
+    expect(pageRegexToggle.props().value).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -55,8 +56,8 @@ describe('landing page condition view', () => {
 
     const { pageTextfield, pageRegexToggle } = getReactComponents(instance);
 
-    pageTextfield.props.onChange('foo');
-    pageRegexToggle.props.onChange(true);
+    pageTextfield.props().onChange('foo');
+    pageRegexToggle.props().onChange(true);
 
     expect(extensionBridge.getSettings()).toEqual({
       page: 'foo',
@@ -70,6 +71,6 @@ describe('landing page condition view', () => {
 
     const { pageTextfield } = getReactComponents(instance);
 
-    expect(pageTextfield.props.invalid).toBe(true);
+    expect(pageTextfield.props().invalid).toBe(true);
   });
 });

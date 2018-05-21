@@ -18,11 +18,12 @@ import bootstrap from '../../../bootstrap';
 import SpecificElements from '../specificElements';
 
 const getReactComponents = (wrapper) => {
+  wrapper.update();
   const radios = wrapper.find(Radio);
 
-  const specificElementsRadio = radios.filterWhere(n => n.prop('value') === 'specific').node;
-  const anyElementRadio = radios.filterWhere(n => n.prop('value') === 'any').node;
-  const specificElements = wrapper.find(SpecificElements).node;
+  const specificElementsRadio = radios.filterWhere(n => n.prop('value') === 'specific');
+  const anyElementRadio = radios.filterWhere(n => n.prop('value') === 'any');
+  const specificElements = wrapper.find(SpecificElements);
 
   return {
     specificElementsRadio,
@@ -49,7 +50,7 @@ describe('elementFilter', () => {
 
     const { specificElementsRadio, specificElements } = getReactComponents(instance);
 
-    expect(specificElementsRadio.props.checked).toBe(true);
+    expect(specificElementsRadio.props().checked).toBe(true);
     expect(specificElements).toBeDefined();
   });
 
@@ -58,8 +59,8 @@ describe('elementFilter', () => {
 
     const { anyElementRadio, specificElements } = getReactComponents(instance);
 
-    expect(anyElementRadio.props.checked).toBe(true);
-    expect(specificElements).not.toBeDefined();
+    expect(anyElementRadio.props().checked).toBe(true);
+    expect(specificElements.exists()).toBe(false);
   });
 
   it('removes elementSelector and elementProperties from settings if any ' +
@@ -78,7 +79,7 @@ describe('elementFilter', () => {
 
     const { anyElementRadio } = getReactComponents(instance);
 
-    anyElementRadio.props.onChange(anyElementRadio.props.value, { stopPropagation() {} });
+    anyElementRadio.props().onChange(anyElementRadio.props().value, { stopPropagation() {} });
 
     const { elementSelector, elementProperties } = extensionBridge.getSettings();
 
@@ -91,8 +92,8 @@ describe('elementFilter', () => {
 
     const { specificElementsRadio } = getReactComponents(instance);
 
-    specificElementsRadio.props.onChange(
-      specificElementsRadio.props.value,
+    specificElementsRadio.props().onChange(
+      specificElementsRadio.props().value,
       { stopPropagation() {} }
     );
 
@@ -104,7 +105,7 @@ describe('elementFilter', () => {
 
     const { anyElementRadio } = getReactComponents(instance);
 
-    anyElementRadio.props.onChange(anyElementRadio.props.value, { stopPropagation() {} });
+    anyElementRadio.props().onChange(anyElementRadio.props().value, { stopPropagation() {} });
 
     expect(extensionBridge.validate()).toBe(true);
   });

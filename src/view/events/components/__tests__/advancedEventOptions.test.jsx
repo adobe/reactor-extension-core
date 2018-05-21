@@ -17,13 +17,14 @@ import createExtensionBridge from '../../../__tests__/helpers/createExtensionBri
 import bootstrap from '../../../bootstrap';
 
 const getReactComponents = (wrapper) => {
+  wrapper.update();
   const checkboxes = wrapper.find(Checkbox);
 
   const bubbleFireIfParentCheckbox = checkboxes
-    .filterWhere(n => n.prop('name') === 'bubbleFireIfParent').node;
+    .filterWhere(n => n.prop('name') === 'bubbleFireIfParent');
   const bubbleFireIfChildFiredCheckbox = checkboxes
-    .filterWhere(n => n.prop('name') === 'bubbleFireIfChildFired').node;
-  const bubbleStopCheckbox = checkboxes.filterWhere(n => n.prop('name') === 'bubbleStop').node;
+    .filterWhere(n => n.prop('name') === 'bubbleFireIfChildFired');
+  const bubbleStopCheckbox = checkboxes.filterWhere(n => n.prop('name') === 'bubbleStop');
 
   return {
     bubbleFireIfParentCheckbox,
@@ -43,11 +44,13 @@ describe('advancedEventOptions', () => {
   });
 
   beforeEach(() => {
-    instance.find(AdvancedEventOptions).node.toggleSelected();
+    instance.update();
+    instance.find(AdvancedEventOptions).instance().toggleSelected();
   });
 
   afterEach(() => {
-    instance.find(AdvancedEventOptions).node.toggleSelected();
+    instance.update();
+    instance.find(AdvancedEventOptions).instance().toggleSelected();
   });
 
   it('sets form values from settings', () => {
@@ -65,9 +68,9 @@ describe('advancedEventOptions', () => {
       bubbleStopCheckbox
     } = getReactComponents(instance);
 
-    expect(bubbleFireIfParentCheckbox.props.checked).toBe(true);
-    expect(bubbleFireIfChildFiredCheckbox.props.checked).toBe(true);
-    expect(bubbleStopCheckbox.props.checked).toBe(true);
+    expect(bubbleFireIfParentCheckbox.props().checked).toBe(true);
+    expect(bubbleFireIfChildFiredCheckbox.props().checked).toBe(true);
+    expect(bubbleStopCheckbox.props().checked).toBe(true);
   });
 
   it('has bubbleFireIfParent set to true by default', () => {
@@ -79,7 +82,7 @@ describe('advancedEventOptions', () => {
       bubbleFireIfParentCheckbox
     } = getReactComponents(instance);
 
-    expect(bubbleFireIfParentCheckbox.props.checked).toBe(true);
+    expect(bubbleFireIfParentCheckbox.props().checked).toBe(true);
   });
 
   it('has bubbleFireIfChildFired set to true by default', () => {
@@ -91,7 +94,7 @@ describe('advancedEventOptions', () => {
       bubbleFireIfChildFiredCheckbox
     } = getReactComponents(instance);
 
-    expect(bubbleFireIfChildFiredCheckbox.props.checked).toBe(true);
+    expect(bubbleFireIfChildFiredCheckbox.props().checked).toBe(true);
   });
 
 
@@ -104,9 +107,9 @@ describe('advancedEventOptions', () => {
       bubbleStopCheckbox
     } = getReactComponents(instance);
 
-    bubbleFireIfParentCheckbox.props.onChange(true);
-    bubbleFireIfChildFiredCheckbox.props.onChange(true);
-    bubbleStopCheckbox.props.onChange(true);
+    bubbleFireIfParentCheckbox.props().onChange(true);
+    bubbleFireIfChildFiredCheckbox.props().onChange(true);
+    bubbleStopCheckbox.props().onChange(true);
 
     const {
       bubbleFireIfParent,

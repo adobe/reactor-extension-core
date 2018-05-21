@@ -19,12 +19,13 @@ import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
+  wrapper.update();
   const fields = wrapper.find(WrappedField);
   const nameField = fields.filterWhere(n => n.prop('name') === 'name');
-  const nameTextfield = nameField.find(Textfield).node;
+  const nameTextfield = nameField.find(Textfield);
   const valueField = fields.filterWhere(n => n.prop('name') === 'value');
-  const valueTextfield = valueField.find(Textfield).node;
-  const valueRegexToggle = wrapper.find(RegexToggle).node;
+  const valueTextfield = valueField.find(Textfield);
+  const valueRegexToggle = wrapper.find(RegexToggle);
 
   return {
     nameTextfield,
@@ -53,9 +54,9 @@ describe('cookie condition view', () => {
 
     const { nameTextfield, valueTextfield, valueRegexToggle } = getReactComponents(instance);
 
-    expect(nameTextfield.props.value).toBe('foo');
-    expect(valueTextfield.props.value).toBe('bar');
-    expect(valueRegexToggle.props.value).toBe(true);
+    expect(nameTextfield.props().value).toBe('foo');
+    expect(valueTextfield.props().value).toBe('bar');
+    expect(valueRegexToggle.props().value).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -63,9 +64,9 @@ describe('cookie condition view', () => {
 
     const { nameTextfield, valueTextfield, valueRegexToggle } = getReactComponents(instance);
 
-    nameTextfield.props.onChange('foo');
-    valueTextfield.props.onChange('bar');
-    valueRegexToggle.props.onChange(true);
+    nameTextfield.props().onChange('foo');
+    valueTextfield.props().onChange('bar');
+    valueRegexToggle.props().onChange(true);
 
     expect(extensionBridge.getSettings()).toEqual({
       name: 'foo',
@@ -80,7 +81,7 @@ describe('cookie condition view', () => {
 
     const { nameTextfield, valueTextfield } = getReactComponents(instance);
 
-    expect(nameTextfield.props.invalid).toBe(true);
-    expect(valueTextfield.props.invalid).toBe(true);
+    expect(nameTextfield.props().invalid).toBe(true);
+    expect(valueTextfield.props().invalid).toBe(true);
   });
 });

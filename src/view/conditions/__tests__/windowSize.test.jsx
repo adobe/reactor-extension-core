@@ -19,17 +19,18 @@ import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
+  wrapper.update();
   const comparisonOperatorSelects = wrapper.find(Select);
   const fields = wrapper.find(WrappedField);
 
   const widthOperatorSelect = comparisonOperatorSelects
-    .filterWhere(n => n.prop('name') === 'widthOperator').node;
+    .filterWhere(n => n.prop('name') === 'widthOperator');
   const heightOperatorSelect = comparisonOperatorSelects
-    .filterWhere(n => n.prop('name') === 'heightOperator').node;
+    .filterWhere(n => n.prop('name') === 'heightOperator');
   const widthField = fields.filterWhere(n => n.prop('name') === 'width');
-  const widthTextfield = widthField.find(Textfield).node;
+  const widthTextfield = widthField.find(Textfield);
   const heightField = fields.filterWhere(n => n.prop('name') === 'height');
-  const heightTextfield = heightField.find(Textfield).node;
+  const heightTextfield = heightField.find(Textfield);
 
   return {
     widthOperatorSelect,
@@ -53,8 +54,8 @@ describe('window size condition view', () => {
 
     const { widthOperatorSelect, heightOperatorSelect } = getReactComponents(instance);
 
-    expect(widthOperatorSelect.props.value).toBe('>');
-    expect(heightOperatorSelect.props.value).toBe('>');
+    expect(widthOperatorSelect.props().value).toBe('>');
+    expect(heightOperatorSelect.props().value).toBe('>');
   });
 
   it('sets form values from settings', () => {
@@ -74,10 +75,10 @@ describe('window size condition view', () => {
       heightTextfield
     } = getReactComponents(instance);
 
-    expect(widthOperatorSelect.props.value).toBe('=');
-    expect(widthTextfield.props.value).toBe(100);
-    expect(heightOperatorSelect.props.value).toBe('<');
-    expect(heightTextfield.props.value).toBe(200);
+    expect(widthOperatorSelect.props().value).toBe('=');
+    expect(widthTextfield.props().value).toBe(100);
+    expect(heightOperatorSelect.props().value).toBe('<');
+    expect(heightTextfield.props().value).toBe(200);
   });
 
   it('sets settings from form values', () => {
@@ -90,10 +91,10 @@ describe('window size condition view', () => {
       heightTextfield
     } = getReactComponents(instance);
 
-    widthOperatorSelect.props.onChange('=');
-    widthTextfield.props.onChange(100);
-    heightOperatorSelect.props.onChange('<');
-    heightTextfield.props.onChange(200);
+    widthOperatorSelect.props().onChange('=');
+    widthTextfield.props().onChange(100);
+    heightOperatorSelect.props().onChange('<');
+    heightTextfield.props().onChange(200);
 
     expect(extensionBridge.getSettings()).toEqual({
       widthOperator: '=',
@@ -112,23 +113,29 @@ describe('window size condition view', () => {
       heightTextfield
     } = getReactComponents(instance);
 
-    expect(widthTextfield.props.invalid).toBe(true);
-    expect(heightTextfield.props.invalid).toBe(true);
+    expect(widthTextfield.props().invalid).toBe(true);
+    expect(heightTextfield.props().invalid).toBe(true);
   });
 
   it('sets errors if values are not numbers', () => {
     extensionBridge.init();
 
-    const {
+    let {
       widthTextfield,
       heightTextfield
     } = getReactComponents(instance);
 
-    widthTextfield.props.onChange('12.abc');
-    heightTextfield.props.onChange('12.abc');
+    widthTextfield.props().onChange('12.abc');
+    heightTextfield.props().onChange('12.abc');
 
     expect(extensionBridge.validate()).toBe(false);
-    expect(widthTextfield.props.invalid).toBe(true);
-    expect(heightTextfield.props.invalid).toBe(true);
+
+    ({
+      widthTextfield,
+      heightTextfield
+    } = getReactComponents(instance));
+
+    expect(widthTextfield.props().invalid).toBe(true);
+    expect(heightTextfield.props().invalid).toBe(true);
   });
 });

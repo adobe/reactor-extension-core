@@ -17,7 +17,8 @@ import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const nameTextfield = wrapper.find(Textfield).node;
+  wrapper.update();
+  const nameTextfield = wrapper.find(Textfield);
 
   return {
     nameTextfield
@@ -42,14 +43,14 @@ describe('session storage data element view', () => {
 
     const { nameTextfield } = getReactComponents(instance);
 
-    expect(nameTextfield.props.value).toBe('foo');
+    expect(nameTextfield.props().value).toBe('foo');
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { nameTextfield } = getReactComponents(instance);
-    nameTextfield.props.onChange('foo');
+    nameTextfield.props().onChange('foo');
 
     expect(extensionBridge.getSettings()).toEqual({
       name: 'foo'
@@ -62,6 +63,6 @@ describe('session storage data element view', () => {
 
     const { nameTextfield } = getReactComponents(instance);
 
-    expect(nameTextfield.props.invalid).toBe(true);
+    expect(nameTextfield.props().invalid).toBe(true);
   });
 });

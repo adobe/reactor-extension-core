@@ -21,10 +21,11 @@ import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge
 import bootstrap from '../../bootstrap';
 import ValidationWrapper from '../validationWrapper';
 
-const getReactComponents = (wrapper) => {
-  const inputComponent = wrapper.findWhere(n => n.prop('onChange')).node;
-  const validationWrapper = wrapper.find(ValidationWrapper).node;
-  const dataElementButton = wrapper.find(Button).node;
+const getReactComponents = (wrapper, InputComponentClass) => {
+  wrapper.update();
+  const inputComponent = wrapper.find(InputComponentClass);
+  const validationWrapper = wrapper.find(ValidationWrapper);
+  const dataElementButton = wrapper.find(Button);
 
   return {
     inputComponent,
@@ -99,9 +100,9 @@ describe('wrapped field', () => {
 
     const {
       inputComponent
-    } = getReactComponents(instance);
+    } = getReactComponents(instance, Textfield);
 
-    expect(inputComponent.props.value).toBe('foo');
+    expect(inputComponent.props().value).toBe('foo');
   });
 
   it('provides onChange on the input component', () => {
@@ -114,9 +115,9 @@ describe('wrapped field', () => {
 
     const {
       inputComponent
-    } = getReactComponents(instance);
+    } = getReactComponents(instance, Textfield);
 
-    inputComponent.props.onChange('foo');
+    inputComponent.props().onChange('foo');
 
     expect(extensionBridge.getSettings()).toEqual({
       product: 'foo'
@@ -135,10 +136,10 @@ describe('wrapped field', () => {
     const {
       inputComponent,
       validationWrapper
-    } = getReactComponents(instance);
+    } = getReactComponents(instance, Textfield);
 
-    expect(inputComponent.props.invalid).toBe(true);
-    expect(validationWrapper.props.error).toBe('Bad things');
+    expect(inputComponent.props().invalid).toBe(true);
+    expect(validationWrapper.props().error).toBe('Bad things');
   });
 
   it('supports error tooltip placement', () => {
@@ -152,9 +153,9 @@ describe('wrapped field', () => {
 
     const {
       validationWrapper
-    } = getReactComponents(instance);
+    } = getReactComponents(instance, Textfield);
 
-    expect(validationWrapper.props.placement).toBe('bottom');
+    expect(validationWrapper.props().placement).toBe('bottom');
   });
 
   it('sets "type" on Field to "checkbox" when Checkbox component is used', () => {
@@ -167,9 +168,9 @@ describe('wrapped field', () => {
 
     const {
       inputComponent
-    } = getReactComponents(instance);
+    } = getReactComponents(instance, Checkbox);
 
-    expect(inputComponent.props.type).toBe('checkbox');
+    expect(inputComponent.props().type).toBe('checkbox');
   });
 
   it('sets "selectedValue" when RadioGroup component is used', () => {
@@ -186,9 +187,9 @@ describe('wrapped field', () => {
 
     const {
       inputComponent
-    } = getReactComponents(instance);
+    } = getReactComponents(instance, RadioGroup);
 
-    expect(inputComponent.props.selectedValue).toBe('foo');
+    expect(inputComponent.props().selectedValue).toBe('foo');
   });
 
   it('supports selecting a data element token', () => {
@@ -202,9 +203,9 @@ describe('wrapped field', () => {
 
     const {
       dataElementButton
-    } = getReactComponents(instance);
+    } = getReactComponents(instance, Textfield);
 
-    dataElementButton.props.onClick();
+    dataElementButton.props().onClick();
 
     expect(extensionBridge.getSettings()).toEqual({
       product: '%foo%'
@@ -222,9 +223,9 @@ describe('wrapped field', () => {
 
     const {
       dataElementButton
-    } = getReactComponents(instance);
+    } = getReactComponents(instance, Textfield);
 
-    dataElementButton.props.onClick();
+    dataElementButton.props().onClick();
 
     expect(extensionBridge.getSettings()).toEqual({
       product: 'foo'
@@ -242,8 +243,8 @@ describe('wrapped field', () => {
 
     const {
       validationWrapper
-    } = getReactComponents(instance);
+    } = getReactComponents(instance, Textfield);
 
-    expect(validationWrapper.props.className).toBe('stylish');
+    expect(validationWrapper.props().className).toBe('stylish');
   });
 });

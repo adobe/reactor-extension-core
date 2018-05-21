@@ -20,12 +20,13 @@ import bootstrap from '../../../bootstrap';
 import AdvancedEventOptions from '../advancedEventOptions';
 
 const getReactComponents = (wrapper) => {
-  const advancedEventOptions = wrapper.find(AdvancedEventOptions).node;
+  wrapper.update();
+  const advancedEventOptions = wrapper.find(AdvancedEventOptions);
   const elementSelectorField = wrapper.find(WrappedField)
     .filterWhere(n => n.prop('name') === 'elementSelector');
-  const elementSelectorTextfield = elementSelectorField.find(Textfield).node;
+  const elementSelectorTextfield = elementSelectorField.find(Textfield);
   const bubbleStopCheckbox = wrapper.find(Checkbox)
-    .filterWhere(n => n.prop('name') === 'bubbleStop').node;
+    .filterWhere(n => n.prop('name') === 'bubbleStop');
 
   return {
     elementSelectorTextfield,
@@ -52,24 +53,24 @@ describe('standard event view', () => {
     });
 
     const { advancedEventOptions } = getReactComponents(instance);
-    advancedEventOptions.toggleSelected();
+    advancedEventOptions.instance().toggleSelected();
 
     const { elementSelectorTextfield, bubbleStopCheckbox } = getReactComponents(instance);
 
-    expect(elementSelectorTextfield.props.value).toBe('.foo');
-    expect(bubbleStopCheckbox.props.value).toBe(true);
+    expect(elementSelectorTextfield.props().value).toBe('.foo');
+    expect(bubbleStopCheckbox.props().value).toBe(true);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { advancedEventOptions } = getReactComponents(instance);
-    advancedEventOptions.toggleSelected();
+    advancedEventOptions.instance().toggleSelected();
 
     const { elementSelectorTextfield, bubbleStopCheckbox } = getReactComponents(instance);
 
-    elementSelectorTextfield.props.onChange('.foo');
-    bubbleStopCheckbox.props.onChange(true);
+    elementSelectorTextfield.props().onChange('.foo');
+    bubbleStopCheckbox.props().onChange(true);
 
     const { elementSelector, bubbleStop } = extensionBridge.getSettings();
     expect(elementSelector).toBe('.foo');
@@ -83,6 +84,6 @@ describe('standard event view', () => {
 
     const { elementSelectorTextfield } = getReactComponents(instance);
 
-    expect(elementSelectorTextfield.props.invalid).toBe(true);
+    expect(elementSelectorTextfield.props().invalid).toBe(true);
   });
 });

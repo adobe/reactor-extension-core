@@ -18,9 +18,10 @@ import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
+  wrapper.update();
   const rows = wrapper.find('[data-row]').map(row => ({
-    subdomainTextfield: row.find(Textfield).node,
-    subdomainRegexToggle: row.find(RegexToggle).node
+    subdomainTextfield: row.find(Textfield),
+    subdomainRegexToggle: row.find(RegexToggle)
   }));
 
   return {
@@ -56,10 +57,10 @@ describe('subdomain condition view', () => {
 
     const { rows } = getReactComponents(instance);
 
-    expect(rows[0].subdomainTextfield.props.value).toBe('foo');
-    expect(rows[1].subdomainTextfield.props.value).toBe('bar');
-    expect(rows[0].subdomainRegexToggle.props.value).toBe('');
-    expect(rows[1].subdomainRegexToggle.props.value).toBe(true);
+    expect(rows[0].subdomainTextfield.props().value).toBe('foo');
+    expect(rows[1].subdomainTextfield.props().value).toBe('bar');
+    expect(rows[0].subdomainRegexToggle.props().value).toBe('');
+    expect(rows[1].subdomainRegexToggle.props().value).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -67,8 +68,8 @@ describe('subdomain condition view', () => {
 
     const { rows } = getReactComponents(instance);
 
-    rows[0].subdomainTextfield.props.onChange('goo');
-    rows[0].subdomainRegexToggle.props.onChange(true);
+    rows[0].subdomainTextfield.props().onChange('goo');
+    rows[0].subdomainRegexToggle.props().onChange(true);
 
 
     expect(extensionBridge.getSettings()).toEqual({
@@ -87,6 +88,6 @@ describe('subdomain condition view', () => {
 
     const { rows } = getReactComponents(instance);
 
-    expect(rows[0].subdomainTextfield.props.invalid).toBe(true);
+    expect(rows[0].subdomainTextfield.props().invalid).toBe(true);
   });
 });

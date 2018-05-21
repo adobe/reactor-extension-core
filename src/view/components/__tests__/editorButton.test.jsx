@@ -19,8 +19,9 @@ import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge
 const render = props => mount(<EditorButton { ...props } />);
 
 const getReactComponents = (wrapper) => {
+  wrapper.update();
   return {
-    button: wrapper.find(Button).node
+    button: wrapper.find(Button)
   };
 };
 
@@ -47,7 +48,7 @@ describe('editor button', () => {
       invalid: true
     }));
 
-    expect(button.props.variant).toBe('warning');
+    expect(button.props().variant).toBe('warning');
   });
 
   it('supports code editing workflow', () => {
@@ -59,7 +60,7 @@ describe('editor button', () => {
       onChange
     }));
 
-    button.props.onClick();
+    button.props().onClick();
 
     expect(extensionBridge.openCodeEditor).toHaveBeenCalledWith({
       code: 'foo',

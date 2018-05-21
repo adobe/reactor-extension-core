@@ -18,11 +18,12 @@ import createExtensionBridge from '../../../__tests__/helpers/createExtensionBri
 import bootstrap from '../../../bootstrap';
 
 const getReactComponents = (wrapper) => {
+  wrapper.update();
   const radios = wrapper.find(Radio);
 
-  const delayRadio = radios.filterWhere(n => n.prop('value') === 'delay').node;
-  const immediateRadio = radios.filterWhere(n => n.prop('value') === 'immediate').node;
-  const delayTextfield = wrapper.find(Textfield).node;
+  const delayRadio = radios.filterWhere(n => n.prop('value') === 'delay');
+  const immediateRadio = radios.filterWhere(n => n.prop('value') === 'immediate');
+  const delayTextfield = wrapper.find(Textfield);
 
   return {
     delayRadio,
@@ -50,8 +51,8 @@ describe('delayType', () => {
 
       const { delayRadio, delayTextfield } = getReactComponents(instance);
 
-      expect(delayRadio.props.checked).toBe(true);
-      expect(delayTextfield.props.value).toBe(500);
+      expect(delayRadio.props().checked).toBe(true);
+      expect(delayTextfield.props().value).toBe(500);
     });
 
     it('when settings doesn\'t contain delay value', () => {
@@ -59,7 +60,7 @@ describe('delayType', () => {
 
       const { immediateRadio } = getReactComponents(instance);
 
-      expect(immediateRadio.props.checked).toBe(true);
+      expect(immediateRadio.props().checked).toBe(true);
     });
   });
 
@@ -68,7 +69,7 @@ describe('delayType', () => {
 
     const { immediateRadio } = getReactComponents(instance);
 
-    expect(immediateRadio.props.checked).toBe(true);
+    expect(immediateRadio.props().checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -76,8 +77,8 @@ describe('delayType', () => {
 
     const { delayRadio, delayTextfield } = getReactComponents(instance);
 
-    delayRadio.props.onChange('delay', { stopPropagation() {} });
-    delayTextfield.props.onChange(100);
+    delayRadio.props().onChange('delay', { stopPropagation() {} });
+    delayTextfield.props().onChange(100);
 
     expect(extensionBridge.getSettings()).toEqual({
       delay: 100
@@ -90,8 +91,8 @@ describe('delayType', () => {
 
     const { delayTextfield, immediateRadio } = getReactComponents(instance);
 
-    delayTextfield.props.onChange(100);
-    immediateRadio.props.onChange('immediately', { stopPropagation() {} });
+    delayTextfield.props().onChange(100);
+    immediateRadio.props().onChange('immediately', { stopPropagation() {} });
 
     expect(extensionBridge.getSettings().delay).toBeUndefined();
   });
@@ -101,25 +102,27 @@ describe('delayType', () => {
 
     const { delayRadio } = getReactComponents(instance);
 
-    delayRadio.props.onChange('delay', { stopPropagation() {} });
+    delayRadio.props().onChange('delay', { stopPropagation() {} });
 
     expect(extensionBridge.validate()).toBe(false);
 
     const { delayTextfield } = getReactComponents(instance);
 
-    expect(delayTextfield.props.invalid).toBe(true);
+    expect(delayTextfield.props().invalid).toBe(true);
   });
 
   it('sets error if the delay field is not a number', () => {
     extensionBridge.init();
 
-    const { delayRadio, delayTextfield } = getReactComponents(instance);
+    let { delayRadio, delayTextfield } = getReactComponents(instance);
 
-    delayRadio.props.onChange('delay', { stopPropagation() {} });
-    delayTextfield.props.onChange('aaa');
+    delayRadio.props().onChange('delay', { stopPropagation() {} });
+    delayTextfield.props().onChange('aaa');
 
     expect(extensionBridge.validate()).toBe(false);
 
-    expect(delayTextfield.props.invalid).toBe(true);
+    ({ delayTextfield } = getReactComponents(instance));
+
+    expect(delayTextfield.props().invalid).toBe(true);
   });
 });

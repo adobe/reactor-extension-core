@@ -19,8 +19,9 @@ import ValidationWrapper from '../validationWrapper';
 const render = props => mount(<ValidationWrapper { ...props } />);
 
 const getReactComponents = (wrapper) => {
-  const overlayTrigger = wrapper.find(OverlayTrigger).node;
-  const tooltip = wrapper.find(Tooltip).node;
+  wrapper.update();
+  const overlayTrigger = wrapper.find(OverlayTrigger);
+  const tooltip = wrapper.find(Tooltip);
 
   return {
     overlayTrigger,
@@ -34,12 +35,12 @@ describe('validation wrapper', () => {
       error: 'Bad things'
     }));
 
-    expect(overlayTrigger.props.disabled).toBe(false);
+    expect(overlayTrigger.props().disabled).toBe(false);
   });
 
   it('disables trigger when there\'s no error', () => {
     const { overlayTrigger } = getReactComponents(render({}));
 
-    expect(overlayTrigger.props.disabled).toBe(true);
+    expect(overlayTrigger.props().disabled).toBe(true);
   });
 });
