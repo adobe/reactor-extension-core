@@ -46,26 +46,26 @@ class DecoratedInput extends React.Component {
       input.selectedValue = input.value;
     }
 
+    const fieldComponentsProps = {
+      ...input,
+      ...rest,
+      invalid: Boolean(meta.touched && meta.invalid)
+    };
+
     // This code that only sets className if it's truthy is just to get around
     // https://jira.corp.adobe.com/browse/RSP-269
     // Once that's fixed, we should be able to always set the className prop.
-    const validationWrapperProps = {
-      error: meta.touched && meta.error,
-      placement: errorTooltipPlacement
-    };
-
-    if (className) {
-      validationWrapperProps.className = className;
+    if (componentClassName) {
+      fieldComponentsProps.className = componentClassName;
     }
 
     return (
-      <ValidationWrapper { ...validationWrapperProps }>
-        <FieldComponent
-          { ...input }
-          { ...rest }
-          className={ componentClassName }
-          invalid={ Boolean(meta.touched && meta.invalid) }
-        >
+      <ValidationWrapper
+        className={ className }
+        error={ meta.touched && meta.error }
+        placement={ errorTooltipPlacement }
+      >
+        <FieldComponent { ...fieldComponentsProps }>
           {children}
         </FieldComponent>
         {

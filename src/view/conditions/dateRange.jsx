@@ -22,15 +22,7 @@ import './dateRange.styl';
 const DEFAULT_TIMEZONE = 'GMT';
 const DATETIME_FORMAT = 'YYYY-MM-DD HH:mm';
 
-const getTimezoneOptions = (() => {
-  // Cache so we're not calculating options on every render.
-  let timezoneOptions;
-  return () => {
-    timezoneOptions = timezoneOptions ||
-      moment.tz.names().map(name => ({ value: name, label: name }));
-    return timezoneOptions;
-  };
-})();
+const timezoneOptions = moment.tz.names();
 
 const DateRange = () => (
   <div className="u-clearfix">
@@ -63,7 +55,7 @@ const DateRange = () => (
       <WrappedField
         name="timezone"
         component={ ComboBox }
-        options={ getTimezoneOptions() }
+        options={ timezoneOptions }
       />
     </label>
   </div>
@@ -126,6 +118,10 @@ export const formConfig = {
 
     if (!values.start && !values.end) {
       errors.start = errors.end = 'Please specify a start or end date.';
+    }
+
+    if (timezoneOptions.indexOf(values.timezone) === -1) {
+      errors.timezone = 'Please specify a valid timezone.';
     }
 
     return errors;
