@@ -41,7 +41,7 @@
     "@adobe/reactor-packager": "^2.6.2",
     "@adobe/reactor-sandbox": "^8.4.0",
     "@adobe/reactor-turbine": "^25.1.0",
-    "@reactor/extension-support-testrunner": "^12.1.0",
+    "@reactor/extension-support-testrunner": "^12.1.1",
     "babel-core": "^6.18.2",
     "babel-loader": "^6.2.7",
     "babel-polyfill": "^6.26.0",
