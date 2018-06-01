@@ -11,20 +11,18 @@
  ****************************************************************************************/
 
 import React from 'react';
-import { Field } from 'redux-form';
-import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
-import InfoTip from '@reactor/react-components/lib/infoTip';
-import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
+import Textfield from '@react/react-spectrum/Textfield';
+import InfoTip from '../components/infoTip';
+import WrappedField from '../components/wrappedField';
 
 const DirectCall = () => (
   <label>
-    <span className="u-label">
+    <span className="u-verticalAlignMiddle u-gapRight">
       Identifier
     </span>
-    <Field
+    <WrappedField
       name="identifier"
-      component={ DecoratedInput }
-      inputComponent={ Textfield }
+      component={ Textfield }
     />
     <InfoTip placement="bottom">
       Specify the string that will be passed to _satellite.track() in your direct call,

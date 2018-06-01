@@ -11,19 +11,17 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
+import Textfield from '@react/react-spectrum/Textfield';
 import JavaScriptVariable, { formConfig } from '../javascriptVariable';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const pathTextfield = wrapper.find(Textfield).node;
-  const pathErrorTip = wrapper.find(ErrorTip).node;
+  wrapper.update();
+  const pathTextfield = wrapper.find(Textfield);
 
   return {
-    pathTextfield,
-    pathErrorTip
+    pathTextfield
   };
 };
 
@@ -45,7 +43,7 @@ describe('javascript variable data element view', () => {
 
     const { pathTextfield } = getReactComponents(instance);
 
-    expect(pathTextfield.props.value).toBe('foo');
+    expect(pathTextfield.props().value).toBe('foo');
   });
 
   it('sets settings from form values', () => {
@@ -53,7 +51,7 @@ describe('javascript variable data element view', () => {
 
     const { pathTextfield } = getReactComponents(instance);
 
-    pathTextfield.props.onChange('foo');
+    pathTextfield.props().onChange('foo');
 
     expect(extensionBridge.getSettings()).toEqual({
       path: 'foo'
@@ -64,8 +62,8 @@ describe('javascript variable data element view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { pathErrorTip } = getReactComponents(instance);
+    const { pathTextfield } = getReactComponents(instance);
 
-    expect(pathErrorTip).toBeDefined();
+    expect(pathTextfield.props().invalid).toBe(true);
   });
 });

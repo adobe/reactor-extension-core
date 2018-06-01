@@ -11,22 +11,20 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import Button from '@coralui/react-coral/lib/Button';
+import Textfield from '@react/react-spectrum/Textfield';
+import Button from '@react/react-spectrum/Button';
 import ElementSelector, { formConfig } from '../elementSelector';
 import createExtensionBridge from '../../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const textfield = wrapper.find(Textfield).node;
-  const button = wrapper.find(Button).node;
-  const errorTip = wrapper.find(ErrorTip).node;
+  wrapper.update();
+  const textfield = wrapper.find(Textfield);
+  const button = wrapper.find(Button);
 
   return {
     textfield,
-    button,
-    errorTip
+    button
   };
 };
 
@@ -48,7 +46,7 @@ describe('elementSelector', () => {
 
     const { textfield } = getReactComponents(instance);
 
-    expect(textfield.props.value).toBe('foo');
+    expect(textfield.props().value).toBe('foo');
   });
 
   it('sets settings from form values', () => {
@@ -56,7 +54,7 @@ describe('elementSelector', () => {
 
     const { textfield } = getReactComponents(instance);
 
-    textfield.props.onChange('some prop set');
+    textfield.props().onChange('some prop set');
 
     expect(extensionBridge.getSettings()).toEqual({
       elementSelector: 'some prop set'
@@ -68,8 +66,8 @@ describe('elementSelector', () => {
 
     expect(extensionBridge.validate()).toBe(false);
 
-    const { errorTip } = getReactComponents(instance);
+    const { textfield } = getReactComponents(instance);
 
-    expect(errorTip).toBeDefined();
+    expect(textfield.props().invalid).toBe(true);
   });
 });

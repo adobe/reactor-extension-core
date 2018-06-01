@@ -11,18 +11,17 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import Switch from '@coralui/react-coral/lib/Switch';
+import Textfield from '@react/react-spectrum/Textfield';
+import RegexToggle from '../../components/regexToggle';
 import Subdomain, { formConfig } from '../subdomain';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
+  wrapper.update();
   const rows = wrapper.find('[data-row]').map(row => ({
-    subdomainTextfield: row.find(Textfield).node,
-    subdomainErrorTip: row.find(ErrorTip).node,
-    subdomainRegexSwitch: row.find(Switch).node
+    subdomainTextfield: row.find(Textfield),
+    subdomainRegexToggle: row.find(RegexToggle)
   }));
 
   return {
@@ -58,10 +57,10 @@ describe('subdomain condition view', () => {
 
     const { rows } = getReactComponents(instance);
 
-    expect(rows[0].subdomainTextfield.props.value).toBe('foo');
-    expect(rows[1].subdomainTextfield.props.value).toBe('bar');
-    expect(rows[0].subdomainRegexSwitch.props.checked).toBe(false);
-    expect(rows[1].subdomainRegexSwitch.props.checked).toBe(true);
+    expect(rows[0].subdomainTextfield.props().value).toBe('foo');
+    expect(rows[1].subdomainTextfield.props().value).toBe('bar');
+    expect(rows[0].subdomainRegexToggle.props().value).toBe('');
+    expect(rows[1].subdomainRegexToggle.props().value).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -69,8 +68,8 @@ describe('subdomain condition view', () => {
 
     const { rows } = getReactComponents(instance);
 
-    rows[0].subdomainTextfield.props.onChange('goo');
-    rows[0].subdomainRegexSwitch.props.onChange({ target: { checked: true } });
+    rows[0].subdomainTextfield.props().onChange('goo');
+    rows[0].subdomainRegexToggle.props().onChange(true);
 
 
     expect(extensionBridge.getSettings()).toEqual({
@@ -89,6 +88,6 @@ describe('subdomain condition view', () => {
 
     const { rows } = getReactComponents(instance);
 
-    expect(rows[0].subdomainErrorTip).toBeDefined();
+    expect(rows[0].subdomainTextfield.props().invalid).toBe(true);
   });
 });

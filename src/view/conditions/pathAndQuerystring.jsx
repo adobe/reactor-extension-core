@@ -11,25 +11,22 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
-import { Field, FieldArray } from 'redux-form';
-import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
-
-
+import Textfield from '@react/react-spectrum/Textfield';
+import { FieldArray } from 'redux-form';
+import WrappedField from '../components/wrappedField';
 import RegexToggle from '../components/regexToggle';
 import MultipleItemEditor from './components/multipleItemEditor';
 
 const renderItem = field => (
   <div data-row className="u-inlineBlock">
     <label className="u-gapRight">
-      <span className="u-label">Path equals</span>
-      <Field
+      <span className="u-verticalAlignMiddle u-gapRight">Path equals</span>
+      <WrappedField
         name={ `${field}.value` }
-        component={ DecoratedInput }
-        inputComponent={ Textfield }
+        component={ Textfield }
       />
     </label>
-    <Field
+    <WrappedField
       name={ `${field}.valueIsRegex` }
       component={ RegexToggle }
       valueFieldName={ `${field}.value` }

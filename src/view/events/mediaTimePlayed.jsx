@@ -11,18 +11,13 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
-import Select from '@coralui/redux-form-react-coral/lib/Select';
-import { Field } from 'redux-form';
-import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
-
+import Textfield from '@react/react-spectrum/Textfield';
+import Select from '@react/react-spectrum/Select';
+import WrappedField from '../components/wrappedField';
 import ElementFilter, { formConfig as elementFilterFormConfig } from './components/elementFilter';
 import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
-
 import { isNumberLikeInRange } from '../utils/validators';
 import mergeFormConfigs from '../utils/mergeFormConfigs';
-
-import './mediaTimePlayed.styl';
 
 const timePlayedUnit = {
   SECOND: 'second',
@@ -36,7 +31,7 @@ const timePlayedUnitOptions = [
   },
   {
     value: timePlayedUnit.PERCENT,
-    label: '%'
+    label: 'percent'
   }
 ];
 
@@ -45,22 +40,20 @@ const MediaTimePlayed = () => (
     <ElementFilter />
     <div className="u-gapTop">
       <label>
-        <span className="u-label u-gapRight">Trigger when</span>
+        <span className="u-verticalAlignMiddle u-gapRight">Trigger when</span>
       </label>
-      <Field
+      <WrappedField
         name="amount"
-        component={ DecoratedInput }
-        inputComponent={ Textfield }
+        component={ Textfield }
       />
-      <Field
+      <WrappedField
         name="unit"
-        className="u-gapLeft TimePlayed-unitSelect"
+        className="u-gapLeft"
         component={ Select }
         options={ timePlayedUnitOptions }
-        backspaceRemoves={ false }
       />
       <label>
-        <span className="u-label u-gapLeft">have passed</span>
+        <span className="u-verticalAlignMiddle u-gapRight u-gapLeft">have passed</span>
       </label>
     </div>
     <AdvancedEventOptions />

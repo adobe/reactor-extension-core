@@ -11,7 +11,8 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Button from '@coralui/react-coral/lib/Button';
+import Button from '@react/react-spectrum/Button';
+import Close from '@react/react-spectrum/Icon/Close';
 
 import './multipleItemEditor.styl';
 
@@ -24,10 +25,9 @@ export default ({ fields, renderItem }) => {
         fields.length > 1 ?
           <Button
             className="u-gapLeft"
-            icon="close"
-            iconSize="XS"
-            variant="minimal"
-            square
+            icon={ <Close /> }
+            variant="action"
+            quiet
             onClick={ fields.remove.bind(this, index) }
           /> : null
       }

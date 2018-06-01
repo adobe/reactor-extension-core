@@ -11,11 +11,11 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Checkbox from '@coralui/redux-form-react-coral/lib/Checkbox';
-import { Field, formValueSelector } from 'redux-form';
-import Alert from '@coralui/react-coral/lib/Alert';
+import Checkbox from '@react/react-spectrum/Checkbox';
+import { formValueSelector } from 'redux-form';
+import { Toast } from '@react/react-spectrum/Toast';
 import { connect } from 'react-redux';
-
+import WrappedField from '../../components/wrappedField';
 import ElementSelector, { formConfig as elementSelectorFormConfig } from './elementSelector';
 import ElementPropertiesEditor, { formConfig as elementPropertiesEditorFormConfig } from './elementPropertiesEditor';
 import mergeFormConfigs from '../../utils/mergeFormConfigs';
@@ -29,21 +29,21 @@ const SpecificElements = ({ ...props }) => {
     <div>
       <ElementSelector fields={ props.fields } />
       <div>
-        <Field
+        <WrappedField
           name="showElementPropertiesFilter"
           className="u-block"
           component={ Checkbox }
         >
           and having certain property values...
-        </Field>
+        </WrappedField>
         {
           showElementPropertiesFilter ?
             <div>
-              <Alert variant="warning">
+              <Toast variant="warning" className="u-gapBottom">
                 Using this option to target elements will add logic to the JavaScript
-                library that may adversely affect performance. Adobe recommends using the CSS
-                selector option above whenever possible.
-              </Alert>
+                library that will adversely affect performance. Adobe recommends using the CSS
+                selector option above.
+              </Toast>
               <ElementPropertiesEditor />
             </div> : null
         }
@@ -58,6 +58,7 @@ const stateToProps = state => ({
 });
 
 export default connect(stateToProps)(SpecificElements);
+
 
 export const formConfig = mergeFormConfigs(
   elementSelectorFormConfig,

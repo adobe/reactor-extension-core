@@ -11,23 +11,20 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
-import { Field } from 'redux-form';
-import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
-
+import Textfield from '@react/react-spectrum/Textfield';
 import RegexToggle from '../components/regexToggle';
+import WrappedField from '../components/wrappedField';
 
 const TrafficSource = () => (
   <div>
     <label className="u-gapRight">
-      <span className="u-label">Traffic source equals</span>
-      <Field
+      <span className="u-verticalAlignMiddle u-gapRight">Traffic source equals</span>
+      <WrappedField
         name="source"
-        component={ DecoratedInput }
-        inputComponent={ Textfield }
+        component={ Textfield }
       />
     </label>
-    <Field
+    <WrappedField
       name="sourceIsRegex"
       component={ RegexToggle }
       valueFieldName="source"

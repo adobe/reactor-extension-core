@@ -12,11 +12,13 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { Field, formValueSelector } from 'redux-form';
-import InfoTip from '@reactor/react-components/lib/infoTip';
-import EditorButton from '@reactor/react-components/lib/reduxForm/editorButton';
-import Checkbox from '@coralui/redux-form-react-coral/lib/Checkbox';
-import Radio from '@coralui/redux-form-react-coral/lib/Radio';
+import { formValueSelector } from 'redux-form';
+import Checkbox from '@react/react-spectrum/Checkbox';
+import Radio from '@react/react-spectrum/Radio';
+import RadioGroup from '@react/react-spectrum/RadioGroup';
+import InfoTip from '../components/infoTip';
+import EditorButton from '../components/editorButton';
+import WrappedField from '../components/wrappedField';
 
 const LANGUAGES = {
   JAVASCRIPT: 'javascript',
@@ -26,37 +28,27 @@ const LANGUAGES = {
 const CustomCode = ({ language }) => (
   <div>
     <fieldset>
-      <legend className="u-inlineBlock">
-        <span className="u-label u-gapRight">Language</span>
+      <legend>
+        Language
       </legend>
 
-      <Field
+      <WrappedField
         name="language"
-        component={ Radio }
-        type="radio"
-        value={ LANGUAGES.JAVASCRIPT }
+        component={ RadioGroup }
       >
-        JavaScript
-      </Field>
-      <Field
-        name="language"
-        component={ Radio }
-        type="radio"
-        value={ LANGUAGES.HTML }
-      >
-        HTML
-      </Field>
+        <Radio value={ LANGUAGES.JAVASCRIPT } label="JavaScript" />
+        <Radio value={ LANGUAGES.HTML } label="HTML" />
+      </WrappedField>
     </fieldset>
 
     {
       language === LANGUAGES.JAVASCRIPT ?
         <div>
-          <Field
+          <WrappedField
             name="global"
             component={ Checkbox }
-          >
-            Execute globally
-          </Field>
+            label="Execute globally"
+          />
           <InfoTip className="u-noPadding">
             Global execution is needed only in cases when the script relies on its own variables to
             be globally visible. Turning this on will disable binding of the variables
@@ -66,7 +58,7 @@ const CustomCode = ({ language }) => (
     }
 
     <div className="u-gapTop">
-      <Field
+      <WrappedField
         name="source"
         component={ EditorButton }
         language={ language }

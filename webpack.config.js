@@ -49,6 +49,15 @@ plugins.push(new webpack.optimize.CommonsChunkPlugin({
   minChunks: Math.round(Object.keys(entries).length / 4)
 }));
 
+plugins.push(new webpack.DefinePlugin({
+  'process.env.SCALE_MEDIUM': 'true',
+  'process.env.SCALE_LARGE': 'false',
+  'process.env.THEME_LIGHT': 'false',
+  'process.env.THEME_LIGHTEST': 'true',
+  'process.env.THEME_DARK': 'false',
+  'process.env.THEME_DARKEST': 'false'
+}));
+
 if (argv.production) {
   plugins.push(
     new webpack.DefinePlugin({
@@ -112,7 +121,11 @@ module.exports = {
       {
         test: /\.styl/,
         include: /src\/view/,
-        loader: 'style-loader!css-loader!stylus-loader'
+        loaders: ['style', 'css', 'stylus']
+      },
+      {
+        test: /\.css/,
+        loaders: ['style', 'css']
       },
       // Needed for moment-timezone.
       {
@@ -138,8 +151,7 @@ module.exports = {
   stylus: {
     use: [require('nib')()],
     import: [
-      path.resolve('./node_modules/nib/lib/nib/index'),
-      path.resolve('./src/view/units')
+      path.resolve('./node_modules/nib/lib/nib/index')
     ]
   }
 };

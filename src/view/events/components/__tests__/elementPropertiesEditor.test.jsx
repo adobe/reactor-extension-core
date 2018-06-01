@@ -10,32 +10,30 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { Field } from 'redux-form';
 import { mount } from 'enzyme';
-import Button from '@coralui/react-coral/lib/Button';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import Switch from '@coralui/react-coral/lib/Switch';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
-
+import Button from '@react/react-spectrum/Button';
+import Textfield from '@react/react-spectrum/Textfield';
+import RegexToggle from '../../../components/regexToggle';
+import WrappedField from '../../../components/wrappedField';
 import ElementPropertiesEditor, { formConfig } from '../elementPropertiesEditor';
 import createExtensionBridge from '../../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../../bootstrap';
 
 const getReactComponents = (wrapper) => {
+  wrapper.update();
   const rows = wrapper.find('[data-row]').map((row) => {
-    const fields = row.find(Field);
+    const fields = row.find(WrappedField);
     const nameField = fields.filterWhere(n => n.prop('name').indexOf('.name') !== -1);
     const valueField = fields.filterWhere(n => n.prop('name').indexOf('.value') !== -1);
     return {
-      nameTextfield: nameField.find(Textfield).node,
-      nameErrorTip: nameField.find(ErrorTip).node,
-      valueTextfield: valueField.find(Textfield).node,
-      valueRegexSwitch: row.find(Switch).node,
-      removeButton: row.find(Button).filterWhere(n => n.prop('icon') === 'close').node
+      nameTextfield: nameField.find(Textfield),
+      valueTextfield: valueField.find(Textfield),
+      valueRegexToggle: row.find(RegexToggle),
+      removeButton: row.find(Button)
     };
   });
 
-  const addButton = wrapper.find(Button).filterWhere(n => n.prop('icon') !== 'close').node;
+  const addButton = wrapper.find(Button).last();
 
   return {
     rows,
@@ -66,9 +64,9 @@ describe('elementPropertiesEditor', () => {
     });
 
     const { rows } = getReactComponents(instance);
-    expect(rows[0].nameTextfield.props.value).toBe('some prop');
-    expect(rows[0].valueTextfield.props.value).toBe('some value');
-    expect(rows[0].valueRegexSwitch.props.checked).toBe(true);
+    expect(rows[0].nameTextfield.props().value).toBe('some prop');
+    expect(rows[0].valueTextfield.props().value).toBe('some value');
+    expect(rows[0].valueRegexToggle.props().value).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -76,9 +74,9 @@ describe('elementPropertiesEditor', () => {
 
     const { rows } = getReactComponents(instance);
 
-    rows[0].nameTextfield.props.onChange('some prop set');
-    rows[0].valueTextfield.props.onChange('some value set');
-    rows[0].valueRegexSwitch.props.onChange({ target: { checked: true } });
+    rows[0].nameTextfield.props().onChange('some prop set');
+    rows[0].valueTextfield.props().onChange('some value set');
+    rows[0].valueRegexToggle.props().onChange(true);
 
     const { elementProperties } = extensionBridge.getSettings();
     expect(elementProperties).toEqual([
@@ -95,20 +93,20 @@ describe('elementPropertiesEditor', () => {
 
     let { rows } = getReactComponents(instance);
 
-    rows[0].valueTextfield.props.onChange('foo');
+    rows[0].valueTextfield.props().onChange('foo');
 
     expect(extensionBridge.validate()).toBe(false);
 
     ({ rows } = getReactComponents(instance));
 
-    expect(rows[0].nameErrorTip).toBeDefined();
+    expect(rows[0].nameTextfield.props().invalid).toBe(true);
   });
 
   it('creates a new row when the add button is clicked', () => {
     extensionBridge.init();
 
     const { addButton } = getReactComponents(instance);
-    addButton.props.onClick();
+    addButton.props().onClick();
 
     const { rows } = getReactComponents(instance);
 
@@ -135,11 +133,11 @@ describe('elementPropertiesEditor', () => {
     });
 
     let { rows } = getReactComponents(instance);
-    rows[0].removeButton.props.onClick();
+    rows[0].removeButton.props().onClick();
 
     ({ rows } = getReactComponents(instance));
 
     expect(rows.length).toBe(1);
-    expect(rows[0].nameTextfield.props.value).toBe('some prop2');
+    expect(rows[0].nameTextfield.props().value).toBe('some prop2');
   });
 });

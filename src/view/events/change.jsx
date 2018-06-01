@@ -11,11 +11,11 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Checkbox from '@coralui/redux-form-react-coral/lib/Checkbox';
-import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
-import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
-import { Field, formValueSelector } from 'redux-form';
+import Checkbox from '@react/react-spectrum/Checkbox';
+import Textfield from '@react/react-spectrum/Textfield';
+import { formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
+import WrappedField from '../components/wrappedField';
 
 import ElementFilter, { formConfig as elementFilterFormConfig } from './components/elementFilter';
 import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
@@ -26,25 +26,23 @@ const Change = ({ showValueField }) => (
   <div>
     <ElementFilter />
     <div>
-      <Field
+      <WrappedField
         name="showValueField"
         className="u-block"
         component={ Checkbox }
-      >
-        and is changed to the following value...
-      </Field>
+        label="and is changed to the following value..."
+      />
       {
         showValueField ?
           <div>
-            <Field
+            <WrappedField
               name="value"
               className="u-gapRight"
               placeholder="Value"
-              component={ DecoratedInput }
-              inputComponent={ Textfield }
+              component={ Textfield }
               supportDataElement
             />
-            <Field
+            <WrappedField
               name="valueIsRegex"
               component={ RegexToggle }
               valueFieldName="value"

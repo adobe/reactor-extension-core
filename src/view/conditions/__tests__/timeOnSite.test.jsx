@@ -11,22 +11,20 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import Select from '@coralui/react-coral/lib/Select';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
+import Textfield from '@react/react-spectrum/Textfield';
+import Select from '@react/react-spectrum/Select';
 import TimeOnSite, { formConfig } from '../timeOnSite';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const operatorSelect = wrapper.find(Select).node;
-  const minutesTextfield = wrapper.find(Textfield).node;
-  const minutesErrorTip = wrapper.find(ErrorTip).node;
+  wrapper.update();
+  const operatorSelect = wrapper.find(Select);
+  const minutesTextfield = wrapper.find(Textfield);
 
   return {
     operatorSelect,
-    minutesTextfield,
-    minutesErrorTip
+    minutesTextfield
   };
 };
 
@@ -44,7 +42,7 @@ describe('time on site condition view', () => {
 
     const { operatorSelect } = getReactComponents(instance);
 
-    expect(operatorSelect.props.value).toBe('>');
+    expect(operatorSelect.props().value).toBe('>');
   });
 
   it('sets form values from settings', () => {
@@ -57,8 +55,8 @@ describe('time on site condition view', () => {
 
     const { operatorSelect, minutesTextfield } = getReactComponents(instance);
 
-    expect(operatorSelect.props.value).toBe('=');
-    expect(minutesTextfield.props.value).toBe(100);
+    expect(operatorSelect.props().value).toBe('=');
+    expect(minutesTextfield.props().value).toBe(100);
   });
 
   it('sets settings from form values', () => {
@@ -66,8 +64,8 @@ describe('time on site condition view', () => {
 
     const { operatorSelect, minutesTextfield } = getReactComponents(instance);
 
-    operatorSelect.props.onChange({ value: '=' });
-    minutesTextfield.props.onChange(100);
+    operatorSelect.props().onChange('=');
+    minutesTextfield.props().onChange(100);
 
     expect(extensionBridge.getSettings()).toEqual({
       operator: '=',
@@ -79,19 +77,22 @@ describe('time on site condition view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { minutesErrorTip } = getReactComponents(instance);
+    const { minutesTextfield } = getReactComponents(instance);
 
-    expect(minutesErrorTip).toBeDefined();
+    expect(minutesTextfield.props().invalid).toBe(true);
   });
 
   it('sets error if count value is not a number', () => {
     extensionBridge.init();
+
+    let { minutesTextfield } = getReactComponents(instance);
+
+    minutesTextfield.props().onChange('12.abc');
+
     expect(extensionBridge.validate()).toBe(false);
 
-    const { minutesTextfield, minutesErrorTip } = getReactComponents(instance);
+    ({ minutesTextfield } = getReactComponents(instance));
 
-    minutesTextfield.props.onChange('12.abc');
-
-    expect(minutesErrorTip).toBeDefined();
+    expect(minutesTextfield.props().invalid).toBe(true);
   });
 });

@@ -11,30 +11,26 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Datepicker from '@coralui/react-coral/lib/Datepicker';
-import Autocomplete from '@coralui/react-coral/lib/Autocomplete';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
-import { Field } from 'redux-form';
+import Datepicker from '@react/react-spectrum/Datepicker';
+import Autocomplete from '@react/react-spectrum/Autocomplete';
+import WrappedField from '../../components/wrappedField';
 import DateRange, { formConfig } from '../dateRange';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const fields = wrapper.find(Field);
+  wrapper.update();
+  const fields = wrapper.find(WrappedField);
   const startField = fields.filterWhere(n => n.prop('name') === 'start');
-  const startDatepicker = startField.find(Datepicker).node;
-  const startErrorTip = startField.find(ErrorTip).node;
+  const startDatepicker = startField.find(Datepicker);
   const endField = fields.filterWhere(n => n.prop('name') === 'end');
-  const endDatepicker = endField.find(Datepicker).node;
-  const endErrorTip = endField.find(ErrorTip).node;
+  const endDatepicker = endField.find(Datepicker);
   const timezoneField = fields.filterWhere(n => n.prop('name') === 'timezone');
-  const timezoneAutocomplete = timezoneField.find(Autocomplete).node;
+  const timezoneAutocomplete = timezoneField.find(Autocomplete);
 
   return {
     startDatepicker,
-    startErrorTip,
     endDatepicker,
-    endErrorTip,
     timezoneAutocomplete
   };
 };
@@ -59,9 +55,9 @@ describe('date range condition view', () => {
 
     const { startDatepicker, endDatepicker, timezoneAutocomplete } = getReactComponents(instance);
 
-    expect(startDatepicker.props.value).toBe('2017-11-03 11:24');
-    expect(endDatepicker.props.value).toBe('2017-11-29 09:12');
-    expect(timezoneAutocomplete.props.value).toBe('US/Mountain');
+    expect(startDatepicker.props().value).toBe('2017-11-03 11:24');
+    expect(endDatepicker.props().value).toBe('2017-11-29 09:12');
+    expect(timezoneAutocomplete.props().value).toBe('US/Mountain');
   });
 
   it('sets form values using GMT if not provided on settings', () => {
@@ -74,9 +70,9 @@ describe('date range condition view', () => {
 
     const { startDatepicker, endDatepicker, timezoneAutocomplete } = getReactComponents(instance);
 
-    expect(startDatepicker.props.value).toBe('2017-11-03 17:24');
-    expect(endDatepicker.props.value).toBe('2017-11-29 16:12');
-    expect(timezoneAutocomplete.props.value).toBe('GMT');
+    expect(startDatepicker.props().value).toBe('2017-11-03 17:24');
+    expect(endDatepicker.props().value).toBe('2017-11-29 16:12');
+    expect(timezoneAutocomplete.props().value).toBe('GMT');
   });
 
   it('sets form values using GMT if invalid timezone provided on settings', () => {
@@ -90,9 +86,9 @@ describe('date range condition view', () => {
 
     const { startDatepicker, endDatepicker, timezoneAutocomplete } = getReactComponents(instance);
 
-    expect(startDatepicker.props.value).toBe('2017-11-03 17:24');
-    expect(endDatepicker.props.value).toBe('2017-11-29 16:12');
-    expect(timezoneAutocomplete.props.value).toBe('GMT');
+    expect(startDatepicker.props().value).toBe('2017-11-03 17:24');
+    expect(endDatepicker.props().value).toBe('2017-11-29 16:12');
+    expect(timezoneAutocomplete.props().value).toBe('GMT');
   });
 
   it('sets settings from form values', () => {
@@ -100,9 +96,9 @@ describe('date range condition view', () => {
 
     const { startDatepicker, endDatepicker, timezoneAutocomplete } = getReactComponents(instance);
 
-    startDatepicker.props.onChange('2017-11-03 11:24');
-    endDatepicker.props.onChange('2017-11-29 09:12');
-    timezoneAutocomplete.props.onChange({ value: 'US/Mountain' });
+    startDatepicker.props().onChange('2017-11-03 11:24');
+    endDatepicker.props().onChange('2017-11-29 09:12');
+    timezoneAutocomplete.props().onChange('US/Mountain');
 
     expect(extensionBridge.getSettings()).toEqual({
       start: '2017-11-03T17:24:00Z',
@@ -115,10 +111,10 @@ describe('date range condition view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { startErrorTip, endErrorTip } = getReactComponents(instance);
+    const { startDatepicker, endDatepicker } = getReactComponents(instance);
 
-    expect(startErrorTip).toBeDefined();
-    expect(endErrorTip).toBeDefined();
+    expect(startDatepicker.props().invalid).toBe(true);
+    expect(endDatepicker.props().invalid).toBe(true);
   });
 
   it('sets no errors if either start or end date is provided', () => {
@@ -128,11 +124,10 @@ describe('date range condition view', () => {
       }
     });
 
+    const { startDatepicker, endDatepicker } = getReactComponents(instance);
+
     expect(extensionBridge.validate()).toBe(true);
-
-    const { startErrorTip, endErrorTip } = getReactComponents(instance);
-
-    expect(startErrorTip).not.toBeDefined();
-    expect(endErrorTip).not.toBeDefined();
+    expect(startDatepicker.props().invalid).toBe(false);
+    expect(endDatepicker.props().invalid).toBe(false);
   });
 });

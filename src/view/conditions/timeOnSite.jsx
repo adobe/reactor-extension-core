@@ -11,12 +11,9 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
-import Select from '@coralui/redux-form-react-coral/lib/Select';
-import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
-import { Field } from 'redux-form';
-
-
+import Textfield from '@react/react-spectrum/Textfield';
+import Select from '@react/react-spectrum/Select';
+import WrappedField from '../components/wrappedField';
 import { isNumberLike } from '../utils/validators';
 import comparisonOperatorOptions from './comparisonOperatorOptions';
 
@@ -24,22 +21,20 @@ const TimeOnSite = () => (
   <div>
     <div>
       <label className="u-gapRight">
-        <span className="u-label">User has spent</span>
-        <Field
+        <span className="u-verticalAlignMiddle u-gapRight">User has spent</span>
+        <WrappedField
           name="operator"
           component={ Select }
           options={ comparisonOperatorOptions }
-          backspaceRemoves={ false }
         />
       </label>
       <label>
-        <Field
+        <WrappedField
           name="minutes"
-          component={ DecoratedInput }
-          inputComponent={ Textfield }
-          inputClassName="u-smallTextfield"
+          component={ Textfield }
+          componentClassName="u-smallTextfield"
         />
-        <span className="u-label u-gapLeft">minutes on site</span>
+        <span className="u-verticalAlignMiddle u-gapRight u-gapLeft">minutes on site</span>
       </label>
     </div>
   </div>

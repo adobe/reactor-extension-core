@@ -11,19 +11,17 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import Switch from '@coralui/react-coral/lib/Switch';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
-
+import Textfield from '@react/react-spectrum/Textfield';
+import RegexToggle from '../../components/regexToggle';
 import Hash, { formConfig } from '../hash';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
+  wrapper.update();
   const rows = wrapper.find('[data-row]').map(row => ({
-    hashTextfield: row.find(Textfield).node,
-    hashRegexSwitch: row.find(Switch).node,
-    hashErrorTip: row.find(ErrorTip).node
+    hashTextfield: row.find(Textfield),
+    hashRegexToggle: row.find(RegexToggle)
   }));
 
   return {
@@ -59,10 +57,10 @@ describe('hash condition view', () => {
 
     const { rows } = getReactComponents(instance);
 
-    expect(rows[0].hashTextfield.props.value).toBe('foo');
-    expect(rows[1].hashTextfield.props.value).toBe('bar');
-    expect(rows[0].hashRegexSwitch.props.checked).toBe(false);
-    expect(rows[1].hashRegexSwitch.props.checked).toBe(true);
+    expect(rows[0].hashTextfield.props().value).toBe('foo');
+    expect(rows[1].hashTextfield.props().value).toBe('bar');
+    expect(rows[0].hashRegexToggle.props().value).toBe('');
+    expect(rows[1].hashRegexToggle.props().value).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -70,8 +68,8 @@ describe('hash condition view', () => {
 
     const { rows } = getReactComponents(instance);
 
-    rows[0].hashTextfield.props.onChange('goo');
-    rows[0].hashRegexSwitch.props.onChange({ target: { checked: true } });
+    rows[0].hashTextfield.props().onChange('goo');
+    rows[0].hashRegexToggle.props().onChange(true);
 
     expect(extensionBridge.getSettings()).toEqual({
       hashes: [
@@ -89,6 +87,6 @@ describe('hash condition view', () => {
 
     const { rows } = getReactComponents(instance);
 
-    expect(rows[0].hashErrorTip).toBeDefined();
+    expect(rows[0].hashTextfield.props().invalid).toBe(true);
   });
 });

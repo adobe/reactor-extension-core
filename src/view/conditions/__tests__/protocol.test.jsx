@@ -11,16 +11,17 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Radio from '@coralui/react-coral/lib/Radio';
+import Radio from '@react/react-spectrum/Radio';
 import Protocol, { formConfig } from '../protocol';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
+  wrapper.update();
   const radios = wrapper.find(Radio);
 
-  const httpRadio = radios.filterWhere(n => n.prop('value') === 'http:').node;
-  const httpsRadio = radios.filterWhere(n => n.prop('value') === 'https:').node;
+  const httpRadio = radios.filterWhere(n => n.prop('value') === 'http:');
+  const httpsRadio = radios.filterWhere(n => n.prop('value') === 'https:');
 
   return {
     httpRadio,
@@ -42,8 +43,8 @@ describe('protocol condition view', () => {
 
     const { httpRadio, httpsRadio } = getReactComponents(instance);
 
-    expect(httpRadio.props.checked).toBe(true);
-    expect(httpsRadio.props.checked).toBe(false);
+    expect(httpRadio.props().checked).toBe(true);
+    expect(httpsRadio.props().checked).toBe(false);
   });
 
   it('sets form values from settings', () => {
@@ -55,8 +56,8 @@ describe('protocol condition view', () => {
 
     const { httpRadio, httpsRadio } = getReactComponents(instance);
 
-    expect(httpRadio.props.checked).toBe(false);
-    expect(httpsRadio.props.checked).toBe(true);
+    expect(httpRadio.props().checked).toBe(false, { stopPropagation() {} });
+    expect(httpsRadio.props().checked).toBe(true, { stopPropagation() {} });
   });
 
   it('sets settings from form values', () => {
@@ -64,7 +65,7 @@ describe('protocol condition view', () => {
 
     const { httpsRadio } = getReactComponents(instance);
 
-    httpsRadio.props.onChange('https:');
+    httpsRadio.props().onChange('https:', { stopPropagation() {} });
 
     expect(extensionBridge.getSettings()).toEqual({
       protocol: 'https:'

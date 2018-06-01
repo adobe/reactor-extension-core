@@ -11,18 +11,17 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import Switch from '@coralui/react-coral/lib/Switch';
+import Textfield from '@react/react-spectrum/Textfield';
+import RegexToggle from '../../components/regexToggle';
 import Path, { formConfig } from '../path';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
+  wrapper.update();
   const rows = wrapper.find('[data-row]').map(row => ({
-    pathTextfield: row.find(Textfield).node,
-    pathErrorTip: row.find(ErrorTip).node,
-    pathRegexSwitch: row.find(Switch).node
+    pathTextfield: row.find(Textfield),
+    pathRegexToggle: row.find(RegexToggle)
   }));
 
   return {
@@ -58,10 +57,10 @@ describe('path condition view', () => {
 
     const { rows } = getReactComponents(instance);
 
-    expect(rows[0].pathTextfield.props.value).toBe('foo');
-    expect(rows[1].pathTextfield.props.value).toBe('bar');
-    expect(rows[0].pathRegexSwitch.props.checked).toBe(false);
-    expect(rows[1].pathRegexSwitch.props.checked).toBe(true);
+    expect(rows[0].pathTextfield.props().value).toBe('foo');
+    expect(rows[1].pathTextfield.props().value).toBe('bar');
+    expect(rows[0].pathRegexToggle.props().value).toBe('');
+    expect(rows[1].pathRegexToggle.props().value).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -69,8 +68,8 @@ describe('path condition view', () => {
 
     const { rows } = getReactComponents(instance);
 
-    rows[0].pathTextfield.props.onChange('goo');
-    rows[0].pathRegexSwitch.props.onChange({ target: { checked: true } });
+    rows[0].pathTextfield.props().onChange('goo');
+    rows[0].pathRegexToggle.props().onChange(true);
 
     expect(extensionBridge.getSettings()).toEqual({
       paths: [
@@ -88,6 +87,6 @@ describe('path condition view', () => {
 
     const { rows } = getReactComponents(instance);
 
-    expect(rows[0].pathErrorTip).toBeDefined();
+    expect(rows[0].pathTextfield.props().invalid).toBe(true);
   });
 });

@@ -11,32 +11,30 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import Checkbox from '@coralui/react-coral/lib/Checkbox';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
-import { Field } from 'redux-form';
+import Textfield from '@react/react-spectrum/Textfield';
+import Checkbox from '@react/react-spectrum/Checkbox';
+import WrappedField from '../../components/wrappedField';
 import Click, { formConfig } from '../click';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 import AdvancedEventOptions from '../components/advancedEventOptions';
 
 const getReactComponents = (wrapper) => {
+  wrapper.update();
   const checkboxes = wrapper.find(Checkbox);
-  const fields = wrapper.find(Field);
+  const fields = wrapper.find(WrappedField);
 
   const delayLinkActivationCheckbox = checkboxes
-    .filterWhere(n => n.prop('name') === 'delayLinkActivation').node;
+    .filterWhere(n => n.prop('name') === 'delayLinkActivation');
   const elementSelectorField = fields.filterWhere(n => n.prop('name') === 'elementSelector');
-  const elementSelectorTextfield = elementSelectorField.find(Textfield).node;
-  const elementSelectorErrorTip = elementSelectorField.find(ErrorTip).node;
-  const bubbleStopCheckbox = checkboxes.filterWhere(n => n.prop('name') === 'bubbleStop').node;
-  const advancedEventOptions = wrapper.find(AdvancedEventOptions).node;
+  const elementSelectorTextfield = elementSelectorField.find(Textfield);
+  const bubbleStopCheckbox = checkboxes.filterWhere(n => n.prop('name') === 'bubbleStop');
+  const advancedEventOptions = wrapper.find(AdvancedEventOptions);
 
   return {
     delayLinkActivationCheckbox,
     elementSelectorTextfield,
     bubbleStopCheckbox,
-    elementSelectorErrorTip,
     advancedEventOptions
   };
 };
@@ -60,7 +58,7 @@ describe('click event view', () => {
     });
 
     const { advancedEventOptions } = getReactComponents(instance);
-    advancedEventOptions.toggleSelected();
+    advancedEventOptions.instance().toggleSelected();
 
     const {
       delayLinkActivationCheckbox,
@@ -68,16 +66,16 @@ describe('click event view', () => {
       bubbleStopCheckbox
     } = getReactComponents(instance);
 
-    expect(delayLinkActivationCheckbox.props.value).toBe(true);
-    expect(elementSelectorTextfield.props.value).toBe('.foo');
-    expect(bubbleStopCheckbox.props.value).toBe(true);
+    expect(delayLinkActivationCheckbox.props().value).toBe(true);
+    expect(elementSelectorTextfield.props().value).toBe('.foo');
+    expect(bubbleStopCheckbox.props().value).toBe(true);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { advancedEventOptions } = getReactComponents(instance);
-    advancedEventOptions.toggleSelected();
+    advancedEventOptions.instance().toggleSelected();
 
     const {
       delayLinkActivationCheckbox,
@@ -85,9 +83,9 @@ describe('click event view', () => {
       bubbleStopCheckbox
     } = getReactComponents(instance);
 
-    delayLinkActivationCheckbox.props.onChange(true);
-    elementSelectorTextfield.props.onChange('.foo');
-    bubbleStopCheckbox.props.onChange(true);
+    delayLinkActivationCheckbox.props().onChange(true);
+    elementSelectorTextfield.props().onChange('.foo');
+    bubbleStopCheckbox.props().onChange(true);
 
     const { delayLinkActivation, elementSelector, bubbleStop } = extensionBridge.getSettings();
 
@@ -100,8 +98,8 @@ describe('click event view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { elementSelectorErrorTip } = getReactComponents(instance);
+    const { elementSelectorTextfield } = getReactComponents(instance);
 
-    expect(elementSelectorErrorTip).toBeDefined();
+    expect(elementSelectorTextfield.props().invalid).toBe(true);
   });
 });

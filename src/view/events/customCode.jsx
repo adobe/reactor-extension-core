@@ -11,8 +11,8 @@
  ****************************************************************************************/
 
 import React from 'react';
-import { Field } from 'redux-form';
-import EditorButton from '@reactor/react-components/lib/reduxForm/editorButton';
+import EditorButton from '../components/editorButton';
+import WrappedField from '../components/wrappedField';
 
 const CustomCode = () => (
   <div>
@@ -20,7 +20,7 @@ const CustomCode = () => (
       The code you provide in the editor will be run as soon as the library is loaded. Inside
       your code, call <code>trigger()</code> whenever you would like the rule to fire.
     </p>
-    <Field
+    <WrappedField
       name="source"
       component={ EditorButton }
     />

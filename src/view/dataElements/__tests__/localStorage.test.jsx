@@ -11,19 +11,17 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
+import Textfield from '@react/react-spectrum/Textfield';
 import LocalStorage, { formConfig } from '../localStorage';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const nameTextfield = wrapper.find(Textfield).node;
-  const nameErrorTip = wrapper.find(ErrorTip).node;
+  wrapper.update();
+  const nameTextfield = wrapper.find(Textfield);
 
   return {
-    nameTextfield,
-    nameErrorTip
+    nameTextfield
   };
 };
 
@@ -45,14 +43,14 @@ describe('local storage data element view', () => {
 
     const { nameTextfield } = getReactComponents(instance);
 
-    expect(nameTextfield.props.value).toBe('foo');
+    expect(nameTextfield.props().value).toBe('foo');
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { nameTextfield } = getReactComponents(instance);
-    nameTextfield.props.onChange('foo');
+    nameTextfield.props().onChange('foo');
 
     expect(extensionBridge.getSettings()).toEqual({
       name: 'foo'
@@ -63,8 +61,8 @@ describe('local storage data element view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { nameErrorTip } = getReactComponents(instance);
+    const { nameTextfield } = getReactComponents(instance);
 
-    expect(nameErrorTip).toBeDefined();
+    expect(nameTextfield.props().invalid).toBe(true);
   });
 });

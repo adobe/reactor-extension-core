@@ -11,27 +11,19 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Radio from '@coralui/redux-form-react-coral/lib/Radio';
-import { Field } from 'redux-form';
+import Radio from '@react/react-spectrum/Radio';
+import RadioGroup from '@react/react-spectrum/RadioGroup';
+import WrappedField from '../components/wrappedField';
 
 const NewReturningVisitor = () => (
   <div>
-    <Field
+    <WrappedField
       name="visitorType"
-      component={ Radio }
-      type="radio"
-      value="new"
+      component={ RadioGroup }
     >
-      New Visitor
-    </Field>
-    <Field
-      name="visitorType"
-      component={ Radio }
-      type="radio"
-      value="returning"
-    >
-      Returning Visitor
-    </Field>
+      <Radio value="new" label="New Visitor" />
+      <Radio value="returning" label="Returning Visitor" />
+    </WrappedField>
   </div>
 );
 

@@ -11,32 +11,29 @@
  ****************************************************************************************/
 
 import React from 'react';
-import { Field } from 'redux-form';
-import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
-import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
+import Textfield from '@react/react-spectrum/Textfield';
+import WrappedField from '../components/wrappedField';
 
 import RegexToggle from '../components/regexToggle';
 
 const Cookie = () => (
   <div>
     <label className="u-gapRight">
-      <span className="u-label">Cookie named</span>
-      <Field
+      <span className="u-verticalAlignMiddle u-gapRight">Cookie named</span>
+      <WrappedField
         name="name"
-        component={ DecoratedInput }
-        inputComponent={ Textfield }
+        component={ Textfield }
       />
     </label>
     <label className="u-gapRight">
-      <span className="u-label">has the value</span>
-      <Field
+      <span className="u-gapRight">has the value</span>
+      <WrappedField
         name="value"
-        component={ DecoratedInput }
-        inputComponent={ Textfield }
+        component={ Textfield }
       />
     </label>
 
-    <Field
+    <WrappedField
       name="valueIsRegex"
       component={ RegexToggle }
       valueFieldName="value"

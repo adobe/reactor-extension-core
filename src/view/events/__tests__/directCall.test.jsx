@@ -11,20 +11,18 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
+import Textfield from '@react/react-spectrum/Textfield';
 import DirectCall, { formConfig } from '../directCall';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
+  wrapper.update();
   const identifierTextfield =
-    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'identifier').node;
-  const identifierErrorTip = wrapper.find(ErrorTip).node;
+    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'identifier');
 
   return {
-    identifierTextfield,
-    identifierErrorTip
+    identifierTextfield
   };
 };
 
@@ -46,14 +44,14 @@ describe('direct call event view', () => {
 
     const { identifierTextfield } = getReactComponents(instance);
 
-    expect(identifierTextfield.props.value).toBe('foo');
+    expect(identifierTextfield.props().value).toBe('foo');
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { identifierTextfield } = getReactComponents(instance);
-    identifierTextfield.props.onChange('foo');
+    identifierTextfield.props().onChange('foo');
 
     expect(extensionBridge.getSettings()).toEqual({
       identifier: 'foo'
@@ -64,8 +62,8 @@ describe('direct call event view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { identifierErrorTip } = getReactComponents(instance);
+    const { identifierTextfield } = getReactComponents(instance);
 
-    expect(identifierErrorTip).toBeDefined();
+    expect(identifierTextfield.props().invalid).toBe(true);
   });
 });

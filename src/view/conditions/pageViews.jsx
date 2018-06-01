@@ -11,11 +11,11 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Radio from '@coralui/redux-form-react-coral/lib/Radio';
-import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
-import Select from '@coralui/redux-form-react-coral/lib/Select';
-import { Field } from 'redux-form';
-import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
+import Radio from '@react/react-spectrum/Radio';
+import RadioGroup from '@react/react-spectrum/RadioGroup';
+import Textfield from '@react/react-spectrum/Textfield';
+import Select from '@react/react-spectrum/Select';
+import WrappedField from '../components/wrappedField';
 
 import { isNumberLike } from '../utils/validators';
 import comparisonOperatorOptions from './comparisonOperatorOptions';
@@ -24,43 +24,35 @@ const PageViews = () => (
   <div>
     <div>
       <label className="u-gapRight">
-        <span className="u-label">The user&apos;s number of page views is</span>
-        <Field
+        <span className="u-verticalAlignMiddle u-gapRight">
+          The user&apos;s number of page views is
+        </span>
+        <WrappedField
           name="operator"
           component={ Select }
           options={ comparisonOperatorOptions }
-          backspaceRemoves={ false }
         />
       </label>
       <label className="u-gapRight">
-        <span className="u-label">the value</span>
-        <Field
+        <span className="u-verticalAlignMiddle u-gapRight">the value</span>
+        <WrappedField
           name="count"
-          component={ DecoratedInput }
-          inputComponent={ Textfield }
-          inputClassName="u-smallTextfield"
+          component={ Textfield }
+          componentClassName="u-smallTextfield"
         />
       </label>
       <span className="u-noWrap">
         <label>
-          <span className="u-label">over</span>
+          <span className="u-verticalAlignMiddle u-gapRight">over</span>
         </label>
-        <Field
+
+        <WrappedField
           name="duration"
-          component={ Radio }
-          type="radio"
-          value="lifetime"
+          component={ RadioGroup }
         >
-          Lifetime
-        </Field>
-        <Field
-          name="duration"
-          component={ Radio }
-          type="radio"
-          value="session"
-        >
-          Current Session
-        </Field>
+          <Radio value="lifetime" label="Lifetime" />
+          <Radio value="session" label="Current Session" />
+        </WrappedField>
       </span>
     </div>
   </div>

@@ -11,36 +11,32 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import Checkbox from '@coralui/react-coral/lib/Checkbox';
-import Radio from '@coralui/react-coral/lib/Radio';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
-import { Field } from 'redux-form';
+import Textfield from '@react/react-spectrum/Textfield';
+import Checkbox from '@react/react-spectrum/Checkbox';
+import Radio from '@react/react-spectrum/Radio';
+import WrappedField from '../../components/wrappedField';
 import Hover, { formConfig } from '../hover';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 import AdvancedEventOptions from '../components/advancedEventOptions';
 
 const getReactComponents = (wrapper) => {
-  const fields = wrapper.find(Field);
+  wrapper.update();
+  const fields = wrapper.find(WrappedField);
 
   const elementSelectorField = fields.filterWhere(n => n.prop('name') === 'elementSelector');
-  const elementSelectorTextfield = elementSelectorField.find(Textfield).node;
-  const elementSelectorErrorTip = elementSelectorField.find(ErrorTip).node;
+  const elementSelectorTextfield = elementSelectorField.find(Textfield);
   const bubbleStopCheckbox = wrapper
-    .find(Checkbox).filterWhere(n => n.prop('name') === 'bubbleStop').node;
+    .find(Checkbox).filterWhere(n => n.prop('name') === 'bubbleStop');
   const delayField = fields.filterWhere(n => n.prop('name') === 'delay');
-  const delayTextfield = delayField.find(Textfield).node;
-  const delayErrorTip = delayField.find(ErrorTip).node;
-  const delayRadio = wrapper.find(Radio).filterWhere(n => n.prop('value') === 'delay').node;
-  const advancedEventOptions = wrapper.find(AdvancedEventOptions).node;
+  const delayTextfield = delayField.find(Textfield);
+  const delayRadio = wrapper.find(Radio).filterWhere(n => n.prop('value') === 'delay');
+  const advancedEventOptions = wrapper.find(AdvancedEventOptions);
 
   return {
     elementSelectorTextfield,
-    elementSelectorErrorTip,
     bubbleStopCheckbox,
     delayTextfield,
-    delayErrorTip,
     delayRadio,
     advancedEventOptions
   };
@@ -57,7 +53,7 @@ describe('hover event view', () => {
     extensionBridge.init();
 
     const { advancedEventOptions } = getReactComponents(instance);
-    advancedEventOptions.toggleSelected();
+    advancedEventOptions.instance().toggleSelected();
   });
 
   it('sets form values from settings', () => {
@@ -75,14 +71,14 @@ describe('hover event view', () => {
       bubbleStopCheckbox
     } = getReactComponents(instance);
 
-    expect(elementSelectorTextfield.props.value).toBe('.foo');
-    expect(delayTextfield.props.value).toBe(100);
-    expect(bubbleStopCheckbox.props.value).toBe(true);
+    expect(elementSelectorTextfield.props().value).toBe('.foo');
+    expect(delayTextfield.props().value).toBe(100);
+    expect(bubbleStopCheckbox.props().value).toBe(true);
   });
 
   it('sets settings from form values', () => {
     const { delayRadio } = getReactComponents(instance);
-    delayRadio.props.onChange('delay');
+    delayRadio.props().onChange('delay', { stopPropagation() {} });
 
     const {
       elementSelectorTextfield,
@@ -90,9 +86,9 @@ describe('hover event view', () => {
       bubbleStopCheckbox
     } = getReactComponents(instance);
 
-    elementSelectorTextfield.props.onChange('.foo');
-    delayTextfield.props.onChange(100);
-    bubbleStopCheckbox.props.onChange(true);
+    elementSelectorTextfield.props().onChange('.foo');
+    delayTextfield.props().onChange(100);
+    bubbleStopCheckbox.props().onChange(true);
 
     const { elementSelector, delay, bubbleStop } = extensionBridge.getSettings();
 
@@ -106,15 +102,15 @@ describe('hover event view', () => {
       delayRadio
     } = getReactComponents(instance);
 
-    delayRadio.props.onChange('delay');
+    delayRadio.props().onChange('delay', { stopPropagation() {} });
     expect(extensionBridge.validate()).toBe(false);
 
     const {
-      delayErrorTip,
-      elementSelectorErrorTip
+      delayTextfield,
+      elementSelectorTextfield
     } = getReactComponents(instance);
 
-    expect(delayErrorTip).toBeDefined();
-    expect(elementSelectorErrorTip).toBeDefined();
+    expect(delayTextfield.props().invalid).toBe(true);
+    expect(elementSelectorTextfield.props().invalid).toBe(true);
   });
 });

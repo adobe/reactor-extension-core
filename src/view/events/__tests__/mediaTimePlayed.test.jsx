@@ -11,36 +11,32 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
-import { Field } from 'redux-form';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import Checkbox from '@coralui/react-coral/lib/Checkbox';
-import Select from '@coralui/react-coral/lib/Select';
+import Textfield from '@react/react-spectrum/Textfield';
+import Checkbox from '@react/react-spectrum/Checkbox';
+import Select from '@react/react-spectrum/Select';
+import WrappedField from '../../components/wrappedField';
 import AdvancedEventOptions from '../components/advancedEventOptions';
 import MediaTimePlayed, { formConfig } from '../mediaTimePlayed';
 import bootstrap from '../../bootstrap';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 
 const getReactComponents = (wrapper) => {
-  const fields = wrapper.find(Field);
+  wrapper.update();
+  const fields = wrapper.find(WrappedField);
 
   const amountField = fields.filterWhere(n => n.prop('name') === 'amount');
-  const amountTextfield = amountField.find(Textfield).node;
-  const amountErrorTip = amountField.find(ErrorTip).node;
-  const unitSelect = wrapper.find(Select).node;
+  const amountTextfield = amountField.find(Textfield);
+  const unitSelect = wrapper.find(Select);
   const elementSelectorField = fields.filterWhere(n => n.prop('name') === 'elementSelector');
-  const elementSelectorTextfield = elementSelectorField.find(Textfield).node;
-  const elementSelectorErrorTip = elementSelectorField.find(ErrorTip).node;
+  const elementSelectorTextfield = elementSelectorField.find(Textfield);
   const bubbleStopCheckbox =
-    wrapper.find(Checkbox).filterWhere(n => n.prop('name') === 'bubbleStop').node;
-  const advancedEventOptions = wrapper.find(AdvancedEventOptions).node;
+    wrapper.find(Checkbox).filterWhere(n => n.prop('name') === 'bubbleStop');
+  const advancedEventOptions = wrapper.find(AdvancedEventOptions);
 
   return {
     amountTextfield,
-    amountErrorTip,
     unitSelect,
     elementSelectorTextfield,
-    elementSelectorErrorTip,
     bubbleStopCheckbox,
     advancedEventOptions
   };
@@ -66,7 +62,7 @@ describe('time played event view', () => {
     });
 
     const { advancedEventOptions } = getReactComponents(instance);
-    advancedEventOptions.toggleSelected();
+    advancedEventOptions.instance().toggleSelected();
 
     const {
       amountTextfield,
@@ -75,10 +71,10 @@ describe('time played event view', () => {
       bubbleStopCheckbox
     } = getReactComponents(instance);
 
-    expect(amountTextfield.props.value).toBe(55);
-    expect(unitSelect.props.value).toBe('percent');
-    expect(elementSelectorTextfield.props.value).toBe('.foo');
-    expect(bubbleStopCheckbox.props.value).toBe(true);
+    expect(amountTextfield.props().value).toBe(55);
+    expect(unitSelect.props().value).toBe('percent');
+    expect(elementSelectorTextfield.props().value).toBe('.foo');
+    expect(bubbleStopCheckbox.props().value).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -90,12 +86,12 @@ describe('time played event view', () => {
       advancedEventOptions
     } = getReactComponents(instance);
 
-    amountTextfield.props.onChange(45);
-    elementSelectorTextfield.props.onChange('.foo');
+    amountTextfield.props().onChange(45);
+    elementSelectorTextfield.props().onChange('.foo');
 
-    advancedEventOptions.toggleSelected();
+    advancedEventOptions.instance().toggleSelected();
     const { bubbleStopCheckbox } = getReactComponents(instance);
-    bubbleStopCheckbox.props.onChange(true);
+    bubbleStopCheckbox.props().onChange(true);
 
     const { amount, unit, elementSelector, bubbleStop } = extensionBridge.getSettings();
     expect(amount).toBe(45);
@@ -109,9 +105,9 @@ describe('time played event view', () => {
 
     expect(extensionBridge.validate()).toBe(false);
 
-    const { amountErrorTip, elementSelectorErrorTip } = getReactComponents(instance);
+    const { amountTextfield, elementSelectorTextfield } = getReactComponents(instance);
 
-    expect(amountErrorTip).toBeDefined();
-    expect(elementSelectorErrorTip).toBeDefined();
+    expect(amountTextfield.props().invalid).toBe(true);
+    expect(elementSelectorTextfield.props().invalid).toBe(true);
   });
 });

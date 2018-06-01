@@ -11,25 +11,23 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Radio from '@coralui/react-coral/lib/Radio';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
+import Radio from '@react/react-spectrum/Radio';
+import Textfield from '@react/react-spectrum/Textfield';
 import DelayType, { formConfig } from '../delayType';
 import createExtensionBridge from '../../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../../bootstrap';
 
 const getReactComponents = (wrapper) => {
+  wrapper.update();
   const radios = wrapper.find(Radio);
 
-  const delayRadio = radios.filterWhere(n => n.prop('value') === 'delay').node;
-  const immediateRadio = radios.filterWhere(n => n.prop('value') === 'immediate').node;
-  const delayTextfield = wrapper.find(Textfield).node;
-  const delayErrorTip = wrapper.find(ErrorTip).node;
+  const delayRadio = radios.filterWhere(n => n.prop('value') === 'delay');
+  const immediateRadio = radios.filterWhere(n => n.prop('value') === 'immediate');
+  const delayTextfield = wrapper.find(Textfield);
 
   return {
     delayRadio,
     delayTextfield,
-    delayErrorTip,
     immediateRadio
   };
 };
@@ -53,8 +51,8 @@ describe('delayType', () => {
 
       const { delayRadio, delayTextfield } = getReactComponents(instance);
 
-      expect(delayRadio.props.checked).toBe(true);
-      expect(delayTextfield.props.value).toBe(500);
+      expect(delayRadio.props().checked).toBe(true);
+      expect(delayTextfield.props().value).toBe(500);
     });
 
     it('when settings doesn\'t contain delay value', () => {
@@ -62,7 +60,7 @@ describe('delayType', () => {
 
       const { immediateRadio } = getReactComponents(instance);
 
-      expect(immediateRadio.props.checked).toBe(true);
+      expect(immediateRadio.props().checked).toBe(true);
     });
   });
 
@@ -71,7 +69,7 @@ describe('delayType', () => {
 
     const { immediateRadio } = getReactComponents(instance);
 
-    expect(immediateRadio.props.checked).toBe(true);
+    expect(immediateRadio.props().checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -79,8 +77,8 @@ describe('delayType', () => {
 
     const { delayRadio, delayTextfield } = getReactComponents(instance);
 
-    delayRadio.props.onChange('delay');
-    delayTextfield.props.onChange(100);
+    delayRadio.props().onChange('delay', { stopPropagation() {} });
+    delayTextfield.props().onChange(100);
 
     expect(extensionBridge.getSettings()).toEqual({
       delay: 100
@@ -93,8 +91,8 @@ describe('delayType', () => {
 
     const { delayTextfield, immediateRadio } = getReactComponents(instance);
 
-    delayTextfield.props.onChange(100);
-    immediateRadio.props.onChange('immediately');
+    delayTextfield.props().onChange(100);
+    immediateRadio.props().onChange('immediately', { stopPropagation() {} });
 
     expect(extensionBridge.getSettings().delay).toBeUndefined();
   });
@@ -104,27 +102,27 @@ describe('delayType', () => {
 
     const { delayRadio } = getReactComponents(instance);
 
-    delayRadio.props.onChange('delay');
+    delayRadio.props().onChange('delay', { stopPropagation() {} });
 
     expect(extensionBridge.validate()).toBe(false);
 
-    const { delayErrorTip } = getReactComponents(instance);
+    const { delayTextfield } = getReactComponents(instance);
 
-    expect(delayErrorTip).toBeDefined();
+    expect(delayTextfield.props().invalid).toBe(true);
   });
 
   it('sets error if the delay field is not a number', () => {
     extensionBridge.init();
 
-    const { delayRadio, delayTextfield } = getReactComponents(instance);
+    let { delayRadio, delayTextfield } = getReactComponents(instance);
 
-    delayRadio.props.onChange('delay');
-    delayTextfield.props.onChange('aaa');
+    delayRadio.props().onChange('delay', { stopPropagation() {} });
+    delayTextfield.props().onChange('aaa');
 
     expect(extensionBridge.validate()).toBe(false);
 
-    const { delayErrorTip } = getReactComponents(instance);
+    ({ delayTextfield } = getReactComponents(instance));
 
-    expect(delayErrorTip).toBeDefined();
+    expect(delayTextfield.props().invalid).toBe(true);
   });
 });

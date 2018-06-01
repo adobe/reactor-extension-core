@@ -13,34 +13,26 @@
 /* eslint no-useless-concat: 0 */
 
 import { mount } from 'enzyme';
-import Radio from '@coralui/react-coral/lib/Radio';
-import Checkbox from '@coralui/react-coral/lib/Checkbox';
-import Button from '@coralui/react-coral/lib/Button';
-import Alert from '@coralui/react-coral/lib/Alert';
-import { Field } from 'redux-form';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
+import Radio from '@react/react-spectrum/Radio';
+import Checkbox from '@react/react-spectrum/Checkbox';
+import EditorButton from '../../components/editorButton';
 import CustomCode, { formConfig } from '../customCode';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const fields = wrapper.find(Field);
+  wrapper.update();
   const radios = wrapper.find(Radio);
-  const javaScriptLanguageRadio = radios.filterWhere(n => n.prop('value') === 'javascript').node;
-  const htmlLanguageRadio = radios.filterWhere(n => n.prop('value') === 'html').node;
-  const globalCheckbox = wrapper.find(Checkbox).filterWhere(n => n.prop('name') === 'global').node;
-  const sourceErrorIcon = wrapper.find(ErrorTip).node;
-  const openEditorButton = fields.filterWhere(n => n.prop('name') === 'source').find(Button).node;
-  const [sequentialHtmlAlert, inlineScriptAlert] = wrapper.find(Alert).nodes;
+  const javaScriptLanguageRadio = radios.filterWhere(n => n.prop('value') === 'javascript');
+  const htmlLanguageRadio = radios.filterWhere(n => n.prop('value') === 'html');
+  const globalCheckbox = wrapper.find(Checkbox).filterWhere(n => n.prop('name') === 'global');
+  const openEditorButton = wrapper.find(EditorButton);
 
   return {
     javaScriptLanguageRadio,
     htmlLanguageRadio,
     globalCheckbox,
-    sourceErrorIcon,
-    openEditorButton,
-    sequentialHtmlAlert,
-    inlineScriptAlert
+    openEditorButton
   };
 };
 
@@ -50,13 +42,6 @@ describe('custom code action view', () => {
 
   beforeAll(() => {
     extensionBridge = window.extensionBridge = createExtensionBridge();
-    spyOn(extensionBridge, 'openCodeEditor').and.callFake((options) => {
-      return {
-        then(resolve) {
-          resolve(`${options.code} bar`);
-        }
-      };
-    });
     instance = mount(bootstrap(CustomCode, formConfig, extensionBridge));
   });
 
@@ -78,9 +63,9 @@ describe('custom code action view', () => {
       globalCheckbox
     } = getReactComponents(instance);
 
-    expect(javaScriptLanguageRadio.props.checked).toBe(false);
-    expect(htmlLanguageRadio.props.checked).toBe(true);
-    expect(globalCheckbox).toBeUndefined();
+    expect(javaScriptLanguageRadio.props().checked).toBe(false);
+    expect(htmlLanguageRadio.props().checked).toBe(true);
+    expect(globalCheckbox.exists()).toBe(false);
 
     extensionBridge.init({
       settings: {
@@ -96,9 +81,9 @@ describe('custom code action view', () => {
       globalCheckbox
     } = getReactComponents(instance));
 
-    expect(javaScriptLanguageRadio.props.checked).toBe(true);
-    expect(htmlLanguageRadio.props.checked).toBe(false);
-    expect(globalCheckbox.props.checked).toBe(true);
+    expect(javaScriptLanguageRadio.props().checked).toBe(true);
+    expect(htmlLanguageRadio.props().checked).toBe(false);
+    expect(globalCheckbox.props().checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -110,14 +95,14 @@ describe('custom code action view', () => {
       globalCheckbox
     } = getReactComponents(instance);
 
-    htmlLanguageRadio.props.onChange('html');
-    globalCheckbox.props.onChange(true);
+    htmlLanguageRadio.props().onChange(true, { stopPropagation() {} });
+    globalCheckbox.props().onChange(true);
 
     expect(extensionBridge.getSettings()).toEqual({
       language: 'html'
     });
 
-    javaScriptLanguageRadio.props.onChange('javascript');
+    javaScriptLanguageRadio.props().onChange(true, { stopPropagation() {} });
 
     expect(extensionBridge.getSettings()).toEqual({
       language: 'javascript',
@@ -130,10 +115,10 @@ describe('custom code action view', () => {
     expect(extensionBridge.validate()).toBe(false);
 
     const {
-      sourceErrorIcon
+      openEditorButton
     } = getReactComponents(instance);
 
-    expect(sourceErrorIcon.props.children).toBeDefined();
+    expect(openEditorButton.props().invalid).toBe(true);
   });
 
   it('allows user to provide custom code', () => {
@@ -148,7 +133,7 @@ describe('custom code action view', () => {
       openEditorButton
     } = getReactComponents(instance);
 
-    openEditorButton.props.onClick();
+    openEditorButton.props().onChange('foo bar');
 
     expect(extensionBridge.getSettings()).toEqual({
       language: 'javascript',

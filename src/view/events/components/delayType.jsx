@@ -11,41 +11,31 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Radio from '@coralui/redux-form-react-coral/lib/Radio';
-import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
-import { Field } from 'redux-form';
-import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
+import Radio from '@react/react-spectrum/Radio';
+import RadioGroup from '@react/react-spectrum/RadioGroup';
+import Textfield from '@react/react-spectrum/Textfield';
+import WrappedField from '../../components/wrappedField';
 
 import { isNumberLikeInRange } from '../../utils/validators';
 
 export default () => (
   <div>
     <label>
-      <span className="u-label u-gapRight">Trigger</span>
+      <span className="u-verticalAlignMiddle u-gapRight">Trigger</span>
     </label>
-    <Field
+    <WrappedField
       name="delayType"
-      component={ Radio }
-      type="radio"
-      value="immediate"
+      component={ RadioGroup }
     >
-      immediately
-    </Field>
-    <Field
-      name="delayType"
-      component={ Radio }
-      type="radio"
-      value="delay"
-    >
-      after
-    </Field>
-    <Field
+      <Radio value="immediate" label="immediately" />
+      <Radio value="delay" label="after" />
+    </WrappedField>
+    <WrappedField
       name="delay"
-      component={ DecoratedInput }
-      inputComponent={ Textfield }
+      component={ Textfield }
     />
     <label>
-      <span className="u-label u-gapLeft">milliseconds</span>
+      <span className="u-verticalAlignMiddle u-gapRight u-gapLeft">milliseconds</span>
     </label>
   </div>
 );

@@ -11,21 +11,19 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import Select from '@coralui/react-coral/lib/Select';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
+import Textfield from '@react/react-spectrum/Textfield';
+import Select from '@react/react-spectrum/Select';
 import MaxFrequency, { formConfig } from '../maxFrequency';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const countTextfield = wrapper.find(Textfield).node;
-  const countErrorTip = wrapper.find(ErrorTip).node;
-  const unitSelect = wrapper.find(Select).node;
+  wrapper.update();
+  const countTextfield = wrapper.find(Textfield);
+  const unitSelect = wrapper.find(Select);
 
   return {
     countTextfield,
-    countErrorTip,
     unitSelect
   };
 };
@@ -44,8 +42,8 @@ describe('max frequency condition view', () => {
 
     const { unitSelect, countTextfield } = getReactComponents(instance);
 
-    expect(unitSelect.props.value).toBe('pageView');
-    expect(countTextfield.props.value).toBe('1');
+    expect(unitSelect.props().value).toBe('pageView');
+    expect(countTextfield.props().value).toBe('1');
   });
 
   it('sets form values from settings', () => {
@@ -61,8 +59,8 @@ describe('max frequency condition view', () => {
       unitSelect
     } = getReactComponents(instance);
 
-    expect(countTextfield.props.value).toBe('3');
-    expect(unitSelect.props.value).toBe('session');
+    expect(countTextfield.props().value).toBe('3');
+    expect(unitSelect.props().value).toBe('session');
   });
 
   it('sets settings from form values', () => {
@@ -73,8 +71,8 @@ describe('max frequency condition view', () => {
       countTextfield
     } = getReactComponents(instance);
 
-    unitSelect.props.onChange({ value: 'session' });
-    countTextfield.props.onChange('3');
+    unitSelect.props().onChange('session');
+    countTextfield.props().onChange('3');
 
     expect(extensionBridge.getSettings()).toEqual({
       count: 3,
@@ -90,29 +88,29 @@ describe('max frequency condition view', () => {
       }
     });
 
-    const {
+    let {
       countTextfield
     } = getReactComponents(instance);
 
-    countTextfield.props.onChange('-1');
-
-    expect(extensionBridge.validate()).toBe(false);
-
-    let {
-      countErrorTip
-    } = getReactComponents(instance);
-
-    expect(countErrorTip).toBeDefined();
-
-    countTextfield.props.onChange('');
+    countTextfield.props().onChange('-1');
 
     expect(extensionBridge.validate()).toBe(false);
 
     ({
-      countErrorTip
+      countTextfield
     } = getReactComponents(instance));
 
-    expect(countErrorTip).toBeDefined();
+    expect(countTextfield.props().invalid).toBe(true);
+
+    countTextfield.props().onChange('');
+
+    expect(extensionBridge.validate()).toBe(false);
+
+    ({
+      countTextfield
+    } = getReactComponents(instance));
+
+    expect(countTextfield.props().invalid).toBe(true);
   });
 
   describe('visitor unit', () => {
@@ -128,8 +126,8 @@ describe('max frequency condition view', () => {
         unitSelect
       } = getReactComponents(instance);
 
-      expect(countTextfield).toBeUndefined();
-      expect(unitSelect.props.value).toBe('visitor');
+      expect(countTextfield.exists()).toBe(false);
+      expect(unitSelect.props().value).toBe('visitor');
     });
 
     it('sets settings from form values', () => {
@@ -139,7 +137,7 @@ describe('max frequency condition view', () => {
         unitSelect
       } = getReactComponents(instance);
 
-      unitSelect.props.onChange({ value: 'visitor' });
+      unitSelect.props().onChange('visitor');
 
       expect(extensionBridge.getSettings()).toEqual({
         unit: 'visitor'

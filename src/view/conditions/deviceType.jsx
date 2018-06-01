@@ -11,8 +11,8 @@
  ****************************************************************************************/
 
 import React from 'react';
-import { Field } from 'redux-form';
-import Alert from '@coralui/react-coral/lib/Alert';
+import { Toast } from '@react/react-spectrum/Toast';
+import WrappedField from '../components/wrappedField';
 import CheckboxList from '../components/checkboxList';
 
 const deviceTypeOptions = [
@@ -28,10 +28,10 @@ const deviceTypeOptions = [
 
 const DeviceType = () => (
   <div>
-    <Alert variant="warning">
+    <Toast variant="warning" className="u-gapBottom">
       This condition type is no longer supported. Please avoid its use.
-    </Alert>
-    <Field name="deviceTypes" component={ CheckboxList } options={ deviceTypeOptions } />
+    </Toast>
+    <WrappedField name="deviceTypes" component={ CheckboxList } options={ deviceTypeOptions } />
   </div>
 );
 

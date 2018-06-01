@@ -11,30 +11,26 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import Radio from '@coralui/react-coral/lib/Radio';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
-import { Field } from 'redux-form';
+import Textfield from '@react/react-spectrum/Textfield';
+import Radio from '@react/react-spectrum/Radio';
+import WrappedField from '../../components/wrappedField';
 import EntersViewport, { formConfig } from '../entersViewport';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const fields = wrapper.find(Field);
+  wrapper.update();
+  const fields = wrapper.find(WrappedField);
 
   const elementSelectorField = fields.filterWhere(n => n.prop('name') === 'elementSelector');
-  const elementSelectorTextfield = elementSelectorField.find(Textfield).node;
-  const elementSelectorErrorTip = elementSelectorField.find(ErrorTip).node;
+  const elementSelectorTextfield = elementSelectorField.find(Textfield);
   const delayField = fields.filterWhere(n => n.prop('name') === 'delay');
-  const delayTextfield = delayField.find(Textfield).node;
-  const delayErrorTip = delayField.find(ErrorTip).node;
-  const delayRadio = wrapper.find(Radio).filterWhere(n => n.prop('value') === 'delay').node;
+  const delayTextfield = delayField.find(Textfield);
+  const delayRadio = wrapper.find(Radio).filterWhere(n => n.prop('value') === 'delay');
 
   return {
     elementSelectorTextfield,
-    elementSelectorErrorTip,
     delayTextfield,
-    delayErrorTip,
     delayRadio
   };
 };
@@ -58,19 +54,19 @@ describe('enters viewport event view', () => {
 
     const { elementSelectorTextfield, delayTextfield } = getReactComponents(instance);
 
-    expect(elementSelectorTextfield.props.value).toBe('.foo');
-    expect(delayTextfield.props.value).toBe(100);
+    expect(elementSelectorTextfield.props().value).toBe('.foo');
+    expect(delayTextfield.props().value).toBe(100);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { delayRadio } = getReactComponents(instance);
-    delayRadio.props.onChange('delay');
+    delayRadio.props().onChange('delay', { stopPropagation() {} });
 
     const { elementSelectorTextfield, delayTextfield } = getReactComponents(instance);
-    elementSelectorTextfield.props.onChange('.foo');
-    delayTextfield.props.onChange(100);
+    elementSelectorTextfield.props().onChange('.foo');
+    delayTextfield.props().onChange(100);
 
     const { elementSelector, delay } = extensionBridge.getSettings();
 
@@ -85,16 +81,16 @@ describe('enters viewport event view', () => {
       delayRadio
     } = getReactComponents(instance);
 
-    delayRadio.props.onChange('delay');
+    delayRadio.props().onChange('delay', { stopPropagation() {} });
 
     expect(extensionBridge.validate()).toBe(false);
 
     const {
-      delayErrorTip,
-      elementSelectorErrorTip
+      delayTextfield,
+      elementSelectorTextfield
     } = getReactComponents(instance);
 
-    expect(delayErrorTip).toBeDefined();
-    expect(elementSelectorErrorTip).toBeDefined();
+    expect(delayTextfield.props().invalid).toBe(true);
+    expect(elementSelectorTextfield.props().invalid).toBe(true);
   });
 });

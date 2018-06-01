@@ -24,13 +24,13 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
-import Checkbox from '@coralui/redux-form-react-coral/lib/Checkbox';
-import { Field, formValueSelector } from 'redux-form';
-import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
-import Alert from '@coralui/react-coral/lib/Alert';
-import Select from '@coralui/redux-form-react-coral/lib/Select';
+import Textfield from '@react/react-spectrum/Textfield';
+import Checkbox from '@react/react-spectrum/Checkbox';
+import { formValueSelector } from 'redux-form';
+import { Toast } from '@react/react-spectrum/Toast';
+import Select from '@react/react-spectrum/Select';
 import RegexTestButton from '../components/regexTestButton';
+import WrappedField from '../components/wrappedField';
 import { isDataElementToken, isNumberLike } from '../utils/validators';
 
 const operators = {
@@ -178,9 +178,9 @@ const NoTypeConversionReminder = (props) => {
   return (props.operator === operators.EQUALS || props.operator === operators.DOES_NOT_EQUAL) &&
     sketchyStrings.indexOf(props.value.toLowerCase()) !== -1 ?
     (
-      <Alert className="u-block" variant="warning">
+      <Toast className="u-gapTop" variant="warning">
         Be aware that the value &quot;{props.value}&quot; will be compared as a string.
-      </Alert>
+      </Toast>
     ) : null;
 };
 
@@ -190,13 +190,13 @@ const RightOperandFields = (props) => {
       props.operator === operators.DOES_NOT_MATCH_REGEX ?
       (
         <div>
-          <Field
+          <WrappedField
             name="rightOperand"
             className="u-gapRight"
-            component={ DecoratedInput }
-            inputComponent={ Textfield }
+            component={ Textfield }
+            supportDataElement
           />
-          <Field
+          <WrappedField
             name="rightOperand"
             className="u-gapRight"
             component={ RegexTestButton }
@@ -206,10 +206,9 @@ const RightOperandFields = (props) => {
       ) :
       (
         <div>
-          <Field
+          <WrappedField
             name="rightOperand"
-            component={ DecoratedInput }
-            inputComponent={ Textfield }
+            component={ Textfield }
             supportDataElement
           />
           <NoTypeConversionReminder operator={ props.operator } value={ props.rightOperand } />
@@ -226,30 +225,28 @@ const ValueComparison = props => (
       Return true if
     </div>
     <div className="u-gapBottom">
-      <Field
+      <WrappedField
         name="leftOperand"
-        component={ DecoratedInput }
-        inputComponent={ Textfield }
+        component={ Textfield }
         supportDataElement
       />
     </div>
     <div className="u-gapBottom">
-      <Field
+      <WrappedField
         name="operator"
         className="u-gapRight"
         component={ Select }
         options={ operatorOptions }
-        backspaceRemoves={ false }
       />
       {
         metaByOperator[props.operator].supportsCaseSensitivity ?
           (
-            <Field
+            <WrappedField
               name="caseInsensitive"
               component={ Checkbox }
             >
               Case Insensitive
-            </Field>
+            </WrappedField>
           ) : null
       }
     </div>

@@ -12,11 +12,11 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { Field } from 'redux-form';
+import WrappedField from '../components/wrappedField';
 import CheckboxList from '../components/checkboxList';
 
 const Domain = props =>
-  (<Field name="domains" component={ CheckboxList } options={ props.domainOptions } />);
+  (<WrappedField name="domains" component={ CheckboxList } options={ props.domainOptions } />);
 
 const stateToProps = state => ({
   domainOptions: state.meta.propertySettings ? state.meta.propertySettings.domains : []

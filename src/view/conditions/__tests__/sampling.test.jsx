@@ -11,23 +11,17 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
-import { Field } from 'redux-form';
+import Textfield from '@react/react-spectrum/Textfield';
 import Sampling, { formConfig } from '../sampling';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const fields = wrapper.find(Field);
-  const rateField = fields.filterWhere(n => n.prop('name') === 'rate');
-  const rateTextfield = rateField.find(Textfield).node;
-  const rateErrorTip = rateField.find(ErrorTip).node;
+  wrapper.update();
+  const rateTextfield = wrapper.find(Textfield);
 
   return {
-    rateField,
-    rateTextfield,
-    rateErrorTip
+    rateTextfield
   };
 };
 
@@ -49,7 +43,7 @@ describe('sampling condition view', () => {
 
     const { rateTextfield } = getReactComponents(instance);
 
-    expect(rateTextfield.props.value).toBe(25);
+    expect(rateTextfield.props().value).toBe(25);
   });
 
   it('sets settings from form values', () => {
@@ -57,7 +51,7 @@ describe('sampling condition view', () => {
 
     const { rateTextfield } = getReactComponents(instance);
 
-    rateTextfield.props.onChange('25');
+    rateTextfield.props().onChange('25');
 
     expect(extensionBridge.getSettings()).toEqual({
       rate: 0.25
@@ -67,65 +61,66 @@ describe('sampling condition view', () => {
   it('sets error if rate is not provided', () => {
     extensionBridge.init();
 
-    const { rateTextfield } = getReactComponents(instance);
+    let { rateTextfield } = getReactComponents(instance);
 
-    rateTextfield.props.onChange('');
+    rateTextfield.props().onChange('');
     expect(extensionBridge.validate()).toBe(false);
 
-    const { rateErrorTip } = getReactComponents(instance);
+    ({ rateTextfield } = getReactComponents(instance));
 
-    expect(rateErrorTip).toBeDefined();
+    expect(rateTextfield.props().invalid).toBe(true);
   });
 
   it('sets error if rate is not a number', () => {
     extensionBridge.init();
 
-    const { rateTextfield } = getReactComponents(instance);
+    let { rateTextfield } = getReactComponents(instance);
 
-    rateTextfield.props.onChange('abc');
+    rateTextfield.props().onChange('abc');
     expect(extensionBridge.validate()).toBe(false);
 
-    const { rateErrorTip } = getReactComponents(instance);
+    ({ rateTextfield } = getReactComponents(instance));
 
-    expect(rateErrorTip).toBeDefined();
+    expect(rateTextfield.props().invalid).toBe(true);
   });
 
   it('sets error if rate is less than 0', () => {
     extensionBridge.init();
 
-    const { rateTextfield } = getReactComponents(instance);
+    let { rateTextfield } = getReactComponents(instance);
 
-    rateTextfield.props.onChange('-1');
+    rateTextfield.props().onChange('-1');
     expect(extensionBridge.validate()).toBe(false);
 
-    const { rateErrorTip } = getReactComponents(instance);
+    ({ rateTextfield } = getReactComponents(instance));
 
-    expect(rateErrorTip).toBeDefined();
+    expect(rateTextfield.props().invalid).toBe(true);
   });
 
   it('sets error if rate is greater than 1', () => {
     extensionBridge.init();
 
-    const { rateTextfield } = getReactComponents(instance);
+    let { rateTextfield } = getReactComponents(instance);
 
-    rateTextfield.props.onChange('101');
+    rateTextfield.props().onChange('101');
     expect(extensionBridge.validate()).toBe(false);
 
-    const { rateErrorTip } = getReactComponents(instance);
+    ({ rateTextfield } = getReactComponents(instance));
 
-    expect(rateErrorTip).toBeDefined();
+    expect(rateTextfield.props().invalid).toBe(true);
   });
 
   it('sets error if rate is not an integer', () => {
     extensionBridge.init();
 
-    const { rateTextfield } = getReactComponents(instance);
+    let { rateTextfield } = getReactComponents(instance);
 
-    rateTextfield.props.onChange('55.55');
+    rateTextfield.props().onChange('55.55');
     expect(extensionBridge.validate()).toBe(false);
 
-    const { rateErrorTip } = getReactComponents(instance);
 
-    expect(rateErrorTip).toBeDefined();
+    ({ rateTextfield } = getReactComponents(instance));
+
+    expect(rateTextfield.props().invalid).toBe(true);
   });
 });

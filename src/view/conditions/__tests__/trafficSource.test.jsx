@@ -11,22 +11,20 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import Switch from '@coralui/react-coral/lib/Switch';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
+import Textfield from '@react/react-spectrum/Textfield';
+import RegexToggle from '../../components/regexToggle';
 import TrafficSource, { formConfig } from '../trafficSource';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const sourceTextfield = wrapper.find(Textfield).node;
-  const valueRegexSwitch = wrapper.find(Switch).node;
-  const sourceErrorTip = wrapper.find(ErrorTip).node;
+  wrapper.update();
+  const sourceTextfield = wrapper.find(Textfield);
+  const valueRegexToggle = wrapper.find(RegexToggle);
 
   return {
     sourceTextfield,
-    valueRegexSwitch,
-    sourceErrorTip
+    valueRegexToggle
   };
 };
 
@@ -47,19 +45,19 @@ describe('traffic source condition view', () => {
       }
     });
 
-    const { sourceTextfield, valueRegexSwitch } = getReactComponents(instance);
+    const { sourceTextfield, valueRegexToggle } = getReactComponents(instance);
 
-    expect(sourceTextfield.props.value).toBe('foo');
-    expect(valueRegexSwitch.props.checked).toBe(true);
+    expect(sourceTextfield.props().value).toBe('foo');
+    expect(valueRegexToggle.props().value).toBe(true);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { sourceTextfield, valueRegexSwitch } = getReactComponents(instance);
+    const { sourceTextfield, valueRegexToggle } = getReactComponents(instance);
 
-    sourceTextfield.props.onChange('foo');
-    valueRegexSwitch.props.onChange({ target: { checked: true } });
+    sourceTextfield.props().onChange('foo');
+    valueRegexToggle.props().onChange(true);
 
     expect(extensionBridge.getSettings()).toEqual({
       source: 'foo',
@@ -71,8 +69,8 @@ describe('traffic source condition view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { sourceErrorTip } = getReactComponents(instance);
+    const { sourceTextfield } = getReactComponents(instance);
 
-    expect(sourceErrorTip).toBeDefined();
+    expect(sourceTextfield.props().invalid).toBe(true);
   });
 });

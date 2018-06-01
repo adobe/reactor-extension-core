@@ -12,18 +12,21 @@
 
 import { mount } from 'enzyme';
 import React from 'react';
-import Button from '@coralui/react-coral/lib/Button';
+import Button from '@react/react-spectrum/Button';
 import MultipleItemEditor from '../multipleItemEditor';
 
 const getReactComponents = (wrapper) => {
-  const rows = wrapper.find('div[data-type="row"]').nodes;
-  const removeButtons = wrapper.find(Button).filterWhere(n => n.prop('icon') === 'close').nodes;
-  const addButton = wrapper.find(Button)
-    .filterWhere(n => n.prop('className') === 'MultipleItemEditor-addPatternButton').node;
+  wrapper.update();
+  const rows = wrapper.find('div[data-type="row"]').map((row) => {
+    return {
+      element: row,
+      removeButton: row.find(Button)
+    };
+  });
+  const addButton = wrapper.find(Button).last();
 
   return {
     rows,
-    removeButtons,
     addButton
   };
 };
@@ -47,23 +50,23 @@ describe('multiple item editor', () => {
     expect(props.renderItem).toHaveBeenCalledTimes(2);
     expect(rows[0]).toBeDefined();
     expect(rows[1]).toBeDefined();
-    expect(rows[0]).not.toBe(rows[1]);
+    expect(rows[0].element).not.toBe(rows[1].element);
   });
 
   it('calls onAddItem when add button is clicked', () => {
     const props = getTestProps();
     const { addButton } = getReactComponents(render(props));
 
-    addButton.props.onClick();
+    addButton.props().onClick();
 
     expect(props.fields.push).toHaveBeenCalled();
   });
 
   it('calls onRemoveItem when remove button is clicked for a row', () => {
     const props = getTestProps();
-    const { removeButtons } = getReactComponents(render(props));
+    const { rows } = getReactComponents(render(props));
 
-    removeButtons[1].props.onClick();
+    rows[1].removeButton.props().onClick();
 
     expect(props.fields.remove).toHaveBeenCalledWith(1);
   });

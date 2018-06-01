@@ -11,20 +11,17 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Button from '@coralui/react-coral/lib/Button';
-import { ErrorTip } from '@reactor/react-components';
-
+import EditorButton from '../../components/editorButton';
 import CustomCode, { formConfig } from '../customCode';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const openEditorButton = wrapper.find(Button).node;
-  const sourceErrorIcon = wrapper.find(ErrorTip).node;
+  wrapper.update();
+  const openEditorButton = wrapper.find(EditorButton);
 
   return {
-    openEditorButton,
-    sourceErrorIcon
+    openEditorButton
   };
 };
 
@@ -34,13 +31,6 @@ describe('custom code data element view', () => {
 
   beforeAll(() => {
     extensionBridge = window.extensionBridge = createExtensionBridge();
-    spyOn(extensionBridge, 'openCodeEditor').and.callFake((options) => {
-      return {
-        then(resolve) {
-          resolve(`${options.code} bar`);
-        }
-      };
-    });
     instance = mount(bootstrap(CustomCode, formConfig, extensionBridge));
   });
 
@@ -53,9 +43,9 @@ describe('custom code data element view', () => {
 
     expect(extensionBridge.validate()).toBe(false);
 
-    const { sourceErrorIcon } = getReactComponents(instance);
+    const { openEditorButton } = getReactComponents(instance);
 
-    expect(sourceErrorIcon.props.children).toEqual(jasmine.any(String));
+    expect(openEditorButton.props().invalid).toBe(true);
   });
 
   it('allows user to provide custom code', () => {
@@ -69,7 +59,7 @@ describe('custom code data element view', () => {
       openEditorButton
     } = getReactComponents(instance);
 
-    openEditorButton.props.onClick();
+    openEditorButton.props().onChange('foo bar');
 
     expect(extensionBridge.getSettings()).toEqual({
       source: 'foo bar'

@@ -11,27 +11,19 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Radio from '@coralui/redux-form-react-coral/lib/Radio';
-import { Field } from 'redux-form';
+import Radio from '@react/react-spectrum/Radio';
+import RadioGroup from '@react/react-spectrum/RadioGroup';
+import WrappedField from '../components/wrappedField';
 
 const Protocol = () => (
   <div>
-    <Field
+    <WrappedField
       name="protocol"
-      component={ Radio }
-      type="radio"
-      value="http:"
+      component={ RadioGroup }
     >
-      HTTP
-    </Field>
-    <Field
-      name="protocol"
-      component={ Radio }
-      type="radio"
-      value="https:"
-    >
-      HTTPS
-    </Field>
+      <Radio value="http:" label="HTTP" />
+      <Radio value="https:" label="HTTPS" />
+    </WrappedField>
   </div>
 );
 

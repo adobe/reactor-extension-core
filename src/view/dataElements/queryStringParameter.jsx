@@ -11,27 +11,25 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Checkbox from '@coralui/redux-form-react-coral/lib/Checkbox';
-import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
-import { Field } from 'redux-form';
-import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
+import Checkbox from '@react/react-spectrum/Checkbox';
+import Textfield from '@react/react-spectrum/Textfield';
+import WrappedField from '../components/wrappedField';
 
 const QueryStringParameter = () => (
   <div>
     <label className="u-gapRight">
-      <span className="u-label">URL Query String Parameter Name</span>
-      <Field
+      <span className="u-verticalAlignMiddle u-gapRight">URL Query String Parameter Name</span>
+      <WrappedField
         name="name"
-        component={ DecoratedInput }
-        inputComponent={ Textfield }
+        component={ Textfield }
       />
     </label>
-    <Field
+    <WrappedField
       name="caseInsensitive"
       component={ Checkbox }
     >
       Allow capitalization differences (case-insensitive)
-    </Field>
+    </WrappedField>
   </div>
 );
 

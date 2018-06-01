@@ -11,13 +11,14 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Select from '@coralui/react-coral/lib/Select';
+import Select from '@react/react-spectrum/Select';
 import VisitorBehavior, { formConfig } from '../visitorBehavior';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const attributeSelect = wrapper.find(Select).node;
+  wrapper.update();
+  const attributeSelect = wrapper.find(Select);
 
   return {
     attributeSelect
@@ -42,7 +43,7 @@ describe('visitor behavior data element view', () => {
 
     const { attributeSelect } = getReactComponents(instance);
 
-    expect(attributeSelect.props.value).toBe('minutesOnSite');
+    expect(attributeSelect.props().value).toBe('minutesOnSite');
   });
 
   it('sets form value defaults', () => {
@@ -50,17 +51,14 @@ describe('visitor behavior data element view', () => {
 
     const { attributeSelect } = getReactComponents(instance);
 
-    expect(attributeSelect.props.value).toBe('landingPage');
+    expect(attributeSelect.props().value).toBe('landingPage');
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
     const { attributeSelect } = getReactComponents(instance);
-    attributeSelect.props.onChange({
-      value: 'minutesOnSite',
-      label: 'Minutes On Site'
-    });
+    attributeSelect.props().onChange('minutesOnSite');
 
     expect(extensionBridge.getSettings()).toEqual({
       attribute: 'minutesOnSite'

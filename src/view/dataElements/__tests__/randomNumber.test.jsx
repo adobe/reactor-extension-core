@@ -11,27 +11,23 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@coralui/react-coral/lib/Textfield';
-import ErrorTip from '@reactor/react-components/lib/errorTip';
-import { Field } from 'redux-form';
+import Textfield from '@react/react-spectrum/Textfield';
+import WrappedField from '../../components/wrappedField';
 import RandomNumber, { formConfig } from '../randomNumber';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
-  const fields = wrapper.find(Field);
+  wrapper.update();
+  const fields = wrapper.find(WrappedField);
   const minField = fields.filterWhere(n => n.prop('name') === 'min');
   const maxField = fields.filterWhere(n => n.prop('name') === 'max');
-  const minTextfield = minField.find(Textfield).node;
-  const maxTextfield = maxField.find(Textfield).node;
-  const minErrorTip = minField.find(ErrorTip).node;
-  const maxErrorTip = maxField.find(ErrorTip).node;
+  const minTextfield = minField.find(Textfield);
+  const maxTextfield = maxField.find(Textfield);
 
   return {
     minTextfield,
-    maxTextfield,
-    minErrorTip,
-    maxErrorTip
+    maxTextfield
   };
 };
 
@@ -54,8 +50,8 @@ describe('random number data element view', () => {
 
     const { minTextfield, maxTextfield } = getReactComponents(instance);
 
-    expect(minTextfield.props.value).toBe(100);
-    expect(maxTextfield.props.value).toBe(200);
+    expect(minTextfield.props().value).toBe(100);
+    expect(maxTextfield.props().value).toBe(200);
   });
 
   it('sets form values with defaults', () => {
@@ -64,8 +60,8 @@ describe('random number data element view', () => {
     const { minTextfield, maxTextfield } = getReactComponents(instance);
 
     expect(extensionBridge.validate()).toBe(true);
-    expect(minTextfield.props.value).toBe(0);
-    expect(maxTextfield.props.value).toBe(1000000000);
+    expect(minTextfield.props().value).toBe(0);
+    expect(maxTextfield.props().value).toBe(1000000000);
   });
 
   it('sets default values and validate passes', () => {
@@ -83,8 +79,8 @@ describe('random number data element view', () => {
     extensionBridge.init();
 
     const { minTextfield, maxTextfield } = getReactComponents(instance);
-    minTextfield.props.onChange('100');
-    maxTextfield.props.onChange('200');
+    minTextfield.props().onChange('100');
+    maxTextfield.props().onChange('200');
 
     expect(extensionBridge.getSettings()).toEqual({
       min: 100,
@@ -95,48 +91,45 @@ describe('random number data element view', () => {
   it('sets errors if values are not provided', () => {
     extensionBridge.init();
 
-    const { minTextfield, maxTextfield } = getReactComponents(instance);
-    minTextfield.props.onChange('');
-    maxTextfield.props.onChange('');
+    let { minTextfield, maxTextfield } = getReactComponents(instance);
+    minTextfield.props().onChange('');
+    maxTextfield.props().onChange('');
 
     expect(extensionBridge.validate()).toBe(false);
 
-    const { minErrorTip, maxErrorTip } = getReactComponents(instance);
+    ({ minTextfield, maxTextfield } = getReactComponents(instance));
 
-    expect(minErrorTip).toBeDefined();
-    expect(minErrorTip.props.children).toBe('Please specify a minimum integer.');
-
-    expect(maxErrorTip).toBeDefined();
-    expect(maxErrorTip.props.children).toBe('Please specify a maximum integer.');
+    expect(minTextfield.props().invalid).toBe(true);
+    expect(maxTextfield.props().invalid).toBe(true);
   });
 
   it('sets errors if values are not integers', () => {
     extensionBridge.init();
 
-    const { minTextfield, maxTextfield } = getReactComponents(instance);
-    minTextfield.props.onChange('1.5');
-    maxTextfield.props.onChange('asdf');
+    let { minTextfield, maxTextfield } = getReactComponents(instance);
+    minTextfield.props().onChange('1.5');
+    maxTextfield.props().onChange('asdf');
 
     expect(extensionBridge.validate()).toBe(false);
 
-    const { minErrorTip, maxErrorTip } = getReactComponents(instance);
+    ({ minTextfield, maxTextfield } = getReactComponents(instance));
 
-    expect(minErrorTip).toBeDefined();
-    expect(maxErrorTip).toBeDefined();
+    expect(minTextfield.props().invalid).toBe(true);
+    expect(maxTextfield.props().invalid).toBe(true);
   });
 
   it('sets errors if min is greater than max', () => {
     extensionBridge.init();
 
-    const { minTextfield, maxTextfield } = getReactComponents(instance);
-    minTextfield.props.onChange('200');
-    maxTextfield.props.onChange('100');
+    let { minTextfield, maxTextfield } = getReactComponents(instance);
+    minTextfield.props().onChange('200');
+    maxTextfield.props().onChange('100');
 
     expect(extensionBridge.validate()).toBe(false);
 
-    const { minErrorTip, maxErrorTip } = getReactComponents(instance);
+    ({ minTextfield, maxTextfield } = getReactComponents(instance));
 
-    expect(minErrorTip).toBeDefined();
-    expect(maxErrorTip).toBeDefined();
+    expect(minTextfield.props().invalid).toBe(true);
+    expect(maxTextfield.props().invalid).toBe(true);
   });
 });

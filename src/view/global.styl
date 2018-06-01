@@ -1,9 +1,9 @@
-@import '~@reactor/react-components/lib/index.css';
-
 $gap = 8px;
-$fieldHeight = 38px;
+$fieldHeight = 32px;
 
-body {
+// This is padding that goes around all the content. We put the padding on the Provider container
+// instead of the body because of https://jira.corp.adobe.com/browse/RSP-276
+.react-spectrum-provider {
   padding: 12px;
 }
 
@@ -19,16 +19,6 @@ code {
   background-color: #f5f5f5;
   color: #4b4b4b;
   font-family: monospace;
-}
-
-.coral-Datepicker {
-  // Without this, they are misaligned vertically with accompanying labels.
-  vertical-align: middle;
-}
-
-.u-label {
-  line-height: $fieldHeight !important;
-  margin-right: $gap !important;
 }
 
 .u-gapLeft {
@@ -56,43 +46,52 @@ code {
 }
 
 .u-buttonReset {
-  display: inline-block;
-  padding: 0;
-  font-size: inherit;
-  cursor: pointer;
-  background-color: transparent;
-  border: 0;
-  user-select: none;
-  outline: none;
-  text-decoration: none;
-  line-height: $fieldHeight;
+  display: inline-block !important;
+  padding: 0 !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  cursor: pointer !important;
+  background-color: transparent !important;
+  border: 0 !important;
+  user-select: none !important;
+  outline: none !important;
+  text-decoration: none !important;
+  line-height: $fieldHeight !important;
 
   &:focus,
   &:hover {
-    text-decoration: underline;
+    text-decoration: underline !important;
   }
 }
 
 .u-italic {
-  font-style: italic
+  font-style: italic !important;
 }
 
 .u-smallTextfield {
-  width: 6rem;
+  width: 6rem !important;
 }
 
 .u-noWrap {
-  white-space: nowrap;
+  white-space: nowrap !important;
 }
 
 .u-noPadding {
-  padding: 0;
+  padding: 0 !important;
 }
 
 .u-noPaddingRight {
-  padding-right: 0;
+  padding-right: 0 !important;
 }
 
 .u-floatLeft {
-  float: left;
+  float: left !important;
+}
+
+.u-verticalAlignMiddle {
+  vertical-align: middle !important;
+}
+
+.u-clearfix {
+  clearfix();
 }

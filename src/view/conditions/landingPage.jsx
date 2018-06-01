@@ -11,24 +11,20 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
-import { Field } from 'redux-form';
-import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
-
-
+import Textfield from '@react/react-spectrum/Textfield';
+import WrappedField from '../components/wrappedField';
 import RegexToggle from '../components/regexToggle';
 
 export default () => (
   <div>
     <label className="u-gapRight">
-      <span className="u-label">Landing page equals</span>
-      <Field
+      <span className="u-verticalAlignMiddle u-gapRight">Landing page equals</span>
+      <WrappedField
         name="page"
-        component={ DecoratedInput }
-        inputComponent={ Textfield }
+        component={ Textfield }
       />
     </label>
-    <Field
+    <WrappedField
       name="pageIsRegex"
       component={ RegexToggle }
       valueFieldName="page"

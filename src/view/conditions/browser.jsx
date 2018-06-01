@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 import React from 'react';
-import { Field } from 'redux-form';
+import WrappedField from '../components/wrappedField';
 import CheckboxList from '../components/checkboxList';
 
 const browserOptions = [
@@ -24,7 +24,7 @@ const browserOptions = [
 ];
 
 const Browser = () =>
-  (<Field name="browsers" component={ CheckboxList } options={ browserOptions } />);
+  (<WrappedField name="browsers" component={ CheckboxList } options={ browserOptions } />);
 
 export default Browser;
 

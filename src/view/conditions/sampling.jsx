@@ -11,21 +11,19 @@
  ****************************************************************************************/
 
 import React from 'react';
-import { Field } from 'redux-form';
-import Textfield from '@coralui/redux-form-react-coral/lib/Textfield';
-import DecoratedInput from '@reactor/react-components/lib/reduxForm/decoratedInput';
+import Textfield from '@react/react-spectrum/Textfield';
+import WrappedField from '../components/wrappedField';
 
 const Sampling = () => (
   <div>
     <label>
-      <span className="u-label">Return true</span>
-      <Field
+      <span className="u-verticalAlignMiddle u-gapRight">Return true</span>
+      <WrappedField
         name="rate"
-        component={ DecoratedInput }
-        inputComponent={ Textfield }
-        inputClassName="u-smallTextfield"
+        component={ Textfield }
+        componentClassName="u-smallTextfield"
       />
-      <span className="u-label u-gapLeft">percent of the time.</span>
+      <span className="u-verticalAlignMiddle u-gapRight u-gapLeft">percent of the time.</span>
     </label>
   </div>
 );
