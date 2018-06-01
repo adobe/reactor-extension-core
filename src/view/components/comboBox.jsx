@@ -16,7 +16,6 @@
  * from Adobe Systems Incorporated.
  **************************************************************************/
 
-import React from 'react';
 import SpectrumComboBox from '@react/react-spectrum/ComboBox';
 
 // Adds support for "contains" matching.

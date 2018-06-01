@@ -87,7 +87,6 @@ describe('checkbox list', () => {
       onChange
     }));
 
-    debugger;
     const testCheckbox = checkboxes.at(2);
 
     testCheckbox.props().onChange(

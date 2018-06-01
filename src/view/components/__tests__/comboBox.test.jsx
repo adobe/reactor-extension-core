@@ -12,9 +12,9 @@
 
 import React from 'react';
 import { mount } from 'enzyme';
-import ComboBox from '../comboBox';
 import Textfield from '@react/react-spectrum/Textfield';
 import { MenuItem } from '@react/react-spectrum/Menu';
+import ComboBox from '../comboBox';
 
 const options = [
   'Apple',
