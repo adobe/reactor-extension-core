@@ -2,7 +2,6 @@ __tests__
 coverage
 test_results
 testrunner
-webpack.config.js
 sonar-project.properties
 src/view
 reactor-core-extension-2.0.0.tgz
