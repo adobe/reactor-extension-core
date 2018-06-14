@@ -12,7 +12,7 @@
 
 import React from 'react';
 import Datepicker from '@react/react-spectrum/Datepicker';
-import ComboBox from '@react/react-spectrum/ComboBox';
+import ComboBox from '../components/comboBox';
 import moment from 'moment-timezone';
 import InfoTip from '../components/infoTip';
 import WrappedField from '../components/wrappedField';
