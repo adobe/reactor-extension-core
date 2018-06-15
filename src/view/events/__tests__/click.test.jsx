@@ -26,6 +26,8 @@ const getReactComponents = (wrapper) => {
 
   const delayLinkActivationCheckbox = checkboxes
     .filterWhere(n => n.prop('name') === 'delayLinkActivation');
+  const anchorDelayField = fields.filterWhere(n => n.prop('name') === 'anchorDelay');
+  const anchorDelayTextfield = anchorDelayField.find(Textfield);
   const elementSelectorField = fields.filterWhere(n => n.prop('name') === 'elementSelector');
   const elementSelectorTextfield = elementSelectorField.find(Textfield);
   const bubbleStopCheckbox = checkboxes.filterWhere(n => n.prop('name') === 'bubbleStop');
@@ -34,6 +36,7 @@ const getReactComponents = (wrapper) => {
   return {
     delayLinkActivationCheckbox,
     elementSelectorTextfield,
+    anchorDelayTextfield,
     bubbleStopCheckbox,
     advancedEventOptions
   };
@@ -51,7 +54,7 @@ describe('click event view', () => {
   it('sets form values from settings', () => {
     extensionBridge.init({
       settings: {
-        delayLinkActivation: true,
+        anchorDelay: 101,
         elementSelector: '.foo',
         bubbleStop: true
       }
@@ -61,12 +64,12 @@ describe('click event view', () => {
     advancedEventOptions.instance().toggleSelected();
 
     const {
-      delayLinkActivationCheckbox,
+      anchorDelayTextfield,
       elementSelectorTextfield,
       bubbleStopCheckbox
     } = getReactComponents(instance);
 
-    expect(delayLinkActivationCheckbox.props().value).toBe(true);
+    expect(anchorDelayTextfield.props().value).toBe(101);
     expect(elementSelectorTextfield.props().value).toBe('.foo');
     expect(bubbleStopCheckbox.props().value).toBe(true);
   });
@@ -84,22 +87,50 @@ describe('click event view', () => {
     } = getReactComponents(instance);
 
     delayLinkActivationCheckbox.props().onChange(true);
+    const { anchorDelayTextfield } = getReactComponents(instance);
+
+    anchorDelayTextfield.props().onChange(101);
     elementSelectorTextfield.props().onChange('.foo');
     bubbleStopCheckbox.props().onChange(true);
 
-    const { delayLinkActivation, elementSelector, bubbleStop } = extensionBridge.getSettings();
+    const { anchorDelay, elementSelector, bubbleStop } = extensionBridge.getSettings();
 
-    expect(delayLinkActivation).toBe(true);
+    expect(anchorDelay).toBe(101);
     expect(elementSelector).toBe('.foo');
     expect(bubbleStop).toBe(true);
   });
 
-  it('sets validation errors', () => {
+  it('sets default anchor delay to 100', () => {
+    extensionBridge.init();
+    const { delayLinkActivationCheckbox } = getReactComponents(instance);
+    delayLinkActivationCheckbox.props().onChange(true);
+
+    const { anchorDelayTextfield } = getReactComponents(instance);
+    expect(anchorDelayTextfield.props().value).toBe(100);
+  });
+
+  it('sets validation error when element selector is missing', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
     const { elementSelectorTextfield } = getReactComponents(instance);
 
     expect(elementSelectorTextfield.props().invalid).toBe(true);
+  });
+
+  it('sets validation error when anchor delay is missing', () => {
+    extensionBridge.init({
+      elementSelector: 'div'
+    });
+    const { delayLinkActivationCheckbox } = getReactComponents(instance);
+    delayLinkActivationCheckbox.props().onChange(true);
+
+    let { anchorDelayTextfield } = getReactComponents(instance);
+    anchorDelayTextfield.props().onChange('');
+
+    expect(extensionBridge.validate()).toBe(false);
+
+    ({ anchorDelayTextfield } = getReactComponents(instance));
+    expect(anchorDelayTextfield.props().invalid).toBe(true);
   });
 });

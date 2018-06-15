@@ -31,14 +31,9 @@ var getClickEvent = function() {
 
 describe('click event delegate', function() {
   var mockWindow = {};
-  var propertySettings = {};
   var delegate;
 
   beforeAll(function() {
-    mockTurbineVariable({
-      propertySettings: propertySettings
-    });
-
     delegate = delegateInjector({
       '@adobe/reactor-window': mockWindow
     });
@@ -50,7 +45,7 @@ describe('click event delegate', function() {
 
   testStandardEvent(function() { return delegate; }, 'click');
 
-  describe('delay link activation', function() {
+  describe('anchor delay', function() {
     var INITIAL_LOCATION = 'http://clicktests.com/';
     var LINK_LOCATION = 'http://example.com/';
     var defaultPrevented;
@@ -75,7 +70,6 @@ describe('click event delegate', function() {
     });
 
     beforeEach(function() {
-      delete propertySettings.linkDelay;
       mockWindow.location = INITIAL_LOCATION;
       mockWindow.top = mockWindow;
       mockWindow.name = 'myWindow';
@@ -96,24 +90,9 @@ describe('click event delegate', function() {
       delegate.__reset();
     });
 
-    it('delays navigation by the default delay', function() {
-      delegate({
-        delayLinkActivation: true
-      }, function() {});
-
-      link.click();
-
-      expect(defaultPrevented).toBe(true);
-      jasmine.clock().tick(99);
-      expect(mockWindow.location).toEqual(INITIAL_LOCATION);
-      jasmine.clock().tick(1);
-      expect(mockWindow.location).toEqual(LINK_LOCATION);
-    });
-
     it('delays navigation by a custom delay', function() {
-      propertySettings.linkDelay = 3000;
       delegate({
-        delayLinkActivation: true
+        anchorDelay: 3000
       }, function() {});
 
       link.click();
@@ -124,11 +103,11 @@ describe('click event delegate', function() {
       jasmine.clock().tick(1);
       expect(mockWindow.location).toEqual(LINK_LOCATION);
     });
-
+    
     it('does not delay navigation if no related rule runs', function() {
       delegate({
         elementSelector: 'h2',
-        delayLinkActivation: true
+        anchorDelay: 100
       }, function() {});
 
       link.click();
@@ -138,7 +117,7 @@ describe('click event delegate', function() {
 
     it('does not delay navigation if the element clicked on is not a link', function() {
       delegate({
-        delayLinkActivation: true
+        anchorDelay: 100
       }, function() {});
 
       document.body.click();
@@ -150,7 +129,7 @@ describe('click event delegate', function() {
       link.removeAttribute('href');
 
       delegate({
-        delayLinkActivation: true
+        anchorDelay: 100
       }, function() {});
 
       link.click();
@@ -162,7 +141,7 @@ describe('click event delegate', function() {
       link.setAttribute('target', '_blank');
 
       delegate({
-        delayLinkActivation: true
+        anchorDelay: 100
       }, function() {});
 
       link.click();
@@ -175,7 +154,7 @@ describe('click event delegate', function() {
       link.setAttribute('target', '_top');
 
       delegate({
-        delayLinkActivation: true
+        anchorDelay: 100
       }, function() {});
 
       link.click();
@@ -187,7 +166,7 @@ describe('click event delegate', function() {
       link.setAttribute('target', '_top');
 
       delegate({
-        delayLinkActivation: true
+        anchorDelay: 100
       }, function() {});
 
       link.click();
@@ -199,7 +178,7 @@ describe('click event delegate', function() {
       link.setAttribute('target', '_parent');
 
       delegate({
-        delayLinkActivation: true
+        anchorDelay: 100
       }, function() {});
 
       link.click();
@@ -211,7 +190,7 @@ describe('click event delegate', function() {
       link.setAttribute('target', 'myWindow');
 
       delegate({
-        delayLinkActivation: true
+        anchorDelay: 100
       }, function() {});
 
       link.click();
@@ -223,7 +202,7 @@ describe('click event delegate', function() {
       link.setAttribute('target', 'otherWindow');
 
       delegate({
-        delayLinkActivation: true
+        anchorDelay: 100
       }, function() {});
 
       link.click();

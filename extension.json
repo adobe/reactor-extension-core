@@ -154,8 +154,9 @@
           "bubbleStop": {
             "type": "boolean"
           },
-          "delayLinkActivation": {
-            "type": "boolean"
+          "anchorDelay": {
+            "type": "number",
+            "minimum": 1
           }
         },
         "additionalProperties": false
