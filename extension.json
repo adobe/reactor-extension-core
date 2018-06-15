@@ -1078,23 +1078,6 @@
       }
     },
     {
-      "name": "cookie-opt-out",
-      "categoryName": "Data",
-      "displayName": "Cookie Opt-out",
-      "libPath": "src/lib/conditions/cookieOptOut.js",
-      "viewPath": "conditions/cookieOptOut.html",
-      "schema": {
-        "$schema": "http://json-schema.org/draft-04/schema#",
-        "type": "object",
-        "properties": {
-          "acceptsCookies": {
-            "type": "boolean"
-          }
-        },
-        "additionalProperties": false
-      }
-    },
-    {
       "name": "custom-code",
       "categoryName": "Data",
       "displayName": "Custom Code",
