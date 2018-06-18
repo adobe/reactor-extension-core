@@ -33,6 +33,11 @@ const getReactComponents = (wrapper) => {
   };
 };
 
+const isIE = () => {
+  const myNav = navigator.userAgent.toLowerCase();
+  return (myNav.indexOf('msie') !== -1) ? parseInt(myNav.split('msie')[1], 10) : false;
+};
+
 const render = () => mount(<ComboBox options={ options } />);
 
 describe('combobox', () => {
@@ -55,6 +60,6 @@ describe('combobox', () => {
       expect(menuItems.at(0).props().value).toBe('Apple');
       expect(menuItems.at(1).props().value).toBe('Pineapple');
       done();
-    });
+    }, !isIE() || isIE() > 10 ? 0 : 50);
   });
 });
