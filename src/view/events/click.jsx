@@ -32,7 +32,7 @@ const Click = props => (
     />
 
     {props.delayLinkActivation ? (
-      <div className="u-gapLeft2x u-gapBottom2x">
+      <div className="FieldSubset">
         <span className="u-verticalAlignMiddle u-gapRight">Link delay</span>
         <WrappedField
           name="anchorDelay"
