@@ -22,7 +22,7 @@ var trackedDelaysByElement = new WeakMap();
  * After a mouseenter has occurred, waits a given amount of time before declaring that a hover
  * has occurred.
  * @param {Event} event The mouseenter event.
- * @param {Number} delay The amount of delay in milliseconds. If delay = 0, the handler will be
+ * @param {number} delay The amount of delay in milliseconds. If delay = 0, the handler will be
  * called immediately.
  * @param {Function} handler The function that should be called
  */
@@ -78,7 +78,7 @@ var watchElement = function(element, trackedDelays) {
  * @param {string} settings.elementProperties[].value The property value.
  * @param {boolean} [settings.elementProperties[].valueIsRegex=false] Whether <code>value</code>
  * on the object instance is intended to be a regular expression.
- * @param {Number} [settings.delay] The number of milliseconds the pointer must be on
+ * @param {number} [settings.delay] The number of milliseconds the pointer must be on
  * top of the element before declaring that a hover has occurred.
  * @param {boolean} [settings.bubbleFireIfParent=true] Whether the rule should fire
  * if the event originated from a descendant element.

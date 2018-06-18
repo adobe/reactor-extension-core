@@ -17,7 +17,7 @@
  * the target function after a certain delay has passed without the proxy function being called
  * again.
  * @param {Function} fn The target function to call once the delay period has passed.
- * @param {Number} delay The number of milliseconds that must pass before the target function is
+ * @param {number} delay The number of milliseconds that must pass before the target function is
  * called.
  * @param {Object} [context] The context in which to call the target function.
  * @returns {Function}
