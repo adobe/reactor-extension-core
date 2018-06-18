@@ -31,39 +31,46 @@ const getReactComponents = (wrapper) => {
 
 const render = props => mount(<DisclosureButton { ...props } />);
 
+const isIE = () => {
+  const myNav = navigator.userAgent.toLowerCase();
+  return (myNav.indexOf('msie') !== -1) ? parseInt(myNav.split('msie')[1], 10) : false;
+};
+
 describe('disclosure button', () => {
-  it('shows down chevron when selected', () => {
-    const {
-      chevronDownIcon,
-      chevronRightIcon
-    } = getReactComponents(render({
-      selected: true
-    }));
+  if (!isIE() || isIE() > 10) {
+    it('shows down chevron when selected', () => {
+      const {
+        chevronDownIcon,
+        chevronRightIcon
+      } = getReactComponents(render({
+        selected: true
+      }));
 
-    expect(chevronDownIcon.exists()).toBe(true);
-    expect(chevronRightIcon.exists()).toBe(false);
-  });
+      expect(chevronDownIcon.exists()).toBe(true);
+      expect(chevronRightIcon.exists()).toBe(false);
+    });
 
-  it('shows right chevron when not selected', () => {
-    const {
-      chevronDownIcon,
-      chevronRightIcon
-    } = getReactComponents(render({
-      selected: false
-    }));
+    it('shows right chevron when not selected', () => {
+      const {
+        chevronDownIcon,
+        chevronRightIcon
+      } = getReactComponents(render({
+        selected: false
+      }));
 
-    expect(chevronDownIcon.exists()).toBe(false);
-    expect(chevronRightIcon.exists()).toBe(true);
-  });
+      expect(chevronDownIcon.exists()).toBe(false);
+      expect(chevronRightIcon.exists()).toBe(true);
+    });
 
-  it('calls onClick when clicked', () => {
-    const onClick = jasmine.createSpy();
-    const { buttonWrapper } = getReactComponents(render({
-      onClick
-    }));
+    it('calls onClick when clicked', () => {
+      const onClick = jasmine.createSpy();
+      const { buttonWrapper } = getReactComponents(render({
+        onClick
+      }));
 
-    buttonWrapper.simulate('click');
+      buttonWrapper.simulate('click');
 
-    expect(onClick).toHaveBeenCalled();
-  });
+      expect(onClick).toHaveBeenCalled();
+    });
+  }
 });
