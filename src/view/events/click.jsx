@@ -28,7 +28,7 @@ const Click = props => (
       name="delayLinkActivation"
       className="u-block"
       component={ Checkbox }
-      label="If the element is a link, delay navigation until rule runs"
+      label="If the element is a link, delay navigation"
     />
 
     {props.delayLinkActivation ? (

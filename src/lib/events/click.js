@@ -62,7 +62,7 @@ document.addEventListener('click', bubbly.evaluateEvent, true);
  * for the rule to fire.
  * @param {string} settings.elementProperties[].name The property name.
  * @param {string} settings.elementProperties[].value The property value.
- * @param {boolean} [settings.anchorDelay] When present and a link is clicked, actual
+ * @param {number} [settings.anchorDelay] When present and a link is clicked, actual
  * navigation will be postponed for a period of time equal with its value. This is typically used to
  * allow time for scripts within the rule to execute, beacons to be sent to servers, etc.
  * @param {boolean} [settings.elementProperties[].valueIsRegex=false] Whether <code>value</code>
