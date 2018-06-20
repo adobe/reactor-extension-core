@@ -39,8 +39,7 @@
   },
   "devDependencies": {
     "@adobe/reactor-packager": "^2.6.2",
-    "@adobe/reactor-sandbox": "^9.0.6",
-    "@adobe/reactor-turbine": "^25.1.0",
+    "@adobe/reactor-sandbox": "^9.0.8",
     "@reactor/extension-support-testrunner": "^12.1.1",
     "babel-core": "^6.18.2",
     "babel-loader": "^6.2.7",
