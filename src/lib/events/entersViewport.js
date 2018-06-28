@@ -62,7 +62,7 @@ var offset = function(elem) {
 
 /**
  * Viewport height.
- * @returns {Number}
+ * @returns {number}
  */
 var getViewportHeight = function() {
   var height = window.innerHeight; // Safari, Opera
@@ -104,7 +104,7 @@ var elementIsInView = function(element, viewportHeight, scrollTop) {
 /**
  * Handle when a targeted element enters the viewport.
  * @param {HTMLElement} element
- * @param {Number} delay
+ * @param {number} delay
  * @param {Object} listener
  */
 var handleElementEnterViewport = function(element, delay, listener) {
@@ -212,7 +212,7 @@ document.addEventListener('DOMContentLoaded', function() {
  * @param {string} settings.elementProperties[].value The property value.
  * @param {boolean} [settings.elementProperties[].valueIsRegex=false] Whether <code>value</code>
  * on the object instance is intended to be a regular expression.
- * @param {Number} [settings.delay] The number of milliseconds the element must be
+ * @param {number} [settings.delay] The number of milliseconds the element must be
  * within the viewport before declaring that the event has occurred.
  * @param {ruleTrigger} trigger The trigger callback.
  */

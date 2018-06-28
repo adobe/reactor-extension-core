@@ -1,5 +1,7 @@
-$gap = 8px;
-$fieldHeight = 32px;
+$rem-size = 16px; // The size of one rem in pixels
+$px = 0rem + (1 / $rem-size);
+$fieldHeight = 32*$px;
+$gap = 8*$px;
 
 // This is padding that goes around all the content. We put the padding on the Provider container
 // instead of the body because of https://jira.corp.adobe.com/browse/RSP-276
@@ -94,4 +96,8 @@ code {
 
 .u-clearfix {
   clearfix();
+}
+
+.FieldSubset {
+  padding: 0 0 8*$px 24*$px;
 }

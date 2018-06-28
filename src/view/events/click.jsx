@@ -11,38 +11,88 @@
  ****************************************************************************************/
 
 import React from 'react';
+import { connect } from 'react-redux';
+import { formValueSelector } from 'redux-form';
 import Checkbox from '@react/react-spectrum/Checkbox';
+import Textfield from '@react/react-spectrum/Textfield/index';
 import WrappedField from '../components/wrappedField';
 import ElementFilter, { formConfig as elementFilterFormConfig } from './components/elementFilter';
 import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
 import mergeFormConfigs from '../utils/mergeFormConfigs';
+import { isNumberLikeInRange } from '../utils/validators';
 
-const Click = () => (
+const Click = props => (
   <div>
     <ElementFilter />
     <WrappedField
       name="delayLinkActivation"
       className="u-block"
       component={ Checkbox }
-      label="If the element is a link, delay navigation until rule runs"
+      label="If the element is a link, delay navigation"
     />
+
+    {props.delayLinkActivation ? (
+      <div className="FieldSubset">
+        <span className="u-verticalAlignMiddle u-gapRight">Link delay</span>
+        <WrappedField
+          name="anchorDelay"
+          component={ Textfield }
+        />
+      </div>
+    ) : null}
+
     <AdvancedEventOptions />
   </div>
 );
 
-export default Click;
+export default connect(state => ({
+  delayLinkActivation: formValueSelector('default')(
+    state,
+    'delayLinkActivation'
+  )
+}))(Click);
 
 export const formConfig = mergeFormConfigs(
   elementFilterFormConfig,
   advancedEventOptionsFormConfig,
   {
-    settingsToFormValues: (values, settings) => ({
-      ...values,
-      delayLinkActivation: settings.delayLinkActivation
-    }),
-    formValuesToSettings: (settings, values) => ({
-      ...settings,
-      delayLinkActivation: values.delayLinkActivation
-    })
+    settingsToFormValues: (values, settings) => {
+      const formValues = {
+        ...values,
+        anchorDelay: settings.anchorDelay
+      };
+
+      if (formValues.anchorDelay) {
+        formValues.delayLinkActivation = true;
+      } else {
+        formValues.delayLinkActivation = false;
+        formValues.anchorDelay = 100;
+      }
+
+      return formValues;
+    },
+    formValuesToSettings: (settings, values) => {
+      const newSettings = {
+        ...settings,
+        anchorDelay: Number(values.anchorDelay)
+      };
+
+      if (!values.delayLinkActivation) {
+        delete newSettings.anchorDelay;
+      }
+
+      return newSettings;
+    },
+    validate(errors, values) {
+      errors = {
+        ...errors
+      };
+
+      if (values.delayLinkActivation && !isNumberLikeInRange(values.anchorDelay, { min: 1 })) {
+        errors.anchorDelay = 'Please specify a number greater than or equal to 1.';
+      }
+
+      return errors;
+    }
   }
 );

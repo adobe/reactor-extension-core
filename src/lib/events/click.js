@@ -62,6 +62,9 @@ document.addEventListener('click', bubbly.evaluateEvent, true);
  * for the rule to fire.
  * @param {string} settings.elementProperties[].name The property name.
  * @param {string} settings.elementProperties[].value The property value.
+ * @param {number} [settings.anchorDelay] When present and a link is clicked, actual
+ * navigation will be postponed for a period of time equal with its value. This is typically used to
+ * allow time for scripts within the rule to execute, beacons to be sent to servers, etc.
  * @param {boolean} [settings.elementProperties[].valueIsRegex=false] Whether <code>value</code>
  * on the object instance is intended to be a regular expression.
  * @param {boolean} [settings.bubbleFireIfParent=true] Whether the rule should fire if
@@ -70,9 +73,6 @@ document.addEventListener('click', bubbly.evaluateEvent, true);
  * if the same event has already triggered a rule targeting a descendant element.
  * @param {boolean} [settings.bubbleStop=false] Whether the event should not trigger
  * rules on ancestor elements.
- * @param {boolean} [settings.delayLinkActivation=false] When true and a link is clicked, actual
- * navigation will be postponed for a period of time. This is typically used to allow time for
- * scripts within the rule to execute, beacons to be sent to servers, etc.
  * @param {ruleTrigger} trigger The trigger callback.
  */
 module.exports = function(settings, trigger) {
@@ -91,13 +91,13 @@ module.exports = function(settings, trigger) {
       return;
     }
 
-    if (settings.delayLinkActivation) {
+    if (settings.anchorDelay) {
       if (!evaluatedEvents.has(nativeEvent)) {
         if (isNavigationLink(nativeEvent.target)) {
           nativeEvent.preventDefault();
           setTimeout(function() {
             window.location = nativeEvent.target.href;
-          }, turbine.propertySettings.linkDelay || 100);
+          }, settings.anchorDelay);
         }
         evaluatedEvents.set(nativeEvent, true);
       }
