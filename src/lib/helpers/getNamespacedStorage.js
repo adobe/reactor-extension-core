@@ -12,10 +12,10 @@
 'use strict';
 
 var window = require('@adobe/reactor-window');
-var namespace = 'com.adobe.reactor.core.';
+var BASE_NAMESPACE = 'com.adobe.reactor.core';
 
 module.exports = function(storageType, additionalNamespace) {
-  var finalNamespace = namespace + (additionalNamespace || '');
+  var namespace = BASE_NAMESPACE + '.' + additionalNamespace;
 
   // When storage is disabled on Safari, the mere act of referencing window.localStorage
   // or window.sessionStorage throws an error. For this reason, we wrap in a try-catch.
@@ -27,7 +27,7 @@ module.exports = function(storageType, additionalNamespace) {
      */
     getItem: function(name) {
       try {
-        return window[storageType].getItem(finalNamespace + name);
+        return window[storageType].getItem(namespace + '.' + name);
       } catch (e) {
         return null;
       }
@@ -40,7 +40,7 @@ module.exports = function(storageType, additionalNamespace) {
      */
     setItem: function(name, value) {
       try {
-        window[storageType].setItem(finalNamespace + name, value);
+        window[storageType].setItem(namespace + '.' + name, value);
         return true;
       } catch (e) {
         return false;

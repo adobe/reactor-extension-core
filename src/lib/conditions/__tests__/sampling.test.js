@@ -22,4 +22,87 @@ describe('sampling condition delegate', function() {
   it('returns true when rate is 1', function() {
     expect(conditionDelegate({ rate: 1 })).toBeTrue();
   });
+
+  describe('cohort persistence', function() {
+    var cleanUp = function() {
+      window.localStorage.clear();
+    };
+
+    afterEach(cleanUp);
+
+    beforeAll(cleanUp);
+
+    it('persists cohort to local storage when condition returns true', function() {
+      conditionDelegate(
+        {
+          rate: 0,
+          persistCohort: true
+        },
+        {
+          $rule: {
+            id: 'RL123'
+          }
+        }
+      );
+
+      expect(window.localStorage.getItem('com.adobe.reactor.core.sampling.cohorts.RL123.0'))
+        .toBe('false');
+    });
+
+    it('persists cohort to local storage when condition returns false', function() {
+      conditionDelegate(
+        {
+          rate: 0,
+          persistCohort: true
+        },
+        {
+          $rule: {
+            id: 'RL123'
+          }
+        }
+      );
+
+      expect(window.localStorage.getItem('com.adobe.reactor.core.sampling.cohorts.RL123.0'))
+        .toBe('false');
+    });
+
+    it('uses persisted cohort', function() {
+      [true, false].forEach(function(includedInCohort) {
+        window.localStorage.setItem(
+          'com.adobe.reactor.core.sampling.cohorts.RL123.0.5',
+          includedInCohort ? 'true' : 'false'
+        );
+
+        for (var i = 0; i < 10; i++) {
+          expect(conditionDelegate(
+            {
+              rate: 0.5,
+              persistCohort: true
+            },
+            {
+              $rule: {
+                id: 'RL123'
+              }
+            }
+          )).toBe(includedInCohort);
+        }
+      });
+    });
+
+    it('does not persist cohort when persistCohort is not true', function() {
+      conditionDelegate(
+        {
+          rate: 1
+        },
+        {
+          $rule: {
+            id: 'RL123'
+          }
+        }
+      );
+
+      expect(window.localStorage.getItem('com.adobe.reactor.core.sampling.cohorts.RL123.1'))
+        .toBe(null);
+    });
+  });
 });
