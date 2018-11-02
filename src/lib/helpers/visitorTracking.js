@@ -18,11 +18,11 @@ var window = require('@adobe/reactor-window');
 var getNamespacedStorage = require('./getNamespacedStorage');
 
 var COOKIE_PREFIX = '_sdsat_';
-var LOCAL_STORAGE_NAMESPACE = 'visitorTracking.';
+var STORAGE_NAMESPACE = 'visitorTracking';
 var MIGRATED_KEY = 'cookiesMigrated';
 
-var visitorTrackingLocalStorage = getNamespacedStorage('localStorage', LOCAL_STORAGE_NAMESPACE);
-var visitorTrackingSessionStorage = getNamespacedStorage('sessionStorage', LOCAL_STORAGE_NAMESPACE);
+var visitorTrackingLocalStorage = getNamespacedStorage('localStorage', STORAGE_NAMESPACE);
+var visitorTrackingSessionStorage = getNamespacedStorage('sessionStorage', STORAGE_NAMESPACE);
 
 // returns whether this is a new visitor session
 var trackLandingPageAndTime = function() {

@@ -48,6 +48,7 @@ const CustomCode = ({ language }) => (
             name="global"
             component={ Checkbox }
             label="Execute globally"
+            className="u-noPaddingRight"
           />
           <InfoTip className="u-noPadding">
             Global execution is needed only in cases when the script relies on its own variables to

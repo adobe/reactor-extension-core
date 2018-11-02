@@ -1,5 +1,6 @@
 {
   "name": "core",
+  "platform": "web",
   "version": "1.2.0",
   "displayName": "Core",
   "description": "Provides default event, condition, and data element types available to all Launch users.",
@@ -1511,6 +1512,9 @@
             "type": "number",
             "minimum": 0,
             "maximum": 1
+          },
+          "persistCohort": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false,

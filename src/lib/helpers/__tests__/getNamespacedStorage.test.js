@@ -40,66 +40,70 @@ describe('getNamespacedStorage', function() {
   };
 
   ['sessionStorage', 'localStorage'].forEach(function(storageType) {
-    describe('getItem', function() {
-      it('returns item', function() {
-        // Mocking window because Safari throws an error when setting a storage item in Private
-        // Browser Mode.
-        var mockWindow = {};
+    describe('using ' + storageType, function() {
+      var itemKey = 'com.adobe.reactor.core.featurex.foo';
 
-        mockWindow[storageType] = createMockStorage();
+      describe('getItem', function() {
+        it('returns item', function() {
+          // Mocking window because Safari throws an error when setting a storage item in
+          // Private Browser Mode.
+          var mockWindow = {};
 
-        var getNamespacedStorage = require('inject-loader!../getNamespacedStorage')({
-          '@adobe/reactor-window': mockWindow
+          mockWindow[storageType] = createMockStorage();
+
+          var getNamespacedStorage = require('inject-loader!../getNamespacedStorage')({
+            '@adobe/reactor-window': mockWindow
+          });
+
+          var storage = getNamespacedStorage(storageType, 'featurex');
+
+          mockWindow[storageType].setItem(itemKey, 'something');
+          expect(storage.getItem('foo')).toEqual('something');
         });
 
-        var storage = getNamespacedStorage(storageType);
+        it('proper error handling if storage is disabled', function() {
+          var mockWindow = createMockWindowUnavailableStorage();
 
-        mockWindow[storageType].setItem('com.adobe.reactor.core.foo', 'something');
-        expect(storage.getItem('foo')).toEqual('something');
+          var getNamespacedStorage = require('inject-loader!../getNamespacedStorage')({
+            '@adobe/reactor-window': mockWindow
+          });
+
+          var storage = getNamespacedStorage(storageType, 'featurex');
+
+          expect(storage.getItem('foo')).toBeNull();
+        });
       });
 
-      it('proper error handling if storage is disabled', function() {
-        var mockWindow = createMockWindowUnavailableStorage();
+      describe('setItem', function() {
+        it('sets item', function() {
+          // Mocking window because Safari throws an error when setting a storage item in
+          // Private Browser Mode.
+          var mockWindow = {};
+          mockWindow[storageType] = createMockStorage();
 
-        var getNamespacedStorage = require('inject-loader!../getNamespacedStorage')({
-          '@adobe/reactor-window': mockWindow
+          var getNamespacedStorage = require('inject-loader!../getNamespacedStorage')({
+            '@adobe/reactor-window': mockWindow
+          });
+
+          var storage = getNamespacedStorage(storageType, 'featurex');
+
+          storage.setItem('foo', 'something');
+          expect(mockWindow[storageType].getItem(itemKey)).toEqual('something');
         });
 
-        var storage = getNamespacedStorage(storageType);
+        it('proper error handling if storage is disabled', function() {
+          var mockWindow = createMockWindowUnavailableStorage();
 
-        expect(storage.getItem('foo')).toBeNull();
-      });
-    });
+          var getNamespacedStorage = require('inject-loader!../getNamespacedStorage')({
+            '@adobe/reactor-window': mockWindow
+          });
 
-    describe('setItem', function() {
-      it('sets item', function() {
-        // Mocking window because Safari throws an error when setting a storage item in Private
-        // Browser Mode.
-        var mockWindow = {};
-        mockWindow[storageType] = createMockStorage();
+          var storage = getNamespacedStorage(storageType, 'featurex');
 
-        var getNamespacedStorage = require('inject-loader!../getNamespacedStorage')({
-          '@adobe/reactor-window': mockWindow
+          storage.setItem('thing', 'something');
+
+          expect(window.localStorage.getItem('thing')).toBeNull();
         });
-
-        var storage = getNamespacedStorage(storageType);
-
-        storage.setItem('foo', 'something');
-        expect(mockWindow[storageType].getItem('com.adobe.reactor.core.foo')).toEqual('something');
-      });
-
-      it('proper error handling if storage is disabled', function() {
-        var mockWindow = createMockWindowUnavailableStorage();
-
-        var getNamespacedStorage = require('inject-loader!../getNamespacedStorage')({
-          '@adobe/reactor-window': mockWindow
-        });
-
-        var storage = getNamespacedStorage(storageType);
-
-        storage.setItem('thing', 'something');
-
-        expect(window.localStorage.getItem('thing')).toBeNull();
       });
     });
   });
