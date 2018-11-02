@@ -35,7 +35,7 @@ describe('sampling condition delegate', function() {
     it('persists cohort to local storage when condition returns true', function() {
       conditionDelegate(
         {
-          rate: 0,
+          rate: 1,
           persistCohort: true
         },
         {
@@ -45,8 +45,8 @@ describe('sampling condition delegate', function() {
         }
       );
 
-      expect(window.localStorage.getItem('com.adobe.reactor.core.sampling.cohorts.RL123.0'))
-        .toBe('false');
+      expect(window.localStorage.getItem('com.adobe.reactor.core.sampling.cohorts.RL123.1'))
+        .toBe('true');
     });
 
     it('persists cohort to local storage when condition returns false', function() {
