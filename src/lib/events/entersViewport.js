@@ -20,6 +20,10 @@ var enableWeakMapDefaultValue = require('./helpers/enableWeakMapDefaultValue');
 
 var POLL_INTERVAL = 3000;
 var DEBOUNCE_DELAY = 200;
+var frequencies = {
+  FIRST_ENTRY: 'firstEntry',
+  EVERY_ENTRY: 'everyEntry'
+};
 var isIE10 = window.navigator.appVersion.indexOf('MSIE 10') !== -1;
 
 var arrayFactory = function() {
@@ -112,7 +116,11 @@ var elementIsInView = function(element, viewportHeight, scrollTop) {
  */
 var handleElementEnterViewport = function(element, delay, listener) {
   var complete = function() {
-    completedListenersByElement.get(element).push(listener);
+    var frequency = listener.settings.frequency || frequencies.FIRST_ENTRY;
+
+    if (frequency === frequencies.FIRST_ENTRY) {
+      completedListenersByElement.get(element).push(listener);
+    }
 
     listener.trigger({
       element: element,
@@ -175,8 +183,12 @@ var checkForElementsInViewport = debounce(function() {
 
       for (var i = 0; i < elements.length; i++) {
         var element = elements[i];
+        var frequency = listener.settings.frequency || frequencies.FIRST_ENTRY;
 
-        if (completedListenersByElement.get(element).indexOf(listener) !== -1) {
+        if (
+          frequency === frequencies.FIRST_ENTRY &&
+          completedListenersByElement.get(element).indexOf(listener) !== -1
+        ) {
           continue;
         }
 
