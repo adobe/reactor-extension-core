@@ -12,12 +12,15 @@
 
 'use strict';
 
+var document = require('@adobe/reactor-document');
+var window = require('@adobe/reactor-window');
 var WeakMap = require('./helpers/weakMap');
 var debounce = require('./helpers/debounce');
 var enableWeakMapDefaultValue = require('./helpers/enableWeakMapDefaultValue');
 
 var POLL_INTERVAL = 3000;
 var DEBOUNCE_DELAY = 200;
+var isIE10 = window.navigator.appVersion.indexOf('MSIE 10') !== -1;
 
 var arrayFactory = function() {
   return [];
@@ -191,12 +194,30 @@ var checkForElementsInViewport = debounce(function() {
   });
 }, DEBOUNCE_DELAY);
 
-document.addEventListener('DOMContentLoaded', function() {
+var initializeContentListeners = function() {
   checkForElementsInViewport();
   setInterval(checkForElementsInViewport, POLL_INTERVAL);
   window.addEventListener('resize', checkForElementsInViewport);
   window.addEventListener('scroll', checkForElementsInViewport);
-});
+};
+
+// There's a bug in IE 10 where readyState is sometimes set to "interactive" too
+// early (before DOMContentLoaded has fired). To make sure the document is ready,
+// we'll wait until the window has loaded.
+// https://bugs.jquery.com/ticket/12282
+if (isIE10) {
+  if (document.readyState === 'complete') {
+    initializeContentListeners();
+  } else {
+    window.addEventListener('load', initializeContentListeners);
+  }
+} else {
+  if (document.readyState !== 'loading') {
+    initializeContentListeners();
+  } else {
+    document.addEventListener('DOMContentLoaded', initializeContentListeners);
+  }
+}
 
 /**
  * Enters viewport event. This event occurs when an element has entered the viewport. The rule

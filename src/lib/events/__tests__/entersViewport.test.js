@@ -12,10 +12,60 @@
 
 'use strict';
 
+var entersViewportInjector = require('inject!../entersViewport');
+
 var POLL_INTERVAL = 3000;
+var DEBOUNCE_DELAY = 200;
+
+/**
+ * Provides a document object that provides native functionality but
+ * allows for better mocking capability (e.g., able to set readyState)
+ */
+var getDocumentProxy = function() {
+  return {
+    get body() {
+      return document.body;
+    },
+    get scrollTop() {
+      return document.scrollTop;
+    },
+    get documentElement() {
+      return document.documentElement;
+    },
+    get compatMode() {
+      return document.compatMode;
+    },
+    querySelectorAll: function() {
+      return document.querySelectorAll.apply(document, arguments);
+    },
+    addEventListener: function() {
+      return window.addEventListener.apply(window, arguments);
+    }
+  };
+};
+
+/**
+ * Provides a window object that provides native functionality but
+ * allows for better mocking capability (e.g., able to set navigator.appVersion)
+ */
+var getWindowProxy = function() {
+  return {
+    get pageXOffset() {
+      return window.pageXOffset;
+    },
+    get pageYOffset() {
+      return window.pageYOffset;
+    },
+    get innerHeight() {
+      return window.innerHeight;
+    },
+    addEventListener: function() {
+      return window.addEventListener.apply(window, arguments);
+    }
+  };
+};
 
 describe('enters viewport event delegate', function() {
-  var delegate;
   var aElement;
   var bElement;
 
@@ -49,20 +99,7 @@ describe('enters viewport event delegate', function() {
   };
 
   beforeAll(function() {
-    // The module may have been previously required by other modules which prevents us from
-    // installing a clock that is effective unless we clear the cache and require the
-    // module again.
-    // delete require.cache[require.resolve('../entersViewport')];
     jasmine.clock().install();
-
-    spyOn(document, 'addEventListener').and.callFake(function(type, callback) {
-      // Simulate that the window has loaded.
-      if (type === 'DOMContentLoaded') {
-        callback();
-      }
-    });
-
-    delegate = require('../entersViewport');
   });
 
   afterAll(function() {
@@ -78,330 +115,433 @@ describe('enters viewport event delegate', function() {
     window.scrollTo(0, 0);
   });
 
-  it('calls trigger with event and related element', function() {
-    var aTrigger = jasmine.createSpy();
+  describe('with document.readyState at complete', function() {
+    var delegate;
 
-    delegate({
-      elementSelector: '#a'
-    }, aTrigger);
+    beforeAll(function() {
+      var mockDocument = getDocumentProxy();
+      mockDocument.readyState = 'complete';
 
-    jasmine.clock().tick(POLL_INTERVAL);
-
-    assertTriggerCall({
-      call: aTrigger.calls.mostRecent(),
-      element: aElement,
-      target: aElement
+      delegate = entersViewportInjector({
+        '@adobe/reactor-document': mockDocument
+      });
     });
-  });
 
-  it('triggers multiple rules targeting the same element with no delay', function() {
-    var aTrigger = jasmine.createSpy();
-    var a2Trigger = jasmine.createSpy();
+    it('calls trigger with event and related element', function() {
+      var aTrigger = jasmine.createSpy();
 
-    delegate({
-      elementSelector: '#a'
-    }, aTrigger);
+      delegate({
+        elementSelector: '#a'
+      }, aTrigger);
 
-    delegate({
-      elementSelector: '#a'
-    }, a2Trigger);
+      jasmine.clock().tick(POLL_INTERVAL);
 
-    jasmine.clock().tick(POLL_INTERVAL);
+      assertTriggerCall({
+        call: aTrigger.calls.mostRecent(),
+        element: aElement,
+        target: aElement
+      });
+    });
 
-    expect(aTrigger.calls.count()).toEqual(1);
-    expect(a2Trigger.calls.count()).toEqual(1);
-  });
+    it('triggers multiple rules targeting the same element with no delay', function() {
+      var aTrigger = jasmine.createSpy();
+      var a2Trigger = jasmine.createSpy();
 
-  it('triggers multiple rules targeting the same element with same delay', function() {
-    var aTrigger = jasmine.createSpy();
-    var a2Trigger = jasmine.createSpy();
+      delegate({
+        elementSelector: '#a'
+      }, aTrigger);
 
-    delegate({
-      elementSelector: '#a',
-      delay: 100000
-    }, aTrigger);
+      delegate({
+        elementSelector: '#a'
+      }, a2Trigger);
 
-    delegate({
-      elementSelector: '#a',
-      delay: 100000
-    }, a2Trigger);
+      jasmine.clock().tick(POLL_INTERVAL);
 
-    jasmine.clock().tick(POLL_INTERVAL);
+      expect(aTrigger.calls.count()).toEqual(1);
+      expect(a2Trigger.calls.count()).toEqual(1);
+    });
 
-    expect(aTrigger.calls.count()).toEqual(0);
-    expect(a2Trigger.calls.count()).toEqual(0);
+    it('triggers multiple rules targeting the same element with same delay', function() {
+      var aTrigger = jasmine.createSpy();
+      var a2Trigger = jasmine.createSpy();
 
-    jasmine.clock().tick(100000);
+      delegate({
+        elementSelector: '#a',
+        delay: 100000
+      }, aTrigger);
 
-    expect(aTrigger.calls.count()).toEqual(1);
-    expect(a2Trigger.calls.count()).toEqual(1);
-  });
+      delegate({
+        elementSelector: '#a',
+        delay: 100000
+      }, a2Trigger);
 
-  it('triggers multiple rules targeting the same element with different delays', function() {
-    var aTrigger = jasmine.createSpy();
-    var a2Trigger = jasmine.createSpy();
+      jasmine.clock().tick(POLL_INTERVAL);
 
-    delegate({
-      elementSelector: '#a',
-      delay: 100000
-    }, aTrigger);
+      expect(aTrigger.calls.count()).toEqual(0);
+      expect(a2Trigger.calls.count()).toEqual(0);
 
-    delegate({
-      elementSelector: '#a',
-      delay: 200000
-    }, a2Trigger);
+      jasmine.clock().tick(100000);
 
-    jasmine.clock().tick(POLL_INTERVAL);
+      expect(aTrigger.calls.count()).toEqual(1);
+      expect(a2Trigger.calls.count()).toEqual(1);
+    });
 
-    expect(aTrigger.calls.count()).toEqual(0);
-    expect(a2Trigger.calls.count()).toEqual(0);
+    it('triggers multiple rules targeting the same element with different delays', function() {
+      var aTrigger = jasmine.createSpy();
+      var a2Trigger = jasmine.createSpy();
 
-    jasmine.clock().tick(100000);
+      delegate({
+        elementSelector: '#a',
+        delay: 100000
+      }, aTrigger);
 
-    expect(aTrigger.calls.count()).toEqual(1);
-    expect(a2Trigger.calls.count()).toEqual(0);
+      delegate({
+        elementSelector: '#a',
+        delay: 200000
+      }, a2Trigger);
 
-    jasmine.clock().tick(100000);
+      jasmine.clock().tick(POLL_INTERVAL);
 
-    expect(aTrigger.calls.count()).toEqual(1);
-    expect(a2Trigger.calls.count()).toEqual(1);
-  });
+      expect(aTrigger.calls.count()).toEqual(0);
+      expect(a2Trigger.calls.count()).toEqual(0);
 
-  it('triggers multiple rules targeting the same element with different selectors', function() {
-    var aTrigger = jasmine.createSpy();
-    var a2Trigger = jasmine.createSpy();
+      jasmine.clock().tick(100000);
 
-    delegate({
-      elementSelector: '#a'
-    }, aTrigger);
+      expect(aTrigger.calls.count()).toEqual(1);
+      expect(a2Trigger.calls.count()).toEqual(0);
 
-    delegate({
-      elementSelector: 'div#a'
-    }, a2Trigger);
+      jasmine.clock().tick(100000);
 
-    jasmine.clock().tick(POLL_INTERVAL);
+      expect(aTrigger.calls.count()).toEqual(1);
+      expect(a2Trigger.calls.count()).toEqual(1);
+    });
 
-    expect(aTrigger.calls.count()).toEqual(1);
-    expect(a2Trigger.calls.count()).toEqual(1);
-  });
+    it('triggers multiple rules targeting the same element with different selectors', function() {
+      var aTrigger = jasmine.createSpy();
+      var a2Trigger = jasmine.createSpy();
 
-  it('triggers rule when elementProperties match', function() {
-    var bTrigger = jasmine.createSpy();
+      delegate({
+        elementSelector: '#a'
+      }, aTrigger);
 
-    delegate({
-      elementSelector: '#b',
-      elementProperties: [{
-        name: 'innerHTML',
-        value: 'b'
-      }]
-    }, bTrigger);
+      delegate({
+        elementSelector: 'div#a'
+      }, a2Trigger);
 
-    jasmine.clock().tick(POLL_INTERVAL);
+      jasmine.clock().tick(POLL_INTERVAL);
 
-    expect(bTrigger.calls.count()).toEqual(1);
-  });
+      expect(aTrigger.calls.count()).toEqual(1);
+      expect(a2Trigger.calls.count()).toEqual(1);
+    });
 
-  it('does not trigger rule when elementProperties do not match', function() {
-    var bTrigger = jasmine.createSpy();
+    it('triggers rule when elementProperties match', function() {
+      var bTrigger = jasmine.createSpy();
 
-    delegate({
-      elementSelector: '#b',
-      elementProperties: [{
-        name: 'innerHTML',
-        value: 'no match'
-      }]
-    }, bTrigger);
-
-    jasmine.clock().tick(POLL_INTERVAL);
-
-    expect(bTrigger.calls.count()).toEqual(0);
-  });
-
-  it('triggers rule when targeting using elementProperties', function() {
-    var bTrigger = jasmine.createSpy();
-
-    delegate({
-      elementSelector: 'div',
-      elementProperties: [
-        {
-          name: 'id',
+      delegate({
+        elementSelector: '#b',
+        elementProperties: [{
+          name: 'innerHTML',
           value: 'b'
-        }
-      ]
-    }, bTrigger);
+        }]
+      }, bTrigger);
 
-    jasmine.clock().tick(POLL_INTERVAL);
+      jasmine.clock().tick(POLL_INTERVAL);
 
-    assertTriggerCall({
-      call: bTrigger.calls.mostRecent(),
-      element: bElement,
-      target: bElement
+      expect(bTrigger.calls.count()).toEqual(1);
     });
+
+    it('does not trigger rule when elementProperties do not match', function() {
+      var bTrigger = jasmine.createSpy();
+
+      delegate({
+        elementSelector: '#b',
+        elementProperties: [{
+          name: 'innerHTML',
+          value: 'no match'
+        }]
+      }, bTrigger);
+
+      jasmine.clock().tick(POLL_INTERVAL);
+
+      expect(bTrigger.calls.count()).toEqual(0);
+    });
+
+    it('triggers rule when targeting using elementProperties', function() {
+      var bTrigger = jasmine.createSpy();
+
+      delegate({
+        elementSelector: 'div',
+        elementProperties: [
+          {
+            name: 'id',
+            value: 'b'
+          }
+        ]
+      }, bTrigger);
+
+      jasmine.clock().tick(POLL_INTERVAL);
+
+      assertTriggerCall({
+        call: bTrigger.calls.mostRecent(),
+        element: bElement,
+        target: bElement
+      });
+    });
+
+    it('triggers rule for each matching element', function() {
+      var trigger = jasmine.createSpy();
+
+      delegate({
+        elementSelector: 'div',
+        elementProperties: [
+          {
+            name: 'customProp',
+            value: 'foo'
+          }
+        ]
+      }, trigger);
+
+      jasmine.clock().tick(POLL_INTERVAL);
+
+      assertTriggerCall({
+        call: trigger.calls.first(),
+        element: aElement,
+        target: aElement
+      });
+
+      assertTriggerCall({
+        call: trigger.calls.mostRecent(),
+        element: bElement,
+        target: bElement
+      });
+
+      var elementAddedLater = document.createElement('div');
+      elementAddedLater.customProp = 'foo';
+      document.body.appendChild(elementAddedLater);
+
+      jasmine.clock().tick(POLL_INTERVAL);
+
+      assertTriggerCall({
+        call: trigger.calls.mostRecent(),
+        element: elementAddedLater,
+        target: elementAddedLater
+      });
+    });
+
+    // The following tests have been commented out because they periodically fail when being run
+    // inside SauceLabs and we haven't found a fix for it. If you're working on the enters viewport
+    // code locally, it may be beneficial to uncomment the tests while you make changes.
+
+    // iOS Safari doesn't allow iframes to have overflow (scrollbars) but instead pushes the
+    // iframe's height to match the height of the content. Since by default Karma loads tests
+    // into an iFrame, these scrolling tests fail. There is a setting to not use an iFrame, but
+    // it's not awesome because you have to make sure every browser you're testing on is
+    // not blocking pop-ups. That is, until this issue is resolved:
+    // https://github.com/karma-runner/karma/issues/849
+    // Until then, we're skipping these tests on iOS.
+
+    // var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    // if (!isIOS) {
+    //   describe('with scrolling', function() {
+    //     it('triggers rule with no delay', function() {
+    //       aElement.style.position = 'absolute';
+    //       aElement.style.top = '3000px';
+    //
+    //       var aTrigger = jasmine.createSpy();
+    //
+    //       delegate({
+    //         elementSelector: '#a'
+    //       }, aTrigger);
+    //
+    //
+    //       Simulate.event(window, 'scroll');
+    //       jasmine.clock().tick(DEBOUNCE_DELAY); // Skip past debounce.
+    //
+    //       // The rule shouldn't be triggered because the element isn't in view.
+    //       expect(aTrigger.calls.count()).toEqual(0);
+    //
+    //       window.scrollTo(0, 3000);
+    //       Simulate.event(window, 'scroll');
+    //       jasmine.clock().tick(DEBOUNCE_DELAY); // Skip past debounce.
+    //
+    //       expect(aTrigger.calls.count()).toEqual(1);
+    //     });
+    //
+    //     it('triggers rules with various delays targeting elements at ' +
+    //       'various positions', function() {
+    //       aElement.style.position = 'absolute';
+    //       aElement.style.top = '10000px';
+    //
+    //       bElement.style.position = 'absolute';
+    //       bElement.style.top = '10000px';
+    //
+    //       var aTrigger = jasmine.createSpy();
+    //       var bTrigger = jasmine.createSpy();
+    //       var b2Trigger = jasmine.createSpy();
+    //
+    //       delegate({
+    //         elementSelector: '#a'
+    //       }, aTrigger);
+    //
+    //       delegate({
+    //         elementSelector: '#b',
+    //         delay: 50000
+    //       }, bTrigger);
+    //
+    //       delegate({
+    //         elementSelector: '#b',
+    //         delay: 200000
+    //       }, b2Trigger);
+    //
+    //       jasmine.clock().tick(POLL_INTERVAL);
+    //
+    //       expect(aTrigger.calls.count()).toEqual(0);
+    //       expect(bTrigger.calls.count()).toEqual(0);
+    //       expect(b2Trigger.calls.count()).toEqual(0);
+    //
+    //       window.scrollTo(0, 10000);
+    //       jasmine.clock().tick(POLL_INTERVAL);
+    //
+    //       expect(aTrigger.calls.count()).toEqual(1);
+    //       expect(bTrigger.calls.count()).toEqual(0);
+    //       expect(b2Trigger.calls.count()).toEqual(0);
+    //
+    //       window.scrollTo(0, 0);
+    //       jasmine.clock().tick(POLL_INTERVAL);
+    //
+    //       window.scrollTo(0, 10000);
+    //       jasmine.clock().tick(POLL_INTERVAL);
+    //
+    //       // The first trigger should only be called the first time the element comes into view.
+    //       expect(aTrigger.calls.count()).toEqual(1);
+    //       expect(bTrigger.calls.count()).toEqual(0);
+    //       expect(b2Trigger.calls.count()).toEqual(0);
+    //
+    //       window.scrollTo(0, 20000);
+    //       jasmine.clock().tick(POLL_INTERVAL);
+    //
+    //       expect(aTrigger.calls.count()).toEqual(1);
+    //       expect(bTrigger.calls.count()).toEqual(0);
+    //       expect(b2Trigger.calls.count()).toEqual(0);
+    //
+    //       window.scrollTo(0, 0);
+    //       jasmine.clock().tick(POLL_INTERVAL);
+    //
+    //       // Give enough time for the configured delay time to pass. The b element rules
+    //       // shouldn't be triggered because the b element is no longer in view.
+    //       jasmine.clock().tick(100000);
+    //
+    //       expect(aTrigger.calls.count()).toEqual(1);
+    //       expect(bTrigger.calls.count()).toEqual(0);
+    //       expect(b2Trigger.calls.count()).toEqual(0);
+    //
+    //       window.scrollTo(0, 20000);
+    //       jasmine.clock().tick(POLL_INTERVAL);
+    //
+    //       // Give enough time for the configured delay time to
+    //       // pass. The second trigger should be called.
+    //       jasmine.clock().tick(50000);
+    //       expect(aTrigger.calls.count()).toEqual(1);
+    //       expect(bTrigger.calls.count()).toEqual(1);
+    //       expect(b2Trigger.calls.count()).toEqual(0);
+    //
+    //       // A different rule watching for the same element but an even longer delay time? Oh my!
+    //       jasmine.clock().tick(200000);
+    //       expect(aTrigger.calls.count()).toEqual(1);
+    //       expect(bTrigger.calls.count()).toEqual(1);
+    //       expect(b2Trigger.calls.count()).toEqual(1);
+    //     });
+    //   });
+    // }
   });
 
-  it('triggers rule for each matching element', function() {
-    var trigger = jasmine.createSpy();
+  describe('with document.readyState at loading', function() {
+    var mockDocument;
+    var mockWindow;
 
-    delegate({
-      elementSelector: 'div',
-      elementProperties: [
-        {
-          name: 'customProp',
-          value: 'foo'
-        }
-      ]
-    }, trigger);
+    beforeEach(function() {
+      mockDocument = getDocumentProxy();
+      mockDocument.readyState = 'loading';
+      spyOn(mockDocument, 'addEventListener');
 
-    jasmine.clock().tick(POLL_INTERVAL);
-
-    assertTriggerCall({
-      call: trigger.calls.first(),
-      element: aElement,
-      target: aElement
+      mockWindow = getWindowProxy();
+      spyOn(mockWindow, 'addEventListener');
     });
 
-    assertTriggerCall({
-      call: trigger.calls.mostRecent(),
-      element: bElement,
-      target: bElement
+    describe('with IE 10 browser', function() {
+      it('waits until window load has fired before checking elements', function() {
+        mockWindow.navigator = {
+          appVersion: 'MSIE 10'
+        };
+
+        var delegate = entersViewportInjector({
+          '@adobe/reactor-document': mockDocument,
+          '@adobe/reactor-window': mockWindow
+        });
+
+        var aTrigger = jasmine.createSpy();
+
+        delegate({
+          elementSelector: '#a'
+        }, aTrigger);
+
+        jasmine.clock().tick(DEBOUNCE_DELAY);
+
+        expect(aTrigger).not.toHaveBeenCalled();
+        expect(mockWindow.addEventListener).toHaveBeenCalledWith(
+          'load',
+          jasmine.any(Function)
+        );
+
+        var windowLoadCallback = mockWindow.addEventListener.calls.first().args[1];
+        windowLoadCallback();
+
+        jasmine.clock().tick(DEBOUNCE_DELAY); // Skip past debounce.
+
+        assertTriggerCall({
+          call: aTrigger.calls.mostRecent(),
+          element: aElement,
+          target: aElement
+        });
+      });
     });
 
-    var elementAddedLater = document.createElement('div');
-    elementAddedLater.customProp = 'foo';
-    document.body.appendChild(elementAddedLater);
+    describe('with browser that is not IE 10', function() {
+      it('waits until DOMContentLoaded has fired before checking elements', function() {
+        mockWindow.navigator = {
+          appVersion: 'something Chrome something'
+        };
 
-    jasmine.clock().tick(POLL_INTERVAL);
+        var delegate = entersViewportInjector({
+          '@adobe/reactor-document': mockDocument,
+          '@adobe/reactor-window': mockWindow
+        });
 
-    assertTriggerCall({
-      call: trigger.calls.mostRecent(),
-      element: elementAddedLater,
-      target: elementAddedLater
+        var aTrigger = jasmine.createSpy();
+
+        delegate({
+          elementSelector: '#a'
+        }, aTrigger);
+
+        jasmine.clock().tick(DEBOUNCE_DELAY);
+
+        expect(aTrigger).not.toHaveBeenCalled();
+        expect(mockDocument.addEventListener).toHaveBeenCalledWith(
+          'DOMContentLoaded',
+          jasmine.any(Function)
+        );
+
+        var domContentLoadedCallback = mockDocument.addEventListener.calls.first().args[1];
+        domContentLoadedCallback();
+
+        jasmine.clock().tick(DEBOUNCE_DELAY); // Skip past debounce.
+
+        assertTriggerCall({
+          call: aTrigger.calls.mostRecent(),
+          element: aElement,
+          target: aElement
+        });
+      });
     });
   });
-
-  // The following tests have been commented out because they periodically fail when being run
-  // inside SauceLabs and we haven't found a fix for it. If you're working on the enters viewport
-  // code locally, it may be beneficial to uncomment the tests while you make changes.
-
-  // iOS Safari doesn't allow iframes to have overflow (scrollbars) but instead pushes the
-  // iframe's height to match the height of the content. Since by default Karma loads tests into an
-  // iFrame, these scrolling tests fail. There is a setting to not use an iFrame, but it's not
-  // awesome because you have to make sure every browser you're testing on is not blocking pop-ups.
-  // That is, until this issue is resolved: https://github.com/karma-runner/karma/issues/849
-  // Until then, we're skipping these tests on iOS.
-
-  // var DEBOUNCE_DELAY = 200;
-  // var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-  // if (!isIOS) {
-  //   describe('with scrolling', function() {
-  //     it('triggers rule with no delay', function() {
-  //       aElement.style.position = 'absolute';
-  //       aElement.style.top = '3000px';
-  //
-  //       var aTrigger = jasmine.createSpy();
-  //
-  //       delegate({
-  //         elementSelector: '#a'
-  //       }, aTrigger);
-  //
-  //
-  //       Simulate.event(window, 'scroll');
-  //       jasmine.clock().tick(DEBOUNCE_DELAY); // Skip past debounce.
-  //
-  //       // The rule shouldn't be triggered because the element isn't in view.
-  //       expect(aTrigger.calls.count()).toEqual(0);
-  //
-  //       window.scrollTo(0, 3000);
-  //       Simulate.event(window, 'scroll');
-  //       jasmine.clock().tick(DEBOUNCE_DELAY); // Skip past debounce.
-  //
-  //       expect(aTrigger.calls.count()).toEqual(1);
-  //     });
-  //
-  //     it('triggers rules with various delays targeting elements at ' +
-  //         'various positions', function() {
-  //       aElement.style.position = 'absolute';
-  //       aElement.style.top = '10000px';
-  //
-  //       bElement.style.position = 'absolute';
-  //       bElement.style.top = '10000px';
-  //
-  //       var aTrigger = jasmine.createSpy();
-  //       var bTrigger = jasmine.createSpy();
-  //       var b2Trigger = jasmine.createSpy();
-  //
-  //       delegate({
-  //         elementSelector: '#a'
-  //       }, aTrigger);
-  //
-  //       delegate({
-  //         elementSelector: '#b',
-  //         delay: 50000
-  //       }, bTrigger);
-  //
-  //       delegate({
-  //         elementSelector: '#b',
-  //         delay: 200000
-  //       }, b2Trigger);
-  //
-  //       jasmine.clock().tick(POLL_INTERVAL);
-  //
-  //       expect(aTrigger.calls.count()).toEqual(0);
-  //       expect(bTrigger.calls.count()).toEqual(0);
-  //       expect(b2Trigger.calls.count()).toEqual(0);
-  //
-  //       window.scrollTo(0, 10000);
-  //       jasmine.clock().tick(POLL_INTERVAL);
-  //
-  //       expect(aTrigger.calls.count()).toEqual(1);
-  //       expect(bTrigger.calls.count()).toEqual(0);
-  //       expect(b2Trigger.calls.count()).toEqual(0);
-  //
-  //       window.scrollTo(0, 0);
-  //       jasmine.clock().tick(POLL_INTERVAL);
-  //
-  //       window.scrollTo(0, 10000);
-  //       jasmine.clock().tick(POLL_INTERVAL);
-  //
-  //       // The first trigger should only be called the first time the element comes into view.
-  //       expect(aTrigger.calls.count()).toEqual(1);
-  //       expect(bTrigger.calls.count()).toEqual(0);
-  //       expect(b2Trigger.calls.count()).toEqual(0);
-  //
-  //       window.scrollTo(0, 20000);
-  //       jasmine.clock().tick(POLL_INTERVAL);
-  //
-  //       expect(aTrigger.calls.count()).toEqual(1);
-  //       expect(bTrigger.calls.count()).toEqual(0);
-  //       expect(b2Trigger.calls.count()).toEqual(0);
-  //
-  //       window.scrollTo(0, 0);
-  //       jasmine.clock().tick(POLL_INTERVAL);
-  //
-  //       // Give enough time for the configured delay time to pass. The b element rules
-  //       // shouldn't be triggered because the b element is no longer in view.
-  //       jasmine.clock().tick(100000);
-  //
-  //       expect(aTrigger.calls.count()).toEqual(1);
-  //       expect(bTrigger.calls.count()).toEqual(0);
-  //       expect(b2Trigger.calls.count()).toEqual(0);
-  //
-  //       window.scrollTo(0, 20000);
-  //       jasmine.clock().tick(POLL_INTERVAL);
-  //
-  //       // Give enough time for the configured delay time to
-  //       // pass. The second trigger should be called.
-  //       jasmine.clock().tick(50000);
-  //       expect(aTrigger.calls.count()).toEqual(1);
-  //       expect(bTrigger.calls.count()).toEqual(1);
-  //       expect(b2Trigger.calls.count()).toEqual(0);
-  //
-  //       // A different rule watching for the same element but an even longer delay time? Oh my!
-  //       jasmine.clock().tick(200000);
-  //       expect(aTrigger.calls.count()).toEqual(1);
-  //       expect(bTrigger.calls.count()).toEqual(1);
-  //       expect(b2Trigger.calls.count()).toEqual(1);
-  //     });
-  //   });
-  // }
 });
