@@ -20,7 +20,8 @@ var textMatch = require('../helpers/textMatch');
  * Variable condition. Determines if a particular JS variable's actual value matches
  * an acceptable value.
  * @param {Object} settings Condition settings.
- * @param {number} settings.name The name of the JS variable (e.g., event.target.id).
+ * @param {number} settings.name The name of the JS variable
+ * (e.g., window.a.b.c or just a.b.c).
  * @param {string} settings.value An acceptable JS variable value.
  * @param {boolean} [settings.valueIsRegex=false] Whether <code>settings.value</code> is intended to
  * be a regular expression.
@@ -32,6 +33,8 @@ module.exports = function(settings) {
 
   if (variable.substring(0, 7) === 'window.') {
     variable = variable.slice(7);
+  } else if (variable.substring(0, 7) === 'window[') {
+    variable = variable.slice(6);
   }
 
   return textMatch(getObjectProperty(window, variable), acceptableValue);

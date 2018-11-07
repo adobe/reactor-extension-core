@@ -20,33 +20,47 @@ describe('variable condition delegate', function() {
   beforeAll(function() {
     conditionDelegate = conditionDelegateInjector({
       '@adobe/reactor-window': {
-        test: 'foo'
+        a: {
+          b: [
+            {
+              c: 'foo'
+            },
+            {
+              c: 'bar'
+            }
+          ]
+        }
       }
     });
   });
 
   it('returns true when the variable matches the string value', function() {
-    var settings = { name: 'test', value: 'foo' };
+    var settings = { name: '[\'a\'].b[1]["c"]', value: 'bar' };
     expect(conditionDelegate(settings)).toBe(true);
   });
 
   it('returns false when the variable does not match the string value', function() {
-    var settings = { name: 'test', value: 'cake' };
+    var settings = { name: '[\'a\'].b[1]["c"]', value: 'cake' };
     expect(conditionDelegate(settings)).toBe(false);
   });
 
   it('returns true when the variable matches the regex value', function() {
-    var settings = { name: 'test', value: 'F.o', valueIsRegex: true };
+    var settings = { name: '[\'a\'].b[1]["c"]', value: 'B.r', valueIsRegex: true };
     expect(conditionDelegate(settings)).toBe(true);
   });
 
   it('returns false when the variable does not match the regex value', function() {
-    var settings = { name: 'test', value: 'g.o', valueIsRegex: true };
+    var settings = { name: '[\'a\'].b[1]["c"]', value: 'g.o', valueIsRegex: true };
     expect(conditionDelegate(settings)).toBe(false);
   });
 
-  it('strips window from the variable name', function() {
-    var settings = { name: 'window.test', value: 'foo' };
+  it('strips window from the variable name when dot notation follows', function() {
+    var settings = { name: 'window.a.b[1]["c"]', value: 'bar' };
+    expect(conditionDelegate(settings)).toBe(true);
+  });
+
+  it('strips window from the variable name when bracket notation follows', function() {
+    var settings = { name: 'window[\'a\'].b[1]["c"]', value: 'bar' };
     expect(conditionDelegate(settings)).toBe(true);
   });
 });
