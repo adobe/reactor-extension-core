@@ -27,11 +27,13 @@ const getReactComponents = (wrapper) => {
   const delayField = fields.filterWhere(n => n.prop('name') === 'delay');
   const delayTextfield = delayField.find(Textfield);
   const delayRadio = wrapper.find(Radio).filterWhere(n => n.prop('value') === 'delay');
+  const everyEntryRadio = wrapper.find(Radio).filterWhere(n => n.prop('value') === 'everyEntry');
 
   return {
     elementSelectorTextfield,
     delayTextfield,
-    delayRadio
+    delayRadio,
+    everyEntryRadio
   };
 };
 
@@ -48,14 +50,20 @@ describe('enters viewport event view', () => {
     extensionBridge.init({
       settings: {
         elementSelector: '.foo',
-        delay: 100
+        delay: 100,
+        frequency: 'everyEntry'
       }
     });
 
-    const { elementSelectorTextfield, delayTextfield } = getReactComponents(instance);
+    const {
+      elementSelectorTextfield,
+      delayTextfield,
+      everyEntryRadio
+    } = getReactComponents(instance);
 
     expect(elementSelectorTextfield.props().value).toBe('.foo');
     expect(delayTextfield.props().value).toBe(100);
+    expect(everyEntryRadio.props().checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -64,14 +72,21 @@ describe('enters viewport event view', () => {
     const { delayRadio } = getReactComponents(instance);
     delayRadio.props().onChange('delay', { stopPropagation() {} });
 
-    const { elementSelectorTextfield, delayTextfield } = getReactComponents(instance);
+    const {
+      elementSelectorTextfield,
+      delayTextfield,
+      everyEntryRadio
+    } = getReactComponents(instance);
+
     elementSelectorTextfield.props().onChange('.foo');
     delayTextfield.props().onChange(100);
+    everyEntryRadio.props().onChange(true, { stopPropagation() {} });
 
-    const { elementSelector, delay } = extensionBridge.getSettings();
+    const { elementSelector, delay, frequency } = extensionBridge.getSettings();
 
     expect(elementSelector).toBe('.foo');
     expect(delay).toBe(100);
+    expect(frequency).toBe('everyEntry');
   });
 
   it('sets validation errors', () => {

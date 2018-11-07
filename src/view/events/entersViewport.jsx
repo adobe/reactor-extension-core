@@ -11,15 +11,29 @@
  ****************************************************************************************/
 
 import React from 'react';
-
+import RadioGroup from '@react/react-spectrum/RadioGroup';
+import Radio from '@react/react-spectrum/Radio';
 import SpecificElements, { formConfig as specificElementsFormConfig } from './components/specificElements';
 import DelayType, { formConfig as delayTypeFormConfig } from './components/delayType';
 import mergeFormConfigs from '../utils/mergeFormConfigs';
+import WrappedField from '../components/wrappedField';
 
 const EntersViewport = () => (
   <div>
     <SpecificElements />
     <DelayType />
+    <div>
+      <label>
+        <span className="u-verticalAlignMiddle u-gapRight">at the frequency of</span>
+      </label>
+      <WrappedField
+        name="frequency"
+        component={ RadioGroup }
+      >
+        <Radio value="firstEntry" label="first time element enters viewport" />
+        <Radio value="everyEntry" label="every time element enters viewport" />
+      </WrappedField>
+    </div>
   </div>
 );
 
@@ -27,5 +41,15 @@ export default EntersViewport;
 
 export const formConfig = mergeFormConfigs(
   specificElementsFormConfig,
-  delayTypeFormConfig
+  delayTypeFormConfig,
+  {
+    settingsToFormValues: (values, settings) => ({
+      ...values,
+      frequency: settings.frequency || 'firstEntry'
+    }),
+    formValuesToSettings: (settings, values) => ({
+      ...settings,
+      frequency: values.frequency
+    })
+  }
 );

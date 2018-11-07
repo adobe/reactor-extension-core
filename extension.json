@@ -411,6 +411,13 @@
           "delay": {
             "type": "number",
             "minimum": 1
+          },
+          "frequency": {
+            "type": "string",
+            "enum": [
+              "firstEntry",
+              "everyEntry"
+            ]
           }
         },
         "additionalProperties": false,

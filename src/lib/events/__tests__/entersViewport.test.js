@@ -376,12 +376,18 @@ describe('enters viewport event delegate', function() {
     //       bElement.style.top = '10000px';
     //
     //       var aTrigger = jasmine.createSpy();
+    //       var a2Trigger = jasmine.createSpy();
     //       var bTrigger = jasmine.createSpy();
     //       var b2Trigger = jasmine.createSpy();
     //
     //       delegate({
     //         elementSelector: '#a'
     //       }, aTrigger);
+    //
+    //       delegate({
+    //         elementSelector: '#a',
+    //         frequency: 'everyTime'
+    //       }, a2Trigger);
     //
     //       delegate({
     //         elementSelector: '#b',
@@ -396,6 +402,7 @@ describe('enters viewport event delegate', function() {
     //       jasmine.clock().tick(POLL_INTERVAL);
     //
     //       expect(aTrigger.calls.count()).toEqual(0);
+    //       expect(a2Trigger.calls.count()).toEqual(0);
     //       expect(bTrigger.calls.count()).toEqual(0);
     //       expect(b2Trigger.calls.count()).toEqual(0);
     //
@@ -403,6 +410,7 @@ describe('enters viewport event delegate', function() {
     //       jasmine.clock().tick(POLL_INTERVAL);
     //
     //       expect(aTrigger.calls.count()).toEqual(1);
+    //       expect(a2Trigger.calls.count()).toEqual(1);
     //       expect(bTrigger.calls.count()).toEqual(0);
     //       expect(b2Trigger.calls.count()).toEqual(0);
     //
@@ -412,8 +420,8 @@ describe('enters viewport event delegate', function() {
     //       window.scrollTo(0, 10000);
     //       jasmine.clock().tick(POLL_INTERVAL);
     //
-    //       // The first trigger should only be called the first time the element comes into view.
     //       expect(aTrigger.calls.count()).toEqual(1);
+    //       expect(a2Trigger.calls.count()).toEqual(2);
     //       expect(bTrigger.calls.count()).toEqual(0);
     //       expect(b2Trigger.calls.count()).toEqual(0);
     //
@@ -421,6 +429,7 @@ describe('enters viewport event delegate', function() {
     //       jasmine.clock().tick(POLL_INTERVAL);
     //
     //       expect(aTrigger.calls.count()).toEqual(1);
+    //       expect(a2Trigger.calls.count()).toEqual(2);
     //       expect(bTrigger.calls.count()).toEqual(0);
     //       expect(b2Trigger.calls.count()).toEqual(0);
     //
@@ -432,6 +441,7 @@ describe('enters viewport event delegate', function() {
     //       jasmine.clock().tick(100000);
     //
     //       expect(aTrigger.calls.count()).toEqual(1);
+    //       expect(a2Trigger.calls.count()).toEqual(2);
     //       expect(bTrigger.calls.count()).toEqual(0);
     //       expect(b2Trigger.calls.count()).toEqual(0);
     //
@@ -442,12 +452,14 @@ describe('enters viewport event delegate', function() {
     //       // pass. The second trigger should be called.
     //       jasmine.clock().tick(50000);
     //       expect(aTrigger.calls.count()).toEqual(1);
+    //       expect(a2Trigger.calls.count()).toEqual(2);
     //       expect(bTrigger.calls.count()).toEqual(1);
     //       expect(b2Trigger.calls.count()).toEqual(0);
     //
     //       // A different rule watching for the same element but an even longer delay time? Oh my!
     //       jasmine.clock().tick(200000);
     //       expect(aTrigger.calls.count()).toEqual(1);
+    //       expect(a2Trigger.calls.count()).toEqual(2);
     //       expect(bTrigger.calls.count()).toEqual(1);
     //       expect(b2Trigger.calls.count()).toEqual(1);
     //     });
