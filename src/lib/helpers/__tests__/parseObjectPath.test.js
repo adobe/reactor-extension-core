@@ -22,8 +22,8 @@ describe('parseObjectPath', function() {
 
   it('parses simple paths in bracket notation', function() {
     expect(parseObjectPath('["c"]')).toEqual(['c']);
-    expect(parseObjectPath('a["b"]["c"]')).toEqual(['a','b','c']);
-    expect(parseObjectPath('["a"]["b"]["c"]')).toEqual(['a','b','c']);
+    expect(parseObjectPath('a[\'b\']["c"]')).toEqual(['a','b','c']);
+    expect(parseObjectPath('["a"][\'b\']["c"]')).toEqual(['a','b','c']);
   });
 
   it('parses numeric nodes in bracket notation', function() {
