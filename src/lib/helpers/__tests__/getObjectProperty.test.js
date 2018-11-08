@@ -17,37 +17,11 @@ var getObjectProperty = require('../getObjectProperty');
 describe('getObjectProperty', function() {
   it('returns an object property value', function() {
     var obj = {
-      a: {
-        b: [
-          {
-            c: 'foo'
-          },
-          {
-            c: 'bar'
-          }
-        ]
+      my: {
+        path: 'bar'
       }
     };
 
-    expect(getObjectProperty(obj, 'a.b.1.c')).toBe('bar');
-    expect(getObjectProperty(obj, '[\'a\'].b[1]["c"]')).toBe('bar');
-  });
-
-  it('returns undefined if object path does not exist', function() {
-    var obj = {
-      a: {
-        b: [
-          {
-            c: 'foo'
-          },
-          {
-            c: 'bar'
-          }
-        ]
-      }
-    };
-
-    expect(getObjectProperty(obj, 'a.b.6.d')).toBe(undefined);
-    expect(getObjectProperty(obj, '[\'a\'].b[6]["d"]')).toBe(undefined);
+    expect(getObjectProperty(obj, 'my.path')).toBe('bar');
   });
 });
