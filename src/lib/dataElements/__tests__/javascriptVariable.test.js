@@ -15,16 +15,23 @@
 var dataElementDelegateInjector = require('inject!../javascriptVariable');
 var dataElementDelegate = dataElementDelegateInjector({
   '@adobe/reactor-window': {
-    my: {
-      path: 'bar'
+    a: {
+      b: [
+        {
+          c: 'foo'
+        },
+        {
+          c: 'bar'
+        }
+      ]
     }
   }
 });
 
 describe('javascript variable data element delegate', function() {
-  it('returns an object property value', function() {
+  it('returns a nested object property value', function() {
     var settings = {
-      path: 'my.path'
+      path: 'a.b.1.c'
     };
 
     var value = dataElementDelegate(settings);
