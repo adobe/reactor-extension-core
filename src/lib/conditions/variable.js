@@ -11,8 +11,6 @@
  ****************************************************************************************/
 
 'use strict';
-var window = require('@adobe/reactor-window');
-
 var getObjectProperty = require('../helpers/getObjectProperty');
 var textMatch = require('../helpers/textMatch');
 
@@ -28,11 +26,5 @@ var textMatch = require('../helpers/textMatch');
  */
 module.exports = function(settings) {
   var acceptableValue = settings.valueIsRegex ? new RegExp(settings.value, 'i') : settings.value;
-  var variable = settings.name;
-
-  if (variable.substring(0, 7) === 'window.') {
-    variable = variable.slice(7);
-  }
-
-  return textMatch(getObjectProperty(window, variable), acceptableValue);
+  return textMatch(getObjectProperty(window, settings.name), acceptableValue);
 };
