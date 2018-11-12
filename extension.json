@@ -1,7 +1,7 @@
 {
   "name": "core",
   "platform": "web",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "displayName": "Core",
   "description": "Provides default event, condition, and data element types available to all Launch users.",
   "iconPath": "resources/icons/core.svg",
