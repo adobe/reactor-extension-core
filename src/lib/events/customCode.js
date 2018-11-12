@@ -25,9 +25,5 @@
  * @param {Function} settings.source The custom script function.
  */
 module.exports = function(settings, trigger) {
-  // We're reluctant to expose the trigger function coming from Turbine directly to the user because
-  // it accepts arguments that we're not sure we want to support for this use case.
-  settings.source(function() {
-    trigger();
-  });
+  settings.source(trigger);
 };

@@ -23,13 +23,17 @@ describe('custom code event delegate', function() {
 
   it('triggers rule when custom code calls trigger', function() {
     var trigger = jasmine.createSpy();
+    var contextualData = {
+      foo: 'bar'
+    };
 
     delegate({
       source: function(trigger) {
-        trigger();
+        trigger(contextualData);
       }
     }, trigger);
 
     expect(trigger.calls.count()).toBe(1);
+    expect(trigger).toHaveBeenCalledWith(contextualData);
   });
 });
