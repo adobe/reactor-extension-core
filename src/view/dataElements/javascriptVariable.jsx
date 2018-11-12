@@ -16,10 +16,11 @@ import WrappedField from '../components/wrappedField';
 
 const JavaScriptVariable = () => (
   <label>
-    <span className="u-verticalAlignMiddle u-gapRight">Path to variable</span>
+    <span className="u-verticalAlignMiddle u-gapRight">JavaScript variable name</span>
     <WrappedField
       name="path"
       component={ Textfield }
+      placeholder="dataLayer.products.1.price"
     />
   </label>
 );
