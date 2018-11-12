@@ -11,8 +11,6 @@
  ****************************************************************************************/
 
 'use strict';
-var window = require('@adobe/reactor-window');
-
 var getObjectProperty = require('../helpers/getObjectProperty');
 var textMatch = require('../helpers/textMatch');
 

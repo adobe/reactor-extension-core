@@ -12,26 +12,24 @@
 
 'use strict';
 
-var conditionDelegateInjector = require('inject!../variable');
+var conditionDelegate = require('../variable');
 
 describe('variable condition delegate', function() {
-  var conditionDelegate;
-
   beforeAll(function() {
-    conditionDelegate = conditionDelegateInjector({
-      '@adobe/reactor-window': {
-        a: {
-          b: [
-            {
-              c: 'foo'
-            },
-            {
-              c: 'bar'
-            }
-          ]
+    window.a = {
+      b: [
+        {
+          c: 'foo'
+        },
+        {
+          c: 'bar'
         }
-      }
-    });
+      ]
+    };
+  });
+
+  afterAll(function() {
+    delete window.a;
   });
 
   it('returns true when the variable matches the string value', function() {
@@ -52,5 +50,10 @@ describe('variable condition delegate', function() {
   it('returns false when the variable does not match the regex value', function() {
     var settings = { name: 'a.b.1.c', value: 'g.o', valueIsRegex: true };
     expect(conditionDelegate(settings)).toBe(false);
+  });
+
+  it('finds value when name is prefixed with window', function() {
+    var settings = { name: 'window.a.b.1.c', value: 'bar' };
+    expect(conditionDelegate(settings)).toBe(true);
   });
 });

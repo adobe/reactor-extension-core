@@ -12,10 +12,11 @@
 
 'use strict';
 
-var dataElementDelegateInjector = require('inject!../javascriptVariable');
-var dataElementDelegate = dataElementDelegateInjector({
-  '@adobe/reactor-window': {
-    a: {
+var dataElementDelegate = require('../javascriptVariable');
+
+describe('javascript variable data element delegate', function() {
+  beforeAll(function() {
+    window.a = {
       b: [
         {
           c: 'foo'
@@ -24,11 +25,13 @@ var dataElementDelegate = dataElementDelegateInjector({
           c: 'bar'
         }
       ]
-    }
-  }
-});
+    };
+  });
 
-describe('javascript variable data element delegate', function() {
+  afterAll(function() {
+    delete window.a;
+  });
+
   it('returns a nested object property value', function() {
     var settings = {
       path: 'a.b.1.c'
@@ -47,5 +50,12 @@ describe('javascript variable data element delegate', function() {
     var value = dataElementDelegate(settings);
 
     expect(value).toBe(undefined);
+  });
+
+  it('finds value when path is prefixed with window', function() {
+    var settings = {
+      path: 'window.a.b.1.c'
+    };
+    expect(dataElementDelegate(settings)).toBe('bar');
   });
 });
