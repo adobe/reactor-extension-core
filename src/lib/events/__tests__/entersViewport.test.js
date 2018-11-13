@@ -418,7 +418,14 @@ describe('enters viewport event delegate', function() {
     //       jasmine.clock().tick(POLL_INTERVAL);
     //
     //       window.scrollTo(0, 10000);
-    //       jasmine.clock().tick(POLL_INTERVAL);
+    //       // Enough time for the poll interval to elapse many times. The point here is to test:
+    //       // 1. aTrigger should not be called again because the event is configured to only
+    //       // fire the first time the element enters the viewport.
+    //       // 2. a2Trigger should be called again because the event is configured to fire
+    //       // the rule each time it enters the viewport.
+    //       // 3. a2Trigger should not be repeatedly called on every poll cycle if the element
+    //       // has remained inside the viewport throughout that duration.
+    //       jasmine.clock().tick(POLL_INTERVAL * 10);
     //
     //       expect(aTrigger.calls.count()).toEqual(1);
     //       expect(a2Trigger.calls.count()).toEqual(2);
