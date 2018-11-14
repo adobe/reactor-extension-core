@@ -1,5 +1,5 @@
 # @adobe/extension-core
-[![Build Status][status-image]][status-url] [![Coverage Status][coverage-image]][coverage-url] [![NPM Dependencies][npm-dependencies-image]][npm-dependencies-url] [![Sandbox][sandbox-image]][sandbox-url]
+[![Build Status][status-image]][status-url] [![Sandbox][sandbox-image]][sandbox-url]
 
 Core extension for Launch. Provides default event, condition, and data element types available to all Launch users.
 
