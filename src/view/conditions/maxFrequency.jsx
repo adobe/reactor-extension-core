@@ -64,17 +64,19 @@ const MaxFrequency = ({ unit }) => (
     </span>
     {
       unit !== VISITOR ?
-        <WrappedField
-          name="count"
-          component={ Textfield }
-          className="u-gapRight"
-          componentClassName="u-smallTextfield"
-        /> : null
+        (
+          <WrappedField
+            name="count"
+            component={Textfield}
+            className="u-gapRight"
+            componentClassName="u-smallTextfield"
+          />
+        ) : null
     }
     <WrappedField
       name="unit"
-      component={ Select }
-      options={ unitOptions }
+      component={Select}
+      options={unitOptions}
     />
   </div>
 );

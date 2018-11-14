@@ -23,14 +23,14 @@ const renderItem = field => (
     <label className="u-gapRight">
       <span className="u-verticalAlignMiddle u-gapRight">Subdomain equals</span>
       <WrappedField
-        name={ `${field}.value` }
-        component={ Textfield }
+        name={`${field}.value`}
+        component={Textfield}
       />
     </label>
     <WrappedField
-      name={ `${field}.valueIsRegex` }
-      component={ RegexToggle }
-      valueFieldName={ `${field}.value` }
+      name={`${field}.valueIsRegex`}
+      component={RegexToggle}
+      valueFieldName={`${field}.value`}
     />
   </div>
 );
@@ -38,8 +38,8 @@ const renderItem = field => (
 const Subdomain = () => (
   <FieldArray
     name="subdomains"
-    renderItem={ renderItem }
-    component={ MultipleItemEditor }
+    renderItem={renderItem}
+    component={MultipleItemEditor}
   />
 );
 

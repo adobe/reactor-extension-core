@@ -3,155 +3,147 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackShellPlugin = require('webpack-shell-plugin');
-const argv = require('yargs').argv;
 const webpack = require('webpack');
 const extension = require('./extension');
 const camelCase = require('camelcase');
 const capitalize = require('capitalize');
 const createEntryFile = require('./createEntryFile');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const entries = {};
 const plugins = [];
 
 // Each view becomes its own "app". These are automatically generated based on naming convention.
-['event', 'condition', 'action', 'dataElement'].forEach((type) => {
+['event', 'condition', 'action', 'dataElement', 'configuration'].forEach(type => {
   const typePluralized = type + 's';
+  const delegates =
+    type === 'configuration'
+      ? [extension['configuration']]
+      : extension[typePluralized];
 
-  extension[typePluralized].forEach((itemDescriptor) => {
-    if (itemDescriptor.viewPath) {
-      const itemName = itemDescriptor.name;
-      const itemNameCamelized = camelCase(itemName);
-      const itemNameCapitalized = capitalize(itemNameCamelized);
-      const chunkName = `${typePluralized}/${itemNameCamelized}`;
+  delegates.forEach(itemDescriptor => {
+    let itemNameCapitalized;
+    let chunkName;
+
+    if (itemDescriptor && itemDescriptor.viewPath) {
+      if (type === 'configuration') {
+        itemNameCapitalized = 'Configuration';
+        chunkName = 'configuration/configuration';
+      } else {
+        const itemName = itemDescriptor.name;
+        const itemNameCamelized = camelCase(itemName);
+        itemNameCapitalized = capitalize(itemNameCamelized);
+        chunkName = `${typePluralized}/${itemNameCamelized}`;
+      }
+
       const entryPath = `./.entries/${chunkName}.js`;
-
       createEntryFile(entryPath, itemNameCapitalized, chunkName);
-
       entries[chunkName] = entryPath;
 
       plugins.push(
         new HtmlWebpackPlugin({
-          chunks: ['common', chunkName],
           filename: `${chunkName}.html`,
-          template: 'src/view/template.html'
+          template: 'src/view/template.html',
+          chunks: ['common', chunkName],
         })
-      )
+      );
     }
   });
 });
 
-// Split out common code from each view into a common file for caching gains.
-plugins.push(new webpack.optimize.CommonsChunkPlugin({
-  name: 'common',
-  filename: 'common.js',
-  // At least this many views must be using a piece of code before it is moved to common chunk.
-  minChunks: Math.round(Object.keys(entries).length / 4)
-}));
+plugins.push(
+  new webpack.DefinePlugin({
+    'process.env.SCALE_MEDIUM': 'true',
+    'process.env.SCALE_LARGE': 'false',
+    'process.env.THEME_LIGHT': 'false',
+    'process.env.THEME_LIGHTEST': 'true',
+    'process.env.THEME_DARK': 'false',
+    'process.env.THEME_DARKEST': 'false',
+  })
+);
 
-plugins.push(new webpack.DefinePlugin({
-  'process.env.SCALE_MEDIUM': 'true',
-  'process.env.SCALE_LARGE': 'false',
-  'process.env.THEME_LIGHT': 'false',
-  'process.env.THEME_LIGHTEST': 'true',
-  'process.env.THEME_DARK': 'false',
-  'process.env.THEME_DARKEST': 'false'
-}));
+module.exports = env => {
+  if (env === 'sandbox') {
+    // This allows us to run the sandbox after the initial build takes place. By not starting up the
+    // sandbox while simultaneously building the view, we ensure:
+    // (1) Whatever we see in the browser contains the latest view files.
+    // (2) The sandbox can validate our extension.json and find that the view files it references
+    // actually exist because they have already been built.
+    plugins.push(
+      new WebpackShellPlugin({
+        onBuildEnd: ['./node_modules/.bin/reactor-sandbox'],
+      })
+    );
 
-if (argv.production) {
-  plugins.push(
-    new webpack.DefinePlugin({
-      'process.env':{
-        'NODE_ENV': JSON.stringify('production')
-      }
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      }
-    })
-  );
-}
-
-if (argv.runSandbox) {
-  // This allows us to run the sandbox after the initial build takes place. By not starting up the
-  // sandbox while simultaneously building the view, we ensure:
-  // (1) Whatever we see in the browser contains the latest view files.
-  // (2) The sandbox can validate our extension.json and find that the view files it references
-  // actually exist because they have already been built.
-  plugins.push(new WebpackShellPlugin({
-    onBuildEnd: ['./node_modules/.bin/reactor-sandbox'],
-  }));
-}
-
-if (argv.analyze) {
-  plugins.push(new BundleAnalyzerPlugin());
-}
-
-// Excludes locale information from moment. Locale info is unnecessary unless/until we decide
-// to internationalize.
-plugins.push(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
-
-module.exports = {
-  entry: entries,
-  plugins: plugins,
-  output: {
-    path: 'dist/',
-    filename: '[name].js'
-  },
-  module: {
-    loaders: [
-      {
-        test: /\.jsx?$/,
-        include: /src\/view/,
-        exclude: /__tests__/,
-        loader: 'babel-loader',
-        query: {
-          presets: ['react', 'es2015', 'stage-0']
-        }
-      },
-      {
-        test: /\.js$/,
-        include: /\.entries/,
-        loader: 'babel-loader',
-        query: {
-          presets: ['es2015', 'stage-0']
-        }
-      },
-      {
-        test: /\.styl/,
-        include: /src\/view/,
-        loaders: ['style', 'css', 'stylus']
-      },
-      {
-        test: /\.css/,
-        loaders: ['style', 'css']
-      },
-      // Needed for moment-timezone.
-      {
-        test: /\.json$/,
-        loader: "json-loader"
-      }
-    ]
-  },
-  resolve: {
-    extensions: ['', '.js', '.jsx', 'styl'],
-    // Needed when npm-linking projects like coralui-support-react
-    // https://github.com/webpack/webpack/issues/784
-    fallback: path.join(__dirname, 'node_modules'),
-    // When looking for modules, prefer the node_modules within this project. An example where
-    // this is helpful: If this project requires in module X, we've npm linked module X and
-    // module X has its node_modules populated, and module X requires React, typically two
-    // copies of React would be bundled (one from this project's node_modules and one from
-    // module X's node_modules). By setting this root, module X will prefer the React in this
-    // project's node_modules, effectively de-duping React.
-    // https://github.com/webpack/webpack/issues/966
-    root: path.resolve(__dirname, 'node_modules')
-  },
-  stylus: {
-    use: [require('nib')()],
-    import: [
-      path.resolve('./node_modules/nib/lib/nib/index')
-    ]
+    plugins.push(new webpack.SourceMapDevToolPlugin({}));
   }
+
+  return {
+    devtool: false,
+    optimization: {
+      runtimeChunk: false,
+      splitChunks: {
+        cacheGroups: {
+          default: false,
+          commons: {
+            name: 'common',
+            chunks: 'all',
+            minChunks: Math.round(Object.keys(entries).length / 4)
+          }
+        }
+      }
+    },
+    entry: entries,
+    plugins: plugins,
+    output: {
+      path: path.resolve(__dirname, 'dist'),
+      filename: '[name].js',
+      chunkFilename: '[name].js',
+    },
+    module: {
+      rules: [
+        {
+          test: /\.jsx?$/,
+          include: /src\/view/,
+          exclude: /__tests__/,
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/react', '@babel/env'],
+            plugins: ['@babel/plugin-proposal-class-properties'],
+          },
+        },
+        {
+          test: /\.js$/,
+          include: /\.entries/,
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/env'],
+          },
+        },
+        {
+          test: /\.styl/,
+          include: /src\/view/,
+          loader: 'style-loader!css-loader!stylus-loader',
+        },
+        {
+          test: /\.css/,
+          loaders: ['style-loader', 'css-loader'],
+        },
+        {
+          test: /\.(jpe?g|png|gif)$/,
+          loader: 'file-loader',
+        },
+        {
+          test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+          loader: 'url-loader?limit=10000&mimetype=application/font-woff',
+        },
+        {
+          test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+          loader: 'file-loader',
+        },
+      ],
+    },
+    resolve: {
+      extensions: ['.js', '.jsx'],
+    },
+  };
 };

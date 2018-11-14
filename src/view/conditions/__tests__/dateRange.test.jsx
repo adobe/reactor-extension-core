@@ -113,8 +113,8 @@ describe('date range condition view', () => {
 
     const { startDatepicker, endDatepicker } = getReactComponents(instance);
 
-    expect(startDatepicker.props().invalid).toBe(true);
-    expect(endDatepicker.props().invalid).toBe(true);
+    expect(startDatepicker.props().validationState).toBe('invalid');
+    expect(endDatepicker.props().validationState).toBe('invalid');
   });
 
   it('sets no errors if either start or end date is provided', () => {
@@ -127,7 +127,7 @@ describe('date range condition view', () => {
     const { startDatepicker, endDatepicker } = getReactComponents(instance);
 
     expect(extensionBridge.validate()).toBe(true);
-    expect(startDatepicker.props().invalid).toBe(false);
-    expect(endDatepicker.props().invalid).toBe(false);
+    expect(startDatepicker.props().validationState).toBeUndefined();
+    expect(endDatepicker.props().validationState).toBeUndefined();
   });
 });

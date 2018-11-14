@@ -74,3 +74,15 @@ module.exports = function(selector, callback) {
 
   initializePolling();
 };
+
+/**
+ * @private
+ * Clears all listeners. This should only be used in tests.
+ */
+module.exports.__reset = function() {
+  callbacksBySelector = Object.create(null);
+
+  initializePolling = once(function() {
+    setInterval(findElements, POLL_INTERVAL);
+  });
+};

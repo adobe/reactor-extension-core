@@ -35,7 +35,7 @@ const getReactComponents = (wrapper) => {
 const ConnectedRegexToggle = () => (
   <WrappedField
     name="valueIsRegex"
-    component={ RegexToggle }
+    component={RegexToggle}
     valueFieldName="value"
   />
 );
@@ -62,13 +62,11 @@ describe('regex toggle', () => {
   beforeEach(() => {
     extensionBridge = createExtensionBridge();
 
-    spyOn(extensionBridge, 'openRegexTester').and.callFake(() => {
-      return {
-        then(resolve) {
-          resolve('bar');
-        }
-      };
-    });
+    spyOn(extensionBridge, 'openRegexTester').and.callFake(() => ({
+      then(resolve) {
+        resolve('bar');
+      }
+    }));
 
     window.extensionBridge = extensionBridge;
 

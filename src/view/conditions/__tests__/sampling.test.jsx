@@ -84,7 +84,7 @@ describe('sampling condition view', () => {
 
     ({ rateTextfield } = getReactComponents(instance));
 
-    expect(rateTextfield.props().invalid).toBe(true);
+    expect(rateTextfield.props().validationState).toBe('invalid');
   });
 
   it('sets error if rate is not a number', () => {
@@ -97,7 +97,7 @@ describe('sampling condition view', () => {
 
     ({ rateTextfield } = getReactComponents(instance));
 
-    expect(rateTextfield.props().invalid).toBe(true);
+    expect(rateTextfield.props().validationState).toBe('invalid');
   });
 
   it('sets error if rate is less than 0', () => {
@@ -110,7 +110,7 @@ describe('sampling condition view', () => {
 
     ({ rateTextfield } = getReactComponents(instance));
 
-    expect(rateTextfield.props().invalid).toBe(true);
+    expect(rateTextfield.props().validationState).toBe('invalid');
   });
 
   it('sets error if rate is greater than 1', () => {
@@ -123,7 +123,7 @@ describe('sampling condition view', () => {
 
     ({ rateTextfield } = getReactComponents(instance));
 
-    expect(rateTextfield.props().invalid).toBe(true);
+    expect(rateTextfield.props().validationState).toBe('invalid');
   });
 
   it('sets error if rate is not an integer', () => {
@@ -137,7 +137,7 @@ describe('sampling condition view', () => {
 
     ({ rateTextfield } = getReactComponents(instance));
 
-    expect(rateTextfield.props().invalid).toBe(true);
+    expect(rateTextfield.props().validationState).toBe('invalid');
   });
 
   it('shows cohort reset warning when rate changes', () => {

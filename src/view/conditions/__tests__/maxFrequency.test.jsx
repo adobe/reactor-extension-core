@@ -100,7 +100,7 @@ describe('max frequency condition view', () => {
       countTextfield
     } = getReactComponents(instance));
 
-    expect(countTextfield.props().invalid).toBe(true);
+    expect(countTextfield.props().validationState).toBe('invalid');
 
     countTextfield.props().onChange('');
 
@@ -110,7 +110,7 @@ describe('max frequency condition view', () => {
       countTextfield
     } = getReactComponents(instance));
 
-    expect(countTextfield.props().invalid).toBe(true);
+    expect(countTextfield.props().validationState).toBe('invalid');
   });
 
   describe('visitor unit', () => {

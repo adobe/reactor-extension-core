@@ -22,14 +22,14 @@ const renderItem = field => (
     <label className="u-gapRight">
       <span className="u-verticalAlignMiddle u-gapRight">Path equals</span>
       <WrappedField
-        name={ `${field}.value` }
-        component={ Textfield }
+        name={`${field}.value`}
+        component={Textfield}
       />
     </label>
     <WrappedField
-      name={ `${field}.valueIsRegex` }
-      component={ RegexToggle }
-      valueFieldName={ `${field}.value` }
+      name={`${field}.valueIsRegex`}
+      component={RegexToggle}
+      valueFieldName={`${field}.value`}
     />
   </div>
 );
@@ -37,8 +37,8 @@ const renderItem = field => (
 const PathAndQueryString = () => (
   <FieldArray
     name="paths"
-    renderItem={ renderItem }
-    component={ MultipleItemEditor }
+    renderItem={renderItem}
+    component={MultipleItemEditor}
   />
 );
 

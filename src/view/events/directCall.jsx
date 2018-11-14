@@ -22,7 +22,7 @@ const DirectCall = () => (
     </span>
     <WrappedField
       name="identifier"
-      component={ Textfield }
+      component={Textfield}
     />
     <InfoTip placement="bottom">
       Specify the string that will be passed to _satellite.track() in your direct call,

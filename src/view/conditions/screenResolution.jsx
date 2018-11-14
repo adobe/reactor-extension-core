@@ -26,14 +26,14 @@ const ScreenResolution = () => (
         </span>
         <WrappedField
           name="widthOperator"
-          component={ Select }
-          options={ comparisonOperatorOptions }
+          component={Select}
+          options={comparisonOperatorOptions}
         />
       </label>
       <label>
         <WrappedField
           name="width"
-          component={ Textfield }
+          component={Textfield}
           className="u-gapRight"
           componentClassName="u-smallTextfield"
         />
@@ -45,14 +45,14 @@ const ScreenResolution = () => (
         <span className="u-verticalAlignMiddle u-gapRight">and height is</span>
         <WrappedField
           name="heightOperator"
-          component={ Select }
-          options={ comparisonOperatorOptions }
+          component={Select}
+          options={comparisonOperatorOptions}
         />
       </label>
       <label>
         <WrappedField
           name="height"
-          component={ Textfield }
+          component={Textfield}
           className="u-gapRight"
           componentClassName="u-smallTextfield"
         />

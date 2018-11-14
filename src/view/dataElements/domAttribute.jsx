@@ -77,7 +77,7 @@ const DomAttribute = ({ ...props }) => {
           </span>
           <WrappedField
             name="elementSelector"
-            component={ Textfield }
+            component={Textfield}
           />
           <Link
             className="u-verticalAlignMiddle u-gapLeft"
@@ -94,17 +94,19 @@ const DomAttribute = ({ ...props }) => {
           <span className="u-verticalAlignMiddle u-gapRight">Use the value of</span>
           <WrappedField
             name="selectedElementPropertyPreset"
-            component={ Select }
-            options={ elementPropertyPresets }
+            component={Select}
+            options={elementPropertyPresets}
           />
         </label>
         {
           (selectedElementPropertyPreset === 'custom') ?
-            <WrappedField
-              name="customElementProperty"
-              component={ Textfield }
-            />
-            : null
+            (
+              <WrappedField
+                name="customElementProperty"
+                component={Textfield}
+              />
+            ) :
+            null
         }
       </div>
     </div>

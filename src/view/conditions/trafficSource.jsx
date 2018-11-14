@@ -21,12 +21,12 @@ const TrafficSource = () => (
       <span className="u-verticalAlignMiddle u-gapRight">Traffic source equals</span>
       <WrappedField
         name="source"
-        component={ Textfield }
+        component={Textfield}
       />
     </label>
     <WrappedField
       name="sourceIsRegex"
-      component={ RegexToggle }
+      component={RegexToggle}
       valueFieldName="source"
     />
   </div>

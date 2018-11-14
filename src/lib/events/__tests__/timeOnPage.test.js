@@ -25,12 +25,7 @@ var mockDocument = {
 };
 
 var Timer = require('../helpers/timer');
-
-var eventDelegateInjector = require('inject!../timeOnPage');
-var delegate = eventDelegateInjector({
-  '../helpers/timer.js': Timer,
-  '@adobe/reactor-document': mockDocument
-});
+var eventDelegateInjector = require('inject-loader!../timeOnPage');
 
 var isIE = function() {
   var myNav = navigator.userAgent.toLowerCase();
@@ -38,11 +33,18 @@ var isIE = function() {
 };
 
 describe('time on page event delegate', function() {
+  var delegate;
+
   beforeEach(function() {
     jasmine.clock().install();
 
     var baseTime = new Date();
     jasmine.clock().mockDate(baseTime);
+
+    delegate = eventDelegateInjector({
+      './helpers/timer': Timer,
+      '@adobe/reactor-document': mockDocument
+    });
   });
 
   afterEach(function() {

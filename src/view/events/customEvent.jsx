@@ -28,7 +28,7 @@ const CustomEvent = () => (
       </span>
       <WrappedField
         name="type"
-        component={ Textfield }
+        component={Textfield}
       />
       <InfoTip placement="bottom">
         This is the name of the event that will be triggered.

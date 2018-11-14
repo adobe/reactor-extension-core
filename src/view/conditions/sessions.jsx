@@ -26,15 +26,15 @@ const Sessions = () => (
         </span>
         <WrappedField
           name="operator"
-          component={ Select }
-          options={ comparisonOperatorOptions }
+          component={Select}
+          options={comparisonOperatorOptions}
         />
       </label>
       <label>
         <span className="u-verticalAlignMiddle u-gapRight">the value</span>
         <WrappedField
           name="count"
-          component={ Textfield }
+          component={Textfield}
           componentClassName="u-smallTextfield"
         />
       </label>

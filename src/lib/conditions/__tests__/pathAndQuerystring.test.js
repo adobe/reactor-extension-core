@@ -19,7 +19,7 @@ var mockDocument = {
   }
 };
 
-var conditionDelegateInjector = require('inject!../pathAndQuerystring');
+var conditionDelegateInjector = require('inject-loader!../pathAndQuerystring');
 var conditionDelegate = conditionDelegateInjector({
   '@adobe/reactor-document': mockDocument
 });

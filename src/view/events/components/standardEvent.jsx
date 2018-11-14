@@ -16,10 +16,10 @@ import ElementFilter, { formConfig as elementFilterFormConfig } from './elementF
 import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './advancedEventOptions';
 import mergeFormConfigs from '../../utils/mergeFormConfigs';
 
-const StandardEvent = ({ ...props }) => (
+const StandardEvent = ({ fields }) => (
   <div>
-    <ElementFilter fields={ props.fields } />
-    <AdvancedEventOptions fields={ props.fields } />
+    <ElementFilter fields={fields} />
+    <AdvancedEventOptions fields={fields} />
   </div>
 );
 

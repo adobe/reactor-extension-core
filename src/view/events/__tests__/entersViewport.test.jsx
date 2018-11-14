@@ -105,7 +105,7 @@ describe('enters viewport event view', () => {
       elementSelectorTextfield
     } = getReactComponents(instance);
 
-    expect(delayTextfield.props().invalid).toBe(true);
-    expect(elementSelectorTextfield.props().invalid).toBe(true);
+    expect(delayTextfield.props().validationState).toBe('invalid');
+    expect(elementSelectorTextfield.props().validationState).toBe('invalid');
   });
 });

@@ -25,20 +25,20 @@ export default (props) => {
   } = props;
 
   return (
-    <div className={ classNames(className, 'u-inlineBlock') }>
+    <div className={classNames(className, 'u-inlineBlock')}>
       <Switch
         className="u-gapRight u-verticalAlignMiddle"
-        checked={ Boolean(valueIsRegex) }
-        onChange={ onChange }
+        checked={Boolean(valueIsRegex)}
+        onChange={onChange}
         label="Regex"
       />
       <span
         id="testButtonContainer"
-        style={ { visibility: valueIsRegex ? 'visible' : 'hidden' } }
+        style={{ visibility: valueIsRegex ? 'visible' : 'hidden' }}
       >
         <WrappedField
-          name={ valueFieldName }
-          component={ RegexTestButton }
+          name={valueFieldName}
+          component={RegexTestButton}
         />
       </span>
     </div>

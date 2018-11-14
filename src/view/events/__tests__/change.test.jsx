@@ -101,7 +101,9 @@ describe('change event view', () => {
     elementSelectorTextfield.props().onChange('.foo');
     bubbleStopCheckbox.props().onChange(true);
 
-    const { value, valueIsRegex, elementSelector, bubbleStop } = extensionBridge.getSettings();
+    const {
+      value, valueIsRegex, elementSelector, bubbleStop
+    } = extensionBridge.getSettings();
 
     expect(value).toBe('abc');
     expect(valueIsRegex).toBe(true);
@@ -115,6 +117,6 @@ describe('change event view', () => {
 
     const { elementSelectorTextfield } = getReactComponents(instance);
 
-    expect(elementSelectorTextfield.props().invalid).toBe(true);
+    expect(elementSelectorTextfield.props().validationState).toBe('invalid');
   });
 });

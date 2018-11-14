@@ -21,22 +21,22 @@ import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } fr
 import mergeFormConfigs from '../utils/mergeFormConfigs';
 import { isNumberLikeInRange } from '../utils/validators';
 
-const Click = props => (
+const Click = ({ delayLinkActivation }) => (
   <div>
     <ElementFilter />
     <WrappedField
       name="delayLinkActivation"
       className="u-block"
-      component={ Checkbox }
+      component={Checkbox}
       label="If the element is a link, delay navigation"
     />
 
-    {props.delayLinkActivation ? (
+    {delayLinkActivation ? (
       <div className="FieldSubset">
         <span className="u-verticalAlignMiddle u-gapRight">Link delay</span>
         <WrappedField
           name="anchorDelay"
-          component={ Textfield }
+          component={Textfield}
         />
       </div>
     ) : null}

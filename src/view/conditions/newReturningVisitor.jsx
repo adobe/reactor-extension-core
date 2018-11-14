@@ -19,7 +19,7 @@ const NewReturningVisitor = () => (
   <div>
     <WrappedField
       name="visitorType"
-      component={ RadioGroup }
+      component={RadioGroup}
     >
       <Radio value="new" label="New Visitor" />
       <Radio value="returning" label="Returning Visitor" />

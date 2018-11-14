@@ -71,6 +71,6 @@ describe('traffic source condition view', () => {
 
     const { sourceTextfield } = getReactComponents(instance);
 
-    expect(sourceTextfield.props().invalid).toBe(true);
+    expect(sourceTextfield.props().validationState).toBe('invalid');
   });
 });

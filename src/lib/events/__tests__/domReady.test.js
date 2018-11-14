@@ -14,7 +14,7 @@
 
 describe('dom ready event delegate', function() {
   it('sends the trigger to the pageLifecycleEvents helper module', function() {
-    var domReadyInjector = require('inject!../domReady');
+    var domReadyInjector = require('inject-loader!../domReady');
     var trigger = function() {};
     var pageLifecycleEventsSpy = jasmine.createSpyObj('pageLifecycleEvents', [
       'registerDomReadyTrigger'

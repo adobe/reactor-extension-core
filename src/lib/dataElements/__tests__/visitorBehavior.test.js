@@ -36,7 +36,7 @@ var mockVisitorTracking = {
   }
 };
 
-var dataElementDelegate = require('inject!../visitorBehavior')({
+var dataElementDelegate = require('inject-loader!../visitorBehavior')({
   '../helpers/visitorTracking': mockVisitorTracking
 });
 

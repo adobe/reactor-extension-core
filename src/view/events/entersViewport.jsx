@@ -25,14 +25,14 @@ const EntersViewport = () => (
     <div>
       <label>
         <span className="u-verticalAlignMiddle u-gapRight">at the frequency of</span>
+        <WrappedField
+          name="frequency"
+          component={RadioGroup}
+        >
+          <Radio value="firstEntry" label="first time element enters viewport" />
+          <Radio value="everyEntry" label="every time element enters viewport" />
+        </WrappedField>
       </label>
-      <WrappedField
-        name="frequency"
-        component={ RadioGroup }
-      >
-        <Radio value="firstEntry" label="first time element enters viewport" />
-        <Radio value="everyEntry" label="every time element enters viewport" />
-      </WrappedField>
     </div>
   </div>
 );

@@ -12,7 +12,7 @@
 
 'use strict';
 var testStandardEvent = require('./helpers/testStandardEvent');
-var delegateInjector = require('inject!../click');
+var delegateInjector = require('inject-loader!../click');
 
 var getClickEvent = function() {
   var event;
@@ -33,13 +33,13 @@ describe('click event delegate', function() {
   var mockWindow = {};
   var delegate;
 
-  beforeAll(function() {
+  beforeEach(function() {
     delegate = delegateInjector({
       '@adobe/reactor-window': mockWindow
     });
   });
 
-  afterAll(function() {
+  afterEach(function() {
     resetTurbineVariable();
   });
 
@@ -59,17 +59,10 @@ describe('click event delegate', function() {
       event.preventDefault();
     };
 
-    beforeAll(function() {
+    beforeEach(function() {
       jasmine.clock().install();
       document.addEventListener('click', clickHandler);
-    });
 
-    afterAll(function() {
-      jasmine.clock().uninstall();
-      document.removeEventListener('click', clickHandler);
-    });
-
-    beforeEach(function() {
       mockWindow.location = INITIAL_LOCATION;
       mockWindow.top = mockWindow;
       mockWindow.name = 'myWindow';
@@ -88,6 +81,9 @@ describe('click event delegate', function() {
       // Without resetting between tests, the delegate would continue watching for and taking
       // action on click events from prior tests.
       delegate.__reset();
+
+      jasmine.clock().uninstall();
+      document.removeEventListener('click', clickHandler);
     });
 
     it('delays navigation by a custom delay', function() {

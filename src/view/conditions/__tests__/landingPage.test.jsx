@@ -71,6 +71,6 @@ describe('landing page condition view', () => {
 
     const { pageTextfield } = getReactComponents(instance);
 
-    expect(pageTextfield.props().invalid).toBe(true);
+    expect(pageTextfield.props().validationState).toBe('invalid');
   });
 });

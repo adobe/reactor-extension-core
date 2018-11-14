@@ -22,30 +22,33 @@ import mergeFormConfigs from '../../utils/mergeFormConfigs';
 
 const SpecificElements = ({ ...props }) => {
   const {
-    showElementPropertiesFilter
+    showElementPropertiesFilter,
+    fields
   } = props;
 
   return (
     <div>
-      <ElementSelector fields={ props.fields } />
+      <ElementSelector fields={fields} />
       <div>
         <WrappedField
           name="showElementPropertiesFilter"
           className="u-block"
-          component={ Checkbox }
+          component={Checkbox}
         >
           and having certain property values...
         </WrappedField>
         {
           showElementPropertiesFilter ?
-            <div>
-              <Toast variant="warning" className="u-gapBottom">
+            (
+              <div>
+                <Toast variant="warning" className="u-gapBottom">
                 Using this option to target elements will add logic to the JavaScript
                 library that will adversely affect performance. Adobe recommends using the CSS
                 selector option above.
-              </Toast>
-              <ElementPropertiesEditor />
-            </div> : null
+                </Toast>
+                <ElementPropertiesEditor />
+              </div>
+            ) : null
         }
       </div>
     </div>

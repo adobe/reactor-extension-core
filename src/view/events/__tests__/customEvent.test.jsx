@@ -100,7 +100,7 @@ describe('custom event event view', () => {
 
     const { typeTextfield, elementSelectorTextfield } = getReactComponents(instance);
 
-    expect(typeTextfield.props().invalid).toBe(true);
-    expect(elementSelectorTextfield.props().invalid).toBe(true);
+    expect(typeTextfield.props().validationState).toBe('invalid');
+    expect(elementSelectorTextfield.props().validationState).toBe('invalid');
   });
 });

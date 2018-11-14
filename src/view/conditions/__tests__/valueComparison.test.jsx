@@ -132,10 +132,10 @@ describe('value comparison condition view', () => {
           } = getReactComponents(instance);
 
 
-          expect(leftOperandTextfield.props().invalid).toBe(true);
+          expect(leftOperandTextfield.props().validationState).toBe('invalid');
           // We allow empty strings for equals operands because users may want to check to
           // see if a value equals an empty string.
-          expect(rightOperandTextfield.props().invalid).toBe(false);
+          expect(rightOperandTextfield.props().validationState).toBeUndefined();
         });
       });
     });
@@ -223,8 +223,8 @@ describe('value comparison condition view', () => {
             rightOperandTextfield
           } = getReactComponents(instance);
 
-          expect(leftOperandTextfield.props().invalid).toBe(true);
-          expect(rightOperandTextfield.props().invalid).toBe(true);
+          expect(leftOperandTextfield.props().validationState).toBe('invalid');
+          expect(rightOperandTextfield.props().validationState).toBe('invalid');
         });
       });
     });
@@ -304,8 +304,8 @@ describe('value comparison condition view', () => {
             rightOperandTextfield
           } = getReactComponents(instance);
 
-          expect(leftOperandTextfield.props().invalid).toBe(true);
-          expect(rightOperandTextfield.props().invalid).toBe(true);
+          expect(leftOperandTextfield.props().validationState).toBe('invalid');
+          expect(rightOperandTextfield.props().validationState).toBe('invalid');
         });
       });
     });
@@ -371,7 +371,7 @@ describe('value comparison condition view', () => {
             leftOperandTextfield
           } = getReactComponents(instance);
 
-          expect(leftOperandTextfield.props().invalid).toBe(true);
+          expect(leftOperandTextfield.props().validationState).toBe('invalid');
         });
       });
     });

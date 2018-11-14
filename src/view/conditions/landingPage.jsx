@@ -21,12 +21,12 @@ export default () => (
       <span className="u-verticalAlignMiddle u-gapRight">Landing page equals</span>
       <WrappedField
         name="page"
-        component={ Textfield }
+        component={Textfield}
       />
     </label>
     <WrappedField
       name="pageIsRegex"
-      component={ RegexToggle }
+      component={RegexToggle}
       valueFieldName="page"
     />
   </div>

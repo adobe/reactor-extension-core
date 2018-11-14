@@ -79,7 +79,7 @@ describe('time on site condition view', () => {
 
     const { minutesTextfield } = getReactComponents(instance);
 
-    expect(minutesTextfield.props().invalid).toBe(true);
+    expect(minutesTextfield.props().validationState).toBe('invalid');
   });
 
   it('sets error if count value is not a number', () => {
@@ -93,6 +93,6 @@ describe('time on site condition view', () => {
 
     ({ minutesTextfield } = getReactComponents(instance));
 
-    expect(minutesTextfield.props().invalid).toBe(true);
+    expect(minutesTextfield.props().validationState).toBe('invalid');
   });
 });

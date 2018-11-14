@@ -19,7 +19,7 @@ var mockDocument = {
   }
 };
 
-var conditionDelegateInjector = require('inject!../windowSize');
+var conditionDelegateInjector = require('inject-loader!../windowSize');
 var conditionDelegate = conditionDelegateInjector({
   '@adobe/reactor-document': mockDocument
 });

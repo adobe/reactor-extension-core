@@ -22,41 +22,41 @@ const ElementPropertiesRenderer = ({ fields }) => (
   <div className="u-gapBottom">
     {
       fields.map((field, index) => (
-        <div key={ index } data-row className="u-gapBottom">
+        <div key={field} data-row className="u-gapBottom">
           <WrappedField
-            name={ `${field}.name` }
+            name={`${field}.name`}
             placeholder="Property"
-            component={ Textfield }
+            component={Textfield}
           />
           <span className="u-verticalAlignMiddle u-gapRight u-gapLeft">&#61;</span>
           <WrappedField
-            name={ `${field}.value` }
+            name={`${field}.value`}
             className="u-gapRight"
             placeholder="Value"
-            component={ Textfield }
+            component={Textfield}
           />
           <WrappedField
-            name={ `${field}.valueIsRegex` }
-            component={ RegexToggle }
-            valueFieldName={ `${field}.value` }
+            name={`${field}.valueIsRegex`}
+            component={RegexToggle}
+            valueFieldName={`${field}.value`}
           />
           <Button
             className="u-gapBottom"
             variant="action"
             quiet
-            icon={ <Close /> }
-            onClick={ fields.remove.bind(this, index) }
+            icon={<Close />}
+            onClick={fields.remove.bind(this, index)}
           />
         </div>
       ))
     }
-    <Button onClick={ () => fields.push({}) }>Add Another</Button>
+    <Button onClick={() => fields.push({})}>Add Another</Button>
   </div>
 );
 
 const ElementPropertiesEditor = () => (
   <FieldArray
-    component={ ElementPropertiesRenderer }
+    component={ElementPropertiesRenderer}
     name="elementProperties"
   />
 );

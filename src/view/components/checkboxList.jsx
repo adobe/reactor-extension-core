@@ -18,7 +18,9 @@ import './checkboxList.styl';
 export default class CheckboxList extends React.Component {
   onChange = (isChecked, event) => {
     const checkboxValue = event.nativeEvent.target.value;
-    const value = this.props.value ? this.props.value.slice() : [];
+    const { onChange } = this.props;
+    let { value = [] } = this.props;
+    value = value.slice();
 
     if (isChecked) {
       value.push(checkboxValue);
@@ -27,33 +29,30 @@ export default class CheckboxList extends React.Component {
       value.splice(index, 1);
     }
 
-    this.props.onChange(value);
+    onChange(value);
   };
 
   render() {
-    let options = this.props.options || [];
+    let { options = [], value } = this.props;
     options = options.map((option) => {
-      let value;
-      let label;
+      let optionValue;
+      let optionLabel;
 
       if (typeof option === 'string') {
-        value = option;
-        label = option;
+        optionValue = option;
+        optionLabel = option;
       } else {
-        value = option.value;
-        label = option.label;
+        optionValue = option.value;
+        optionLabel = option.label;
       }
 
       return (
-        <li key={ value }>
+        <li key={optionValue}>
           <Checkbox
-            value={ value }
-            checked={
-              this.props.value &&
-              this.props.value.indexOf(value) > -1
-            }
-            onChange={ this.onChange }
-            label={ label }
+            value={optionValue}
+            checked={value && value.indexOf(optionValue) > -1}
+            onChange={this.onChange}
+            label={optionLabel}
           />
         </li>
       );

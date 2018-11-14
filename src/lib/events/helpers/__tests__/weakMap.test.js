@@ -29,7 +29,7 @@ describe('WeakMap', function() {
     var mockWindow = {};
 
     var WeakMap = require('inject-loader!../weakMap')({
-      'window': mockWindow
+      '@adobe/reactor-window': mockWindow
     });
 
     expect(WeakMap).toEqual(jasmine.any(Function));
@@ -43,7 +43,7 @@ describe('WeakMap', function() {
     var WeakMap = require('inject-loader!../weakMap')({
       // Inject an empty window so we don't end up testing the native WeakMap if it exists
       // in the target browser.
-      'window': {}
+      '@adobe/reactor-window': {}
     });
     expect(WeakMap.prototype.get).toEqual(jasmine.any(Function));
     expect(WeakMap.prototype.set).toEqual(jasmine.any(Function));
@@ -55,7 +55,7 @@ describe('WeakMap', function() {
     var WeakMap = require('inject-loader!../weakMap')({
       // Inject an empty window so we don't end up testing the native WeakMap if it exists
       // in the target browser.
-      'window': {}
+      '@adobe/reactor-window': {}
     });
     var wm = new WeakMap();
 

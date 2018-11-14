@@ -26,15 +26,15 @@ const WindowSize = () => (
         </span>
         <WrappedField
           name="widthOperator"
-          component={ Select }
-          options={ comparisonOperatorOptions }
+          component={Select}
+          options={comparisonOperatorOptions}
         />
       </label>
       <label>
         <WrappedField
           name="width"
           className="u-gapRight"
-          component={ Textfield }
+          component={Textfield}
           componentClassName="u-smallTextfield"
         />
         <span>px</span>
@@ -45,15 +45,15 @@ const WindowSize = () => (
         <span className="u-verticalAlignMiddle u-gapRight">and height is</span>
         <WrappedField
           name="heightOperator"
-          component={ Select }
-          options={ comparisonOperatorOptions }
+          component={Select}
+          options={comparisonOperatorOptions}
         />
       </label>
       <label>
         <WrappedField
           name="height"
           className="u-gapRight"
-          component={ Textfield }
+          component={Textfield}
           componentClassName="u-smallTextfield"
         />
         <span>px</span>

@@ -16,7 +16,7 @@ var mockClientInfo = {
   os: 'Foo'
 };
 
-var conditionDelegateInjector = require('inject!../operatingSystem');
+var conditionDelegateInjector = require('inject-loader!../operatingSystem');
 var conditionDelegate = conditionDelegateInjector({
   './helpers/clientInfo': mockClientInfo
 });

@@ -46,8 +46,8 @@ const PageInfo = () => (
     <span className="u-verticalAlignMiddle u-gapRight">Attribute</span>
     <WrappedField
       name="attribute"
-      component={ Select }
-      options={ options }
+      component={Select}
+      options={options}
     />
   </label>
 );

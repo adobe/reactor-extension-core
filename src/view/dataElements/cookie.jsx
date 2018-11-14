@@ -19,7 +19,7 @@ const Cookie = () => (
     <span className="u-verticalAlignMiddle u-gapRight">Cookie Name</span>
     <WrappedField
       name="name"
-      component={ Textfield }
+      component={Textfield}
     />
   </label>
 );

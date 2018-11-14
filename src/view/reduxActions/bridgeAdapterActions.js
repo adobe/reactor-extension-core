@@ -20,15 +20,21 @@ export const actionCreators = {
   markInitComplete: createAction(MARK_INIT_COMPLETE)
 };
 
-export default handleActions({
-  [POPULATE_META]: (state, action) => ({
-    ...state,
-    meta: {
-      ...action.payload
-    }
-  }),
-  [MARK_INIT_COMPLETE]: state => ({
-    ...state,
-    initializedByBridge: true
-  })
-});
+export default handleActions(
+  {
+    [POPULATE_META]: (state, action) => ({
+      ...state,
+      meta: {
+        ...action.payload
+      }
+    }),
+    [MARK_INIT_COMPLETE]: state => ({
+      ...state,
+      initializedByBridge: true
+    })
+  },
+  {
+    initializedByBridge: false,
+    meta: {}
+  }
+);

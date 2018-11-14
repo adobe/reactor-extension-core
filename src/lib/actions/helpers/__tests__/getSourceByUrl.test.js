@@ -12,14 +12,14 @@
 
 'use strict';
 
-var getSourceUrlCodeInjector = require('inject!../getSourceByUrl');
+var getSourceUrlCodeInjector = require('inject-loader!../getSourceByUrl');
 var Promise = require('@adobe/reactor-promise');
 
 describe('get source by url', function() {
   var loadScriptSpy;
   var getSourceUrlCode;
 
-  beforeAll(function() {
+  beforeEach(function() {
     loadScriptSpy = jasmine.createSpy('load-script').and.callFake(function(url) {
       _satellite.__registerScript(url, 'script code');
       return Promise.resolve();

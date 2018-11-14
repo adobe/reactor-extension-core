@@ -21,12 +21,12 @@ const QueryStringParameter = () => (
       <span className="u-verticalAlignMiddle u-gapRight">URL Query String Parameter Name</span>
       <WrappedField
         name="name"
-        component={ Textfield }
+        component={Textfield}
       />
     </label>
     <WrappedField
       name="caseInsensitive"
-      component={ Checkbox }
+      component={Checkbox}
     >
       Allow capitalization differences (case-insensitive)
     </WrappedField>

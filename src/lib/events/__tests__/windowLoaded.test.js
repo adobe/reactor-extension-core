@@ -14,7 +14,7 @@
 
 describe('window loaded event delegate', function() {
   it('sends the trigger to the pageLifecycleEvents helper module', function() {
-    var windowLoadedInjector = require('inject!../windowLoaded');
+    var windowLoadedInjector = require('inject-loader!../windowLoaded');
     var trigger = function() {};
     var pageLifecycleEventsSpy = jasmine.createSpyObj('pageLifecycleEvents', [
       'registerWindowLoadedTrigger'

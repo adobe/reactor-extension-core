@@ -16,7 +16,7 @@ var mockClientInfo = {
   deviceType: 'Foo'
 };
 
-var conditionDelegateInjector = require('inject!../deviceType');
+var conditionDelegateInjector = require('inject-loader!../deviceType');
 var conditionDelegate = conditionDelegateInjector({
   './helpers/clientInfo': mockClientInfo
 });

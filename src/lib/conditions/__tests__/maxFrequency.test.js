@@ -31,7 +31,7 @@ describe('max frequency condition delegate', function() {
 
     mockVisitorTracking = {};
 
-    var conditionDelegateInjector = require('inject!../maxFrequency');
+    var conditionDelegateInjector = require('inject-loader!../maxFrequency');
     conditionDelegate = conditionDelegateInjector({
       '../helpers/visitorTracking': mockVisitorTracking
     });

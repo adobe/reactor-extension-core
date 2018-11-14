@@ -14,7 +14,7 @@ import { mount } from 'enzyme';
 import Textfield from '@react/react-spectrum/Textfield';
 import Checkbox from '@react/react-spectrum/Checkbox';
 import WrappedField from '../../../components/wrappedField';
-import StandardEvent, { formConfig } from '../../components/standardEvent';
+import StandardEvent, { formConfig } from '../standardEvent';
 import createExtensionBridge from '../../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../../bootstrap';
 import AdvancedEventOptions from '../advancedEventOptions';
@@ -84,6 +84,6 @@ describe('standard event view', () => {
 
     const { elementSelectorTextfield } = getReactComponents(instance);
 
-    expect(elementSelectorTextfield.props().invalid).toBe(true);
+    expect(elementSelectorTextfield.props().validationState).toBe('invalid');
   });
 });

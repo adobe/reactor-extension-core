@@ -64,6 +64,6 @@ describe('javascript variable data element view', () => {
 
     const { pathTextfield } = getReactComponents(instance);
 
-    expect(pathTextfield.props().invalid).toBe(true);
+    expect(pathTextfield.props().validationState).toBe('invalid');
   });
 });

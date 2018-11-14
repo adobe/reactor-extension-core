@@ -19,15 +19,14 @@ import { isNumberLikeInRange } from '../utils/validators';
 const TimeOnPage = () => (
   <div>
     <label>
-      <span className="u-verticalAlignMiddle u-gapRight u-gapRight">Trigger after</span>
+      <span className="u-verticalAlignMiddle u-gapRight u-gapRight">
+        Trigger after
+      </span>
+      <WrappedField name="timeOnPage" component={Textfield} />
     </label>
-    <WrappedField
-      name="timeOnPage"
-      component={ Textfield }
-    />
-    <label>
-      <span className="u-verticalAlignMiddle u-gapRight u-gapLeft">seconds spent on the page</span>
-    </label>
+    <span className="u-verticalAlignMiddle u-gapRight u-gapLeft">
+      seconds spent on the page
+    </span>
   </div>
 );
 

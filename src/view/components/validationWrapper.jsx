@@ -4,19 +4,21 @@ import OverlayTrigger from '@react/react-spectrum/OverlayTrigger';
 import Tooltip from '@react/react-spectrum/Tooltip';
 import './validationWrapper.styl';
 
-export default (props) => (
+export default ({
+  placement, error, className, children
+}) => (
   <OverlayTrigger
-    placement={ props.placement || 'right' }
+    placement={placement || 'right'}
     variant="error"
-    disabled={ !props.error }
+    disabled={!error}
   >
     <div
-      className={ classNames(props.className, 'ValidationWrapper') }
+      className={classNames(className, 'ValidationWrapper')}
     >
-      { props.children }
+      { children }
     </div>
     <Tooltip>
-      { props.error }
+      { error }
     </Tooltip>
   </OverlayTrigger>
 );

@@ -20,14 +20,14 @@ import SpecificElements, { formConfig as specificElementsFormConfig } from './sp
 import mergeFormConfigs from '../../utils/mergeFormConfigs';
 
 const ElementFilter = ({ ...props }) => {
-  const { elementSpecificity } = props;
+  const { elementSpecificity, fields } = props;
 
   return (
     <div>
       <div>
         <WrappedField
           name="elementSpecificity"
-          component={ RadioGroup }
+          component={RadioGroup}
         >
           <Radio value="specific" label="specific elements" />
           <Radio value="any" label="any element" />
@@ -35,7 +35,7 @@ const ElementFilter = ({ ...props }) => {
       </div>
       {
         elementSpecificity === 'specific' ?
-          <SpecificElements fields={ props.fields } /> : null
+          <SpecificElements fields={fields} /> : null
       }
     </div>
   );

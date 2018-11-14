@@ -34,20 +34,25 @@ const getReactComponents = (wrapper, InputComponentClass) => {
   };
 };
 
-const ConnectedWrappedField = (props) => {
+const ConnectedWrappedField = ({
+  className,
+  name,
+  component,
+  supportDataElement,
+  supportDataElementName,
+  errorTooltipPlacement
+}) => (
   // Props contain not only the specific props we provide, but also all the props that redux-form
   // passses as well. For this reason, we'll be specific on which props we pass through.
-  return (
-    <WrappedField
-      className={ props.className }
-      name={ props.name }
-      component={ props.component }
-      supportDataElement={ props.supportDataElement }
-      supportDataElementName={ props.supportDataElementName }
-      errorTooltipPlacement={ props.errorTooltipPlacement }
-    />
-  );
-};
+  <WrappedField
+    className={className}
+    name={name}
+    component={component}
+    supportDataElement={supportDataElement}
+    supportDataElementName={supportDataElementName}
+    errorTooltipPlacement={errorTooltipPlacement}
+  />
+);
 
 const formConfig = {
   settingsToFormValues(values, settings) {
@@ -68,17 +73,17 @@ let extensionBridge;
 const render = (props) => {
   extensionBridge = createExtensionBridge();
 
-  spyOn(extensionBridge, 'openDataElementSelector').and.callFake((options) => {
-    return {
-      then(resolve) {
-        resolve(options.tokenize ? '%foo%' : 'foo');
-      }
-    };
-  });
+  spyOn(extensionBridge, 'openDataElementSelector').and.callFake(options => ({
+    then(resolve) {
+      resolve(options.tokenize ? '%foo%' : 'foo');
+    }
+  }));
 
   window.extensionBridge = extensionBridge;
 
-  return mount(bootstrap(ConnectedWrappedField, formConfig, extensionBridge, props));
+  return mount(
+    bootstrap(ConnectedWrappedField, formConfig, extensionBridge, props)
+  );
 };
 
 describe('wrapped field', () => {
@@ -98,9 +103,7 @@ describe('wrapped field', () => {
       }
     });
 
-    const {
-      inputComponent
-    } = getReactComponents(instance, Textfield);
+    const { inputComponent } = getReactComponents(instance, Textfield);
 
     expect(inputComponent.props().value).toBe('foo');
   });
@@ -113,9 +116,7 @@ describe('wrapped field', () => {
 
     extensionBridge.init();
 
-    const {
-      inputComponent
-    } = getReactComponents(instance, Textfield);
+    const { inputComponent } = getReactComponents(instance, Textfield);
 
     inputComponent.props().onChange('foo');
 
@@ -133,12 +134,12 @@ describe('wrapped field', () => {
     extensionBridge.init();
     extensionBridge.validate();
 
-    const {
-      inputComponent,
-      validationWrapper
-    } = getReactComponents(instance, Textfield);
+    const { inputComponent, validationWrapper } = getReactComponents(
+      instance,
+      Textfield
+    );
 
-    expect(inputComponent.props().invalid).toBe(true);
+    expect(inputComponent.props().validationState).toBe('invalid');
     expect(validationWrapper.props().error).toBe('Bad things');
   });
 
@@ -151,9 +152,7 @@ describe('wrapped field', () => {
 
     extensionBridge.init();
 
-    const {
-      validationWrapper
-    } = getReactComponents(instance, Textfield);
+    const { validationWrapper } = getReactComponents(instance, Textfield);
 
     expect(validationWrapper.props().placement).toBe('bottom');
   });
@@ -166,9 +165,7 @@ describe('wrapped field', () => {
 
     extensionBridge.init();
 
-    const {
-      inputComponent
-    } = getReactComponents(instance, Checkbox);
+    const { inputComponent } = getReactComponents(instance, Checkbox);
 
     expect(inputComponent.props().type).toBe('checkbox');
   });
@@ -185,9 +182,7 @@ describe('wrapped field', () => {
       }
     });
 
-    const {
-      inputComponent
-    } = getReactComponents(instance, RadioGroup);
+    const { inputComponent } = getReactComponents(instance, RadioGroup);
 
     expect(inputComponent.props().selectedValue).toBe('foo');
   });
@@ -201,9 +196,7 @@ describe('wrapped field', () => {
 
     extensionBridge.init();
 
-    const {
-      dataElementButton
-    } = getReactComponents(instance, Textfield);
+    const { dataElementButton } = getReactComponents(instance, Textfield);
 
     dataElementButton.props().onClick();
 
@@ -221,9 +214,7 @@ describe('wrapped field', () => {
 
     extensionBridge.init();
 
-    const {
-      dataElementButton
-    } = getReactComponents(instance, Textfield);
+    const { dataElementButton } = getReactComponents(instance, Textfield);
 
     dataElementButton.props().onClick();
 
@@ -241,9 +232,7 @@ describe('wrapped field', () => {
 
     extensionBridge.init();
 
-    const {
-      validationWrapper
-    } = getReactComponents(instance, Textfield);
+    const { validationWrapper } = getReactComponents(instance, Textfield);
 
     expect(validationWrapper.props().className).toBe('stylish');
   });

@@ -10,26 +10,30 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-export const isNumberLike =
-  value => (!isNaN(value) && (typeof value !== 'string' || value.trim().length > 0));
+/*eslint no-restricted-globals: 0*/
+/*eslint object-curly-newline: 0*/
+/*eslint implicit-arrow-linebreak: 0*/
+export const isNumberLike = value => (
+  !isNaN(value) && (typeof value !== 'string' || value.trim().length > 0)
+);
 
 export const isNumberLikeInRange = (value, options) => {
-  const {
-    min,
-    minInclusive = true,
-    max,
-    maxInclusive = true
-  } = options;
+  const { min, minInclusive = true, max, maxInclusive = true } = options;
 
-  return isNumberLike(value) &&
-    (min === undefined || (minInclusive ? Number(value) >= min : Number(value) > min)) &&
-    (max === undefined || (maxInclusive ? Number(value) <= max : Number(value) < max));
+  return (
+    isNumberLike(value) &&
+    (min === undefined ||
+      (minInclusive ? Number(value) >= min : Number(value) > min)) &&
+    (max === undefined ||
+      (maxInclusive ? Number(value) <= max : Number(value) < max))
+  );
 };
 
-export const isInteger = Number.isInteger || (value => (
-  typeof value === 'number' &&
+export const isInteger =
+  Number.isInteger ||
+  (value =>
+    typeof value === 'number' &&
     isFinite(value) &&
-    Math.floor(value) === value
-));
+    Math.floor(value) === value);
 
 export const isDataElementToken = value => /^%([^%]+)%$/.test(value);

@@ -108,7 +108,7 @@ describe('delayType', () => {
 
     const { delayTextfield } = getReactComponents(instance);
 
-    expect(delayTextfield.props().invalid).toBe(true);
+    expect(delayTextfield.props().validationState).toBe('invalid');
   });
 
   it('sets error if the delay field is not a number', () => {
@@ -123,6 +123,6 @@ describe('delayType', () => {
 
     ({ delayTextfield } = getReactComponents(instance));
 
-    expect(delayTextfield.props().invalid).toBe(true);
+    expect(delayTextfield.props().validationState).toBe('invalid');
   });
 });

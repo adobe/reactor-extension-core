@@ -12,7 +12,7 @@
 
 'use strict';
 
-var conditionDelegateInjector = require('inject!../queryStringParameter');
+var conditionDelegateInjector = require('inject-loader!../queryStringParameter');
 
 describe('query string parameter condition delegate', function() {
   var conditionDelegate;

@@ -79,7 +79,7 @@ describe('sessions condition view', () => {
 
     const { countTextfield } = getReactComponents(instance);
 
-    expect(countTextfield.props().invalid).toBe(true);
+    expect(countTextfield.props().validationState).toBe('invalid');
   });
 
   it('sets error if count value is not a number', () => {
@@ -93,6 +93,6 @@ describe('sessions condition view', () => {
 
     ({ countTextfield } = getReactComponents(instance));
 
-    expect(countTextfield.props().invalid).toBe(true);
+    expect(countTextfield.props().validationState).toBe('invalid');
   });
 });

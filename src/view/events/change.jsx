@@ -29,26 +29,28 @@ const Change = ({ showValueField }) => (
       <WrappedField
         name="showValueField"
         className="u-block"
-        component={ Checkbox }
+        component={Checkbox}
         label="and is changed to the following value..."
       />
       {
         showValueField ?
-          <div>
-            <WrappedField
-              name="value"
-              className="u-gapRight"
-              placeholder="Value"
-              component={ Textfield }
-              supportDataElement
-            />
-            <WrappedField
-              name="valueIsRegex"
-              component={ RegexToggle }
-              valueFieldName="value"
-            />
-          </div>
-          : null
+          (
+            <div>
+              <WrappedField
+                name="value"
+                className="u-gapRight"
+                placeholder="Value"
+                component={Textfield}
+                supportDataElement
+              />
+              <WrappedField
+                name="valueIsRegex"
+                component={RegexToggle}
+                valueFieldName="value"
+              />
+            </div>
+          ) :
+          null
       }
     </div>
     <AdvancedEventOptions />

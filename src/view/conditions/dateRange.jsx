@@ -30,7 +30,7 @@ const DateRange = () => (
       <span className="u-verticalAlignMiddle u-gapRight">The date and time is after </span>
       <WrappedField
         name="start"
-        component={ Datepicker }
+        component={Datepicker}
         type="datetime"
       />
       <InfoTip className="u-noPaddingRight" placement="bottom">
@@ -42,7 +42,7 @@ const DateRange = () => (
       <span className="u-verticalAlignMiddle u-gapRight">and before</span>
       <WrappedField
         name="end"
-        component={ Datepicker }
+        component={Datepicker}
         type="datetime"
       />
       <InfoTip className="u-noPaddingRight" placement="bottom">
@@ -54,8 +54,8 @@ const DateRange = () => (
       <span className="u-verticalAlignMiddle u-gapRight">in time zone</span>
       <WrappedField
         name="timezone"
-        component={ ComboBox }
-        options={ timezoneOptions }
+        component={ComboBox}
+        options={timezoneOptions}
       />
     </label>
   </div>
@@ -69,7 +69,7 @@ export const formConfig = {
       ...values
     };
 
-    let timezone = settings.timezone;
+    let { timezone } = settings;
 
     if (moment.tz.names().indexOf(timezone) === -1) {
       timezone = DEFAULT_TIMEZONE;
@@ -117,7 +117,8 @@ export const formConfig = {
     };
 
     if (!values.start && !values.end) {
-      errors.start = errors.end = 'Please specify a start or end date.';
+      errors.start = 'Please specify a start or end date.';
+      errors.end = errors.start;
     }
 
     if (timezoneOptions.indexOf(values.timezone) === -1) {

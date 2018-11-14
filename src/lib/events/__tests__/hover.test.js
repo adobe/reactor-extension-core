@@ -12,6 +12,7 @@
 
 'use strict';
 var POLL_INTERVAL = 3000;
+var liveQuerySelector = require('../helpers/liveQuerySelector');
 
 describe('hover event delegate', function() {
   var delegate;
@@ -41,20 +42,16 @@ describe('hover event delegate', function() {
     expect(options.call.args[0]).toEqual({
       element: options.element,
       target: options.target,
-      delay: options.delay
+      delay: options.delay,
     });
   };
 
-  beforeAll(function() {
-    jasmine.clock().install();
-    delegate = require('../hover');
-  });
-
-  afterAll(function() {
-    jasmine.clock().uninstall();
-  });
-
   beforeEach(function() {
+    jasmine.clock().install();
+    delegate = require('inject-loader!../hover')({
+      './helpers/liveQuerySelector': liveQuerySelector,
+    });
+
     createElements();
   });
 
@@ -62,25 +59,36 @@ describe('hover event delegate', function() {
     Simulate.mouseleave(bElement);
     Simulate.mouseleave(aElement);
     removeElements();
+
+    jasmine.clock().uninstall();
+
+    // We need to reset the liveQuerySelector, otherwise it will affect the next test that is run.
+    liveQuerySelector.__reset();
   });
 
   it('triggers multiple rules with no delay targeting nested elements', function() {
     var aTrigger = jasmine.createSpy();
     var bTrigger = jasmine.createSpy();
 
-    delegate({
-      elementSelector: '#a',
-      bubbleFireIfParent: true,
-      bubbleFireIfChildFired: true,
-      bubbleStop: false
-    }, aTrigger);
+    delegate(
+      {
+        elementSelector: '#a',
+        bubbleFireIfParent: true,
+        bubbleFireIfChildFired: true,
+        bubbleStop: false,
+      },
+      aTrigger
+    );
 
-    delegate({
-      elementSelector: '#b',
-      bubbleFireIfParent: true,
-      bubbleFireIfChildFired: true,
-      bubbleStop: false
-    }, bTrigger);
+    delegate(
+      {
+        elementSelector: '#b',
+        bubbleFireIfParent: true,
+        bubbleFireIfChildFired: true,
+        bubbleStop: false,
+      },
+      bTrigger
+    );
 
     jasmine.clock().tick(POLL_INTERVAL);
 
@@ -92,7 +100,7 @@ describe('hover event delegate', function() {
       call: aTrigger.calls.mostRecent(),
       element: aElement,
       target: aElement,
-      delay: 0
+      delay: 0,
     });
 
     Simulate.mouseenter(bElement);
@@ -104,7 +112,7 @@ describe('hover event delegate', function() {
       call: aTrigger.calls.mostRecent(),
       element: aElement,
       target: bElement,
-      delay: 0
+      delay: 0,
     });
 
     expect(bTrigger.calls.count()).toEqual(1);
@@ -113,7 +121,7 @@ describe('hover event delegate', function() {
       call: bTrigger.calls.mostRecent(),
       element: bElement,
       target: bElement,
-      delay: 0
+      delay: 0,
     });
   });
 
@@ -121,19 +129,25 @@ describe('hover event delegate', function() {
     var aTrigger = jasmine.createSpy();
     var a2Trigger = jasmine.createSpy();
 
-    delegate({
-      elementSelector: '#a',
-      bubbleFireIfParent: true,
-      bubbleFireIfChildFired: true,
-      bubbleStop: false
-    }, aTrigger);
+    delegate(
+      {
+        elementSelector: '#a',
+        bubbleFireIfParent: true,
+        bubbleFireIfChildFired: true,
+        bubbleStop: false,
+      },
+      aTrigger
+    );
 
-    delegate({
-      elementSelector: '#a',
-      bubbleFireIfParent: true,
-      bubbleFireIfChildFired: true,
-      bubbleStop: false
-    }, a2Trigger);
+    delegate(
+      {
+        elementSelector: '#a',
+        bubbleFireIfParent: true,
+        bubbleFireIfChildFired: true,
+        bubbleStop: false,
+      },
+      a2Trigger
+    );
 
     jasmine.clock().tick(POLL_INTERVAL);
 
@@ -145,7 +159,7 @@ describe('hover event delegate', function() {
       call: aTrigger.calls.mostRecent(),
       element: aElement,
       target: aElement,
-      delay: 0
+      delay: 0,
     });
 
     expect(a2Trigger.calls.count()).toEqual(1);
@@ -154,7 +168,7 @@ describe('hover event delegate', function() {
       call: a2Trigger.calls.mostRecent(),
       element: aElement,
       target: aElement,
-      delay: 0
+      delay: 0,
     });
   });
 
@@ -162,21 +176,27 @@ describe('hover event delegate', function() {
     var aTrigger = jasmine.createSpy();
     var bTrigger = jasmine.createSpy();
 
-    delegate({
-      elementSelector: '#a',
-      bubbleFireIfParent: true,
-      bubbleFireIfChildFired: true,
-      bubbleStop: false,
-      delay: 1000
-    }, aTrigger);
+    delegate(
+      {
+        elementSelector: '#a',
+        bubbleFireIfParent: true,
+        bubbleFireIfChildFired: true,
+        bubbleStop: false,
+        delay: 1000,
+      },
+      aTrigger
+    );
 
-    delegate({
-      elementSelector: '#b',
-      bubbleFireIfParent: true,
-      bubbleFireIfChildFired: true,
-      bubbleStop: false,
-      delay: 1000
-    }, bTrigger);
+    delegate(
+      {
+        elementSelector: '#b',
+        bubbleFireIfParent: true,
+        bubbleFireIfChildFired: true,
+        bubbleStop: false,
+        delay: 1000,
+      },
+      bTrigger
+    );
 
     jasmine.clock().tick(POLL_INTERVAL);
 
@@ -204,14 +224,14 @@ describe('hover event delegate', function() {
       call: aTrigger.calls.first(),
       element: aElement,
       target: aElement,
-      delay: 1000
+      delay: 1000,
     });
 
     assertTriggerCall({
       call: aTrigger.calls.mostRecent(),
       element: aElement,
       target: bElement,
-      delay: 1000
+      delay: 1000,
     });
 
     expect(bTrigger.calls.count()).toEqual(1);
@@ -220,7 +240,7 @@ describe('hover event delegate', function() {
       call: bTrigger.calls.mostRecent(),
       element: bElement,
       target: bElement,
-      delay: 1000
+      delay: 1000,
     });
   });
 
@@ -228,22 +248,27 @@ describe('hover event delegate', function() {
     var aTrigger = jasmine.createSpy();
     var bTrigger = jasmine.createSpy();
 
-    delegate({
-      elementSelector: '#a',
-      bubbleFireIfParent: true,
-      bubbleFireIfChildFired: true,
-      bubbleStop: false,
-      delay: 2000
-    }, aTrigger);
+    delegate(
+      {
+        elementSelector: '#a',
+        bubbleFireIfParent: true,
+        bubbleFireIfChildFired: true,
+        bubbleStop: false,
+        delay: 2000,
+      },
+      aTrigger
+    );
 
-    delegate({
-      elementSelector: '#b',
-      bubbleFireIfParent: true,
-      bubbleFireIfChildFired: true,
-      bubbleStop: false,
-      delay: 1000
-    }, bTrigger);
-
+    delegate(
+      {
+        elementSelector: '#b',
+        bubbleFireIfParent: true,
+        bubbleFireIfChildFired: true,
+        bubbleStop: false,
+        delay: 1000,
+      },
+      bTrigger
+    );
 
     jasmine.clock().tick(POLL_INTERVAL);
 
@@ -270,7 +295,7 @@ describe('hover event delegate', function() {
       call: bTrigger.calls.mostRecent(),
       element: bElement,
       target: bElement,
-      delay: 1000
+      delay: 1000,
     });
 
     jasmine.clock().tick(1000);
@@ -284,7 +309,7 @@ describe('hover event delegate', function() {
       call: aTrigger.calls.mostRecent(),
       element: aElement,
       target: aElement,
-      delay: 2000
+      delay: 2000,
     });
   });
 
@@ -292,21 +317,27 @@ describe('hover event delegate', function() {
     var aTrigger = jasmine.createSpy();
     var a2Trigger = jasmine.createSpy();
 
-    delegate({
-      elementSelector: '#a',
-      bubbleFireIfParent: true,
-      bubbleFireIfChildFired: true,
-      bubbleStop: false,
-      delay: 1000
-    }, aTrigger);
+    delegate(
+      {
+        elementSelector: '#a',
+        bubbleFireIfParent: true,
+        bubbleFireIfChildFired: true,
+        bubbleStop: false,
+        delay: 1000,
+      },
+      aTrigger
+    );
 
-    delegate({
-      elementSelector: '#a',
-      bubbleFireIfParent: true,
-      bubbleFireIfChildFired: true,
-      bubbleStop: false,
-      delay: 1000
-    }, a2Trigger);
+    delegate(
+      {
+        elementSelector: '#a',
+        bubbleFireIfParent: true,
+        bubbleFireIfChildFired: true,
+        bubbleStop: false,
+        delay: 1000,
+      },
+      a2Trigger
+    );
 
     jasmine.clock().tick(POLL_INTERVAL);
 
@@ -329,7 +360,7 @@ describe('hover event delegate', function() {
       call: aTrigger.calls.mostRecent(),
       element: aElement,
       target: aElement,
-      delay: 1000
+      delay: 1000,
     });
 
     expect(a2Trigger.calls.count()).toEqual(1);
@@ -338,7 +369,7 @@ describe('hover event delegate', function() {
       call: a2Trigger.calls.mostRecent(),
       element: aElement,
       target: aElement,
-      delay: 1000
+      delay: 1000,
     });
   });
 
@@ -346,21 +377,27 @@ describe('hover event delegate', function() {
     var aTrigger = jasmine.createSpy();
     var a2Trigger = jasmine.createSpy();
 
-    delegate({
-      elementSelector: '#a',
-      bubbleFireIfParent: true,
-      bubbleFireIfChildFired: true,
-      bubbleStop: false,
-      delay: 1000
-    }, aTrigger);
+    delegate(
+      {
+        elementSelector: '#a',
+        bubbleFireIfParent: true,
+        bubbleFireIfChildFired: true,
+        bubbleStop: false,
+        delay: 1000,
+      },
+      aTrigger
+    );
 
-    delegate({
-      elementSelector: '#a',
-      bubbleFireIfParent: true,
-      bubbleFireIfChildFired: true,
-      bubbleStop: false,
-      delay: 2000
-    }, a2Trigger);
+    delegate(
+      {
+        elementSelector: '#a',
+        bubbleFireIfParent: true,
+        bubbleFireIfChildFired: true,
+        bubbleStop: false,
+        delay: 2000,
+      },
+      a2Trigger
+    );
 
     jasmine.clock().tick(POLL_INTERVAL);
 
@@ -384,7 +421,7 @@ describe('hover event delegate', function() {
       call: aTrigger.calls.mostRecent(),
       element: aElement,
       target: aElement,
-      delay: 1000
+      delay: 1000,
     });
 
     jasmine.clock().tick(1000);
@@ -396,20 +433,25 @@ describe('hover event delegate', function() {
       call: a2Trigger.calls.mostRecent(),
       element: aElement,
       target: aElement,
-      delay: 2000
+      delay: 2000,
     });
   });
 
   it('triggers a rule when the element matches elementProperties', function() {
     var bTrigger = jasmine.createSpy();
 
-    delegate({
-      elementSelector: '#b',
-      elementProperties: [{
-        name: 'innerHTML',
-        value: 'b'
-      }]
-    }, bTrigger);
+    delegate(
+      {
+        elementSelector: '#b',
+        elementProperties: [
+          {
+            name: 'innerHTML',
+            value: 'b',
+          },
+        ],
+      },
+      bTrigger
+    );
 
     jasmine.clock().tick(POLL_INTERVAL);
 
@@ -421,13 +463,18 @@ describe('hover event delegate', function() {
   it('does not trigger rule when the element does not match elementProperties', function() {
     var bTrigger = jasmine.createSpy();
 
-    delegate({
-      elementSelector: '#b',
-      elementProperties: [{
-        name: 'innerHTML',
-        value: 'd'
-      }]
-    }, bTrigger);
+    delegate(
+      {
+        elementSelector: '#b',
+        elementProperties: [
+          {
+            name: 'innerHTML',
+            value: 'd',
+          },
+        ],
+      },
+      bTrigger
+    );
 
     jasmine.clock().tick(POLL_INTERVAL);
 
@@ -435,5 +482,4 @@ describe('hover event delegate', function() {
 
     expect(bTrigger.calls.count()).toEqual(0);
   });
-
 });

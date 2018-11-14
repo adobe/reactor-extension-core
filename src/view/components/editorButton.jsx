@@ -29,10 +29,10 @@ class EditorButton extends React.Component {
 
     return (
       <Button
-        icon={ <Code /> }
-        className={ className }
-        onClick={ this.onClick }
-        variant={ invalid ? 'warning' : 'primary' }
+        icon={<Code />}
+        className={className}
+        onClick={this.onClick}
+        variant={invalid ? 'warning' : 'primary'}
       >
         Open Editor
       </Button>

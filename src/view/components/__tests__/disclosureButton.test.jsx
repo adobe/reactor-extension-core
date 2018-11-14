@@ -29,7 +29,7 @@ const getReactComponents = (wrapper) => {
   };
 };
 
-const render = props => mount(<DisclosureButton { ...props } />);
+const render = props => mount(<DisclosureButton {...props} />);
 
 describe('disclosure button', () => {
   it('shows down chevron when selected', () => {

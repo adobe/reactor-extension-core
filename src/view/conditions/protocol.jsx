@@ -19,7 +19,7 @@ const Protocol = () => (
   <div>
     <WrappedField
       name="protocol"
-      component={ RadioGroup }
+      component={RadioGroup}
     >
       <Radio value="http:" label="HTTP" />
       <Radio value="https:" label="HTTPS" />

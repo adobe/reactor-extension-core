@@ -18,11 +18,15 @@ const CustomCode = () => (
   <div>
     <p>
       The code you provide in the editor will be run as soon as the library is loaded. Inside
-      your code, call <code>trigger()</code> whenever you would like the rule to fire.
+      your code, call
+      {' '}
+      <code>trigger()</code>
+      {' '}
+      whenever you would like the rule to fire.
     </p>
     <WrappedField
       name="source"
-      component={ EditorButton }
+      component={EditorButton}
     />
   </div>
 );

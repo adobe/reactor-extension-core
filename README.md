@@ -13,9 +13,5 @@ See the [@adobe/reactor-sandbox README](https://github.com/Adobe-Marketing-Cloud
 
 [status-url]: https://dtm-builder.ut1.mcps.adobe.net/job/extension-core
 [status-image]: https://dtm-builder.ut1.mcps.adobe.net/buildStatus/icon?job=extension-core
-[coverage-url]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-core/lastStableBuild/cobertura/
-[coverage-image]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-core/ws/badges/coverage.svg
-[npm-dependencies-url]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-core/ws/dependencies.txt
-[npm-dependencies-image]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-core/ws/badges/dependencies.svg
 [sandbox-url]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-core/ws/sandbox/viewSandbox.html
 [sandbox-image]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-core/ws/badges/sandbox.svg

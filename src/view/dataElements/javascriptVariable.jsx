@@ -19,7 +19,7 @@ const JavaScriptVariable = () => (
     <span className="u-verticalAlignMiddle u-gapRight">JavaScript variable name</span>
     <WrappedField
       name="path"
-      component={ Textfield }
+      component={Textfield}
       placeholder="dataLayer.products.1.price"
     />
   </label>

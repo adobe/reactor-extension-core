@@ -41,20 +41,18 @@ const MediaTimePlayed = () => (
     <div className="u-gapTop">
       <label>
         <span className="u-verticalAlignMiddle u-gapRight">Trigger when</span>
+        <WrappedField
+          name="amount"
+          component={Textfield}
+        />
       </label>
-      <WrappedField
-        name="amount"
-        component={ Textfield }
-      />
       <WrappedField
         name="unit"
         className="u-gapLeft"
-        component={ Select }
-        options={ timePlayedUnitOptions }
+        component={Select}
+        options={timePlayedUnitOptions}
       />
-      <label>
-        <span className="u-verticalAlignMiddle u-gapRight u-gapLeft">have passed</span>
-      </label>
+      <span className="u-verticalAlignMiddle u-gapRight u-gapLeft">have passed</span>
     </div>
     <AdvancedEventOptions />
   </div>

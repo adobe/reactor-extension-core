@@ -113,8 +113,8 @@ describe('screen resolution condition view', () => {
       heightTextfield
     } = getReactComponents(instance);
 
-    expect(widthTextfield.props().invalid).toBe(true);
-    expect(heightTextfield.props().invalid).toBe(true);
+    expect(widthTextfield.props().validationState).toBe('invalid');
+    expect(heightTextfield.props().validationState).toBe('invalid');
   });
 
   it('sets errors if values are not numbers', () => {
@@ -135,7 +135,7 @@ describe('screen resolution condition view', () => {
       heightTextfield
     } = getReactComponents(instance));
 
-    expect(widthTextfield.props().invalid).toBe(true);
-    expect(heightTextfield.props().invalid).toBe(true);
+    expect(widthTextfield.props().validationState).toBe('invalid');
+    expect(heightTextfield.props().validationState).toBe('invalid');
   });
 });

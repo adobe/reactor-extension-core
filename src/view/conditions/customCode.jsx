@@ -19,7 +19,7 @@ const CustomCode = () => (
   <div>
     <WrappedField
       name="source"
-      component={ EditorButton }
+      component={EditorButton}
     />
     <InfoTip placement="bottom">
       Enter a script that evaluates to true or false to control whether this rule executes. Use

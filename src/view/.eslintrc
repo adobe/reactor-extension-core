@@ -8,26 +8,25 @@
       "experimentalObjectRestSpread": true
     }
   },
-  "extends": "airbnb",
+  "extends": ["airbnb"],
   "rules": {
+    "jsx-a11y/label-has-associated-control": [ 2, {
+      "controlComponents": ["WrappedField"],
+      "depth": 1
+    }],
     "space-before-function-paren": [2, "never"],
     "max-len": [2, 100, 4, {"ignoreUrls": true, "ignorePattern": "^(\\s*(var|let|const)\\s.+=\\s*require\\s*\\()|(^\\s*import)"}],
     "comma-dangle": ["error", "never"],
     "react/prop-types": 0,
     "react/jsx-no-bind": 0,
-    "react/jsx-curly-spacing": [2, "always"],
-    "arrow-body-style": 0,
-    "arrow-parens": 0,
-    "no-script-url": 0,
     "no-param-reassign": 0,
     "no-prototype-builtins": 0,
-    "default-case": 0,
     "jsx-a11y/label-has-for": 0,
-    "import/no-extraneous-dependencies": 0,
     "spaced-comment": 0, // To support our copyright banner.
     "prefer-const": ["error", {
       "destructuring": "all"
-    }]
+    }],
+    "operator-linebreak": ["error", "after"]
   },
   "env": {
     "es6": true,

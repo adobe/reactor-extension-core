@@ -18,7 +18,7 @@ const CustomCode = () => (
   <div>
     <WrappedField
       name="source"
-      component={ EditorButton }
+      component={EditorButton}
     />
   </div>
 );

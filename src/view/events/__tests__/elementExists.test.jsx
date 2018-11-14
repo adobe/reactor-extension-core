@@ -64,6 +64,6 @@ describe('element exists event view', () => {
 
     const { elementSelectorTextfield } = getReactComponents(instance);
 
-    expect(elementSelectorTextfield.props().invalid).toBe(true);
+    expect(elementSelectorTextfield.props().validationState).toBe('invalid');
   });
 });

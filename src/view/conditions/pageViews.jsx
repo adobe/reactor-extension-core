@@ -29,30 +29,29 @@ const PageViews = () => (
         </span>
         <WrappedField
           name="operator"
-          component={ Select }
-          options={ comparisonOperatorOptions }
+          component={Select}
+          options={comparisonOperatorOptions}
         />
       </label>
       <label className="u-gapRight">
         <span className="u-verticalAlignMiddle u-gapRight">the value</span>
         <WrappedField
           name="count"
-          component={ Textfield }
+          component={Textfield}
           componentClassName="u-smallTextfield"
         />
       </label>
       <span className="u-noWrap">
         <label>
           <span className="u-verticalAlignMiddle u-gapRight">over</span>
+          <WrappedField
+            name="duration"
+            component={RadioGroup}
+          >
+            <Radio value="lifetime" label="Lifetime" />
+            <Radio value="session" label="Current Session" />
+          </WrappedField>
         </label>
-
-        <WrappedField
-          name="duration"
-          component={ RadioGroup }
-        >
-          <Radio value="lifetime" label="Lifetime" />
-          <Radio value="session" label="Current Session" />
-        </WrappedField>
       </span>
     </div>
   </div>

@@ -167,7 +167,7 @@ const operatorOptions = Object.keys(metaByOperator).map(operator => (
   }
 ));
 
-const NoTypeConversionReminder = (props) => {
+const NoTypeConversionReminder = ({ operator, value }) => {
   const sketchyStrings = [
     'true',
     'false',
@@ -175,32 +175,34 @@ const NoTypeConversionReminder = (props) => {
     'undefined'
   ];
 
-  return (props.operator === operators.EQUALS || props.operator === operators.DOES_NOT_EQUAL) &&
-    sketchyStrings.indexOf(props.value.toLowerCase()) !== -1 ?
+  return (operator === operators.EQUALS || operator === operators.DOES_NOT_EQUAL) &&
+    sketchyStrings.indexOf(value.toLowerCase()) !== -1 ?
     (
       <Toast className="u-gapTop" variant="warning">
-        Be aware that the value &quot;{props.value}&quot; will be compared as a string.
+        Be aware that the value &quot;
+        {value}
+&quot; will be compared as a string.
       </Toast>
     ) : null;
 };
 
-const RightOperandFields = (props) => {
-  if (metaByOperator[props.operator].supportsRightOperand) {
-    return props.operator === operators.MATCHES_REGEX ||
-      props.operator === operators.DOES_NOT_MATCH_REGEX ?
+const RightOperandFields = ({ operator, caseInsensitive, rightOperand }) => {
+  if (metaByOperator[operator].supportsRightOperand) {
+    return operator === operators.MATCHES_REGEX ||
+      operator === operators.DOES_NOT_MATCH_REGEX ?
       (
         <div>
           <WrappedField
             name="rightOperand"
             className="u-gapRight"
-            component={ Textfield }
+            component={Textfield}
             supportDataElement
           />
           <WrappedField
             name="rightOperand"
             className="u-gapRight"
-            component={ RegexTestButton }
-            flags={ props.caseInsensitive ? 'i' : '' }
+            component={RegexTestButton}
+            flags={caseInsensitive ? 'i' : ''}
           />
         </div>
       ) :
@@ -208,10 +210,10 @@ const RightOperandFields = (props) => {
         <div>
           <WrappedField
             name="rightOperand"
-            component={ Textfield }
+            component={Textfield}
             supportDataElement
           />
-          <NoTypeConversionReminder operator={ props.operator } value={ props.rightOperand } />
+          <NoTypeConversionReminder operator={operator} value={rightOperand} />
         </div>
       );
   }
@@ -219,7 +221,7 @@ const RightOperandFields = (props) => {
   return null;
 };
 
-const ValueComparison = props => (
+const ValueComparison = ({ operator, ...rest }) => (
   <div>
     <div className="u-gapBottom">
       Return true if
@@ -227,7 +229,7 @@ const ValueComparison = props => (
     <div className="u-gapBottom">
       <WrappedField
         name="leftOperand"
-        component={ Textfield }
+        component={Textfield}
         supportDataElement
       />
     </div>
@@ -235,15 +237,15 @@ const ValueComparison = props => (
       <WrappedField
         name="operator"
         className="u-gapRight"
-        component={ Select }
-        options={ operatorOptions }
+        component={Select}
+        options={operatorOptions}
       />
       {
-        metaByOperator[props.operator].supportsCaseSensitivity ?
+        metaByOperator[operator].supportsCaseSensitivity ?
           (
             <WrappedField
               name="caseInsensitive"
-              component={ Checkbox }
+              component={Checkbox}
             >
               Case Insensitive
             </WrappedField>
@@ -251,7 +253,7 @@ const ValueComparison = props => (
       }
     </div>
     <div>
-      <RightOperandFields { ...props } />
+      <RightOperandFields operator={operator} {...rest} />
     </div>
   </div>
 );
@@ -261,8 +263,7 @@ const stateToProps = state => valueSelector(state,
   'operator',
   'caseInsensitive',
   'leftOperand',
-  'rightOperand'
-);
+  'rightOperand');
 
 export default connect(stateToProps)(ValueComparison);
 

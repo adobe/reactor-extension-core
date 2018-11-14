@@ -30,7 +30,9 @@ describe('custom code event view', () => {
   let instance;
 
   beforeAll(() => {
-    extensionBridge = window.extensionBridge = createExtensionBridge();
+    extensionBridge = createExtensionBridge();
+    window.extensionBridge = extensionBridge;
+
     instance = mount(bootstrap(CustomCode, formConfig, extensionBridge));
   });
 
@@ -45,7 +47,7 @@ describe('custom code event view', () => {
 
     const { openEditorButton } = getReactComponents(instance);
 
-    expect(openEditorButton.props().invalid).toBe(true);
+    expect(openEditorButton.props().validationState).toBe('invalid');
   });
 
   it('allows user to provide custom code', () => {

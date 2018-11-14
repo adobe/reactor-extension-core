@@ -22,20 +22,20 @@ const Cookie = () => (
       <span className="u-verticalAlignMiddle u-gapRight">Cookie named</span>
       <WrappedField
         name="name"
-        component={ Textfield }
+        component={Textfield}
       />
     </label>
     <label className="u-gapRight">
       <span className="u-gapRight">has the value</span>
       <WrappedField
         name="value"
-        component={ Textfield }
+        component={Textfield}
       />
     </label>
 
     <WrappedField
       name="valueIsRegex"
-      component={ RegexToggle }
+      component={RegexToggle}
       valueFieldName="value"
     />
   </div>

@@ -63,6 +63,6 @@ describe('local storage data element view', () => {
 
     const { nameTextfield } = getReactComponents(instance);
 
-    expect(nameTextfield.props().invalid).toBe(true);
+    expect(nameTextfield.props().validationState).toBe('invalid');
   });
 });

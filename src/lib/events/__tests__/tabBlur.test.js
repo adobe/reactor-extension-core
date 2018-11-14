@@ -12,7 +12,7 @@
 
 'use strict';
 
-var eventDelegateInjector = require('inject!../tabBlur');
+var eventDelegateInjector = require('inject-loader!../tabBlur');
 var visibilityApi = require('../helpers/visibilityApi');
 var visibilityApiInstance = visibilityApi();
 var visibilityChangeListener;

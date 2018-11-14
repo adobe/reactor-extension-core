@@ -23,7 +23,7 @@ describe('pageLifecycleEvents', function() {
   var triggersResults;
   var delegate;
 
-  var pageLifecycleEventsInjector = require('inject!../pageLifecycleEvents');
+  var pageLifecycleEventsInjector = require('inject-loader!../pageLifecycleEvents');
 
   var triggerTypesToRegisterMethods = {
     libraryLoaded: 'registerLibraryLoadedTrigger',

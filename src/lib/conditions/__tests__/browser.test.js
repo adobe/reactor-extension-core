@@ -16,7 +16,7 @@ var mockClientInfo = {
   browser: 'Foo'
 };
 
-var conditionDelegateInjector = require('inject!../browser');
+var conditionDelegateInjector = require('inject-loader!../browser');
 var conditionDelegate = conditionDelegateInjector({
   './helpers/clientInfo': mockClientInfo
 });

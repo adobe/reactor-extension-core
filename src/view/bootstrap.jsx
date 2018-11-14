@@ -16,7 +16,9 @@
 * from Adobe Systems Incorporated.
 **************************************************************************/
 
-import 'babel-polyfill';
+/*eslint import/no-extraneous-dependencies: 0*/
+
+import '@babel/polyfill';
 import React from 'react';
 import { Provider, connect } from 'react-redux';
 import { createStore, compose } from 'redux';
@@ -24,15 +26,15 @@ import { reduxForm } from 'redux-form';
 import reducer from './reduxActions/reducer';
 import bridgeAdapter from './bridgeAdapter';
 
-module.exports = (View, formConfig, extensionBridge = window.extensionBridge, viewProps) => {
+export default (View, formConfig, extensionBridge = window.extensionBridge, viewProps) => {
   const finalCreateStore = compose(
     window.devToolsExtension ? window.devToolsExtension() : f => f
   )(createStore);
 
   const store = finalCreateStore(reducer, {});
 
-  const ViewWrapper = props => (props.initializedByBridge ?
-    <View { ...props } componentsWithErrors={ props.error || [] } /> :
+  const ViewWrapper = ({ initializedByBridge, error, ...rest }) => (initializedByBridge ?
+    <View {...rest} componentsWithErrors={error || []} /> :
     null);
 
   const ReduxView = connect(
@@ -54,8 +56,8 @@ module.exports = (View, formConfig, extensionBridge = window.extensionBridge, vi
   bridgeAdapter(extensionBridge, store, formConfig);
 
   return (
-    <Provider store={ store }>
-      <ReduxFormView { ...viewProps } />
+    <Provider store={store}>
+      <ReduxFormView {...viewProps} />
     </Provider>
   );
 };

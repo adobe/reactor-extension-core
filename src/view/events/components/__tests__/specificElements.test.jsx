@@ -104,7 +104,7 @@ describe('specificElements', () => {
 
     const { elementSelectorTextfield } = getReactComponents(instance);
 
-    expect(elementSelectorTextfield.props().invalid).toBe(true);
+    expect(elementSelectorTextfield.props().validationState).toBe('invalid');
   });
 
   it('removes elementProperties error if element properties not shown', () => {

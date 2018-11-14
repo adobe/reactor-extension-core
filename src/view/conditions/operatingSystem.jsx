@@ -23,12 +23,13 @@ const operatingSystemOptions = [
   'Android'
 ];
 
-const OperatingSystem = () =>
-  (<WrappedField
+const OperatingSystem = () => (
+  <WrappedField
     name="operatingSystems"
-    component={ CheckboxList }
-    options={ operatingSystemOptions }
-  />);
+    component={CheckboxList}
+    options={operatingSystemOptions}
+  />
+);
 
 export default OperatingSystem;
 

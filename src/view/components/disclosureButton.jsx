@@ -14,17 +14,15 @@ import React from 'react';
 import ChevronDown from '@react/react-spectrum/Icon/ChevronDown';
 import ChevronRight from '@react/react-spectrum/Icon/ChevronRight';
 
-export default ({ ...props }) => {
-  return (
-    <button className="u-buttonReset" onClick={ props.onClick }>
-      {
-        props.selected ?
-          <ChevronDown className="u-verticalAlignMiddle" size="S" /> :
-          <ChevronRight className="u-verticalAlignMiddle" size="S" />
-      }
-      <span className="u-verticalAlignMiddle u-gapLeft">
-        { props.label }
-      </span>
-    </button>
-  );
-};
+export default ({ onClick, selected, label }) => (
+  <button type="button" className="u-buttonReset" onClick={onClick}>
+    {
+      selected ?
+        <ChevronDown className="u-verticalAlignMiddle" size="S" /> :
+        <ChevronRight className="u-verticalAlignMiddle" size="S" />
+    }
+    <span className="u-verticalAlignMiddle u-gapLeft">
+      { label }
+    </span>
+  </button>
+);

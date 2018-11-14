@@ -21,7 +21,7 @@ export default () => (
       <span className="u-verticalAlignMiddle u-gapRight">Elements matching the CSS selector</span>
       <WrappedField
         name="elementSelector"
-        component={ Textfield }
+        component={Textfield}
       />
     </label>
     <Link

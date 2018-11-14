@@ -99,8 +99,8 @@ describe('random number data element view', () => {
 
     ({ minTextfield, maxTextfield } = getReactComponents(instance));
 
-    expect(minTextfield.props().invalid).toBe(true);
-    expect(maxTextfield.props().invalid).toBe(true);
+    expect(minTextfield.props().validationState).toBe('invalid');
+    expect(maxTextfield.props().validationState).toBe('invalid');
   });
 
   it('sets errors if values are not integers', () => {
@@ -114,8 +114,8 @@ describe('random number data element view', () => {
 
     ({ minTextfield, maxTextfield } = getReactComponents(instance));
 
-    expect(minTextfield.props().invalid).toBe(true);
-    expect(maxTextfield.props().invalid).toBe(true);
+    expect(minTextfield.props().validationState).toBe('invalid');
+    expect(maxTextfield.props().validationState).toBe('invalid');
   });
 
   it('sets errors if min is greater than max', () => {
@@ -129,7 +129,7 @@ describe('random number data element view', () => {
 
     ({ minTextfield, maxTextfield } = getReactComponents(instance));
 
-    expect(minTextfield.props().invalid).toBe(true);
-    expect(maxTextfield.props().invalid).toBe(true);
+    expect(minTextfield.props().validationState).toBe('invalid');
+    expect(maxTextfield.props().validationState).toBe('invalid');
   });
 });

@@ -18,18 +18,20 @@ import './multipleItemEditor.styl';
 
 export default ({ fields, renderItem }) => {
   const rows = fields.map((field, index) => (
-    <div data-type="row" key={ field }>
+    <div data-type="row" key={field}>
       { index !== 0 ? <div className="MultipleItemEditor-orLabel">or</div> : null }
       { renderItem(field) }
       {
         fields.length > 1 ?
-          <Button
-            className="u-gapLeft"
-            icon={ <Close /> }
-            variant="action"
-            quiet
-            onClick={ fields.remove.bind(this, index) }
-          /> : null
+          (
+            <Button
+              className="u-gapLeft"
+              icon={<Close />}
+              variant="action"
+              quiet
+              onClick={fields.remove.bind(this, index)}
+            />
+          ) : null
       }
     </div>
   ));
@@ -40,7 +42,7 @@ export default ({ fields, renderItem }) => {
       <div>
         <Button
           className="MultipleItemEditor-addPatternButton"
-          onClick={ () => fields.push({}) }
+          onClick={() => fields.push({})}
         >
           Add Another
         </Button>

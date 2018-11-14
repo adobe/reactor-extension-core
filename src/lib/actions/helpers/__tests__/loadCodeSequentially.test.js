@@ -12,7 +12,7 @@
 
 'use strict';
 
-var sequentiallyLoadCodePromiseInjector = require('inject!../loadCodeSequentially');
+var sequentiallyLoadCodePromiseInjector = require('inject-loader!../loadCodeSequentially');
 var Promise = require('@adobe/reactor-promise');
 
 var sequentiallyLoadCodePromise = sequentiallyLoadCodePromiseInjector({

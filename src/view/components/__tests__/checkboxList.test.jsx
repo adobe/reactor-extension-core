@@ -15,7 +15,7 @@ import React from 'react';
 import Checkbox from '@react/react-spectrum/Checkbox';
 import CheckboxList from '../checkboxList';
 
-const render = props => mount(<CheckboxList { ...props } />);
+const render = props => mount(<CheckboxList {...props} />);
 
 const getReactComponents = (wrapper) => {
   wrapper.update();

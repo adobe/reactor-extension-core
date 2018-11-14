@@ -18,7 +18,9 @@
 
 /* eslint dot-notation: 0 */
 
-import { getFormValues, initialize, change, submit, isValid } from 'redux-form';
+import {
+  getFormValues, initialize, change, submit, isValid
+} from 'redux-form';
 import { actionCreators } from './reduxActions/bridgeAdapterActions';
 
 export default (extensionBridge, store, formConfig) => {

@@ -27,10 +27,11 @@ export default (props) => {
   };
 
   return (
-    <div className={ classNames(className, 'u-inlineBlock') }>
+    <div className={classNames(className, 'u-inlineBlock')}>
       <button
+        type="button"
         className="u-buttonReset coral-Link"
-        onClick={ () => window.extensionBridge.openRegexTester(options).then(onChange) }
+        onClick={() => window.extensionBridge.openRegexTester(options).then(onChange)}
       >
         Test
       </button>

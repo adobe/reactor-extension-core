@@ -19,7 +19,7 @@ const SessionStorage = () => (
     <span className="u-verticalAlignMiddle u-gapRight">Session Storage Item Name</span>
     <WrappedField
       name="name"
-      component={ Textfield }
+      component={Textfield}
     />
   </label>
 );

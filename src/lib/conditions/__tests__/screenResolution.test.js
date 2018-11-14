@@ -19,7 +19,7 @@ var mockWindow = {
   }
 };
 
-var conditionDelegateInjector = require('inject!../screenResolution');
+var conditionDelegateInjector = require('inject-loader!../screenResolution');
 var conditionDelegate = conditionDelegateInjector({
   '@adobe/reactor-window': mockWindow
 });

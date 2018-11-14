@@ -34,35 +34,37 @@ const CustomCode = ({ language }) => (
 
       <WrappedField
         name="language"
-        component={ RadioGroup }
+        component={RadioGroup}
       >
-        <Radio value={ LANGUAGES.JAVASCRIPT } label="JavaScript" />
-        <Radio value={ LANGUAGES.HTML } label="HTML" />
+        <Radio value={LANGUAGES.JAVASCRIPT} label="JavaScript" />
+        <Radio value={LANGUAGES.HTML} label="HTML" />
       </WrappedField>
     </fieldset>
 
     {
       language === LANGUAGES.JAVASCRIPT ?
-        <div>
-          <WrappedField
-            name="global"
-            component={ Checkbox }
-            label="Execute globally"
-            className="u-noPaddingRight"
-          />
-          <InfoTip className="u-noPadding">
+        (
+          <div>
+            <WrappedField
+              name="global"
+              component={Checkbox}
+              label="Execute globally"
+              className="u-noPaddingRight"
+            />
+            <InfoTip className="u-noPadding">
             Global execution is needed only in cases when the script relies on its own variables to
             be globally visible. Turning this on will disable binding of the variables
             &quot;this&quot;, &quot;event&quot;, and &quot;target&quot; within the script.
-          </InfoTip>
-        </div> : null
+            </InfoTip>
+          </div>
+        ) : null
     }
 
     <div className="u-gapTop">
       <WrappedField
         name="source"
-        component={ EditorButton }
-        language={ language }
+        component={EditorButton}
+        language={language}
       />
     </div>
   </div>

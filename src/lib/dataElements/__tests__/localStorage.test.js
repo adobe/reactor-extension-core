@@ -26,7 +26,7 @@ describe('local storage data element delegate', function() {
       }
     };
 
-    var dataElementDelegate = require('inject!../localStorage')({
+    var dataElementDelegate = require('inject-loader!../localStorage')({
       '@adobe/reactor-window': mockWindow
     });
 
@@ -45,7 +45,7 @@ describe('local storage data element delegate', function() {
       }
     };
 
-    var dataElementDelegate = require('inject!../localStorage')({
+    var dataElementDelegate = require('inject-loader!../localStorage')({
       '@adobe/reactor-window': mockWindow
     });
 
@@ -58,7 +58,7 @@ describe('local storage data element delegate', function() {
   });
 
   it('returns null if error is thrown (like when local storage is disabled in safari)', function() {
-    var dataElementDelegate = require('inject!../localStorage')({
+    var dataElementDelegate = require('inject-loader!../localStorage')({
       '@adobe/reactor-window': {}
     });
 

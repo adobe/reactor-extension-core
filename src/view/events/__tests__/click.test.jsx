@@ -115,7 +115,7 @@ describe('click event view', () => {
 
     const { elementSelectorTextfield } = getReactComponents(instance);
 
-    expect(elementSelectorTextfield.props().invalid).toBe(true);
+    expect(elementSelectorTextfield.props().validationState).toBe('invalid');
   });
 
   it('sets validation error when anchor delay is missing', () => {
@@ -131,6 +131,6 @@ describe('click event view', () => {
     expect(extensionBridge.validate()).toBe(false);
 
     ({ anchorDelayTextfield } = getReactComponents(instance));
-    expect(anchorDelayTextfield.props().invalid).toBe(true);
+    expect(anchorDelayTextfield.props().validationState).toBe('invalid');
   });
 });

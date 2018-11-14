@@ -24,28 +24,32 @@ export default class AdvancedEventOptions extends React.Component {
   }
 
   toggleSelected = () => {
+    const { expanded } = this.state;
+
     this.setState({
-      expanded: !this.state.expanded
+      expanded: !expanded
     });
   };
 
   render() {
     let advancedPanel;
 
-    if (this.state.expanded) {
+    const { expanded } = this.state;
+
+    if (expanded) {
       advancedPanel = (
         <div className="u-gapTop">
           <WrappedField
             name="bubbleFireIfParent"
             className="u-block"
-            component={ Checkbox }
+            component={Checkbox}
             label="Run this rule even when the event originates from a descendant element"
           />
 
           <WrappedField
             name="bubbleFireIfChildFired"
             className="u-block"
-            component={ Checkbox }
+            component={Checkbox}
             label="Allow this rule to run even if the event already triggered a rule targeting
               a descendant element"
           />
@@ -53,7 +57,7 @@ export default class AdvancedEventOptions extends React.Component {
           <WrappedField
             name="bubbleStop"
             className="u-block"
-            component={ Checkbox }
+            component={Checkbox}
             label="After the rule runs, prevent the event from triggering rules targeting
               ancestor elements"
           />
@@ -66,8 +70,8 @@ export default class AdvancedEventOptions extends React.Component {
         <div className="AdvancedEventOptions-disclosureButtonContainer">
           <DisclosureButton
             label="Advanced"
-            selected={ this.state.expanded }
-            onClick={ this.toggleSelected }
+            selected={expanded}
+            onClick={this.toggleSelected}
           />
         </div>
         { advancedPanel }

@@ -99,7 +99,7 @@ describe('elementPropertiesEditor', () => {
 
     ({ rows } = getReactComponents(instance));
 
-    expect(rows[0].nameTextfield.props().invalid).toBe(true);
+    expect(rows[0].nameTextfield.props().validationState).toBe('invalid');
   });
 
   it('creates a new row when the add button is clicked', () => {

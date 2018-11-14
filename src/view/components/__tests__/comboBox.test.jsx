@@ -38,7 +38,7 @@ const isIE = () => {
   return (myNav.indexOf('msie') !== -1) ? parseInt(myNav.split('msie')[1], 10) : false;
 };
 
-const render = () => mount(<ComboBox options={ options } />);
+const render = () => mount(<ComboBox options={options} />);
 
 describe('combobox', () => {
   it('shows down chevron when selected', (done) => {

@@ -12,7 +12,7 @@
 
 'use strict';
 
-var entersViewportInjector = require('inject!../entersViewport');
+var entersViewportInjector = require('inject-loader!../entersViewport');
 
 var POLL_INTERVAL = 3000;
 var DEBOUNCE_DELAY = 200;

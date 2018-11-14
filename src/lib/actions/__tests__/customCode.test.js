@@ -13,7 +13,7 @@
 'use strict';
 
 var Promise = require('@adobe/reactor-promise');
-var customCodeInjector = require('inject!../customCode');
+var customCodeInjector = require('inject-loader!../customCode');
 
 var LAUNCH_LIB_EXAMPLE_SRC =
   'assets.adobedtm.com/launch-ENad46b63a40c84a86a0de29087f7ecb24-development.min.js';

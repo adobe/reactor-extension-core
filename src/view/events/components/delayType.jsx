@@ -22,21 +22,19 @@ export default () => (
   <div>
     <label>
       <span className="u-verticalAlignMiddle u-gapRight">Trigger</span>
+      <WrappedField
+        name="delayType"
+        component={RadioGroup}
+      >
+        <Radio value="immediate" label="immediately" />
+        <Radio value="delay" label="after" />
+      </WrappedField>
     </label>
-    <WrappedField
-      name="delayType"
-      component={ RadioGroup }
-    >
-      <Radio value="immediate" label="immediately" />
-      <Radio value="delay" label="after" />
-    </WrappedField>
     <WrappedField
       name="delay"
-      component={ Textfield }
+      component={Textfield}
     />
-    <label>
-      <span className="u-verticalAlignMiddle u-gapRight u-gapLeft">milliseconds</span>
-    </label>
+    <span className="u-verticalAlignMiddle u-gapRight u-gapLeft">milliseconds</span>
   </div>
 );
 

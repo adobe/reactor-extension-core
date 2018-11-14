@@ -24,14 +24,14 @@ const TimeOnSite = () => (
         <span className="u-verticalAlignMiddle u-gapRight">User has spent</span>
         <WrappedField
           name="operator"
-          component={ Select }
-          options={ comparisonOperatorOptions }
+          component={Select}
+          options={comparisonOperatorOptions}
         />
       </label>
       <label>
         <WrappedField
           name="minutes"
-          component={ Textfield }
+          component={Textfield}
           componentClassName="u-smallTextfield"
         />
         <span className="u-verticalAlignMiddle u-gapRight u-gapLeft">minutes on site</span>

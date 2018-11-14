@@ -94,7 +94,7 @@ describe('DOM attribute data element view', () => {
 
     const { elementSelectorTextfield } = getReactComponents(instance);
 
-    expect(elementSelectorTextfield.props().invalid).toBe(true);
+    expect(elementSelectorTextfield.props().validationState).toBe('invalid');
   });
 
   it('sets settings from form values using element property preset', () => {
@@ -117,7 +117,7 @@ describe('DOM attribute data element view', () => {
     const {
       elementSelectorTextfield,
       elementPropertyPresetsSelect
-      } = getReactComponents(instance);
+    } = getReactComponents(instance);
 
     elementSelectorTextfield.props().onChange('foo');
     elementPropertyPresetsSelect.props().onChange('custom');
@@ -146,6 +146,6 @@ describe('DOM attribute data element view', () => {
 
     const { customElementPropertyTextfield } = getReactComponents(instance);
 
-    expect(customElementPropertyTextfield.props().invalid).toBe(true);
+    expect(customElementPropertyTextfield.props().validationState).toBe('invalid');
   });
 });

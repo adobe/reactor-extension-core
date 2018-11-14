@@ -10,6 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
+/*eslint no-restricted-globals: 0*/
 import React from 'react';
 import { formValueSelector, getFormInitialValues } from 'redux-form';
 import { connect } from 'react-redux';
@@ -19,45 +20,45 @@ import Checkbox from '@react/react-spectrum/Checkbox';
 import InfoTip from '../components/infoTip';
 import WrappedField from '../components/wrappedField';
 
-const Sampling = (props) => {
-  return (
+const Sampling = ({ showCohortResetInfo }) => (
+  <div>
     <div>
-      <div>
-        <label>
-          <span className="u-verticalAlignMiddle u-gapRight">Return true</span>
-          <WrappedField
-            name="rate"
-            component={ Textfield }
-            componentClassName="u-smallTextfield"
-          />
-          <span className="u-verticalAlignMiddle u-gapRight u-gapLeft">percent of the time.</span>
-        </label>
-      </div>
-      <div className="u-gapTop">
+      <label>
+        <span className="u-verticalAlignMiddle u-gapRight">Return true</span>
         <WrappedField
-          name="persistCohort"
-          component={ Checkbox }
-          label="Persist cohort"
-          componentClassName="u-noPaddingRight"
+          name="rate"
+          component={Textfield}
+          componentClassName="u-smallTextfield"
         />
-        <InfoTip className="u-noPadding">
-          If the condition returns true the first time it is run for a given user it will return
-          true on subsequent runs of the condition for the same user and vice versa.
-        </InfoTip>
-        {
-          props.showCohortResetInfo ?
+        <span className="u-verticalAlignMiddle u-gapRight u-gapLeft">percent of the time.</span>
+      </label>
+    </div>
+    <div className="u-gapTop">
+      <WrappedField
+        name="persistCohort"
+        component={Checkbox}
+        label="Persist cohort"
+        componentClassName="u-noPaddingRight"
+      />
+      <InfoTip className="u-noPadding">
+        If the condition returns true the first time it is run for a given user it will return
+        true on subsequent runs of the condition for the same user and vice versa.
+      </InfoTip>
+      {
+        showCohortResetInfo ?
+          (
             <Toast variant="warning">
               Changing the sampling value will reset the cohort the next time the rule is published.
-            </Toast> : null
-        }
-      </div>
+            </Toast>
+          ) : null
+      }
     </div>
-  );
-};
+  </div>
+);
 
 const valueSelector = formValueSelector('default');
 const initialValuesSelector = getFormInitialValues('default');
-const stateToProps = state => {
+const stateToProps = (state) => {
   const initialValues = initialValuesSelector(state);
   return ({
     showCohortResetInfo: !state.meta.isNew &&

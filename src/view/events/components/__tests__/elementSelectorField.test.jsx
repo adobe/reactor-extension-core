@@ -68,6 +68,6 @@ describe('elementSelector', () => {
 
     const { textfield } = getReactComponents(instance);
 
-    expect(textfield.props().invalid).toBe(true);
+    expect(textfield.props().validationState).toBe('invalid');
   });
 });

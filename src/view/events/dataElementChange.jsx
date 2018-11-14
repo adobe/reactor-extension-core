@@ -29,7 +29,7 @@ const DataElementChange = () => (
       <span className="u-verticalAlignMiddle u-gapRight">Data Element Name</span>
       <WrappedField
         name="name"
-        component={ Textfield }
+        component={Textfield}
         supportDataElementName
       />
     </label>

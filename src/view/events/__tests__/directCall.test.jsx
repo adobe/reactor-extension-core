@@ -64,6 +64,6 @@ describe('direct call event view', () => {
 
     const { identifierTextfield } = getReactComponents(instance);
 
-    expect(identifierTextfield.props().invalid).toBe(true);
+    expect(identifierTextfield.props().validationState).toBe('invalid');
   });
 });

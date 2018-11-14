@@ -18,7 +18,7 @@ var mockDocument = {
   }
 };
 
-var conditionDelegateInjector = require('inject!../domain');
+var conditionDelegateInjector = require('inject-loader!../domain');
 var conditionDelegate = conditionDelegateInjector({
   '@adobe/reactor-document': mockDocument
 });

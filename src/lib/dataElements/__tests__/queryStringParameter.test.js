@@ -13,7 +13,7 @@
 'use strict';
 
 describe('query string parameter data element delegate', function() {
-  var injectDelegate = require('inject!../queryStringParameter');
+  var injectDelegate = require('inject-loader!../queryStringParameter');
   var delegate;
 
   beforeAll(function() {

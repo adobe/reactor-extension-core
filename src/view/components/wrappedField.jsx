@@ -22,7 +22,7 @@ class DecoratedInput extends React.Component {
     // to how we want the UX to flow.
     window.extensionBridge.openDataElementSelector({
       tokenize
-    }).then(dataElement => {
+    }).then((dataElement) => {
       onChange(tokenize ? addDataElementToken(value, dataElement) : dataElement);
     });
   };
@@ -48,9 +48,12 @@ class DecoratedInput extends React.Component {
 
     const fieldComponentsProps = {
       ...input,
-      ...rest,
-      invalid: Boolean(meta.touched && meta.invalid)
+      ...rest
     };
+
+    if (meta.touched && meta.invalid) {
+      fieldComponentsProps.validationState = 'invalid';
+    }
 
     // This code that only sets className if it's truthy is just to get around
     // https://jira.corp.adobe.com/browse/RSP-269
@@ -61,21 +64,23 @@ class DecoratedInput extends React.Component {
 
     return (
       <ValidationWrapper
-        className={ className }
-        error={ meta.touched && meta.error }
-        placement={ errorTooltipPlacement }
+        className={className}
+        error={meta.touched && meta.error}
+        placement={errorTooltipPlacement}
       >
-        <FieldComponent { ...fieldComponentsProps }>
+        <FieldComponent {...fieldComponentsProps}>
           {children}
         </FieldComponent>
         {
           supportDataElement || supportDataElementName ?
-            <Button
-              variant="action"
-              quiet
-              icon={ <Data /> }
-              onClick={ this.openDataElementSelector(supportDataElement) }
-            /> : null
+            (
+              <Button
+                variant="action"
+                quiet
+                icon={<Data />}
+                onClick={this.openDataElementSelector(supportDataElement)}
+              />
+            ) : null
         }
       </ValidationWrapper>
     );
@@ -95,6 +100,6 @@ export default ({ component: Component, ...rest }) => {
     fieldProps.type = 'checkbox';
   }
   return (
-    <Field { ...fieldProps } />
+    <Field {...fieldProps} />
   );
 };

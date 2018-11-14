@@ -26,7 +26,7 @@ describe('session storage data element delegate', function() {
       }
     };
 
-    var dataElementDelegate = require('inject!../sessionStorage')({
+    var dataElementDelegate = require('inject-loader!../sessionStorage')({
       '@adobe/reactor-window': mockWindow
     });
 
@@ -45,7 +45,7 @@ describe('session storage data element delegate', function() {
       }
     };
 
-    var dataElementDelegate = require('inject!../sessionStorage')({
+    var dataElementDelegate = require('inject-loader!../sessionStorage')({
       '@adobe/reactor-window': mockWindow
     });
 
@@ -60,7 +60,7 @@ describe('session storage data element delegate', function() {
   it('returns null if error is thrown (like when session storage is ' +
     'disabled in safari)', function() {
 
-    var dataElementDelegate = require('inject!../sessionStorage')({
+    var dataElementDelegate = require('inject-loader!../sessionStorage')({
       '@adobe/reactor-window': {}
     });
 

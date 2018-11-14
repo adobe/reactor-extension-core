@@ -87,6 +87,6 @@ describe('path and query string condition view', () => {
 
     const { rows } = getReactComponents(instance);
 
-    expect(rows[0].pathTextfield.props().invalid).toBe(true);
+    expect(rows[0].pathTextfield.props().validationState).toBe('invalid');
   });
 });

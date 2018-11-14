@@ -14,7 +14,7 @@
 
 describe('page bottom event delegate', function() {
   it('sends the trigger to the pageLifecycleEvents helper module', function() {
-    var pageBottomInjector = require('inject!../pageBottom');
+    var pageBottomInjector = require('inject-loader!../pageBottom');
     var trigger = function() {};
     var pageLifecycleEventsSpy = jasmine.createSpyObj('pageLifecycleEvents', [
       'registerPageBottomTrigger'

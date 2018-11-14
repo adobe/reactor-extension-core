@@ -30,7 +30,7 @@ describe('zoom change event delegate', function() {
     jasmine.clock().install();
     jasmine.clock().mockDate();
 
-    var delegateInjector = require('inject!../zoomChange');
+    var delegateInjector = require('inject-loader!../zoomChange');
     delegate = delegateInjector({
       '@adobe/reactor-window': mockWindow,
     });

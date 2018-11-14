@@ -23,19 +23,17 @@ describe('regex test button', () => {
   beforeEach(() => {
     extensionBridge = createExtensionBridge();
 
-    spyOn(extensionBridge, 'openRegexTester').and.callFake(() => {
-      return {
-        then(resolve) {
-          resolve('bar');
-        }
-      };
-    });
+    spyOn(extensionBridge, 'openRegexTester').and.callFake(() => ({
+      then(resolve) {
+        resolve('bar');
+      }
+    }));
 
     window.extensionBridge = extensionBridge;
 
     onChange = jasmine.createSpy();
 
-    instance = mount(<RegexTestButton value="foo" onChange={ onChange } />);
+    instance = mount(<RegexTestButton value="foo" onChange={onChange} />);
   });
 
   afterEach(() => {

@@ -31,7 +31,7 @@ const DeviceType = () => (
     <Toast variant="warning" className="u-gapBottom">
       This condition type is no longer supported. Please avoid its use.
     </Toast>
-    <WrappedField name="deviceTypes" component={ CheckboxList } options={ deviceTypeOptions } />
+    <WrappedField name="deviceTypes" component={CheckboxList} options={deviceTypeOptions} />
   </div>
 );
 

@@ -22,7 +22,7 @@ const Variable = () => (
       <span className="u-verticalAlignMiddle u-gapRight">JavaScript variable named</span>
       <WrappedField
         name="name"
-        component={ Textfield }
+        component={Textfield}
         placeholder="dataLayer.products.1.price"
       />
     </label>
@@ -30,7 +30,7 @@ const Variable = () => (
       <span className="u-verticalAlignMiddle u-gapRight">has the value</span>
       <WrappedField
         name="value"
-        component={ Textfield }
+        component={Textfield}
       />
     </label>
     <InfoTip className="u-gapRight" placement="bottom">
@@ -40,7 +40,7 @@ const Variable = () => (
     </InfoTip>
     <WrappedField
       name="valueIsRegex"
-      component={ RegexToggle }
+      component={RegexToggle}
       valueFieldName="value"
     />
   </div>

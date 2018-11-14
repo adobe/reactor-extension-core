@@ -82,7 +82,7 @@ describe('query string parameter condition view', () => {
 
     const { nameTextfield, valueTextfield } = getReactComponents(instance);
 
-    expect(nameTextfield.props().invalid).toBe(true);
-    expect(valueTextfield.props().invalid).toBe(true);
+    expect(nameTextfield.props().validationState).toBe('invalid');
+    expect(valueTextfield.props().validationState).toBe('invalid');
   });
 });

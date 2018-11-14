@@ -28,7 +28,7 @@ var mockDocument = {
   referrer: 'http://testreferrer.com/test.html'
 };
 
-var visitorTrackingInjector = require('inject!../visitorTracking');
+var visitorTrackingInjector = require('inject-loader!../visitorTracking');
 
 var getVisitorTracking = function() {
   return visitorTrackingInjector({

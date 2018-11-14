@@ -12,7 +12,7 @@
 
 'use strict';
 
-var eventDelegateInjector = require('inject!../tabFocus');
+var eventDelegateInjector = require('inject-loader!../tabFocus');
 var visibilityApi = require('../helpers/visibilityApi');
 var visibilityApiInstance = visibilityApi();
 var visibilityChangeListener;

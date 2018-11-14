@@ -27,7 +27,7 @@ module.exports = function(getDelegate, type) {
   describe('standard event functionality', function() {
     var delegate;
 
-    beforeAll(function() {
+    beforeEach(function() {
       delegate = getDelegate();
 
       outerElement = document.createElement('div');
@@ -42,7 +42,7 @@ module.exports = function(getDelegate, type) {
       document.body.insertBefore(outerElement, document.body.firstChild);
     });
 
-    afterAll(function() {
+    afterEach(function() {
       document.body.removeChild(outerElement);
     });
 

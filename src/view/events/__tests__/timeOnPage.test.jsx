@@ -63,7 +63,7 @@ describe('time on page event view', () => {
 
     const { timeOnPageTextfield } = getReactComponents(instance);
 
-    expect(timeOnPageTextfield.props().invalid).toBe(true);
+    expect(timeOnPageTextfield.props().validationState).toBe('invalid');
   });
 
   it('sets error if timeOnPage value is not a number', () => {
@@ -77,6 +77,6 @@ describe('time on page event view', () => {
 
     ({ timeOnPageTextfield } = getReactComponents(instance));
 
-    expect(timeOnPageTextfield.props().invalid).toBe(true);
+    expect(timeOnPageTextfield.props().validationState).toBe('invalid');
   });
 });

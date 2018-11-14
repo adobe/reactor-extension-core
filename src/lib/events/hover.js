@@ -57,11 +57,14 @@ var watchElement = function(element, trackedDelays) {
   element.addEventListener('mouseenter', function(event) {
     trackedDelays.forEach(function(trackedDelay) {
       delayHover(event, trackedDelay, function(event) {
-        bubbly.evaluateEvent({
-          element: event.target,
-          target: event.target,
-          delay: trackedDelay
-        }, true);
+        bubbly.evaluateEvent(
+          {
+            element: event.target,
+            target: event.target,
+            delay: trackedDelay,
+          },
+          true
+        );
       });
     });
   });

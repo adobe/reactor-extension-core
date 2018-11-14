@@ -23,8 +23,9 @@ const browserOptions = [
   'Mobile Safari'
 ];
 
-const Browser = () =>
-  (<WrappedField name="browsers" component={ CheckboxList } options={ browserOptions } />);
+const Browser = () => (
+  <WrappedField name="browsers" component={CheckboxList} options={browserOptions} />
+);
 
 export default Browser;
 
@@ -46,4 +47,3 @@ export const formConfig = {
     };
   }
 };
-

@@ -87,6 +87,6 @@ describe('hash condition view', () => {
 
     const { rows } = getReactComponents(instance);
 
-    expect(rows[0].hashTextfield.props().invalid).toBe(true);
+    expect(rows[0].hashTextfield.props().validationState).toBe('invalid');
   });
 });

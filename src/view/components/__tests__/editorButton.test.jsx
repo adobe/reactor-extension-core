@@ -16,7 +16,7 @@ import Button from '@react/react-spectrum/Button';
 import EditorButton from '../editorButton';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 
-const render = props => mount(<EditorButton { ...props } />);
+const render = props => mount(<EditorButton {...props} />);
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
@@ -29,14 +29,13 @@ describe('editor button', () => {
   let extensionBridge;
 
   beforeAll(() => {
-    extensionBridge = window.extensionBridge = createExtensionBridge();
-    spyOn(window.extensionBridge, 'openCodeEditor').and.callFake((options) => {
-      return {
-        then(resolve) {
-          resolve(`${options.code} bar`);
-        }
-      };
-    });
+    extensionBridge = createExtensionBridge();
+    window.extensionBridge = extensionBridge;
+    spyOn(window.extensionBridge, 'openCodeEditor').and.callFake(options => ({
+      then(resolve) {
+        resolve(`${options.code} bar`);
+      }
+    }));
   });
 
   afterAll(() => {

@@ -88,6 +88,6 @@ describe('subdomain condition view', () => {
 
     const { rows } = getReactComponents(instance);
 
-    expect(rows[0].subdomainTextfield.props().invalid).toBe(true);
+    expect(rows[0].subdomainTextfield.props().validationState).toBe('invalid');
   });
 });

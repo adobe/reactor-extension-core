@@ -21,14 +21,14 @@ const RandomNumber = () => (
       <span className="u-verticalAlignMiddle u-gapRight">Minimum</span>
       <WrappedField
         name="min"
-        component={ Textfield }
+        component={Textfield}
       />
     </label>
     <label className="u-gapLeft">
       <span className="u-verticalAlignMiddle u-gapRight">Maximum</span>
       <WrappedField
         name="max"
-        component={ Textfield }
+        component={Textfield}
       />
     </label>
   </div>
@@ -65,7 +65,8 @@ export const formConfig = {
     }
 
     if (!errors.min && !errors.max && Number(values.min) >= Number(values.max)) {
-      errors.min = errors.max = 'Please ensure that minimum is less than maximum.';
+      errors.min = 'Please ensure that minimum is less than maximum.';
+      errors.max = errors.min;
     }
 
     return errors;

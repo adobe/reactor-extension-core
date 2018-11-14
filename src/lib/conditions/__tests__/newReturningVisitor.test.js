@@ -14,7 +14,7 @@
 
 var mockVisitorTracking = {};
 
-var conditionDelegateInjector = require('inject!../newReturningVisitor');
+var conditionDelegateInjector = require('inject-loader!../newReturningVisitor');
 
 var conditionDelegate = conditionDelegateInjector({
   '../helpers/visitorTracking': mockVisitorTracking

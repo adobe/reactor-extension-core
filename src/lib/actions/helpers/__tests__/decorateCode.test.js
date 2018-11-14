@@ -13,11 +13,12 @@
 'use strict';
 
 var decorateCode = require('../decorateCode');
+var id = 1;
 
 describe('decorate code', function() {
   var mockTurbine;
 
-  beforeAll(function() {
+  beforeEach(function() {
     mockTurbine = {
       replaceTokens: jasmine.createSpy().and.callFake(function(token) {
         return token.replace(/%(.+?)%/g, function(token, variableName) {
@@ -29,7 +30,7 @@ describe('decorate code', function() {
     mockTurbineVariable(mockTurbine);
   });
 
-  afterAll(function() {
+  afterEach(function() {
     resetTurbineVariable();
   });
 
@@ -44,8 +45,10 @@ describe('decorate code', function() {
       event: {}
     }, settings.source);
 
+    var newId = id++;
+
     expect(decoratedCode).toBe(
-      '<script>_satellite["__runScript1"]' +
+      '<script>_satellite["__runScript' + newId + '"]' +
       '(function(event, target) {\nconsole.log("logging")\n});' +
       '</script>'
     );
@@ -62,13 +65,14 @@ describe('decorate code', function() {
         source: 'console.log("logging")'
       };
       var spy = jasmine.createSpy('fn');
+      var newId = id++;
 
       decorateCode({
         settings: settings,
         event: event
       }, settings.source);
 
-      _satellite['__runScript2'](spy);
+      _satellite['__runScript' + newId](spy);
 
       expect(spy.calls.mostRecent()).toEqual({
         object: event.element,
@@ -87,6 +91,7 @@ describe('decorate code', function() {
         language: 'javascript',
         source: 'console.log("logging")'
       };
+      var newId = id++;
 
       decorateCode({
         settings: settings,
@@ -95,9 +100,9 @@ describe('decorate code', function() {
       }, settings.source);
 
 
-      expect(_satellite['__runScript3']).toBeDefined();
-      _satellite['__runScript3'](function() {});
-      expect(_satellite['__runScript3']).not.toBeDefined();
+      expect(_satellite['__runScript' + newId]).toBeDefined();
+      _satellite['__runScript' + newId](function() {});
+      expect(_satellite['__runScript' + newId]).not.toBeDefined();
     });
 
 

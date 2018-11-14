@@ -17,12 +17,10 @@ import MultipleItemEditor from '../multipleItemEditor';
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const rows = wrapper.find('div[data-type="row"]').map((row) => {
-    return {
-      element: row,
-      removeButton: row.find(Button)
-    };
-  });
+  const rows = wrapper.find('div[data-type="row"]').map(row => ({
+    element: row,
+    removeButton: row.find(Button)
+  }));
   const addButton = wrapper.find(Button).last();
 
   return {
@@ -38,10 +36,12 @@ const getTestProps = () => ({
     remove: jasmine.createSpy('remove'),
     length: 2
   },
-  renderItem: jasmine.createSpy('renderItem').and.callFake(item => <span>{ item.label }</span>)
+  renderItem: jasmine
+    .createSpy('renderItem')
+    .and.callFake(item => <span>{item.label}</span>)
 });
 
-const render = props => mount(<MultipleItemEditor { ...props } />);
+const render = props => mount(<MultipleItemEditor {...props} />);
 
 describe('multiple item editor', () => {
   it('renders a row for each item', () => {

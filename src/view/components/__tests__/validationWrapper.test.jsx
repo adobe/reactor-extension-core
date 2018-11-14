@@ -16,7 +16,7 @@ import OverlayTrigger from '@react/react-spectrum/OverlayTrigger';
 import Tooltip from '@react/react-spectrum/Tooltip';
 import ValidationWrapper from '../validationWrapper';
 
-const render = props => mount(<ValidationWrapper { ...props } />);
+const render = props => mount(<ValidationWrapper {...props} />);
 
 const getReactComponents = (wrapper) => {
   wrapper.update();

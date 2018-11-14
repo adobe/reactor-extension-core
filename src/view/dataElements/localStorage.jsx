@@ -19,7 +19,7 @@ const LocalStorage = () => (
     <span className="u-verticalAlignMiddle u-gapRight">Local Storage Item Name</span>
     <WrappedField
       name="name"
-      component={ Textfield }
+      component={Textfield}
     />
   </label>
 );
