@@ -17,6 +17,8 @@ var window = require('@adobe/reactor-window');
 var WeakMap = require('./helpers/weakMap');
 var debounce = require('./helpers/debounce');
 var enableWeakMapDefaultValue = require('./helpers/enableWeakMapDefaultValue');
+var matchesSelector = require('./helpers/matchesSelector');
+var matchesProperties = require('./helpers/matchesProperties');
 
 var POLL_INTERVAL = 3000;
 var DEBOUNCE_DELAY = 200;
@@ -26,15 +28,21 @@ var frequencies = {
 };
 var isIE10 = window.navigator.appVersion.indexOf('MSIE 10') !== -1;
 
-var arrayFactory = function() {
-  return [];
-};
-
-var timeoutIdsByElement = enableWeakMapDefaultValue(new WeakMap(), arrayFactory);
-var delayedListenersByElement = enableWeakMapDefaultValue(new WeakMap(), arrayFactory);
-var completedListenersByElement = enableWeakMapDefaultValue(new WeakMap(), arrayFactory);
-
-var matchesProperties = require('./helpers/matchesProperties');
+var stateByElement = enableWeakMapDefaultValue(new WeakMap(), function() {
+  return {
+    // When a user configures the event to fire the rule after an element has been inside
+    // the viewport for a certain period of time, we run a timeout for that period of time after
+    // we first see the element in the viewport. This array contains the IDs for all the timeouts
+    // for the element.
+    timeoutIds: [],
+    // When a user configures the event to only fire a rule once, after the rule has been triggered,
+    // we store the "listener" in this array so that we know it's been fired and shouldn't be fired
+    // again.
+    completedListeners: [],
+    // Whether the element is currently inside the viewport.
+    inViewport: false
+  };
+});
 
 var listenersBySelector = {};
 
@@ -109,55 +117,77 @@ var elementIsInView = function(element, viewportHeight, scrollTop) {
 };
 
 /**
- * Handle when a targeted element enters the viewport.
- * @param {HTMLElement} element
- * @param {number} delay
- * @param {Object} listener
+ * Handle when a targeted element is inside the viewport.
  */
-var handleElementEnterViewport = function(element, delay, listener) {
-  var complete = function() {
-    var frequency = listener.settings.frequency || frequencies.FIRST_ENTRY;
+var handleElementInsideViewport = function(element) {
+  var elementState = stateByElement.get(element);
 
-    if (frequency === frequencies.FIRST_ENTRY) {
-      completedListenersByElement.get(element).push(listener);
-    }
+  if (elementState.inViewport) {
+    return;
+  }
 
-    listener.trigger({
-      element: element,
-      target: element,
-      delay: delay
-    });
-  };
+  elementState.inViewport = true;
 
-  if (delay) {
-
-    if (delayedListenersByElement.get(element).indexOf(listener) !== -1) {
+  // Evaluate the element against all stored listeners to see which ones should be triggered
+  // due to the element being in the viewport.
+  Object.keys(listenersBySelector).forEach(function(selector) {
+    if (!matchesSelector(element, selector)) {
       return;
     }
 
-    var timeoutId = setTimeout(function() {
-      if (elementIsInView(element, getViewportHeight(), getScrollTop())) {
-        complete();
+    listenersBySelector[selector].forEach(function(listener) {
+      if (!matchesProperties(element, listener.settings.elementProperties)) {
+        return;
       }
-    }, delay);
 
-    timeoutIdsByElement.get(element).push(timeoutId);
-    delayedListenersByElement.get(element).push(listener);
-  } else {
-    complete();
-  }
+      // If the listener was already triggered and shouldn't be triggered again, bail.
+      if (elementState.completedListeners.indexOf(listener) !== -1) {
+        return;
+      }
+
+      var delayComplete = function() {
+        var frequency = listener.settings.frequency || frequencies.FIRST_ENTRY;
+
+        // When a user configures the event to only fire a rule once, then after the rule
+        // has been triggered we store the "listener" in this array so that we know it's
+        // been triggered and shouldn't be triggered in the future.
+        if (frequency === frequencies.FIRST_ENTRY) {
+          elementState.completedListeners.push(listener);
+        }
+
+        listener.trigger({
+          element: element,
+          target: element,
+          delay: listener.settings.delay
+        });
+      };
+
+      if (listener.settings.delay) {
+        var timeoutId = setTimeout(function() {
+          // One last check to make sure the element is still in view.
+          if (elementIsInView(element, getViewportHeight(), getScrollTop())) {
+            delayComplete();
+          }
+        }, listener.settings.delay);
+
+        elementState.timeoutIds.push(timeoutId);
+      } else {
+        delayComplete();
+      }
+    });
+  });
 };
 
 /**
- * Handle when a targeted element exits the viewport.
- * @param element
+ * Handle when a targeted element is outside the viewport.
  */
-var handleElementExitViewport = function(element) {
-  var timeoutIds = timeoutIdsByElement.get(element);
-  if (timeoutIds) {
-    timeoutIds.forEach(clearTimeout);
-    timeoutIdsByElement.delete(element);
-    delayedListenersByElement.delete(element);
+var handleElementOutsideViewport = function(element) {
+  var elementState = stateByElement.get(element);
+  elementState.inViewport = false;
+
+  if (elementState.timeoutIds.length) {
+    elementState.timeoutIds.forEach(clearTimeout);
+    elementState.timeoutIds = [];
   }
 };
 
@@ -170,40 +200,27 @@ var handleElementExitViewport = function(element) {
  * the viewport, it may trigger the same rule again.
  */
 var checkForElementsInViewport = debounce(function() {
+  var selectors = Object.keys(listenersBySelector);
+
+  if (!selectors.length) {
+    return;
+  }
+
+  // Find all the elements pertaining to rules using Enters Viewport.
+  var elements = document.querySelectorAll(selectors.join(','));
+
   // Cached and re-used for optimization.
   var viewportHeight = getViewportHeight();
   var scrollTop = getScrollTop();
 
-  Object.keys(listenersBySelector).forEach(function(selector) {
-    var listeners = listenersBySelector[selector];
-    var elements = document.querySelectorAll(selector);
-
-    listeners.forEach(function(listener) {
-      var delay = listener.settings.delay;
-
-      for (var i = 0; i < elements.length; i++) {
-        var element = elements[i];
-        var frequency = listener.settings.frequency || frequencies.FIRST_ENTRY;
-
-        if (
-          frequency === frequencies.FIRST_ENTRY &&
-          completedListenersByElement.get(element).indexOf(listener) !== -1
-        ) {
-          continue;
-        }
-
-        if (!matchesProperties(element, listener.settings.elementProperties)) {
-          continue;
-        }
-
-        if (elementIsInView(element, viewportHeight, scrollTop)) {
-          handleElementEnterViewport(element, delay, listener);
-        } else { // Element is not in view, has delay
-          handleElementExitViewport(element);
-        }
-      }
-    });
-  });
+  for (var i = 0; i < elements.length; i++) {
+    var element = elements[i];
+    if (elementIsInView(element, viewportHeight, scrollTop)) {
+      handleElementInsideViewport(element);
+    } else {
+      handleElementOutsideViewport(element);
+    }
+  }
 }, DEBOUNCE_DELAY);
 
 var initializeContentListeners = function() {
