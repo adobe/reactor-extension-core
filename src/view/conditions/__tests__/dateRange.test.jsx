@@ -12,7 +12,7 @@
 
 import { mount } from 'enzyme';
 import Datepicker from '@react/react-spectrum/Datepicker';
-import Autocomplete from '@react/react-spectrum/Autocomplete';
+import ComboBox from '@react/react-spectrum/ComboBox';
 import WrappedField from '../../components/wrappedField';
 import DateRange, { formConfig } from '../dateRange';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
@@ -26,12 +26,12 @@ const getReactComponents = (wrapper) => {
   const endField = fields.filterWhere(n => n.prop('name') === 'end');
   const endDatepicker = endField.find(Datepicker);
   const timezoneField = fields.filterWhere(n => n.prop('name') === 'timezone');
-  const timezoneAutocomplete = timezoneField.find(Autocomplete);
+  const timezoneComboBox = timezoneField.find(ComboBox);
 
   return {
     startDatepicker,
     endDatepicker,
-    timezoneAutocomplete
+    timezoneComboBox
   };
 };
 
@@ -53,11 +53,11 @@ describe('date range condition view', () => {
       }
     });
 
-    const { startDatepicker, endDatepicker, timezoneAutocomplete } = getReactComponents(instance);
+    const { startDatepicker, endDatepicker, timezoneComboBox } = getReactComponents(instance);
 
     expect(startDatepicker.props().value).toBe('2017-11-03 11:24');
     expect(endDatepicker.props().value).toBe('2017-11-29 09:12');
-    expect(timezoneAutocomplete.props().value).toBe('US/Mountain');
+    expect(timezoneComboBox.props().value).toBe('US/Mountain');
   });
 
   it('sets form values using GMT if not provided on settings', () => {
@@ -68,11 +68,11 @@ describe('date range condition view', () => {
       }
     });
 
-    const { startDatepicker, endDatepicker, timezoneAutocomplete } = getReactComponents(instance);
+    const { startDatepicker, endDatepicker, timezoneComboBox } = getReactComponents(instance);
 
     expect(startDatepicker.props().value).toBe('2017-11-03 17:24');
     expect(endDatepicker.props().value).toBe('2017-11-29 16:12');
-    expect(timezoneAutocomplete.props().value).toBe('GMT');
+    expect(timezoneComboBox.props().value).toBe('GMT');
   });
 
   it('sets form values using GMT if invalid timezone provided on settings', () => {
@@ -84,21 +84,21 @@ describe('date range condition view', () => {
       }
     });
 
-    const { startDatepicker, endDatepicker, timezoneAutocomplete } = getReactComponents(instance);
+    const { startDatepicker, endDatepicker, timezoneComboBox } = getReactComponents(instance);
 
     expect(startDatepicker.props().value).toBe('2017-11-03 17:24');
     expect(endDatepicker.props().value).toBe('2017-11-29 16:12');
-    expect(timezoneAutocomplete.props().value).toBe('GMT');
+    expect(timezoneComboBox.props().value).toBe('GMT');
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { startDatepicker, endDatepicker, timezoneAutocomplete } = getReactComponents(instance);
+    const { startDatepicker, endDatepicker, timezoneComboBox } = getReactComponents(instance);
 
     startDatepicker.props().onChange('2017-11-03 11:24');
     endDatepicker.props().onChange('2017-11-29 09:12');
-    timezoneAutocomplete.props().onChange('US/Mountain');
+    timezoneComboBox.props().onChange('US/Mountain');
 
     expect(extensionBridge.getSettings()).toEqual({
       start: '2017-11-03T17:24:00Z',
