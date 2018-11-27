@@ -20,34 +20,34 @@ var evaluatedEvents = new WeakMap();
 /**
  * Determines whether an element is a link that would navigate the user's current window to a
  * different URL.
- * @param element
+ * @param node
  * @returns {boolean}
  */
-var isNavigationLink = function(element) {
-  var tagName = element.tagName;
+var getDelayableLink = function(node) {
+  while (node) {
+    var tagName = node.tagName;
 
-  if (tagName && tagName.toLowerCase() !== 'a') {
-    return false;
-  }
+    if (tagName && tagName.toLowerCase() === 'a') {
+      var href = node.getAttribute('href');
+      var target = node.getAttribute('target');
 
-  var target = element.getAttribute('target');
-  var href = element.getAttribute('href');
-  if (!href) {
-    return false;
-  } else if (!target) {
-    return true;
-  } else if (target === '_blank') {
-    return false;
-  } else if (target === '_top') {
-    return window.top === window;
-  } else if (target === '_parent') {
-    return false;
-  } else if (target === '_self') {
-    return true;
-  } else if (window.name) {
-    return target === window.name;
-  } else {
-    return true;
+      if (
+        href &&
+        (
+          !target ||
+          target === '_self' ||
+          (target === '_top' && window.top === window) ||
+          target === window.name
+        )
+      ) {
+        return node;
+      } else {
+        // No need to continue searching ancestry.
+        return;
+      }
+    }
+
+    node = node.parentNode;
   }
 };
 
@@ -82,7 +82,7 @@ module.exports = function(settings, trigger) {
     // AppMeasurement captures the click events, and tries to detect if the element clicked is an A
     // tag that contains an exit link. When that happens, it stops the initial event, sends a
     // beacon, clones the initial event and fires it again.
-    // Reactor detects the click events first, because it's listeners are set on the capture phase.
+    // Reactor detects the click events first, because its listeners are set on the capture phase.
     // We need to ignore the cloned event, otherwise the same rule will fire twice. AppMeasurement
     // sets `s_fe` attribute on the cloned event, and that is the flag we'll use to ignore these
     // fake events.
@@ -93,10 +93,11 @@ module.exports = function(settings, trigger) {
 
     if (settings.anchorDelay) {
       if (!evaluatedEvents.has(nativeEvent)) {
-        if (isNavigationLink(nativeEvent.target)) {
+        var delayableLink = getDelayableLink(nativeEvent.target);
+        if (delayableLink) {
           nativeEvent.preventDefault();
           setTimeout(function() {
-            window.location = nativeEvent.target.href;
+            window.location = delayableLink.href;
           }, settings.anchorDelay);
         }
         evaluatedEvents.set(nativeEvent, true);

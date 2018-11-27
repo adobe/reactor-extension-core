@@ -50,6 +50,7 @@ describe('click event delegate', function() {
     var LINK_LOCATION = 'http://example.com/';
     var defaultPrevented;
     var link;
+    var spanWithinLink;
 
     // Regardless of what we're testing, we can't let a simulated link click take us away
     // from the testing page. However, we also need to record if the default was prevented by
@@ -72,6 +73,9 @@ describe('click event delegate', function() {
       link = document.createElement('a');
       link.href = 'http://example.com/';
 
+      spanWithinLink = document.createElement('span');
+      link.appendChild(spanWithinLink);
+
       document.body.appendChild(link);
     });
 
@@ -86,7 +90,7 @@ describe('click event delegate', function() {
       document.removeEventListener('click', clickHandler);
     });
 
-    it('delays navigation by a custom delay', function() {
+    it('delays navigation by a custom delay when link is clicked', function() {
       delegate({
         anchorDelay: 3000
       }, function() {});
@@ -99,7 +103,21 @@ describe('click event delegate', function() {
       jasmine.clock().tick(1);
       expect(mockWindow.location).toEqual(LINK_LOCATION);
     });
-    
+
+    it('delays navigation by a custom delay when link descendant clicked', function() {
+      delegate({
+        anchorDelay: 3000
+      }, function() {});
+
+      spanWithinLink.click();
+
+      expect(defaultPrevented).toBe(true);
+      jasmine.clock().tick(2999);
+      expect(mockWindow.location).toEqual(INITIAL_LOCATION);
+      jasmine.clock().tick(1);
+      expect(mockWindow.location).toEqual(LINK_LOCATION);
+    });
+
     it('does not delay navigation if no related rule runs', function() {
       delegate({
         elementSelector: 'h2',
