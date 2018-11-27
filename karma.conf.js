@@ -19,7 +19,7 @@ if (isCi) {
     'SL_CHROME',
     'SL_FIREFOX',
     'SL_ANDROID',
-    'SL_SAFARI',
+    'SL_SAFARI'
   ];
 
   reporters.push('saucelabs');
@@ -43,50 +43,57 @@ const rules = [
     loader: 'babel-loader',
     options: {
       presets: ['@babel/react', '@babel/env'],
-      plugins: ['@babel/plugin-proposal-class-properties'],
-    },
+      plugins: ['@babel/plugin-proposal-class-properties']
+    }
   },
   {
     test: /\.js$/,
     include: /\.entries/,
     loader: 'babel-loader',
     options: {
-      presets: ['@babel/env'],
-    },
+      presets: ['@babel/env']
+    }
   },
   {
     test: /\.styl/,
     include: /src\/view/,
-    loader: 'style-loader!css-loader!stylus-loader',
+    loader: 'style-loader!css-loader!stylus-loader'
   },
   {
     test: /\.css/,
-    loaders: ['style-loader', 'css-loader'],
+    loaders: ['style-loader', 'css-loader']
   },
   {
     test: /\.(jpe?g|png|gif)$/,
-    loader: 'file-loader',
+    loader: 'file-loader'
   },
   {
     test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-    loader: 'url-loader?limit=10000&mimetype=application/font-woff',
+    loader: 'url-loader?limit=10000&mimetype=application/font-woff'
   },
   {
     test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-    loader: 'file-loader',
-  },
+    loader: 'file-loader'
+  }
 ];
 
 if (argv.coverage) {
   rules.push({
     test: /\.jsx?$/,
     enforce: 'post',
-    include: path.resolve('src'),
+    include: path.resolve('src/view'),
     exclude: new RegExp('__tests__'),
-    use: {
-      loader: 'istanbul-instrumenter-loader',
-      options: { esModules: true },
-    },
+    loader: 'istanbul-instrumenter-loader',
+    options: { esModules: true }
+  });
+
+  rules.push({
+    test: /\.js$/,
+    enforce: 'pre',
+    include: path.resolve('src/lib'),
+    exclude: new RegExp('__tests__'),
+    loader: 'istanbul-instrumenter-loader',
+    options: { esModules: true }
   });
 
   reporters.push('coverage-istanbul');
@@ -109,13 +116,13 @@ module.exports = config => {
         pattern: require.resolve('simulate'),
         watched: false,
         included: true,
-        served: true,
+        served: true
       },
       {
         pattern: path.join('helpers/*.js'),
         watched: true,
         included: true,
-        served: true,
+        served: true
       },
       {
         pattern: 'src/**/__tests__/**/*',
@@ -126,14 +133,14 @@ module.exports = config => {
         // Sounds like https://github.com/webpack/karma-webpack/issues/44
         watched: false,
         included: false,
-        served: true,
+        served: true
       },
       {
         pattern: 'testIndex.js',
         watched: false,
         included: true,
-        served: true,
-      },
+        served: true
+      }
     ],
 
     // list of files to exclude
@@ -142,7 +149,7 @@ module.exports = config => {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'testIndex.js': ['webpack'],
+      'testIndex.js': ['webpack']
     },
 
     // test results reporter to use
@@ -172,32 +179,32 @@ module.exports = config => {
       SL_CHROME: {
         base: 'SauceLabs',
         browserName: 'chrome',
-        version: 'latest',
+        version: 'latest'
       },
       SL_FIREFOX: {
         base: 'SauceLabs',
         browserName: 'firefox',
-        version: 'latest',
+        version: 'latest'
       },
       SL_SAFARI: {
         base: 'SauceLabs',
         browserName: 'safari',
-        version: 'latest',
+        version: 'latest'
       },
       SL_IE10: {
         base: 'SauceLabs',
         browserName: 'internet explorer',
-        version: '10',
+        version: '10'
       },
       SL_IE11: {
         base: 'SauceLabs',
         browserName: 'internet explorer',
-        version: '11',
+        version: '11'
       },
       SL_EDGE: {
         base: 'SauceLabs',
         browserName: 'MicrosoftEdge',
-        version: 'latest',
+        version: 'latest'
       },
       SL_IOS: {
         base: 'SauceLabs',
@@ -205,7 +212,7 @@ module.exports = config => {
         appiumVersion: '1.9.1',
         browserName: 'Safari',
         platformName: 'iOS',
-        platformVersion: '12.0',
+        platformVersion: '12.0'
       },
       SL_ANDROID: {
         base: 'SauceLabs',
@@ -213,8 +220,8 @@ module.exports = config => {
         appiumVersion: '1.9.1',
         browserName: 'Chrome',
         platformName: 'Android',
-        platformVersion: '7.1',
-      },
+        platformVersion: '7.1'
+      }
     },
 
     sauceLabs: {
@@ -227,8 +234,8 @@ module.exports = config => {
       recordScreenshots: false,
       // https://support.saucelabs.com/hc/en-us/articles/115010079868-Issues-with-Safari-and-Karma-Test-Runner
       connectOptions: {
-        noSslBumpDomains: 'all',
-      },
+        noSslBumpDomains: 'all'
+      }
     },
 
     // Continuous Integration mode
@@ -243,11 +250,11 @@ module.exports = config => {
       reports: ['html', 'cobertura', 'text-summary'],
       'report-config': {
         html: {
-          subdir: 'html',
-        },
+          subdir: 'html'
+        }
       },
       fixWebpackSourcePaths: true,
-      combineBrowserReports: true,
+      combineBrowserReports: true
     },
 
     captureTimeout: 180000,
@@ -260,27 +267,27 @@ module.exports = config => {
       mode: 'development',
       externals: {
         window: 'window',
-        document: 'document',
+        document: 'document'
       },
       resolve: {
-        extensions: ['.js', '.jsx'],
+        extensions: ['.js', '.jsx']
       },
       module: {
-        rules: rules,
+        rules: rules
       },
       plugins: [
         new DefinePlugin({
           TEST_BASE_PATH: JSON.stringify(process.cwd() + argv.testBasePath)
         }),
-        new SourceMapDevToolPlugin({}),
-      ],
+        new SourceMapDevToolPlugin({})
+      ]
     },
 
     webpackServer: {
       stats: true,
       debug: false,
       progress: true,
-      quiet: false,
-    },
+      quiet: false
+    }
   });
 };
