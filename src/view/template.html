@@ -2,10 +2,11 @@
 <html>
   <head lang="en">
     <meta charset="UTF-8">
-    <title></title>
+    <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
   <body>
     <div id="content"></div>
+    <%= htmlWebpackPlugin.options.react_dev_hook %>
     <script src="//assets.adobedtm.com/activation/reactor/extensionbridge/extensionbridge.min.js"></script>
   </body>
 </html>

@@ -12,56 +12,61 @@ const createEntryFile = require('./createEntryFile');
 const entries = {};
 const plugins = [];
 
-// Each view becomes its own "app". These are automatically generated based on naming convention.
-['event', 'condition', 'action', 'dataElement', 'configuration'].forEach(type => {
-  const typePluralized = type + 's';
-  const delegates =
-    type === 'configuration'
-      ? [extension['configuration']]
-      : extension[typePluralized];
-
-  delegates.forEach(itemDescriptor => {
-    let itemNameCapitalized;
-    let chunkName;
-
-    if (itemDescriptor && itemDescriptor.viewPath) {
-      if (type === 'configuration') {
-        itemNameCapitalized = 'Configuration';
-        chunkName = 'configuration/configuration';
-      } else {
-        const itemName = itemDescriptor.name;
-        const itemNameCamelized = camelCase(itemName);
-        itemNameCapitalized = capitalize(itemNameCamelized);
-        chunkName = `${typePluralized}/${itemNameCamelized}`;
-      }
-
-      const entryPath = `./.entries/${chunkName}.js`;
-      createEntryFile(entryPath, itemNameCapitalized, chunkName);
-      entries[chunkName] = entryPath;
-
-      plugins.push(
-        new HtmlWebpackPlugin({
-          filename: `${chunkName}.html`,
-          template: 'src/view/template.html',
-          chunks: ['common', chunkName],
-        })
-      );
-    }
-  });
-});
-
-plugins.push(
-  new webpack.DefinePlugin({
-    'process.env.SCALE_MEDIUM': 'true',
-    'process.env.SCALE_LARGE': 'false',
-    'process.env.THEME_LIGHT': 'false',
-    'process.env.THEME_LIGHTEST': 'true',
-    'process.env.THEME_DARK': 'false',
-    'process.env.THEME_DARKEST': 'false',
-  })
-);
-
 module.exports = env => {
+  // Each view becomes its own "app". These are automatically generated based on naming convention.
+  ['event', 'condition', 'action', 'dataElement', 'configuration'].forEach(type => {
+    const typePluralized = type + 's';
+    const delegates =
+      type === 'configuration'
+        ? [extension['configuration']]
+        : extension[typePluralized];
+
+    delegates.forEach(itemDescriptor => {
+      let itemNameCapitalized;
+      let chunkName;
+
+      if (itemDescriptor && itemDescriptor.viewPath) {
+        if (type === 'configuration') {
+          itemNameCapitalized = 'Configuration';
+          chunkName = 'configuration/configuration';
+        } else {
+          const itemName = itemDescriptor.name;
+          const itemNameCamelized = camelCase(itemName);
+          itemNameCapitalized = capitalize(itemNameCamelized);
+          chunkName = `${typePluralized}/${itemNameCamelized}`;
+        }
+
+        const entryPath = `./.entries/${chunkName}.js`;
+        createEntryFile(entryPath, itemNameCapitalized, chunkName);
+        entries[chunkName] = entryPath;
+
+        plugins.push(
+          new HtmlWebpackPlugin({
+            title: itemDescriptor.displayName,
+            filename: `${chunkName}.html`,
+            template: 'src/view/template.html',
+            chunks: ['common', chunkName],
+            react_dev_hook:
+              env === 'sandbox'
+                ? '<script> __REACT_DEVTOOLS_GLOBAL_HOOK__ = parent.__REACT_DEVTOOLS_GLOBAL_HOOK__ </script>'
+                : ''
+          })
+        );
+      }
+    });
+  });
+
+  plugins.push(
+    new webpack.DefinePlugin({
+      'process.env.SCALE_MEDIUM': 'true',
+      'process.env.SCALE_LARGE': 'false',
+      'process.env.THEME_LIGHT': 'false',
+      'process.env.THEME_LIGHTEST': 'true',
+      'process.env.THEME_DARK': 'false',
+      'process.env.THEME_DARKEST': 'false',
+    })
+  );
+
   if (env === 'sandbox') {
     // This allows us to run the sandbox after the initial build takes place. By not starting up the
     // sandbox while simultaneously building the view, we ensure:
@@ -73,12 +78,9 @@ module.exports = env => {
         onBuildEnd: ['./node_modules/.bin/reactor-sandbox'],
       })
     );
-
-    plugins.push(new webpack.SourceMapDevToolPlugin({}));
   }
 
   return {
-    devtool: false,
     optimization: {
       runtimeChunk: false,
       splitChunks: {

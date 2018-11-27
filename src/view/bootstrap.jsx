@@ -17,21 +17,22 @@
 **************************************************************************/
 
 /*eslint import/no-extraneous-dependencies: 0*/
+/*eslint no-underscore-dangle: 0*/
 
 import '@babel/polyfill';
 import React from 'react';
 import { Provider, connect } from 'react-redux';
-import { createStore, compose } from 'redux';
+import { createStore } from 'redux';
 import { reduxForm } from 'redux-form';
 import reducer from './reduxActions/reducer';
 import bridgeAdapter from './bridgeAdapter';
 
 export default (View, formConfig, extensionBridge = window.extensionBridge, viewProps) => {
-  const finalCreateStore = compose(
-    window.devToolsExtension ? window.devToolsExtension() : f => f
-  )(createStore);
-
-  const store = finalCreateStore(reducer, {});
+  const store = createStore(
+    reducer,
+    {},
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  );
 
   const ViewWrapper = ({ initializedByBridge, error, ...rest }) => (initializedByBridge ?
     <View {...rest} componentsWithErrors={error || []} /> :
