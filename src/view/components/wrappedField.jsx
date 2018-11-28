@@ -2,6 +2,7 @@ import React from 'react';
 import { Field } from 'redux-form';
 import Button from '@react/react-spectrum/Button';
 import RadioGroup from '@react/react-spectrum/RadioGroup';
+import Select from '@react/react-spectrum/Select';
 import Checkbox from '@react/react-spectrum/Checkbox';
 import Data from '@react/react-spectrum/Icon/Data';
 import ValidationWrapper from './validationWrapper';
@@ -40,6 +41,21 @@ class DecoratedInput extends React.Component {
       errorTooltipPlacement,
       ...rest
     } = this.props;
+
+    // The underlying DOM component for Select is a button. When input.onBlur was called,
+    // the event.target.value had a value, because the button was receiving all the react component
+    // properties. Beginning with v.2.12.0, the DOM button was receiving only the react component
+    // properties related to accessibility. So the event.target.value will always be empty. We
+    // take the value from the input and we add it to the event so everything still works.
+    // Without this fix, whenever a blur was triggered on a Select, the Select value would be reset.
+    if (FieldComponent === Select) {
+      const { onBlur, value } = input;
+
+      input.onBlur = (e) => {
+        e.target.value = value;
+        onBlur(e);
+      };
+    }
 
     // Unlike other components, RadioGroup's "value" prop is named "selectedValue". :/
     if (FieldComponent === RadioGroup) {
