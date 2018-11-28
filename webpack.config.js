@@ -14,47 +14,49 @@ const plugins = [];
 
 module.exports = env => {
   // Each view becomes its own "app". These are automatically generated based on naming convention.
-  ['event', 'condition', 'action', 'dataElement', 'configuration'].forEach(type => {
-    const typePluralized = type + 's';
-    const delegates =
-      type === 'configuration'
-        ? [extension['configuration']]
-        : extension[typePluralized];
+  ['event', 'condition', 'action', 'dataElement', 'configuration'].forEach(
+    type => {
+      const typePluralized = type + 's';
+      const delegates =
+        type === 'configuration'
+          ? [extension['configuration']]
+          : extension[typePluralized];
 
-    delegates.forEach(itemDescriptor => {
-      let itemNameCapitalized;
-      let chunkName;
+      delegates.forEach(itemDescriptor => {
+        let itemNameCapitalized;
+        let chunkName;
 
-      if (itemDescriptor && itemDescriptor.viewPath) {
-        if (type === 'configuration') {
-          itemNameCapitalized = 'Configuration';
-          chunkName = 'configuration/configuration';
-        } else {
-          const itemName = itemDescriptor.name;
-          const itemNameCamelized = camelCase(itemName);
-          itemNameCapitalized = capitalize(itemNameCamelized);
-          chunkName = `${typePluralized}/${itemNameCamelized}`;
+        if (itemDescriptor && itemDescriptor.viewPath) {
+          if (type === 'configuration') {
+            itemNameCapitalized = 'Configuration';
+            chunkName = 'configuration/configuration';
+          } else {
+            const itemName = itemDescriptor.name;
+            const itemNameCamelized = camelCase(itemName);
+            itemNameCapitalized = capitalize(itemNameCamelized);
+            chunkName = `${typePluralized}/${itemNameCamelized}`;
+          }
+
+          const entryPath = `./.entries/${chunkName}.js`;
+          createEntryFile(entryPath, itemNameCapitalized, chunkName);
+          entries[chunkName] = entryPath;
+
+          plugins.push(
+            new HtmlWebpackPlugin({
+              title: itemDescriptor.displayName,
+              filename: `${chunkName}.html`,
+              template: 'src/view/template.html',
+              chunks: ['common', chunkName],
+              react_dev_hook:
+                env === 'sandbox'
+                  ? '<script> __REACT_DEVTOOLS_GLOBAL_HOOK__ = parent.__REACT_DEVTOOLS_GLOBAL_HOOK__ </script>'
+                  : ''
+            })
+          );
         }
-
-        const entryPath = `./.entries/${chunkName}.js`;
-        createEntryFile(entryPath, itemNameCapitalized, chunkName);
-        entries[chunkName] = entryPath;
-
-        plugins.push(
-          new HtmlWebpackPlugin({
-            title: itemDescriptor.displayName,
-            filename: `${chunkName}.html`,
-            template: 'src/view/template.html',
-            chunks: ['common', chunkName],
-            react_dev_hook:
-              env === 'sandbox'
-                ? '<script> __REACT_DEVTOOLS_GLOBAL_HOOK__ = parent.__REACT_DEVTOOLS_GLOBAL_HOOK__ </script>'
-                : ''
-          })
-        );
-      }
-    });
-  });
+      });
+    }
+  );
 
   plugins.push(
     new webpack.DefinePlugin({
@@ -63,7 +65,7 @@ module.exports = env => {
       'process.env.THEME_LIGHT': 'false',
       'process.env.THEME_LIGHTEST': 'true',
       'process.env.THEME_DARK': 'false',
-      'process.env.THEME_DARKEST': 'false',
+      'process.env.THEME_DARKEST': 'false'
     })
   );
 
@@ -75,7 +77,7 @@ module.exports = env => {
     // actually exist because they have already been built.
     plugins.push(
       new WebpackShellPlugin({
-        onBuildEnd: ['./node_modules/.bin/reactor-sandbox'],
+        onBuildEnd: ['./node_modules/.bin/reactor-sandbox']
       })
     );
   }
@@ -99,7 +101,7 @@ module.exports = env => {
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: '[name].js',
-      chunkFilename: '[name].js',
+      chunkFilename: '[name].js'
     },
     module: {
       rules: [
@@ -110,42 +112,51 @@ module.exports = env => {
           loader: 'babel-loader',
           options: {
             presets: ['@babel/react', '@babel/env'],
-            plugins: ['@babel/plugin-proposal-class-properties'],
-          },
+            plugins: ['@babel/plugin-proposal-class-properties']
+          }
         },
         {
           test: /\.js$/,
           include: /\.entries/,
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/env'],
-          },
+            presets: ['@babel/env']
+          }
         },
         {
           test: /\.styl/,
           include: /src\/view/,
-          loader: 'style-loader!css-loader!stylus-loader',
+          use: [
+            require.resolve('style-loader'),
+            {
+              loader: require.resolve('css-loader'),
+              options: {
+                importLoaders: 1
+              }
+            },
+            require.resolve('stylus-loader'),
+          ]
         },
         {
           test: /\.css/,
-          loaders: ['style-loader', 'css-loader'],
+          use: [
+            require.resolve('style-loader'),
+            {
+              loader: require.resolve('css-loader'),
+              options: {
+                importLoaders: 1
+              }
+            }
+          ]
         },
         {
           test: /\.(jpe?g|png|gif)$/,
-          loader: 'file-loader',
-        },
-        {
-          test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-          loader: 'url-loader?limit=10000&mimetype=application/font-woff',
-        },
-        {
-          test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-          loader: 'file-loader',
-        },
-      ],
+          loader: 'file-loader'
+        }
+      ]
     },
     resolve: {
-      extensions: ['.js', '.jsx'],
-    },
+      extensions: ['.js', '.jsx']
+    }
   };
 };
