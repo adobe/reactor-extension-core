@@ -3,10 +3,10 @@
   "platform": "web",
   "version": "1.4.2",
   "displayName": "Core",
-  "description": "Provides default event, condition, and data element types available to all Launch users.",
+  "description": "Provides default event, condition, and data element types available to all Launch properties.",
   "iconPath": "resources/icons/core.svg",
   "author": {
-    "name": "Adobe Systems",
+    "name": "Adobe",
     "url": "http://adobe.com",
     "email": "reactor@adobe.com"
   },

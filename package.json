@@ -1,15 +1,15 @@
 {
-  "name": "@reactor/extension-core",
+  "name": "@adobe/reactor-extension-core",
   "version": "2.0.0",
-  "description": "Core extension for Launch. Provides default event, condition, and data element types available to all Launch users.",
+  "description": "This is the Core extension for Adobe Experience Launch. It provides default event, condition, and data element types available to all Launch properties.",
   "author": {
-    "name": "Adobe Systems",
+    "name": "Adobe",
     "url": "http://adobe.com",
     "email": "reactor@adobe.com"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:Adobe-Marketing-Cloud/reactor-core-extension.git"
+    "url": "git@github.com:adobe/reactor-extension-core.git"
   },
   "scripts": {
     "build": "rm -rf dist && webpack --mode=production",
@@ -23,7 +23,7 @@
     "ci-job": "npm test -- --ci && npm run lint && npm run package && ./node_modules/.bin/reactor-sandbox build"
   },
   "dependencies": {
-    "@react/react-spectrum": "^2.14.0",
+    "@react/react-spectrum": "file:react-spectrum-2.14.0.tgz",
     "classnames": "^2.2.6",
     "escape-string-regexp": "1.0.5",
     "mitt": "^1.1.3",

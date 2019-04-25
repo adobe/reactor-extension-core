@@ -1,17 +1,20 @@
-# @adobe/extension-core
-[![Build Status][status-image]][status-url] [![Sandbox][sandbox-image]][sandbox-url]
+# @adobe/reactor-extension-core
 
-Core extension for Launch. Provides default event, condition, and data element types available to all Launch users.
+This is the Core extension for [Adobe Experience Platform Launch](https://www.adobe.com/experience-platform/launch.html). It provides default event, condition, and data element types available to all Launch properties.
 
-## Development Setup
+## Contributing
+
+Contributions are welcomed! Read the [Contributing Guide](CONTRIBUTING.md) for more information about how our community works.
+
 1. Install [node.js](https://nodejs.org/).
 1. Clone this repository.
 1. After navigating into the project directory, install project dependencies by running `npm install`.
-1. See the `scripts` node within package.json for a list of scripts you may run using `npm run`.
 
-See the [@adobe/reactor-sandbox README](https://github.com/Adobe-Marketing-Cloud/reactor-sandbox) and the [extension-support-testrunner README](https://github.com/Adobe-Marketing-Cloud/reactor-testrunner) for more information on how to build and test this project.
+Several npm scripts have been provided for assisting in development. Each script can be run by navigating to the cloned repository directory in a terminal and executing `npm run scriptname` where `scriptname` is the name of the script you would like to run. The most useful scripts are as follows:
 
-[status-url]: https://dtm-builder.ut1.mcps.adobe.net/job/extension-core
-[status-image]: https://dtm-builder.ut1.mcps.adobe.net/buildStatus/icon?job=extension-core
-[sandbox-url]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-core/ws/sandbox/viewSandbox.html
-[sandbox-image]: https://dtm-builder.ut1.mcps.adobe.net/view/Reactor-Frontend/job/extension-core/ws/badges/sandbox.svg
+* `sandbox` Spins up a sandbox where extension views and library modules can be manually tested. See the [@adobe/reactor-sandbox README](https://github.com/Adobe-Marketing-Cloud/reactor-sandbox) for more information.
+* `test` Runs unit tests against source files. Tests can be found in the `src` directory within files ending in `.test.js`.
+* `test:watch` Same as `test`, but will re-run the tests as you change source files or test files.
+* `lint` Analyzes code for potential errors.
+
+Thank you for your interest in contributing!
