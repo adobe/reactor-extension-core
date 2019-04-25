@@ -69,7 +69,9 @@ describe('value comparison condition view', () => {
                 operator,
                 caseInsensitive: true
               },
-              rightOperand: 'bar'
+              // We're using 0 here because it also tests whether falsy values
+              // are handled appropriately.
+              rightOperand: 0
             }
           });
 
@@ -82,7 +84,7 @@ describe('value comparison condition view', () => {
 
           expect(leftOperandTextfield.props().value).toBe('%foo%');
           expect(operatorSelect.props().value).toBe(operator);
-          expect(rightOperandTextfield.props().value).toBe('bar');
+          expect(rightOperandTextfield.props().value).toBe('0');
           expect(caseInsensitiveCheckbox.props().checked).toBe(true);
         });
 
