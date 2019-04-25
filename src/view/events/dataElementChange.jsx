@@ -30,6 +30,7 @@ const DataElementChange = () => (
       <WrappedField
         name="name"
         component={Textfield}
+        componentClassName="Field--long"
         supportDataElementName
       />
     </label>

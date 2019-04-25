@@ -18,26 +18,29 @@ import RegexToggle from '../components/regexToggle';
 
 const Cookie = () => (
   <div>
-    <label className="u-gapRight">
+    <label className="u-gapRight u-gapBottom u-noWrap u-floatLeft">
       <span className="u-verticalAlignMiddle u-gapRight">Cookie named</span>
       <WrappedField
         name="name"
         component={Textfield}
       />
     </label>
-    <label className="u-gapRight">
-      <span className="u-gapRight">has the value</span>
-      <WrappedField
-        name="value"
-        component={Textfield}
-      />
-    </label>
+    <div className="u-inlineBlock u-gapRight u-gapBottom u-noWrap u-floatLeft">
+      <label className="u-gapRight">
+        <span className="u-gapRight">has the value</span>
+        <WrappedField
+          name="value"
+          component={Textfield}
+          componentClassName="Field--long"
+        />
+      </label>
 
-    <WrappedField
-      name="valueIsRegex"
-      component={RegexToggle}
-      valueFieldName="value"
-    />
+      <WrappedField
+        name="valueIsRegex"
+        component={RegexToggle}
+        valueFieldName="value"
+      />
+    </div>
   </div>
 );
 

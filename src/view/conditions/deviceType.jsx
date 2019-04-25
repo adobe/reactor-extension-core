@@ -28,9 +28,11 @@ const deviceTypeOptions = [
 
 const DeviceType = () => (
   <div>
-    <Toast variant="warning" className="u-gapBottom">
-      This condition type is no longer supported. Please avoid its use.
-    </Toast>
+    <div>
+      <Toast variant="warning" className="u-gapBottom">
+        This condition type is no longer supported. Please avoid its use.
+      </Toast>
+    </div>
     <WrappedField name="deviceTypes" component={CheckboxList} options={deviceTypeOptions} />
   </div>
 );

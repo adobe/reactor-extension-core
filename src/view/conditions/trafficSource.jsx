@@ -22,6 +22,7 @@ const TrafficSource = () => (
       <WrappedField
         name="source"
         component={Textfield}
+        componentClassName="Field--long"
       />
     </label>
     <WrappedField
