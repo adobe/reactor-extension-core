@@ -4,6 +4,7 @@
   "version": "1.4.2",
   "displayName": "Core",
   "description": "Provides default event, condition, and data element types available to all Launch properties.",
+  "exchangeUrl": "https://www.adobeexchange.com/experiencecloud.details.100223.adobe-launch-core-extension.html",
   "iconPath": "resources/icons/core.svg",
   "author": {
     "name": "Adobe",
