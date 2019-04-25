@@ -40,7 +40,7 @@ describe('custom event event delegate', function() {
     document.body.removeChild(outerElement);
   });
 
-  it('triggers rule when event occurs', function() {
+  it('triggers rule when event is dispatched from element', function() {
     var CUSTOM_EVENT_TYPE = 'foo';
 
     var trigger = jasmine.createSpy();
@@ -58,6 +58,48 @@ describe('custom event event delegate', function() {
     expect(call.args[0]).toEqual({
       element: outerElement,
       target: innerElement,
+      nativeEvent: jasmine.any(Object),
+      detail: { foo: 'bar' }
+    });
+  });
+
+  it('triggers rule when event is dispatched from window', function() {
+    var CUSTOM_EVENT_TYPE = 'foo';
+
+    var trigger = jasmine.createSpy();
+
+    delegate({
+      type: CUSTOM_EVENT_TYPE
+    }, trigger);
+
+    triggerCustomEvent(window, CUSTOM_EVENT_TYPE, { foo: 'bar' });
+
+    expect(trigger.calls.count()).toBe(1);
+    var call = trigger.calls.mostRecent();
+    expect(call.args[0]).toEqual({
+      element: window,
+      target: window,
+      nativeEvent: jasmine.any(Object),
+      detail: { foo: 'bar' }
+    });
+  });
+
+  it('triggers rule when event is dispatched from document', function() {
+    var CUSTOM_EVENT_TYPE = 'foo';
+
+    var trigger = jasmine.createSpy();
+
+    delegate({
+      type: CUSTOM_EVENT_TYPE
+    }, trigger);
+
+    triggerCustomEvent(document, CUSTOM_EVENT_TYPE, { foo: 'bar' });
+
+    expect(trigger.calls.count()).toBe(1);
+    var call = trigger.calls.mostRecent();
+    expect(call.args[0]).toEqual({
+      element: document,
+      target: document,
       nativeEvent: jasmine.any(Object),
       detail: { foo: 'bar' }
     });
