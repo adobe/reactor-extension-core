@@ -271,10 +271,10 @@ export const formConfig = {
   settingsToFormValues(values, settings) {
     return {
       ...values,
-      leftOperand: String(settings.leftOperand || ''),
+      leftOperand: settings.leftOperand || '',
       operator: (settings.comparison && settings.comparison.operator) || operators.EQUALS,
       caseInsensitive: Boolean(settings.comparison && settings.comparison.caseInsensitive),
-      rightOperand: String(settings.rightOperand || '')
+      rightOperand: settings.rightOperand !== undefined ? String(settings.rightOperand) : ''
     };
   },
   formValuesToSettings(settings, values) {
