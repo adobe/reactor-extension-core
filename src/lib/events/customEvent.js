@@ -40,7 +40,7 @@ module.exports = function(settings, trigger) {
 
   if (typesWatched.indexOf(type) === -1) {
     typesWatched.push(type);
-    document.addEventListener(type, bubbly.evaluateEvent, true);
+    window.addEventListener(type, bubbly.evaluateEvent, true);
   }
 
   bubbly.addListener(settings, function(event) {
