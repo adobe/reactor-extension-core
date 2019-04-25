@@ -16,6 +16,13 @@ var WeakMap = require('./weakMap');
 var matchesProperties = require('./matchesProperties');
 var matchesSelector = require('./matchesSelector');
 
+// Note to developers of other extensions:
+// This module largely exists to support advanced bubbling options
+// that were carried over to Launch from DTM. It is highly unlikely
+// that you need to support these options in your own extension.
+// As such, please only copy this code if you know why you're doing so
+// and feel you have a justifiable reason.
+
 /**
  * Handles logic related to bubbling options provided for many event types.
  */
