@@ -18,31 +18,35 @@ import WrappedField from '../components/wrappedField';
 
 const Variable = () => (
   <div>
-    <label className="u-gapRight">
+    <label className="u-gapRight u-gapBottom u-noWrap u-floatLeft">
       <span className="u-verticalAlignMiddle u-gapRight">JavaScript variable named</span>
       <WrappedField
         name="name"
         component={Textfield}
+        componentClassName="Field--long"
         placeholder="dataLayer.products.1.price"
       />
     </label>
-    <label>
-      <span className="u-verticalAlignMiddle u-gapRight">has the value</span>
+    <div className="u-inlineBlock u-gapRight u-gapBottom u-noWrap u-floatLeft">
+      <label>
+        <span className="u-verticalAlignMiddle u-gapRight">has the value</span>
+        <WrappedField
+          name="value"
+          component={Textfield}
+          componentClassName="Field--long"
+        />
+      </label>
+      <InfoTip className="u-gapRight" placement="bottom">
+        Specify a text (string) value here. The rule will only fire if the specified
+        variable contains this string. Note: If your variable contains a number, this will not
+        work as expected.
+      </InfoTip>
       <WrappedField
-        name="value"
-        component={Textfield}
+        name="valueIsRegex"
+        component={RegexToggle}
+        valueFieldName="value"
       />
-    </label>
-    <InfoTip className="u-gapRight" placement="bottom">
-      Specify a text (string) value here. The rule will only fire if the specified
-      variable contains this string. Note: If your variable contains a number, this will not
-      work as expected.
-    </InfoTip>
-    <WrappedField
-      name="valueIsRegex"
-      component={RegexToggle}
-      valueFieldName="value"
-    />
+    </div>
   </div>
 );
 

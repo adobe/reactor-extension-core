@@ -25,6 +25,7 @@ const renderItem = field => (
       <WrappedField
         name={`${field}.value`}
         component={Textfield}
+        componentClassName="Field--long"
       />
     </label>
 

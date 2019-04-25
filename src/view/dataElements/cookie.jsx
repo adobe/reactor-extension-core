@@ -20,6 +20,7 @@ const Cookie = () => (
     <WrappedField
       name="name"
       component={Textfield}
+      componentClassName="Field--long"
     />
   </label>
 );

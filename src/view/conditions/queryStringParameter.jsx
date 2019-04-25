@@ -17,25 +17,28 @@ import RegexToggle from '../components/regexToggle';
 
 const QueryStringParameter = () => (
   <div>
-    <span className="u-verticalAlignMiddle u-gapRight">Parameter named</span>
-    <label className="u-gapRight">
+    <label className="u-gapRight u-gapBottom u-noWrap u-floatLeft">
+      <span className="u-verticalAlignMiddle u-gapRight">Parameter named</span>
       <WrappedField
         name="name"
         component={Textfield}
       />
     </label>
-    <label className="u-gapRight">
-      <span className="u-verticalAlignMiddle u-gapRight">has the value</span>
+    <div className="u-inlineBlock u-gapRight u-gapBottom u-noWrap u-floatLeft">
+      <label className="u-gapRight">
+        <span className="u-verticalAlignMiddle u-gapRight">has the value</span>
+        <WrappedField
+          name="value"
+          component={Textfield}
+          componentClassName="Field--long"
+        />
+      </label>
       <WrappedField
-        name="value"
-        component={Textfield}
+        name="valueIsRegex"
+        component={RegexToggle}
+        valueFieldName="value"
       />
-    </label>
-    <WrappedField
-      name="valueIsRegex"
-      component={RegexToggle}
-      valueFieldName="value"
-    />
+    </div>
   </div>
 );
 
