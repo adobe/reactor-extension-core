@@ -78,7 +78,7 @@ const DomAttribute = ({ ...props }) => {
           <WrappedField
             name="elementSelector"
             component={Textfield}
-            componentClassName="Field--long"
+            componentClassName="u-fieldLong"
           />
           <Link
             className="u-verticalAlignMiddle u-gapLeft"

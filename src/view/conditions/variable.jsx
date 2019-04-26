@@ -23,7 +23,7 @@ const Variable = () => (
       <WrappedField
         name="name"
         component={Textfield}
-        componentClassName="Field--long"
+        componentClassName="u-fieldLong"
         placeholder="dataLayer.products.1.price"
       />
     </label>
@@ -33,7 +33,7 @@ const Variable = () => (
         <WrappedField
           name="value"
           component={Textfield}
-          componentClassName="Field--long"
+          componentClassName="u-fieldLong"
         />
       </label>
       <InfoTip className="u-gapRight" placement="bottom">

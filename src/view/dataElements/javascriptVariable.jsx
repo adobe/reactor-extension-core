@@ -20,7 +20,7 @@ const JavaScriptVariable = () => (
     <WrappedField
       name="path"
       component={Textfield}
-      componentClassName="Field--long"
+      componentClassName="u-fieldLong"
       placeholder="dataLayer.products.1.price"
     />
   </label>

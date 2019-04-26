@@ -31,7 +31,7 @@ const Cookie = () => (
         <WrappedField
           name="value"
           component={Textfield}
-          componentClassName="Field--long"
+          componentClassName="u-fieldLong"
         />
       </label>
 
