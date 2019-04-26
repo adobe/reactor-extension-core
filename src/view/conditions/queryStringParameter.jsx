@@ -30,7 +30,7 @@ const QueryStringParameter = () => (
         <WrappedField
           name="value"
           component={Textfield}
-          componentClassName="Field--long"
+          componentClassName="u-fieldLong"
         />
       </label>
       <WrappedField

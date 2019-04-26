@@ -22,7 +22,7 @@ export default () => (
       <WrappedField
         name="elementSelector"
         component={Textfield}
-        componentClassName="Field--long"
+        componentClassName="u-fieldLong"
       />
     </label>
     <Link

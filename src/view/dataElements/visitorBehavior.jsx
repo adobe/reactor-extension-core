@@ -51,7 +51,7 @@ const VisitorBehavior = () => (
     <WrappedField
       name="attribute"
       component={Select}
-      componentClassName="Field--long"
+      componentClassName="u-fieldLong"
       options={options}
     />
   </label>

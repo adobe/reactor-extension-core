@@ -20,7 +20,7 @@ const SessionStorage = () => (
     <WrappedField
       name="name"
       component={Textfield}
-      componentClassName="Field--long"
+      componentClassName="u-fieldLong"
     />
   </label>
 );
