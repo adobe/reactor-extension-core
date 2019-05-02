@@ -59,7 +59,7 @@ var guardNumberCompare = function(compare) {
   };
 };
 
-var guardCasing = function(compare) {
+var guardCaseSensitivity = function(compare) {
   return function(leftOperand, rightOperand, caseInsensitive) {
     return compare(
       updateCase(leftOperand, caseInsensitive),
@@ -69,25 +69,25 @@ var guardCasing = function(compare) {
 };
 
 var conditions = {
-  equals: guardCasing(function(leftOperand, rightOperand) {
+  equals: guardCaseSensitivity(function(leftOperand, rightOperand) {
     return leftOperand == rightOperand;
   }),
   doesNotEqual: function() {
     return !conditions.equals.apply(null, arguments);
   },
-  contains: guardStringCompare(guardCasing(function(leftOperand, rightOperand) {
+  contains: guardStringCompare(guardCaseSensitivity(function(leftOperand, rightOperand) {
     return leftOperand.indexOf(rightOperand) !== -1;
   })),
   doesNotContain: function() {
     return !conditions.contains.apply(null, arguments);
   },
-  startsWith: guardStringCompare(guardCasing(function(leftOperand, rightOperand) {
+  startsWith: guardStringCompare(guardCaseSensitivity(function(leftOperand, rightOperand) {
     return leftOperand.indexOf(rightOperand) === 0;
   })),
   doesNotStartWith: function() {
     return !conditions.startsWith.apply(null, arguments);
   },
-  endsWith: guardStringCompare(guardCasing(function(leftOperand, rightOperand) {
+  endsWith: guardStringCompare(guardCaseSensitivity(function(leftOperand, rightOperand) {
     return leftOperand.substring(
       leftOperand.length - rightOperand.length,
       leftOperand.length
