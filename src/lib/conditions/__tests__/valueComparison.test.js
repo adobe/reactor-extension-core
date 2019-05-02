@@ -718,7 +718,7 @@ describe('value comparison delegate', function() {
         comparison: {
           operator: 'matchesRegex'
         },
-        rightOperand: 'a.c'
+        rightOperand: 'a\\Sc'
       })).toBe(true);
     });
 
@@ -728,7 +728,7 @@ describe('value comparison delegate', function() {
         comparison: {
           operator: 'matchesRegex'
         },
-        rightOperand: 'aBc'
+        rightOperand: 'a\\Sd'
       })).toBe(false);
     });
 
@@ -739,7 +739,8 @@ describe('value comparison delegate', function() {
           operator: 'matchesRegex',
           caseInsensitive: true
         },
-        rightOperand: 'aBc'
+        // DTM-13120 Also tests that the regex pattern doesn't get lowercased
+        rightOperand: 'a\\SC'
       })).toBe(true);
     });
 
@@ -802,7 +803,7 @@ describe('value comparison delegate', function() {
         comparison: {
           operator: 'doesNotMatchRegex'
         },
-        rightOperand: 'a.c'
+        rightOperand: 'a\\Sc'
       })).toBe(false);
     });
 
@@ -812,7 +813,7 @@ describe('value comparison delegate', function() {
         comparison: {
           operator: 'doesNotMatchRegex'
         },
-        rightOperand: 'aBc'
+        rightOperand: 'a\\SD'
       })).toBe(true);
     });
 
@@ -823,7 +824,8 @@ describe('value comparison delegate', function() {
           operator: 'doesNotMatchRegex',
           caseInsensitive: true
         },
-        rightOperand: 'aBc'
+        // DTM-13120 Also tests that the regex pattern doesn't get lowercased
+        rightOperand: 'a\\SC'
       })).toBe(false);
     });
 

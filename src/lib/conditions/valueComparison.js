@@ -35,13 +35,13 @@ var castToNumberIfString = function(operand) {
 
 var guardStringCompare = function(compare) {
   return function(leftOperand, rightOperand, caseInsensitive) {
-    leftOperand = castToStringIfNumber(updateCase(leftOperand, caseInsensitive));
-    rightOperand = castToStringIfNumber(updateCase(rightOperand, caseInsensitive));
+    leftOperand = castToStringIfNumber(leftOperand);
+    rightOperand = castToStringIfNumber(rightOperand);
 
     return (
       isString(leftOperand) &&
       isString(rightOperand) &&
-      compare(leftOperand, rightOperand)
+      compare(leftOperand, rightOperand, caseInsensitive)
     );
   };
 };
@@ -59,31 +59,40 @@ var guardNumberCompare = function(compare) {
   };
 };
 
+var guardCasing = function(compare) {
+  return function(leftOperand, rightOperand, caseInsensitive) {
+    return compare(
+      updateCase(leftOperand, caseInsensitive),
+      updateCase(rightOperand, caseInsensitive)
+    );
+  };
+};
+
 var conditions = {
-  equals: function(leftOperand, rightOperand, caseInsensitive) {
-    return updateCase(leftOperand, caseInsensitive) == updateCase(rightOperand, caseInsensitive);
-  },
+  equals: guardCasing(function(leftOperand, rightOperand) {
+    return leftOperand == rightOperand;
+  }),
   doesNotEqual: function() {
     return !conditions.equals.apply(null, arguments);
   },
-  contains: guardStringCompare(function(leftOperand, rightOperand) {
+  contains: guardStringCompare(guardCasing(function(leftOperand, rightOperand) {
     return leftOperand.indexOf(rightOperand) !== -1;
-  }),
+  })),
   doesNotContain: function() {
     return !conditions.contains.apply(null, arguments);
   },
-  startsWith: guardStringCompare(function(leftOperand, rightOperand) {
+  startsWith: guardStringCompare(guardCasing(function(leftOperand, rightOperand) {
     return leftOperand.indexOf(rightOperand) === 0;
-  }),
+  })),
   doesNotStartWith: function() {
     return !conditions.startsWith.apply(null, arguments);
   },
-  endsWith: guardStringCompare(function(leftOperand, rightOperand) {
+  endsWith: guardStringCompare(guardCasing(function(leftOperand, rightOperand) {
     return leftOperand.substring(
       leftOperand.length - rightOperand.length,
       leftOperand.length
     ) === rightOperand;
-  }),
+  })),
   doesNotEndWith: function() {
     return !conditions.endsWith.apply(null, arguments);
   },
