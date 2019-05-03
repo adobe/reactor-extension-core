@@ -76,7 +76,7 @@
     "karma-webpack": "^3.0.5",
     "nib": "^1.1.2",
     "prettier": "^1.14.3",
-    "simulate": "git+https://github.com/Aaronius/simulate.js.git#d8538a34fb85b513ae76a9def5d2615c0b702bbc",
+    "simulate": "0.0.6",
     "style-loader": "^0.23.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
