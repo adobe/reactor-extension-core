@@ -38,6 +38,16 @@ window._satellite.track = function(identifier, detail) {
     triggers.forEach(function(trigger) {
       trigger(syntheticEvent);
     });
+
+    var logMessage = 'Rules using the direct call event type with identifier "' + identifier +
+      '" have been triggered' + (detail ? ' with additional detail:' : '.');
+    var logArgs = [logMessage];
+
+    if (detail) {
+      logArgs.push(detail);
+    }
+
+    turbine.logger.log.apply(turbine.logger, logArgs);
   } else {
     turbine.logger.log('"' + identifier + '" does not match any direct call identifiers.');
   }
