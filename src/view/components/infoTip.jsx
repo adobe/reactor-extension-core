@@ -9,7 +9,9 @@ import './infoTip.styl';
 export default ({ className, placement, children }) => (
   <div className={classNames(className, 'InfoTip')}>
     <OverlayTrigger placement={placement || 'right'} trigger="hover">
-      <InfoIcon className="InfoTip-icon" size="XS" />
+      <span>
+        <InfoIcon className="InfoTip-icon" size="XS" />
+      </span>
       <Tooltip className="InfoTip-tooltip">
         { children }
       </Tooltip>
