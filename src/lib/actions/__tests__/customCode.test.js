@@ -64,8 +64,18 @@ describe('custom code action delegate', function() {
   var customCode;
 
   beforeAll(function() {
+    mockTurbineVariable({
+      getExtensionSettings: function() {
+        return {};
+      }
+    });
+
     postscribeSpy = jasmine.createSpy('postscribe');
     documentWriteSpy = jasmine.createSpy('documentWrite');
+  });
+
+  afterAll(function() {
+    resetTurbineVariable();
   });
 
   beforeEach(function() {
@@ -216,6 +226,48 @@ describe('custom code action delegate', function() {
 
             expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside container');
             expect(documentWriteSpy).not.toHaveBeenCalled();
+          });
+        });
+
+        describe('and the cspNonce is defined inside extension configuration', function() {
+          var postscribeTag;
+
+          beforeAll(function() {
+            postscribeTag = {
+              tagName: 'script',
+              attrs: {}
+            };
+
+            mockTurbineVariable({
+              getExtensionSettings: function() {
+                return {
+                  cspNonce: 'nonce'
+                };
+              }
+            });
+
+            customCode = createCustomCodeDelegate({
+              postscribe: function(_, src, opts) {
+                opts.beforeWriteToken(postscribeTag);
+              },
+              document: getMockDocument({
+                isIE: isIE,
+                isAsync: true,
+                write: documentWriteSpy,
+                isDocumentBodyAvailable: true,
+                readyState: 'interactive'
+              })
+            });
+          });
+
+          it('writes the cspNonce as an attribute on all script tags', function() {
+            customCode({
+              source: 'some code with script tag',
+              language: 'javascript'
+            });
+
+            expect(documentWriteSpy).not.toHaveBeenCalled();
+            expect(postscribeTag.attrs.nonce).toBe('nonce');
           });
         });
       });

@@ -71,7 +71,7 @@ describe('direct call event delegate', function() {
     );
   });
 
-  it("logs a message when no rules found with matching identifier", function() {
+  it('logs a message when no rules found with matching identifier', function() {
     _satellite.track('baz');
 
     expect(turbine.logger.log).toHaveBeenCalledWith(

@@ -12,6 +12,20 @@
     "email": "reactor@adobe.com"
   },
   "viewBasePath": "dist/",
+  "configuration": {
+    "viewPath": "configuration/configuration.html",
+    "schema": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "type": "object",
+      "properties": {
+        "cspNonce": {
+          "type": "string",
+          "pattern": "^%([^%]+)%$"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
   "events": [
     {
       "name": "blur",

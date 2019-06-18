@@ -16,10 +16,17 @@ var document = require('@adobe/reactor-document');
 var decorateCode = require('./helpers/decorateCode');
 var loadCodeSequentially = require('./helpers/loadCodeSequentially');
 var postscribe = require('../../../node_modules/postscribe/dist/postscribe');
+var extensionSettings = turbine.getExtensionSettings();
 
 var postscribeWrite = (function() {
   var write = function(source) {
     postscribe(document.body, source, {
+      beforeWriteToken: function(tag) {
+        if (extensionSettings.cspNonce && tag.tagName === 'script') {
+          tag.attrs.nonce = extensionSettings.cspNonce;
+        }
+        return tag;
+      },
       error: function(error) {
         turbine.logger.error(error.msg);
       }
