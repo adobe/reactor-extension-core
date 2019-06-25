@@ -25,7 +25,6 @@
   "dependencies": {
     "@react/react-spectrum": "file:react-spectrum-2.14.0.tgz",
     "classnames": "^2.2.6",
-    "escape-string-regexp": "2.0.0",
     "mitt": "^1.1.3",
     "moment-timezone": "^0.5.25",
     "postscribe": "^2.0.8",

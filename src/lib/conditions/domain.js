@@ -13,7 +13,15 @@
 'use strict';
 
 var document = require('@adobe/reactor-document');
-var escapeForRegex = require('../../../node_modules/escape-string-regexp/index.js');
+var matchOperatorsRegex = /[|\\{}()[\]^$+*?.-]/g;
+
+var escapeForRegex = function(string) {
+  if (typeof string !== 'string') {
+    throw new TypeError('Expected a string');
+  }
+
+  return string.replace(matchOperatorsRegex, '\\$&');
+};
 
 /**
  * Domain condition. Determines if the actual domain matches at least one acceptable domain.
@@ -29,7 +37,8 @@ module.exports = function(settings) {
     // condition would pass without (^|\.), which is incorrect. We can't only use ^ though because
     // if document.location.hostname is niner.example.com and the acceptableDomain is example.com,
     // the condition should pass. See the tests for examples of why this pattern is necessary.
-    return domain.match(new RegExp('(^|\\.)' + escapeForRegex(acceptableDomain) + '$', 'i'));
+    return domain.match(
+      new RegExp('(^|\\.)' + escapeForRegex(acceptableDomain) + '$', 'i')
+    );
   });
 };
-
