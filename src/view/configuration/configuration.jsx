@@ -54,7 +54,7 @@ export const formConfig = {
       ...errors
     };
 
-    if (!isDataElementToken(values.cspNonce)) {
+    if (values.cspNonce && !isDataElementToken(values.cspNonce)) {
       errors.cspNonce =
         'Please specify a data element that will return the CSP Nonce value.';
     }

@@ -58,6 +58,13 @@ describe('extension configuration view', () => {
     });
   });
 
+  it('passes validation when cspNonce is not provided', () => {
+    extensionBridge.init({
+      settings: {}
+    });
+    expect(extensionBridge.validate()).toBe(true);
+  });
+
   it('sets errors if cspNonce is not a data element', () => {
     extensionBridge.init({
       settings: {
