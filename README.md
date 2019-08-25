@@ -1,4 +1,4 @@
-# @adobe/reactor-extension-core
+# Core Extension for Adobe Experience Platform Launch
 
 This is the Core extension for [Adobe Experience Platform Launch](https://www.adobe.com/experience-platform/launch.html). It provides default event, condition, and data element types available to all Launch properties.
 
