@@ -18,3 +18,9 @@ Several npm scripts have been provided for assisting in development. Each script
 * `lint` Analyzes code for potential errors.
 
 Thank you for your interest in contributing!
+
+## Internal Dependencies
+
+This project depends on the @react/react-spectrum package which depends on the @react/collection-view package. Neither package is published to the public npm repository. In order to support their installation and use, they have been included in this project as tar files. While changing `package.json` to point to the tar file for @react/react-spectrum is simple and natively supported by npm, this is not the case with @react/collection-view, since it is a dependency of @react/react-spectrum.
+
+To point `package-lock.json` to use the tar file for @react/react-collection-view, we leverage the [npm-force-resolutions](https://www.npmjs.com/package/npm-force-resolutions) package.
