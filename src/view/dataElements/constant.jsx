@@ -46,7 +46,7 @@ export const formConfig = {
     };
 
     if (!values.value) {
-      errors.name = 'Please specify a value.';
+      errors.value = 'Please specify a value.';
     }
 
     return errors;
