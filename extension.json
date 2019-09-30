@@ -200,9 +200,7 @@
         {
           "type": "function",
           "propertyPath": "source",
-          "parameters": [
-            "trigger"
-          ]
+          "parameters": ["trigger"]
         }
       ]
     },
@@ -429,10 +427,7 @@
           },
           "frequency": {
             "type": "string",
-            "enum": [
-              "firstEntry",
-              "everyEntry"
-            ]
+            "enum": ["firstEntry", "everyEntry"]
           }
         },
         "additionalProperties": false,
@@ -1123,10 +1118,7 @@
         {
           "type": "function",
           "propertyPath": "source",
-          "parameters": [
-            "event",
-            "target"
-          ]
+          "parameters": ["event", "target"]
         }
       ]
     },
@@ -1293,24 +1285,17 @@
               }
             },
             "additionalProperties": false,
-            "required": [
-              "count",
-              "unit"
-            ]
+            "required": ["count", "unit"]
           },
           {
             "properties": {
               "unit": {
                 "type": "string",
-                "enum": [
-                  "visitor"
-                ]
+                "enum": ["visitor"]
               }
             },
             "additionalProperties": false,
-            "required": [
-              "unit"
-            ]
+            "required": ["unit"]
           }
         ]
       }
@@ -1347,14 +1332,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "enum": [
-                "Windows",
-                "MacOS",
-                "Linux",
-                "Unix",
-                "iOS",
-                "Android"
-              ]
+              "enum": ["Windows", "MacOS", "Linux", "Unix", "iOS", "Android"]
             }
           }
         },
@@ -1374,21 +1352,14 @@
         "properties": {
           "operator": {
             "type": "string",
-            "enum": [
-              ">",
-              "=",
-              "<"
-            ]
+            "enum": [">", "=", "<"]
           },
           "count": {
             "type": "number"
           },
           "duration": {
             "type": "string",
-            "enum": [
-              "lifetime",
-              "session"
-            ]
+            "enum": ["lifetime", "session"]
           }
         },
         "additionalProperties": false,
@@ -1473,10 +1444,7 @@
         "properties": {
           "protocol": {
             "type": "string",
-            "enum": [
-              "http:",
-              "https:"
-            ]
+            "enum": ["http:", "https:"]
           }
         },
         "additionalProperties": false,
@@ -1495,22 +1463,14 @@
         "properties": {
           "widthOperator": {
             "type": "string",
-            "enum": [
-              ">",
-              "=",
-              "<"
-            ]
+            "enum": [">", "=", "<"]
           },
           "width": {
             "type": "number"
           },
           "heightOperator": {
             "type": "string",
-            "enum": [
-              ">",
-              "=",
-              "<"
-            ]
+            "enum": [">", "=", "<"]
           },
           "height": {
             "type": "number"
@@ -1555,11 +1515,7 @@
         "properties": {
           "operator": {
             "type": "string",
-            "enum": [
-              ">",
-              "=",
-              "<"
-            ]
+            "enum": [">", "=", "<"]
           },
           "count": {
             "type": "number"
@@ -1614,11 +1570,7 @@
         "properties": {
           "operator": {
             "type": "string",
-            "enum": [
-              ">",
-              "=",
-              "<"
-            ]
+            "enum": [">", "=", "<"]
           },
           "minutes": {
             "type": "number"
@@ -1697,18 +1649,13 @@
                 "properties": {
                   "operator": {
                     "type": "string",
-                    "enum": [
-                      "equals",
-                      "doesNotEqual"
-                    ]
+                    "enum": ["equals", "doesNotEqual"]
                   },
                   "caseInsensitive": {
                     "type": "boolean"
                   }
                 },
-                "required": [
-                  "operator"
-                ],
+                "required": ["operator"],
                 "additionalProperties": false
               },
               "rightOperand": {
@@ -1722,11 +1669,7 @@
                 ]
               }
             },
-            "required": [
-              "leftOperand",
-              "comparison",
-              "rightOperand"
-            ],
+            "required": ["leftOperand", "comparison", "rightOperand"],
             "additionalProperties": false
           },
           {
@@ -1755,9 +1698,7 @@
                     "type": "boolean"
                   }
                 },
-                "required": [
-                  "operator"
-                ],
+                "required": ["operator"],
                 "additionalProperties": false
               },
               "rightOperand": {
@@ -1765,11 +1706,7 @@
                 "minLength": 1
               }
             },
-            "required": [
-              "leftOperand",
-              "comparison",
-              "rightOperand"
-            ],
+            "required": ["leftOperand", "comparison", "rightOperand"],
             "additionalProperties": false
           },
           {
@@ -1791,9 +1728,7 @@
                     ]
                   }
                 },
-                "required": [
-                  "operator"
-                ],
+                "required": ["operator"],
                 "additionalProperties": false
               },
               "rightOperand": {
@@ -1808,11 +1743,7 @@
                 ]
               }
             },
-            "required": [
-              "leftOperand",
-              "comparison",
-              "rightOperand"
-            ],
+            "required": ["leftOperand", "comparison", "rightOperand"],
             "additionalProperties": false
           },
           {
@@ -1826,24 +1757,14 @@
                 "properties": {
                   "operator": {
                     "type": "string",
-                    "enum": [
-                      "isTrue",
-                      "isTruthy",
-                      "isFalse",
-                      "isFalsy"
-                    ]
+                    "enum": ["isTrue", "isTruthy", "isFalse", "isFalsy"]
                   }
                 },
-                "required": [
-                  "operator"
-                ],
+                "required": ["operator"],
                 "additionalProperties": false
               }
             },
-            "required": [
-              "leftOperand",
-              "comparison"
-            ],
+            "required": ["leftOperand", "comparison"],
             "additionalProperties": false
           }
         ]
@@ -1887,22 +1808,14 @@
         "properties": {
           "widthOperator": {
             "type": "string",
-            "enum": [
-              ">",
-              "=",
-              "<"
-            ]
+            "enum": [">", "=", "<"]
           },
           "width": {
             "type": "number"
           },
           "heightOperator": {
             "type": "string",
-            "enum": [
-              ">",
-              "=",
-              "<"
-            ]
+            "enum": [">", "=", "<"]
           },
           "height": {
             "type": "number"
@@ -1914,6 +1827,24 @@
     }
   ],
   "dataElements": [
+    {
+      "name": "constant",
+      "displayName": "Constant",
+      "libPath": "src/lib/dataElements/constant.js",
+      "viewPath": "dataElements/constant.html",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false,
+        "required": ["value"]
+      }
+    },
     {
       "name": "cookie",
       "displayName": "Cookie",
@@ -2136,9 +2067,7 @@
           {
             "properties": {
               "language": {
-                "enum": [
-                  "javascript"
-                ]
+                "enum": ["javascript"]
               },
               "global": {
                 "type": "boolean"
@@ -2149,17 +2078,12 @@
               }
             },
             "additionalProperties": false,
-            "required": [
-              "language",
-              "source"
-            ]
+            "required": ["language", "source"]
           },
           {
             "properties": {
               "language": {
-                "enum": [
-                  "html"
-                ]
+                "enum": ["html"]
               },
               "source": {
                 "type": "string",
@@ -2167,10 +2091,7 @@
               }
             },
             "additionalProperties": false,
-            "required": [
-              "language",
-              "source"
-            ]
+            "required": ["language", "source"]
           }
         ]
       },
