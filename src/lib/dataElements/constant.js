@@ -15,8 +15,7 @@
 /**
  * The cookie data element.
  * @param {Object} settings The data element settings object.
- * @param {string} settings.value The value that the user had specified when creating this 
- * Data Element.
+ * @param {string} settings.value The constant value that should be returned.
  * @returns {string}
  */
 

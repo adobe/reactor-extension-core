@@ -16,7 +16,7 @@ import WrappedField from '../components/wrappedField';
 
 const ConstantValue = () => (
   <label>
-    <span className="u-verticalAlignMiddle u-gapRight">Value for this Data Element</span>
+    <span className="u-verticalAlignMiddle u-gapRight">Constant Value</span>
     <WrappedField
       name="value"
       component={Textfield}
