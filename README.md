@@ -6,9 +6,10 @@ This is the Core extension for [Adobe Experience Platform Launch](https://www.ad
 
 Contributions are welcomed! Read the [Contributing Guide](CONTRIBUTING.md) for more information about how our community works.
 
-1. Install [node.js](https://nodejs.org/).
+1. [Install node.js](https://nodejs.org/).
+1. [Install Yarn](https://yarnpkg.com/en/docs/install). 
 1. Clone this repository.
-1. After navigating into the project directory, install project dependencies by running `npm install`.
+1. After navigating into the project directory, install project dependencies by running `yarn install`.
 
 Several npm scripts have been provided for assisting in development. Each script can be run by navigating to the cloned repository directory in a terminal and executing `npm run scriptname` where `scriptname` is the name of the script you would like to run. The most useful scripts are as follows:
 
@@ -31,6 +32,4 @@ This project depends on the @react/react-spectrum package which depends on the @
  */
 ```
 
-While changing `package.json` to point to the tar file for @react/react-spectrum is simple and natively supported by npm, this is not the case with @react/collection-view, since it is a dependency of @react/react-spectrum.
-
-To point `package-lock.json` to use the tar file for @react/react-collection-view, we leverage the [npm-force-resolutions](https://www.npmjs.com/package/npm-force-resolutions) package.
+While changing `package.json` to point to the tar file for @react/react-spectrum is simple and natively supported by npm, this is not the case with @react/collection-view, since it is a dependency of @react/react-spectrum. To solve this problem, this project uses Yarn for installing dependencies since it natively supports [selective dependency resolutions](https://yarnpkg.com/lang/en/docs/selective-version-resolutions/).
