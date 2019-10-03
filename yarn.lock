@@ -830,6 +830,7 @@
 "@react/collection-view@^4.1.5", "@react/collection-view@file:react-collection-view-4.1.5.tgz":
   version "4.1.5"
   resolved "file:react-collection-view-4.1.5.tgz#17034aab37f9cdb91a479b5096d900914ae08ca2"
+  integrity sha1-jQxvNLbXEh7XTdh0OsXyat9hb6w=
   dependencies:
     raf "^3.4.0"
 
