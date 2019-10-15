@@ -24,4 +24,17 @@ describe('custom code data element delegate', function() {
 
     expect(dataElementDelegate(settings)).toBe('foo');
   });
+
+  it('receives the event parameter if provided', function() {
+    var settings = {
+      source: function(event) {
+        return event.foo;
+      }
+    };
+    var event = {
+      'foo': 'bar'
+    };
+
+    expect(dataElementDelegate(settings, event)).toBe('bar');
+  });
 });
