@@ -16,8 +16,9 @@
  * The custom data element.
  * @param {Object} settings The data element settings object.
  * @param {string} settings.source The function that should be called which will return a value.
+ * @param {string} event The event (if any) that triggered the evaluation of the data element.
  * @returns {string}
  */
-module.exports = function(settings) {
-  return settings.source();
+module.exports = function(settings, event) {
+  return settings.source(event);
 };

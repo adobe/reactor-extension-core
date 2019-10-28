@@ -1883,7 +1883,8 @@
       "transforms": [
         {
           "type": "function",
-          "propertyPath": "source"
+          "propertyPath": "source",
+          "parameters": ["event"]
         }
       ]
     },
