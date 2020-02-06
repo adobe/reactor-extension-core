@@ -23,7 +23,7 @@ export default () => (
       <WrappedField
         name="cspNonce"
         component={Textfield}
-        componentClassName="u-fieldLong"
+        componentClassName="u-fieldExtraLong"
         supportDataElement
       />
 

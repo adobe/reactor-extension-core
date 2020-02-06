@@ -29,7 +29,7 @@ const CustomEvent = () => (
       <WrappedField
         name="type"
         component={Textfield}
-        componentClassName="u-fieldLong"
+        componentClassName="u-fieldExtraLong"
       />
       <InfoTip placement="bottom">
         This is the name of the event that will be triggered.

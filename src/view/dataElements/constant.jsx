@@ -20,7 +20,7 @@ const ConstantValue = () => (
     <WrappedField
       name="value"
       component={Textfield}
-      componentClassName="u-fieldLong"
+      componentClassName="u-fieldExtraLong"
     />
   </label>
 );

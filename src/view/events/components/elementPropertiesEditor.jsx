@@ -27,6 +27,7 @@ const ElementPropertiesRenderer = ({ fields }) => (
             name={`${field}.name`}
             placeholder="Property"
             component={Textfield}
+            componentClassName="u-fieldLong"
           />
           <span className="u-verticalAlignMiddle u-gapRight u-gapLeft">&#61;</span>
           <WrappedField
@@ -34,6 +35,7 @@ const ElementPropertiesRenderer = ({ fields }) => (
             className="u-gapRight"
             placeholder="Value"
             component={Textfield}
+            componentClassName="u-fieldLong"
           />
           <WrappedField
             name={`${field}.valueIsRegex`}

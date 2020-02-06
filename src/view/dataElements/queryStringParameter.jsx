@@ -22,6 +22,7 @@ const QueryStringParameter = () => (
       <WrappedField
         name="name"
         component={Textfield}
+        componentClassName="u-fieldExtraLong"
       />
     </label>
     <WrappedField
