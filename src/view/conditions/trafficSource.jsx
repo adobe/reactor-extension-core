@@ -22,7 +22,7 @@ const TrafficSource = () => (
       <WrappedField
         name="source"
         component={Textfield}
-        componentClassName="u-fieldLong"
+        componentClassName="u-fieldExtraLong"
       />
     </label>
     <WrappedField

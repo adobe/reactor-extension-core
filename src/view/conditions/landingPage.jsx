@@ -22,7 +22,7 @@ export default () => (
       <WrappedField
         name="page"
         component={Textfield}
-        componentClassName="u-fieldLong"
+        componentClassName="u-fieldExtraLong"
       />
     </label>
     <WrappedField

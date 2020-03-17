@@ -22,6 +22,7 @@ const QueryStringParameter = () => (
       <WrappedField
         name="name"
         component={Textfield}
+        componentClassName="u-fieldLong"
       />
     </label>
     <div className="u-inlineBlock u-gapRight u-gapBottom u-noWrap u-floatLeft">
@@ -30,7 +31,7 @@ const QueryStringParameter = () => (
         <WrappedField
           name="value"
           component={Textfield}
-          componentClassName="u-fieldLong"
+          componentClassName="u-fieldExtraLong"
         />
       </label>
       <WrappedField
