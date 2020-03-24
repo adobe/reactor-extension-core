@@ -18,24 +18,27 @@ import RegexToggle from '../components/regexToggle';
 
 const Cookie = () => (
   <div>
-    <label className="u-gapRight u-gapBottom u-noWrap u-floatLeft">
-      <span className="u-verticalAlignMiddle u-gapRight">Cookie named</span>
+    <label className="u-gapRight u-gapBottom u-noWrap u-flex">
+      <span className="u-flexCenter u-gapRight">Cookie named</span>
       <WrappedField
+        className="u-flexOne"
         name="name"
         component={Textfield}
-        componentClassName="u-fieldLong"
+        componentClassName="u-fullWidth u-minFieldWidth"
       />
+      <div className="u-toolTipMinimumSize"> </div>
     </label>
-    <div className="u-inlineBlock u-gapRight u-gapBottom u-noWrap u-floatLeft">
-      <label className="u-gapRight">
-        <span className="u-gapRight">has the value</span>
+
+    <div className="u-inlineBlock u-gapRight u-gapBottom u-noWrap u-flex">
+      <span className="u-flexCenter u-gapRight">has the value</span>
+      <label className="u-flexOne u-gapRight">
         <WrappedField
+          className="u-fullWidth"
           name="value"
           component={Textfield}
-          componentClassName="u-fieldExtraLong"
+          componentClassName="u-fullWidth u-minFieldWidth"
         />
       </label>
-
       <WrappedField
         name="valueIsRegex"
         component={RegexToggle}

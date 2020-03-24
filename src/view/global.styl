@@ -23,6 +23,16 @@ code {
   font-family: monospace;
 }
 
+.u-toolTipMinimumSize {
+  min-width:  120*$px !important;
+}
+
+// This provides enough padding to the right of the 'learn more' link on events
+// to allow the error toolTip to dispaly on the right side of the text field
+.u-gapLinkRight {
+  margin-right: $gap*7 !important;
+}
+
 .u-gapLeft {
   margin-left: $gap !important;
 }
@@ -103,9 +113,36 @@ code {
 }
 
 .u-fieldExtraLong {
- width: 740*$px !important;
+ width: 470*$px !important;
+}
+
+.u-fullWidth {
+  width: 100% !important;
+}
+
+.u-minFieldWidth {
+  min-width:  300*$px !important;
 }
 
 .FieldSubset {
   padding: 0 0 8 *$px 24 *$px;
+}
+
+.u-flex {
+  display: flex !important;
+  /* min-width and min-height allow Firefox and Edge to calculate scrollable widths and heights for nested flex containers */
+  /* without this, scrolling will default to the top most flex box or the document level */
+  /* https://stackoverflow.com/questions/28636832/firefox-overflow-y-not-working-with-nested-flexbox#answer-28639686 */
+  /* change these to auto when the browsers support it */
+  /* https://drafts.csswg.org/css-flexbox/#min-size-auto */
+  min-width: 0;
+  min-height: 0;
+}
+
+.u-flexOne { 
+  flex: 1; 
+} /* stylus doesn't like us using !important here. */
+
+.u-flexCenter { 
+  align-self: center !important; 
 }

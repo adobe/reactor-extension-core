@@ -15,14 +15,16 @@ import Textfield from '@react/react-spectrum/Textfield';
 import WrappedField from '../components/wrappedField';
 
 const JavaScriptVariable = () => (
-  <label>
-    <span className="u-verticalAlignMiddle u-gapRight">JavaScript variable name</span>
+  <label className="u-flex">
+    <span className="u-flexCenter u-gapRight">JavaScript variable name</span>
     <WrappedField
+      className="u-flexOne"
       name="path"
       component={Textfield}
-      componentClassName="u-fieldExtraLong"
+      componentClassName="u-fullWidth u-minFieldWidth"
       placeholder="dataLayer.products.1.price"
     />
+    <div className="u-toolTipMinimumSize"> </div>
   </label>
 );
 

@@ -16,13 +16,14 @@ import RegexToggle from '../components/regexToggle';
 import WrappedField from '../components/wrappedField';
 
 const TrafficSource = () => (
-  <div>
-    <label className="u-gapRight">
-      <span className="u-verticalAlignMiddle u-gapRight">Traffic source equals</span>
+  <div className="u-gapRight u-gapBottom u-flex">
+    <span className="u-flexCenter u-gapRight">Traffic source equals</span>
+    <label className="u-gapRight u-flexOne">
       <WrappedField
+        className="u-fullWidth"
         name="source"
         component={Textfield}
-        componentClassName="u-fieldExtraLong"
+        componentClassName="u-fullWidth u-minFieldWidth"
       />
     </label>
     <WrappedField

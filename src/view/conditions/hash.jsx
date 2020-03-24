@@ -19,16 +19,16 @@ import MultipleItemEditor from './components/multipleItemEditor';
 import RegexToggle from '../components/regexToggle';
 
 const renderItem = field => (
-  <div data-row className="u-inlineBlock">
-    <label className="u-gapRight">
-      <span className="u-verticalAlignMiddle u-gapRight">Hash equals</span>
+  <div data-row className="u-inlineBlock u-flex">
+    <span className="u-flexCenter u-gapRight">Hash equals</span>
+    <label className="u-gapRight u-flexOne">
       <WrappedField
+        className="u-fullWidth"
         name={`${field}.value`}
         component={Textfield}
-        componentClassName="u-fieldExtraLong"
+        componentClassName="u-fullWidth u-minFieldWidth"
       />
     </label>
-
     <WrappedField
       name={`${field}.valueIsRegex`}
       component={RegexToggle}

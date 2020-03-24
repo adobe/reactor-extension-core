@@ -15,13 +15,15 @@ import Textfield from '@react/react-spectrum/Textfield';
 import WrappedField from '../components/wrappedField';
 
 const SessionStorage = () => (
-  <label>
-    <span className="u-verticalAlignMiddle u-gapRight">Session Storage Item Name</span>
+  <label className="u-flex">
+    <span className="u-flexCenter u-gapRight">Session Storage Item Name</span>
     <WrappedField
+      className="u-flexOne"
       name="name"
       component={Textfield}
-      componentClassName="u-fieldExtraLong"
+      componentClassName="u-fullWidth u-minFieldWidth"
     />
+    <div className="u-toolTipMinimumSize"> </div>
   </label>
 );
 

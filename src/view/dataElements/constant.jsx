@@ -15,13 +15,15 @@ import Textfield from '@react/react-spectrum/Textfield';
 import WrappedField from '../components/wrappedField';
 
 const ConstantValue = () => (
-  <label>
-    <span className="u-verticalAlignMiddle u-gapRight">Constant Value</span>
+  <label className="u-flex">
+    <span className="u-flexCenter u-gapRight">Constant Value</span>
     <WrappedField
+      className="u-flexOne"
       name="value"
       component={Textfield}
-      componentClassName="u-fieldExtraLong"
+      componentClassName="u-fullWidth u-minFieldWidth"
     />
+    <div className="u-toolTipMinimumSize"> </div>
   </label>
 );
 

@@ -17,13 +17,15 @@ import WrappedField from '../components/wrappedField';
 
 const QueryStringParameter = () => (
   <div>
-    <label className="u-gapRight">
-      <span className="u-verticalAlignMiddle u-gapRight">URL Query String Parameter Name</span>
+    <label className="u-gapRight u-flex">
+      <span className="u-flexCenter u-gapRight">URL Query String Parameter Name</span>
       <WrappedField
+        className="u-flexOne"
         name="name"
         component={Textfield}
-        componentClassName="u-fieldExtraLong"
+        componentClassName="u-fullWidth u-minFieldWidth"
       />
+      <div className="u-toolTipMinimumSize"> </div>
     </label>
     <WrappedField
       name="caseInsensitive"

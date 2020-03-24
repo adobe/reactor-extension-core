@@ -15,13 +15,15 @@ import Textfield from '@react/react-spectrum/Textfield';
 import WrappedField from '../components/wrappedField';
 
 const Cookie = () => (
-  <label>
-    <span className="u-verticalAlignMiddle u-gapRight">Cookie Name</span>
+  <label className="u-flex">
+    <span className="u-flexCenter u-gapRight">Cookie Name</span>
     <WrappedField
+      className="u-flexOne"
       name="name"
       component={Textfield}
-      componentClassName="u-fieldExtraLong"
+      componentClassName="u-fullWidth u-minFieldWidth"
     />
+    <div className="u-toolTipMinimumSize"> </div>
   </label>
 );
 

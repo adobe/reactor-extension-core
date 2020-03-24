@@ -16,19 +16,21 @@ import InfoTip from '../components/infoTip';
 import WrappedField from '../components/wrappedField';
 
 const DirectCall = () => (
-  <label>
-    <span className="u-verticalAlignMiddle u-gapRight">
+  <label className="u-flex">
+    <span className="u-flexCenter u-gapRight">
       Identifier
     </span>
     <WrappedField
+      className="u-flexOne"
       name="identifier"
       component={Textfield}
-      componentClassName="u-fieldExtraLong"
+      componentClassName="u-fullWidth u-minFieldWidth"
     />
     <InfoTip placement="bottom">
       Specify the string that will be passed to _satellite.track() in your direct call,
       without quotes.
     </InfoTip>
+    <div className="u-toolTipMinimumSize"> </div>
   </label>
 );
 

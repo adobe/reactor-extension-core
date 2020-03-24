@@ -71,17 +71,18 @@ const DomAttribute = ({ ...props }) => {
   return (
     <div>
       <div className="u-gapBottom">
-        <label>
-          <span className="u-verticalAlignMiddle u-gapRight">
+        <label className="u-flex">
+          <span className="u-flexCenter u-gapRight">
             From the DOM element matching the CSS Selector
           </span>
           <WrappedField
+            className="u-flexOne"
             name="elementSelector"
             component={Textfield}
-            componentClassName="u-fieldExtraLong"
+            componentClassName="u-fullWidth u-minFieldWidth"
           />
           <Link
-            className="u-verticalAlignMiddle u-gapLeft"
+            className="u-flexCenter u-gapLeft u-gapLinkRight"
             href="https://developer.mozilla.org/en-US/docs/Learn/CSS/Introduction_to_CSS/Selectors"
             rel="noopener noreferrer"
             target="_blank"

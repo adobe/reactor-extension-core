@@ -18,22 +18,26 @@ import WrappedField from '../components/wrappedField';
 
 const Variable = () => (
   <div>
-    <label className="u-gapRight u-gapBottom u-noWrap u-floatLeft">
-      <span className="u-verticalAlignMiddle u-gapRight">JavaScript variable named</span>
+    <label className="u-gapRight u-gapBottom u-noWrap u-flex">
+      <span className="u-flexCenter u-gapRight">JavaScript variable named</span>
       <WrappedField
+        className="u-flexOne"
         name="name"
         component={Textfield}
-        componentClassName="u-fieldExtraLong"
+        componentClassName="u-fullWidth u-minFieldWidth"
         placeholder="dataLayer.products.1.price"
       />
+      <div className="u-toolTipMinimumSize"> </div>
     </label>
-    <div className="u-inlineBlock u-gapRight u-gapBottom u-noWrap u-floatLeft">
-      <label>
-        <span className="u-verticalAlignMiddle u-gapRight">has the value</span>
+
+    <div className="u-inlineBlock u-gapRight u-gapBottom u-noWrap u-flex">
+      <span className="u-flexCenter u-gapRight">has the value</span>
+      <label className="u-flexOne u-gapRight">
         <WrappedField
+          className="u-fullWidth"
           name="value"
           component={Textfield}
-          componentClassName="u-fieldExtraLong"
+          componentClassName="u-fullWidth u-minFieldWidth"
         />
       </label>
       <InfoTip className="u-gapRight" placement="bottom">
