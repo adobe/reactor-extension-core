@@ -18,11 +18,11 @@ import RegexToggle from '../components/regexToggle';
 import MultipleItemEditor from './components/multipleItemEditor';
 
 const renderItem = field => (
-  <div data-row className="u-inlineBlock u-flex">
-    <span className="u-flexCenter u-gapRight">Path equals</span>
-    <label className="u-gapRight u-flexOne">
+  <div data-row className="u-inlineBlock u-alignItemsCenter u-flex">
+    <label className="u-gapRight u-flexOne u-alignItemsCenter u-flex">
+      <span className="u-gapRight">Path equals</span>
       <WrappedField
-        className="u-fullWidth"
+        className="u-flexOne"
         name={`${field}.value`}
         component={Textfield}
         componentClassName="u-fullWidth u-minFieldWidth"

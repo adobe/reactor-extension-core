@@ -12,12 +12,12 @@
 
 import React from 'react';
 import Textfield from '@react/react-spectrum/Textfield';
-import Link from '@react/react-spectrum/Link';
 import WrappedField from '../../components/wrappedField';
+import SelectorLearnMoreLink from '../../components/selectorLearnMoreLink';
 
 export default () => (
-  <div className="u-flex">
-    <span className="u-flexCenter u-gapRight">Elements matching the CSS selector</span>
+  <div className="u-alignItemsCenter u-flex">
+    <span className="u-gapRight">Elements matching the CSS selector</span>
     <label className="u-flexOne">
       <WrappedField
         className="u-fullWidth"
@@ -26,14 +26,7 @@ export default () => (
         componentClassName="u-fullWidth u-minFieldWidth"
       />
     </label>
-    <Link
-      className="u-flexCenter u-gapLeft u-gapLinkRight"
-      href="https://developer.mozilla.org/en-US/docs/Learn/CSS/Introduction_to_CSS/Selectors"
-      rel="noopener noreferrer"
-      target="_blank"
-    >
-      Learn more
-    </Link>
+    <SelectorLearnMoreLink />
   </div>
 );
 

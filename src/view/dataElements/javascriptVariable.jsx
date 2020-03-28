@@ -13,10 +13,11 @@
 import React from 'react';
 import Textfield from '@react/react-spectrum/Textfield';
 import WrappedField from '../components/wrappedField';
+import TooltipPlaceholder from '../components/tooltipPlaceholder';
 
 const JavaScriptVariable = () => (
-  <label className="u-flex">
-    <span className="u-flexCenter u-gapRight">JavaScript variable name</span>
+  <label className="u-alignItemsCenter u-flex">
+    <span className="u-gapRight">JavaScript variable name</span>
     <WrappedField
       className="u-flexOne"
       name="path"
@@ -24,7 +25,7 @@ const JavaScriptVariable = () => (
       componentClassName="u-fullWidth u-minFieldWidth"
       placeholder="dataLayer.products.1.price"
     />
-    <div className="u-toolTipMinimumSize"> </div>
+    <TooltipPlaceholder />
   </label>
 );
 
