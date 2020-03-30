@@ -14,6 +14,8 @@ import React from 'react';
 import Link from '@react/react-spectrum/Link';
 import './selectorLearnMoreLink.styl';
 
+// when an input field ends with a "learn more" link,
+// we insert padding for the form validation tooltip to display correctly
 export default () => (
   <Link
     className="SelectorLearnMoreLink u-gapLeft"

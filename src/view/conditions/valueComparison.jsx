@@ -196,7 +196,7 @@ const RightOperandFields = ({ operator, caseInsensitive, rightOperand }) => {
             name="rightOperand"
             className="u-gapRight"
             component={Textfield}
-            componentClassName="u-fieldExtraLong"
+            componentClassName="u-fieldLong"
             supportDataElement
           />
           <WrappedField
@@ -212,7 +212,7 @@ const RightOperandFields = ({ operator, caseInsensitive, rightOperand }) => {
           <WrappedField
             name="rightOperand"
             component={Textfield}
-            componentClassName="u-fieldExtraLong"
+            componentClassName="u-fieldLong"
             supportDataElement
           />
           <NoTypeConversionReminder operator={operator} value={rightOperand} />
@@ -232,7 +232,7 @@ const ValueComparison = ({ operator, ...rest }) => (
       <WrappedField
         name="leftOperand"
         component={Textfield}
-        componentClassName="u-fieldExtraLong"
+        componentClassName="u-fieldLong"
         supportDataElement
       />
     </div>

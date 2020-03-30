@@ -13,6 +13,8 @@
 import React from 'react';
 import './tooltipPlaceholder.styl';
 
+// creates a placeholder for the form validation tooltip in the event
+// that the input box extends to the end of the frame.
 export default () => (
   <div className="TooltipPlaceholder" />
 );
