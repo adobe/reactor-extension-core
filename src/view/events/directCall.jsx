@@ -14,21 +14,24 @@ import React from 'react';
 import Textfield from '@react/react-spectrum/Textfield';
 import InfoTip from '../components/infoTip';
 import WrappedField from '../components/wrappedField';
+import TooltipPlaceholder from '../components/tooltipPlaceholder';
 
 const DirectCall = () => (
-  <label>
-    <span className="u-verticalAlignMiddle u-gapRight">
+  <label className="u-alignItemsCenter u-flex">
+    <span className="u-gapRight">
       Identifier
     </span>
     <WrappedField
+      className="u-flexOne"
       name="identifier"
       component={Textfield}
-      componentClassName="u-fieldExtraLong"
+      componentClassName="u-fullWidth u-minFieldWidth"
     />
     <InfoTip placement="bottom">
       Specify the string that will be passed to _satellite.track() in your direct call,
       without quotes.
     </InfoTip>
+    <TooltipPlaceholder />
   </label>
 );
 

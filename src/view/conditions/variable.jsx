@@ -15,25 +15,30 @@ import Textfield from '@react/react-spectrum/Textfield';
 import InfoTip from '../components/infoTip';
 import RegexToggle from '../components/regexToggle';
 import WrappedField from '../components/wrappedField';
+import TooltipPlaceholder from '../components/tooltipPlaceholder';
 
 const Variable = () => (
   <div>
-    <label className="u-gapRight u-gapBottom u-noWrap u-floatLeft">
-      <span className="u-verticalAlignMiddle u-gapRight">JavaScript variable named</span>
+    <label className="u-gapRight u-gapBottom u-noWrap u-alignItemsCenter u-flex">
+      <span className="u-gapRight">JavaScript variable named</span>
       <WrappedField
+        className="u-flexOne"
         name="name"
         component={Textfield}
-        componentClassName="u-fieldExtraLong"
+        componentClassName="u-fullWidth u-minFieldWidth"
         placeholder="dataLayer.products.1.price"
       />
+      <TooltipPlaceholder />
     </label>
-    <div className="u-inlineBlock u-gapRight u-gapBottom u-noWrap u-floatLeft">
-      <label>
-        <span className="u-verticalAlignMiddle u-gapRight">has the value</span>
+
+    <div className="u-inlineBlock u-gapRight u-gapBottom u-noWrap u-alignItemsCenter u-flex">
+      <label className="u-gapRight u-flexOne u-alignItemsCenter u-flex">
+        <span className="u-gapRight">has the value</span>
         <WrappedField
+          className="u-flexOne"
           name="value"
           component={Textfield}
-          componentClassName="u-fieldExtraLong"
+          componentClassName="u-fullWidth u-minFieldWidth"
         />
       </label>
       <InfoTip className="u-gapRight" placement="bottom">

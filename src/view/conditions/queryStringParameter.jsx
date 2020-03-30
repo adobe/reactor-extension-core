@@ -13,25 +13,29 @@
 import React from 'react';
 import Textfield from '@react/react-spectrum/Textfield';
 import WrappedField from '../components/wrappedField';
+import TooltipPlaceholder from '../components/tooltipPlaceholder';
 import RegexToggle from '../components/regexToggle';
 
 const QueryStringParameter = () => (
   <div>
-    <label className="u-gapRight u-gapBottom u-noWrap u-floatLeft">
-      <span className="u-verticalAlignMiddle u-gapRight">Parameter named</span>
+    <label className="u-gapRight u-gapBottom u-alignItemsCenter u-flex">
+      <span className="u-gapRight">Parameter named</span>
       <WrappedField
+        className="u-flexOne"
         name="name"
         component={Textfield}
-        componentClassName="u-fieldLong"
+        componentClassName="u-fullWidth u-minFieldWidth"
       />
+      <TooltipPlaceholder />
     </label>
-    <div className="u-inlineBlock u-gapRight u-gapBottom u-noWrap u-floatLeft">
-      <label className="u-gapRight">
-        <span className="u-verticalAlignMiddle u-gapRight">has the value</span>
+    <div className="u-inlineBlock u-gapRight u-gapBottom u-noWrap u-alignItemsCenter u-flex">
+      <label className="u-gapRight u-flexOne u-alignItemsCenter u-flex">
+        <span className="u-gapRight">has the value</span>
         <WrappedField
+          className="u-flexOne"
           name="value"
           component={Textfield}
-          componentClassName="u-fieldExtraLong"
+          componentClassName="u-fullWidth u-minFieldWidth"
         />
       </label>
       <WrappedField

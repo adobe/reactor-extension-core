@@ -16,13 +16,14 @@ import WrappedField from '../components/wrappedField';
 import RegexToggle from '../components/regexToggle';
 
 export default () => (
-  <div>
-    <label className="u-gapRight">
-      <span className="u-verticalAlignMiddle u-gapRight">Landing page equals</span>
+  <div className="u-gapRight u-gapBottom u-alignItemsCenter u-flex">
+    <label className="u-gapRight u-flexOne u-alignItemsCenter u-flex">
+      <span className="u-gapRight">Landing page equals</span>
       <WrappedField
+        className="u-flexOne"
         name="page"
         component={Textfield}
-        componentClassName="u-fieldExtraLong"
+        componentClassName="u-fullWidth u-minFieldWidth"
       />
     </label>
     <WrappedField

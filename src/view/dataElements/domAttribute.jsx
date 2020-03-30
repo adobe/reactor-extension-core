@@ -13,10 +13,10 @@
 import React from 'react';
 import { formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
-import Link from '@react/react-spectrum/Link';
 import Textfield from '@react/react-spectrum/Textfield';
 import Select from '@react/react-spectrum/Select';
 import WrappedField from '../components/wrappedField';
+import SelectorLearnMoreLink from '../components/selectorLearnMoreLink';
 
 const elementPropertyPresets = [
   {
@@ -71,23 +71,17 @@ const DomAttribute = ({ ...props }) => {
   return (
     <div>
       <div className="u-gapBottom">
-        <label>
-          <span className="u-verticalAlignMiddle u-gapRight">
+        <label className="u-alignItemsCenter u-flex">
+          <span className="u-gapRight">
             From the DOM element matching the CSS Selector
           </span>
           <WrappedField
+            className="u-flexOne"
             name="elementSelector"
             component={Textfield}
-            componentClassName="u-fieldExtraLong"
+            componentClassName="u-fullWidth u-minFieldWidth"
           />
-          <Link
-            className="u-verticalAlignMiddle u-gapLeft"
-            href="https://developer.mozilla.org/en-US/docs/Learn/CSS/Introduction_to_CSS/Selectors"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Learn more
-          </Link>
+          <SelectorLearnMoreLink />
         </label>
       </div>
       <div>

@@ -22,20 +22,21 @@ import mergeFormConfigs from '../utils/mergeFormConfigs';
 
 const CustomEvent = () => (
   <div>
-    <label>
-      <span className="u-verticalAlignMiddle u-gapRight">
+    <label className="u-alignItemsCenter u-flex">
+      <span className="u-gapRight">
         Custom Event Type
       </span>
       <WrappedField
+        className="u-flexOne"
         name="type"
         component={Textfield}
-        componentClassName="u-fieldExtraLong"
+        componentClassName="u-fullWidth u-minFieldWidth"
       />
       <InfoTip placement="bottom">
         This is the name of the event that will be triggered.
       </InfoTip>
       <Link
-        className="u-verticalAlignMiddle u-gapLeft"
+        className="u-gapLeft u-gapRight"
         href="https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Creating_and_triggering_events"
         rel="noopener noreferrer"
         target="_blank"

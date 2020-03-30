@@ -1,5 +1,5 @@
 /***************************************************************************************
- * Copyright 2019 Adobe. All rights reserved.
+ * Copyright 2020 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License. You may obtain a copy
  * of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -13,29 +13,32 @@
 import React from 'react';
 import Textfield from '@react/react-spectrum/Textfield';
 import WrappedField from '../components/wrappedField';
-
+import TooltipPlaceholder from '../components/tooltipPlaceholder';
 import RegexToggle from '../components/regexToggle';
 
 const Cookie = () => (
   <div>
-    <label className="u-gapRight u-gapBottom u-noWrap u-floatLeft">
-      <span className="u-verticalAlignMiddle u-gapRight">Cookie named</span>
+    <label className="u-gapRight u-gapBottom u-noWrap u-alignItemsCenter u-flex">
+      <span className="u-gapRight">Cookie named</span>
       <WrappedField
+        className="u-flexOne"
         name="name"
         component={Textfield}
-        componentClassName="u-fieldLong"
+        componentClassName="u-fullWidth u-minFieldWidth"
       />
+      <TooltipPlaceholder />
     </label>
-    <div className="u-inlineBlock u-gapRight u-gapBottom u-noWrap u-floatLeft">
-      <label className="u-gapRight">
+
+    <div className="u-inlineBlock u-gapRight u-gapBottom u-noWrap u-alignItemsCenter u-flex">
+      <label className="u-gapRight u-flexOne u-alignItemsCenter u-flex">
         <span className="u-gapRight">has the value</span>
         <WrappedField
+          className="u-flexOne"
           name="value"
           component={Textfield}
-          componentClassName="u-fieldExtraLong"
+          componentClassName="u-fullWidth u-minFieldWidth"
         />
       </label>
-
       <WrappedField
         name="valueIsRegex"
         component={RegexToggle}

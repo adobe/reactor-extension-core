@@ -13,15 +13,18 @@
 import React from 'react';
 import Textfield from '@react/react-spectrum/Textfield';
 import WrappedField from '../components/wrappedField';
+import TooltipPlaceholder from '../components/tooltipPlaceholder';
 
 const LocalStorage = () => (
-  <label>
-    <span className="u-verticalAlignMiddle u-gapRight">Local Storage Item Name</span>
+  <label className="u-alignItemsCenter u-flex">
+    <span className="u-gapRight">Local Storage Item Name</span>
     <WrappedField
+      className="u-flexOne"
       name="name"
       component={Textfield}
-      componentClassName="u-fieldExtraLong"
+      componentClassName="u-fullWidth u-minFieldWidth"
     />
+    <TooltipPlaceholder />
   </label>
 );
 

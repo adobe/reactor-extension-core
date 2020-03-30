@@ -14,16 +14,19 @@ import React from 'react';
 import Checkbox from '@react/react-spectrum/Checkbox';
 import Textfield from '@react/react-spectrum/Textfield';
 import WrappedField from '../components/wrappedField';
+import TooltipPlaceholder from '../components/tooltipPlaceholder';
 
 const QueryStringParameter = () => (
   <div>
-    <label className="u-gapRight">
-      <span className="u-verticalAlignMiddle u-gapRight">URL Query String Parameter Name</span>
+    <label className="u-gapRight u-alignItemsCenter u-flex">
+      <span className="u-gapRight">URL Query String Parameter Name</span>
       <WrappedField
+        className="u-flexOne"
         name="name"
         component={Textfield}
-        componentClassName="u-fieldExtraLong"
+        componentClassName="u-fullWidth u-minFieldWidth"
       />
+      <TooltipPlaceholder />
     </label>
     <WrappedField
       name="caseInsensitive"
