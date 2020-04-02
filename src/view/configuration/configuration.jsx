@@ -15,15 +15,17 @@ import Textfield from '@react/react-spectrum/Textfield';
 import WrappedField from '../components/wrappedField';
 import InfoTip from '../components/infoTip';
 import { isDataElementToken } from '../utils/validators';
+import TooltipPlaceholder from '../components/tooltipPlaceholder';
 
 export default () => (
   <div>
-    <label className="u-gapRight">
-      <span className="u-verticalAlignMiddle u-gapRight">CSP Nonce</span>
+    <label className="u-gapRight u-alignItemsCenter u-flex">
+      <span className="u-gapRight u-noWrap">CSP Nonce</span>
       <WrappedField
+        className="u-flexOne u-alignItemsCenter u-flex"
         name="cspNonce"
         component={Textfield}
-        componentClassName="u-fieldLong"
+        componentClassName="u-fullWidth u-minFieldWidth"
         supportDataElement
       />
 
@@ -32,6 +34,7 @@ export default () => (
         a nonce that you generate to authenticate inline scripts, please provide
         the data element that references your nonce.
       </InfoTip>
+      <TooltipPlaceholder />
     </label>
   </div>
 );

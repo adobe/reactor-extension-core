@@ -18,22 +18,24 @@ import './multipleItemEditor.styl';
 
 export default ({ fields, renderItem }) => {
   const rows = fields.map((field, index) => (
-    <div data-type="row" key={field}>
-      { index !== 0 ? <div className="MultipleItemEditor-orLabel">or</div> : null }
-      { renderItem(field) }
-      {
-        fields.length > 1 ?
-          (
-            <Button
-              className="u-gapLeft"
-              icon={<Close />}
-              variant="action"
-              quiet
-              onClick={fields.remove.bind(this, index)}
-            />
-          ) : null
-      }
-    </div>
+    <React.Fragment>
+      { index !== 0 ? <div className="MultipleItemEditor-orLabel u-gapRight">OR</div> : null }
+      <div data-type="row" key={field} className="u-noWrap u-gapBottom u-alignItemsCenter u-flex">
+        { renderItem(field) }
+        {
+          fields.length > 1 ?
+            (
+              <Button
+                className="u-gapLeft"
+                icon={<Close />}
+                variant="action"
+                quiet
+                onClick={fields.remove.bind(this, index)}
+              />
+            ) : null
+        }
+      </div>
+    </React.Fragment>
   ));
 
   return (

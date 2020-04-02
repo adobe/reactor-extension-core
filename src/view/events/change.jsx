@@ -35,12 +35,13 @@ const Change = ({ showValueField }) => (
       {
         showValueField ?
           (
-            <div>
+            <div className="u-alignItemsCenter u-flex">
               <WrappedField
                 name="value"
-                className="u-gapRight"
+                className="u-gapRight u-flexOne u-alignItemsCenter u-flex"
                 placeholder="Value"
                 component={Textfield}
+                componentClassName="u-fullWidth u-minFieldWidth"
                 supportDataElement
               />
               <WrappedField
