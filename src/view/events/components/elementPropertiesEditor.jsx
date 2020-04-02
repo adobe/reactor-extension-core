@@ -22,20 +22,21 @@ const ElementPropertiesRenderer = ({ fields }) => (
   <div className="u-gapBottom">
     {
       fields.map((field, index) => (
-        <div key={field} data-row className="u-gapBottom">
+        <div key={field} data-row className="u-gapBottom u-alignItemsCenter u-flex">
           <WrappedField
             name={`${field}.name`}
+            className="u-flexOne u-alignItemsCenter u-flex"
             placeholder="Property"
             component={Textfield}
-            componentClassName="u-fieldLong"
+            componentClassName="u-fullWidth u-smallTextfield"
           />
-          <span className="u-verticalAlignMiddle u-gapRight u-gapLeft">&#61;</span>
+          <span className="u-gapRight u-gapLeft">&#61;</span>
           <WrappedField
             name={`${field}.value`}
-            className="u-gapRight"
+            className="u-gapRight u-flexOne u-alignItemsCenter u-flex"
             placeholder="Value"
             component={Textfield}
-            componentClassName="u-fieldLong"
+            componentClassName="u-fullWidth u-smallTextfield "
           />
           <WrappedField
             name={`${field}.valueIsRegex`}
@@ -43,7 +44,6 @@ const ElementPropertiesRenderer = ({ fields }) => (
             valueFieldName={`${field}.value`}
           />
           <Button
-            className="u-gapBottom"
             variant="action"
             quiet
             icon={<Close />}

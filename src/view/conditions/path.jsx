@@ -18,7 +18,7 @@ import RegexToggle from '../components/regexToggle';
 import MultipleItemEditor from './components/multipleItemEditor';
 
 const renderItem = field => (
-  <div data-row className="u-inlineBlock u-alignItemsCenter u-flex">
+  <div data-row className="u-inlineBlock u-flexOne u-alignItemsCenter u-flex">
     <label className="u-gapRight u-flexOne u-alignItemsCenter u-flex">
       <span className="u-gapRight">Path equals</span>
       <WrappedField

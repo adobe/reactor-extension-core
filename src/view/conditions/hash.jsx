@@ -19,7 +19,7 @@ import MultipleItemEditor from './components/multipleItemEditor';
 import RegexToggle from '../components/regexToggle';
 
 const renderItem = field => (
-  <div data-row className="u-inlineBlock u-alignItemsCenter u-flex">
+  <div data-row className="u-inlineBlock u-flexOne u-alignItemsCenter u-flex">
     <label className="u-gapRight u-flexOne u-alignItemsCenter u-flex">
       <span className="u-gapRight">Hash equals</span>
       <WrappedField

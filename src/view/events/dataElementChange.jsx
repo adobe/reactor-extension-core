@@ -14,6 +14,7 @@ import React from 'react';
 import Textfield from '@react/react-spectrum/Textfield';
 import { Toast } from '@react/react-spectrum/Toast';
 import WrappedField from '../components/wrappedField';
+import TooltipPlaceholder from '../components/tooltipPlaceholder';
 
 const DataElementChange = () => (
   <div>
@@ -25,14 +26,16 @@ const DataElementChange = () => (
       </Toast>
     </div>
 
-    <label>
-      <span className="u-verticalAlignMiddle u-gapRight">Data Element Name</span>
+    <label className="u-alignItemsCenter u-flex">
+      <span className="u-gapRight">Data Element Name</span>
       <WrappedField
+        className="u-flexOne u-alignItemsCenter u-flex"
         name="name"
         component={Textfield}
-        componentClassName="u-fieldLong"
+        componentClassName="u-fullWidth u-minFieldWidth"
         supportDataElementName
       />
+      <TooltipPlaceholder />
     </label>
   </div>
 );
