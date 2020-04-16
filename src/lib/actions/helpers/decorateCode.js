@@ -12,48 +12,63 @@
 
 'use strict';
 
+var Promise = require('@adobe/reactor-promise');
+
 var id = 0;
 
 var isSourceLoadedFromFile = function(action) {
   return action.settings.isExternal;
 };
 
-var decorateGlobalJavaScriptCode = function(action, source) {
+var decorateGlobalJavaScriptCode = function(_, source) {
   // The line break after the source is important in case their last line of code is a comment.
   return '<scr' + 'ipt>\n' + source + '\n</scr' + 'ipt>';
 };
 
-var decorateNonGlobalJavaScriptCode = function(action, source) {
+var decorateNonGlobalJavaScriptCode = function(
+  action,
+  source,
+  deferredPromise
+) {
   var runScriptFnName = '__runScript' + ++id;
 
   _satellite[runScriptFnName] = function(fn) {
-    fn.call(action.event.element, action.event, action.event.target);
+    Promise.resolve(
+      fn.call(action.event.element, action.event, action.event.target)
+    ).then(deferredPromise.resolve, deferredPromise.reject);
+
     delete _satellite[runScriptFnName];
   };
 
   // The line break after the source is important in case their last line of code is a comment.
-  return '<scr' + 'ipt>_satellite["' + runScriptFnName + '"](function(event, target) {\n' +
+  return (
+    '<scr' +
+    'ipt>_satellite["' +
+    runScriptFnName +
+    '"](function(event, target) {\n' +
     source +
-    '\n});</scr' + 'ipt>';
+    '\n})</scr' +
+    'ipt>'
+  );
 };
 
 var decorators = {
-  javascript: function(action, source) {
-    return action.settings.global ?
-      decorateGlobalJavaScriptCode(action, source) :
-      decorateNonGlobalJavaScriptCode(action, source);
+  javascript: function(action, source, deferredPromise) {
+    return action.settings.global
+      ? decorateGlobalJavaScriptCode(action, source, deferredPromise)
+      : decorateNonGlobalJavaScriptCode(action, source, deferredPromise);
   },
-  html: function(action, source) {
+  html: function(action, source, deferredPromise) {
     // We need to replace tokens only for sources loaded from external files. The sources from
     // inside the container are automatically taken care by Turbine.
     if (isSourceLoadedFromFile(action)) {
-      return turbine.replaceTokens(source, action.event);
+      return turbine.replaceTokens(source, action.event, deferredPromise);
     }
 
     return source;
   }
 };
 
-module.exports = function(action, source) {
-  return decorators[action.settings.language](action, source);
+module.exports = function(action, source, deferredPromise) {
+  return decorators[action.settings.language](action, source, deferredPromise);
 };

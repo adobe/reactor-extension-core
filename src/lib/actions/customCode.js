@@ -13,7 +13,7 @@
 'use strict';
 
 var document = require('@adobe/reactor-document');
-var decorateCode = require('./helpers/decorateCode');
+var handleSequence = require('./helpers/handleSequence');
 var loadCodeSequentially = require('./helpers/loadCodeSequentially');
 var postscribe = require('../../../node_modules/postscribe/dist/postscribe');
 var extensionSettings = turbine.getExtensionSettings();
@@ -111,7 +111,7 @@ module.exports = function(settings, event) {
   if (action.settings.isExternal) {
     return loadCodeSequentially(source).then(function(source) {
       if (source) {
-        postscribeWrite(decorateCode(action, source));
+        return handleSequence(action, source, postscribeWrite);
       }
     });
   } else {
@@ -143,12 +143,12 @@ module.exports = function(settings, event) {
       // https://www.w3.org/MarkUp/2004/xhtml-faq#docwrite
       // https://developer.mozilla.org/en-US/docs/Archive/Web/Writing_JavaScript_for_HTML
       if (document.write) {
-        document.write(decorateCode(action, source));
+        return handleSequence(action, source, document.write.bind(document));
       } else {
-        postscribeWrite(decorateCode(action, source));
+        return handleSequence(action, source, postscribeWrite);
       }
     } else {
-      postscribeWrite(decorateCode(action, source));
+      return handleSequence(action, source, postscribeWrite);
     }
   }
 };
