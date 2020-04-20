@@ -13,11 +13,9 @@
 'use strict';
 
 var Promise = require('@adobe/reactor-promise');
-var decorateCode = require('./decorateCode');
-var deferredPromise = require('./deferredPromise');
 
 var callbackId = 0;
-var deferredPromises = {};
+var htmlCodePromises = {};
 
 window._satellite = window._satellite || {};
 
@@ -26,11 +24,12 @@ window._satellite = window._satellite || {};
  * @param {number} callbackId The identifier passed to _satellite._onCustomCodeSuccess().
  */
 window._satellite._onCustomCodeSuccess = function(callbackId) {
-  var promiseHandlers = deferredPromises[callbackId];
+  var promiseHandlers = htmlCodePromises[callbackId];
   if (!promiseHandlers) {
     return;
   }
 
+  delete htmlCodePromises[callbackId];
   promiseHandlers.resolve();
 };
 
@@ -39,11 +38,12 @@ window._satellite._onCustomCodeSuccess = function(callbackId) {
  * @param {number} callbackId The identifier passed to _satellite._onCustomCodeSuccess().
  */
 window._satellite._onCustomCodeFailure = function(callbackId) {
-  var promiseHandlers = deferredPromises[callbackId];
+  var promiseHandlers = htmlCodePromises[callbackId];
   if (!promiseHandlers) {
     return;
   }
 
+  delete htmlCodePromises[callbackId];
   promiseHandlers.reject();
 };
 
@@ -55,21 +55,33 @@ var replaceCallbacksIds = function(source, callbackId) {
   return source.replace(/\${reactorCallbackId}/g, callbackId);
 };
 
-var shouldActionBeMarkedAsComplete = function(action) {
-  return action.settings.language === 'javascript' && action.settings.global;
+var isSourceLoadedFromFile = function(action) {
+  return action.settings.isExternal;
 };
 
-module.exports = function(action, source, writeFn) {
-  var p = deferredPromise();
-  source = decorateCode(action, source, p);
+module.exports = function(action, source) {
+  // We need to replace tokens only for sources loaded from external files. The sources from
+  // inside the container are automatically taken care by Turbine.
+  if (isSourceLoadedFromFile(action)) {
+    source = turbine.replaceTokens(source, action.event);
+  }
+
+  var promise = Promise.resolve();
 
   if (reactorCallbackIdShouldBeReplaced(source)) {
-    deferredPromises[callbackId] = p;
-    source = replaceCallbacksIds(source, callbackId);
+    promise = new Promise(function(resolve, reject) {
+      htmlCodePromises[callbackId] = {
+        resolve: resolve,
+        reject: reject
+      };
+    });
 
+    source = replaceCallbacksIds(source, callbackId);
     callbackId += 1;
   }
 
-  writeFn(source);
-  return shouldActionBeMarkedAsComplete(action) ? Promise.resolve() : p.promise;
+  return {
+    code: source,
+    promise: promise
+  };
 };

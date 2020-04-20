@@ -13,7 +13,7 @@
 'use strict';
 
 var document = require('@adobe/reactor-document');
-var handleSequence = require('./helpers/handleSequence');
+var decorateCode = require('./helpers/decorateCode');
 var loadCodeSequentially = require('./helpers/loadCodeSequentially');
 var postscribe = require('../../../node_modules/postscribe/dist/postscribe');
 var extensionSettings = turbine.getExtensionSettings();
@@ -108,10 +108,12 @@ module.exports = function(settings, event) {
     return;
   }
 
+  var decoratedResult = decorateCode(action, source);
+
   if (action.settings.isExternal) {
     return loadCodeSequentially(source).then(function(source) {
       if (source) {
-        return handleSequence(action, source, postscribeWrite);
+        postscribeWrite(decoratedResult.code);
       }
     });
   } else {
@@ -143,12 +145,14 @@ module.exports = function(settings, event) {
       // https://www.w3.org/MarkUp/2004/xhtml-faq#docwrite
       // https://developer.mozilla.org/en-US/docs/Archive/Web/Writing_JavaScript_for_HTML
       if (document.write) {
-        return handleSequence(action, source, document.write.bind(document));
+        document.write(decoratedResult.code);
       } else {
-        return handleSequence(action, source, postscribeWrite);
+        postscribeWrite(decoratedResult.code);
       }
     } else {
-      return handleSequence(action, source, postscribeWrite);
+      postscribeWrite(decoratedResult.code);
     }
   }
+
+  return decoratedResult.promise;
 };
