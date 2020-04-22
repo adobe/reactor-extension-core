@@ -24,7 +24,7 @@ module.exports = function(action, source) {
       // catch errors from custom code.
       new Promise(function(_resolve) {
         _resolve(
-          fn.call(action.event.element, action.event, action.event.target)
+          fn.call(action.event.element, action.event, action.event.target, Promise)
         );
       }).then(resolve, reject);
     };
@@ -35,9 +35,9 @@ module.exports = function(action, source) {
     '<scr' +
     'ipt>_satellite["' +
     runScriptFnName +
-    '"](function(event, target) {\n' +
+    '"](function(event, target, Promise) {\n' +
     source +
-    '\n})</scr' +
+    '\n});</scr' +
     'ipt>';
 
   return {

@@ -10,6 +10,8 @@ governing permissions and limitations under the License.
 */
 'use strict';
 
+var Promise = require('@adobe/reactor-promise');
+
 module.exports = function(_, source) {
   // The line break after the source is important in case their last line of code is a comment.
   return {

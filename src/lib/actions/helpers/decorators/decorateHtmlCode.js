@@ -66,7 +66,7 @@ module.exports = function(action, source) {
     source = turbine.replaceTokens(source, action.event);
   }
 
-  var promise = Promise.resolve();
+  var promise;
 
   if (reactorCallbackIdShouldBeReplaced(source)) {
     promise = new Promise(function(resolve, reject) {
@@ -78,6 +78,8 @@ module.exports = function(action, source) {
 
     source = replaceCallbacksIds(source, callbackId);
     callbackId += 1;
+  } else {
+    promise = Promise.resolve();
   }
 
   return {
