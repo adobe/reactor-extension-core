@@ -1,14 +1,13 @@
-/***************************************************************************************
- * Copyright 2019 Adobe. All rights reserved.
- * This file is licensed to you under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License. You may obtain a copy
- * of the License at http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under
- * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
- * OF ANY KIND, either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- ****************************************************************************************/
+/*
+Copyright 2020 Adobe. All rights reserved.
+This file is licensed to you under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License. You may obtain a copy
+of the License at http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software distributed under
+the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
+OF ANY KIND, either express or implied. See the License for the specific language
+governing permissions and limitations under the License.
+*/
 
 'use strict';
 
@@ -149,13 +148,13 @@ describe('decorate non global javascript code', function() {
       },
       settings.source
     ).promise.catch(function(r) {
-      expect(r).toBe('resolved from inside the promise');
+      expect(r).toBe('rejected from inside the promise');
       done();
     });
 
     _satellite['_runScript1'](function(event, target, Promise) {
       return new Promise(function(resolve, reject) {
-        reject('resolved from inside the promise');
+        reject('rejected from inside the promise');
       });
     });
   });

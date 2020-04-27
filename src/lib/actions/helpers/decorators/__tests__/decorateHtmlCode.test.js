@@ -1,18 +1,18 @@
-/***************************************************************************************
- * Copyright 2019 Adobe. All rights reserved.
- * This file is licensed to you under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License. You may obtain a copy
- * of the License at http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under
- * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
- * OF ANY KIND, either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- ****************************************************************************************/
+/*
+Copyright 2020 Adobe. All rights reserved.
+This file is licensed to you under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License. You may obtain a copy
+of the License at http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software distributed under
+the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
+OF ANY KIND, either express or implied. See the License for the specific language
+governing permissions and limitations under the License.
+*/
 
 'use strict';
 
 var decorateHtmlCodeInjector = require('inject-loader!../decorateHtmlCode');
+var flushPromiseChains = require('../../../../__tests__/helpers/flushPromiseChains');
 
 describe('decorate html code', function() {
   var mockTurbine;
@@ -155,16 +155,20 @@ describe('decorate html code', function() {
 
       var decorateHtmlCode = decorateHtmlCodeInjector();
 
-      decorateHtmlCode(
+      var onPromiseResolved = jasmine.createSpy('onPromiseResolved');
+      var decorateCodePromise = decorateHtmlCode(
         {
           settings: settings
         },
         settings.source
-      ).promise.then(function() {
-        done();
-      });
+      ).promise;
 
-      window._satellite._onCustomCodeSuccess(0);
+      decorateCodePromise.then(onPromiseResolved).then(done);
+
+      flushPromiseChains().then(function() {
+        expect(onPromiseResolved).not.toHaveBeenCalled();
+        window._satellite._onCustomCodeSuccess(0);
+      });
     }
   );
 
@@ -179,17 +183,20 @@ describe('decorate html code', function() {
       };
 
       var decorateHtmlCode = decorateHtmlCodeInjector();
-
-      decorateHtmlCode(
+      var onPromiseRejected = jasmine.createSpy('onPromiseRejected');
+      var decorateCodePromise = decorateHtmlCode(
         {
           settings: settings
         },
         settings.source
-      ).promise.catch(function() {
-        done();
-      });
+      ).promise;
 
-      window._satellite._onCustomCodeFailure(0);
+      decorateCodePromise.catch(onPromiseRejected).then(done);
+
+      flushPromiseChains().then(function() {
+        expect(onPromiseRejected).not.toHaveBeenCalled();
+        window._satellite._onCustomCodeFailure(0);
+      });
     }
   );
 });
