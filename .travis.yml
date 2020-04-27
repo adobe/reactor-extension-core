@@ -6,7 +6,5 @@ addons:
     no_ssl_bump_domains: "all"
 after_script:
   - "npm install -g coveralls"
-  - "cat coverage/lcov.dat | coveralls"
-after_success:
-  - "npm install -g codeclimate-test-reporter"
-  - "codeclimate-test-reporter < coverage/lcov.dat"
+  - "cat coverage/lcov.info | coveralls"
+

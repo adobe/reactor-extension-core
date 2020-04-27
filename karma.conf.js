@@ -253,8 +253,8 @@ module.exports = config => {
     // how many browser should be started simultaneous
     concurrency: Infinity,
 
-    coverageIstanbulReporter: {
-      reports: ['html', 'cobertura', 'text-summary'],
+    coverageIstanbulRer: {
+      reports: ['html', 'lcovonly', 'text-summary'],
       'report-config': {
         html: {
           subdir: 'html'
