@@ -1,5 +1,8 @@
 # Core Extension for Adobe Experience Platform Launch
 
+[![Build Status](https://travis-ci.com/adobe/reactor-extension-core.svg?branch=master)](https://travis-ci.com/adobe/reactor-extension-core)
+[![Coverage Status](https://coveralls.io/repos/github/Adobe/reactor-extension-core/badge.svg)](https://coveralls.io/github/Adobe/reactor-extension-core)
+
 This is the Core extension for [Adobe Experience Platform Launch](https://www.adobe.com/experience-platform/launch.html). It provides default event, condition, and data element types available to all Launch properties.
 
 ## Contributing
