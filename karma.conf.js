@@ -7,11 +7,17 @@ const packageDescriptor = require('./package.json');
 
 let defaultBrowsers = ['Chrome'];
 let startConnect = false;
-
 const reporters = ['dots'];
-const isCi = require('yargs').argv.ci;
+let buildId;
 
-if (isCi) {
+if (process.env.TRAVIS) {
+  buildId =
+    'TRAVIS #' +
+    process.env.TRAVIS_BUILD_NUMBER +
+    ' (' +
+    process.env.TRAVIS_BUILD_ID +
+    ')';
+
   defaultBrowsers = [
     'SL_IE10',
     'SL_IE11',
@@ -21,11 +27,12 @@ if (isCi) {
     'SL_ANDROID',
     'SL_SAFARI'
   ];
-
   reporters.push('saucelabs');
+} else {
   startConnect = true;
-} else if (process.env.SAUCE_USERNAME) {
-  startConnect = true;
+}
+
+if (process.env.SAUCE_USERNAME) {
   reporters.push('saucelabs');
 }
 
@@ -225,9 +232,9 @@ module.exports = config => {
     },
 
     sauceLabs: {
+      buildId: buildId,
       testName: packageDescriptor.name + ' Test',
-      tunnelIdentifier:
-        packageDescriptor.name.replace(/[^a-z0-9]/gim, '') + Date.now(),
+      tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
       startConnect: startConnect,
       retryLimit: 3,
       recordVideo: false,

@@ -23,7 +23,10 @@ var createCustomCodeDelegate = function(mocks) {
     '../../../node_modules/postscribe/dist/postscribe': mocks.postscribe,
     '@adobe/reactor-document': mocks.document,
     './helpers/decorateCode': function(action, source) {
-      return source;
+      return {
+        code: source,
+        promise: Promise.resolve('promise result from inside the decorators')
+      };
     },
     './helpers/loadCodeSequentially': function() {
       return Promise.resolve('inside external file');
@@ -36,7 +39,9 @@ var getMockDocument = function(options) {
     querySelectorAll: function() {
       return [
         {
-          src: options.isLibRenamed ? 'renamedlaunchlib.js' : LAUNCH_LIB_EXAMPLE_SRC,
+          src: options.isLibRenamed
+            ? 'renamedlaunchlib.js'
+            : LAUNCH_LIB_EXAMPLE_SRC,
           async: options.isAsync
         }
       ];
@@ -106,7 +111,9 @@ describe('custom code action delegate', function() {
               language: 'javascript'
             });
 
-            expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside container');
+            expect(postscribeSpy.calls.mostRecent().args[1]).toBe(
+              'inside container'
+            );
             expect(documentWriteSpy).not.toHaveBeenCalled();
           });
 
@@ -116,7 +123,9 @@ describe('custom code action delegate', function() {
               source: 'http://someurl.com/source.js',
               language: 'javascript'
             }).then(function() {
-              expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside external file');
+              expect(postscribeSpy.calls.mostRecent().args[1]).toBe(
+                'inside external file'
+              );
               expect(documentWriteSpy).not.toHaveBeenCalled();
               done();
             });
@@ -158,7 +167,9 @@ describe('custom code action delegate', function() {
             mockDocument.body = {};
             jasmine.clock().tick(20);
 
-            expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside container');
+            expect(postscribeSpy.calls.mostRecent().args[1]).toBe(
+              'inside container'
+            );
             expect(documentWriteSpy).not.toHaveBeenCalled();
           });
 
@@ -174,7 +185,9 @@ describe('custom code action delegate', function() {
               mockDocument.body = {};
               jasmine.clock().tick(20);
 
-              expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside external file');
+              expect(postscribeSpy.calls.mostRecent().args[1]).toBe(
+                'inside external file'
+              );
               expect(documentWriteSpy).not.toHaveBeenCalled();
               done();
             });
@@ -224,7 +237,9 @@ describe('custom code action delegate', function() {
               language: 'javascript'
             });
 
-            expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside container');
+            expect(postscribeSpy.calls.mostRecent().args[1]).toBe(
+              'inside container'
+            );
             expect(documentWriteSpy).not.toHaveBeenCalled();
           });
         });
@@ -290,7 +305,7 @@ describe('custom code action delegate', function() {
           it('writes the code defined inside the main library', function() {
             customCode({
               source: 'inside container',
-              language: 'javascript',
+              language: 'javascript'
             });
 
             expect(postscribeSpy).not.toHaveBeenCalled();
@@ -303,7 +318,9 @@ describe('custom code action delegate', function() {
               source: 'http://someurl.com/source.js',
               language: 'javascript'
             }).then(function() {
-              expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside external file');
+              expect(postscribeSpy.calls.mostRecent().args[1]).toBe(
+                'inside external file'
+              );
               expect(documentWriteSpy).not.toHaveBeenCalled();
               done();
             });
@@ -330,7 +347,9 @@ describe('custom code action delegate', function() {
               language: 'javascript'
             });
 
-            expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside container');
+            expect(postscribeSpy.calls.mostRecent().args[1]).toBe(
+              'inside container'
+            );
             expect(documentWriteSpy).not.toHaveBeenCalled();
           });
 
@@ -340,7 +359,9 @@ describe('custom code action delegate', function() {
               source: 'http://someurl.com/source.js',
               language: 'javascript'
             }).then(function() {
-              expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside external file');
+              expect(postscribeSpy.calls.mostRecent().args[1]).toBe(
+                'inside external file'
+              );
               expect(documentWriteSpy).not.toHaveBeenCalled();
               done();
             });
@@ -374,7 +395,9 @@ describe('custom code action delegate', function() {
               language: 'javascript'
             });
 
-            expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside container');
+            expect(postscribeSpy.calls.mostRecent().args[1]).toBe(
+              'inside container'
+            );
             expect(documentWriteSpy).not.toHaveBeenCalled();
           });
 
@@ -384,13 +407,47 @@ describe('custom code action delegate', function() {
               source: 'http://someurl.com/source.js',
               language: 'javascript'
             }).then(function() {
-              expect(postscribeSpy.calls.mostRecent().args[1]).toBe('inside external file');
+              expect(postscribeSpy.calls.mostRecent().args[1]).toBe(
+                'inside external file'
+              );
               expect(documentWriteSpy).not.toHaveBeenCalled();
               done();
             });
           });
         });
       }
+    });
+  });
+
+  describe('returns the promise received from the decorateCode module', function() {
+    beforeEach(function() {
+      customCode = createCustomCodeDelegate({
+        postscribe: postscribeSpy,
+        document: getMockDocument({})
+      });
+    });
+
+    it('for the code defined inside an external file', function(done) {
+      customCode({
+        isExternal: true,
+        source: 'http://someurl.com/source.js',
+        language: 'javascript'
+      }).then(function(result) {
+        expect(result).toBe('promise result from inside the decorators');
+
+        done();
+      });
+    });
+
+    it('for the code defined inside the main library', function(done) {
+      customCode({
+        source: 'inside container',
+        language: 'javascript'
+      }).then(function(result) {
+        expect(result).toBe('promise result from inside the decorators');
+
+        done();
+      });
     });
   });
 });

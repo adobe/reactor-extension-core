@@ -98,6 +98,8 @@ var libraryWasLoadedAsynchronously = (function() {
  * <code>javascript</code> or <code>html</code>.
  */
 module.exports = function(settings, event) {
+  var decoratedResult;
+
   var action = {
     settings: settings,
     event: event
@@ -111,10 +113,15 @@ module.exports = function(settings, event) {
   if (action.settings.isExternal) {
     return loadCodeSequentially(source).then(function(source) {
       if (source) {
-        postscribeWrite(decorateCode(action, source));
+        decoratedResult = decorateCode(action, source);
+        postscribeWrite(decoratedResult.code);
       }
+
+      return decoratedResult.promise;
     });
   } else {
+    decoratedResult = decorateCode(action, source);
+
     // This area has been modified several times, so here are some helpful details:
     // 1. Custom code will be included into the main launch library if it's for a rule that uses the
     //    Library Loaded or Page Bottom event. isExternal will be false. However, keep in mind that
@@ -143,12 +150,14 @@ module.exports = function(settings, event) {
       // https://www.w3.org/MarkUp/2004/xhtml-faq#docwrite
       // https://developer.mozilla.org/en-US/docs/Archive/Web/Writing_JavaScript_for_HTML
       if (document.write) {
-        document.write(decorateCode(action, source));
+        document.write(decoratedResult.code);
       } else {
-        postscribeWrite(decorateCode(action, source));
+        postscribeWrite(decoratedResult.code);
       }
     } else {
-      postscribeWrite(decorateCode(action, source));
+      postscribeWrite(decoratedResult.code);
     }
+
+    return decoratedResult.promise;
   }
 };

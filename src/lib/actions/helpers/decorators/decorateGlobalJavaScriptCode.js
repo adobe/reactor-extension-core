@@ -8,22 +8,14 @@ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTA
 OF ANY KIND, either express or implied. See the License for the specific language
 governing permissions and limitations under the License.
 */
-
 'use strict';
 
-var decorateGlobalJavaScriptCode = require('./decorators/decorateGlobalJavaScriptCode');
-var decorateNonGlobalJavaScriptCode = require('./decorators/decorateNonGlobalJavaScriptCode');
-var decorateHtmlCode = require('./decorators/decorateHtmlCode');
+var Promise = require('@adobe/reactor-promise');
 
-var decorators = {
-  javascript: function(action, source) {
-    return action.settings.global
-      ? decorateGlobalJavaScriptCode(action, source)
-      : decorateNonGlobalJavaScriptCode(action, source);
-  },
-  html: decorateHtmlCode
-};
-
-module.exports = function(action, source) {
-  return decorators[action.settings.language](action, source);
+module.exports = function(_, source) {
+  // The line break after the source is important in case their last line of code is a comment.
+  return {
+    code: '<scr' + 'ipt>\n' + source + '\n</scr' + 'ipt>',
+    promise: Promise.resolve()
+  };
 };
