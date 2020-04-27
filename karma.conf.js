@@ -8,9 +8,10 @@ const packageDescriptor = require('./package.json');
 let defaultBrowsers = ['Chrome'];
 let startConnect = false;
 const reporters = ['dots'];
+let buildId;
 
 if (process.env.TRAVIS) {
-  const buildId =
+  buildId =
     'TRAVIS #' +
     process.env.TRAVIS_BUILD_NUMBER +
     ' (' +
