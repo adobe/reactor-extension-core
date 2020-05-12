@@ -70,7 +70,7 @@ module.exports = function(action, source) {
 
   if (reactorCallbackIdShouldBeReplaced(source)) {
     promise = new Promise(function(resolve, reject) {
-      htmlCodePromises[callbackId] = {
+      htmlCodePromises[String(callbackId)] = {
         resolve: resolve,
         reject: reject
       };

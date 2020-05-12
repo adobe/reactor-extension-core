@@ -57,7 +57,7 @@ describe('decorate html code', function() {
     var settings = {
       language: 'html',
       source:
-        '<script>_satellite._onCustomCodeSuccess(${reactorCallbackId})</script>'
+        '<script>_satellite._onCustomCodeSuccess("${reactorCallbackId}")</script>'
     };
 
     var decorateHtmlCode = decorateHtmlCodeInjector();
@@ -70,7 +70,7 @@ describe('decorate html code', function() {
     );
 
     expect(decoratedResult.code).toBe(
-      '<script>_satellite._onCustomCodeSuccess(0)</script>'
+      '<script>_satellite._onCustomCodeSuccess("0")</script>'
     );
   });
 
@@ -150,7 +150,7 @@ describe('decorate html code', function() {
       var settings = {
         language: 'html',
         source:
-          '<script>_satellite._onCustomCodeSuccess(${reactorCallbackId})</script>'
+          '<script>_satellite._onCustomCodeSuccess("${reactorCallbackId}")</script>'
       };
 
       var decorateHtmlCode = decorateHtmlCodeInjector();
@@ -167,7 +167,7 @@ describe('decorate html code', function() {
 
       flushPromiseChains().then(function() {
         expect(onPromiseResolved).not.toHaveBeenCalled();
-        window._satellite._onCustomCodeSuccess(0);
+        window._satellite._onCustomCodeSuccess('0');
       });
     }
   );
@@ -179,7 +179,7 @@ describe('decorate html code', function() {
       var settings = {
         language: 'html',
         source:
-          '<script>_satellite._onCustomCodeFailure(${reactorCallbackId})</script>'
+          '<script>_satellite._onCustomCodeFailure("${reactorCallbackId}")</script>'
       };
 
       var decorateHtmlCode = decorateHtmlCodeInjector();
@@ -195,7 +195,7 @@ describe('decorate html code', function() {
 
       flushPromiseChains().then(function() {
         expect(onPromiseRejected).not.toHaveBeenCalled();
-        window._satellite._onCustomCodeFailure(0);
+        window._satellite._onCustomCodeFailure('0');
       });
     }
   );
