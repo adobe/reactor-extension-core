@@ -70,6 +70,7 @@ describe('custom code action delegate', function() {
 
   beforeAll(function() {
     mockTurbineVariable({
+      propertySettings: {},
       getExtensionSettings: function() {
         return {};
       }
@@ -254,6 +255,7 @@ describe('custom code action delegate', function() {
             };
 
             mockTurbineVariable({
+              propertySettings: {},
               getExtensionSettings: function() {
                 return {
                   cspNonce: 'nonce'
@@ -303,6 +305,15 @@ describe('custom code action delegate', function() {
           });
 
           it('writes the code defined inside the main library', function() {
+            mockTurbineVariable({
+              propertySettings: {
+                ruleComponentSequencingEnabled: false
+              },
+              getExtensionSettings: function() {
+                return {};
+              }
+            });
+
             customCode({
               source: 'inside container',
               language: 'javascript'
@@ -325,6 +336,32 @@ describe('custom code action delegate', function() {
               done();
             });
           });
+
+          it(
+            'writes the code defined inside the main library using postscribe ' +
+              'when sequencing is enabled',
+            function(done) {
+              mockTurbineVariable({
+                propertySettings: {
+                  ruleComponentSequencingEnabled: true
+                },
+                getExtensionSettings: function() {
+                  return {};
+                }
+              });
+
+              customCode({
+                source: 'inside container',
+                language: 'javascript'
+              }).then(function() {
+                expect(postscribeSpy.calls.mostRecent().args[1]).toBe(
+                  'inside container'
+                );
+                expect(documentWriteSpy).not.toHaveBeenCalled();
+                done();
+              });
+            }
+          );
         });
 
         describe('and document.readyState is not loading', function() {

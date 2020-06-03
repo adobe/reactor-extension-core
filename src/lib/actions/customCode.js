@@ -149,7 +149,10 @@ module.exports = function(settings, event) {
       // More info:
       // https://www.w3.org/MarkUp/2004/xhtml-faq#docwrite
       // https://developer.mozilla.org/en-US/docs/Archive/Web/Writing_JavaScript_for_HTML
-      if (document.write) {
+      if (
+        document.write &&
+        turbine.propertySettings.ruleComponentSequencingEnabled === false
+      ) {
         document.write(decoratedResult.code);
       } else {
         postscribeWrite(decoratedResult.code);
