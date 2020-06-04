@@ -149,6 +149,9 @@ module.exports = function(settings, event) {
       // More info:
       // https://www.w3.org/MarkUp/2004/xhtml-faq#docwrite
       // https://developer.mozilla.org/en-US/docs/Archive/Web/Writing_JavaScript_for_HTML
+      // Also, when rule component sequencing is enabled, there is an issue in Edge Legacy
+      // where the whole page gets erased: https://jira.corp.adobe.com/browse/DTM-13527.
+      // We decided to not use document.write at all when rule component sequencing is enabled.
       if (
         document.write &&
         turbine.propertySettings.ruleComponentSequencingEnabled === false
