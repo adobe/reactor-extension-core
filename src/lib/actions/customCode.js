@@ -34,7 +34,7 @@ var postscribeWrite = (function() {
         // are not escaped. That causes problems when loading scripts from external
         // sources. See https://jira.corp.adobe.com/browse/DTM-15058.
         if (tagName === 'script' || tagName === 'style') {
-          Object.keys(token.attrs || []).forEach(function(key) {
+          Object.keys(token.attrs || {}).forEach(function(key) {
             token.attrs[key] = unescapeHTMLEntities(token.attrs[key]);
           });
 
