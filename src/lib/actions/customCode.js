@@ -24,14 +24,16 @@ var postscribeWrite = (function() {
   var write = function(source) {
     postscribe(document.body, source, {
       beforeWriteToken: function(token) {
-        if (extensionSettings.cspNonce && token.tagName === 'script') {
+        var tagName = token.tagName.toLowerCase();
+
+        if (extensionSettings.cspNonce && tagName === 'script') {
           token.attrs.nonce = extensionSettings.cspNonce;
         }
 
         // There is an issue in Postscribe where script and style attributes
         // are not escaped. That causes problems when loading scripts from external
         // sources. See https://jira.corp.adobe.com/browse/DTM-15058.
-        if (token.tagName === 'script' || token.tagName === 'style') {
+        if (tagName === 'script' || tagName === 'style') {
           Object.keys(token.attrs || []).forEach(function(key) {
             token.attrs[key] = unescapeHTMLEntities(token.attrs[key]);
           });

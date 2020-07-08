@@ -514,6 +514,24 @@ describe('custom code action delegate', function() {
       }
     );
 
+    it(
+      'decodes the HTML entities from the token attrs attribute ' +
+        'inside beforeWriteToken callback even when the tag name is uppercase',
+      function() {
+        postscribeTag = {
+          tagName: 'STYLE',
+          attrs: { 'data-id': 'a &amp; b' }
+        };
+
+        customCode({
+          source: '<STYLE data-id="a &amp; b"></STYLE>',
+          language: 'html'
+        });
+
+        expect(postscribeTag.attrs['data-id']).toBe('a & b');
+      }
+    );
+
     it('lets the browser decode the HTML entities from other token attrs attributes', function() {
       postscribeTag = {
         tagName: 'div',
