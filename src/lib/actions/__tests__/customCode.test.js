@@ -456,7 +456,7 @@ describe('custom code action delegate', function() {
     });
   });
 
-  describe('when postscribe it is used', function() {
+  describe('when postscribe is used', function() {
     var postscribeTag;
 
     beforeEach(function() {

@@ -31,7 +31,7 @@ var postscribeWrite = (function() {
         }
 
         // There is an issue in Postscribe where script and style attributes
-        // are not escaped. That causes problems when loading scripts from external
+        // are not unescaped. That causes problems when loading scripts from external
         // sources. See https://jira.corp.adobe.com/browse/DTM-15058.
         if (tagName === 'script' || tagName === 'style') {
           Object.keys(token.attrs || {}).forEach(function(key) {
