@@ -13,6 +13,7 @@
 'use strict';
 
 var document = require('@adobe/reactor-document');
+var Promise = require('@adobe/reactor-promise');
 var decorateCode = require('./helpers/decorateCode');
 var loadCodeSequentially = require('./helpers/loadCodeSequentially');
 var postscribe = require('../../../node_modules/postscribe/dist/postscribe');
@@ -133,9 +134,10 @@ module.exports = function(settings, event) {
       if (source) {
         decoratedResult = decorateCode(action, source);
         postscribeWrite(decoratedResult.code);
+        return decoratedResult.promise;
       }
 
-      return decoratedResult.promise;
+      return Promise.resolve();
     });
   } else {
     decoratedResult = decorateCode(action, source);

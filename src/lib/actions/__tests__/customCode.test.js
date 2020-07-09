@@ -28,9 +28,11 @@ var createCustomCodeDelegate = function(mocks) {
         promise: Promise.resolve('promise result from inside the decorators')
       };
     },
-    './helpers/loadCodeSequentially': function() {
-      return Promise.resolve('inside external file');
-    }
+    './helpers/loadCodeSequentially':
+      mocks.loadCodeSequentially ||
+      function() {
+        return Promise.resolve('inside external file');
+      }
   });
 };
 
@@ -573,6 +575,28 @@ describe('custom code action delegate', function() {
         language: 'javascript'
       }).then(function(result) {
         expect(result).toBe('promise result from inside the decorators');
+
+        done();
+      });
+    });
+  });
+
+  describe('returns a resolved promise', function() {
+    it('for empty code defined inside an external file', function(done) {
+      customCode = createCustomCodeDelegate({
+        postscribe: postscribeSpy,
+        document: getMockDocument({}),
+        loadCodeSequentially: function() {
+          return Promise.resolve('');
+        }
+      });
+
+      customCode({
+        isExternal: true,
+        source: 'http://someurl.com/source.js',
+        language: 'javascript'
+      }).then(function(result) {
+        expect(result).toBeUndefined();
 
         done();
       });
