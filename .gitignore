@@ -5,3 +5,4 @@ dist
 .sonar
 .sandbox
 .entries
+package-core*
