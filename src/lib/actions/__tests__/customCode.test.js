@@ -456,6 +456,97 @@ describe('custom code action delegate', function() {
     });
   });
 
+  describe('when postscribe is used', function() {
+    var postscribeTag;
+
+    beforeEach(function() {
+      customCode = createCustomCodeDelegate({
+        document: getMockDocument({
+          write: function() {},
+          isDocumentBodyAvailable: true
+        }),
+        postscribe: function(_, src, opts) {
+          opts.beforeWriteToken(postscribeTag);
+        }
+      });
+    });
+
+    it(
+      'decodes the HTML entities from script token attrs and src attributes ' +
+        'inside beforeWriteToken callback',
+      function() {
+        postscribeTag = {
+          tagName: 'script',
+          attrs: { src: 'https://www.google.com/?id=DC&amp;l=gtmDataLayer' },
+          src: 'https://www.google.com/?id=DC&amp;l=gtmDataLayer'
+        };
+
+        customCode({
+          source:
+            '<script src="https://www.google.com/?id=DC&amp;l=gtmDataLayer"></script>',
+          language: 'html'
+        });
+
+        expect(postscribeTag.attrs.src).toBe(
+          'https://www.google.com/?id=DC&l=gtmDataLayer'
+        );
+        expect(postscribeTag.src).toBe(
+          'https://www.google.com/?id=DC&l=gtmDataLayer'
+        );
+      }
+    );
+
+    it(
+      'decodes the HTML entities from style token attrs attribute ' +
+        'inside beforeWriteToken callback',
+      function() {
+        postscribeTag = {
+          tagName: 'style',
+          attrs: { 'data-id': 'a &amp; b' }
+        };
+
+        customCode({
+          source: '<style data-id="a &amp; b"></style>',
+          language: 'html'
+        });
+
+        expect(postscribeTag.attrs['data-id']).toBe('a & b');
+      }
+    );
+
+    it(
+      'decodes the HTML entities from the token attrs attribute ' +
+        'inside beforeWriteToken callback even when the tag name is uppercase',
+      function() {
+        postscribeTag = {
+          tagName: 'STYLE',
+          attrs: { 'data-id': 'a &amp; b' }
+        };
+
+        customCode({
+          source: '<STYLE data-id="a &amp; b"></STYLE>',
+          language: 'html'
+        });
+
+        expect(postscribeTag.attrs['data-id']).toBe('a & b');
+      }
+    );
+
+    it('lets the browser decode the HTML entities from other token attrs attributes', function() {
+      postscribeTag = {
+        tagName: 'div',
+        attrs: { 'data-id': 'a &amp; b' }
+      };
+
+      customCode({
+        source: '<div data-id="a &amp; b"></div>',
+        language: 'html'
+      });
+
+      expect(postscribeTag.attrs['data-id']).toBe('a &amp; b');
+    });
+  });
+
   describe('returns the promise received from the decorateCode module', function() {
     beforeEach(function() {
       customCode = createCustomCodeDelegate({

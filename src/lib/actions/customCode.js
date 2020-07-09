@@ -16,16 +16,34 @@ var document = require('@adobe/reactor-document');
 var decorateCode = require('./helpers/decorateCode');
 var loadCodeSequentially = require('./helpers/loadCodeSequentially');
 var postscribe = require('../../../node_modules/postscribe/dist/postscribe');
+var unescapeHTMLEntities = require('./helpers/unescapeHtmlCode');
+
 var extensionSettings = turbine.getExtensionSettings();
 
 var postscribeWrite = (function() {
   var write = function(source) {
     postscribe(document.body, source, {
-      beforeWriteToken: function(tag) {
-        if (extensionSettings.cspNonce && tag.tagName === 'script') {
-          tag.attrs.nonce = extensionSettings.cspNonce;
+      beforeWriteToken: function(token) {
+        var tagName = token.tagName.toLowerCase();
+
+        if (extensionSettings.cspNonce && tagName === 'script') {
+          token.attrs.nonce = extensionSettings.cspNonce;
         }
-        return tag;
+
+        // There is an issue in Postscribe where script and style attributes
+        // are not unescaped. That causes problems when loading scripts from external
+        // sources. See https://jira.corp.adobe.com/browse/DTM-15058.
+        if (tagName === 'script' || tagName === 'style') {
+          Object.keys(token.attrs || {}).forEach(function(key) {
+            token.attrs[key] = unescapeHTMLEntities(token.attrs[key]);
+          });
+
+          if (token.src) {
+            token.src = unescapeHTMLEntities(token.src);
+          }
+        }
+
+        return token;
       },
       error: function(error) {
         turbine.logger.error(error.msg);
