@@ -1,7 +1,7 @@
 {
   "name": "core",
   "platform": "web",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "displayName": "Core",
   "description": "Provides default event, condition, and data element types available to all Launch properties.",
   "exchangeUrl": "https://www.adobeexchange.com/experiencecloud.details.100223.adobe-launch-core-extension.html",
