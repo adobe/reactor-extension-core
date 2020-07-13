@@ -547,6 +547,22 @@ describe('custom code action delegate', function() {
 
       expect(postscribeTag.attrs['data-id']).toBe('a &amp; b');
     });
+
+    it('beforeWriteToken does not throw error for comments tokens', function() {
+      postscribeTag = {
+        content: ' comment -->',
+        length: 16,
+        text: '<!-- comment -->',
+        type: 'comment'
+      };
+
+      expect(function() {
+        customCode({
+          source: '<!-- comment -->',
+          language: 'html'
+        });
+      }).not.toThrow();
+    });
   });
 
   describe('returns the promise received from the decorateCode module', function() {
