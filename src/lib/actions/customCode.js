@@ -25,7 +25,7 @@ var postscribeWrite = (function() {
   var write = function(source) {
     postscribe(document.body, source, {
       beforeWriteToken: function(token) {
-        var tagName = token.tagName.toLowerCase();
+        var tagName = token.tagName && token.tagName.toLowerCase();
 
         if (extensionSettings.cspNonce && tagName === 'script') {
           token.attrs.nonce = extensionSettings.cspNonce;
