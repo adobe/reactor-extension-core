@@ -19,16 +19,15 @@ var loadCodeSequentially = require('./helpers/loadCodeSequentially');
 var postscribe = require('../../../node_modules/postscribe/dist/postscribe');
 var unescapeHTMLEntities = require('./helpers/unescapeHtmlCode');
 
-var extensionSettings = turbine.getExtensionSettings();
-
 var postscribeWrite = (function() {
   var write = function(source) {
     postscribe(document.body, source, {
       beforeWriteToken: function(token) {
         var tagName = token.tagName && token.tagName.toLowerCase();
+        var cspNonce = turbine.getExtensionSettings().cspNonce;
 
-        if (extensionSettings.cspNonce && tagName === 'script') {
-          token.attrs.nonce = extensionSettings.cspNonce;
+        if (cspNonce && tagName === 'script') {
+          token.attrs.nonce = cspNonce;
         }
 
         // There is an issue in Postscribe where script and style attributes
