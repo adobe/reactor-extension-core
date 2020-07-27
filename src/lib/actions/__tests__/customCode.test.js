@@ -249,6 +249,7 @@ describe('custom code action delegate', function() {
 
         describe('and the cspNonce is defined inside extension configuration', function() {
           var postscribeTag;
+          var extensionSettings;
 
           beforeAll(function() {
             postscribeTag = {
@@ -256,12 +257,12 @@ describe('custom code action delegate', function() {
               attrs: {}
             };
 
+            extensionSettings = {};
+
             mockTurbineVariable({
               propertySettings: {},
               getExtensionSettings: function() {
-                return {
-                  cspNonce: 'nonce'
-                };
+                return extensionSettings;
               }
             });
 
@@ -280,6 +281,8 @@ describe('custom code action delegate', function() {
           });
 
           it('writes the cspNonce as an attribute on all script tags', function() {
+            extensionSettings.cspNonce = 'nonce';
+
             customCode({
               source: 'some code with script tag',
               language: 'javascript'
@@ -287,6 +290,16 @@ describe('custom code action delegate', function() {
 
             expect(documentWriteSpy).not.toHaveBeenCalled();
             expect(postscribeTag.attrs.nonce).toBe('nonce');
+
+            extensionSettings.cspNonce = 'nonce2';
+
+            customCode({
+              source: 'some code with script tag',
+              language: 'javascript'
+            });
+
+            expect(documentWriteSpy).not.toHaveBeenCalled();
+            expect(postscribeTag.attrs.nonce).toBe('nonce2');
           });
         });
       });
