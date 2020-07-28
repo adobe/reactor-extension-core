@@ -19,12 +19,13 @@ var loadCodeSequentially = require('./helpers/loadCodeSequentially');
 var postscribe = require('../../../node_modules/postscribe/dist/postscribe');
 var unescapeHTMLEntities = require('./helpers/unescapeHtmlCode');
 
+var cspNonce;
+
 var postscribeWrite = (function() {
   var write = function(source) {
     postscribe(document.body, source, {
       beforeWriteToken: function(token) {
         var tagName = token.tagName && token.tagName.toLowerCase();
-        var cspNonce = turbine.getExtensionSettings().cspNonce;
 
         if (cspNonce && tagName === 'script') {
           token.attrs.nonce = cspNonce;
@@ -116,6 +117,9 @@ var libraryWasLoadedAsynchronously = (function() {
  * <code>javascript</code> or <code>html</code>.
  */
 module.exports = function(settings, event) {
+  // ensure the nonce is up-to-date when the function is used
+  cspNonce = turbine.getExtensionSettings().cspNonce;
+
   var decoratedResult;
 
   var action = {
