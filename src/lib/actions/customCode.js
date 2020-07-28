@@ -19,7 +19,7 @@ var loadCodeSequentially = require('./helpers/loadCodeSequentially');
 var postscribe = require('../../../node_modules/postscribe/dist/postscribe');
 var unescapeHTMLEntities = require('./helpers/unescapeHtmlCode');
 
-var extensionSettings = turbine.getExtensionSettings();
+var cspNonce;
 
 var postscribeWrite = (function() {
   var write = function(source) {
@@ -27,8 +27,8 @@ var postscribeWrite = (function() {
       beforeWriteToken: function(token) {
         var tagName = token.tagName && token.tagName.toLowerCase();
 
-        if (extensionSettings.cspNonce && tagName === 'script') {
-          token.attrs.nonce = extensionSettings.cspNonce;
+        if (cspNonce && tagName === 'script') {
+          token.attrs.nonce = cspNonce;
         }
 
         // There is an issue in Postscribe where script and style attributes
@@ -117,6 +117,9 @@ var libraryWasLoadedAsynchronously = (function() {
  * <code>javascript</code> or <code>html</code>.
  */
 module.exports = function(settings, event) {
+  // ensure the nonce is up-to-date when the function is used
+  cspNonce = turbine.getExtensionSettings().cspNonce;
+
   var decoratedResult;
 
   var action = {
