@@ -1,7 +1,7 @@
 {
   "name": "core",
   "platform": "web",
-  "version": "1.8.3",
+  "version": "1.8.4",
   "displayName": "Core",
   "description": "Provides default event, condition, and data element types available to all Launch properties.",
   "exchangeUrl": "https://www.adobeexchange.com/experiencecloud.details.100223.adobe-launch-core-extension.html",
@@ -2102,6 +2102,24 @@
           "propertyPath": "source"
         }
       ]
+    },
+    {
+      "name": "direct-call",
+      "displayName": "Trigger Direct Call",
+      "libPath": "src/lib/actions/directCall.js",
+      "viewPath": "actions/directCall.html",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false,
+        "required": ["identifier"]
+      }
     }
   ]
 }
