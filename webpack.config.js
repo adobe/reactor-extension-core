@@ -49,7 +49,7 @@ module.exports = env => {
               chunks: ['common', chunkName],
               react_dev_hook:
                 env === 'sandbox'
-                  ? '<script> __REACT_DEVTOOLS_GLOBAL_HOOK__ = parent.__REACT_DEVTOOLS_GLOBAL_HOOK__ </script>'
+                  ? '<script> try { __REACT_DEVTOOLS_GLOBAL_HOOK__ = parent.__REACT_DEVTOOLS_GLOBAL_HOOK__ } catch(error) {}</script>'
                   : ''
             })
           );
@@ -134,7 +134,7 @@ module.exports = env => {
                 importLoaders: 1
               }
             },
-            require.resolve('stylus-loader'),
+            require.resolve('stylus-loader')
           ]
         },
         {
