@@ -47,6 +47,10 @@ export const formConfig = {
     };
   },
   formValuesToSettings(settings, values) {
+    if (!values.cspNonce) {
+      delete values.cspNonce;
+    }
+
     return {
       ...settings,
       ...values
