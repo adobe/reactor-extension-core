@@ -90,4 +90,20 @@ describe('extension configuration view', () => {
 
     expect(cspNonceTextfield.props().validationState).toBe('invalid');
   });
+
+  it('removes cspNonce from the settings object if the value is falsy', () => {
+    extensionBridge.init({
+      settings: {
+        cspNonce: '%foo%'
+      }
+    });
+
+    const { cspNonceTextfield } = getReactComponents(instance);
+
+    cspNonceTextfield.props().onChange('');
+
+    expect(extensionBridge.getSettings()).toEqual({});
+
+    expect(extensionBridge.validate()).toBe(true);
+  });
 });
