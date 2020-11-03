@@ -31,7 +31,7 @@ var unescapeHTMLEntities = require('./helpers/unescapeHtmlCode');
  * <code>javascript</code> or <code>html</code>.
  */
 module.exports = function(settings, event) {
-  if ('undefined' !== typeof settings && settings && 'undefined' !== typeof settings.identifier && settings.identifier) {
+  if (settings && settings.identifier) {
     _satellite.track(settings.identifier, event);
   }
 };
