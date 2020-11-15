@@ -234,7 +234,7 @@ module.exports = config => {
     sauceLabs: {
       buildId: buildId,
       testName: packageDescriptor.name + ' Test',
-      tunnelIdentifier: process.env.GITHUB_RUN_NUMBER,
+      tunnelIdentifier: 'github-action-tunnel',
       startConnect: startConnect,
       retryLimit: 3,
       recordVideo: false,
