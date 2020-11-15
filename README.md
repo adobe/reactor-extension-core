@@ -1,6 +1,6 @@
 # Core Extension for Adobe Experience Platform Launch
 
-[![Build Status](https://travis-ci.com/adobe/reactor-extension-core.svg?branch=master)](https://travis-ci.com/adobe/reactor-extension-core)
+[![Build Status](https://img.shields.io/github/workflow/status/adobe/reactor-extension-core/ci?style=flat)](https://github.com/adobe/reactor-extension-core/actions)
 [![Coverage Status](https://coveralls.io/repos/github/adobe/reactor-extension-core/badge.svg?branch=master)](https://coveralls.io/github/adobe/reactor-extension-core?branch=master)
 
 This is the Core extension for [Adobe Experience Platform Launch](https://www.adobe.com/experience-platform/launch.html). It provides default event, condition, and data element types available to all Launch properties.
@@ -10,7 +10,7 @@ This is the Core extension for [Adobe Experience Platform Launch](https://www.ad
 Contributions are welcomed! Read the [Contributing Guide](CONTRIBUTING.md) for more information about how our community works.
 
 1. [Install node.js](https://nodejs.org/).
-1. [Install Yarn](https://yarnpkg.com/en/docs/install). 
+1. [Install Yarn](https://yarnpkg.com/en/docs/install).
 1. Clone this repository.
 1. After navigating into the project directory, install project dependencies by running `yarn install`.
 
@@ -25,7 +25,7 @@ Thank you for your interest in contributing!
 
 ## Internal Dependencies
 
-This project depends on the @react/react-spectrum package which depends on the @react/collection-view package. Neither package is published to the public npm repository. In order to support their installation and use, they have been included in this project as tar files. Each file has been prepended with the following message regarding the license: 
+This project depends on the @react/react-spectrum package which depends on the @react/collection-view package. Neither package is published to the public npm repository. In order to support their installation and use, they have been included in this project as tar files. Each file has been prepended with the following message regarding the license:
 
 ```js
 /**

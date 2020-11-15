@@ -10,12 +10,12 @@ let startConnect = false;
 const reporters = ['dots'];
 let buildId;
 
-if (process.env.TRAVIS) {
+if (process.env.CI) {
   buildId =
-    'TRAVIS #' +
-    process.env.TRAVIS_BUILD_NUMBER +
+    'CI #' +
+    process.env.GITHUB_RUN_NUMBER +
     ' (' +
-    process.env.TRAVIS_BUILD_ID +
+    process.env.GITHUB_RUN_ID +
     ')';
 
   defaultBrowsers = [
@@ -234,7 +234,7 @@ module.exports = config => {
     sauceLabs: {
       buildId: buildId,
       testName: packageDescriptor.name + ' Test',
-      tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
+      tunnelIdentifier: 'github-action-tunnel',
       startConnect: startConnect,
       retryLimit: 3,
       recordVideo: false,
