@@ -291,7 +291,6 @@ module.exports = config => {
     },
 
     webpackServer: {
-      stats: true,
       debug: false,
       progress: true,
       quiet: false
