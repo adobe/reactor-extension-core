@@ -47,40 +47,48 @@ const rules = [
   {
     test: /\.jsx?$/,
     include: /src\/view/,
-    loader: 'babel-loader',
-    options: {
-      presets: ['@babel/react', '@babel/env'],
-      plugins: ['@babel/plugin-proposal-class-properties']
+    use: {
+      loader: 'babel-loader',
+      options: {
+        presets: ['@babel/react', ["@babel/env", { "targets": "> 0.25%, not dead, ie 11, ie 10" }]],
+        plugins: ['@babel/plugin-proposal-class-properties']
+      }
     }
   },
   {
     test: /\.js$/,
     include: /\.entries/,
-    loader: 'babel-loader',
-    options: {
-      presets: ['@babel/env']
+    use: {
+      loader: 'babel-loader',
+      options: {
+        presets: [["@babel/env", { "targets": "> 0.25%, not dead, ie 11, ie 10" }]]
+      }
     }
   },
   {
     test: /\.styl/,
     include: /src\/view/,
-    loader: 'style-loader!css-loader!stylus-loader'
+    use: [
+      { loader: 'style-loader' },
+      { loader: 'css-loader' },
+      { loader: 'stylus-loader' }
+    ]
   },
   {
     test: /\.css/,
-    loaders: ['style-loader', 'css-loader']
+    use: [{ loader: 'style-loader' }, { loader: 'css-loader' }]
   },
   {
     test: /\.(jpe?g|png|gif)$/,
-    loader: 'file-loader'
+    use: 'file-loader'
   },
   {
     test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-    loader: 'url-loader?limit=10000&mimetype=application/font-woff'
+    use: 'url-loader?limit=10000&mimetype=application/font-woff'
   },
   {
     test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-    loader: 'file-loader'
+    use: 'file-loader'
   }
 ];
 
@@ -90,8 +98,10 @@ if (argv.coverage) {
     enforce: 'post',
     include: path.resolve('src/view'),
     exclude: new RegExp('__tests__'),
-    loader: 'istanbul-instrumenter-loader',
-    options: { esModules: true }
+    use: {
+      loader: 'istanbul-instrumenter-loader',
+      options: { esModules: true }
+    }
   });
 
   rules.push({
@@ -99,8 +109,10 @@ if (argv.coverage) {
     enforce: 'pre',
     include: path.resolve('src/lib'),
     exclude: new RegExp('__tests__'),
-    loader: 'istanbul-instrumenter-loader',
-    options: { esModules: true }
+    use: {
+      loader: 'istanbul-instrumenter-loader',
+      options: { esModules: true }
+    }
   });
 
   reporters.push('coverage-istanbul');
