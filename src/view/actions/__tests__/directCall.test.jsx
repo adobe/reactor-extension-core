@@ -43,7 +43,7 @@ describe('direct call action view', () => {
 
     const { identifierTextfield } = getReactComponents(instance);
 
-    expect(identifierTextfield.props().identifier).toBe('foo'); // TBD - identifier or value?
+    expect(identifierTextfield.props().value).toBe('foo'); // TBD - identifier or value?
   });
 
   it('sets settings from form values', () => {

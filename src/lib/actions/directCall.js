@@ -12,13 +12,7 @@
 
 'use strict';
 
-var document = require('@adobe/reactor-document');
-var Promise = require('@adobe/reactor-promise');
-var decorateCode = require('./helpers/decorateCode');
-var loadCodeSequentially = require('./helpers/loadCodeSequentially');
-var postscribe = require('../../../node_modules/postscribe/dist/postscribe');
-var unescapeHTMLEntities = require('./helpers/unescapeHtmlCode');
-
+var window = require('@adobe/reactor-window');
 
 /**
  * The custom code action. This loads and executes custom JavaScript or HTML provided by the user.
@@ -32,6 +26,6 @@ var unescapeHTMLEntities = require('./helpers/unescapeHtmlCode');
  */
 module.exports = function(settings, event) {
   if (settings && settings.identifier) {
-    _satellite.track(settings.identifier, event);
+    window._satellite.track(settings.identifier, event);
   }
 };
