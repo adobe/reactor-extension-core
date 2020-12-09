@@ -21,11 +21,12 @@ jobs:
       with:
         node-version: 14.x
     - run: yarn install
-    - run: npm run build --if-present
     - uses: saucelabs/sauce-connect-action@master
       with:
         username: ${{ secrets.SAUCE_USERNAME }}
         accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
+        noSSLBumpDomains: all
+        noProxyCaching: true
         tunnelIdentifier: github-action-tunnel
     - run: npm test
       env:

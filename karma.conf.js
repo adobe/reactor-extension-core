@@ -47,40 +47,48 @@ const rules = [
   {
     test: /\.jsx?$/,
     include: /src\/view/,
-    loader: 'babel-loader',
-    options: {
-      presets: ['@babel/react', '@babel/env'],
-      plugins: ['@babel/plugin-proposal-class-properties']
+    use: {
+      loader: 'babel-loader',
+      options: {
+        presets: ['@babel/react', ["@babel/env", { "targets": "> 0.25%, not dead, ie 11, ie 10" }]],
+        plugins: ['@babel/plugin-proposal-class-properties']
+      }
     }
   },
   {
     test: /\.js$/,
     include: /\.entries/,
-    loader: 'babel-loader',
-    options: {
-      presets: ['@babel/env']
+    use: {
+      loader: 'babel-loader',
+      options: {
+        presets: [["@babel/env", { "targets": "> 0.25%, not dead, ie 11, ie 10" }]]
+      }
     }
   },
   {
     test: /\.styl/,
     include: /src\/view/,
-    loader: 'style-loader!css-loader!stylus-loader'
+    use: [
+      { loader: 'style-loader' },
+      { loader: 'css-loader' },
+      { loader: 'stylus-loader' }
+    ]
   },
   {
     test: /\.css/,
-    loaders: ['style-loader', 'css-loader']
+    use: [{ loader: 'style-loader' }, { loader: 'css-loader' }]
   },
   {
     test: /\.(jpe?g|png|gif)$/,
-    loader: 'file-loader'
+    use: 'file-loader'
   },
   {
     test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-    loader: 'url-loader?limit=10000&mimetype=application/font-woff'
+    use: 'url-loader?limit=10000&mimetype=application/font-woff'
   },
   {
     test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-    loader: 'file-loader'
+    use: 'file-loader'
   }
 ];
 
@@ -90,8 +98,10 @@ if (argv.coverage) {
     enforce: 'post',
     include: path.resolve('src/view'),
     exclude: new RegExp('__tests__'),
-    loader: 'istanbul-instrumenter-loader',
-    options: { esModules: true }
+    use: {
+      loader: 'istanbul-instrumenter-loader',
+      options: { esModules: true }
+    }
   });
 
   rules.push({
@@ -99,14 +109,16 @@ if (argv.coverage) {
     enforce: 'pre',
     include: path.resolve('src/lib'),
     exclude: new RegExp('__tests__'),
-    loader: 'istanbul-instrumenter-loader',
-    options: { esModules: true }
+    use: {
+      loader: 'istanbul-instrumenter-loader',
+      options: { esModules: true }
+    }
   });
 
   reporters.push('coverage-istanbul');
 }
 
-module.exports = config => {
+module.exports = (config) => {
   config.set({
     hostname: '0.0.0.0',
 
@@ -186,48 +198,54 @@ module.exports = config => {
       SL_CHROME: {
         base: 'SauceLabs',
         browserName: 'chrome',
-        version: 'latest'
+        browserVersion: 'latest',
+        platformName: 'Windows 10'
       },
       SL_FIREFOX: {
         base: 'SauceLabs',
         browserName: 'firefox',
-        version: 'latest'
+        browserVersion: 'latest',
+        platformName: 'Windows 10'
       },
       SL_SAFARI: {
         base: 'SauceLabs',
         browserName: 'safari',
-        version: 'latest'
+        browserVersion: 'latest',
+        platformName: 'macOS 10.15'
       },
       SL_IE10: {
         base: 'SauceLabs',
         browserName: 'internet explorer',
-        version: '10'
+        platformName: 'Windows 7',
+        browserVersion: '10'
       },
       SL_IE11: {
         base: 'SauceLabs',
         browserName: 'internet explorer',
-        version: '11'
+        platformName: 'Windows 7',
+        browserVersion: '11'
       },
       SL_EDGE: {
         base: 'SauceLabs',
         browserName: 'MicrosoftEdge',
-        version: 'latest'
+        browserVersion: 'latest',
+        platformName: 'Windows 10'
       },
       SL_IOS: {
         base: 'SauceLabs',
-        deviceName: 'iPhone XS Simulator',
-        appiumVersion: '1.9.1',
+        deviceName: 'iPhone X Simulator',
+        appiumVersion: '1.19.1',
         browserName: 'Safari',
         platformName: 'iOS',
-        platformVersion: '12.0'
+        platformVersion: '14.0'
       },
       SL_ANDROID: {
         base: 'SauceLabs',
         deviceName: 'Android GoogleAPI Emulator',
-        appiumVersion: '1.9.1',
+        appiumVersion: '1.18.1',
         browserName: 'Chrome',
         platformName: 'Android',
-        platformVersion: '7.1'
+        platformVersion: '11.0'
       }
     },
 
@@ -237,6 +255,7 @@ module.exports = config => {
       tunnelIdentifier: 'github-action-tunnel',
       startConnect: startConnect,
       retryLimit: 3,
+      idleTimeout: 360,
       recordVideo: false,
       recordScreenshots: false,
       // https://support.saucelabs.com/hc/en-us/articles/115010079868-Issues-with-Safari-and-Karma-Test-Runner
@@ -251,9 +270,9 @@ module.exports = config => {
 
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: Infinity,
+    concurrency: 5,
 
-    coverageIstanbulRer: {
+    coverageIstanbulReporter: {
       reports: ['html', 'lcovonly', 'text-summary'],
       'report-config': {
         html: {
@@ -264,8 +283,8 @@ module.exports = config => {
       combineBrowserReports: true
     },
 
-    captureTimeout: 180000,
-    browserDisconnectTimeout: 180000,
+    captureTimeout: 60000,
+    browserDisconnectTimeout: 20000,
     browserDisconnectTolerance: 3,
     browserNoActivityTimeout: 300000,
 
@@ -291,7 +310,6 @@ module.exports = config => {
     },
 
     webpackServer: {
-      stats: true,
       debug: false,
       progress: true,
       quiet: false
