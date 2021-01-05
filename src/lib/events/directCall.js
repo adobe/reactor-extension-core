@@ -30,12 +30,12 @@ window._satellite.track = function(identifier, detail) {
   identifier = identifier.trim();
   var triggers = triggersByIdentifier[identifier];
   if (triggers) {
-    var syntheticEvent = {
-      identifier: identifier,
-      detail: detail
-    };
-
+    
     triggers.forEach(function(trigger) {
+      var syntheticEvent = {
+        identifier: identifier,
+        detail: detail
+      };
       trigger(syntheticEvent);
     });
 
