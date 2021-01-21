@@ -12,9 +12,11 @@
 
 'use strict';
 
-describe('media ended event delegate', function() {
+describe('media ended event delegate', function () {
   var testStandardEvent = require('./helpers/testStandardEvent');
   var delegate = require('../mediaEnded');
 
-  testStandardEvent(function() { return delegate; }, 'ended');
+  testStandardEvent(function () {
+    return delegate;
+  }, 'ended');
 });

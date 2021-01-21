@@ -12,23 +12,23 @@
 
 'use strict';
 
-describe('getNamespacedStorage', function() {
-  var createMockStorage = function() {
+describe('getNamespacedStorage', function () {
+  var createMockStorage = function () {
     var storage = {};
     return {
-      setItem: function(key, value) {
+      setItem: function (key, value) {
         storage[key] = value;
       },
-      getItem: function(key) {
+      getItem: function (key) {
         return storage[key];
       },
-      removeItem: function(key) {
+      removeItem: function (key) {
         storage[key] = null;
       }
     };
   };
 
-  var createMockWindowUnavailableStorage = function() {
+  var createMockWindowUnavailableStorage = function () {
     return {
       get sessionStorage() {
         throw new Error('Storage unavailable.');
@@ -39,21 +39,23 @@ describe('getNamespacedStorage', function() {
     };
   };
 
-  ['sessionStorage', 'localStorage'].forEach(function(storageType) {
-    describe('using ' + storageType, function() {
+  ['sessionStorage', 'localStorage'].forEach(function (storageType) {
+    describe('using ' + storageType, function () {
       var itemKey = 'com.adobe.reactor.core.featurex.foo';
 
-      describe('getItem', function() {
-        it('returns item', function() {
+      describe('getItem', function () {
+        it('returns item', function () {
           // Mocking window because Safari throws an error when setting a storage item in
           // Private Browser Mode.
           var mockWindow = {};
 
           mockWindow[storageType] = createMockStorage();
 
-          var getNamespacedStorage = require('inject-loader!../getNamespacedStorage')({
-            '@adobe/reactor-window': mockWindow
-          });
+          var getNamespacedStorage = require('inject-loader!../getNamespacedStorage')(
+            {
+              '@adobe/reactor-window': mockWindow
+            }
+          );
 
           var storage = getNamespacedStorage(storageType, 'featurex');
 
@@ -61,12 +63,14 @@ describe('getNamespacedStorage', function() {
           expect(storage.getItem('foo')).toEqual('something');
         });
 
-        it('proper error handling if storage is disabled', function() {
+        it('proper error handling if storage is disabled', function () {
           var mockWindow = createMockWindowUnavailableStorage();
 
-          var getNamespacedStorage = require('inject-loader!../getNamespacedStorage')({
-            '@adobe/reactor-window': mockWindow
-          });
+          var getNamespacedStorage = require('inject-loader!../getNamespacedStorage')(
+            {
+              '@adobe/reactor-window': mockWindow
+            }
+          );
 
           var storage = getNamespacedStorage(storageType, 'featurex');
 
@@ -74,16 +78,18 @@ describe('getNamespacedStorage', function() {
         });
       });
 
-      describe('setItem', function() {
-        it('sets item', function() {
+      describe('setItem', function () {
+        it('sets item', function () {
           // Mocking window because Safari throws an error when setting a storage item in
           // Private Browser Mode.
           var mockWindow = {};
           mockWindow[storageType] = createMockStorage();
 
-          var getNamespacedStorage = require('inject-loader!../getNamespacedStorage')({
-            '@adobe/reactor-window': mockWindow
-          });
+          var getNamespacedStorage = require('inject-loader!../getNamespacedStorage')(
+            {
+              '@adobe/reactor-window': mockWindow
+            }
+          );
 
           var storage = getNamespacedStorage(storageType, 'featurex');
 
@@ -91,12 +97,14 @@ describe('getNamespacedStorage', function() {
           expect(mockWindow[storageType].getItem(itemKey)).toEqual('something');
         });
 
-        it('proper error handling if storage is disabled', function() {
+        it('proper error handling if storage is disabled', function () {
           var mockWindow = createMockWindowUnavailableStorage();
 
-          var getNamespacedStorage = require('inject-loader!../getNamespacedStorage')({
-            '@adobe/reactor-window': mockWindow
-          });
+          var getNamespacedStorage = require('inject-loader!../getNamespacedStorage')(
+            {
+              '@adobe/reactor-window': mockWindow
+            }
+          );
 
           var storage = getNamespacedStorage(storageType, 'featurex');
 

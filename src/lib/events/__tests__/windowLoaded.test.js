@@ -12,10 +12,10 @@
 
 'use strict';
 
-describe('window loaded event delegate', function() {
-  it('sends the trigger to the pageLifecycleEvents helper module', function() {
+describe('window loaded event delegate', function () {
+  it('sends the trigger to the pageLifecycleEvents helper module', function () {
     var windowLoadedInjector = require('inject-loader!../windowLoaded');
-    var trigger = function() {};
+    var trigger = function () {};
     var pageLifecycleEventsSpy = jasmine.createSpyObj('pageLifecycleEvents', [
       'registerWindowLoadedTrigger'
     ]);
@@ -25,8 +25,8 @@ describe('window loaded event delegate', function() {
     });
 
     delegate({}, trigger);
-    expect(pageLifecycleEventsSpy.registerWindowLoadedTrigger).toHaveBeenCalledWith(
-      trigger
-    );
+    expect(
+      pageLifecycleEventsSpy.registerWindowLoadedTrigger
+    ).toHaveBeenCalledWith(trigger);
   });
 });

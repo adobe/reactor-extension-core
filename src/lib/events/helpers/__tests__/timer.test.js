@@ -14,19 +14,19 @@
 
 var Timer = require('../timer');
 
-describe('timer', function() {
-  beforeEach(function() {
+describe('timer', function () {
+  beforeEach(function () {
     jasmine.clock().install();
 
     var baseTime = new Date();
     jasmine.clock().mockDate(baseTime);
   });
 
-  afterEach(function() {
+  afterEach(function () {
     jasmine.clock().uninstall();
   });
 
-  it('updates the tracked time every 1s', function() {
+  it('updates the tracked time every 1s', function () {
     var timer = new Timer();
     timer.start();
     jasmine.clock().tick(1000);
@@ -34,8 +34,8 @@ describe('timer', function() {
     expect(timer.getTime()).toBe(1000);
   });
 
-  describe('when paused', function() {
-    it('updates the track time until that moment', function() {
+  describe('when paused', function () {
+    it('updates the track time until that moment', function () {
       var timer = new Timer();
       timer.start();
       jasmine.clock().tick(400);
@@ -44,7 +44,7 @@ describe('timer', function() {
       expect(timer.getTime()).toBe(400);
     });
 
-    it('stops updating the tracked time', function() {
+    it('stops updating the tracked time', function () {
       var timer = new Timer();
       timer.start();
       jasmine.clock().tick(200);
@@ -55,8 +55,8 @@ describe('timer', function() {
     });
   });
 
-  describe('when resumed', function() {
-    it('it counts the time starting from that moment', function() {
+  describe('when resumed', function () {
+    it('it counts the time starting from that moment', function () {
       var timer = new Timer();
       timer.start();
       jasmine.clock().tick(400);
@@ -69,8 +69,8 @@ describe('timer', function() {
     });
   });
 
-  describe('when markers are provided', function() {
-    it('an markerPassed event is emitted', function() {
+  describe('when markers are provided', function () {
+    it('an markerPassed event is emitted', function () {
       var callback = jasmine.createSpy('onTimePassedCallback');
       var timer = new Timer();
       timer.on('markerPassed', callback);
@@ -82,7 +82,7 @@ describe('timer', function() {
       expect(callback).toHaveBeenCalledWith(5000);
     });
 
-    it('the markerPassed event is emitted once per each marker', function() {
+    it('the markerPassed event is emitted once per each marker', function () {
       var callback = jasmine.createSpy('onTimePassedCallback');
       var timer = new Timer();
       timer.on('markerPassed', callback);
@@ -104,7 +104,7 @@ describe('timer', function() {
       expect(callback.calls.count()).toEqual(2);
     });
 
-    it('no marker will be called twice', function() {
+    it('no marker will be called twice', function () {
       var callback = jasmine.createSpy('onTimePassedCallback');
       var timer = new Timer();
       timer.on('markerPassed', callback);
@@ -117,7 +117,7 @@ describe('timer', function() {
       expect(callback.calls.count()).toEqual(1);
     });
 
-    it('the markerPassed event will be emitted in ascending order', function() {
+    it('the markerPassed event will be emitted in ascending order', function () {
       var callback = jasmine.createSpy('onTimePassedCallback');
       var timer = new Timer();
       timer.on('markerPassed', callback);

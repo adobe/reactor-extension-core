@@ -23,7 +23,7 @@ var evaluatedEvents = new WeakMap();
  * @param node
  * @returns {boolean}
  */
-var getDelayableLink = function(node) {
+var getDelayableLink = function (node) {
   while (node) {
     var tagName = node.tagName;
 
@@ -33,12 +33,10 @@ var getDelayableLink = function(node) {
 
       if (
         href &&
-        (
-          !target ||
+        (!target ||
           target === '_self' ||
           (target === '_top' && window.top === window) ||
-          target === window.name
-        )
+          target === window.name)
       ) {
         return node;
       } else {
@@ -75,8 +73,8 @@ document.addEventListener('click', bubbly.evaluateEvent, true);
  * rules on ancestor elements.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function(settings, trigger) {
-  bubbly.addListener(settings, function(syntheticEvent) {
+module.exports = function (settings, trigger) {
+  bubbly.addListener(settings, function (syntheticEvent) {
     var nativeEvent = syntheticEvent.nativeEvent;
 
     // AppMeasurement captures the click events, and tries to detect if the element clicked is an A
@@ -96,7 +94,7 @@ module.exports = function(settings, trigger) {
         var delayableLink = getDelayableLink(nativeEvent.target);
         if (delayableLink) {
           nativeEvent.preventDefault();
-          setTimeout(function() {
+          setTimeout(function () {
             window.location = delayableLink.href;
           }, settings.anchorDelay);
         }

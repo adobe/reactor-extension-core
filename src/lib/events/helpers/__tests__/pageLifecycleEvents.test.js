@@ -11,7 +11,7 @@
  ****************************************************************************************/
 'use strict';
 
-describe('pageLifecycleEvents', function() {
+describe('pageLifecycleEvents', function () {
   var triggerDOMContentLoaded;
   var triggerWindowLoad;
   var triggerSetTimeout;
@@ -32,10 +32,10 @@ describe('pageLifecycleEvents', function() {
     windowLoaded: 'registerWindowLoadedTrigger'
   };
 
-  var generateTriggers = function() {
+  var generateTriggers = function () {
     var triggers = {};
-    Object.keys(triggerTypesToRegisterMethods).forEach(function(type) {
-      triggers[type] = jasmine.createSpy(type).and.callFake(function() {
+    Object.keys(triggerTypesToRegisterMethods).forEach(function (type) {
+      triggers[type] = jasmine.createSpy(type).and.callFake(function () {
         triggersResults.push(type);
       });
     });
@@ -43,14 +43,14 @@ describe('pageLifecycleEvents', function() {
     return triggers;
   };
 
-  var registerTriggers = function(delegate, triggers) {
-    Object.keys(triggers).forEach(function(key) {
+  var registerTriggers = function (delegate, triggers) {
+    Object.keys(triggers).forEach(function (key) {
       delegate[triggerTypesToRegisterMethods[key]](triggers[key]);
     });
   };
 
-  var checkTriggersFired = function(triggers, lifecycles) {
-    Object.keys(triggers).forEach(function(key) {
+  var checkTriggersFired = function (triggers, lifecycles) {
+    Object.keys(triggers).forEach(function (key) {
       if (lifecycles.indexOf(key) !== -1) {
         expect(triggers[key]).toHaveBeenCalled();
       } else {
@@ -59,22 +59,22 @@ describe('pageLifecycleEvents', function() {
     });
   };
 
-  beforeEach(function() {
+  beforeEach(function () {
     mockWindow = {
       navigator: { appVersion: 'something Chrome something' },
-      addEventListener: function(type, callback) {
+      addEventListener: function (type, callback) {
         if (type === 'load') {
           triggerWindowLoad = callback;
         }
       },
-      setTimeout: function(callback) {
+      setTimeout: function (callback) {
         triggerSetTimeout = callback;
       }
     };
 
     mockDocument = {
       readyState: 'loading',
-      addEventListener: function(type, callback) {
+      addEventListener: function (type, callback) {
         if (type === 'DOMContentLoaded') {
           triggerDOMContentLoaded = callback;
         }
@@ -92,26 +92,29 @@ describe('pageLifecycleEvents', function() {
     registerTriggers(delegate, triggers);
   });
 
-  afterAll(function() {
+  afterAll(function () {
     resetTurbineVariable();
   });
 
-  it('runs only library loaded triggers when library finishes loading', function() {
+  it('runs only library loaded triggers when library finishes loading', function () {
     checkTriggersFired(triggers, ['libraryLoaded']);
   });
 
-  it('runs library loaded and page bottom triggers on page bottom', function() {
+  it('runs library loaded and page bottom triggers on page bottom', function () {
     mockWindow._satellite.pageBottom();
     checkTriggersFired(triggers, ['libraryLoaded', 'pageBottom']);
   });
 
-  it('runs library loaded and page bottom and dom ready triggers on dom content loaded',
-    function() {
+  it(
+    'runs library loaded and page bottom and dom ready ' +
+      'triggers on dom content loaded',
+    function () {
       triggerDOMContentLoaded();
       checkTriggersFired(triggers, ['libraryLoaded', 'pageBottom', 'domReady']);
-    });
+    }
+  );
 
-  it('runs all triggers on window load', function() {
+  it('runs all triggers on window load', function () {
     triggerWindowLoad();
 
     checkTriggersFired(triggers, [
@@ -122,7 +125,7 @@ describe('pageLifecycleEvents', function() {
     ]);
   });
 
-  it('runs all triggers in order', function() {
+  it('runs all triggers in order', function () {
     triggerWindowLoad();
 
     expect(triggersResults).toEqual([
@@ -133,17 +136,17 @@ describe('pageLifecycleEvents', function() {
     ]);
   });
 
-  it('runs all triggers only once', function() {
+  it('runs all triggers only once', function () {
     mockWindow._satellite.pageBottom();
     triggerDOMContentLoaded();
     triggerWindowLoad();
 
-    Object.keys(triggers).forEach(function(key) {
+    Object.keys(triggers).forEach(function (key) {
       expect(triggers[key].calls.count()).toBe(1);
     });
   });
 
-  it('sends synthetic events to the dom ready triggers', function() {
+  it('sends synthetic events to the dom ready triggers', function () {
     var fakeEvent = {};
     triggerDOMContentLoaded(fakeEvent);
 
@@ -154,7 +157,7 @@ describe('pageLifecycleEvents', function() {
     });
   });
 
-  it('sends synthetic events to the window loaded triggers', function() {
+  it('sends synthetic events to the window loaded triggers', function () {
     var fakeEvent = {};
     triggerWindowLoad(fakeEvent);
 
@@ -165,12 +168,12 @@ describe('pageLifecycleEvents', function() {
     });
   });
 
-  it('auto detects correctly library loaded lifecycle event', function() {
+  it('auto detects correctly library loaded lifecycle event', function () {
     triggerSetTimeout();
     checkTriggersFired(triggers, ['libraryLoaded']);
   });
 
-  it('auto detects correctly dom ready lifecycle event', function() {
+  it('auto detects correctly dom ready lifecycle event', function () {
     mockDocument.readyState = 'interactive';
     var delegate = pageLifecycleEventsInjector({
       '@adobe/reactor-window': mockWindow,
@@ -182,7 +185,7 @@ describe('pageLifecycleEvents', function() {
     checkTriggersFired(triggers, ['libraryLoaded', 'pageBottom', 'domReady']);
   });
 
-  it('auto detects correctly window loaded lifecycle event', function() {
+  it('auto detects correctly window loaded lifecycle event', function () {
     mockDocument.readyState = 'complete';
     var delegate = pageLifecycleEventsInjector({
       '@adobe/reactor-window': mockWindow,
@@ -199,7 +202,7 @@ describe('pageLifecycleEvents', function() {
     ]);
   });
 
-  it("doesn't run dom ready events in IE10 until window is loaded", function() {
+  it("doesn't run dom ready events in IE10 until window is loaded", function () {
     mockDocument.readyState = 'interactive';
     mockWindow.navigator.appVersion = 'MSIE 10';
 

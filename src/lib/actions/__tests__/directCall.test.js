@@ -14,10 +14,10 @@
 
 var directCallActionDelegateInjector = require('inject-loader!../directCall');
 
-describe('direct call action delegate', function() {
-  it('triggers the specified direct-call Event Type', function() {
+describe('direct call action delegate', function () {
+  it('triggers the specified direct-call Event Type', function () {
     var mockWindow = {};
-    mockWindow._satellite = jasmine.createSpyObj("_satellite", ["track"]);
+    mockWindow._satellite = jasmine.createSpyObj('_satellite', ['track']);
 
     var delegate = directCallActionDelegateInjector({
       '@adobe/reactor-window': mockWindow
@@ -35,7 +35,8 @@ describe('direct call action delegate', function() {
     delegate(settings, event);
 
     // check that the Action has called _satellite.track() properly
-    expect(mockWindow._satellite.track).toHaveBeenCalledWith('foo', { prop: 'x' });
+    expect(mockWindow._satellite.track).toHaveBeenCalledWith('foo', {
+      prop: 'x'
+    });
   });
-
 });

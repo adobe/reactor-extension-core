@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-const isFunction = value => typeof value === 'function';
+const isFunction = (value) => typeof value === 'function';
 
 /**
  * Merges multiple form config objects.
@@ -20,31 +20,29 @@ const isFunction = value => typeof value === 'function';
  */
 export default (...formConfigs) => {
   const settingsToFormValuesFunctions = formConfigs
-    .map(formConfig => formConfig.settingsToFormValues)
+    .map((formConfig) => formConfig.settingsToFormValues)
     .filter(isFunction);
 
   const formValuesToSettingsFunctions = formConfigs
-    .map(formConfig => formConfig.formValuesToSettings)
+    .map((formConfig) => formConfig.formValuesToSettings)
     .filter(isFunction);
 
   const validateFunctions = formConfigs
-    .map(formConfig => formConfig.validate)
+    .map((formConfig) => formConfig.validate)
     .filter(isFunction);
 
   return {
     settingsToFormValues(values, settings, state) {
       return settingsToFormValuesFunctions.reduce(
-        (reducedValues, settingsToFormValues) => settingsToFormValues(
-          reducedValues, settings, state
-        ),
+        (reducedValues, settingsToFormValues) =>
+          settingsToFormValues(reducedValues, settings, state),
         values
       );
     },
     formValuesToSettings(settings, values, state) {
       return formValuesToSettingsFunctions.reduce(
-        (reducedSettings, formValuesToSettings) => formValuesToSettings(
-          reducedSettings, values, state
-        ),
+        (reducedSettings, formValuesToSettings) =>
+          formValuesToSettings(reducedSettings, values, state),
         settings
       );
     },

@@ -15,17 +15,17 @@
 var outerElement;
 var innerElement;
 
-var triggerCustomEvent = function(element, type, detail) {
+var triggerCustomEvent = function (element, type, detail) {
   var event = document.createEvent('CustomEvent');
   event.initCustomEvent(type, true, true, detail);
   element.dispatchEvent(event);
   return event;
 };
 
-describe('custom event event delegate', function() {
+describe('custom event event delegate', function () {
   var delegate = require('../customEvent');
 
-  beforeAll(function() {
+  beforeAll(function () {
     outerElement = document.createElement('div');
     outerElement.id = 'outer';
 
@@ -36,20 +36,23 @@ describe('custom event event delegate', function() {
     document.body.insertBefore(outerElement, document.body.firstChild);
   });
 
-  afterAll(function() {
+  afterAll(function () {
     document.body.removeChild(outerElement);
   });
 
-  it('triggers rule when event is dispatched from element', function() {
+  it('triggers rule when event is dispatched from element', function () {
     var CUSTOM_EVENT_TYPE = 'foo';
 
     var trigger = jasmine.createSpy();
 
-    delegate({
-      elementSelector: '#outer',
-      type: CUSTOM_EVENT_TYPE,
-      bubbleFireIfParent: true
-    }, trigger);
+    delegate(
+      {
+        elementSelector: '#outer',
+        type: CUSTOM_EVENT_TYPE,
+        bubbleFireIfParent: true
+      },
+      trigger
+    );
 
     triggerCustomEvent(innerElement, CUSTOM_EVENT_TYPE, { foo: 'bar' });
 
@@ -63,14 +66,17 @@ describe('custom event event delegate', function() {
     });
   });
 
-  it('triggers rule when event is dispatched from window', function() {
+  it('triggers rule when event is dispatched from window', function () {
     var CUSTOM_EVENT_TYPE = 'foo';
 
     var trigger = jasmine.createSpy();
 
-    delegate({
-      type: CUSTOM_EVENT_TYPE
-    }, trigger);
+    delegate(
+      {
+        type: CUSTOM_EVENT_TYPE
+      },
+      trigger
+    );
 
     triggerCustomEvent(window, CUSTOM_EVENT_TYPE, { foo: 'bar' });
 
@@ -84,14 +90,17 @@ describe('custom event event delegate', function() {
     });
   });
 
-  it('triggers rule when event is dispatched from document', function() {
+  it('triggers rule when event is dispatched from document', function () {
     var CUSTOM_EVENT_TYPE = 'foo';
 
     var trigger = jasmine.createSpy();
 
-    delegate({
-      type: CUSTOM_EVENT_TYPE
-    }, trigger);
+    delegate(
+      {
+        type: CUSTOM_EVENT_TYPE
+      },
+      trigger
+    );
 
     triggerCustomEvent(document, CUSTOM_EVENT_TYPE, { foo: 'bar' });
 
@@ -105,25 +114,31 @@ describe('custom event event delegate', function() {
     });
   });
 
-  it('only triggers rule pertaining to event type', function() {
+  it('only triggers rule pertaining to event type', function () {
     var CUSTOM_EVENT_TYPE_A = 'foo';
     var CUSTOM_EVENT_TYPE_B = 'bar';
 
     var triggerA = jasmine.createSpy();
 
-    delegate({
-      elementSelector: '#outer',
-      type: CUSTOM_EVENT_TYPE_A,
-      bubbleFireIfParent: true
-    }, triggerA);
+    delegate(
+      {
+        elementSelector: '#outer',
+        type: CUSTOM_EVENT_TYPE_A,
+        bubbleFireIfParent: true
+      },
+      triggerA
+    );
 
     var triggerB = jasmine.createSpy();
 
-    delegate({
-      elementSelector: '#outer',
-      type: CUSTOM_EVENT_TYPE_B,
-      bubbleFireIfParent: true
-    }, triggerB);
+    delegate(
+      {
+        elementSelector: '#outer',
+        type: CUSTOM_EVENT_TYPE_B,
+        bubbleFireIfParent: true
+      },
+      triggerB
+    );
 
     triggerCustomEvent(outerElement, CUSTOM_EVENT_TYPE_B);
 
@@ -131,24 +146,30 @@ describe('custom event event delegate', function() {
     expect(triggerB.calls.count()).toBe(1);
   });
 
-  it('only triggers each rule once when multiple rules watching for same event type', function() {
+  it('only triggers each rule once when multiple rules watching for same event type', function () {
     var CUSTOM_EVENT_TYPE = 'foo';
 
     var triggerA = jasmine.createSpy();
 
-    delegate({
-      elementSelector: '#outer',
-      type: CUSTOM_EVENT_TYPE,
-      bubbleFireIfParent: true
-    }, triggerA);
+    delegate(
+      {
+        elementSelector: '#outer',
+        type: CUSTOM_EVENT_TYPE,
+        bubbleFireIfParent: true
+      },
+      triggerA
+    );
 
     var triggerB = jasmine.createSpy();
 
-    delegate({
-      elementSelector: '#outer',
-      type: CUSTOM_EVENT_TYPE,
-      bubbleFireIfParent: true
-    }, triggerB);
+    delegate(
+      {
+        elementSelector: '#outer',
+        type: CUSTOM_EVENT_TYPE,
+        bubbleFireIfParent: true
+      },
+      triggerB
+    );
 
     triggerCustomEvent(outerElement, CUSTOM_EVENT_TYPE);
 

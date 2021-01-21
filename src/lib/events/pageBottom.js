@@ -20,6 +20,6 @@ var pageLifecycleEvents = require('./helpers/pageLifecycleEvents');
  * @param {Object} settings The event settings object.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function(settings, trigger) {
+module.exports = function (settings, trigger) {
   pageLifecycleEvents.registerPageBottomTrigger(trigger);
 };

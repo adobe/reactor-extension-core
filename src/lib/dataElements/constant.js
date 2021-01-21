@@ -19,6 +19,6 @@
  * @returns {string}
  */
 
-module.exports = function(settings) {
+module.exports = function (settings) {
   return settings.value;
 };

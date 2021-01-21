@@ -15,7 +15,7 @@
 var document = require('@adobe/reactor-document');
 var matchOperatorsRegex = /[|\\{}()[\]^$+*?.-]/g;
 
-var escapeForRegex = function(string) {
+var escapeForRegex = function (string) {
   if (typeof string !== 'string') {
     throw new TypeError('Expected a string');
   }
@@ -29,10 +29,10 @@ var escapeForRegex = function(string) {
  * @param {string[]} settings.domains An array of acceptable domains.
  * @returns {boolean}
  */
-module.exports = function(settings) {
+module.exports = function (settings) {
   var domain = document.location.hostname;
 
-  return settings.domains.some(function(acceptableDomain) {
+  return settings.domains.some(function (acceptableDomain) {
     // If document.location.hostname is example.com and the acceptableDomain is ample.com, the
     // condition would pass without (^|\.), which is incorrect. We can't only use ^ though because
     // if document.location.hostname is niner.example.com and the acceptableDomain is example.com,

@@ -23,11 +23,10 @@ var compareNumbers = require('./helpers/compareNumbers');
  * compare against count.
  * @returns {boolean}
  */
-module.exports = function(settings) {
+module.exports = function (settings) {
   return compareNumbers(
     visitorTracking.getSessionCount(),
     settings.operator,
     settings.count
   );
 };
-

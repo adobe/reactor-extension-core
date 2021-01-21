@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 import React from 'react';
-import { Flex, TextField, View, Picker, Item } from '@adobe/react-spectrum';
+import { Flex, TextField, Picker, Item } from '@adobe/react-spectrum';
 import WrappedField from '../components/wrappedField';
 import ElementFilter, {
   formConfig as elementFilterFormConfig

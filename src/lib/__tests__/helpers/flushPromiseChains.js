@@ -19,14 +19,14 @@ governing permissions and limitations under the License.
  * are no longer than 10 promises long.
  * @returns {Promise}
  */
-module.exports = function() {
+module.exports = function () {
   var promise;
 
   for (var i = 0; i < 10; i += 1) {
     promise = promise
-      ? promise.then(function() {
-        return Promise.resolve();
-      })
+      ? promise.then(function () {
+          return Promise.resolve();
+        })
       : Promise.resolve();
   }
 

@@ -12,35 +12,35 @@
 
 'use strict';
 
-var assertTriggerCall = function(options) {
+var assertTriggerCall = function (options) {
   expect(options.call.args[0]).toEqual({
     method: options.method,
     zoom: options.zoom
   });
 };
 
-describe('zoom change event delegate', function() {
+describe('zoom change event delegate', function () {
   var delegate;
   var mockWindow = {
     ongestureend: null,
     ontouchend: null
   };
 
-  beforeAll(function() {
+  beforeAll(function () {
     jasmine.clock().install();
     jasmine.clock().mockDate();
 
     var delegateInjector = require('inject-loader!../zoomChange');
     delegate = delegateInjector({
-      '@adobe/reactor-window': mockWindow,
+      '@adobe/reactor-window': mockWindow
     });
   });
 
-  afterAll(function() {
+  afterAll(function () {
     jasmine.clock().uninstall();
   });
 
-  it('triggers rule when zoom changes', function() {
+  it('triggers rule when zoom changes', function () {
     var trigger = jasmine.createSpy();
 
     mockWindow.innerWidth = document.documentElement.clientWidth;

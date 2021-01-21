@@ -13,7 +13,7 @@
 'use strict';
 
 var mockVisitorTracking = {
-  getTrafficSource: function() {
+  getTrafficSource: function () {
     return 'http://trafficsource.com';
   }
 };
@@ -23,32 +23,31 @@ var conditionDelegate = conditionDelegateInjector({
   '../helpers/visitorTracking': mockVisitorTracking
 });
 
-var getSettings = function(source, sourceIsRegex) {
+var getSettings = function (source, sourceIsRegex) {
   return {
     source: source,
     sourceIsRegex: sourceIsRegex
   };
 };
 
-describe('traffic source condition delegate', function() {
-  it('returns true when the traffic source matches a string', function() {
+describe('traffic source condition delegate', function () {
+  it('returns true when the traffic source matches a string', function () {
     var settings = getSettings('http://trafficsource.com', false);
     expect(conditionDelegate(settings)).toBe(true);
   });
 
-  it('returns false when the traffic source does not match a string', function() {
+  it('returns false when the traffic source does not match a string', function () {
     var settings = getSettings('http://foo.com', false);
     expect(conditionDelegate(settings)).toBe(false);
   });
 
-  it('returns true when the traffic source matches a regex', function() {
+  it('returns true when the traffic source matches a regex', function () {
     var settings = getSettings('Traffic.ource', true);
     expect(conditionDelegate(settings)).toBe(true);
   });
 
-  it('returns false when the traffic source does not match a regex', function() {
+  it('returns false when the traffic source does not match a regex', function () {
     var settings = getSettings('my\\.yahoo\\.com', true);
     expect(conditionDelegate(settings)).toBe(false);
   });
 });
-

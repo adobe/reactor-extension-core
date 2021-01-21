@@ -14,8 +14,8 @@
 
 var dataElementDelegate = require('../randomNumber');
 
-describe('random number data element delegate', function() {
-  it('returns a random number between the min and the max', function() {
+describe('random number data element delegate', function () {
+  it('returns a random number between the min and the max', function () {
     var settings = {
       min: 10,
       max: 20
@@ -26,7 +26,7 @@ describe('random number data element delegate', function() {
     expect(result).toBeLessThanOrEqual(20);
   });
 
-  it('returns NaN if min is greater than max', function() {
+  it('returns NaN if min is greater than max', function () {
     var settings = {
       min: 20,
       max: 10

@@ -13,9 +13,8 @@
 /*eslint no-restricted-globals: 0*/
 /*eslint object-curly-newline: 0*/
 /*eslint implicit-arrow-linebreak: 0*/
-export const isNumberLike = value => (
-  !isNaN(value) && (typeof value !== 'string' || value.trim().length > 0)
-);
+export const isNumberLike = (value) =>
+  !isNaN(value) && (typeof value !== 'string' || value.trim().length > 0);
 
 export const isNumberLikeInRange = (value, options) => {
   const { min, minInclusive = true, max, maxInclusive = true } = options;
@@ -31,9 +30,9 @@ export const isNumberLikeInRange = (value, options) => {
 
 export const isInteger =
   Number.isInteger ||
-  (value =>
+  ((value) =>
     typeof value === 'number' &&
     isFinite(value) &&
     Math.floor(value) === value);
 
-export const isDataElementToken = value => /^%([^%]+)%$/.test(value);
+export const isDataElementToken = (value) => /^%([^%]+)%$/.test(value);

@@ -20,7 +20,7 @@ var document = require('@adobe/reactor-document');
  * @param {string} settings.attribute The attribute that should be returned.
  * @returns {string}
  */
-module.exports = function(settings) {
+module.exports = function (settings) {
   switch (settings.attribute) {
     case 'url':
       return document.location.href;

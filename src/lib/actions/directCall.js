@@ -24,7 +24,7 @@ var window = require('@adobe/reactor-window');
  * @param {Object} event.target The element on which the event occurred.
  * <code>javascript</code> or <code>html</code>.
  */
-module.exports = function(settings, event) {
+module.exports = function (settings, event) {
   if (settings && settings.identifier) {
     window._satellite.track(settings.identifier, event);
   }

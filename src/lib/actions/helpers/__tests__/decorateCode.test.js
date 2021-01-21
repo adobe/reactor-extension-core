@@ -13,8 +13,8 @@ governing permissions and limitations under the License.
 
 var decorateCodeInjector = require('inject-loader!../decorateCode');
 
-describe('decorate code', function() {
-  it('decorates javascript action', function() {
+describe('decorate code', function () {
+  it('decorates javascript action', function () {
     var settings = {
       language: 'javascript',
       source: 'console.log("logging")'
@@ -45,7 +45,7 @@ describe('decorate code', function() {
     );
   });
 
-  it('decorates global javascript action', function() {
+  it('decorates global javascript action', function () {
     var settings = {
       language: 'javascript',
       global: true,
@@ -78,7 +78,7 @@ describe('decorate code', function() {
     );
   });
 
-  it('decorates html action', function() {
+  it('decorates html action', function () {
     var settings = {
       language: 'html',
       global: true,

@@ -14,13 +14,30 @@
 var testStandardEvent = require('./helpers/testStandardEvent');
 var delegateInjector = require('inject-loader!../click');
 
-var getClickEvent = function() {
+var getClickEvent = function () {
   var event;
 
-  if (navigator.userAgent.indexOf('MSIE') !== -1 || navigator.appVersion.indexOf('Trident/') > 0) {
+  if (
+    navigator.userAgent.indexOf('MSIE') !== -1 ||
+    navigator.appVersion.indexOf('Trident/') > 0
+  ) {
     event = document.createEvent('MouseEvent');
     event.initMouseEvent(
-      'click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null
+      'click',
+      true,
+      true,
+      window,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      false,
+      false,
+      false,
+      0,
+      null
     );
   } else {
     event = new MouseEvent('click');
@@ -29,23 +46,25 @@ var getClickEvent = function() {
   return event;
 };
 
-describe('click event delegate', function() {
+describe('click event delegate', function () {
   var mockWindow = {};
   var delegate;
 
-  beforeEach(function() {
+  beforeEach(function () {
     delegate = delegateInjector({
       '@adobe/reactor-window': mockWindow
     });
   });
 
-  afterEach(function() {
+  afterEach(function () {
     resetTurbineVariable();
   });
 
-  testStandardEvent(function() { return delegate; }, 'click');
+  testStandardEvent(function () {
+    return delegate;
+  }, 'click');
 
-  describe('anchor delay', function() {
+  describe('anchor delay', function () {
     var INITIAL_LOCATION = 'http://clicktests.com/';
     var LINK_LOCATION = 'http://example.com/';
     var defaultPrevented;
@@ -55,12 +74,12 @@ describe('click event delegate', function() {
     // Regardless of what we're testing, we can't let a simulated link click take us away
     // from the testing page. However, we also need to record if the default was prevented by
     // the delegate so we can assert on it within the tests.
-    var clickHandler = function(event) {
+    var clickHandler = function (event) {
       defaultPrevented = event.defaultPrevented;
       event.preventDefault();
     };
 
-    beforeEach(function() {
+    beforeEach(function () {
       jasmine.clock().install();
       document.addEventListener('click', clickHandler);
 
@@ -79,7 +98,7 @@ describe('click event delegate', function() {
       document.body.appendChild(link);
     });
 
-    afterEach(function() {
+    afterEach(function () {
       document.body.removeChild(link);
 
       // Without resetting between tests, the delegate would continue watching for and taking
@@ -90,10 +109,13 @@ describe('click event delegate', function() {
       document.removeEventListener('click', clickHandler);
     });
 
-    it('delays navigation by a custom delay when link is clicked', function() {
-      delegate({
-        anchorDelay: 3000
-      }, function() {});
+    it('delays navigation by a custom delay when link is clicked', function () {
+      delegate(
+        {
+          anchorDelay: 3000
+        },
+        function () {}
+      );
 
       link.click();
 
@@ -104,10 +126,13 @@ describe('click event delegate', function() {
       expect(mockWindow.location).toEqual(LINK_LOCATION);
     });
 
-    it('delays navigation by a custom delay when link descendant clicked', function() {
-      delegate({
-        anchorDelay: 3000
-      }, function() {});
+    it('delays navigation by a custom delay when link descendant clicked', function () {
+      delegate(
+        {
+          anchorDelay: 3000
+        },
+        function () {}
+      );
 
       spanWithinLink.click();
 
@@ -118,119 +143,153 @@ describe('click event delegate', function() {
       expect(mockWindow.location).toEqual(LINK_LOCATION);
     });
 
-    it('does not delay navigation if no related rule runs', function() {
-      delegate({
-        elementSelector: 'h2',
-        anchorDelay: 100
-      }, function() {});
+    it('does not delay navigation if no related rule runs', function () {
+      delegate(
+        {
+          elementSelector: 'h2',
+          anchorDelay: 100
+        },
+        function () {}
+      );
 
       link.click();
 
       expect(defaultPrevented).toBe(false);
     });
 
-    it('does not delay navigation if the element clicked on is not a link', function() {
-      delegate({
-        anchorDelay: 100
-      }, function() {});
+    it('does not delay navigation if the element clicked on is not a link', function () {
+      delegate(
+        {
+          anchorDelay: 100
+        },
+        function () {}
+      );
 
       document.body.click();
 
       expect(defaultPrevented).toBe(false);
     });
 
-    it('does not delay navigation if the link does not have an href', function() {
+    it('does not delay navigation if the link does not have an href', function () {
       link.removeAttribute('href');
 
-      delegate({
-        anchorDelay: 100
-      }, function() {});
+      delegate(
+        {
+          anchorDelay: 100
+        },
+        function () {}
+      );
 
       link.click();
 
       expect(defaultPrevented).toBe(false);
     });
 
-    it('does not delay navigation if the link has target=_blank', function() {
+    it('does not delay navigation if the link has target=_blank', function () {
       link.setAttribute('target', '_blank');
 
-      delegate({
-        anchorDelay: 100
-      }, function() {});
+      delegate(
+        {
+          anchorDelay: 100
+        },
+        function () {}
+      );
 
       link.click();
 
       expect(defaultPrevented).toBe(false);
     });
 
-    it('does not delay navigation if the link has target=_top and is within an iframe', function() {
-      mockWindow.top = {};
+    it(
+      'does not delay navigation if the link has target=_top and is' +
+        ' within an iframe',
+      function () {
+        mockWindow.top = {};
+        link.setAttribute('target', '_top');
+
+        delegate(
+          {
+            anchorDelay: 100
+          },
+          function () {}
+        );
+
+        link.click();
+
+        expect(defaultPrevented).toBe(false);
+      }
+    );
+
+    it('delays navigation if the link has target=_top and is not within an iframe', function () {
       link.setAttribute('target', '_top');
 
-      delegate({
-        anchorDelay: 100
-      }, function() {});
-
-      link.click();
-
-      expect(defaultPrevented).toBe(false);
-    });
-
-    it('delays navigation if the link has target=_top and is not within an iframe', function() {
-      link.setAttribute('target', '_top');
-
-      delegate({
-        anchorDelay: 100
-      }, function() {});
+      delegate(
+        {
+          anchorDelay: 100
+        },
+        function () {}
+      );
 
       link.click();
 
       expect(defaultPrevented).toBe(true);
     });
 
-    it('does not delay navigation if the link has target=_parent', function() {
+    it('does not delay navigation if the link has target=_parent', function () {
       link.setAttribute('target', '_parent');
 
-      delegate({
-        anchorDelay: 100
-      }, function() {});
+      delegate(
+        {
+          anchorDelay: 100
+        },
+        function () {}
+      );
 
       link.click();
 
       expect(defaultPrevented).toBe(false);
     });
 
-    it('delays navigation if the link has a target that is the window name', function() {
+    it('delays navigation if the link has a target that is the window name', function () {
       link.setAttribute('target', 'myWindow');
 
-      delegate({
-        anchorDelay: 100
-      }, function() {});
+      delegate(
+        {
+          anchorDelay: 100
+        },
+        function () {}
+      );
 
       link.click();
 
       expect(defaultPrevented).toBe(true);
     });
 
-    it('delays navigation if the link has a target that is not equal the window name', function() {
+    it('delays navigation if the link has a target that is not equal the window name', function () {
       link.setAttribute('target', 'otherWindow');
 
-      delegate({
-        anchorDelay: 100
-      }, function() {});
+      delegate(
+        {
+          anchorDelay: 100
+        },
+        function () {}
+      );
 
       link.click();
 
       expect(defaultPrevented).toBe(false);
     });
 
-    it('ignores the fake events generated by AppMeasurement', function() {
+    it('ignores the fake events generated by AppMeasurement', function () {
       var trigger = jasmine.createSpy();
 
-      delegate({
-        bubbleFireIfParent: true,
-        bubbleFireIfChildFired: true
-      }, trigger);
+      delegate(
+        {
+          bubbleFireIfParent: true,
+          bubbleFireIfChildFired: true
+        },
+        trigger
+      );
 
       var event = getClickEvent();
       event['s_fe'] = 1;

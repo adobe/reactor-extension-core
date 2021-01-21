@@ -30,7 +30,7 @@ var mockDocument = {
 
 var visitorTrackingInjector = require('inject-loader!../visitorTracking');
 
-var getVisitorTracking = function() {
+var getVisitorTracking = function () {
   return visitorTrackingInjector({
     '@adobe/reactor-cookie': cookie,
     '@adobe/reactor-document': mockDocument,
@@ -40,16 +40,16 @@ var getVisitorTracking = function() {
 
 var COOKIE_PREFIX = '_sdsat_';
 
-var clearTestCookies = function() {
-  Object.keys(cookie.get()).forEach(function(cookieName) {
+var clearTestCookies = function () {
+  Object.keys(cookie.get()).forEach(function (cookieName) {
     if (cookieName.indexOf(COOKIE_PREFIX) === 0) {
       cookie.remove(cookieName);
     }
   });
 };
 
-describe('visitor tracking', function() {
-  var cleanUp = function() {
+describe('visitor tracking', function () {
+  var cleanUp = function () {
     clearTestCookies();
     window.sessionStorage.clear();
     window.localStorage.clear();
@@ -57,7 +57,7 @@ describe('visitor tracking', function() {
 
   afterEach(cleanUp);
 
-  beforeAll(function() {
+  beforeAll(function () {
     cleanUp();
     spyOn(cookie, 'set').and.callThrough();
     mockTurbineVariable({
@@ -65,36 +65,45 @@ describe('visitor tracking', function() {
     });
   });
 
-  afterAll(function() {
+  afterAll(function () {
     resetTurbineVariable();
   });
 
-  it('tracks the landing page if the current page is the landing page', function() {
+  it('tracks the landing page if the current page is the landing page', function () {
     var url1 = mockWindow.location.href;
     var url2 = 'http://visitortracking.com/somethingelse.html';
     var visitorTracking = getVisitorTracking();
 
-    expect(window.sessionStorage.getItem('com.adobe.reactor.core.visitorTracking.landingPage'))
-      .toBe(url1);
+    expect(
+      window.sessionStorage.getItem(
+        'com.adobe.reactor.core.visitorTracking.landingPage'
+      )
+    ).toBe(url1);
     expect(visitorTracking.getLandingPage()).toBe(url1);
 
     mockWindow.location.href = url2;
     visitorTracking = getVisitorTracking();
 
-    expect(window.sessionStorage.getItem('com.adobe.reactor.core.visitorTracking.landingPage'))
-      .toBe(url1);
+    expect(
+      window.sessionStorage.getItem(
+        'com.adobe.reactor.core.visitorTracking.landingPage'
+      )
+    ).toBe(url1);
     expect(visitorTracking.getLandingPage()).toBe(url1);
   });
 
-  it('tracks the landing time', function() {
+  it('tracks the landing time', function () {
     jasmine.clock().install();
 
     var landingDate = new Date();
     jasmine.clock().mockDate(landingDate);
 
     var visitorTracking = getVisitorTracking();
-    expect(window.sessionStorage.getItem('com.adobe.reactor.core.visitorTracking.landingTime'))
-      .toBe(landingDate.getTime().toString());
+    expect(
+      window.sessionStorage.getItem(
+        'com.adobe.reactor.core.visitorTracking.landingTime'
+      )
+    ).toBe(landingDate.getTime().toString());
     expect(visitorTracking.getLandingTime()).toBe(landingDate.getTime());
 
     // Simulate moving to a new page. The landing time should remain the same.
@@ -103,93 +112,131 @@ describe('visitor tracking', function() {
     jasmine.clock().tick(100000);
 
     visitorTracking = getVisitorTracking();
-    expect(window.sessionStorage.getItem('com.adobe.reactor.core.visitorTracking.landingTime'))
-      .toBe(landingDate.getTime().toString());
+    expect(
+      window.sessionStorage.getItem(
+        'com.adobe.reactor.core.visitorTracking.landingTime'
+      )
+    ).toBe(landingDate.getTime().toString());
     expect(visitorTracking.getLandingTime()).toBe(landingDate.getTime());
 
     jasmine.clock().uninstall();
   });
 
-  it('tracks minutes on site', function() {
+  it('tracks minutes on site', function () {
     jasmine.clock().install();
     jasmine.clock().mockDate(new Date(1000));
 
     var visitorTracking = getVisitorTracking();
-    expect(window.sessionStorage.getItem('com.adobe.reactor.core.visitorTracking.landingTime'))
-      .toBe('1000');
+    expect(
+      window.sessionStorage.getItem(
+        'com.adobe.reactor.core.visitorTracking.landingTime'
+      )
+    ).toBe('1000');
     expect(visitorTracking.getMinutesOnSite()).toBe(0);
 
     jasmine.clock().tick(2.7 * 60 * 1000);
 
     visitorTracking = getVisitorTracking();
-    expect(window.sessionStorage.getItem('com.adobe.reactor.core.visitorTracking.landingTime'))
-      .toBe('1000');
+    expect(
+      window.sessionStorage.getItem(
+        'com.adobe.reactor.core.visitorTracking.landingTime'
+      )
+    ).toBe('1000');
     expect(visitorTracking.getMinutesOnSite()).toBe(2);
     jasmine.clock().uninstall();
   });
 
-  it('tracks the number of sessions', function() {
+  it('tracks the number of sessions', function () {
     var visitorTracking = getVisitorTracking();
-    expect(window.localStorage.getItem('com.adobe.reactor.core.visitorTracking.sessionCount'))
-      .toBe('1');
+    expect(
+      window.localStorage.getItem(
+        'com.adobe.reactor.core.visitorTracking.sessionCount'
+      )
+    ).toBe('1');
     expect(visitorTracking.getSessionCount()).toBe(1);
 
     visitorTracking = getVisitorTracking();
-    expect(window.localStorage.getItem('com.adobe.reactor.core.visitorTracking.sessionCount'))
-      .toBe('1');
+    expect(
+      window.localStorage.getItem(
+        'com.adobe.reactor.core.visitorTracking.sessionCount'
+      )
+    ).toBe('1');
     expect(visitorTracking.getSessionCount()).toBe(1);
 
     // Number of sessions is incremented only if the landing page has not been stored.
-    window.sessionStorage.removeItem('com.adobe.reactor.core.visitorTracking.landingPage');
+    window.sessionStorage.removeItem(
+      'com.adobe.reactor.core.visitorTracking.landingPage'
+    );
 
     visitorTracking = getVisitorTracking();
-    expect(window.localStorage.getItem('com.adobe.reactor.core.visitorTracking.sessionCount'))
-      .toBe('2');
+    expect(
+      window.localStorage.getItem(
+        'com.adobe.reactor.core.visitorTracking.sessionCount'
+      )
+    ).toBe('2');
     expect(visitorTracking.getSessionCount()).toBe(2);
   });
 
-  it('tracks lifetime pages viewed', function() {
+  it('tracks lifetime pages viewed', function () {
     var visitorTracking = getVisitorTracking();
-    expect(window.localStorage.getItem('com.adobe.reactor.core.visitorTracking.pagesViewed'))
-      .toBe('1');
+    expect(
+      window.localStorage.getItem(
+        'com.adobe.reactor.core.visitorTracking.pagesViewed'
+      )
+    ).toBe('1');
     expect(visitorTracking.getLifetimePageViewCount()).toBe(1);
 
     visitorTracking = getVisitorTracking();
-    expect(window.localStorage.getItem('com.adobe.reactor.core.visitorTracking.pagesViewed'))
-      .toBe('2');
+    expect(
+      window.localStorage.getItem(
+        'com.adobe.reactor.core.visitorTracking.pagesViewed'
+      )
+    ).toBe('2');
     expect(visitorTracking.getLifetimePageViewCount()).toBe(2);
   });
 
-  it('tracks session pages viewed', function() {
+  it('tracks session pages viewed', function () {
     var visitorTracking = getVisitorTracking();
-    expect(window.sessionStorage.getItem('com.adobe.reactor.core.visitorTracking.pagesViewed'))
-      .toBe('1');
+    expect(
+      window.sessionStorage.getItem(
+        'com.adobe.reactor.core.visitorTracking.pagesViewed'
+      )
+    ).toBe('1');
     expect(visitorTracking.getSessionPageViewCount()).toBe(1);
 
     visitorTracking = getVisitorTracking();
-    expect(window.sessionStorage.getItem('com.adobe.reactor.core.visitorTracking.pagesViewed'))
-      .toBe('2');
+    expect(
+      window.sessionStorage.getItem(
+        'com.adobe.reactor.core.visitorTracking.pagesViewed'
+      )
+    ).toBe('2');
     expect(visitorTracking.getSessionPageViewCount()).toBe(2);
   });
 
-  it('tracks traffic source', function() {
+  it('tracks traffic source', function () {
     var referrer1 = mockDocument.referrer;
     var referrer2 = 'http://otherreferrer.com';
 
     var visitorTracking = getVisitorTracking();
-    expect(window.sessionStorage.getItem('com.adobe.reactor.core.visitorTracking.trafficSource'))
-      .toBe(referrer1);
+    expect(
+      window.sessionStorage.getItem(
+        'com.adobe.reactor.core.visitorTracking.trafficSource'
+      )
+    ).toBe(referrer1);
     expect(visitorTracking.getTrafficSource()).toBe(referrer1);
 
     mockDocument.referrer = referrer2;
 
     visitorTracking = getVisitorTracking();
-    expect(window.sessionStorage.getItem('com.adobe.reactor.core.visitorTracking.trafficSource'))
-      .toBe(referrer1);
+    expect(
+      window.sessionStorage.getItem(
+        'com.adobe.reactor.core.visitorTracking.trafficSource'
+      )
+    ).toBe(referrer1);
     expect(visitorTracking.getTrafficSource()).toBe(referrer1);
   });
 
-  it('tracks whether the visitor is new', function() {
+  it('tracks whether the visitor is new', function () {
     var visitorTracking = getVisitorTracking();
 
     expect(visitorTracking.getIsNewVisitor()).toBe(true);
@@ -197,42 +244,59 @@ describe('visitor tracking', function() {
     // The visitor is considered "returning" if more than one session has been recorded.
     // The session count is incremented when the landing page has not been stored.
     // Therefore, to make getIsNewVisitor() return false we have to reset the stored landing page.
-    window.sessionStorage.removeItem('com.adobe.reactor.core.visitorTracking.landingPage');
+    window.sessionStorage.removeItem(
+      'com.adobe.reactor.core.visitorTracking.landingPage'
+    );
 
     visitorTracking = getVisitorTracking();
     expect(visitorTracking.getIsNewVisitor()).toBe(false);
   });
 
-  it('migrates cookie data once', function() {
+  it('migrates cookie data once', function () {
     cookie.set('_sdsat_session_count', '12');
     cookie.set('_sdsat_lt_pages_viewed', '342');
 
     var visitorTracking = getVisitorTracking();
 
-    expect(window.localStorage.getItem('com.adobe.reactor.core.visitorTracking.sessionCount'))
-      .toBe('13');
+    expect(
+      window.localStorage.getItem(
+        'com.adobe.reactor.core.visitorTracking.sessionCount'
+      )
+    ).toBe('13');
     expect(visitorTracking.getSessionCount()).toBe(13);
 
-    expect(window.localStorage.getItem('com.adobe.reactor.core.visitorTracking.pagesViewed'))
-      .toBe('343');
+    expect(
+      window.localStorage.getItem(
+        'com.adobe.reactor.core.visitorTracking.pagesViewed'
+      )
+    ).toBe('343');
     expect(visitorTracking.getLifetimePageViewCount()).toBe(343);
 
     // If migration didn't only occur a single time, this second migration would overwrite the
     // values stored in session and local storage during the previous migration.
-    expect(window.localStorage.getItem('com.adobe.reactor.core.visitorTracking.cookiesMigrated'))
-      .toBe('true');
+    expect(
+      window.localStorage.getItem(
+        'com.adobe.reactor.core.visitorTracking.cookiesMigrated'
+      )
+    ).toBe('true');
 
     cookie.set('_sdsat_session_count', '12345');
     cookie.set('_sdsat_lt_pages_viewed', '34256456');
 
     visitorTracking = getVisitorTracking();
 
-    expect(window.localStorage.getItem('com.adobe.reactor.core.visitorTracking.sessionCount'))
-      .toBe('13');
+    expect(
+      window.localStorage.getItem(
+        'com.adobe.reactor.core.visitorTracking.sessionCount'
+      )
+    ).toBe('13');
     expect(visitorTracking.getSessionCount()).toBe(13);
 
-    expect(window.localStorage.getItem('com.adobe.reactor.core.visitorTracking.pagesViewed'))
-      .toBe('344');
+    expect(
+      window.localStorage.getItem(
+        'com.adobe.reactor.core.visitorTracking.pagesViewed'
+      )
+    ).toBe('344');
     expect(visitorTracking.getLifetimePageViewCount()).toBe(344);
   });
 });

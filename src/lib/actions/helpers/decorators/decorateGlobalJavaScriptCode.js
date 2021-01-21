@@ -12,7 +12,7 @@ governing permissions and limitations under the License.
 
 var Promise = require('@adobe/reactor-promise');
 
-module.exports = function(_, source) {
+module.exports = function (_, source) {
   // The line break after the source is important in case their last line of code is a comment.
   return {
     code: '<scr' + 'ipt>\n' + source + '\n</scr' + 'ipt>',

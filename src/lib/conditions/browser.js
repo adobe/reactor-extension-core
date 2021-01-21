@@ -20,7 +20,6 @@ var clientInfo = require('./helpers/clientInfo');
  * @param {string[]} settings.browsers An array of acceptable browsers.
  * @returns {boolean}
  */
-module.exports = function(settings) {
+module.exports = function (settings) {
   return settings.browsers.indexOf(clientInfo.browser) !== -1;
 };
-

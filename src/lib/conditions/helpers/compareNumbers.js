@@ -30,7 +30,7 @@ var comparisonOperator = {
  * @param {number} num2 The second number.
  * @returns {Function}
  */
-var compareNumbers = function(num1, op, num2) {
+var compareNumbers = function (num1, op, num2) {
   switch (op) {
     case comparisonOperator.GREATER_THAN:
       return num1 > num2;

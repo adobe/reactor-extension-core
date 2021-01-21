@@ -14,10 +14,10 @@
 
 var conditionDelegateInjector = require('inject-loader!../queryStringParameter');
 
-describe('query string parameter condition delegate', function() {
+describe('query string parameter condition delegate', function () {
   var conditionDelegate;
 
-  var getSettings = function(name, value, valueIsRegex) {
+  var getSettings = function (name, value, valueIsRegex) {
     return {
       name: name,
       value: value,
@@ -25,7 +25,7 @@ describe('query string parameter condition delegate', function() {
     };
   };
 
-  beforeAll(function() {
+  beforeAll(function () {
     conditionDelegate = conditionDelegateInjector({
       '@adobe/reactor-window': {
         location: {
@@ -35,22 +35,22 @@ describe('query string parameter condition delegate', function() {
     });
   });
 
-  it('returns true when value matches using regular string', function() {
+  it('returns true when value matches using regular string', function () {
     var settings = getSettings('testParam', 'foo', false);
     expect(conditionDelegate(settings)).toBe(true);
   });
 
-  it('returns false when value does not match using regular string', function() {
+  it('returns false when value does not match using regular string', function () {
     var settings = getSettings('testParam', 'goo', false);
     expect(conditionDelegate(settings)).toBe(false);
   });
 
-  it('returns true when value matches using regex', function() {
+  it('returns true when value matches using regex', function () {
     var settings = getSettings('testParam', '^F[ojd]o$', true);
     expect(conditionDelegate(settings)).toBe(true);
   });
 
-  it('returns false when value does not match using regex', function() {
+  it('returns false when value does not match using regex', function () {
     var settings = getSettings('testParam', '^g[ojd]o$', true);
     expect(conditionDelegate(settings)).toBe(false);
   });

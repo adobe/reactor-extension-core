@@ -12,18 +12,13 @@
 
 /* eslint dot-notation: 0 */
 
-import {
-  getFormValues, initialize, change, submit, isValid
-} from 'redux-form';
+import { getFormValues, initialize, change, submit, isValid } from 'redux-form';
 import { actionCreators } from './reduxActions/bridgeAdapterActions';
 
 export default (extensionBridge, store, formConfig) => {
   extensionBridge.register({
     init(options = {}) {
-      let {
-        settings,
-        ...meta
-      } = options;
+      let { settings, ...meta } = options;
 
       meta.isNew = !settings;
       settings = settings || {};
@@ -34,7 +29,11 @@ export default (extensionBridge, store, formConfig) => {
       store.dispatch(actionCreators.populateMeta(meta));
 
       // Tell redux-form to initialize our form to the initialValues provided above.
-      const initialValues = formConfig.settingsToFormValues({}, settings, store.getState());
+      const initialValues = formConfig.settingsToFormValues(
+        {},
+        settings,
+        store.getState()
+      );
       store.dispatch(initialize('default', initialValues));
 
       // The view won't render until the state says that init is complete so in order to avoid

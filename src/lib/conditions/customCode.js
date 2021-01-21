@@ -21,7 +21,7 @@
  * @param {Object} event.target The element on which the event occurred.
  * @returns {boolean}
  */
-module.exports = function(settings, event) {
+module.exports = function (settings, event) {
   // `this` and `target` are provided separately from event for backward-compatibility.
   return settings.source.call(event.element, event, event.target);
 };

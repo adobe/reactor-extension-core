@@ -18,7 +18,7 @@
  * @param {string|RegExp} pattern The pattern to match against.
  * @returns {boolean} Whether the string matches the pattern.
  */
-module.exports = function(str, pattern) {
+module.exports = function (str, pattern) {
   if (pattern == null) {
     throw new Error('Illegal Argument: Pattern is not present');
   }

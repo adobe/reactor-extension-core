@@ -20,6 +20,6 @@ var cookie = require('@adobe/reactor-cookie');
  * @param {string} settings.name The name of the cookie for which a value should be retrieved.
  * @returns {string}
  */
-module.exports = function(settings) {
+module.exports = function (settings) {
   return cookie.get(settings.name);
 };

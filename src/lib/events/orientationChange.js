@@ -15,7 +15,7 @@
 var window = require('@adobe/reactor-window');
 var triggers = [];
 
-window.addEventListener('orientationchange', function(event) {
+window.addEventListener('orientationchange', function (event) {
   if (triggers.length) {
     var syntheticEvent = {
       element: window,
@@ -23,7 +23,7 @@ window.addEventListener('orientationchange', function(event) {
       nativeEvent: event
     };
 
-    triggers.forEach(function(trigger) {
+    triggers.forEach(function (trigger) {
       trigger(syntheticEvent);
     });
   }
@@ -34,6 +34,6 @@ window.addEventListener('orientationchange', function(event) {
  * @param {Object} settings The event settings object.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function(settings, trigger) {
+module.exports = function (settings, trigger) {
   triggers.push(trigger);
 };

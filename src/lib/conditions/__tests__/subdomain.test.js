@@ -23,8 +23,8 @@ var conditionDelegate = conditionDelegateInjector({
   '@adobe/reactor-document': mockDocument
 });
 
-describe('subdomain condition delegate', function() {
-  it('returns true when the subdomain matches an acceptable string', function() {
+describe('subdomain condition delegate', function () {
+  it('returns true when the subdomain matches an acceptable string', function () {
     var settings = {
       subdomains: [
         {
@@ -38,7 +38,7 @@ describe('subdomain condition delegate', function() {
     expect(conditionDelegate(settings)).toBe(true);
   });
 
-  it('returns false when the subdomain does not match an acceptable string', function() {
+  it('returns false when the subdomain does not match an acceptable string', function () {
     var settings = {
       subdomains: [
         {
@@ -52,7 +52,7 @@ describe('subdomain condition delegate', function() {
     expect(conditionDelegate(settings)).toBe(false);
   });
 
-  it('returns true when the subdomain matches an acceptable regex', function() {
+  it('returns true when the subdomain matches an acceptable regex', function () {
     var settings = {
       subdomains: [
         {
@@ -67,7 +67,7 @@ describe('subdomain condition delegate', function() {
     expect(conditionDelegate(settings)).toBe(true);
   });
 
-  it('returns false when the subdomain does not match an acceptable regex', function() {
+  it('returns false when the subdomain does not match an acceptable regex', function () {
     var settings = {
       subdomains: [
         {

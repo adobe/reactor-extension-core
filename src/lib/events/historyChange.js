@@ -26,9 +26,9 @@ var triggers = [];
  * @param {String} methodName The name of the method to replace with the proxy method.
  * @param {Function} fn A function that should be called after the original method is called.
  */
-var callThrough = function(object, methodName, fn) {
+var callThrough = function (object, methodName, fn) {
   var original = object[methodName];
-  object[methodName] = function() {
+  object[methodName] = function () {
     var returnValue = original.apply(object, arguments);
     fn.apply(null, arguments);
     return returnValue;
@@ -38,10 +38,10 @@ var callThrough = function(object, methodName, fn) {
 /**
  * Calls all the trigger methods if the URI has changed.
  */
-var callTriggersIfURIChanged = debounce(function() {
+var callTriggersIfURIChanged = debounce(function () {
   var uri = window.location.href;
   if (lastURI !== uri) {
-    triggers.forEach(function(trigger) {
+    triggers.forEach(function (trigger) {
       trigger();
     });
 
@@ -52,7 +52,7 @@ var callTriggersIfURIChanged = debounce(function() {
 /**
  * Starts watching for history changes.
  */
-var watchForHistoryChange = once(function() {
+var watchForHistoryChange = once(function () {
   if (history) {
     if (history.pushState) {
       callThrough(history, 'pushState', callTriggersIfURIChanged);
@@ -73,7 +73,7 @@ var watchForHistoryChange = once(function() {
  * @param {Object} settings The event settings object.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function(settings, trigger) {
+module.exports = function (settings, trigger) {
   watchForHistoryChange();
   triggers.push(trigger);
 };

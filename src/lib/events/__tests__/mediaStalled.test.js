@@ -12,9 +12,11 @@
 
 'use strict';
 
-describe('media stalled event delegate', function() {
+describe('media stalled event delegate', function () {
   var testStandardEvent = require('./helpers/testStandardEvent');
   var delegate = require('../mediaStalled');
 
-  testStandardEvent(function() { return delegate; }, 'stalled');
+  testStandardEvent(function () {
+    return delegate;
+  }, 'stalled');
 });

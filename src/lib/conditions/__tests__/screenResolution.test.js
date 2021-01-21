@@ -24,7 +24,7 @@ var conditionDelegate = conditionDelegateInjector({
   '@adobe/reactor-window': mockWindow
 });
 
-var getSettings = function(width, widthOperator, height, heightOperator) {
+var getSettings = function (width, widthOperator, height, heightOperator) {
   return {
     width: width,
     widthOperator: widthOperator,
@@ -33,33 +33,33 @@ var getSettings = function(width, widthOperator, height, heightOperator) {
   };
 };
 
-describe('screen resolution condition delegate', function() {
-  it('returns true when dimension is above "greater than" constraint', function() {
+describe('screen resolution condition delegate', function () {
+  it('returns true when dimension is above "greater than" constraint', function () {
     var settings = getSettings(1365, '>', 768, '=');
     expect(conditionDelegate(settings)).toBe(true);
   });
 
-  it('returns false when dimension is below "greater than" constraint', function() {
+  it('returns false when dimension is below "greater than" constraint', function () {
     var settings = getSettings(1366, '>', 768, '=');
     expect(conditionDelegate(settings)).toBe(false);
   });
 
-  it('returns true when dimension is below "less than" constraint', function() {
+  it('returns true when dimension is below "less than" constraint', function () {
     var settings = getSettings(1366, '=', 769, '<');
     expect(conditionDelegate(settings)).toBe(true);
   });
 
-  it('returns false when dimension is above "less than" constraint', function() {
+  it('returns false when dimension is above "less than" constraint', function () {
     var settings = getSettings(1366, '=', 768, '<');
     expect(conditionDelegate(settings)).toBe(false);
   });
 
-  it('returns true when dimension matches "equals" constraint', function() {
+  it('returns true when dimension matches "equals" constraint', function () {
     var settings = getSettings(1366, '=', 768, '=');
     expect(conditionDelegate(settings)).toBe(true);
   });
 
-  it('returns false when dimension does not match "equals" constraint', function() {
+  it('returns false when dimension does not match "equals" constraint', function () {
     var settings = getSettings(1366, '=', 767, '=');
     expect(conditionDelegate(settings)).toBe(false);
   });

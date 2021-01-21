@@ -56,9 +56,7 @@ describe('custom code condition view', () => {
       }
     });
 
-    const {
-      openEditorButton
-    } = getReactComponents(instance);
+    const { openEditorButton } = getReactComponents(instance);
 
     openEditorButton.props().onChange('foo bar');
 

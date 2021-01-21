@@ -13,8 +13,8 @@ governing permissions and limitations under the License.
 
 var decorateGlobalJavaScriptCodeInjector = require('inject-loader!../decorateGlobalJavaScriptCode');
 
-describe('decorate global javascript code', function() {
-  it('returns the decorated code on the code key', function() {
+describe('decorate global javascript code', function () {
+  it('returns the decorated code on the code key', function () {
     var settings = {
       language: 'javascript',
       global: true,
@@ -34,7 +34,7 @@ describe('decorate global javascript code', function() {
     );
   });
 
-  it('returns a resolved promise on the promise key', function() {
+  it('returns a resolved promise on the promise key', function () {
     var settings = {
       language: 'javascript',
       global: true,
@@ -44,7 +44,7 @@ describe('decorate global javascript code', function() {
     var p = Promise.resolve();
     var decorateGlobalJavaScriptCode = decorateGlobalJavaScriptCodeInjector({
       '@adobe/reactor-promise': {
-        resolve: function() {
+        resolve: function () {
           return p;
         }
       }

@@ -22,13 +22,13 @@
  * @param {Object} [context] The context in which to call the target function.
  * @returns {Function}
  */
-module.exports = function(fn, delay, context) {
+module.exports = function (fn, delay, context) {
   var timeoutId = null;
-  return function() {
+  return function () {
     var ctx = context || this;
     var args = arguments;
     clearTimeout(timeoutId);
-    timeoutId = setTimeout(function() {
+    timeoutId = setTimeout(function () {
       fn.apply(ctx, args);
     }, delay);
   };

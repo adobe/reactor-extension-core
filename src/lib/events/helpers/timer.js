@@ -15,7 +15,7 @@ var assign = require('@adobe/reactor-object-assign');
 var mitt = require('../../../../node_modules/mitt/dist/mitt');
 
 var CHECK_INTERVAL_MS = 1000;
-var onlyUnique = function(value, index, self) {
+var onlyUnique = function (value, index, self) {
   return self.indexOf(value) === index;
 };
 
@@ -26,7 +26,7 @@ var onlyUnique = function(value, index, self) {
  * it's internal counter.
  * @constructor
  */
-var Timer = function(checkInterval) {
+var Timer = function (checkInterval) {
   assign(this, mitt());
 
   this._total = 0;
@@ -37,22 +37,22 @@ var Timer = function(checkInterval) {
 };
 
 Timer.prototype = {
-  start: function() {
+  start: function () {
     this.resume();
   },
 
-  resume: function() {
+  resume: function () {
     this._setIntervalUpdater();
     this._startNewInternalTimer();
   },
 
-  pause: function() {
+  pause: function () {
     this._removeIntervalUpdater();
     this._calculateTimePassed();
     this._stopInternalTimer();
   },
 
-  getTime: function() {
+  getTime: function () {
     return this._total;
   },
 
@@ -62,37 +62,39 @@ Timer.prototype = {
    *
    * @param {number} marker The marker number to be tracked (in milliseconds).
    */
-  addMarker: function(marker) {
+  addMarker: function (marker) {
     this._markers.push(marker);
     this._markers = this._markers.filter(onlyUnique);
     this._markers.sort();
   },
 
-  _setIntervalUpdater: function() {
-    this._intervalId =
-      window.setInterval(this._calculateTimePassed.bind(this), this._checkInterval);
+  _setIntervalUpdater: function () {
+    this._intervalId = window.setInterval(
+      this._calculateTimePassed.bind(this),
+      this._checkInterval
+    );
   },
 
-  _removeIntervalUpdater: function() {
+  _removeIntervalUpdater: function () {
     window.clearInterval(this._intervalId);
   },
 
-  _startNewInternalTimer: function() {
+  _startNewInternalTimer: function () {
     this._startTime = new Date().getTime();
   },
 
-  _stopInternalTimer: function() {
+  _stopInternalTimer: function () {
     this._startTime = null;
   },
 
-  _calculateTimePassed: function() {
+  _calculateTimePassed: function () {
     this._total += new Date().getTime() - this._startTime;
     this._checkMarkersCompleted();
     this._startNewInternalTimer();
   },
 
-  _checkMarkersCompleted: function() {
-    var timePassed =  this.getTime();
+  _checkMarkersCompleted: function () {
+    var timePassed = this.getTime();
 
     for (var i = 0; i < this._markers.length; i++) {
       var marker = this._markers[i];

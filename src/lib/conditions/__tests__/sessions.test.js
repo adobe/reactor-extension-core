@@ -13,7 +13,7 @@
 'use strict';
 
 var mockVisitorTracking = {
-  getSessionCount: function() {
+  getSessionCount: function () {
     return 5;
   }
 };
@@ -23,40 +23,40 @@ var conditionDelegate = conditionDelegateInjector({
   '../helpers/visitorTracking': mockVisitorTracking
 });
 
-var getSettings = function(count, operator) {
+var getSettings = function (count, operator) {
   return {
     count: count,
     operator: operator
   };
 };
 
-describe('sessions condition delegate', function() {
-  it('returns true when number of sessions is above "greater than" constraint', function() {
+describe('sessions condition delegate', function () {
+  it('returns true when number of sessions is above "greater than" constraint', function () {
     var settings = getSettings(4, '>');
     expect(conditionDelegate(settings)).toBe(true);
   });
 
-  it('returns false when number of sessions is below "greater than" constraint', function() {
+  it('returns false when number of sessions is below "greater than" constraint', function () {
     var settings = getSettings(6, '>');
     expect(conditionDelegate(settings)).toBe(false);
   });
 
-  it('returns true when number of sessions is below "less than" constraint', function() {
+  it('returns true when number of sessions is below "less than" constraint', function () {
     var settings = getSettings(6, '<');
     expect(conditionDelegate(settings)).toBe(true);
   });
 
-  it('returns false when number of sessions is above "less than" constraint', function() {
+  it('returns false when number of sessions is above "less than" constraint', function () {
     var settings = getSettings(4, '<');
     expect(conditionDelegate(settings)).toBe(false);
   });
 
-  it('returns true when number of sessions matches "equals" constraint', function() {
+  it('returns true when number of sessions matches "equals" constraint', function () {
     var settings = getSettings(5, '=');
     expect(conditionDelegate(settings)).toBe(true);
   });
 
-  it('returns false when number of sessions does not match "equals" constraint', function() {
+  it('returns false when number of sessions does not match "equals" constraint', function () {
     var settings = getSettings(11, '=');
     expect(conditionDelegate(settings)).toBe(false);
   });

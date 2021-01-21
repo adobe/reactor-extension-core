@@ -11,19 +11,19 @@
  ****************************************************************************************/
 'use strict';
 
-describe('debounce', function() {
+describe('debounce', function () {
   var debounce;
 
-  beforeAll(function() {
+  beforeAll(function () {
     debounce = require('../debounce');
     jasmine.clock().install();
   });
 
-  afterAll(function() {
+  afterAll(function () {
     jasmine.clock().uninstall();
   });
 
-  it('calls the target function once after delay', function() {
+  it('calls the target function once after delay', function () {
     var targetFn = jasmine.createSpy();
     var debouncedFn = debounce(targetFn, 100);
 
@@ -44,7 +44,7 @@ describe('debounce', function() {
     expect(targetFn.calls.count()).toBe(1);
   });
 
-  it('calls the target function using the provided context', function() {
+  it('calls the target function using the provided context', function () {
     var targetFn = jasmine.createSpy();
     var context = {};
 
@@ -55,7 +55,7 @@ describe('debounce', function() {
     expect(targetFn.calls.first().object).toBe(context);
   });
 
-  it('calls the target function using the provided arguments', function() {
+  it('calls the target function using the provided arguments', function () {
     var targetFn = jasmine.createSpy();
 
     debounce(targetFn, 100)('arg1', 'arg2');

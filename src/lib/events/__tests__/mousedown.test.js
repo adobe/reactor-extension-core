@@ -12,9 +12,11 @@
 
 'use strict';
 
-describe('mousedown event delegate', function() {
+describe('mousedown event delegate', function () {
   var testStandardEvent = require('./helpers/testStandardEvent');
   var delegate = require('../mousedown');
 
-  testStandardEvent(function() { return delegate; }, 'mousedown');
+  testStandardEvent(function () {
+    return delegate;
+  }, 'mousedown');
 });

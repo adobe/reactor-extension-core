@@ -21,8 +21,7 @@ var visitorTracking = require('../helpers/visitorTracking');
  * visitor.
  * @returns {boolean}
  */
-module.exports = function(settings) {
+module.exports = function (settings) {
   var isNewVisitor = visitorTracking.getIsNewVisitor();
   return settings.isNewVisitor ? isNewVisitor : !isNewVisitor;
 };
-

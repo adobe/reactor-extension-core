@@ -25,11 +25,12 @@ var textMatch = require('../helpers/textMatch');
  * instance is intended to be a regular expression.
  * @returns {boolean}
  */
-module.exports = function(settings) {
+module.exports = function (settings) {
   var path = document.location.pathname + document.location.search;
-  return settings.paths.some(function(acceptablePath) {
-    var acceptableValue = acceptablePath.valueIsRegex ?
-      new RegExp(acceptablePath.value, 'i') : acceptablePath.value;
+  return settings.paths.some(function (acceptablePath) {
+    var acceptableValue = acceptablePath.valueIsRegex
+      ? new RegExp(acceptablePath.value, 'i')
+      : acceptablePath.value;
     return textMatch(path, acceptableValue);
   });
 };

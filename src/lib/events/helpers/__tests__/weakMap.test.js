@@ -11,9 +11,9 @@
  ****************************************************************************************/
 'use strict';
 
-describe('WeakMap', function() {
-  it('returns the native WeakMap if it exists', function() {
-    var MockWeakMap = function() {};
+describe('WeakMap', function () {
+  it('returns the native WeakMap if it exists', function () {
+    var MockWeakMap = function () {};
     var mockWindow = {
       WeakMap: MockWeakMap
     };
@@ -25,7 +25,7 @@ describe('WeakMap', function() {
     expect(WeakMap).toBe(MockWeakMap);
   });
 
-  it('returns WeakMap implementation without modifying global scope', function() {
+  it('returns WeakMap implementation without modifying global scope', function () {
     var mockWindow = {};
 
     var WeakMap = require('inject-loader!../weakMap')({
@@ -39,7 +39,7 @@ describe('WeakMap', function() {
   // Tests below are derived from
   // https://github.com/webcomponents/webcomponentsjs/blob/82964dec42a7f6af70142b1bbf3bc4ca16bf1bcf/tests/WeakMap/tests.html
 
-  it('has get, set, delete, and has functions', function() {
+  it('has get, set, delete, and has functions', function () {
     var WeakMap = require('inject-loader!../weakMap')({
       // Inject an empty window so we don't end up testing the native WeakMap if it exists
       // in the target browser.
@@ -51,7 +51,7 @@ describe('WeakMap', function() {
     expect(WeakMap.prototype.has).toEqual(jasmine.any(Function));
   });
 
-  it('has methods that perform as expected', function() {
+  it('has methods that perform as expected', function () {
     var WeakMap = require('inject-loader!../weakMap')({
       // Inject an empty window so we don't end up testing the native WeakMap if it exists
       // in the target browser.
@@ -60,7 +60,7 @@ describe('WeakMap', function() {
     var wm = new WeakMap();
 
     var o1 = {};
-    var o2 = function() {};
+    var o2 = function () {};
     var o3 = window;
 
     // IE 11 WeakMap does not chain

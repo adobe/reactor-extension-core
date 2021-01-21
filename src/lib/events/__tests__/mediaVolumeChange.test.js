@@ -12,9 +12,11 @@
 
 'use strict';
 
-describe('media volume change event delegate', function() {
+describe('media volume change event delegate', function () {
   var testStandardEvent = require('./helpers/testStandardEvent');
   var delegate = require('../mediaVolumeChange');
 
-  testStandardEvent(function() { return delegate; }, 'volumechange');
+  testStandardEvent(function () {
+    return delegate;
+  }, 'volumechange');
 });

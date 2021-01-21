@@ -12,11 +12,11 @@
 
 'use strict';
 
-describe('query string parameter data element delegate', function() {
+describe('query string parameter data element delegate', function () {
   var injectDelegate = require('inject-loader!../queryStringParameter');
   var delegate;
 
-  beforeAll(function() {
+  beforeAll(function () {
     delegate = injectDelegate({
       '@adobe/reactor-window': {
         location: {
@@ -26,7 +26,7 @@ describe('query string parameter data element delegate', function() {
     });
   });
 
-  it('returns a value when a match is found case-insensitively', function() {
+  it('returns a value when a match is found case-insensitively', function () {
     var settings = {
       name: 'foo',
       caseInsensitive: true
@@ -37,7 +37,7 @@ describe('query string parameter data element delegate', function() {
     expect(value).toBe('bar');
   });
 
-  it('returns a value when a match is found case-sensitively', function() {
+  it('returns a value when a match is found case-sensitively', function () {
     var settings = {
       name: 'foo'
     };
@@ -47,7 +47,7 @@ describe('query string parameter data element delegate', function() {
     expect(value).toBe('bar');
   });
 
-  it('returns undefined when a match is not found case-insensitively', function() {
+  it('returns undefined when a match is not found case-insensitively', function () {
     var settings = {
       name: 'unicorn',
       caseInsensitive: true
@@ -58,7 +58,7 @@ describe('query string parameter data element delegate', function() {
     expect(value).toBe(undefined);
   });
 
-  it('returns undefined when a match is not found case-sensitively', function() {
+  it('returns undefined when a match is not found case-sensitively', function () {
     var settings = {
       name: 'FOO'
     };

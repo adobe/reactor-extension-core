@@ -20,7 +20,7 @@ var calledCallbacksByElement = new WeakMap();
 // Create a naked object with no prototype so we can safely use it as a map.
 var callbacksBySelector = Object.create(null);
 
-var findElements = function() {
+var findElements = function () {
   // Using for loops instead of forEach and functions because this will process a lot and we want
   // to be as efficient as possible.
   var selectors = Object.keys(callbacksBySelector);
@@ -39,7 +39,7 @@ var findElements = function() {
   }
 };
 
-var initializePolling = once(function() {
+var initializePolling = once(function () {
   setInterval(findElements, POLL_INTERVAL);
 });
 
@@ -49,7 +49,7 @@ var initializePolling = once(function() {
  * @param {Function} callback A function that will be called once and only once for each element
  * found. The element will be passed to the callback.
  */
-module.exports = function(selector, callback) {
+module.exports = function (selector, callback) {
   var callbacks = callbacksBySelector[selector];
 
   if (!callbacks) {
@@ -58,7 +58,7 @@ module.exports = function(selector, callback) {
 
   // This function will be called for every element found matching the selector but we will only
   // call the consumer's callback if it has not already been called for the element.
-  callbacks.push(function(element) {
+  callbacks.push(function (element) {
     var calledCallbacks = calledCallbacksByElement.get(element);
 
     if (!calledCallbacks) {
@@ -79,10 +79,10 @@ module.exports = function(selector, callback) {
  * @private
  * Clears all listeners. This should only be used in tests.
  */
-module.exports.__reset = function() {
+module.exports.__reset = function () {
   callbacksBySelector = Object.create(null);
 
-  initializePolling = once(function() {
+  initializePolling = once(function () {
     setInterval(findElements, POLL_INTERVAL);
   });
 };

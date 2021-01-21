@@ -13,8 +13,8 @@ governing permissions and limitations under the License.
 
 var unescapeHtmlCode = require('../unescapeHtmlCode');
 
-describe('unescape html code', function() {
-  it('decodes html entities', function() {
+describe('unescape html code', function () {
+  it('decodes html entities', function () {
     expect(
       unescapeHtmlCode('https://www.google.com/?id=DC&amp;l=gtmData&gt;Layer')
     ).toBe('https://www.google.com/?id=DC&l=gtmData>Layer');

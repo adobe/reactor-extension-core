@@ -15,68 +15,70 @@
 var dataElementDelegate = require('inject-loader!../pageInfo')({
   '@adobe/reactor-document': {
     location: {
-      href: 'http://www.adobe.com/creativecloud/photography.html?promoid=NQCJRBTZ&mv=other',
+      href:
+        'http://www.adobe.com/creativecloud/photography.html?promoid=NQCJRBTZ&mv=other',
       hostname: 'www.adobe.com',
       pathname: '/creativecloud/photography.html',
       protocol: 'http:'
     },
     referrer: 'http://www.google.com/',
-    title: 'Adobe Creative Cloud Photography plan | Professional photo editing software'
+    title:
+      'Adobe Creative Cloud Photography plan | Professional photo editing software'
   }
 });
 
-describe('page info data element delegate', function() {
-  it('returns the URL', function() {
+describe('page info data element delegate', function () {
+  it('returns the URL', function () {
     var settings = {
       attribute: 'url'
     };
 
-    expect(dataElementDelegate(settings))
-      .toBe('http://www.adobe.com/creativecloud/photography.html?promoid=NQCJRBTZ&mv=other');
+    expect(dataElementDelegate(settings)).toBe(
+      'http://www.adobe.com/creativecloud/photography.html?promoid=NQCJRBTZ&mv=other'
+    );
   });
 
-  it('returns the hostname', function() {
+  it('returns the hostname', function () {
     var settings = {
       attribute: 'hostname'
     };
 
-    expect(dataElementDelegate(settings))
-      .toBe('www.adobe.com');
+    expect(dataElementDelegate(settings)).toBe('www.adobe.com');
   });
 
-  it('returns the pathname', function() {
+  it('returns the pathname', function () {
     var settings = {
       attribute: 'pathname'
     };
 
-    expect(dataElementDelegate(settings))
-      .toBe('/creativecloud/photography.html');
+    expect(dataElementDelegate(settings)).toBe(
+      '/creativecloud/photography.html'
+    );
   });
 
-  it('returns the protocol', function() {
+  it('returns the protocol', function () {
     var settings = {
       attribute: 'protocol'
     };
 
-    expect(dataElementDelegate(settings))
-      .toBe('http:');
+    expect(dataElementDelegate(settings)).toBe('http:');
   });
 
-  it('returns the referrer', function() {
+  it('returns the referrer', function () {
     var settings = {
       attribute: 'referrer'
     };
 
-    expect(dataElementDelegate(settings))
-      .toBe('http://www.google.com/');
+    expect(dataElementDelegate(settings)).toBe('http://www.google.com/');
   });
 
-  it('returns the title', function() {
+  it('returns the title', function () {
     var settings = {
       attribute: 'title'
     };
 
-    expect(dataElementDelegate(settings))
-      .toBe('Adobe Creative Cloud Photography plan | Professional photo editing software');
+    expect(dataElementDelegate(settings)).toBe(
+      'Adobe Creative Cloud Photography plan | Professional photo editing software'
+    );
   });
 });

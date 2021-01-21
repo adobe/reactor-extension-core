@@ -19,7 +19,7 @@ var visitorTracking = require('../helpers/visitorTracking');
  * @param {string} settings.attribute The attribute that should be returned.
  * @returns {string}
  */
-module.exports = function(settings) {
+module.exports = function (settings) {
   switch (settings.attribute) {
     case 'landingPage':
       return visitorTracking.getLandingPage();

@@ -24,14 +24,18 @@ var once = require('./helpers/once');
  */
 var triggers = [];
 
-var watchForTabBlur = once(function() {
-  document.addEventListener(visibilityChangeEventType, function() {
-    if (document[hiddenProperty]) {
-      triggers.forEach(function(trigger) {
-        trigger();
-      });
-    }
-  }, true);
+var watchForTabBlur = once(function () {
+  document.addEventListener(
+    visibilityChangeEventType,
+    function () {
+      if (document[hiddenProperty]) {
+        triggers.forEach(function (trigger) {
+          trigger();
+        });
+      }
+    },
+    true
+  );
 });
 
 /**
@@ -39,7 +43,7 @@ var watchForTabBlur = once(function() {
  * @param {Object} settings The event settings object.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function(settings, trigger) {
+module.exports = function (settings, trigger) {
   watchForTabBlur();
   triggers.push(trigger);
 };

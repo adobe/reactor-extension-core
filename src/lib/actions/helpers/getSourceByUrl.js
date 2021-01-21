@@ -17,7 +17,7 @@ var Promise = require('@adobe/reactor-promise');
 var codeBySourceUrl = {};
 var scriptStore = {};
 
-var loadScriptOnlyOnce = function(url) {
+var loadScriptOnlyOnce = function (url) {
   if (!scriptStore[url]) {
     scriptStore[url] = loadScript(url);
   }
@@ -25,20 +25,23 @@ var loadScriptOnlyOnce = function(url) {
   return scriptStore[url];
 };
 
-_satellite.__registerScript = function(sourceUrl, code) {
+_satellite.__registerScript = function (sourceUrl, code) {
   codeBySourceUrl[sourceUrl] = code;
 };
 
-module.exports = function(sourceUrl) {
+module.exports = function (sourceUrl) {
   if (codeBySourceUrl[sourceUrl]) {
     return Promise.resolve(codeBySourceUrl[sourceUrl]);
   } else {
-    return new Promise(function(resolve) {
-      loadScriptOnlyOnce(sourceUrl).then(function() {
-        resolve(codeBySourceUrl[sourceUrl]);
-      }, function() {
-        resolve();
-      });
+    return new Promise(function (resolve) {
+      loadScriptOnlyOnce(sourceUrl).then(
+        function () {
+          resolve(codeBySourceUrl[sourceUrl]);
+        },
+        function () {
+          resolve();
+        }
+      );
     });
   }
 };

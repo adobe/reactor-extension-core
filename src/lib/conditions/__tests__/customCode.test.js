@@ -14,10 +14,10 @@
 
 var conditionDelegate = require('../customCode');
 
-describe('custom code condition delegate', function() {
-  it('should run a user-defined function', function() {
+describe('custom code condition delegate', function () {
+  it('should run a user-defined function', function () {
     var settings = {
-      source: function() {
+      source: function () {
         return true;
       }
     };

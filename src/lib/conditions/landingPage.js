@@ -23,8 +23,9 @@ var textMatch = require('../helpers/textMatch');
  * be a regular expression.
  * @returns {boolean}
  */
-module.exports = function(settings) {
-  var acceptablePage = settings.pageIsRegex ? new RegExp(settings.page, 'i') : settings.page;
+module.exports = function (settings) {
+  var acceptablePage = settings.pageIsRegex
+    ? new RegExp(settings.page, 'i')
+    : settings.page;
   return textMatch(visitorTracking.getLandingPage(), acceptablePage);
 };
-

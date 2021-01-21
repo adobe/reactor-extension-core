@@ -24,9 +24,9 @@ var visitorTracking = require('../helpers/visitorTracking');
  * to be a regular expression.
  * @returns {boolean}
  */
-module.exports = function(settings) {
-  var acceptableSource =
-    settings.sourceIsRegex ? new RegExp(settings.source, 'i') : settings.source;
+module.exports = function (settings) {
+  var acceptableSource = settings.sourceIsRegex
+    ? new RegExp(settings.source, 'i')
+    : settings.source;
   return textMatch(visitorTracking.getTrafficSource(), acceptableSource);
 };
-

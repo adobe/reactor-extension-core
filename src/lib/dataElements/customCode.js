@@ -19,6 +19,6 @@
  * @param {string} event The event (if any) that triggered the evaluation of the data element.
  * @returns {string}
  */
-module.exports = function(settings, event) {
+module.exports = function (settings, event) {
   return settings.source(event);
 };

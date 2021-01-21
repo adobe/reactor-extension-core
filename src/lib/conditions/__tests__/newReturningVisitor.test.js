@@ -20,15 +20,15 @@ var conditionDelegate = conditionDelegateInjector({
   '../helpers/visitorTracking': mockVisitorTracking
 });
 
-var getSettings = function(isNewVisitor) {
+var getSettings = function (isNewVisitor) {
   return {
     isNewVisitor: isNewVisitor
   };
 };
 
-describe('new vs. returning condition delegate', function() {
-  it('returns true when isNewVisitor = true and the visitor is new', function() {
-    mockVisitorTracking.getIsNewVisitor = function() {
+describe('new vs. returning condition delegate', function () {
+  it('returns true when isNewVisitor = true and the visitor is new', function () {
+    mockVisitorTracking.getIsNewVisitor = function () {
       return true;
     };
 
@@ -36,8 +36,8 @@ describe('new vs. returning condition delegate', function() {
     expect(conditionDelegate(settings)).toBe(true);
   });
 
-  it('returns true when isNewVisitor = false and the visitor is returning', function() {
-    mockVisitorTracking.getIsNewVisitor = function() {
+  it('returns true when isNewVisitor = false and the visitor is returning', function () {
+    mockVisitorTracking.getIsNewVisitor = function () {
       return false;
     };
 
@@ -45,8 +45,8 @@ describe('new vs. returning condition delegate', function() {
     expect(conditionDelegate(settings)).toBe(true);
   });
 
-  it('returns false when isNewVisitor = false and the visitor is new', function() {
-    mockVisitorTracking.getIsNewVisitor = function() {
+  it('returns false when isNewVisitor = false and the visitor is new', function () {
+    mockVisitorTracking.getIsNewVisitor = function () {
       return true;
     };
 
@@ -54,8 +54,8 @@ describe('new vs. returning condition delegate', function() {
     expect(conditionDelegate(settings)).toBe(false);
   });
 
-  it('returns false when isNewVisitor = true and the visitor is returning', function() {
-    mockVisitorTracking.getIsNewVisitor = function() {
+  it('returns false when isNewVisitor = true and the visitor is returning', function () {
+    mockVisitorTracking.getIsNewVisitor = function () {
       return false;
     };
 

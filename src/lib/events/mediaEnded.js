@@ -35,6 +35,6 @@ document.addEventListener('ended', bubbly.evaluateEvent, true);
  * rules on ancestor elements.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function(settings, trigger) {
+module.exports = function (settings, trigger) {
   bubbly.addListener(settings, trigger);
 };

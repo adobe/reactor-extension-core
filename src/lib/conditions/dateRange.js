@@ -21,7 +21,7 @@
  * stop returning true.
  * @returns {boolean}
  */
-module.exports = function(settings) {
+module.exports = function (settings) {
   var now = new Date();
 
   if (settings.start && now < new Date(settings.start)) {

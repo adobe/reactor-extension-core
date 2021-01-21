@@ -14,8 +14,8 @@
 
 var conditionDelegate = require('../variable');
 
-describe('variable condition delegate', function() {
-  beforeAll(function() {
+describe('variable condition delegate', function () {
+  beforeAll(function () {
     window.a = {
       b: [
         {
@@ -28,31 +28,31 @@ describe('variable condition delegate', function() {
     };
   });
 
-  afterAll(function() {
+  afterAll(function () {
     delete window.a;
   });
 
-  it('returns true when the variable matches the string value', function() {
+  it('returns true when the variable matches the string value', function () {
     var settings = { name: 'a.b.1.c', value: 'bar' };
     expect(conditionDelegate(settings)).toBe(true);
   });
 
-  it('returns false when the variable does not match the string value', function() {
+  it('returns false when the variable does not match the string value', function () {
     var settings = { name: 'a.b.1.c', value: 'cake' };
     expect(conditionDelegate(settings)).toBe(false);
   });
 
-  it('returns true when the variable matches the regex value', function() {
+  it('returns true when the variable matches the regex value', function () {
     var settings = { name: 'a.b.1.c', value: 'B.r', valueIsRegex: true };
     expect(conditionDelegate(settings)).toBe(true);
   });
 
-  it('returns false when the variable does not match the regex value', function() {
+  it('returns false when the variable does not match the regex value', function () {
     var settings = { name: 'a.b.1.c', value: 'g.o', valueIsRegex: true };
     expect(conditionDelegate(settings)).toBe(false);
   });
 
-  it('finds value when name is prefixed with window', function() {
+  it('finds value when name is prefixed with window', function () {
     var settings = { name: 'window.a.b.1.c', value: 'bar' };
     expect(conditionDelegate(settings)).toBe(true);
   });

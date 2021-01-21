@@ -15,50 +15,54 @@
 var getSourceUrlCodeInjector = require('inject-loader!../getSourceByUrl');
 var Promise = require('@adobe/reactor-promise');
 
-describe('get source by url', function() {
+describe('get source by url', function () {
   var loadScriptSpy;
   var getSourceUrlCode;
 
-  beforeEach(function() {
-    loadScriptSpy = jasmine.createSpy('load-script').and.callFake(function(url) {
-      _satellite.__registerScript(url, 'script code');
-      return Promise.resolve();
-    });
+  beforeEach(function () {
+    loadScriptSpy = jasmine
+      .createSpy('load-script')
+      .and.callFake(function (url) {
+        _satellite.__registerScript(url, 'script code');
+        return Promise.resolve();
+      });
 
     getSourceUrlCode = getSourceUrlCodeInjector({
       '@adobe/reactor-load-script': loadScriptSpy
     });
   });
 
-  beforeEach(function() {
+  beforeEach(function () {
     loadScriptSpy.calls.reset();
   });
 
-  it('loads the script containing the script only once', function() {
+  it('loads the script containing the script only once', function () {
     getSourceUrlCode('url1');
     getSourceUrlCode('url1');
 
     expect(loadScriptSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('returns a promise that once fulfilled returns the code', function(done) {
-    getSourceUrlCode('url1').then(function(code) {
+  it('returns a promise that once fulfilled returns the code', function (done) {
+    getSourceUrlCode('url1').then(function (code) {
       expect(code).toBe('script code');
       done();
     });
   });
 
-  it('returns undefined when the script cannot be loaded', function(done) {
-    var loadScriptSpy = jasmine.createSpy('load-script').and.callFake(function(url) {
-      _satellite.__registerScript(url, 'script code');
-      return Promise.reject();
-    });
+  it('returns undefined when the script cannot be loaded', function (done) {
+    var loadScriptSpy = jasmine
+      .createSpy('load-script')
+      .and.callFake(function (url) {
+        _satellite.__registerScript(url, 'script code');
+        return Promise.reject();
+      });
 
     var getSourceUrlCode = getSourceUrlCodeInjector({
       '@adobe/reactor-load-script': loadScriptSpy
     });
 
-    getSourceUrlCode('url1').then(function(code) {
+    getSourceUrlCode('url1').then(function (code) {
       expect(code).toBeUndefined();
       done();
     });

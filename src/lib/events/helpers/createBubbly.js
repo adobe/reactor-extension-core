@@ -26,7 +26,7 @@ var matchesSelector = require('./matchesSelector');
 /**
  * Handles logic related to bubbling options provided for many event types.
  */
-module.exports = function() {
+module.exports = function () {
   var listeners = [];
 
   // It's important that a new weak map is created for each instance of bubbly in order to store
@@ -56,7 +56,7 @@ module.exports = function() {
      * @param {Function} callback The function to be called when a matching event is seen. If the
      * callback does not end up triggering a rule, the callback should explicitly return false.
      */
-    addListener: function(settings, callback) {
+    addListener: function (settings, callback) {
       listeners.push({
         settings: settings,
         callback: callback
@@ -71,7 +71,7 @@ module.exports = function() {
      * @param {boolean} [eventIsSynthetic] Whether the event passed in is synthetic (instead of
      * native).
      */
-    evaluateEvent: function(event, eventIsSynthetic) {
+    evaluateEvent: function (event, eventIsSynthetic) {
       if (!listeners.length) {
         return;
       }
@@ -101,20 +101,29 @@ module.exports = function() {
           var elementProperties = listener.settings.elementProperties;
 
           // bubbleFireIfChildFired should be considered true by default
-          if (listener.settings.bubbleFireIfChildFired === false && childHasTriggeredRule) {
+          if (
+            listener.settings.bubbleFireIfChildFired === false &&
+            childHasTriggeredRule
+          ) {
             continue;
           }
 
           // bubbleFireIfParent should be considered true by default
-          if (node !== event.target && listener.settings.bubbleFireIfParent === false) {
+          if (
+            node !== event.target &&
+            listener.settings.bubbleFireIfParent === false
+          ) {
             continue;
           }
 
           // If the user didn't specify elementSelector or elementProperties then they want the
           // rule to run whenever the event occurs on any element. They don't intend for the
           // rule to run for every node in the element hierarchy though.
-          if (node !== event.target && !elementSelector &&
-              (!elementProperties || !Object.keys(elementProperties).length)) {
+          if (
+            node !== event.target &&
+            !elementSelector &&
+            (!elementProperties || !Object.keys(elementProperties).length)
+          ) {
             continue;
           }
 
@@ -122,7 +131,10 @@ module.exports = function() {
             continue;
           }
 
-          if (elementProperties && !matchesProperties(node, elementProperties)) {
+          if (
+            elementProperties &&
+            !matchesProperties(node, elementProperties)
+          ) {
             continue;
           }
 
@@ -131,7 +143,7 @@ module.exports = function() {
           // We'll attach relevant data depending on whether the passed in event is synthetic
           // or native.
           if (eventIsSynthetic) {
-            Object.keys(event).forEach(function(key) {
+            Object.keys(event).forEach(function (key) {
               syntheticEventForCallback[key] = event[key];
             });
           } else {
@@ -174,7 +186,7 @@ module.exports = function() {
    * @private
    * Clears all listeners. This should only be used in tests.
    */
-  bubbly.__reset = function() {
+  bubbly.__reset = function () {
     listeners = [];
   };
 

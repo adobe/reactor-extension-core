@@ -26,7 +26,7 @@ window._satellite = window._satellite || {};
  * @param {string} identifier The identifier passed to _satellite.track().
  * @param {*} [detail] Any detail that should be passed along to conditions and actions.
  */
-window._satellite.track = function(identifier, detail) {
+window._satellite.track = function (identifier, detail) {
   identifier = identifier.trim();
   var triggers = triggersByIdentifier[identifier];
   if (triggers) {
@@ -35,12 +35,15 @@ window._satellite.track = function(identifier, detail) {
       detail: detail
     };
 
-    triggers.forEach(function(trigger) {
+    triggers.forEach(function (trigger) {
       trigger(syntheticEvent);
     });
 
-    var logMessage = 'Rules using the direct call event type with identifier "' + identifier +
-      '" have been triggered' + (detail ? ' with additional detail:' : '.');
+    var logMessage =
+      'Rules using the direct call event type with identifier "' +
+      identifier +
+      '" have been triggered' +
+      (detail ? ' with additional detail:' : '.');
     var logArgs = [logMessage];
 
     if (detail) {
@@ -49,7 +52,9 @@ window._satellite.track = function(identifier, detail) {
 
     turbine.logger.log.apply(turbine.logger, logArgs);
   } else {
-    turbine.logger.log('"' + identifier + '" does not match any direct call identifiers.');
+    turbine.logger.log(
+      '"' + identifier + '" does not match any direct call identifiers.'
+    );
   }
 };
 
@@ -59,7 +64,7 @@ window._satellite.track = function(identifier, detail) {
  * @param {string} settings.identifier The identifier passed to _satellite.track().
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function(settings, trigger) {
+module.exports = function (settings, trigger) {
   var triggers = triggersByIdentifier[settings.identifier];
 
   if (!triggers) {

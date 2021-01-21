@@ -12,9 +12,11 @@
 
 'use strict';
 
-describe('blur event delegate', function() {
+describe('blur event delegate', function () {
   var testStandardEvent = require('./helpers/testStandardEvent');
   var delegate = require('../blur');
 
-  testStandardEvent(function() { return delegate; }, 'blur');
+  testStandardEvent(function () {
+    return delegate;
+  }, 'blur');
 });

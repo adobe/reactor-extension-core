@@ -12,9 +12,11 @@
 
 'use strict';
 
-describe('focus event delegate', function() {
+describe('focus event delegate', function () {
   var testStandardEvent = require('./helpers/testStandardEvent');
   var delegate = require('../focus');
 
-  testStandardEvent(function() { return delegate; }, 'focus');
+  testStandardEvent(function () {
+    return delegate;
+  }, 'focus');
 });

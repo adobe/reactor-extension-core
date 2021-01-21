@@ -21,21 +21,24 @@ var conditionDelegate = conditionDelegateInjector({
   './helpers/clientInfo': mockClientInfo
 });
 
-var getSettings = function(browsers) {
+var getSettings = function (browsers) {
   return {
     browsers: browsers
   };
 };
 
-describe('browser condition delegate', function() {
-  it('returns true when the current browser matches one of the selected browsers', function() {
+describe('browser condition delegate', function () {
+  it('returns true when the current browser matches one of the selected browsers', function () {
     var settings = getSettings(['Shoe', 'Goo', 'Foo', 'Moo']);
     expect(conditionDelegate(settings)).toBe(true);
   });
 
-  it('returns false when the current browser does not match any of the ' +
-      'selected browsers', function() {
-    var settings = getSettings(['Shoe', 'Goo', 'Boo', 'Moo']);
-    expect(conditionDelegate(settings)).toBe(false);
-  });
+  it(
+    'returns false when the current browser does not match any of the ' +
+      'selected browsers',
+    function () {
+      var settings = getSettings(['Shoe', 'Goo', 'Boo', 'Moo']);
+      expect(conditionDelegate(settings)).toBe(false);
+    }
+  );
 });

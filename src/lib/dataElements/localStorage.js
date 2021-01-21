@@ -21,7 +21,7 @@ var window = require('@adobe/reactor-window');
  * retrieved.
  * @returns {string}
  */
-module.exports = function(settings) {
+module.exports = function (settings) {
   // When local storage is disabled on Safari, the mere act of referencing window.localStorage
   // throws an error. For this reason, referencing window.localStorage without being inside
   // a try-catch should be avoided.

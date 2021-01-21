@@ -24,14 +24,18 @@ var visibilityChangeEventType = visibilityApi.visibilityChangeEventType;
  */
 var triggers = [];
 
-var watchForTabFocus = once(function() {
-  document.addEventListener(visibilityChangeEventType, function() {
-    if (!document[hiddenProperty]) {
-      triggers.forEach(function(trigger) {
-        trigger();
-      });
-    }
-  }, true);
+var watchForTabFocus = once(function () {
+  document.addEventListener(
+    visibilityChangeEventType,
+    function () {
+      if (!document[hiddenProperty]) {
+        triggers.forEach(function (trigger) {
+          trigger();
+        });
+      }
+    },
+    true
+  );
 });
 
 /**
@@ -41,7 +45,7 @@ var watchForTabFocus = once(function() {
  * @param {Object} settings The event settings object.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function(settings, trigger) {
+module.exports = function (settings, trigger) {
   watchForTabFocus();
   triggers.push(trigger);
 };

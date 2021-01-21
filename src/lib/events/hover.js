@@ -26,7 +26,7 @@ var trackedDelaysByElement = new WeakMap();
  * called immediately.
  * @param {Function} handler The function that should be called
  */
-var delayHover = function(event, delay, handler) {
+var delayHover = function (event, delay, handler) {
   if (delay === 0) {
     handler(event);
     return;
@@ -36,16 +36,16 @@ var delayHover = function(event, delay, handler) {
   var removeMouseLeaveListener;
   var handleMouseLeave;
 
-  removeMouseLeaveListener = function() {
+  removeMouseLeaveListener = function () {
     event.target.removeEventListener('mouseleave', handleMouseLeave);
   };
 
-  handleMouseLeave = function() {
+  handleMouseLeave = function () {
     clearTimeout(timeoutId);
     removeMouseLeaveListener();
   };
 
-  timeoutId = setTimeout(function() {
+  timeoutId = setTimeout(function () {
     handler(event);
     removeMouseLeaveListener();
   }, delay);
@@ -53,15 +53,15 @@ var delayHover = function(event, delay, handler) {
   event.target.addEventListener('mouseleave', handleMouseLeave);
 };
 
-var watchElement = function(element, trackedDelays) {
-  element.addEventListener('mouseenter', function(event) {
-    trackedDelays.forEach(function(trackedDelay) {
-      delayHover(event, trackedDelay, function(event) {
+var watchElement = function (element, trackedDelays) {
+  element.addEventListener('mouseenter', function (event) {
+    trackedDelays.forEach(function (trackedDelay) {
+      delayHover(event, trackedDelay, function (event) {
         bubbly.evaluateEvent(
           {
             element: event.target,
             target: event.target,
-            delay: trackedDelay,
+            delay: trackedDelay
           },
           true
         );
@@ -91,10 +91,10 @@ var watchElement = function(element, trackedDelays) {
  * rules on ancestor elements.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function(settings, trigger) {
+module.exports = function (settings, trigger) {
   var delay = settings.delay || 0;
 
-  bubbly.addListener(settings, function(syntheticEvent) {
+  bubbly.addListener(settings, function (syntheticEvent) {
     // Bubbling for this event is dependent upon the delay configured for rules.
     // An event can "bubble up" to other rules with the same delay but not to rules with
     // different delays. See the tests for how this plays out.
@@ -105,7 +105,7 @@ module.exports = function(settings, trigger) {
     }
   });
 
-  liveQuerySelector(settings.elementSelector, function(element) {
+  liveQuerySelector(settings.elementSelector, function (element) {
     if (!matchesProperties(element, settings.elementProperties)) {
       return;
     }

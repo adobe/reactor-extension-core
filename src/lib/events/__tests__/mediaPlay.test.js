@@ -12,9 +12,11 @@
 
 'use strict';
 
-describe('media play event delegate', function() {
+describe('media play event delegate', function () {
   var testStandardEvent = require('./helpers/testStandardEvent');
   var delegate = require('../mediaPlay');
 
-  testStandardEvent(function() { return delegate; }, 'play');
+  testStandardEvent(function () {
+    return delegate;
+  }, 'play');
 });

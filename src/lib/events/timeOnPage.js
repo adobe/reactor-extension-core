@@ -20,27 +20,31 @@ var hiddenProperty = visibilityApi.hiddenProperty;
 var visibilityChangeEventType = visibilityApi.visibilityChangeEventType;
 var triggers = {};
 
-var onMarkerPassed = function(timeOnPageMilliseconds) {
+var onMarkerPassed = function (timeOnPageMilliseconds) {
   var syntheticEvent = {
     timeOnPage: timeOnPageMilliseconds / 1000
   };
 
-  triggers[timeOnPageMilliseconds].forEach(function(trigger) {
+  triggers[timeOnPageMilliseconds].forEach(function (trigger) {
     trigger(syntheticEvent);
   });
 };
 
-var setupTimer = once(function() {
+var setupTimer = once(function () {
   var timer = new Timer();
   timer.on('markerPassed', onMarkerPassed);
 
-  document.addEventListener(visibilityChangeEventType, function() {
-    if (document[hiddenProperty]) {
-      timer.pause();
-    } else {
-      timer.resume();
-    }
-  }, true);
+  document.addEventListener(
+    visibilityChangeEventType,
+    function () {
+      if (document[hiddenProperty]) {
+        timer.pause();
+      } else {
+        timer.resume();
+      }
+    },
+    true
+  );
 
   timer.start();
   return timer;
@@ -56,7 +60,7 @@ var setupTimer = once(function() {
  * before the rule is triggered.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function(settings, trigger) {
+module.exports = function (settings, trigger) {
   var timer = setupTimer();
   var timeOnPageMilliseconds = settings.timeOnPage * 1000;
 

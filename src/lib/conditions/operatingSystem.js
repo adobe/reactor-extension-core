@@ -22,7 +22,6 @@ var clientInfo = require('./helpers/clientInfo');
  * systems.
  * @returns {boolean}
  */
-module.exports = function(settings) {
+module.exports = function (settings) {
   return settings.operatingSystems.indexOf(clientInfo.os) !== -1;
 };
-

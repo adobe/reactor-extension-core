@@ -21,7 +21,7 @@ var window = require('@adobe/reactor-window');
  * retrieved.
  * @returns {string}
  */
-module.exports = function(settings) {
+module.exports = function (settings) {
   // When session storage is disabled on Safari, the mere act of referencing window.sessionStorage
   // throws an error. For this reason, referencing window.sessionStorage without being inside
   // a try-catch should be avoided.

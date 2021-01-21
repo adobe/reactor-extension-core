@@ -14,7 +14,10 @@
 
 var visitorTracking = require('../helpers/visitorTracking');
 var getNamespacedStorage = require('../helpers/getNamespacedStorage');
-var maxFrequencyLocalStorage = getNamespacedStorage('localStorage', 'maxFrequency');
+var maxFrequencyLocalStorage = getNamespacedStorage(
+  'localStorage',
+  'maxFrequency'
+);
 
 var millisByUnit = {
   second: 1000,
@@ -22,7 +25,7 @@ var millisByUnit = {
   hour: 3600000, // 60 minutes
   day: 86400000, // 24 hours
   week: 604800000, // 7 days
-  month: 2678400000, // 31 days
+  month: 2678400000 // 31 days
 };
 
 /**
@@ -34,7 +37,7 @@ var millisByUnit = {
  * @param {string} settings.unit The unit that defines the maximum frequency.
  * @returns {boolean}
  */
-module.exports = function(settings, event) {
+module.exports = function (settings, event) {
   // Note that our storage key incorporates the rule ID instead of the rule component ID
   // (because a rule component ID isn't available). The storage key ALSO
   // incorporates the value of settings.unit. This means that multiple Max Frequency
@@ -48,7 +51,9 @@ module.exports = function(settings, event) {
   switch (settings.unit) {
     case 'pageView':
       var pageViewCount = visitorTracking.getLifetimePageViewCount();
-      var lastRecordedPageViewCount = Number(maxFrequencyLocalStorage.getItem(storageKey) || 0);
+      var lastRecordedPageViewCount = Number(
+        maxFrequencyLocalStorage.getItem(storageKey) || 0
+      );
       if (pageViewCount - lastRecordedPageViewCount >= settings.count) {
         maxFrequencyLocalStorage.setItem(storageKey, pageViewCount);
         return true;
@@ -56,7 +61,9 @@ module.exports = function(settings, event) {
       break;
     case 'session':
       var sessionCount = visitorTracking.getSessionCount();
-      var lastRecordedSessionCount = Number(maxFrequencyLocalStorage.getItem(storageKey) || 0);
+      var lastRecordedSessionCount = Number(
+        maxFrequencyLocalStorage.getItem(storageKey) || 0
+      );
       if (sessionCount - lastRecordedSessionCount >= settings.count) {
         maxFrequencyLocalStorage.setItem(storageKey, sessionCount);
         return true;
@@ -77,8 +84,13 @@ module.exports = function(settings, event) {
     case 'week':
     case 'month':
       var time = new Date().getTime();
-      var lastRecordedTime = Number(maxFrequencyLocalStorage.getItem(storageKey) || 0);
-      if (lastRecordedTime <= time - (settings.count * millisByUnit[settings.unit])) {
+      var lastRecordedTime = Number(
+        maxFrequencyLocalStorage.getItem(storageKey) || 0
+      );
+      if (
+        lastRecordedTime <=
+        time - settings.count * millisByUnit[settings.unit]
+      ) {
         maxFrequencyLocalStorage.setItem(storageKey, time);
         return true;
       }
@@ -87,4 +99,3 @@ module.exports = function(settings, event) {
 
   return false;
 };
-

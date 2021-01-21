@@ -17,8 +17,8 @@ var POLL_INTERVAL = 1000;
 var triggersByName = {};
 var cachedStringifiedValueByName = {};
 
-setInterval(function() {
-  Object.keys(triggersByName).forEach(function(name) {
+setInterval(function () {
+  Object.keys(triggersByName).forEach(function (name) {
     var stringifiedValue = JSON.stringify(turbine.getDataElementValue(name));
 
     if (stringifiedValue !== cachedStringifiedValueByName[name]) {
@@ -26,7 +26,7 @@ setInterval(function() {
         dataElementName: name
       };
 
-      triggersByName[name].forEach(function(trigger) {
+      triggersByName[name].forEach(function (trigger) {
         trigger(syntheticEvent);
       });
 
@@ -41,13 +41,15 @@ setInterval(function() {
  * @param {string} settings.name The name of the data element.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function(settings, trigger) {
+module.exports = function (settings, trigger) {
   var name = settings.name;
   var triggers = triggersByName[name];
 
   if (!triggers) {
     triggers = triggersByName[name] = [];
-    cachedStringifiedValueByName[name] = JSON.stringify(turbine.getDataElementValue(name));
+    cachedStringifiedValueByName[name] = JSON.stringify(
+      turbine.getDataElementValue(name)
+    );
   }
 
   triggers.push(trigger);

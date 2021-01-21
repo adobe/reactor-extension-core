@@ -19,10 +19,10 @@
  * @param {Function} defaultValueFactory A function that returns the default value that should
  * be used.
  */
-module.exports = function(weakMap, defaultValueFactory) {
+module.exports = function (weakMap, defaultValueFactory) {
   var originalGet = weakMap.get;
 
-  weakMap.get = function(key) {
+  weakMap.get = function (key) {
     if (!weakMap.has(key)) {
       weakMap.set(key, defaultValueFactory());
     }

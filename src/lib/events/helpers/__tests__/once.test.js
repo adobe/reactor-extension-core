@@ -11,14 +11,14 @@
  ****************************************************************************************/
 'use strict';
 
-describe('once', function() {
+describe('once', function () {
   var once;
 
-  beforeAll(function() {
+  beforeAll(function () {
     once = require('../once');
   });
 
-  it('calls the target function at most a single time', function() {
+  it('calls the target function at most a single time', function () {
     var targetFn = jasmine.createSpy();
     var oncified = once(targetFn);
 
@@ -31,7 +31,7 @@ describe('once', function() {
     expect(targetFn.calls.count()).toBe(1);
   });
 
-  it('calls the target function with the provided context', function() {
+  it('calls the target function with the provided context', function () {
     var targetFn = jasmine.createSpy();
     var context = {};
     var oncified = once(targetFn, context);
@@ -41,7 +41,7 @@ describe('once', function() {
     expect(targetFn.calls.first().object).toBe(context);
   });
 
-  it('calls the target function with the provided arguments', function() {
+  it('calls the target function with the provided arguments', function () {
     var targetFn = jasmine.createSpy();
     var oncified = once(targetFn);
 
