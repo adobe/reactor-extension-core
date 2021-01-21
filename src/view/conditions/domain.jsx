@@ -11,20 +11,24 @@
  ****************************************************************************************/
 
 import React from 'react';
+import { CheckboxGroup, Checkbox } from '@adobe/react-spectrum';
 import { connect } from 'react-redux';
 import WrappedField from '../components/wrappedField';
-import CheckboxList from '../components/checkboxList';
 
 const Domain = ({ domainOptions }) => (
-  <WrappedField
-    name="domains"
-    component={CheckboxList}
-    options={domainOptions}
-  />
+  <WrappedField label="Domains" name="domains" component={CheckboxGroup}>
+    {domainOptions.map((o) => (
+      <Checkbox value={o} key={o}>
+        {o}
+      </Checkbox>
+    ))}
+  </WrappedField>
 );
 
-const stateToProps = state => ({
-  domainOptions: state.meta.propertySettings ? state.meta.propertySettings.domains : []
+const stateToProps = (state) => ({
+  domainOptions: state.meta.propertySettings
+    ? state.meta.propertySettings.domains
+    : []
 });
 
 export default connect(stateToProps)(Domain);

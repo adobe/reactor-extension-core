@@ -11,18 +11,16 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@react/react-spectrum/Textfield';
-import Checkbox from '@react/react-spectrum/Checkbox';
-import { Toast } from '@react/react-spectrum/Toast';
+import { TextField, Checkbox, Well } from '@adobe/react-spectrum';
 import Sampling, { formConfig } from '../sampling';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const rateTextfield = wrapper.find(Textfield);
+  const rateTextfield = wrapper.find(TextField);
   const persistCohortCheckbox = wrapper.find(Checkbox);
-  const cohortResetWarning = wrapper.find(Toast);
+  const cohortResetWarning = wrapper.find(Well);
 
   return {
     rateTextfield,
@@ -48,10 +46,9 @@ describe('sampling condition view', () => {
       }
     });
 
-    const {
-      rateTextfield,
-      persistCohortCheckbox
-    } = getReactComponents(instance);
+    const { rateTextfield, persistCohortCheckbox } = getReactComponents(
+      instance
+    );
 
     expect(rateTextfield.props().value).toBe('25');
     expect(persistCohortCheckbox.props().value).toBe(true);
@@ -60,10 +57,9 @@ describe('sampling condition view', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const {
-      rateTextfield,
-      persistCohortCheckbox
-    } = getReactComponents(instance);
+    const { rateTextfield, persistCohortCheckbox } = getReactComponents(
+      instance
+    );
 
     rateTextfield.props().onChange('25');
     persistCohortCheckbox.props().onChange(true);
@@ -134,7 +130,6 @@ describe('sampling condition view', () => {
     rateTextfield.props().onChange('55.55');
     expect(extensionBridge.validate()).toBe(false);
 
-
     ({ rateTextfield } = getReactComponents(instance));
 
     expect(rateTextfield.props().validationState).toBe('invalid');
@@ -169,24 +164,26 @@ describe('sampling condition view', () => {
     expect(cohortResetWarning.exists()).toBe(false);
   });
 
-  it('does not show cohort reset warning when rate changes and persist cohort ' +
-      'unchecked on last save', () => {
-    extensionBridge.init({
-      settings: {
-        rate: 0.25
-      }
-    });
+  it(
+    'does not show cohort reset warning when rate changes and persist cohort ' +
+      'unchecked on last save',
+    () => {
+      extensionBridge.init({
+        settings: {
+          rate: 0.25
+        }
+      });
 
-    const {
-      rateTextfield,
-      persistCohortCheckbox
-    } = getReactComponents(instance);
+      const { rateTextfield, persistCohortCheckbox } = getReactComponents(
+        instance
+      );
 
-    persistCohortCheckbox.props().onChange(true);
-    rateTextfield.props().onChange('70');
+      persistCohortCheckbox.props().onChange(true);
+      rateTextfield.props().onChange('70');
 
-    const { cohortResetWarning } = getReactComponents(instance);
+      const { cohortResetWarning } = getReactComponents(instance);
 
-    expect(cohortResetWarning.exists()).toBe(false);
-  });
+      expect(cohortResetWarning.exists()).toBe(false);
+    }
+  );
 });

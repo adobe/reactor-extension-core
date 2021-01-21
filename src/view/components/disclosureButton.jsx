@@ -11,18 +11,13 @@
  ****************************************************************************************/
 
 import React from 'react';
-import ChevronDown from '@react/react-spectrum/Icon/ChevronDown';
-import ChevronRight from '@react/react-spectrum/Icon/ChevronRight';
+import { ActionButton, Text } from '@adobe/react-spectrum';
+import ChevronDown from '@spectrum-icons/workflow/ChevronDown';
+import ChevronRight from '@spectrum-icons/workflow/ChevronRight';
 
 export default ({ onClick, selected, label }) => (
-  <button type="button" className="u-buttonReset" onClick={onClick}>
-    {
-      selected ?
-        <ChevronDown className="u-verticalAlignMiddle" size="S" /> :
-        <ChevronRight className="u-verticalAlignMiddle" size="S" />
-    }
-    <span className="u-verticalAlignMiddle u-gapLeft">
-      { label }
-    </span>
-  </button>
+  <ActionButton isQuiet onPress={onClick}>
+    {selected ? <ChevronDown size="S" /> : <ChevronRight size="S" />}
+    <Text>{label}</Text>
+  </ActionButton>
 );

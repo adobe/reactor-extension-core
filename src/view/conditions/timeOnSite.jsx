@@ -11,33 +11,34 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@react/react-spectrum/Textfield';
-import Select from '@react/react-spectrum/Select';
+import { Picker, TextField, Item, Flex } from '@adobe/react-spectrum';
 import WrappedField from '../components/wrappedField';
 import { isNumberLike } from '../utils/validators';
 import comparisonOperatorOptions from './comparisonOperatorOptions';
+import NoWrapText from '../components/noWrapText';
 
 const TimeOnSite = () => (
-  <div>
-    <div>
-      <label className="u-gapRight">
-        <span className="u-verticalAlignMiddle u-gapRight">User has spent</span>
-        <WrappedField
-          name="operator"
-          component={Select}
-          options={comparisonOperatorOptions}
-        />
-      </label>
-      <label>
-        <WrappedField
-          name="minutes"
-          component={Textfield}
-          componentClassName="u-smallTextfield"
-        />
-        <span className="u-verticalAlignMiddle u-gapRight u-gapLeft">minutes on site</span>
-      </label>
-    </div>
-  </div>
+  <Flex gap="size-100" minWidth="size-6000" alignItems="end" wrap>
+    <NoWrapText>User has spent</NoWrapText>
+    <WrappedField
+      label="Operator"
+      name="operator"
+      component={Picker}
+      items={comparisonOperatorOptions}
+    >
+      {(item) => <Item>{item.name}</Item>}
+    </WrappedField>
+    <Flex gap="size-100" alignItems="end">
+      <WrappedField
+        label="Minutes"
+        name="minutes"
+        component={TextField}
+        isRequired
+      />
+
+      <NoWrapText>minutes on site</NoWrapText>
+    </Flex>
+  </Flex>
 );
 
 export default TimeOnSite;

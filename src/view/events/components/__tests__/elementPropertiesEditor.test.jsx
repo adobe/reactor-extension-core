@@ -11,25 +11,34 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Button from '@react/react-spectrum/Button';
-import Textfield from '@react/react-spectrum/Textfield';
+import { TextField, Button, ActionButton } from '@adobe/react-spectrum';
 import RegexToggle from '../../../components/regexToggle';
 import WrappedField from '../../../components/wrappedField';
-import ElementPropertiesEditor, { formConfig } from '../elementPropertiesEditor';
+import ElementPropertiesEditor, {
+  formConfig
+} from '../elementPropertiesEditor';
 import createExtensionBridge from '../../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const rows = wrapper.find('[data-row]').map((row) => {
+
+  const rows = wrapper.find('div[data-row]').map((row) => {
     const fields = row.find(WrappedField);
-    const nameField = fields.filterWhere(n => n.prop('name').indexOf('.name') !== -1);
-    const valueField = fields.filterWhere(n => n.prop('name').indexOf('.value') !== -1);
+    const nameField = fields.filterWhere(
+      (n) => n.prop('name').indexOf('.name') !== -1
+    );
+    const valueField = fields.filterWhere(
+      (n) => n.prop('name').indexOf('.value') !== -1
+    );
+
     return {
-      nameTextfield: nameField.find(Textfield),
-      valueTextfield: valueField.find(Textfield),
+      nameTextfield: nameField.find(TextField),
+      valueTextfield: valueField.find(TextField),
       valueRegexToggle: row.find(RegexToggle),
-      removeButton: row.find(Button)
+      removeButton: row
+        .find(ActionButton)
+        .filterWhere((n) => n.prop('aria-label') === 'Remove row')
     };
   });
 
@@ -47,7 +56,9 @@ describe('elementPropertiesEditor', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(ElementPropertiesEditor, formConfig, extensionBridge));
+    instance = mount(
+      bootstrap(ElementPropertiesEditor, formConfig, extensionBridge)
+    );
   });
 
   it('sets form values from settings', () => {
@@ -106,7 +117,7 @@ describe('elementPropertiesEditor', () => {
     extensionBridge.init();
 
     const { addButton } = getReactComponents(instance);
-    addButton.props().onClick();
+    addButton.props().onPress();
 
     const { rows } = getReactComponents(instance);
 
@@ -133,7 +144,7 @@ describe('elementPropertiesEditor', () => {
     });
 
     let { rows } = getReactComponents(instance);
-    rows[0].removeButton.props().onClick();
+    rows[0].removeButton.props().onPress();
 
     ({ rows } = getReactComponents(instance));
 

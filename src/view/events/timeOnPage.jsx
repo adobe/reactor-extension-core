@@ -11,23 +11,22 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@react/react-spectrum/Textfield';
+import { TextField, Flex } from '@adobe/react-spectrum';
 import WrappedField from '../components/wrappedField';
-
+import NoWrapText from '../components/noWrapText';
 import { isNumberLikeInRange } from '../utils/validators';
 
 const TimeOnPage = () => (
-  <div>
-    <label>
-      <span className="u-verticalAlignMiddle u-gapRight u-gapRight">
-        Trigger after
-      </span>
-      <WrappedField name="timeOnPage" component={Textfield} />
-    </label>
-    <span className="u-verticalAlignMiddle u-gapRight u-gapLeft">
-      seconds spent on the page
-    </span>
-  </div>
+  <Flex alignItems="end" gap="size-100" minWidth="size-6000">
+    <NoWrapText>Trigger after</NoWrapText>
+    <WrappedField
+      label="Time On Page"
+      name="timeOnPage"
+      isRequired
+      component={TextField}
+    />
+    <NoWrapText>seconds spent on the page</NoWrapText>
+  </Flex>
 );
 
 export default TimeOnPage;

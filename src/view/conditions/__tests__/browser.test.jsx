@@ -11,19 +11,16 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
+import { CheckboxGroup } from '@adobe/react-spectrum';
 import Browser, { formConfig } from '../browser';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
-import CheckboxList from '../../components/checkboxList';
 
-const selectedBrowsers = [
-  'Chrome',
-  'Safari'
-];
+const selectedBrowsers = ['Chrome', 'Safari'];
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const browsersCheckboxList = wrapper.find(CheckboxList);
+  const browsersCheckboxList = wrapper.find(CheckboxGroup);
 
   return {
     browsersCheckboxList

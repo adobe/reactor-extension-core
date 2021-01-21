@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Checkbox from '@react/react-spectrum/Checkbox';
+import { Checkbox } from '@adobe/react-spectrum';
 import AdvancedEventOptions, { formConfig } from '../advancedEventOptions';
 import createExtensionBridge from '../../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../../bootstrap';
@@ -20,11 +20,15 @@ const getReactComponents = (wrapper) => {
   wrapper.update();
   const checkboxes = wrapper.find(Checkbox);
 
-  const bubbleFireIfParentCheckbox = checkboxes
-    .filterWhere(n => n.prop('name') === 'bubbleFireIfParent');
-  const bubbleFireIfChildFiredCheckbox = checkboxes
-    .filterWhere(n => n.prop('name') === 'bubbleFireIfChildFired');
-  const bubbleStopCheckbox = checkboxes.filterWhere(n => n.prop('name') === 'bubbleStop');
+  const bubbleFireIfParentCheckbox = checkboxes.filterWhere(
+    (n) => n.prop('name') === 'bubbleFireIfParent'
+  );
+  const bubbleFireIfChildFiredCheckbox = checkboxes.filterWhere(
+    (n) => n.prop('name') === 'bubbleFireIfChildFired'
+  );
+  const bubbleStopCheckbox = checkboxes.filterWhere(
+    (n) => n.prop('name') === 'bubbleStop'
+  );
 
   return {
     bubbleFireIfParentCheckbox,
@@ -39,7 +43,9 @@ describe('advancedEventOptions', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(AdvancedEventOptions, formConfig, extensionBridge));
+    instance = mount(
+      bootstrap(AdvancedEventOptions, formConfig, extensionBridge)
+    );
     extensionBridge.init();
   });
 
@@ -78,9 +84,7 @@ describe('advancedEventOptions', () => {
       settings: {}
     });
 
-    const {
-      bubbleFireIfParentCheckbox
-    } = getReactComponents(instance);
+    const { bubbleFireIfParentCheckbox } = getReactComponents(instance);
 
     expect(bubbleFireIfParentCheckbox.props().checked).toBe(true);
   });
@@ -90,13 +94,10 @@ describe('advancedEventOptions', () => {
       settings: {}
     });
 
-    const {
-      bubbleFireIfChildFiredCheckbox
-    } = getReactComponents(instance);
+    const { bubbleFireIfChildFiredCheckbox } = getReactComponents(instance);
 
     expect(bubbleFireIfChildFiredCheckbox.props().checked).toBe(true);
   });
-
 
   it('sets settings from form values', () => {
     extensionBridge.init();

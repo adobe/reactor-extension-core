@@ -8,14 +8,25 @@
       "experimentalObjectRestSpread": true
     }
   },
-  "extends": ["airbnb"],
+  "extends": ["airbnb", "plugin:prettier/recommended", "prettier/react"],
   "rules": {
-    "jsx-a11y/label-has-associated-control": [ 2, {
-      "controlComponents": ["WrappedField"],
-      "depth": 1
-    }],
+    "jsx-a11y/label-has-associated-control": [
+      2,
+      {
+        "controlComponents": ["WrappedField"],
+        "depth": 1
+      }
+    ],
     "space-before-function-paren": [2, "never"],
-    "max-len": [2, 100, 4, {"ignoreUrls": true, "ignorePattern": "^(\\s*(var|let|const)\\s.+=\\s*require\\s*\\()|(^\\s*import)"}],
+    "max-len": [
+      2,
+      100,
+      4,
+      {
+        "ignoreUrls": true,
+        "ignorePattern": "^(\\s*(var|let|const)\\s.+=\\s*require\\s*\\()|(^\\s*import)"
+      }
+    ],
     "comma-dangle": ["error", "never"],
     "react/prop-types": 0,
     "react/jsx-no-bind": 0,
@@ -23,10 +34,17 @@
     "no-prototype-builtins": 0,
     "jsx-a11y/label-has-for": 0,
     "spaced-comment": 0, // To support our copyright banner.
-    "prefer-const": ["error", {
-      "destructuring": "all"
-    }],
-    "operator-linebreak": ["error", "after"]
+    "implicit-arrow-linebreak": 0,
+    "prefer-const": [
+      "error",
+      {
+        "destructuring": "all"
+      }
+    ],
+    "operator-linebreak": 0,
+    "object-curly-newline": 0,
+    "react/jsx-props-no-spreading": 0,
+    "jsx-a11y/anchor-is-valid": 0
   },
   "env": {
     "es6": true,

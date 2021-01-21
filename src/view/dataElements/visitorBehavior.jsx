@@ -11,50 +11,50 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Select from '@react/react-spectrum/Select';
-import WrappedField from '../components/wrappedField';
+import { Picker, Item } from '@adobe/react-spectrum';
+import FullWidthField from '../components/fullWidthField';
 
 const options = [
   {
-    value: 'landingPage',
-    label: 'Landing Page'
+    id: 'landingPage',
+    name: 'Landing Page'
   },
   {
-    value: 'trafficSource',
-    label: 'Traffic Source'
+    id: 'trafficSource',
+    name: 'Traffic Source'
   },
   {
-    value: 'minutesOnSite',
-    label: 'Minutes On Site'
+    id: 'minutesOnSite',
+    name: 'Minutes On Site'
   },
   {
-    value: 'sessionCount',
-    label: 'Session Count'
+    id: 'sessionCount',
+    name: 'Session Count'
   },
   {
-    value: 'sessionPageViewCount',
-    label: 'Session Page View Count'
+    id: 'sessionPageViewCount',
+    name: 'Session Page View Count'
   },
   {
-    value: 'lifetimePageViewCount',
-    label: 'Lifetime Page View Count'
+    id: 'lifetimePageViewCount',
+    name: 'Lifetime Page View Count'
   },
   {
-    value: 'isNewVisitor',
-    label: 'Is New Visitor'
+    id: 'isNewVisitor',
+    name: 'Is New Visitor'
   }
 ];
 
 const VisitorBehavior = () => (
-  <label>
-    <span className="u-verticalAlignMiddle u-gapRight">Attribute</span>
-    <WrappedField
-      name="attribute"
-      component={Select}
-      componentClassName="u-fieldLong"
-      options={options}
-    />
-  </label>
+  <FullWidthField
+    label="Attribute"
+    name="attribute"
+    component={Picker}
+    items={options}
+    containerMinWidth="size-6000"
+  >
+    {(item) => <Item>{item.name}</Item>}
+  </FullWidthField>
 );
 
 export default VisitorBehavior;

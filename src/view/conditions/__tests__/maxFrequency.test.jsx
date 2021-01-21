@@ -11,16 +11,15 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@react/react-spectrum/Textfield';
-import Select from '@react/react-spectrum/Select';
+import { TextField, Picker } from '@adobe/react-spectrum';
 import MaxFrequency, { formConfig } from '../maxFrequency';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const countTextfield = wrapper.find(Textfield);
-  const unitSelect = wrapper.find(Select);
+  const countTextfield = wrapper.find(TextField);
+  const unitSelect = wrapper.find(Picker);
 
   return {
     countTextfield,
@@ -54,10 +53,7 @@ describe('max frequency condition view', () => {
       }
     });
 
-    const {
-      countTextfield,
-      unitSelect
-    } = getReactComponents(instance);
+    const { countTextfield, unitSelect } = getReactComponents(instance);
 
     expect(countTextfield.props().value).toBe('3');
     expect(unitSelect.props().value).toBe('session');
@@ -66,10 +62,7 @@ describe('max frequency condition view', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const {
-      unitSelect,
-      countTextfield
-    } = getReactComponents(instance);
+    const { unitSelect, countTextfield } = getReactComponents(instance);
 
     unitSelect.props().onChange('session');
     countTextfield.props().onChange('3');
@@ -88,17 +81,13 @@ describe('max frequency condition view', () => {
       }
     });
 
-    let {
-      countTextfield
-    } = getReactComponents(instance);
+    let { countTextfield } = getReactComponents(instance);
 
     countTextfield.props().onChange('-1');
 
     expect(extensionBridge.validate()).toBe(false);
 
-    ({
-      countTextfield
-    } = getReactComponents(instance));
+    ({ countTextfield } = getReactComponents(instance));
 
     expect(countTextfield.props().validationState).toBe('invalid');
 
@@ -106,9 +95,7 @@ describe('max frequency condition view', () => {
 
     expect(extensionBridge.validate()).toBe(false);
 
-    ({
-      countTextfield
-    } = getReactComponents(instance));
+    ({ countTextfield } = getReactComponents(instance));
 
     expect(countTextfield.props().validationState).toBe('invalid');
   });
@@ -121,10 +108,7 @@ describe('max frequency condition view', () => {
         }
       });
 
-      const {
-        countTextfield,
-        unitSelect
-      } = getReactComponents(instance);
+      const { countTextfield, unitSelect } = getReactComponents(instance);
 
       expect(countTextfield.exists()).toBe(false);
       expect(unitSelect.props().value).toBe('visitor');
@@ -133,9 +117,7 @@ describe('max frequency condition view', () => {
     it('sets settings from form values', () => {
       extensionBridge.init();
 
-      const {
-        unitSelect
-      } = getReactComponents(instance);
+      const { unitSelect } = getReactComponents(instance);
 
       unitSelect.props().onChange('visitor');
 

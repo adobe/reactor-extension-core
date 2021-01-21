@@ -11,30 +11,30 @@
  ****************************************************************************************/
 
 import React from 'react';
-import RadioGroup from '@react/react-spectrum/RadioGroup';
-import Radio from '@react/react-spectrum/Radio';
-import SpecificElements, { formConfig as specificElementsFormConfig } from './components/specificElements';
-import DelayType, { formConfig as delayTypeFormConfig } from './components/delayType';
+import { RadioGroup, Radio, Flex } from '@adobe/react-spectrum';
+import SpecificElements, {
+  formConfig as specificElementsFormConfig
+} from './components/specificElements';
+import DelayType, {
+  formConfig as delayTypeFormConfig
+} from './components/delayType';
 import mergeFormConfigs from '../utils/mergeFormConfigs';
 import WrappedField from '../components/wrappedField';
 
 const EntersViewport = () => (
-  <div>
+  <Flex gap="size-100" direction="column">
     <SpecificElements />
     <DelayType />
-    <div>
-      <label>
-        <span className="u-verticalAlignMiddle u-gapRight">at the frequency of</span>
-        <WrappedField
-          name="frequency"
-          component={RadioGroup}
-        >
-          <Radio value="firstEntry" label="first time element enters viewport" />
-          <Radio value="everyEntry" label="every time element enters viewport" />
-        </WrappedField>
-      </label>
-    </div>
-  </div>
+
+    <WrappedField
+      label="at the frequency of"
+      name="frequency"
+      component={RadioGroup}
+    >
+      <Radio value="firstEntry">first time element enters viewport</Radio>
+      <Radio value="everyEntry">every time element enters viewport</Radio>
+    </WrappedField>
+  </Flex>
 );
 
 export default EntersViewport;

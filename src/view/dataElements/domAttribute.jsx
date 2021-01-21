@@ -11,57 +11,57 @@
  ****************************************************************************************/
 
 import React from 'react';
+import { TextField, Picker, Flex, Item, View } from '@adobe/react-spectrum';
 import { formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
-import Textfield from '@react/react-spectrum/Textfield';
-import Select from '@react/react-spectrum/Select';
 import WrappedField from '../components/wrappedField';
 import SelectorLearnMoreLink from '../components/selectorLearnMoreLink';
+import NoWrapText from '../components/noWrapText';
 
 const elementPropertyPresets = [
   {
-    value: 'id',
-    label: 'id'
+    id: 'id',
+    name: 'id'
   },
   {
-    value: 'href',
-    label: 'href'
+    id: 'href',
+    name: 'href'
   },
   {
-    value: 'class',
-    label: 'class'
+    id: 'class',
+    name: 'class'
   },
   {
-    value: 'src',
-    label: 'src'
+    id: 'src',
+    name: 'src'
   },
   {
-    value: 'alt',
-    label: 'alt'
+    id: 'alt',
+    name: 'alt'
   },
   {
-    value: 'innerHTML',
-    label: 'HTML'
+    id: 'innerHTML',
+    name: 'HTML'
   },
   {
-    value: 'text',
-    label: 'text'
+    id: 'text',
+    name: 'text'
   },
   {
-    value: 'name',
-    label: 'name'
+    id: 'name',
+    name: 'name'
   },
   {
-    value: 'value',
-    label: 'value'
+    id: 'value',
+    name: 'value'
   },
   {
-    value: 'type',
-    label: 'type'
+    id: 'type',
+    name: 'type'
   },
   {
-    value: 'custom',
-    label: 'other attribute'
+    id: 'custom',
+    name: 'other attribute'
   }
 ];
 
@@ -69,48 +69,50 @@ const DomAttribute = ({ ...props }) => {
   const { selectedElementPropertyPreset } = props;
 
   return (
-    <div>
-      <div className="u-gapBottom">
-        <label className="u-alignItemsCenter u-flex">
-          <span className="u-gapRight">
-            From the DOM element matching the CSS Selector
-          </span>
+    <Flex direction="column" gap="size-100" minWidth="size-4600">
+      <Flex gap="size-100" alignItems="end">
+        <NoWrapText>From the DOM element matching the CSS Selector</NoWrapText>
+        <View flex>
           <WrappedField
-            className="u-flexOne"
+            width="100%"
+            label="Element Selector"
             name="elementSelector"
-            component={Textfield}
-            componentClassName="u-fullWidth u-minFieldWidth"
+            component={TextField}
+            isRequired
           />
+        </View>
+        <View marginBottom="size-20" width="size-1600">
           <SelectorLearnMoreLink />
-        </label>
-      </div>
-      <div>
-        <label className="u-gapRight">
-          <span className="u-verticalAlignMiddle u-gapRight">Use the value of</span>
+        </View>
+      </Flex>
+      <Flex gap="size-100" wrap>
+        <WrappedField
+          label="Use the value of"
+          name="selectedElementPropertyPreset"
+          component={Picker}
+          items={elementPropertyPresets}
+        >
+          {(item) => <Item>{item.name}</Item>}
+        </WrappedField>
+
+        {selectedElementPropertyPreset === 'custom' ? (
           <WrappedField
-            name="selectedElementPropertyPreset"
-            component={Select}
-            options={elementPropertyPresets}
+            label="Custom Element Property"
+            name="customElementProperty"
+            component={TextField}
           />
-        </label>
-        {
-          (selectedElementPropertyPreset === 'custom') ?
-            (
-              <WrappedField
-                name="customElementProperty"
-                component={Textfield}
-              />
-            ) :
-            null
-        }
-      </div>
-    </div>
+        ) : null}
+      </Flex>
+    </Flex>
   );
 };
 
 const valueSelector = formValueSelector('default');
-const stateToProps = state => ({
-  selectedElementPropertyPreset: valueSelector(state, 'selectedElementPropertyPreset')
+const stateToProps = (state) => ({
+  selectedElementPropertyPreset: valueSelector(
+    state,
+    'selectedElementPropertyPreset'
+  )
 });
 
 export default connect(stateToProps)(DomAttribute);
@@ -119,8 +121,9 @@ export const formConfig = {
   settingsToFormValues(values, settings) {
     const { elementSelector, elementProperty } = settings;
 
-    const elementPropertyIsPreset =
-      elementPropertyPresets.some(preset => preset.value === elementProperty);
+    const elementPropertyIsPreset = elementPropertyPresets.some(
+      (preset) => preset.value === elementProperty
+    );
 
     let selectedElementPropertyPreset;
     let customElementProperty;
@@ -165,7 +168,10 @@ export const formConfig = {
       errors.elementSelector = 'Please specify a CSS selector.';
     }
 
-    if (values.selectedElementPropertyPreset === 'custom' && !values.customElementProperty) {
+    if (
+      values.selectedElementPropertyPreset === 'custom' &&
+      !values.customElementProperty
+    ) {
       errors.customElementProperty = 'Please specify an element property.';
     }
 

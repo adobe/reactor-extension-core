@@ -11,56 +11,66 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Button from '@react/react-spectrum/Button';
-import Close from '@react/react-spectrum/Icon/Close';
-import Textfield from '@react/react-spectrum/Textfield';
+import {
+  Flex,
+  TextField,
+  View,
+  ActionButton,
+  Button,
+  Text
+} from '@adobe/react-spectrum';
+import Delete from '@spectrum-icons/workflow/Delete';
+import Add from '@spectrum-icons/workflow/Add';
 import { FieldArray } from 'redux-form';
 import WrappedField from '../../components/wrappedField';
 import RegexToggle from '../../components/regexToggle';
 
 const ElementPropertiesRenderer = ({ fields }) => (
-  <div className="u-gapBottom">
-    {
-      fields.map((field, index) => (
-        <div key={field} data-row className="u-gapBottom u-alignItemsCenter u-flex">
+  <Flex direction="column" gap="size-200" minWidth="size-6000">
+    {fields.map((field, index) => (
+      <Flex key={field} data-row gap="size-100" alignItems="end">
+        <View flex>
           <WrappedField
+            label="Property"
             name={`${field}.name`}
-            className="u-flexOne u-alignItemsCenter u-flex"
-            placeholder="Property"
-            component={Textfield}
-            componentClassName="u-fullWidth u-smallTextfield"
+            component={TextField}
+            width="100%"
           />
-          <span className="u-gapRight u-gapLeft">&#61;</span>
+        </View>
+        <span className="u-gapRight u-gapLeft">&#61;</span>
+        <View flex>
           <WrappedField
+            label="Value"
             name={`${field}.value`}
-            className="u-gapRight u-flexOne u-alignItemsCenter u-flex"
-            placeholder="Value"
-            component={Textfield}
-            componentClassName="u-fullWidth u-smallTextfield "
+            component={TextField}
+            width="100%"
           />
-          <WrappedField
-            name={`${field}.valueIsRegex`}
-            component={RegexToggle}
-            valueFieldName={`${field}.value`}
-          />
-          <Button
-            variant="action"
-            quiet
-            icon={<Close />}
-            onClick={fields.remove.bind(this, index)}
-          />
-        </div>
-      ))
-    }
-    <Button onClick={() => fields.push({})}>Add Another</Button>
-  </div>
+        </View>
+        <WrappedField
+          name={`${field}.valueIsRegex`}
+          component={RegexToggle}
+          valueFieldName={`${field}.value`}
+        />
+        <ActionButton
+          isQuiet
+          aria-label="Remove row"
+          onPress={fields.remove.bind(this, index)}
+        >
+          <Delete />
+        </ActionButton>
+      </Flex>
+    ))}
+    <View marginBottom="size-150">
+      <Button variant="primary" onPress={() => fields.push({})}>
+        <Add />
+        <Text>Add Another</Text>
+      </Button>
+    </View>
+  </Flex>
 );
 
 const ElementPropertiesEditor = () => (
-  <FieldArray
-    component={ElementPropertiesRenderer}
-    name="elementProperties"
-  />
+  <FieldArray component={ElementPropertiesRenderer} name="elementProperties" />
 );
 
 export default ElementPropertiesEditor;
@@ -88,7 +98,7 @@ export const formConfig = {
     let { elementProperties } = values;
 
     elementProperties = elementProperties
-      .filter(elementProperty => elementProperty.name)
+      .filter((elementProperty) => elementProperty.name)
       .map((elementProperty) => {
         elementProperty = {
           ...elementProperty

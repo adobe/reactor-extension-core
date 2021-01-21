@@ -11,14 +11,14 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@react/react-spectrum/Textfield';
+import { TextField } from '@adobe/react-spectrum';
 import Configuration, { formConfig } from '../configuration';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const cspNonceTextfield = wrapper.find(Textfield);
+  const cspNonceTextfield = wrapper.find(TextField);
 
   return {
     cspNonceTextfield

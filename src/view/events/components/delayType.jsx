@@ -11,32 +11,46 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Radio from '@react/react-spectrum/Radio';
-import RadioGroup from '@react/react-spectrum/RadioGroup';
-import Textfield from '@react/react-spectrum/Textfield';
+import {
+  Radio,
+  RadioGroup,
+  TextField,
+  Flex,
+  View
+} from '@adobe/react-spectrum';
+import { connect } from 'react-redux';
+import { formValueSelector } from 'redux-form';
 import WrappedField from '../../components/wrappedField';
 
 import { isNumberLikeInRange } from '../../utils/validators';
 
-export default () => (
-  <div>
-    <label>
-      <span className="u-verticalAlignMiddle u-gapRight">Trigger</span>
-      <WrappedField
-        name="delayType"
-        component={RadioGroup}
-      >
-        <Radio value="immediate" label="immediately" />
-        <Radio value="delay" label="after" />
-      </WrappedField>
-    </label>
-    <WrappedField
-      name="delay"
-      component={Textfield}
-    />
-    <span className="u-verticalAlignMiddle u-gapRight u-gapLeft">milliseconds</span>
-  </div>
+const DelayType = ({ delayType }) => (
+  <View>
+    <WrappedField name="delayType" label="Trigger" component={RadioGroup}>
+      <Radio value="immediate">immediately</Radio>
+      <Radio value="delay">after a delay</Radio>
+    </WrappedField>
+
+    {delayType === 'delay' && (
+      <Flex alignItems="end" gap="size-100">
+        <WrappedField
+          name="delay"
+          component={TextField}
+          label="Delay"
+          isRequired
+        />
+        <View marginBottom="size-75">milliseconds</View>
+      </Flex>
+    )}
+  </View>
 );
+
+const valueSelector = formValueSelector('default');
+const stateToProps = (state) => ({
+  delayType: valueSelector(state, 'delayType')
+});
+
+export default connect(stateToProps)(DelayType);
 
 export const formConfig = {
   settingsToFormValues(values, settings) {
@@ -62,7 +76,10 @@ export const formConfig = {
       ...errors
     };
 
-    if (values.delayType === 'delay' && !isNumberLikeInRange(values.delay, { min: 1 })) {
+    if (
+      values.delayType === 'delay' &&
+      !isNumberLikeInRange(values.delay, { min: 1 })
+    ) {
       errors.delay = 'Please specify a number greater than or equal to 1.';
     }
 

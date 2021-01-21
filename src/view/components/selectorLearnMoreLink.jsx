@@ -11,18 +11,21 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Link from '@react/react-spectrum/Link';
-import './selectorLearnMoreLink.styl';
+import { Link, View } from '@adobe/react-spectrum';
 
 // when an input field ends with a "learn more" link,
 // we insert padding for the form validation tooltip to display correctly
 export default () => (
-  <Link
-    className="SelectorLearnMoreLink u-gapLeft"
-    href="https://developer.mozilla.org/en-US/docs/Learn/CSS/Introduction_to_CSS/Selectors"
-    rel="noopener noreferrer"
-    target="_blank"
-  >
-    Learn more
-  </Link>
+  <View marginBottom="size-75">
+    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+    <Link>
+      <a
+        href="https://developer.mozilla.org/en-US/docs/Learn/CSS/Introduction_to_CSS/Selectors"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Learn more
+      </a>
+    </Link>
+  </View>
 );

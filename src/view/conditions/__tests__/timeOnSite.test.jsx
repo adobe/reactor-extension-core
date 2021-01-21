@@ -11,16 +11,15 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@react/react-spectrum/Textfield';
-import Select from '@react/react-spectrum/Select';
+import { TextField, Picker } from '@adobe/react-spectrum';
 import TimeOnSite, { formConfig } from '../timeOnSite';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const operatorSelect = wrapper.find(Select);
-  const minutesTextfield = wrapper.find(Textfield);
+  const operatorSelect = wrapper.find(Picker);
+  const minutesTextfield = wrapper.find(TextField);
 
   return {
     operatorSelect,

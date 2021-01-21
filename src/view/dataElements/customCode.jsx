@@ -15,12 +15,7 @@ import WrappedField from '../components/wrappedField';
 import EditorButton from '../components/editorButton';
 
 const CustomCode = () => (
-  <div>
-    <WrappedField
-      name="source"
-      component={EditorButton}
-    />
-  </div>
+  <WrappedField name="source" component={EditorButton} />
 );
 
 export default CustomCode;

@@ -11,8 +11,7 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Checkbox from '@react/react-spectrum/Checkbox';
-import Textfield from '@react/react-spectrum/Textfield';
+import { Checkbox, TextField } from '@adobe/react-spectrum';
 import WrappedField from '../../../components/wrappedField';
 import SpecificElements, { formConfig } from '../specificElements';
 import createExtensionBridge from '../../../__tests__/helpers/createExtensionBridge';
@@ -23,9 +22,10 @@ const getReactComponents = (wrapper) => {
   wrapper.update();
   const showElementPropertiesCheckbox = wrapper.find(Checkbox);
   const elementPropertiesEditor = wrapper.find(ElementPropertiesEditor);
-  const elementSelectorTextfield = wrapper.find(WrappedField)
-    .filterWhere(n => n.prop('name') === 'elementSelector')
-    .find(Textfield);
+  const elementSelectorTextfield = wrapper
+    .find(WrappedField)
+    .filterWhere((n) => n.prop('name') === 'elementSelector')
+    .find(TextField);
 
   return {
     showElementPropertiesCheckbox,
@@ -60,7 +60,10 @@ describe('specificElements', () => {
       }
     });
 
-    const { showElementPropertiesCheckbox, elementPropertiesEditor } = getReactComponents(instance);
+    const {
+      showElementPropertiesCheckbox,
+      elementPropertiesEditor
+    } = getReactComponents(instance);
     expect(showElementPropertiesCheckbox.props().checked).toBe(true);
     expect(elementPropertiesEditor.exists()).toBe(true);
   });
@@ -72,7 +75,10 @@ describe('specificElements', () => {
       }
     });
 
-    const { showElementPropertiesCheckbox, elementPropertiesEditor } = getReactComponents(instance);
+    const {
+      showElementPropertiesCheckbox,
+      elementPropertiesEditor
+    } = getReactComponents(instance);
     expect(showElementPropertiesCheckbox.props().checked).toBe(false);
     expect(elementPropertiesEditor.exists()).toBe(false);
   });

@@ -11,42 +11,52 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@react/react-spectrum/Textfield';
-import Link from '@react/react-spectrum/Link';
+import { Flex, TextField, View, Link } from '@adobe/react-spectrum';
+
 import WrappedField from '../components/wrappedField';
 import InfoTip from '../components/infoTip';
 
-import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
-import ElementFilter, { formConfig as elementFilterFormConfig } from './components/elementFilter';
+import AdvancedEventOptions, {
+  formConfig as advancedEventOptionsFormConfig
+} from './components/advancedEventOptions';
+import ElementFilter, {
+  formConfig as elementFilterFormConfig
+} from './components/elementFilter';
 import mergeFormConfigs from '../utils/mergeFormConfigs';
 
 const CustomEvent = () => (
-  <div>
-    <label className="u-alignItemsCenter u-flex">
-      <span className="u-gapRight">
-        Custom Event Type
-      </span>
-      <WrappedField
-        className="u-flexOne"
-        name="type"
-        component={Textfield}
-        componentClassName="u-fullWidth u-minFieldWidth"
-      />
+  <Flex gap="size-100" direction="column">
+    <Flex alignItems="end" gap="size-100">
+      <View flex>
+        <WrappedField
+          name="type"
+          width="100%"
+          label="Custom Event Type"
+          isRequired
+          component={TextField}
+        />
+      </View>
       <InfoTip placement="bottom">
         This is the name of the event that will be triggered.
       </InfoTip>
-      <Link
-        className="u-gapLeft u-gapRight"
-        href="https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Creating_and_triggering_events"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        Learn more
-      </Link>
-    </label>
+      <View marginBottom="size-75">
+        <Link>
+          <a
+            href="https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Creating_and_triggering_events"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Learn more
+          </a>
+        </Link>
+      </View>
+      <View width="size-600" />
+    </Flex>
+
     <ElementFilter />
+
     <AdvancedEventOptions />
-  </div>
+  </Flex>
 );
 
 export default CustomEvent;

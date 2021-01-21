@@ -11,8 +11,8 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
+import { ComboBox } from '@react-spectrum/combobox';
 import Datepicker from '@react/react-spectrum/Datepicker';
-import ComboBox from '@react/react-spectrum/ComboBox';
 import WrappedField from '../../components/wrappedField';
 import DateRange, { formConfig } from '../dateRange';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
@@ -21,11 +21,13 @@ import bootstrap from '../../bootstrap';
 const getReactComponents = (wrapper) => {
   wrapper.update();
   const fields = wrapper.find(WrappedField);
-  const startField = fields.filterWhere(n => n.prop('name') === 'start');
+  const startField = fields.filterWhere((n) => n.prop('name') === 'start');
   const startDatepicker = startField.find(Datepicker);
-  const endField = fields.filterWhere(n => n.prop('name') === 'end');
+  const endField = fields.filterWhere((n) => n.prop('name') === 'end');
   const endDatepicker = endField.find(Datepicker);
-  const timezoneField = fields.filterWhere(n => n.prop('name') === 'timezone');
+  const timezoneField = fields.filterWhere(
+    (n) => n.prop('name') === 'timezone'
+  );
   const timezoneComboBox = timezoneField.find(ComboBox);
 
   return {
@@ -53,7 +55,11 @@ describe('date range condition view', () => {
       }
     });
 
-    const { startDatepicker, endDatepicker, timezoneComboBox } = getReactComponents(instance);
+    const {
+      startDatepicker,
+      endDatepicker,
+      timezoneComboBox
+    } = getReactComponents(instance);
 
     expect(startDatepicker.props().value).toBe('2017-11-03 11:24');
     expect(endDatepicker.props().value).toBe('2017-11-29 09:12');
@@ -68,7 +74,11 @@ describe('date range condition view', () => {
       }
     });
 
-    const { startDatepicker, endDatepicker, timezoneComboBox } = getReactComponents(instance);
+    const {
+      startDatepicker,
+      endDatepicker,
+      timezoneComboBox
+    } = getReactComponents(instance);
 
     expect(startDatepicker.props().value).toBe('2017-11-03 17:24');
     expect(endDatepicker.props().value).toBe('2017-11-29 16:12');
@@ -84,7 +94,11 @@ describe('date range condition view', () => {
       }
     });
 
-    const { startDatepicker, endDatepicker, timezoneComboBox } = getReactComponents(instance);
+    const {
+      startDatepicker,
+      endDatepicker,
+      timezoneComboBox
+    } = getReactComponents(instance);
 
     expect(startDatepicker.props().value).toBe('2017-11-03 17:24');
     expect(endDatepicker.props().value).toBe('2017-11-29 16:12');
@@ -94,7 +108,11 @@ describe('date range condition view', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { startDatepicker, endDatepicker, timezoneComboBox } = getReactComponents(instance);
+    const {
+      startDatepicker,
+      endDatepicker,
+      timezoneComboBox
+    } = getReactComponents(instance);
 
     startDatepicker.props().onChange('2017-11-03 11:24');
     endDatepicker.props().onChange('2017-11-29 09:12');

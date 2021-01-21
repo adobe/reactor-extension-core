@@ -11,48 +11,55 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@react/react-spectrum/Textfield';
+import { Flex, TextField, View } from '@adobe/react-spectrum';
 import InfoTip from '../components/infoTip';
 import RegexToggle from '../components/regexToggle';
 import WrappedField from '../components/wrappedField';
-import TooltipPlaceholder from '../components/tooltipPlaceholder';
+import NoWrapText from '../components/noWrapText';
+import FullWidthField from '../components/fullWidthField';
 
 const Variable = () => (
-  <div>
-    <label className="u-gapRight u-gapBottom u-noWrap u-alignItemsCenter u-flex">
-      <span className="u-gapRight">JavaScript variable named</span>
-      <WrappedField
-        className="u-flexOne"
-        name="name"
-        component={Textfield}
-        componentClassName="u-fullWidth u-minFieldWidth"
-        placeholder="dataLayer.products.1.price"
-      />
-      <TooltipPlaceholder />
-    </label>
+  <Flex gap="size-100" direction="column" minWidth="size-6000">
+    <FullWidthField
+      beginText="Return true if the JavaScript variable named"
+      label="Variable name"
+      name="name"
+      minWidth="size-2400"
+      placeholder="dataLayer.products.1.price"
+      isRequired
+      blankSpace={{
+        width: 'size-2000',
+        marginEnd: 'size-200',
+        marginStart: 'size-115'
+      }}
+    />
 
-    <div className="u-inlineBlock u-gapRight u-gapBottom u-noWrap u-alignItemsCenter u-flex">
-      <label className="u-gapRight u-flexOne u-alignItemsCenter u-flex">
-        <span className="u-gapRight">has the value</span>
+    <Flex gap="size-100" alignItems="end">
+      <NoWrapText>has the value</NoWrapText>
+      <View flex>
         <WrappedField
-          className="u-flexOne"
+          minWidth="size-4600"
+          width="100%"
+          label="Variable value"
           name="value"
-          component={Textfield}
-          componentClassName="u-fullWidth u-minFieldWidth"
+          isRequired
+          component={TextField}
         />
-      </label>
-      <InfoTip className="u-gapRight" placement="bottom">
-        Specify a text (string) value here. The rule will only fire if the specified
-        variable contains this string. Note: If your variable contains a number, this will not
-        work as expected.
-      </InfoTip>
+      </View>
+      <View>
+        <InfoTip className="u-gapRight" placement="bottom">
+          Specify a text (string) value here. The rule will only fire if the
+          specified variable contains this string. Note: If your variable
+          contains a number, this will not work as expected.
+        </InfoTip>
+      </View>
       <WrappedField
         name="valueIsRegex"
         component={RegexToggle}
         valueFieldName="value"
       />
-    </div>
-  </div>
+    </Flex>
+  </Flex>
 );
 
 export default Variable;

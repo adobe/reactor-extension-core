@@ -11,20 +11,16 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@react/react-spectrum/Textfield';
-import Button from '@react/react-spectrum/Button';
+import { TextField } from '@adobe/react-spectrum';
 import ElementSelector, { formConfig } from '../elementSelector';
 import createExtensionBridge from '../../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const textfield = wrapper.find(Textfield);
-  const button = wrapper.find(Button);
 
   return {
-    textfield,
-    button
+    textfield: wrapper.find(TextField)
   };
 };
 

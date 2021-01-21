@@ -11,14 +11,14 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@react/react-spectrum/Textfield';
+import { TextField } from '@adobe/react-spectrum';
 import ElementExists, { formConfig } from '../elementExists';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const elementSelectorTextfield = wrapper.find(Textfield);
+  const elementSelectorTextfield = wrapper.find(TextField);
 
   return {
     elementSelectorTextfield

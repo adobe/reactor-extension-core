@@ -10,7 +10,12 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import StandardEvent, { formConfig as standardEventFormConfig } from './components/standardEvent';
+import React from 'react';
+import StandardEvent, {
+  formConfig as standardEventFormConfig
+} from './components/standardEvent';
 
-export default StandardEvent;
+export default () => (
+  <StandardEvent elementSpecificityLabel="When playback completes on" />
+);
 export const formConfig = standardEventFormConfig;

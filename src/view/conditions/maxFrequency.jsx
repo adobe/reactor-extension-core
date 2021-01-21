@@ -11,11 +11,11 @@
  ****************************************************************************************/
 
 import React from 'react';
+import { TextField, Picker, Item, Flex } from '@adobe/react-spectrum';
 import { connect } from 'react-redux';
-import Textfield from '@react/react-spectrum/Textfield';
-import Select from '@react/react-spectrum/Select';
 import { formValueSelector } from 'redux-form';
 import WrappedField from '../components/wrappedField';
+import NoWrapText from '../components/noWrapText';
 
 import { isNumberLikeInRange } from '../utils/validators';
 
@@ -24,65 +24,63 @@ const PAGE_VIEW = 'pageView';
 
 const unitOptions = [
   {
-    label: 'page views',
-    value: PAGE_VIEW
+    name: 'page views',
+    id: PAGE_VIEW
   },
   {
-    label: 'sessions',
-    value: 'session'
+    name: 'sessions',
+    id: 'session'
   },
   {
-    label: 'visitor',
-    value: VISITOR
+    name: 'visitor',
+    id: VISITOR
   },
   {
-    label: 'seconds',
-    value: 'second'
+    name: 'seconds',
+    id: 'second'
   },
   {
-    label: 'minutes',
-    value: 'minute'
+    name: 'minutes',
+    id: 'minute'
   },
   {
-    label: 'days',
-    value: 'day'
+    name: 'days',
+    id: 'day'
   },
   {
-    label: 'weeks',
-    value: 'week'
+    name: 'weeks',
+    id: 'week'
   },
   {
-    label: 'months',
-    value: 'month'
+    name: 'months',
+    id: 'month'
   }
 ];
 
 const MaxFrequency = ({ unit }) => (
-  <div>
-    <span className="u-verticalAlignMiddle u-gapRight">
-      Return true no more than once every
-    </span>
-    {
-      unit !== VISITOR ?
-        (
-          <WrappedField
-            name="count"
-            component={Textfield}
-            className="u-gapRight"
-            componentClassName="u-smallTextfield"
-          />
-        ) : null
-    }
+  <Flex gap="size-100" alignItems="end" minWidth="size-6000" wrap>
+    <NoWrapText>Return true no more than once every</NoWrapText>
+    {unit !== VISITOR ? (
+      <WrappedField
+        label="Count"
+        name="count"
+        component={TextField}
+        isRequired
+      />
+    ) : null}
     <WrappedField
+      label="Unit"
       name="unit"
-      component={Select}
-      options={unitOptions}
-    />
-  </div>
+      component={Picker}
+      items={unitOptions}
+    >
+      {(item) => <Item>{item.name}</Item>}
+    </WrappedField>
+  </Flex>
 );
 
 const valueSelector = formValueSelector('default');
-const stateToProps = state => ({
+const stateToProps = (state) => ({
   unit: valueSelector(state, 'unit')
 });
 
@@ -113,8 +111,10 @@ export const formConfig = {
       ...errors
     };
 
-    if (values.unit !== VISITOR &&
-      (!isNumberLikeInRange(values.count, { min: 1 }))) {
+    if (
+      values.unit !== VISITOR &&
+      !isNumberLikeInRange(values.count, { min: 1 })
+    ) {
       errors.count = 'Please specify a number greater than or equal to 1.';
     }
 

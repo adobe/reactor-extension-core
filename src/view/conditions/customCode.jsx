@@ -11,22 +11,25 @@
  ****************************************************************************************/
 
 import React from 'react';
+import { Flex } from '@adobe/react-spectrum';
 import InfoTip from '../components/infoTip';
 import WrappedField from '../components/wrappedField';
 import EditorButton from '../components/editorButton';
 
 const CustomCode = () => (
-  <div>
+  <Flex>
     <WrappedField
+      errorTooltipPlacement="bottom"
       name="source"
       component={EditorButton}
     />
     <InfoTip placement="bottom">
-      Enter a script that evaluates to true or false to control whether this rule executes. Use
-      this code to check for certain values (like shopping cart size or item price), whether a
-      user is logged in or registered, or anything else you require.
+      Enter a script that evaluates to true or false to control whether this
+      rule executes. Use this code to check for certain values (like shopping
+      cart size or item price), whether a user is logged in or registered, or
+      anything else you require.
     </InfoTip>
-  </div>
+  </Flex>
 );
 
 export default CustomCode;

@@ -11,21 +11,15 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@react/react-spectrum/Textfield';
-import WrappedField from '../components/wrappedField';
-import TooltipPlaceholder from '../components/tooltipPlaceholder';
+import FullWidthField from '../components/fullWidthField';
 
 const Cookie = () => (
-  <label className="u-alignItemsCenter u-flex">
-    <span className="u-gapRight">Cookie Name</span>
-    <WrappedField
-      className="u-flexOne"
-      name="name"
-      component={Textfield}
-      componentClassName="u-fullWidth u-minFieldWidth"
-    />
-    <TooltipPlaceholder />
-  </label>
+  <FullWidthField
+    label="Cookie Name"
+    name="name"
+    containerMinWidth="size-6000"
+    isRequired
+  />
 );
 
 export default Cookie;
@@ -55,8 +49,9 @@ export const formConfig = {
     // This RegEx is created from:
     // http://stackoverflow.com/questions/1969232/allowed-characters-in-cookies
     if (!/^[a-zA-Z0-9!#$%&'*+-.^_"|~]+$/.test(values.name)) {
-      errors.name = 'The cookie name must be a sequence of alphanumeric characters and/or ' +
-        'the following special characters: ! # $ % & \' * + - . ^ _ | ~';
+      errors.name =
+        'The cookie name must be a sequence of alphanumeric characters and/or ' +
+        "the following special characters: ! # $ % & ' * + - . ^ _ | ~";
     }
 
     return errors;

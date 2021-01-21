@@ -11,9 +11,7 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@react/react-spectrum/Textfield';
-import Checkbox from '@react/react-spectrum/Checkbox';
-import Radio from '@react/react-spectrum/Radio';
+import { TextField, Checkbox, RadioGroup } from '@adobe/react-spectrum';
 import WrappedField from '../../components/wrappedField';
 import Hover, { formConfig } from '../hover';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
@@ -24,20 +22,24 @@ const getReactComponents = (wrapper) => {
   wrapper.update();
   const fields = wrapper.find(WrappedField);
 
-  const elementSelectorField = fields.filterWhere(n => n.prop('name') === 'elementSelector');
-  const elementSelectorTextfield = elementSelectorField.find(Textfield);
+  const elementSelectorField = fields.filterWhere(
+    (n) => n.prop('name') === 'elementSelector'
+  );
+  const elementSelectorTextfield = elementSelectorField.find(TextField);
   const bubbleStopCheckbox = wrapper
-    .find(Checkbox).filterWhere(n => n.prop('name') === 'bubbleStop');
-  const delayField = fields.filterWhere(n => n.prop('name') === 'delay');
-  const delayTextfield = delayField.find(Textfield);
-  const delayRadio = wrapper.find(Radio).filterWhere(n => n.prop('value') === 'delay');
+    .find(Checkbox)
+    .filterWhere((n) => n.prop('name') === 'bubbleStop');
+  const delayField = fields.filterWhere((n) => n.prop('name') === 'delay');
+  const delayTextfield = delayField.find(TextField);
+  const delayRadioGroup = wrapper.find(RadioGroup);
+
   const advancedEventOptions = wrapper.find(AdvancedEventOptions);
 
   return {
     elementSelectorTextfield,
     bubbleStopCheckbox,
     delayTextfield,
-    delayRadio,
+    delayRadioGroup,
     advancedEventOptions
   };
 };
@@ -77,8 +79,8 @@ describe('hover event view', () => {
   });
 
   it('sets settings from form values', () => {
-    const { delayRadio } = getReactComponents(instance);
-    delayRadio.props().onChange('delay', { stopPropagation() {} });
+    const { delayRadioGroup } = getReactComponents(instance);
+    delayRadioGroup.props().onChange('delay', { stopPropagation() {} });
 
     const {
       elementSelectorTextfield,
@@ -90,7 +92,11 @@ describe('hover event view', () => {
     delayTextfield.props().onChange(100);
     bubbleStopCheckbox.props().onChange(true);
 
-    const { elementSelector, delay, bubbleStop } = extensionBridge.getSettings();
+    const {
+      elementSelector,
+      delay,
+      bubbleStop
+    } = extensionBridge.getSettings();
 
     expect(elementSelector).toBe('.foo');
     expect(delay).toBe(100);
@@ -98,17 +104,14 @@ describe('hover event view', () => {
   });
 
   it('sets validation errors', () => {
-    const {
-      delayRadio
-    } = getReactComponents(instance);
+    const { delayRadioGroup } = getReactComponents(instance);
 
-    delayRadio.props().onChange('delay', { stopPropagation() {} });
+    delayRadioGroup.props().onChange('delay', { stopPropagation() {} });
     expect(extensionBridge.validate()).toBe(false);
 
-    const {
-      delayTextfield,
-      elementSelectorTextfield
-    } = getReactComponents(instance);
+    const { delayTextfield, elementSelectorTextfield } = getReactComponents(
+      instance
+    );
 
     expect(delayTextfield.props().validationState).toBe('invalid');
     expect(elementSelectorTextfield.props().validationState).toBe('invalid');

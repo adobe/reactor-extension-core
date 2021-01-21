@@ -1,24 +1,13 @@
 import React from 'react';
-import classNames from 'classnames';
-import OverlayTrigger from '@react/react-spectrum/OverlayTrigger';
-import Tooltip from '@react/react-spectrum/Tooltip';
-import './validationWrapper.styl';
+import { TooltipTrigger, Tooltip } from '@adobe/react-spectrum';
 
-export default ({
-  placement, error, className, children
-}) => (
-  <OverlayTrigger
+export default ({ placement, error, children }) => (
+  <TooltipTrigger
+    delay={0}
     placement={placement || 'right'}
-    variant="error"
-    disabled={!error}
+    isDisabled={!error}
   >
-    <div
-      className={classNames(className, 'ValidationWrapper')}
-    >
-      { children }
-    </div>
-    <Tooltip>
-      { error }
-    </Tooltip>
-  </OverlayTrigger>
+    {children}
+    <Tooltip>{error}</Tooltip>
+  </TooltipTrigger>
 );

@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@react/react-spectrum/Textfield';
+import { TextField } from '@adobe/react-spectrum';
 import RegexToggle from '../../components/regexToggle';
 import TrafficSource, { formConfig } from '../trafficSource';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
@@ -19,7 +19,7 @@ import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const sourceTextfield = wrapper.find(Textfield);
+  const sourceTextfield = wrapper.find(TextField);
   const valueRegexToggle = wrapper.find(RegexToggle);
 
   return {

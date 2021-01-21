@@ -11,20 +11,18 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Radio from '@react/react-spectrum/Radio';
-import RadioGroup from '@react/react-spectrum/RadioGroup';
+import { Radio, RadioGroup } from '@adobe/react-spectrum';
 import WrappedField from '../components/wrappedField';
 
 const NewReturningVisitor = () => (
-  <div>
-    <WrappedField
-      name="visitorType"
-      component={RadioGroup}
-    >
-      <Radio value="new" label="New Visitor" />
-      <Radio value="returning" label="Returning Visitor" />
-    </WrappedField>
-  </div>
+  <WrappedField
+    name="visitorType"
+    label="Return true if the visitor is a"
+    component={RadioGroup}
+  >
+    <Radio value="new">new visitor</Radio>
+    <Radio value="returning">returning visitor</Radio>
+  </WrappedField>
 );
 
 export default NewReturningVisitor;
@@ -33,7 +31,8 @@ export const formConfig = {
   settingsToFormValues(values, settings, state) {
     return {
       ...values,
-      visitorType: state.meta.isNew || settings.isNewVisitor ? 'new' : 'returning'
+      visitorType:
+        state.meta.isNew || settings.isNewVisitor ? 'new' : 'returning'
     };
   },
   formValuesToSettings(settings, values) {

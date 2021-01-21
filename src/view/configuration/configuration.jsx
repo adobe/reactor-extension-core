@@ -11,32 +11,30 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@react/react-spectrum/Textfield';
+import { TextField, Flex, View } from '@adobe/react-spectrum';
+
 import WrappedField from '../components/wrappedField';
 import InfoTip from '../components/infoTip';
 import { isDataElementToken } from '../utils/validators';
-import TooltipPlaceholder from '../components/tooltipPlaceholder';
 
 export default () => (
-  <div>
-    <label className="u-gapRight u-alignItemsCenter u-flex">
-      <span className="u-gapRight u-noWrap">CSP Nonce</span>
+  <Flex alignItems="end">
+    <View flex>
       <WrappedField
-        className="u-flexOne u-alignItemsCenter u-flex"
+        width="100%"
+        label="CSP Nonce"
         name="cspNonce"
-        component={Textfield}
-        componentClassName="u-fullWidth u-minFieldWidth"
+        component={TextField}
         supportDataElement
       />
+    </View>
 
-      <InfoTip placement="bottom">
-        If you are implementing a Content Security Policy on your site and using
-        a nonce that you generate to authenticate inline scripts, please provide
-        the data element that references your nonce.
-      </InfoTip>
-      <TooltipPlaceholder />
-    </label>
-  </div>
+    <InfoTip placement="bottom">
+      If you are implementing a Content Security Policy on your site and using a
+      nonce that you generate to authenticate inline scripts, please provide the
+      data element that references your nonce.
+    </InfoTip>
+  </Flex>
 );
 
 export const formConfig = {

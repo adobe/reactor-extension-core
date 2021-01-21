@@ -11,50 +11,36 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Radio from '@react/react-spectrum/Radio';
-import RadioGroup from '@react/react-spectrum/RadioGroup';
-import Textfield from '@react/react-spectrum/Textfield';
-import Select from '@react/react-spectrum/Select';
+import { Radio, RadioGroup, Picker, Item, Flex } from '@adobe/react-spectrum';
 import WrappedField from '../components/wrappedField';
-
 import { isNumberLike } from '../utils/validators';
 import comparisonOperatorOptions from './comparisonOperatorOptions';
+import FullWidthField from '../components/fullWidthField';
 
 const PageViews = () => (
-  <div>
-    <div>
-      <label className="u-gapRight">
-        <span className="u-verticalAlignMiddle u-gapRight">
-          The user&apos;s number of page views is
-        </span>
-        <WrappedField
-          name="operator"
-          component={Select}
-          options={comparisonOperatorOptions}
-        />
-      </label>
-      <label className="u-gapRight">
-        <span className="u-verticalAlignMiddle u-gapRight">the value</span>
-        <WrappedField
-          name="count"
-          component={Textfield}
-          componentClassName="u-smallTextfield"
-        />
-      </label>
-      <span className="u-noWrap">
-        <label>
-          <span className="u-verticalAlignMiddle u-gapRight">over</span>
-          <WrappedField
-            name="duration"
-            component={RadioGroup}
-          >
-            <Radio value="lifetime" label="Lifetime" />
-            <Radio value="session" label="Current Session" />
-          </WrappedField>
-        </label>
-      </span>
-    </div>
-  </div>
+  <Flex direction="column" gap="size-100" minWidth="size-6000">
+    <FullWidthField
+      beginText="Return true if the user&rsquo;s number of page views is"
+      label="Operator"
+      name="operator"
+      component={Picker}
+      items={comparisonOperatorOptions}
+    >
+      {(item) => <Item>{item.name}</Item>}
+    </FullWidthField>
+
+    <FullWidthField
+      beginText="the value"
+      label="Count"
+      name="count"
+      isRequired
+    />
+
+    <WrappedField name="duration" component={RadioGroup} label="over">
+      <Radio value="lifetime">lifetime</Radio>
+      <Radio value="session">current session</Radio>
+    </WrappedField>
+  </Flex>
 );
 
 export default PageViews;

@@ -24,13 +24,12 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import Textfield from '@react/react-spectrum/Textfield';
-import Checkbox from '@react/react-spectrum/Checkbox';
+import { TextField, Checkbox, Picker, Item, Flex } from '@adobe/react-spectrum';
 import { formValueSelector } from 'redux-form';
-import { Toast } from '@react/react-spectrum/Toast';
-import Select from '@react/react-spectrum/Select';
 import RegexTestButton from '../components/regexTestButton';
 import WrappedField from '../components/wrappedField';
+import WarningContainer from '../components/warningContainer';
+import NoWrapText from '../components/noWrapText';
 import { isDataElementToken, isNumberLike } from '../utils/validators';
 
 const operators = {
@@ -78,36 +77,42 @@ const metaByOperator = {
     label: 'Contains',
     supportsCaseSensitivity: true,
     supportsRightOperand: true,
+    rigthOperandIsRequired: true,
     rightOperandMustBeNonEmptyString: true
   },
   [operators.DOES_NOT_CONTAIN]: {
     label: 'Does Not Contain',
     supportsCaseSensitivity: true,
     supportsRightOperand: true,
+    rigthOperandIsRequired: true,
     rightOperandMustBeNonEmptyString: true
   },
   [operators.STARTS_WITH]: {
     label: 'Starts With',
     supportsCaseSensitivity: true,
     supportsRightOperand: true,
+    rigthOperandIsRequired: true,
     rightOperandMustBeNonEmptyString: true
   },
   [operators.DOES_NOT_START_WITH]: {
     label: 'Does Not Start With',
     supportsCaseSensitivity: true,
     supportsRightOperand: true,
+    rigthOperandIsRequired: true,
     rightOperandMustBeNonEmptyString: true
   },
   [operators.ENDS_WITH]: {
     label: 'Ends With',
     supportsCaseSensitivity: true,
     supportsRightOperand: true,
+    rigthOperandIsRequired: true,
     rightOperandMustBeNonEmptyString: true
   },
   [operators.DOES_NOT_END_WITH]: {
     label: 'Does Not End With',
     supportsCaseSensitivity: true,
     supportsRightOperand: true,
+    rigthOperandIsRequired: true,
     rightOperandMustBeNonEmptyString: true
   },
   [operators.MATCHES_REGEX]: {
@@ -125,24 +130,28 @@ const metaByOperator = {
   [operators.LESS_THAN]: {
     label: 'Is Less Than',
     supportsRightOperand: true,
+    rigthOperandIsRequired: true,
     saveOperandAsNumberWhenPossible: true,
     rightOperandMustBeNumberOrDataElement: true
   },
   [operators.LESS_THAN_OR_EQUAL]: {
     label: 'Is Less Than Or Equal To',
     supportsRightOperand: true,
+    rigthOperandIsRequired: true,
     saveOperandAsNumberWhenPossible: true,
     rightOperandMustBeNumberOrDataElement: true
   },
   [operators.GREATER_THAN]: {
     label: 'Is Greater Than',
     supportsRightOperand: true,
+    rigthOperandIsRequired: true,
     saveOperandAsNumberWhenPossible: true,
     rightOperandMustBeNumberOrDataElement: true
   },
   [operators.GREATER_THAN_OR_EQUAL]: {
     label: 'Is Greater Than Or Equal To',
     supportsRightOperand: true,
+    rigthOperandIsRequired: true,
     saveOperandAsNumberWhenPossible: true,
     rightOperandMustBeNumberOrDataElement: true
   },
@@ -160,114 +169,108 @@ const metaByOperator = {
   }
 };
 
-const operatorOptions = Object.keys(metaByOperator).map(operator => (
-  {
-    value: operator,
-    label: metaByOperator[operator].label
-  }
-));
+const operatorOptions = Object.keys(metaByOperator).map((operator) => ({
+  id: operator,
+  name: metaByOperator[operator].label
+}));
 
 const NoTypeConversionReminder = ({ operator, value }) => {
-  const sketchyStrings = [
-    'true',
-    'false',
-    'null',
-    'undefined'
-  ];
+  const sketchyStrings = ['true', 'false', 'null', 'undefined'];
 
-  return (operator === operators.EQUALS || operator === operators.DOES_NOT_EQUAL) &&
-    sketchyStrings.indexOf(value.toLowerCase()) !== -1 ?
-    (
-      <Toast className="u-gapTop" variant="warning">
-        Be aware that the value &quot;
-        {value}
-&quot; will be compared as a string.
-      </Toast>
-    ) : null;
+  return (operator === operators.EQUALS ||
+    operator === operators.DOES_NOT_EQUAL) &&
+    sketchyStrings.indexOf(value.toLowerCase()) !== -1 ? (
+    <WarningContainer>
+      Be aware that the value &quot;
+      {value}
+      &quot; will be compared as a string.
+    </WarningContainer>
+  ) : null;
 };
 
 const RightOperandFields = ({ operator, caseInsensitive, rightOperand }) => {
   if (metaByOperator[operator].supportsRightOperand) {
     return operator === operators.MATCHES_REGEX ||
-      operator === operators.DOES_NOT_MATCH_REGEX ?
-      (
-        <div>
-          <WrappedField
-            name="rightOperand"
-            className="u-gapRight"
-            component={Textfield}
-            componentClassName="u-fieldLong"
-            supportDataElement
-          />
-          <WrappedField
-            name="rightOperand"
-            className="u-gapRight"
-            component={RegexTestButton}
-            flags={caseInsensitive ? 'i' : ''}
-          />
-        </div>
-      ) :
-      (
-        <div>
-          <WrappedField
-            name="rightOperand"
-            component={Textfield}
-            componentClassName="u-fieldLong"
-            supportDataElement
-          />
-          <NoTypeConversionReminder operator={operator} value={rightOperand} />
-        </div>
-      );
+      operator === operators.DOES_NOT_MATCH_REGEX ? (
+      <Flex gap="size-100">
+        <WrappedField
+          label="Right Operand"
+          name="rightOperand"
+          component={TextField}
+          width="size-3000"
+          supportDataElement
+          isRequired
+        />
+        <WrappedField
+          name="rightOperand"
+          component={RegexTestButton}
+          flags={caseInsensitive ? 'i' : ''}
+        />
+      </Flex>
+    ) : (
+      <>
+        <WrappedField
+          label="Right Operand"
+          name="rightOperand"
+          width="size-3000"
+          component={TextField}
+          supportDataElement
+          isRequired={metaByOperator[operator].rigthOperandIsRequired}
+        />
+        <NoTypeConversionReminder operator={operator} value={rightOperand} />
+      </>
+    );
   }
 
   return null;
 };
 
 const ValueComparison = ({ operator, ...rest }) => (
-  <div>
-    <div className="u-gapBottom">
-      Return true if
-    </div>
-    <div className="u-gapBottom">
+  <Flex gap="size-100" direction="column">
+    <NoWrapText>Return true if</NoWrapText>
+    <WrappedField
+      minWidth="size-3000"
+      label="Left Operand"
+      name="leftOperand"
+      component={TextField}
+      isRequired
+      supportDataElement
+    />
+
+    <Flex gap="size-100">
       <WrappedField
-        name="leftOperand"
-        component={Textfield}
-        componentClassName="u-fieldLong"
-        supportDataElement
-      />
-    </div>
-    <div className="u-gapBottom">
-      <WrappedField
+        width="size-3000"
         name="operator"
-        className="u-gapRight"
-        component={Select}
-        componentClassName="u-fieldLong"
-        options={operatorOptions}
-      />
-      {
-        metaByOperator[operator].supportsCaseSensitivity ?
-          (
-            <WrappedField
-              name="caseInsensitive"
-              component={Checkbox}
-            >
-              Case Insensitive
-            </WrappedField>
-          ) : null
-      }
-    </div>
-    <div>
-      <RightOperandFields operator={operator} {...rest} />
-    </div>
-  </div>
+        label="Operator"
+        component={Picker}
+        items={operatorOptions}
+      >
+        {(item) => <Item>{item.name}</Item>}
+      </WrappedField>
+      {metaByOperator[operator].supportsCaseSensitivity ? (
+        <WrappedField
+          minWidth="size-2000"
+          name="caseInsensitive"
+          component={Checkbox}
+        >
+          Case Insensitive
+        </WrappedField>
+      ) : null}
+    </Flex>
+
+    <RightOperandFields operator={operator} {...rest} />
+  </Flex>
 );
 
 const valueSelector = formValueSelector('default');
-const stateToProps = state => valueSelector(state,
-  'operator',
-  'caseInsensitive',
-  'leftOperand',
-  'rightOperand');
+const stateToProps = (state) =>
+  valueSelector(
+    state,
+    'operator',
+    'caseInsensitive',
+    'leftOperand',
+    'rightOperand'
+  );
 
 export default connect(stateToProps)(ValueComparison);
 
@@ -276,9 +279,14 @@ export const formConfig = {
     return {
       ...values,
       leftOperand: settings.leftOperand || '',
-      operator: (settings.comparison && settings.comparison.operator) || operators.EQUALS,
-      caseInsensitive: Boolean(settings.comparison && settings.comparison.caseInsensitive),
-      rightOperand: settings.rightOperand !== undefined ? String(settings.rightOperand) : ''
+      operator:
+        (settings.comparison && settings.comparison.operator) ||
+        operators.EQUALS,
+      caseInsensitive: Boolean(
+        settings.comparison && settings.comparison.caseInsensitive
+      ),
+      rightOperand:
+        settings.rightOperand !== undefined ? String(settings.rightOperand) : ''
     };
   },
   formValuesToSettings(settings, values) {
@@ -298,9 +306,10 @@ export const formConfig = {
 
     if (operatorMeta.supportsRightOperand) {
       settings.rightOperand =
-        operatorMeta.saveOperandAsNumberWhenPossible && isNumberLike(values.rightOperand) ?
-          Number(values.rightOperand) :
-          String(values.rightOperand);
+        operatorMeta.saveOperandAsNumberWhenPossible &&
+        isNumberLike(values.rightOperand)
+          ? Number(values.rightOperand)
+          : String(values.rightOperand);
     }
 
     return settings;
@@ -317,13 +326,18 @@ export const formConfig = {
     if (values.operator) {
       const operatorMeta = metaByOperator[values.operator];
 
-      if (operatorMeta.rightOperandMustBeNonEmptyString && !values.rightOperand) {
+      if (
+        operatorMeta.rightOperandMustBeNonEmptyString &&
+        !values.rightOperand
+      ) {
         errors.rightOperand = 'Please specify a value';
       }
 
-      if (operatorMeta.rightOperandMustBeNumberOrDataElement &&
+      if (
+        operatorMeta.rightOperandMustBeNumberOrDataElement &&
         !isNumberLike(values.rightOperand) &&
-        !isDataElementToken(values.rightOperand)) {
+        !isDataElementToken(values.rightOperand)
+      ) {
         errors.rightOperand = 'Please specify a number or data element';
       }
     }

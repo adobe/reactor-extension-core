@@ -11,8 +11,7 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@react/react-spectrum/Textfield';
-import Checkbox from '@react/react-spectrum/Checkbox';
+import { TextField, Checkbox } from '@adobe/react-spectrum';
 import WrappedField from '../../../components/wrappedField';
 import StandardEvent, { formConfig } from '../standardEvent';
 import createExtensionBridge from '../../../__tests__/helpers/createExtensionBridge';
@@ -22,11 +21,13 @@ import AdvancedEventOptions from '../advancedEventOptions';
 const getReactComponents = (wrapper) => {
   wrapper.update();
   const advancedEventOptions = wrapper.find(AdvancedEventOptions);
-  const elementSelectorField = wrapper.find(WrappedField)
-    .filterWhere(n => n.prop('name') === 'elementSelector');
-  const elementSelectorTextfield = elementSelectorField.find(Textfield);
-  const bubbleStopCheckbox = wrapper.find(Checkbox)
-    .filterWhere(n => n.prop('name') === 'bubbleStop');
+  const elementSelectorField = wrapper
+    .find(WrappedField)
+    .filterWhere((n) => n.prop('name') === 'elementSelector');
+  const elementSelectorTextfield = elementSelectorField.find(TextField);
+  const bubbleStopCheckbox = wrapper
+    .find(Checkbox)
+    .filterWhere((n) => n.prop('name') === 'bubbleStop');
 
   return {
     elementSelectorTextfield,
@@ -55,7 +56,9 @@ describe('standard event view', () => {
     const { advancedEventOptions } = getReactComponents(instance);
     advancedEventOptions.instance().toggleSelected();
 
-    const { elementSelectorTextfield, bubbleStopCheckbox } = getReactComponents(instance);
+    const { elementSelectorTextfield, bubbleStopCheckbox } = getReactComponents(
+      instance
+    );
 
     expect(elementSelectorTextfield.props().value).toBe('.foo');
     expect(bubbleStopCheckbox.props().value).toBe(true);
@@ -67,7 +70,9 @@ describe('standard event view', () => {
     const { advancedEventOptions } = getReactComponents(instance);
     advancedEventOptions.instance().toggleSelected();
 
-    const { elementSelectorTextfield, bubbleStopCheckbox } = getReactComponents(instance);
+    const { elementSelectorTextfield, bubbleStopCheckbox } = getReactComponents(
+      instance
+    );
 
     elementSelectorTextfield.props().onChange('.foo');
     bubbleStopCheckbox.props().onChange(true);

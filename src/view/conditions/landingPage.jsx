@@ -11,27 +11,19 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@react/react-spectrum/Textfield';
-import WrappedField from '../components/wrappedField';
-import RegexToggle from '../components/regexToggle';
+import FullWidthField from '../components/fullWidthField';
 
 export default () => (
-  <div className="u-gapRight u-gapBottom u-alignItemsCenter u-flex">
-    <label className="u-gapRight u-flexOne u-alignItemsCenter u-flex">
-      <span className="u-gapRight">Landing page equals</span>
-      <WrappedField
-        className="u-flexOne"
-        name="page"
-        component={Textfield}
-        componentClassName="u-fullWidth u-minFieldWidth"
-      />
-    </label>
-    <WrappedField
-      name="pageIsRegex"
-      component={RegexToggle}
-      valueFieldName="page"
-    />
-  </div>
+  <FullWidthField
+    beginText="Return true if the landing page equals"
+    label="Page"
+    name="page"
+    regexName="pageIsRegex"
+    regexValueFieldName="page"
+    blankSpace={null}
+    isRequired
+    containerMinWidth="size-6000"
+  />
 );
 
 export const formConfig = {

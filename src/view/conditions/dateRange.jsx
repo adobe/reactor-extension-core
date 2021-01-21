@@ -11,9 +11,11 @@
  ****************************************************************************************/
 
 import React from 'react';
+import Provider from '@react/react-spectrum/Provider';
+import { Flex, Text } from '@adobe/react-spectrum';
+import { ComboBox, Item } from '@react-spectrum/combobox';
 import moment from 'moment-timezone';
 import Datepicker from '@react/react-spectrum/Datepicker';
-import ComboBox from '@react/react-spectrum/ComboBox';
 import InfoTip from '../components/infoTip';
 import WrappedField from '../components/wrappedField';
 
@@ -22,43 +24,40 @@ import './dateRange.styl';
 const DEFAULT_TIMEZONE = 'GMT';
 const DATETIME_FORMAT = 'YYYY-MM-DD HH:mm';
 
-const timezoneOptions = moment.tz.names();
+const timezoneOptions = moment.tz.names().map((t) => ({ id: t, name: t }));
 
 const DateRange = () => (
-  <div className="u-clearfix">
-    <label className="u-gapRight u-gapBottom u-noWrap u-floatLeft">
-      <span className="u-verticalAlignMiddle u-gapRight">The date and time is after </span>
-      <WrappedField
-        name="start"
-        component={Datepicker}
-        type="datetime"
-      />
-      <InfoTip className="u-noPaddingRight" placement="bottom">
-        Time should be specified in 24-hour time. Leaving the start date blank will allow the
-        condition to pass anytime before the end date.
-      </InfoTip>
-    </label>
-    <label className="u-gapRight u-gapBottom u-noWrap u-floatLeft">
-      <span className="u-verticalAlignMiddle u-gapRight">and before</span>
-      <WrappedField
-        name="end"
-        component={Datepicker}
-        type="datetime"
-      />
-      <InfoTip className="u-noPaddingRight" placement="bottom">
-        Time should be specified in 24-hour time. Leaving the end date blank will allow the
-        condition to pass anytime after the start date.
-      </InfoTip>
-    </label>
-    <label className="u-gapRight u-gapBottom u-noWrap u-floatLeft">
-      <span className="u-verticalAlignMiddle u-gapRight">in time zone</span>
-      <WrappedField
-        name="timezone"
-        component={ComboBox}
-        options={timezoneOptions}
-      />
-    </label>
-  </div>
+  <Provider theme="lightest">
+    <Flex alignItems="center" gap="size-100" wrap>
+      <Flex alignItems="center" gap="size-100">
+        <Text>The date and time is after</Text>
+        <WrappedField name="start" component={Datepicker} type="datetime" />
+        <InfoTip className="u-noPaddingRight" placement="bottom">
+          Time should be specified in 24-hour time. Leaving the start date blank
+          will allow the condition to pass anytime before the end date.
+        </InfoTip>
+      </Flex>
+      <Flex alignItems="center" gap="size-100">
+        <Text>and before</Text>
+        <WrappedField name="end" component={Datepicker} type="datetime" />
+        <InfoTip className="u-noPaddingRight" placement="bottom">
+          Time should be specified in 24-hour time. Leaving the end date blank
+          will allow the condition to pass anytime after the start date.
+        </InfoTip>
+      </Flex>
+      <Flex alignItems="center" gap="size-100">
+        <Text>in time zone</Text>
+        <WrappedField
+          aria-label="Timezone"
+          name="timezone"
+          component={ComboBox}
+          defaultItems={timezoneOptions}
+        >
+          {(item) => <Item>{item.name}</Item>}
+        </WrappedField>
+      </Flex>
+    </Flex>
+  </Provider>
 );
 
 export default DateRange;
@@ -76,7 +75,9 @@ export const formConfig = {
     }
 
     if (settings.start) {
-      values.start = moment.tz(settings.start, timezone).format(DATETIME_FORMAT);
+      values.start = moment
+        .tz(settings.start, timezone)
+        .format(DATETIME_FORMAT);
     }
 
     if (settings.end) {
@@ -121,7 +122,7 @@ export const formConfig = {
       errors.end = errors.start;
     }
 
-    if (timezoneOptions.indexOf(values.timezone) === -1) {
+    if (timezoneOptions.filter((t) => t.id === values.timezone).length === 0) {
       errors.timezone = 'Please specify a valid timezone.';
     }
 

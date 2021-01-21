@@ -11,15 +11,15 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Checkbox from '@react/react-spectrum/Checkbox';
-import Textfield from '@react/react-spectrum/Textfield';
+import { TextField, Checkbox } from '@adobe/react-spectrum';
+
 import QueryStringParameter, { formConfig } from '../queryStringParameter';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const nameTextfield = wrapper.find(Textfield);
+  const nameTextfield = wrapper.find(TextField);
   const caseInsensitiveCheckbox = wrapper.find(Checkbox);
 
   return {
@@ -34,7 +34,9 @@ describe('query string parameter data element view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(QueryStringParameter, formConfig, extensionBridge));
+    instance = mount(
+      bootstrap(QueryStringParameter, formConfig, extensionBridge)
+    );
   });
 
   it('checks case insensitive checkbox by default', () => {
@@ -53,7 +55,9 @@ describe('query string parameter data element view', () => {
       }
     });
 
-    const { nameTextfield, caseInsensitiveCheckbox } = getReactComponents(instance);
+    const { nameTextfield, caseInsensitiveCheckbox } = getReactComponents(
+      instance
+    );
 
     expect(nameTextfield.props().value).toBe('foo');
     expect(caseInsensitiveCheckbox.props().checked).toBe(false);
@@ -62,7 +66,9 @@ describe('query string parameter data element view', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { nameTextfield, caseInsensitiveCheckbox } = getReactComponents(instance);
+    const { nameTextfield, caseInsensitiveCheckbox } = getReactComponents(
+      instance
+    );
 
     nameTextfield.props().onChange('foo');
     caseInsensitiveCheckbox.props().onChange(false);

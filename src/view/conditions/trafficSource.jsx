@@ -11,27 +11,19 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@react/react-spectrum/Textfield';
-import RegexToggle from '../components/regexToggle';
-import WrappedField from '../components/wrappedField';
+import FullWidthField from '../components/fullWidthField';
 
 const TrafficSource = () => (
-  <div className="u-gapRight u-gapBottom u-alignItemsCenter u-flex">
-    <label className="u-gapRight u-flexOne u-alignItemsCenter u-flex">
-      <span className="u-gapRight">Traffic source equals</span>
-      <WrappedField
-        className="u-flexOne"
-        name="source"
-        component={Textfield}
-        componentClassName="u-fullWidth u-minFieldWidth"
-      />
-    </label>
-    <WrappedField
-      name="sourceIsRegex"
-      component={RegexToggle}
-      valueFieldName="source"
-    />
-  </div>
+  <FullWidthField
+    beginText="Return true if the traffic source equals"
+    label="Source"
+    name="source"
+    minWidth="size-2400"
+    regexName="sourceIsRegex"
+    regexValueFieldName="source"
+    blankSpace={null}
+    isRequired
+  />
 );
 
 export default TrafficSource;

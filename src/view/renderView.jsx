@@ -10,17 +10,15 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import React from 'react';
 import ReactDOM from 'react-dom';
-import Provider from '@react/react-spectrum/Provider';
+
 import bootstrap from './bootstrap';
 
 import './global.styl';
 
 export default (View, formConfig) => {
-  ReactDOM.render((
-    <Provider theme="lightest">
-      { bootstrap(View, formConfig) }
-    </Provider>
-  ), document.getElementById('content'));
+  ReactDOM.render(
+    bootstrap(View, formConfig),
+    document.getElementById('content')
+  );
 };

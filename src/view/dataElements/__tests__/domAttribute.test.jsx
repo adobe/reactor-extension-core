@@ -11,8 +11,7 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@react/react-spectrum/Textfield';
-import Select from '@react/react-spectrum/Select';
+import { TextField, Picker } from '@adobe/react-spectrum';
 import WrappedField from '../../components/wrappedField';
 import DomAttribute, { formConfig } from '../domAttribute';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
@@ -22,12 +21,17 @@ const getReactComponents = (wrapper) => {
   wrapper.update();
   const fields = wrapper.find(WrappedField);
 
-  const elementPropertyPresetsSelect = wrapper.find(Select);
-  const elementSelectorField = fields.filterWhere(n => n.prop('name') === 'elementSelector');
-  const elementSelectorTextfield = elementSelectorField.find(Textfield);
-  const customElementPropertyField = fields
-    .filterWhere(n => n.prop('name') === 'customElementProperty');
-  const customElementPropertyTextfield = customElementPropertyField.find(Textfield);
+  const elementPropertyPresetsSelect = wrapper.find(Picker);
+  const elementSelectorField = fields.filterWhere(
+    (n) => n.prop('name') === 'elementSelector'
+  );
+  const elementSelectorTextfield = elementSelectorField.find(TextField);
+  const customElementPropertyField = fields.filterWhere(
+    (n) => n.prop('name') === 'customElementProperty'
+  );
+  const customElementPropertyTextfield = customElementPropertyField.find(
+    TextField
+  );
 
   return {
     elementPropertyPresetsSelect,
@@ -53,7 +57,6 @@ describe('DOM attribute data element view', () => {
     expect(elementPropertyPresetsSelect.props().value).toBe('id');
   });
 
-
   it('sets form values from settings using element property preset', () => {
     extensionBridge.init({
       settings: {
@@ -62,10 +65,15 @@ describe('DOM attribute data element view', () => {
       }
     });
 
-    const { elementSelectorTextfield, elementPropertyPresetsSelect } = getReactComponents(instance);
+    const {
+      elementSelectorTextfield,
+      elementPropertyPresetsSelect,
+      customElementPropertyTextfield
+    } = getReactComponents(instance);
 
     expect(elementSelectorTextfield.props().value).toBe('foo');
-    expect(elementPropertyPresetsSelect.props().value).toBe('innerHTML');
+    expect(elementPropertyPresetsSelect.props().value).toBe('custom');
+    expect(customElementPropertyTextfield.props().value).toBe('innerHTML');
   });
 
   it('sets form values from settings using custom element property', () => {
@@ -100,7 +108,10 @@ describe('DOM attribute data element view', () => {
   it('sets settings from form values using element property preset', () => {
     extensionBridge.init();
 
-    const { elementSelectorTextfield, elementPropertyPresetsSelect } = getReactComponents(instance);
+    const {
+      elementSelectorTextfield,
+      elementPropertyPresetsSelect
+    } = getReactComponents(instance);
 
     elementSelectorTextfield.props().onChange('foo');
     elementPropertyPresetsSelect.props().onChange('innerHTML');
@@ -122,9 +133,7 @@ describe('DOM attribute data element view', () => {
     elementSelectorTextfield.props().onChange('foo');
     elementPropertyPresetsSelect.props().onChange('custom');
 
-    const {
-      customElementPropertyTextfield
-    } = getReactComponents(instance);
+    const { customElementPropertyTextfield } = getReactComponents(instance);
 
     customElementPropertyTextfield.props().onChange('bar');
 
@@ -146,6 +155,8 @@ describe('DOM attribute data element view', () => {
 
     const { customElementPropertyTextfield } = getReactComponents(instance);
 
-    expect(customElementPropertyTextfield.props().validationState).toBe('invalid');
+    expect(customElementPropertyTextfield.props().validationState).toBe(
+      'invalid'
+    );
   });
 });

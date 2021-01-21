@@ -11,14 +11,14 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@react/react-spectrum/Textfield';
+import { TextField } from '@adobe/react-spectrum';
 import DirectCallIdentifier, { formConfig } from '../directCall';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const identifierTextfield = wrapper.find(Textfield);
+  const identifierTextfield = wrapper.find(TextField);
 
   return {
     identifierTextfield
@@ -31,7 +31,9 @@ describe('direct call action view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(DirectCallIdentifier, formConfig, extensionBridge));
+    instance = mount(
+      bootstrap(DirectCallIdentifier, formConfig, extensionBridge)
+    );
   });
 
   it('sets form values from settings', () => {

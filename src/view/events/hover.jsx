@@ -11,19 +11,24 @@
  ****************************************************************************************/
 
 import React from 'react';
-
-
-import DelayType, { formConfig as delayTypeFormConfig } from './components/delayType';
-import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
-import SpecificElements, { formConfig as specificElementsFormConfig } from './components/specificElements';
+import { Flex } from '@adobe/react-spectrum';
+import DelayType, {
+  formConfig as delayTypeFormConfig
+} from './components/delayType';
+import AdvancedEventOptions, {
+  formConfig as advancedEventOptionsFormConfig
+} from './components/advancedEventOptions';
+import SpecificElements, {
+  formConfig as specificElementsFormConfig
+} from './components/specificElements';
 import mergeFormConfigs from '../utils/mergeFormConfigs';
 
 const Hover = () => (
-  <div>
+  <Flex gap="size-100" direction="column">
     <SpecificElements />
     <DelayType />
     <AdvancedEventOptions />
-  </div>
+  </Flex>
 );
 
 export default Hover;

@@ -11,8 +11,7 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@react/react-spectrum/Textfield';
-import Select from '@react/react-spectrum/Select';
+import { TextField, Picker } from '@adobe/react-spectrum';
 import WrappedField from '../../components/wrappedField';
 import WindowSize, { formConfig } from '../windowSize';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
@@ -20,17 +19,19 @@ import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const comparisonOperatorSelects = wrapper.find(Select);
+  const comparisonOperatorSelects = wrapper.find(Picker);
   const fields = wrapper.find(WrappedField);
 
-  const widthOperatorSelect = comparisonOperatorSelects
-    .filterWhere(n => n.prop('name') === 'widthOperator');
-  const heightOperatorSelect = comparisonOperatorSelects
-    .filterWhere(n => n.prop('name') === 'heightOperator');
-  const widthField = fields.filterWhere(n => n.prop('name') === 'width');
-  const widthTextfield = widthField.find(Textfield);
-  const heightField = fields.filterWhere(n => n.prop('name') === 'height');
-  const heightTextfield = heightField.find(Textfield);
+  const widthOperatorSelect = comparisonOperatorSelects.filterWhere(
+    (n) => n.prop('name') === 'widthOperator'
+  );
+  const heightOperatorSelect = comparisonOperatorSelects.filterWhere(
+    (n) => n.prop('name') === 'heightOperator'
+  );
+  const widthField = fields.filterWhere((n) => n.prop('name') === 'width');
+  const widthTextfield = widthField.find(TextField);
+  const heightField = fields.filterWhere((n) => n.prop('name') === 'height');
+  const heightTextfield = heightField.find(TextField);
 
   return {
     widthOperatorSelect,
@@ -52,7 +53,9 @@ describe('window size condition view', () => {
   it('sets operators to greater than by default', () => {
     extensionBridge.init();
 
-    const { widthOperatorSelect, heightOperatorSelect } = getReactComponents(instance);
+    const { widthOperatorSelect, heightOperatorSelect } = getReactComponents(
+      instance
+    );
 
     expect(widthOperatorSelect.props().value).toBe('>');
     expect(heightOperatorSelect.props().value).toBe('>');
@@ -108,10 +111,7 @@ describe('window size condition view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const {
-      widthTextfield,
-      heightTextfield
-    } = getReactComponents(instance);
+    const { widthTextfield, heightTextfield } = getReactComponents(instance);
 
     expect(widthTextfield.props().validationState).toBe('invalid');
     expect(heightTextfield.props().validationState).toBe('invalid');
@@ -120,20 +120,14 @@ describe('window size condition view', () => {
   it('sets errors if values are not numbers', () => {
     extensionBridge.init();
 
-    let {
-      widthTextfield,
-      heightTextfield
-    } = getReactComponents(instance);
+    let { widthTextfield, heightTextfield } = getReactComponents(instance);
 
     widthTextfield.props().onChange('12.abc');
     heightTextfield.props().onChange('12.abc');
 
     expect(extensionBridge.validate()).toBe(false);
 
-    ({
-      widthTextfield,
-      heightTextfield
-    } = getReactComponents(instance));
+    ({ widthTextfield, heightTextfield } = getReactComponents(instance));
 
     expect(widthTextfield.props().validationState).toBe('invalid');
     expect(heightTextfield.props().validationState).toBe('invalid');

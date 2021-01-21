@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@react/react-spectrum/Textfield';
+import { TextField } from '@adobe/react-spectrum';
 import RegexToggle from '../../components/regexToggle';
 import WrappedField from '../../components/wrappedField';
 import QueryStringParameter, { formConfig } from '../queryStringParameter';
@@ -22,10 +22,10 @@ const getReactComponents = (wrapper) => {
   wrapper.update();
   const fields = wrapper.find(WrappedField);
 
-  const nameField = fields.filterWhere(n => n.prop('name') === 'name');
-  const nameTextfield = nameField.find(Textfield);
-  const valueField = fields.filterWhere(n => n.prop('name') === 'value');
-  const valueTextfield = valueField.find(Textfield);
+  const nameField = fields.filterWhere((n) => n.prop('name') === 'name');
+  const nameTextfield = nameField.find(TextField);
+  const valueField = fields.filterWhere((n) => n.prop('name') === 'value');
+  const valueTextfield = valueField.find(TextField);
   const valueRegexToggle = wrapper.find(RegexToggle);
 
   return {
@@ -41,7 +41,9 @@ describe('query string parameter condition view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(QueryStringParameter, formConfig, extensionBridge));
+    instance = mount(
+      bootstrap(QueryStringParameter, formConfig, extensionBridge)
+    );
   });
 
   it('sets form values from settings', () => {
@@ -53,7 +55,11 @@ describe('query string parameter condition view', () => {
       }
     });
 
-    const { nameTextfield, valueTextfield, valueRegexToggle } = getReactComponents(instance);
+    const {
+      nameTextfield,
+      valueTextfield,
+      valueRegexToggle
+    } = getReactComponents(instance);
 
     expect(nameTextfield.props().value).toBe('foo');
     expect(valueTextfield.props().value).toBe('bar');
@@ -63,7 +69,11 @@ describe('query string parameter condition view', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { nameTextfield, valueTextfield, valueRegexToggle } = getReactComponents(instance);
+    const {
+      nameTextfield,
+      valueTextfield,
+      valueRegexToggle
+    } = getReactComponents(instance);
 
     nameTextfield.props().onChange('foo');
     valueTextfield.props().onChange('bar');

@@ -11,6 +11,7 @@
  ****************************************************************************************/
 
 import React from 'react';
+import { ActionButton } from '@adobe/react-spectrum';
 import { mount } from 'enzyme';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import RegexTestButton from '../regexTestButton';
@@ -41,9 +42,9 @@ describe('regex test button', () => {
   });
 
   it('supports regex testing+updating workflow', () => {
-    const button = instance.find('button');
+    const button = instance.find(ActionButton);
 
-    button.simulate('click');
+    button.props().onPress();
 
     expect(extensionBridge.openRegexTester).toHaveBeenCalledWith({
       pattern: 'foo',

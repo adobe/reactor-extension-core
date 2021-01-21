@@ -34,9 +34,11 @@ var duration = {
  * page views.
  * @returns {boolean}
  */
-module.exports = function(settings) {
-  var methodName = settings.duration === duration.LIFETIME ?
-    'getLifetimePageViewCount' : 'getSessionPageViewCount';
+module.exports = function (settings) {
+  var methodName =
+    settings.duration === duration.LIFETIME
+      ? 'getLifetimePageViewCount'
+      : 'getSessionPageViewCount';
   return compareNumbers(
     visitorTracking[methodName](),
     settings.operator,

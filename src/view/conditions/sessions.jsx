@@ -11,35 +11,29 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@react/react-spectrum/Textfield';
-import Select from '@react/react-spectrum/Select';
-import WrappedField from '../components/wrappedField';
+import { Picker, Flex, Item } from '@adobe/react-spectrum';
 import { isNumberLike } from '../utils/validators';
 import comparisonOperatorOptions from './comparisonOperatorOptions';
+import FullWidthField from '../components/fullWidthField';
 
 const Sessions = () => (
-  <div>
-    <div>
-      <label className="u-gapRight">
-        <span className="u-verticalAlignMiddle u-gapRight">
-          The user&apos;s number of sessions is
-        </span>
-        <WrappedField
-          name="operator"
-          component={Select}
-          options={comparisonOperatorOptions}
-        />
-      </label>
-      <label>
-        <span className="u-verticalAlignMiddle u-gapRight">the value</span>
-        <WrappedField
-          name="count"
-          component={Textfield}
-          componentClassName="u-smallTextfield"
-        />
-      </label>
-    </div>
-  </div>
+  <Flex direction="column" gap="size-100" minWidth="size-6000">
+    <FullWidthField
+      beginText="The user's number of sessions is"
+      label="Operator"
+      name="operator"
+      component={Picker}
+      items={comparisonOperatorOptions}
+    >
+      {(item) => <Item>{item.name}</Item>}
+    </FullWidthField>
+    <FullWidthField
+      beginText="the value"
+      label="Count"
+      name="count"
+      isRequired
+    />
+  </Flex>
 );
 
 export default Sessions;

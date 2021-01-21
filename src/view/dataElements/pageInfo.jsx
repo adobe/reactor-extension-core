@@ -11,45 +11,46 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Select from '@react/react-spectrum/Select';
-import WrappedField from '../components/wrappedField';
+import { Picker, Item } from '@adobe/react-spectrum';
+import FullWidthField from '../components/fullWidthField';
 
 const options = [
   {
-    value: 'url',
-    label: 'URL'
+    id: 'url',
+    name: 'URL'
   },
   {
-    value: 'hostname',
-    label: 'Hostname'
+    id: 'hostname',
+    name: 'Hostname'
   },
   {
-    value: 'pathname',
-    label: 'Pathname'
+    id: 'pathname',
+    name: 'Pathname'
   },
   {
-    value: 'protocol',
-    label: 'Protocol'
+    id: 'protocol',
+    name: 'Protocol'
   },
   {
-    value: 'referrer',
-    label: 'Referrer'
+    id: 'referrer',
+    name: 'Referrer'
   },
   {
-    value: 'title',
-    label: 'Title'
+    id: 'title',
+    name: 'Title'
   }
 ];
 
 const PageInfo = () => (
-  <label>
-    <span className="u-verticalAlignMiddle u-gapRight">Attribute</span>
-    <WrappedField
-      name="attribute"
-      component={Select}
-      options={options}
-    />
-  </label>
+  <FullWidthField
+    label="Attribute"
+    name="attribute"
+    component={Picker}
+    items={options}
+    containerMinWidth="size-6000"
+  >
+    {(item) => <Item>{item.name}</Item>}
+  </FullWidthField>
 );
 
 export default PageInfo;

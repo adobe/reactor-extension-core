@@ -11,40 +11,29 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@react/react-spectrum/Textfield';
-import WrappedField from '../components/wrappedField';
-import TooltipPlaceholder from '../components/tooltipPlaceholder';
-import RegexToggle from '../components/regexToggle';
+import { Flex } from '@adobe/react-spectrum';
+import FullWidthField from '../components/fullWidthField';
 
 const QueryStringParameter = () => (
-  <div>
-    <label className="u-gapRight u-gapBottom u-alignItemsCenter u-flex">
-      <span className="u-gapRight">Parameter named</span>
-      <WrappedField
-        className="u-flexOne"
-        name="name"
-        component={Textfield}
-        componentClassName="u-fullWidth u-minFieldWidth"
-      />
-      <TooltipPlaceholder />
-    </label>
-    <div className="u-inlineBlock u-gapRight u-gapBottom u-noWrap u-alignItemsCenter u-flex">
-      <label className="u-gapRight u-flexOne u-alignItemsCenter u-flex">
-        <span className="u-gapRight">has the value</span>
-        <WrappedField
-          className="u-flexOne"
-          name="value"
-          component={Textfield}
-          componentClassName="u-fullWidth u-minFieldWidth"
-        />
-      </label>
-      <WrappedField
-        name="valueIsRegex"
-        component={RegexToggle}
-        valueFieldName="value"
-      />
-    </div>
-  </div>
+  <Flex gap="size-100" direction="column" minWidth="size-6000">
+    <FullWidthField
+      beginText="Return true if the parameter named"
+      label="Parameter"
+      name="name"
+      blankSpace={{ width: 'size-1700', marginStart: 'size-100' }}
+      isRequired
+    />
+
+    <FullWidthField
+      beginText="has the value"
+      label="Value"
+      name="value"
+      regexName="valueIsRegex"
+      regexValueFieldName="value"
+      blankSpace={null}
+      isRequired
+    />
+  </Flex>
 );
 
 export default QueryStringParameter;

@@ -11,21 +11,15 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@react/react-spectrum/Textfield';
-import WrappedField from '../components/wrappedField';
-import TooltipPlaceholder from '../components/tooltipPlaceholder';
+import FullWidthField from '../components/fullWidthField';
 
 const ConstantValue = () => (
-  <label className="u-alignItemsCenter u-flex">
-    <span className="u-gapRight">Constant Value</span>
-    <WrappedField
-      className="u-flexOne"
-      name="value"
-      component={Textfield}
-      componentClassName="u-fullWidth u-minFieldWidth"
-    />
-    <TooltipPlaceholder />
-  </label>
+  <FullWidthField
+    label="Constant Value"
+    name="value"
+    containerMinWidth="size-6000"
+    isRequired
+  />
 );
 
 export default ConstantValue;
