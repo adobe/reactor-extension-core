@@ -40,7 +40,6 @@ const argv = require('yargs')
   .array('browsers')
   .default('browsers', defaultBrowsers)
   .default('singleRun', true)
-  .default('autoWatch', false)
   .default('testBasePath', '/src')
   .default('coverage', true).argv;
 
@@ -51,10 +50,7 @@ const rules = [
     use: {
       loader: 'babel-loader',
       options: {
-        presets: [
-          '@babel/react',
-          ['@babel/env', { targets: '> 0.25%, not dead, ie 11, ie 10' }]
-        ],
+        presets: ['@babel/react', ["@babel/env", { "targets": "> 0.25%, not dead, ie 11, ie 10" }]],
         plugins: ['@babel/plugin-proposal-class-properties']
       }
     }
@@ -65,9 +61,7 @@ const rules = [
     use: {
       loader: 'babel-loader',
       options: {
-        presets: [
-          ['@babel/env', { targets: '> 0.25%, not dead, ie 11, ie 10' }]
-        ]
+        presets: [["@babel/env", { "targets": "> 0.25%, not dead, ie 11, ie 10" }]]
       }
     }
   },
@@ -194,7 +188,7 @@ module.exports = (config) => {
     logLevel: config.LOG_INFO,
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: argv.autoWatch,
+    autoWatch: true,
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher

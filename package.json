@@ -18,7 +18,7 @@
     "package": "npm run build && npx @adobe/reactor-packager",
     "lint": "eslint 'src/**'",
     "test": "karma start",
-    "test:watch": "npm test -- --no-single-run --no-coverage --auto-watch",
+    "test:watch": "npm test -- --no-single-run --no-coverage",
     "bootstrap": "reactor-sandbox init",
     "ci-job": "npm test -- --ci && npm run lint && npm run package && ./node_modules/.bin/reactor-sandbox build"
   },
