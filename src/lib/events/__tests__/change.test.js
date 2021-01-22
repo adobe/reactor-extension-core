@@ -12,11 +12,11 @@
 
 'use strict';
 
-describe('change event delegate', function() {
+describe('change event delegate', function () {
   var testStandardEvent = require('./helpers/testStandardEvent');
   var delegate = require('../change');
 
-  var assertTriggerCall = function(options) {
+  var assertTriggerCall = function (options) {
     expect(options.call.args[0]).toEqual({
       element: options.element,
       target: options.target,
@@ -24,15 +24,17 @@ describe('change event delegate', function() {
     });
   };
 
-  describe('without value defined', function() {
-    testStandardEvent(function() { return delegate; }, 'change');
+  describe('without value defined', function () {
+    testStandardEvent(function () {
+      return delegate;
+    }, 'change');
   });
 
-  describe('with value defined', function() {
+  describe('with value defined', function () {
     var outerElement;
     var innerElement;
 
-    beforeAll(function() {
+    beforeAll(function () {
       outerElement = document.createElement('div');
       outerElement.id = 'outer';
 
@@ -44,19 +46,22 @@ describe('change event delegate', function() {
       document.body.insertBefore(outerElement, document.body.firstChild);
     });
 
-    afterAll(function() {
+    afterAll(function () {
       document.body.removeChild(outerElement);
     });
 
-    it('triggers rule when a string value matches', function() {
+    it('triggers rule when a string value matches', function () {
       var trigger = jasmine.createSpy();
 
-      delegate({
-        elementSelector: '#outer',
-        value: 'foo',
-        bubbleFireIfParent: true,
-        bubbleFireIfChildFired: true
-      }, trigger);
+      delegate(
+        {
+          elementSelector: '#outer',
+          value: 'foo',
+          bubbleFireIfParent: true,
+          bubbleFireIfChildFired: true
+        },
+        trigger
+      );
 
       innerElement.value = 'foo';
       Simulate.change(innerElement);
@@ -70,15 +75,18 @@ describe('change event delegate', function() {
       });
     });
 
-    it('does not trigger rule when a string value does not match', function() {
+    it('does not trigger rule when a string value does not match', function () {
       var trigger = jasmine.createSpy();
 
-      delegate({
-        elementSelector: '#outer',
-        value: 'foo',
-        bubbleFireIfParent: true,
-        bubbleFireIfChildFired: true
-      }, trigger);
+      delegate(
+        {
+          elementSelector: '#outer',
+          value: 'foo',
+          bubbleFireIfParent: true,
+          bubbleFireIfChildFired: true
+        },
+        trigger
+      );
 
       innerElement.value = 'bar';
       Simulate.change(innerElement);
@@ -86,16 +94,19 @@ describe('change event delegate', function() {
       expect(trigger.calls.count()).toBe(0);
     });
 
-    it('triggers rule when a regex value matches', function() {
+    it('triggers rule when a regex value matches', function () {
       var trigger = jasmine.createSpy();
 
-      delegate({
-        elementSelector: '#outer',
-        value: '^F',
-        valueIsRegex: true,
-        bubbleFireIfParent: true,
-        bubbleFireIfChildFired: true
-      }, trigger);
+      delegate(
+        {
+          elementSelector: '#outer',
+          value: '^F',
+          valueIsRegex: true,
+          bubbleFireIfParent: true,
+          bubbleFireIfChildFired: true
+        },
+        trigger
+      );
 
       innerElement.value = 'foo';
       Simulate.change(innerElement);
@@ -109,16 +120,19 @@ describe('change event delegate', function() {
       });
     });
 
-    it('does not trigger rule when a string value does not match', function() {
+    it('does not trigger rule when a string value does not match', function () {
       var trigger = jasmine.createSpy();
 
-      delegate({
-        elementSelector: '#outer',
-        value: '^f',
-        valueIsRegex: true,
-        bubbleFireIfParent: true,
-        bubbleFireIfChildFired: true
-      }, trigger);
+      delegate(
+        {
+          elementSelector: '#outer',
+          value: '^f',
+          valueIsRegex: true,
+          bubbleFireIfParent: true,
+          bubbleFireIfChildFired: true
+        },
+        trigger
+      );
 
       innerElement.value = 'bar';
       Simulate.change(innerElement);
@@ -126,15 +140,18 @@ describe('change event delegate', function() {
       expect(trigger.calls.count()).toBe(0);
     });
 
-    it('triggers rule when empty string matches', function() {
+    it('triggers rule when empty string matches', function () {
       var trigger = jasmine.createSpy();
 
-      delegate({
-        elementSelector: '#outer',
-        value: '',
-        bubbleFireIfParent: true,
-        bubbleFireIfChildFired: true
-      }, trigger);
+      delegate(
+        {
+          elementSelector: '#outer',
+          value: '',
+          bubbleFireIfParent: true,
+          bubbleFireIfChildFired: true
+        },
+        trigger
+      );
 
       innerElement.value = '';
       Simulate.change(innerElement);

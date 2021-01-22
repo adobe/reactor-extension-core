@@ -15,16 +15,16 @@
 var cookie = require('js-cookie');
 var dataElementDelegate = require('../cookie');
 
-describe('cookie data element delegate', function() {
-  beforeAll(function() {
+describe('cookie data element delegate', function () {
+  beforeAll(function () {
     cookie.set('foo', 'bar');
   });
 
-  afterAll(function() {
+  afterAll(function () {
     cookie.remove('foo');
   });
 
-  it('returns the value of a cookie', function() {
+  it('returns the value of a cookie', function () {
     var settings = {
       name: 'foo'
     };
@@ -32,7 +32,7 @@ describe('cookie data element delegate', function() {
     expect(dataElementDelegate(settings)).toBe('bar');
   });
 
-  it('returns undefined if the cookie is not set', function() {
+  it('returns undefined if the cookie is not set', function () {
     var settings = {
       name: 'unicorn'
     };

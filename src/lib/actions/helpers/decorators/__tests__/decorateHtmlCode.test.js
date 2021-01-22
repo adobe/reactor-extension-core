@@ -14,13 +14,13 @@ governing permissions and limitations under the License.
 var decorateHtmlCodeInjector = require('inject-loader!../decorateHtmlCode');
 var flushPromiseChains = require('../../../../__tests__/helpers/flushPromiseChains');
 
-describe('decorate html code', function() {
+describe('decorate html code', function () {
   var mockTurbine;
 
-  beforeEach(function() {
+  beforeEach(function () {
     mockTurbine = {
-      replaceTokens: jasmine.createSpy().and.callFake(function(token) {
-        return token.replace(/%(.+?)%/g, function(token, variableName) {
+      replaceTokens: jasmine.createSpy().and.callFake(function (token) {
+        return token.replace(/%(.+?)%/g, function (token, variableName) {
           return 'replaced - ' + variableName;
         });
       })
@@ -29,11 +29,11 @@ describe('decorate html code', function() {
     mockTurbineVariable(mockTurbine);
   });
 
-  afterEach(function() {
+  afterEach(function () {
     resetTurbineVariable();
   });
 
-  it('returns the decorated code on the code key', function() {
+  it('returns the decorated code on the code key', function () {
     var settings = {
       language: 'html',
       source: '<script>console.log("logging")</script>'
@@ -53,7 +53,7 @@ describe('decorate html code', function() {
     );
   });
 
-  it('returns the decorated code with replaced callback ids if they exist', function() {
+  it('returns the decorated code with replaced callback ids if they exist', function () {
     var settings = {
       language: 'html',
       source:
@@ -74,7 +74,7 @@ describe('decorate html code', function() {
     );
   });
 
-  it('does not replace data element tokens for an embedded html action', function() {
+  it('does not replace data element tokens for an embedded html action', function () {
     var settings = {
       language: 'html',
       source: '<div>%productname%</div>'
@@ -94,7 +94,7 @@ describe('decorate html code', function() {
     expect(mockTurbine.replaceTokens).not.toHaveBeenCalled();
   });
 
-  it('does replace data element tokens for an html action loaded from a file', function() {
+  it('does replace data element tokens for an html action loaded from a file', function () {
     var settings = {
       language: 'html',
       source: 'url1',
@@ -117,7 +117,7 @@ describe('decorate html code', function() {
   it(
     'returns a resolved promise on the promise key when HTML code ' +
       'does not contain callbacks',
-    function() {
+    function () {
       var settings = {
         language: 'html',
         source: '<script>console.log("logging")</script>'
@@ -126,7 +126,7 @@ describe('decorate html code', function() {
       var p = Promise.resolve();
       var decorateHtmlCode = decorateHtmlCodeInjector({
         '@adobe/reactor-promise': {
-          resolve: function() {
+          resolve: function () {
             return p;
           }
         }
@@ -146,7 +146,7 @@ describe('decorate html code', function() {
   it(
     'returns a promise that will be resolved when HTML code contains callbacks' +
       'and _satellite._onCustomCodeSuccess is called',
-    function(done) {
+    function (done) {
       var settings = {
         language: 'html',
         source:
@@ -165,7 +165,7 @@ describe('decorate html code', function() {
 
       decorateCodePromise.then(onPromiseResolved).then(done);
 
-      flushPromiseChains().then(function() {
+      flushPromiseChains().then(function () {
         expect(onPromiseResolved).not.toHaveBeenCalled();
         window._satellite._onCustomCodeSuccess('0');
       });
@@ -175,7 +175,7 @@ describe('decorate html code', function() {
   it(
     'returns a promise that will be rejected when HTML code contains callbacks' +
       'and _satellite._onCustomCodeFailure is called',
-    function(done) {
+    function (done) {
       var settings = {
         language: 'html',
         source:
@@ -193,7 +193,7 @@ describe('decorate html code', function() {
 
       decorateCodePromise.catch(onPromiseRejected).then(done);
 
-      flushPromiseChains().then(function() {
+      flushPromiseChains().then(function () {
         expect(onPromiseRejected).not.toHaveBeenCalled();
         window._satellite._onCustomCodeFailure('0');
       });

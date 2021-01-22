@@ -12,11 +12,11 @@
 
 import { mount } from 'enzyme';
 import React from 'react';
-import Button from '@react/react-spectrum/Button';
+import { Button } from '@adobe/react-spectrum';
 import EditorButton from '../editorButton';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 
-const render = props => mount(<EditorButton {...props} />);
+const render = (props) => mount(<EditorButton {...props} />);
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
@@ -31,7 +31,7 @@ describe('editor button', () => {
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
     window.extensionBridge = extensionBridge;
-    spyOn(window.extensionBridge, 'openCodeEditor').and.callFake(options => ({
+    spyOn(window.extensionBridge, 'openCodeEditor').and.callFake((options) => ({
       then(resolve) {
         resolve(`${options.code} bar`);
       }
@@ -43,23 +43,27 @@ describe('editor button', () => {
   });
 
   it('sets button variant to warning when invalid', () => {
-    const { button } = getReactComponents(render({
-      invalid: true
-    }));
+    const { button } = getReactComponents(
+      render({
+        validationState: 'invalid'
+      })
+    );
 
-    expect(button.props().variant).toBe('warning');
+    expect(button.props().variant).toBe('negative');
   });
 
   it('supports code editing workflow', () => {
     const onChange = jasmine.createSpy();
-    const { button } = getReactComponents(render({
-      invalid: true,
-      value: 'foo',
-      language: 'html',
-      onChange
-    }));
+    const { button } = getReactComponents(
+      render({
+        invalid: true,
+        value: 'foo',
+        language: 'html',
+        onChange
+      })
+    );
 
-    button.props().onClick();
+    button.props().onPress();
 
     expect(extensionBridge.openCodeEditor).toHaveBeenCalledWith({
       code: 'foo',

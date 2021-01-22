@@ -12,23 +12,23 @@
 
 'use strict';
 
-describe('orientation change event delegate', function() {
+describe('orientation change event delegate', function () {
   var delegate;
   var orientationChangeCallbacks = [];
 
   // We can't use the real window object to mock orientation changes because some browsers won't
   // let us set the orientation property.
   var mockWindow = {
-    addEventListener: function(type, callback) {
+    addEventListener: function (type, callback) {
       if (type === 'orientationchange') {
         orientationChangeCallbacks.push(callback);
       }
     }
   };
 
-  var triggerOrientationChange = function() {
+  var triggerOrientationChange = function () {
     // Act as though window triggered an orientationchange event.
-    orientationChangeCallbacks.forEach(function(callback) {
+    orientationChangeCallbacks.forEach(function (callback) {
       callback({
         type: 'orientationchange',
         target: mockWindow,
@@ -37,7 +37,7 @@ describe('orientation change event delegate', function() {
     });
   };
 
-  var assertTriggerCall = function(options) {
+  var assertTriggerCall = function (options) {
     expect(options.call.args[0]).toEqual({
       element: mockWindow,
       target: mockWindow,
@@ -45,14 +45,14 @@ describe('orientation change event delegate', function() {
     });
   };
 
-  beforeAll(function() {
+  beforeAll(function () {
     var delegateInjector = require('inject-loader!../orientationChange');
     delegate = delegateInjector({
       '@adobe/reactor-window': mockWindow
     });
   });
 
-  it('triggers rule when orientation changes', function() {
+  it('triggers rule when orientation changes', function () {
     var trigger = jasmine.createSpy();
 
     delegate({}, trigger);

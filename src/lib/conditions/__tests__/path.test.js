@@ -24,8 +24,8 @@ var conditionDelegate = conditionDelegateInjector({
   '@adobe/reactor-document': mockDocument
 });
 
-describe('path condition delegate', function() {
-  it('returns true when the path matches an acceptable string', function() {
+describe('path condition delegate', function () {
+  it('returns true when the path matches an acceptable string', function () {
     var settings = {
       paths: [
         {
@@ -39,7 +39,7 @@ describe('path condition delegate', function() {
     expect(conditionDelegate(settings)).toBe(true);
   });
 
-  it('returns false when the path does not match an acceptable string', function() {
+  it('returns false when the path does not match an acceptable string', function () {
     var settings = {
       paths: [
         {
@@ -53,7 +53,7 @@ describe('path condition delegate', function() {
     expect(conditionDelegate(settings)).toBe(false);
   });
 
-  it('returns true when the path matches an acceptable regex', function() {
+  it('returns true when the path matches an acceptable regex', function () {
     var settings = {
       paths: [
         {
@@ -68,7 +68,7 @@ describe('path condition delegate', function() {
     expect(conditionDelegate(settings)).toBe(true);
   });
 
-  it('returns false when the path does not match an acceptable regex', function() {
+  it('returns false when the path does not match an acceptable regex', function () {
     var settings = {
       paths: [
         {

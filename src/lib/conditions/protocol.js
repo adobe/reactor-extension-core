@@ -19,7 +19,8 @@
  * @param {string} settings.protocol An acceptable protocol.
  * @returns {boolean}
  */
-module.exports = function(settings) {
-  return document.location.protocol.toLowerCase() === settings.protocol.toLowerCase();
+module.exports = function (settings) {
+  return (
+    document.location.protocol.toLowerCase() === settings.protocol.toLowerCase()
+  );
 };
-

@@ -12,10 +12,8 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import { Radio, RadioGroup, Flex, Checkbox } from '@adobe/react-spectrum';
 import { formValueSelector } from 'redux-form';
-import Checkbox from '@react/react-spectrum/Checkbox';
-import Radio from '@react/react-spectrum/Radio';
-import RadioGroup from '@react/react-spectrum/RadioGroup';
 import InfoTip from '../components/infoTip';
 import EditorButton from '../components/editorButton';
 import WrappedField from '../components/wrappedField';
@@ -26,39 +24,26 @@ const LANGUAGES = {
 };
 
 const CustomCode = ({ language }) => (
-  <div>
-    <fieldset>
-      <legend>
-        Language
-      </legend>
+  <Flex direction="column" gap="size-100">
+    <WrappedField name="language" label="Language" component={RadioGroup}>
+      <Radio value={LANGUAGES.JAVASCRIPT}>JavaScript</Radio>
+      <Radio value={LANGUAGES.HTML}>HTML</Radio>
+    </WrappedField>
 
-      <WrappedField
-        name="language"
-        component={RadioGroup}
-      >
-        <Radio value={LANGUAGES.JAVASCRIPT} label="JavaScript" />
-        <Radio value={LANGUAGES.HTML} label="HTML" />
-      </WrappedField>
-    </fieldset>
+    {language === LANGUAGES.JAVASCRIPT ? (
+      <Flex>
+        <WrappedField name="global" component={Checkbox} paddingRight="size-0">
+          Execute globally
+        </WrappedField>
 
-    {
-      language === LANGUAGES.JAVASCRIPT ?
-        (
-          <div>
-            <WrappedField
-              name="global"
-              component={Checkbox}
-              label="Execute globally"
-              className="u-noPaddingRight"
-            />
-            <InfoTip className="u-noPadding">
-            Global execution is needed only in cases when the script relies on its own variables to
-            be globally visible. Turning this on will disable binding of the variables
-            &quot;this&quot;, &quot;event&quot;, and &quot;target&quot; within the script.
-            </InfoTip>
-          </div>
-        ) : null
-    }
+        <InfoTip>
+          Global execution is needed only in cases when the script relies on its
+          own variables to be globally visible. Turning this on will disable
+          binding of the variables &quot;this&quot;, &quot;event&quot;, and
+          &quot;target&quot; within the script.
+        </InfoTip>
+      </Flex>
+    ) : null}
 
     <div className="u-gapTop">
       <WrappedField
@@ -67,11 +52,13 @@ const CustomCode = ({ language }) => (
         language={language}
       />
     </div>
-  </div>
+  </Flex>
 );
 
 const valueSelector = formValueSelector('default');
-const stateToProps = state => ({ language: valueSelector(state, 'language') });
+const stateToProps = (state) => ({
+  language: valueSelector(state, 'language')
+});
 
 export default connect(stateToProps)(CustomCode);
 

@@ -11,33 +11,26 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@react/react-spectrum/Textfield';
-import { Toast } from '@react/react-spectrum/Toast';
-import WrappedField from '../components/wrappedField';
-import TooltipPlaceholder from '../components/tooltipPlaceholder';
+import { Flex } from '@adobe/react-spectrum';
+import WarningContainer from '../components/warningContainer';
+import FullWidthField from '../components/fullWidthField';
 
 const DataElementChange = () => (
-  <div>
-    <div>
-      <Toast variant="warning" className="u-gapBottom">
-        This event type polls the data element value to determine if it has changed. If your rule is
-        time-sensitive, we recommend using other event types (e.g., Custom Event, Direct Call) to
-        manually fire the rule immediately after you have made data element value changes.
-      </Toast>
-    </div>
+  <Flex direction="column" gap="size-100" minWidth="size-6000">
+    <WarningContainer>
+      This event type polls the data element value to determine if it has
+      changed. If your rule is time-sensitive, we recommend using other event
+      types (e.g., Custom Event, Direct Call) to manually fire the rule
+      immediately after you have made data element value changes.
+    </WarningContainer>
 
-    <label className="u-alignItemsCenter u-flex">
-      <span className="u-gapRight">Data Element Name</span>
-      <WrappedField
-        className="u-flexOne u-alignItemsCenter u-flex"
-        name="name"
-        component={Textfield}
-        componentClassName="u-fullWidth u-minFieldWidth"
-        supportDataElementName
-      />
-      <TooltipPlaceholder />
-    </label>
-  </div>
+    <FullWidthField
+      label="Data Element Name"
+      name="name"
+      isRequired
+      supportDataElementName
+    />
+  </Flex>
 );
 
 export default DataElementChange;

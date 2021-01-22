@@ -11,8 +11,8 @@
  ****************************************************************************************/
 'use strict';
 
-var matchUserAgent = function(regexs) {
-  return function(userAgent) {
+var matchUserAgent = function (regexs) {
+  return function (userAgent) {
     var keys = Object.keys(regexs);
     for (var i = 0; i < keys.length; i++) {
       var key = keys[i];

@@ -11,36 +11,28 @@
  ****************************************************************************************/
 
 import React from 'react';
-import classNames from 'classnames';
-import Switch from '@react/react-spectrum/Switch';
+import { Switch, Flex } from '@adobe/react-spectrum';
 import WrappedField from './wrappedField';
 import RegexTestButton from './regexTestButton';
 
 export default (props) => {
-  const {
-    value: valueIsRegex,
-    onChange,
-    valueFieldName,
-    className
-  } = props;
+  const { value: valueIsRegex, onChange, valueFieldName } = props;
 
   return (
-    <div className={classNames(className, 'u-inlineBlock')}>
+    <Flex>
       <Switch
-        className="u-gapRight u-verticalAlignMiddle"
-        checked={Boolean(valueIsRegex)}
+        isSelected={Boolean(valueIsRegex)}
         onChange={onChange}
         label="Regex"
-      />
+      >
+        Regex
+      </Switch>
       <span
         id="testButtonContainer"
         style={{ visibility: valueIsRegex ? 'visible' : 'hidden' }}
       >
-        <WrappedField
-          name={valueFieldName}
-          component={RegexTestButton}
-        />
+        <WrappedField name={valueFieldName} component={RegexTestButton} />
       </span>
-    </div>
+    </Flex>
   );
 };

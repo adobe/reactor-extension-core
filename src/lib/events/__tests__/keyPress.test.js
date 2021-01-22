@@ -12,9 +12,11 @@
 
 'use strict';
 
-describe('key press event delegate', function() {
+describe('key press event delegate', function () {
   var testStandardEvent = require('./helpers/testStandardEvent');
   var delegate = require('../keyPress');
 
-  testStandardEvent(function() { return delegate; }, 'keypress');
+  testStandardEvent(function () {
+    return delegate;
+  }, 'keypress');
 });

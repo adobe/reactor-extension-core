@@ -10,7 +10,9 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import SpecificElements, { formConfig as specificElementsFormConfig } from './components/specificElements';
+import SpecificElements, {
+  formConfig as specificElementsFormConfig
+} from './components/specificElements';
 
 export default SpecificElements;
 export const formConfig = specificElementsFormConfig;

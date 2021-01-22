@@ -11,9 +11,9 @@
  ****************************************************************************************/
 
 import React from 'react';
-import { Toast } from '@react/react-spectrum/Toast';
+import { CheckboxGroup, Checkbox, Flex } from '@adobe/react-spectrum';
 import WrappedField from '../components/wrappedField';
-import CheckboxList from '../components/checkboxList';
+import WarningContainer from '../components/warningContainer';
 
 const deviceTypeOptions = [
   'Desktop',
@@ -27,14 +27,23 @@ const deviceTypeOptions = [
 ];
 
 const DeviceType = () => (
-  <div>
-    <div>
-      <Toast variant="warning" className="u-gapBottom">
-        This condition type is no longer supported. Please avoid its use.
-      </Toast>
-    </div>
-    <WrappedField name="deviceTypes" component={CheckboxList} options={deviceTypeOptions} />
-  </div>
+  <Flex gap="size-100" direction="column">
+    <WarningContainer>
+      This condition type is no longer supported. Please avoid its use.
+    </WarningContainer>
+
+    <WrappedField
+      label="Device Types"
+      name="deviceTypes"
+      component={CheckboxGroup}
+    >
+      {deviceTypeOptions.map((o) => (
+        <Checkbox value={o} key={o}>
+          {o}
+        </Checkbox>
+      ))}
+    </WrappedField>
+  </Flex>
 );
 
 export default DeviceType;

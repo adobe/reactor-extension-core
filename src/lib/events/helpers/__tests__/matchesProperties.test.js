@@ -12,17 +12,17 @@
 
 'use strict';
 
-describe('matchesProperties', function() {
+describe('matchesProperties', function () {
   var matchesProperties = require('../matchesProperties');
   var element;
 
-  beforeAll(function() {
+  beforeAll(function () {
     element = document.createElement('div');
     element.className = 'flashy';
     element.innerHTML = 'scooter';
   });
 
-  it('returns true if the string property value matches', function() {
+  it('returns true if the string property value matches', function () {
     var matches = matchesProperties(element, [
       {
         name: 'className',
@@ -37,7 +37,7 @@ describe('matchesProperties', function() {
     expect(matches).toBe(true);
   });
 
-  it('returns true if the string property value does not match', function() {
+  it('returns true if the string property value does not match', function () {
     var matches = matchesProperties(element, [
       {
         name: 'className',
@@ -52,7 +52,7 @@ describe('matchesProperties', function() {
     expect(matches).toBe(false);
   });
 
-  it('returns true if the regex property value matches', function() {
+  it('returns true if the regex property value matches', function () {
     var matches = matchesProperties(element, [
       {
         name: 'className',
@@ -68,7 +68,7 @@ describe('matchesProperties', function() {
     expect(matches).toBe(true);
   });
 
-  it('returns false if the regex property value does not match', function() {
+  it('returns false if the regex property value does not match', function () {
     var matches = matchesProperties(element, [
       {
         name: 'className',

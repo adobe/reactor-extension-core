@@ -26,7 +26,7 @@ var samplingLocalStorage = getNamespacedStorage('localStorage', 'sampling');
  * the cohort and vice versa.
  * @returns {boolean}
  */
-module.exports = function(settings, event) {
+module.exports = function (settings, event) {
   // Note that we intentionally don't use <=. Math.random() returns a value between
   // 0 (inclusive) and 1 (exclusive). If we were to use <= and Math.random() returned 0, the
   // condition would return true. The condition should always return false if the rate is set to

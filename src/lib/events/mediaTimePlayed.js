@@ -27,7 +27,7 @@ var timePlayedUnit = {
   PERCENT: 'percent'
 };
 
-var handleTimeUpdate = function(event) {
+var handleTimeUpdate = function (event) {
   var target = event.target;
 
   if (!target.seekable || !target.seekable.length) {
@@ -42,15 +42,23 @@ var handleTimeUpdate = function(event) {
 
   var secondsLastTriggered = lastTriggeredByElement.get(target) || 0;
 
-  relevantMarkers.forEach(function(relevantMarker) {
-    var configuredSeconds = relevantMarker.unit === timePlayedUnit.SECOND ?
-      relevantMarker.amount : (endTime - startTime) * (relevantMarker.amount / 100);
-    if (configuredSeconds > secondsLastTriggered && configuredSeconds <= playedSeconds) {
-      bubbly.evaluateEvent({
-        target: target,
-        amount: relevantMarker.amount,
-        unit: relevantMarker.unit
-      }, true);
+  relevantMarkers.forEach(function (relevantMarker) {
+    var configuredSeconds =
+      relevantMarker.unit === timePlayedUnit.SECOND
+        ? relevantMarker.amount
+        : (endTime - startTime) * (relevantMarker.amount / 100);
+    if (
+      configuredSeconds > secondsLastTriggered &&
+      configuredSeconds <= playedSeconds
+    ) {
+      bubbly.evaluateEvent(
+        {
+          target: target,
+          amount: relevantMarker.amount,
+          unit: relevantMarker.unit
+        },
+        true
+      );
     }
   });
 
@@ -83,8 +91,8 @@ document.addEventListener('timeupdate', handleTimeUpdate, true);
  * rules on ancestor elements.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function(settings, trigger) {
-  var doesMarkerMatch = function(marker) {
+module.exports = function (settings, trigger) {
+  var doesMarkerMatch = function (marker) {
     return marker.amount === settings.amount && marker.unit === settings.unit;
   };
 
@@ -97,11 +105,14 @@ module.exports = function(settings, trigger) {
     });
   }
 
-  bubbly.addListener(settings, function(syntheticEvent) {
+  bubbly.addListener(settings, function (syntheticEvent) {
     // Bubbling for this event is dependent upon the amount and unit configured for rules.
     // An event can "bubble up" to other rules with the same amount and unit but not to rules with
     // a different amount or unit. See the tests for how this plays out.
-    if (syntheticEvent.amount === settings.amount && syntheticEvent.unit === settings.unit) {
+    if (
+      syntheticEvent.amount === settings.amount &&
+      syntheticEvent.unit === settings.unit
+    ) {
       trigger(syntheticEvent);
     } else {
       return false;

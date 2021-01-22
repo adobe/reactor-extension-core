@@ -20,8 +20,8 @@ var matchesProperties = require('./helpers/matchesProperties');
 
 var listenersBySelector = {};
 
-setInterval(function() {
-  Object.keys(listenersBySelector).forEach(function(selector) {
+setInterval(function () {
+  Object.keys(listenersBySelector).forEach(function (selector) {
     var listeners = listenersBySelector[selector];
     var elements = document.querySelectorAll(selector);
 
@@ -72,7 +72,7 @@ setInterval(function() {
  * on the object instance is intended to be a regular expression.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function(settings, trigger) {
+module.exports = function (settings, trigger) {
   var listeners = listenersBySelector[settings.elementSelector];
 
   if (!listeners) {

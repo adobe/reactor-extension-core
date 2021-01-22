@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@react/react-spectrum/Textfield';
+import { TextField } from '@adobe/react-spectrum';
 import RegexToggle from '../../components/regexToggle';
 import Hash, { formConfig } from '../hash';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
@@ -19,8 +19,8 @@ import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const rows = wrapper.find('[data-row]').map(row => ({
-    hashTextfield: row.find(Textfield),
+  const rows = wrapper.find('div[data-row]').map((row) => ({
+    hashTextfield: row.find(TextField),
     hashRegexToggle: row.find(RegexToggle)
   }));
 
@@ -58,8 +58,8 @@ describe('hash condition view', () => {
     const { rows } = getReactComponents(instance);
 
     expect(rows[0].hashTextfield.props().value).toBe('foo');
-    expect(rows[1].hashTextfield.props().value).toBe('bar');
     expect(rows[0].hashRegexToggle.props().value).toBe('');
+    expect(rows[1].hashTextfield.props().value).toBe('bar');
     expect(rows[1].hashRegexToggle.props().value).toBe(true);
   });
 
@@ -67,7 +67,6 @@ describe('hash condition view', () => {
     extensionBridge.init();
 
     const { rows } = getReactComponents(instance);
-
     rows[0].hashTextfield.props().onChange('goo');
     rows[0].hashRegexToggle.props().onChange(true);
 

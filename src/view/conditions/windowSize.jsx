@@ -11,55 +11,68 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@react/react-spectrum/Textfield';
-import Select from '@react/react-spectrum/Select';
+import {
+  Text,
+  Flex,
+  Picker,
+  Item,
+  TextField,
+  View
+} from '@adobe/react-spectrum';
 import WrappedField from '../components/wrappedField';
 import { isNumberLike } from '../utils/validators';
 import comparisonOperatorOptions from './comparisonOperatorOptions';
+import NoWrapText from '../components/noWrapText';
 
 const WindowSize = () => (
-  <div>
-    <div>
-      <label className="u-gapRight">
-        <span className="u-verticalAlignMiddle u-gapRight">
-          The user&apos;s window size width is
-        </span>
+  <Flex gap="size-100" direction="column" minWidth="size-6000">
+    <Flex alignItems="end" gap="size-100">
+      <Text marginBottom="size-75">
+        Return true if the user&rsquo;s window size width is
+      </Text>
+      <WrappedField
+        label="Operator"
+        name="widthOperator"
+        component={Picker}
+        items={comparisonOperatorOptions}
+      >
+        {(item) => <Item>{item.name}</Item>}
+      </WrappedField>
+      <View flex>
         <WrappedField
-          name="widthOperator"
-          component={Select}
-          options={comparisonOperatorOptions}
-        />
-      </label>
-      <label>
-        <WrappedField
+          label="Width"
           name="width"
-          className="u-gapRight"
-          component={Textfield}
-          componentClassName="u-smallTextfield"
+          component={TextField}
+          width="100%"
+          minWidth="size-1200"
+          isRequired
         />
-        <span>px</span>
-      </label>
-    </div>
-    <div className="u-gapTop">
-      <label className="u-gapRight">
-        <span className="u-verticalAlignMiddle u-gapRight">and height is</span>
+      </View>
+      <NoWrapText>px</NoWrapText>
+    </Flex>
+    <Flex alignItems="end" gap="size-100">
+      <NoWrapText>and height is</NoWrapText>
+      <WrappedField
+        label="Operator"
+        name="heightOperator"
+        component={Picker}
+        items={comparisonOperatorOptions}
+      >
+        {(item) => <Item>{item.name}</Item>}
+      </WrappedField>
+      <View flex>
         <WrappedField
-          name="heightOperator"
-          component={Select}
-          options={comparisonOperatorOptions}
-        />
-      </label>
-      <label>
-        <WrappedField
+          label="Height"
           name="height"
-          className="u-gapRight"
-          component={Textfield}
-          componentClassName="u-smallTextfield"
+          component={TextField}
+          width="100%"
+          minWidth="size-1200"
+          isRequired
         />
-        <span>px</span>
-      </label>
-    </div>
-  </div>
+      </View>
+      <NoWrapText>px</NoWrapText>
+    </Flex>
+  </Flex>
 );
 
 export default WindowSize;

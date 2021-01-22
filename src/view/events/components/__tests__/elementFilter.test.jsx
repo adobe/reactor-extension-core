@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Radio from '@react/react-spectrum/Radio';
+import { RadioGroup } from '@adobe/react-spectrum';
 import ElementFilter, { formConfig } from '../elementFilter';
 import createExtensionBridge from '../../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../../bootstrap';
@@ -19,16 +19,10 @@ import SpecificElements from '../specificElements';
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const radios = wrapper.find(Radio);
-
-  const specificElementsRadio = radios.filterWhere(n => n.prop('value') === 'specific');
-  const anyElementRadio = radios.filterWhere(n => n.prop('value') === 'any');
-  const specificElements = wrapper.find(SpecificElements);
 
   return {
-    specificElementsRadio,
-    specificElements,
-    anyElementRadio
+    elementFilterRadioGroup: wrapper.find(RadioGroup),
+    specificElements: wrapper.find(SpecificElements)
   };
 };
 
@@ -48,54 +42,63 @@ describe('elementFilter', () => {
       }
     });
 
-    const { specificElementsRadio, specificElements } = getReactComponents(instance);
+    const { elementFilterRadioGroup, specificElements } = getReactComponents(
+      instance
+    );
 
-    expect(specificElementsRadio.props().checked).toBe(true);
+    expect(elementFilterRadioGroup.props().value).toBe('specific');
     expect(specificElements).toBeDefined();
   });
 
   it('updates view properly when elementSelector is not provided', () => {
     extensionBridge.init({ settings: {} });
 
-    const { anyElementRadio, specificElements } = getReactComponents(instance);
+    const { elementFilterRadioGroup, specificElements } = getReactComponents(
+      instance
+    );
 
-    expect(anyElementRadio.props().checked).toBe(true);
+    expect(elementFilterRadioGroup.props().value).toBe('any');
     expect(specificElements.exists()).toBe(false);
   });
 
-  it('removes elementSelector and elementProperties from settings if any ' +
-    'element radio is selected', () => {
-    extensionBridge.init({
-      settings: {
-        elementSelector: '.foo',
-        elementProperties: [
-          {
-            name: 'a',
-            value: 'b'
-          }
-        ]
-      }
-    });
+  it(
+    'removes elementSelector and elementProperties from settings if any ' +
+      'element radio is selected',
+    () => {
+      extensionBridge.init({
+        settings: {
+          elementSelector: '.foo',
+          elementProperties: [
+            {
+              name: 'a',
+              value: 'b'
+            }
+          ]
+        }
+      });
 
-    const { anyElementRadio } = getReactComponents(instance);
+      const { elementFilterRadioGroup } = getReactComponents(instance);
 
-    anyElementRadio.props().onChange(anyElementRadio.props().value, { stopPropagation() {} });
+      elementFilterRadioGroup.props().onChange('any', { stopPropagation() {} });
 
-    const { elementSelector, elementProperties } = extensionBridge.getSettings();
+      const {
+        elementSelector,
+        elementProperties
+      } = extensionBridge.getSettings();
 
-    expect(elementSelector).toBeUndefined();
-    expect(elementProperties).toBeUndefined();
-  });
+      expect(elementSelector).toBeUndefined();
+      expect(elementProperties).toBeUndefined();
+    }
+  );
 
   it('includes specificElements errors if specific element radio is selected', () => {
     extensionBridge.init();
 
-    const { specificElementsRadio } = getReactComponents(instance);
+    const { elementFilterRadioGroup } = getReactComponents(instance);
 
-    specificElementsRadio.props().onChange(
-      specificElementsRadio.props().value,
-      { stopPropagation() {} }
-    );
+    elementFilterRadioGroup.props().onChange('specific', {
+      stopPropagation() {}
+    });
 
     expect(extensionBridge.validate()).toBe(false);
   });
@@ -103,9 +106,11 @@ describe('elementFilter', () => {
   it('excludes specificElements errors if any element radio is selected', () => {
     extensionBridge.init();
 
-    const { anyElementRadio } = getReactComponents(instance);
+    const { elementFilterRadioGroup } = getReactComponents(instance);
 
-    anyElementRadio.props().onChange(anyElementRadio.props().value, { stopPropagation() {} });
+    elementFilterRadioGroup.props().onChange('any', {
+      stopPropagation() {}
+    });
 
     expect(extensionBridge.validate()).toBe(true);
   });

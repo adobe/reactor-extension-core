@@ -12,19 +12,19 @@
 
 'use strict';
 
-describe('history change event delegate', function() {
+describe('history change event delegate', function () {
   var delegate;
   var origHref = window.location.href;
 
-  var assertTriggerCall = function(call) {
+  var assertTriggerCall = function (call) {
     expect(call.args.length).toBe(0);
   };
 
-  beforeAll(function() {
+  beforeAll(function () {
     delegate = require('../historyChange');
   });
 
-  afterAll(function() {
+  afterAll(function () {
     // Just so the URL goes back to what it was. That way when we refresh the browser when
     // debugging it actually loads the correct url.
     if (window.history.replaceState) {
@@ -34,42 +34,41 @@ describe('history change event delegate', function() {
     }
   });
 
-  it('triggers rule on the hash change event', function(done) {
+  it('triggers rule on the hash change event', function (done) {
     var trigger = jasmine.createSpy();
     delegate({}, trigger);
 
     window.location.hash = 'hashchange-' + Math.floor(Math.random() * 100);
 
     // The hashchange event seems to be triggered asynchronously by the browser.
-    waitUntil(function() {
+    waitUntil(function () {
       return trigger.calls.count() > 0;
-    }).then(function() {
+    }).then(function () {
       expect(trigger.calls.count()).toBe(1);
       assertTriggerCall(trigger.calls.mostRecent());
       done();
     });
   });
 
-
   if (window.history.pushState) {
-    it('triggers rule when pushState is called and on the popstate event', function(done) {
+    it('triggers rule when pushState is called and on the popstate event', function (done) {
       var trigger = jasmine.createSpy();
       delegate({}, trigger);
 
-      window.history.pushState({some: 'state'}, null, 'pushStateTest.html');
+      window.history.pushState({ some: 'state' }, null, 'pushStateTest.html');
 
-      waitUntil(function() {
+      waitUntil(function () {
         return trigger.calls.count() > 0;
-      }).then(function() {
+      }).then(function () {
         expect(trigger.calls.count()).toBe(1);
         assertTriggerCall(trigger.calls.mostRecent());
 
         window.history.back(); // This causes the popstate event.
 
         // The popstate event seems to be triggered asynchronously by the browser.
-        waitUntil(function() {
+        waitUntil(function () {
           return trigger.calls.count() > 1;
-        }).then(function() {
+        }).then(function () {
           expect(trigger.calls.count()).toBe(2);
           assertTriggerCall(trigger.calls.mostRecent());
           done();
@@ -79,20 +78,23 @@ describe('history change event delegate', function() {
   }
 
   if (window.history.replaceState) {
-    it('triggers rule when replaceState is called', function(done) {
+    it('triggers rule when replaceState is called', function (done) {
       var trigger = jasmine.createSpy();
       delegate({}, trigger);
 
-      window.history.replaceState({some: 'state'}, null, 'replaceStateTest.html');
+      window.history.replaceState(
+        { some: 'state' },
+        null,
+        'replaceStateTest.html'
+      );
 
-      waitUntil(function() {
+      waitUntil(function () {
         return trigger.calls.count() > 0;
-      }).then(function() {
+      }).then(function () {
         expect(trigger.calls.count()).toBe(1);
         assertTriggerCall(trigger.calls.mostRecent());
         done();
       });
     });
   }
-
 });

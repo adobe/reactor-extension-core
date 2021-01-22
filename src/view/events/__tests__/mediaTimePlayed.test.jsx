@@ -11,9 +11,7 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@react/react-spectrum/Textfield';
-import Checkbox from '@react/react-spectrum/Checkbox';
-import Select from '@react/react-spectrum/Select';
+import { TextField, Checkbox, Picker } from '@adobe/react-spectrum';
 import WrappedField from '../../components/wrappedField';
 import AdvancedEventOptions from '../components/advancedEventOptions';
 import MediaTimePlayed, { formConfig } from '../mediaTimePlayed';
@@ -24,13 +22,16 @@ const getReactComponents = (wrapper) => {
   wrapper.update();
   const fields = wrapper.find(WrappedField);
 
-  const amountField = fields.filterWhere(n => n.prop('name') === 'amount');
-  const amountTextfield = amountField.find(Textfield);
-  const unitSelect = wrapper.find(Select);
-  const elementSelectorField = fields.filterWhere(n => n.prop('name') === 'elementSelector');
-  const elementSelectorTextfield = elementSelectorField.find(Textfield);
-  const bubbleStopCheckbox =
-    wrapper.find(Checkbox).filterWhere(n => n.prop('name') === 'bubbleStop');
+  const amountField = fields.filterWhere((n) => n.prop('name') === 'amount');
+  const amountTextfield = amountField.find(TextField);
+  const unitSelect = wrapper.find(Picker);
+  const elementSelectorField = fields.filterWhere(
+    (n) => n.prop('name') === 'elementSelector'
+  );
+  const elementSelectorTextfield = elementSelectorField.find(TextField);
+  const bubbleStopCheckbox = wrapper
+    .find(Checkbox)
+    .filterWhere((n) => n.prop('name') === 'bubbleStop');
   const advancedEventOptions = wrapper.find(AdvancedEventOptions);
 
   return {
@@ -94,7 +95,10 @@ describe('time played event view', () => {
     bubbleStopCheckbox.props().onChange(true);
 
     const {
-      amount, unit, elementSelector, bubbleStop
+      amount,
+      unit,
+      elementSelector,
+      bubbleStop
     } = extensionBridge.getSettings();
     expect(amount).toBe(45);
     expect(unit).toBe('second');
@@ -107,7 +111,9 @@ describe('time played event view', () => {
 
     expect(extensionBridge.validate()).toBe(false);
 
-    const { amountTextfield, elementSelectorTextfield } = getReactComponents(instance);
+    const { amountTextfield, elementSelectorTextfield } = getReactComponents(
+      instance
+    );
 
     expect(amountTextfield.props().validationState).toBe('invalid');
     expect(elementSelectorTextfield.props().validationState).toBe('invalid');

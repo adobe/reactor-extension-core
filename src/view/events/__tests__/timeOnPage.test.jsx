@@ -11,14 +11,14 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@react/react-spectrum/Textfield';
+import { TextField } from '@adobe/react-spectrum';
 import TimeOnPage, { formConfig } from '../timeOnPage';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const timeOnPageTextfield = wrapper.find(Textfield);
+  const timeOnPageTextfield = wrapper.find(TextField);
 
   return {
     timeOnPageTextfield

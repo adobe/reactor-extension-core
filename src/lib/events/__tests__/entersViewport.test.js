@@ -21,7 +21,7 @@ var DEBOUNCE_DELAY = 200;
  * Provides a document object that provides native functionality but
  * allows for better mocking capability (e.g., able to set readyState)
  */
-var getDocumentProxy = function() {
+var getDocumentProxy = function () {
   return {
     get body() {
       return document.body;
@@ -35,10 +35,10 @@ var getDocumentProxy = function() {
     get compatMode() {
       return document.compatMode;
     },
-    querySelectorAll: function() {
+    querySelectorAll: function () {
       return document.querySelectorAll.apply(document, arguments);
     },
-    addEventListener: function() {
+    addEventListener: function () {
       return window.addEventListener.apply(window, arguments);
     }
   };
@@ -48,7 +48,7 @@ var getDocumentProxy = function() {
  * Provides a window object that provides native functionality but
  * allows for better mocking capability (e.g., able to set navigator.appVersion)
  */
-var getWindowProxy = function() {
+var getWindowProxy = function () {
   return {
     get pageXOffset() {
       return window.pageXOffset;
@@ -59,17 +59,17 @@ var getWindowProxy = function() {
     get innerHeight() {
       return window.innerHeight;
     },
-    addEventListener: function() {
+    addEventListener: function () {
       return window.addEventListener.apply(window, arguments);
     }
   };
 };
 
-describe('enters viewport event delegate', function() {
+describe('enters viewport event delegate', function () {
   var aElement;
   var bElement;
 
-  var createElements = function() {
+  var createElements = function () {
     aElement = document.createElement('div');
     aElement.id = 'a';
     aElement.innerHTML = 'a';
@@ -83,14 +83,14 @@ describe('enters viewport event delegate', function() {
     aElement.appendChild(bElement);
   };
 
-  var removeElements = function() {
+  var removeElements = function () {
     if (aElement) {
       document.body.removeChild(aElement);
     }
     aElement = bElement = null;
   };
 
-  var assertTriggerCall = function(options) {
+  var assertTriggerCall = function (options) {
     expect(options.call.args[0]).toEqual({
       element: options.element,
       target: options.target,
@@ -98,27 +98,27 @@ describe('enters viewport event delegate', function() {
     });
   };
 
-  beforeAll(function() {
+  beforeAll(function () {
     jasmine.clock().install();
   });
 
-  afterAll(function() {
+  afterAll(function () {
     jasmine.clock().uninstall();
   });
 
-  beforeEach(function() {
+  beforeEach(function () {
     createElements();
   });
 
-  afterEach(function() {
+  afterEach(function () {
     removeElements();
     window.scrollTo(0, 0);
   });
 
-  describe('with document.readyState at complete', function() {
+  describe('with document.readyState at complete', function () {
     var delegate;
 
-    beforeAll(function() {
+    beforeAll(function () {
       var mockDocument = getDocumentProxy();
       mockDocument.readyState = 'complete';
 
@@ -127,12 +127,15 @@ describe('enters viewport event delegate', function() {
       });
     });
 
-    it('calls trigger with event and related element', function() {
+    it('calls trigger with event and related element', function () {
       var aTrigger = jasmine.createSpy();
 
-      delegate({
-        elementSelector: '#a'
-      }, aTrigger);
+      delegate(
+        {
+          elementSelector: '#a'
+        },
+        aTrigger
+      );
 
       jasmine.clock().tick(POLL_INTERVAL);
 
@@ -143,17 +146,23 @@ describe('enters viewport event delegate', function() {
       });
     });
 
-    it('triggers multiple rules targeting the same element with no delay', function() {
+    it('triggers multiple rules targeting the same element with no delay', function () {
       var aTrigger = jasmine.createSpy();
       var a2Trigger = jasmine.createSpy();
 
-      delegate({
-        elementSelector: '#a'
-      }, aTrigger);
+      delegate(
+        {
+          elementSelector: '#a'
+        },
+        aTrigger
+      );
 
-      delegate({
-        elementSelector: '#a'
-      }, a2Trigger);
+      delegate(
+        {
+          elementSelector: '#a'
+        },
+        a2Trigger
+      );
 
       jasmine.clock().tick(POLL_INTERVAL);
 
@@ -161,44 +170,25 @@ describe('enters viewport event delegate', function() {
       expect(a2Trigger.calls.count()).toEqual(1);
     });
 
-    it('triggers multiple rules targeting the same element with same delay', function() {
+    it('triggers multiple rules targeting the same element with same delay', function () {
       var aTrigger = jasmine.createSpy();
       var a2Trigger = jasmine.createSpy();
 
-      delegate({
-        elementSelector: '#a',
-        delay: 100000
-      }, aTrigger);
+      delegate(
+        {
+          elementSelector: '#a',
+          delay: 100000
+        },
+        aTrigger
+      );
 
-      delegate({
-        elementSelector: '#a',
-        delay: 100000
-      }, a2Trigger);
-
-      jasmine.clock().tick(POLL_INTERVAL);
-
-      expect(aTrigger.calls.count()).toEqual(0);
-      expect(a2Trigger.calls.count()).toEqual(0);
-
-      jasmine.clock().tick(100000);
-
-      expect(aTrigger.calls.count()).toEqual(1);
-      expect(a2Trigger.calls.count()).toEqual(1);
-    });
-
-    it('triggers multiple rules targeting the same element with different delays', function() {
-      var aTrigger = jasmine.createSpy();
-      var a2Trigger = jasmine.createSpy();
-
-      delegate({
-        elementSelector: '#a',
-        delay: 100000
-      }, aTrigger);
-
-      delegate({
-        elementSelector: '#a',
-        delay: 200000
-      }, a2Trigger);
+      delegate(
+        {
+          elementSelector: '#a',
+          delay: 100000
+        },
+        a2Trigger
+      );
 
       jasmine.clock().tick(POLL_INTERVAL);
 
@@ -208,6 +198,37 @@ describe('enters viewport event delegate', function() {
       jasmine.clock().tick(100000);
 
       expect(aTrigger.calls.count()).toEqual(1);
+      expect(a2Trigger.calls.count()).toEqual(1);
+    });
+
+    it('triggers multiple rules targeting the same element with different delays', function () {
+      var aTrigger = jasmine.createSpy();
+      var a2Trigger = jasmine.createSpy();
+
+      delegate(
+        {
+          elementSelector: '#a',
+          delay: 100000
+        },
+        aTrigger
+      );
+
+      delegate(
+        {
+          elementSelector: '#a',
+          delay: 200000
+        },
+        a2Trigger
+      );
+
+      jasmine.clock().tick(POLL_INTERVAL);
+
+      expect(aTrigger.calls.count()).toEqual(0);
+      expect(a2Trigger.calls.count()).toEqual(0);
+
+      jasmine.clock().tick(100000);
+
+      expect(aTrigger.calls.count()).toEqual(1);
       expect(a2Trigger.calls.count()).toEqual(0);
 
       jasmine.clock().tick(100000);
@@ -216,17 +237,23 @@ describe('enters viewport event delegate', function() {
       expect(a2Trigger.calls.count()).toEqual(1);
     });
 
-    it('triggers multiple rules targeting the same element with different selectors', function() {
+    it('triggers multiple rules targeting the same element with different selectors', function () {
       var aTrigger = jasmine.createSpy();
       var a2Trigger = jasmine.createSpy();
 
-      delegate({
-        elementSelector: '#a'
-      }, aTrigger);
+      delegate(
+        {
+          elementSelector: '#a'
+        },
+        aTrigger
+      );
 
-      delegate({
-        elementSelector: 'div#a'
-      }, a2Trigger);
+      delegate(
+        {
+          elementSelector: 'div#a'
+        },
+        a2Trigger
+      );
 
       jasmine.clock().tick(POLL_INTERVAL);
 
@@ -234,50 +261,63 @@ describe('enters viewport event delegate', function() {
       expect(a2Trigger.calls.count()).toEqual(1);
     });
 
-    it('triggers rule when elementProperties match', function() {
+    it('triggers rule when elementProperties match', function () {
       var bTrigger = jasmine.createSpy();
 
-      delegate({
-        elementSelector: '#b',
-        elementProperties: [{
-          name: 'innerHTML',
-          value: 'b'
-        }]
-      }, bTrigger);
+      delegate(
+        {
+          elementSelector: '#b',
+          elementProperties: [
+            {
+              name: 'innerHTML',
+              value: 'b'
+            }
+          ]
+        },
+        bTrigger
+      );
 
       jasmine.clock().tick(POLL_INTERVAL);
 
       expect(bTrigger.calls.count()).toEqual(1);
     });
 
-    it('does not trigger rule when elementProperties do not match', function() {
+    it('does not trigger rule when elementProperties do not match', function () {
       var bTrigger = jasmine.createSpy();
 
-      delegate({
-        elementSelector: '#b',
-        elementProperties: [{
-          name: 'innerHTML',
-          value: 'no match'
-        }]
-      }, bTrigger);
+      delegate(
+        {
+          elementSelector: '#b',
+          elementProperties: [
+            {
+              name: 'innerHTML',
+              value: 'no match'
+            }
+          ]
+        },
+        bTrigger
+      );
 
       jasmine.clock().tick(POLL_INTERVAL);
 
       expect(bTrigger.calls.count()).toEqual(0);
     });
 
-    it('triggers rule when targeting using elementProperties', function() {
+    it('triggers rule when targeting using elementProperties', function () {
       var bTrigger = jasmine.createSpy();
 
-      delegate({
-        elementSelector: 'div',
-        elementProperties: [
-          {
-            name: 'id',
-            value: 'b'
-          }
-        ]
-      }, bTrigger);
+      delegate(
+        {
+          elementSelector: 'div',
+          elementProperties: [
+            {
+              name: 'id',
+              value: 'b'
+            }
+          ]
+        },
+        bTrigger
+      );
 
       jasmine.clock().tick(POLL_INTERVAL);
 
@@ -288,18 +328,21 @@ describe('enters viewport event delegate', function() {
       });
     });
 
-    it('triggers rule for each matching element', function() {
+    it('triggers rule for each matching element', function () {
       var trigger = jasmine.createSpy();
 
-      delegate({
-        elementSelector: 'div',
-        elementProperties: [
-          {
-            name: 'customProp',
-            value: 'foo'
-          }
-        ]
-      }, trigger);
+      delegate(
+        {
+          elementSelector: 'div',
+          elementProperties: [
+            {
+              name: 'customProp',
+              value: 'foo'
+            }
+          ]
+        },
+        trigger
+      );
 
       jasmine.clock().tick(POLL_INTERVAL);
 
@@ -474,11 +517,11 @@ describe('enters viewport event delegate', function() {
     // }
   });
 
-  describe('with document.readyState at loading', function() {
+  describe('with document.readyState at loading', function () {
     var mockDocument;
     var mockWindow;
 
-    beforeEach(function() {
+    beforeEach(function () {
       mockDocument = getDocumentProxy();
       mockDocument.readyState = 'loading';
       spyOn(mockDocument, 'addEventListener');
@@ -487,8 +530,8 @@ describe('enters viewport event delegate', function() {
       spyOn(mockWindow, 'addEventListener');
     });
 
-    describe('with IE 10 browser', function() {
-      it('waits until window load has fired before checking elements', function() {
+    describe('with IE 10 browser', function () {
+      it('waits until window load has fired before checking elements', function () {
         mockWindow.navigator = {
           appVersion: 'MSIE 10'
         };
@@ -500,9 +543,12 @@ describe('enters viewport event delegate', function() {
 
         var aTrigger = jasmine.createSpy();
 
-        delegate({
-          elementSelector: '#a'
-        }, aTrigger);
+        delegate(
+          {
+            elementSelector: '#a'
+          },
+          aTrigger
+        );
 
         jasmine.clock().tick(DEBOUNCE_DELAY);
 
@@ -512,7 +558,8 @@ describe('enters viewport event delegate', function() {
           jasmine.any(Function)
         );
 
-        var windowLoadCallback = mockWindow.addEventListener.calls.first().args[1];
+        var windowLoadCallback = mockWindow.addEventListener.calls.first()
+          .args[1];
         windowLoadCallback();
 
         jasmine.clock().tick(DEBOUNCE_DELAY); // Skip past debounce.
@@ -525,8 +572,8 @@ describe('enters viewport event delegate', function() {
       });
     });
 
-    describe('with browser that is not IE 10', function() {
-      it('waits until DOMContentLoaded has fired before checking elements', function() {
+    describe('with browser that is not IE 10', function () {
+      it('waits until DOMContentLoaded has fired before checking elements', function () {
         mockWindow.navigator = {
           appVersion: 'something Chrome something'
         };
@@ -538,9 +585,12 @@ describe('enters viewport event delegate', function() {
 
         var aTrigger = jasmine.createSpy();
 
-        delegate({
-          elementSelector: '#a'
-        }, aTrigger);
+        delegate(
+          {
+            elementSelector: '#a'
+          },
+          aTrigger
+        );
 
         jasmine.clock().tick(DEBOUNCE_DELAY);
 
@@ -550,7 +600,8 @@ describe('enters viewport event delegate', function() {
           jasmine.any(Function)
         );
 
-        var domContentLoadedCallback = mockDocument.addEventListener.calls.first().args[1];
+        var domContentLoadedCallback = mockDocument.addEventListener.calls.first()
+          .args[1];
         domContentLoadedCallback();
 
         jasmine.clock().tick(DEBOUNCE_DELAY); // Skip past debounce.

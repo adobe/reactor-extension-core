@@ -11,23 +11,26 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@react/react-spectrum/Textfield';
+import { TextField, Flex, View } from '@adobe/react-spectrum';
 import WrappedField from '../../components/wrappedField';
 import SelectorLearnMoreLink from '../../components/selectorLearnMoreLink';
+import NoWrapText from '../../components/noWrapText';
 
 export default () => (
-  <div className="u-alignItemsCenter u-flex">
-    <span className="u-gapRight">Elements matching the CSS selector</span>
-    <label className="u-flexOne">
+  <Flex alignItems="end" gap="size-100" minWidth="size-6000">
+    <NoWrapText>Elements matching the CSS selector</NoWrapText>
+    <View flex>
       <WrappedField
-        className="u-fullWidth"
         name="elementSelector"
-        component={Textfield}
-        componentClassName="u-fullWidth u-minFieldWidth"
+        label="Selector"
+        isRequired
+        width="100%"
+        component={TextField}
       />
-    </label>
+    </View>
     <SelectorLearnMoreLink />
-  </div>
+    <View width="size-1200" />
+  </Flex>
 );
 
 export const formConfig = {

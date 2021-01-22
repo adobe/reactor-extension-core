@@ -11,21 +11,16 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Radio from '@react/react-spectrum/Radio';
+import { RadioGroup } from '@adobe/react-spectrum';
 import NewReturningVisitor, { formConfig } from '../newReturningVisitor';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const radios = wrapper.find(Radio);
-
-  const newVisitorRadio = radios.filterWhere(n => n.prop('value') === 'new');
-  const returningVisitorRadio = radios.filterWhere(n => n.prop('value') === 'returning');
 
   return {
-    newVisitorRadio,
-    returningVisitorRadio
+    radioGroup: wrapper.find(RadioGroup)
   };
 };
 
@@ -35,16 +30,17 @@ describe('new/returning visitor condition view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(NewReturningVisitor, formConfig, extensionBridge));
+    instance = mount(
+      bootstrap(NewReturningVisitor, formConfig, extensionBridge)
+    );
   });
 
   it('sets new visitor radio as checked by default', () => {
     extensionBridge.init();
 
-    const { newVisitorRadio, returningVisitorRadio } = getReactComponents(instance);
+    const { radioGroup } = getReactComponents(instance);
 
-    expect(newVisitorRadio.props().checked).toBe(true);
-    expect(returningVisitorRadio.props().checked).toBe(false);
+    expect(radioGroup.props().value).toBe('new');
   });
 
   it('sets form values from settings', () => {
@@ -54,18 +50,15 @@ describe('new/returning visitor condition view', () => {
       }
     });
 
-    const { newVisitorRadio, returningVisitorRadio } = getReactComponents(instance);
-
-    expect(newVisitorRadio.props().checked).toBe(false);
-    expect(returningVisitorRadio.props().checked).toBe(true);
+    const { radioGroup } = getReactComponents(instance);
+    expect(radioGroup.props().value).toBe('returning');
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { returningVisitorRadio } = getReactComponents(instance);
-
-    returningVisitorRadio.props().onChange('returning', { stopPropagation() {} });
+    const { radioGroup } = getReactComponents(instance);
+    radioGroup.props().onChange('returning', { stopPropagation() {} });
 
     expect(extensionBridge.getSettings()).toEqual({
       isNewVisitor: false

@@ -11,14 +11,14 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@react/react-spectrum/Textfield';
+import { TextField } from '@adobe/react-spectrum';
 import JavaScriptVariable, { formConfig } from '../javascriptVariable';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const pathTextfield = wrapper.find(Textfield);
+  const pathTextfield = wrapper.find(TextField);
 
   return {
     pathTextfield
@@ -31,7 +31,9 @@ describe('javascript variable data element view', () => {
 
   beforeAll(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(JavaScriptVariable, formConfig, extensionBridge));
+    instance = mount(
+      bootstrap(JavaScriptVariable, formConfig, extensionBridge)
+    );
   });
 
   it('sets form values from settings', () => {

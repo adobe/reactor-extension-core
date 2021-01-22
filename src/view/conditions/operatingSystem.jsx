@@ -11,8 +11,8 @@
  ****************************************************************************************/
 
 import React from 'react';
+import { CheckboxGroup, Checkbox } from '@adobe/react-spectrum';
 import WrappedField from '../components/wrappedField';
-import CheckboxList from '../components/checkboxList';
 
 const operatingSystemOptions = [
   'Windows',
@@ -25,10 +25,17 @@ const operatingSystemOptions = [
 
 const OperatingSystem = () => (
   <WrappedField
+    label="Operating Systems"
     name="operatingSystems"
-    component={CheckboxList}
+    component={CheckboxGroup}
     options={operatingSystemOptions}
-  />
+  >
+    {operatingSystemOptions.map((o) => (
+      <Checkbox value={o} key={o}>
+        {o}
+      </Checkbox>
+    ))}
+  </WrappedField>
 );
 
 export default OperatingSystem;
@@ -37,11 +44,13 @@ export const formConfig = {
   settingsToFormValues(values, settings) {
     return {
       ...values,
-      operatingSystems: settings.operatingSystems ?
-        // We have to take into consideration OS options that previously existed.
-        // If a user saved the condition using those options, we filter them out here.
-        settings.operatingSystems.filter(os => operatingSystemOptions.indexOf(os) !== -1) :
-        []
+      operatingSystems: settings.operatingSystems
+        ? // We have to take into consideration OS options that previously existed.
+          // If a user saved the condition using those options, we filter them out here.
+          settings.operatingSystems.filter(
+            (os) => operatingSystemOptions.indexOf(os) !== -1
+          )
+        : []
     };
   },
   formValuesToSettings(settings, values) {

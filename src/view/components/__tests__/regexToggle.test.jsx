@@ -12,7 +12,7 @@
 
 import React from 'react';
 import { mount } from 'enzyme';
-import Switch from '@react/react-spectrum/Switch';
+import { Switch, ActionButton } from '@adobe/react-spectrum';
 import WrappedField from '../wrappedField';
 
 import RegexToggle from '../regexToggle';
@@ -22,7 +22,7 @@ import bootstrap from '../../bootstrap';
 const getReactComponents = (wrapper) => {
   wrapper.update();
   const regexSwitch = wrapper.find(Switch);
-  const testButton = wrapper.find('button');
+  const testButton = wrapper.find(ActionButton);
   const testButtonContainer = wrapper.find('#testButtonContainer');
 
   return {
@@ -70,7 +70,9 @@ describe('regex toggle', () => {
 
     window.extensionBridge = extensionBridge;
 
-    instance = mount(bootstrap(ConnectedRegexToggle, formConfig, extensionBridge));
+    instance = mount(
+      bootstrap(ConnectedRegexToggle, formConfig, extensionBridge)
+    );
   });
 
   afterEach(() => {
@@ -86,8 +88,7 @@ describe('regex toggle', () => {
     });
 
     const { regexSwitch } = getReactComponents(instance);
-
-    expect(regexSwitch.props().checked).toBe(true);
+    expect(regexSwitch.props().isSelected).toBe(true);
   });
 
   it('calls onChange from ValueIsRegex field when switch is toggled', () => {
@@ -111,13 +112,13 @@ describe('regex toggle', () => {
     });
 
     const { testButton } = getReactComponents(instance);
-
-    testButton.simulate('click');
+    testButton.props().onPress();
 
     expect(extensionBridge.openRegexTester).toHaveBeenCalledWith({
       pattern: 'foo',
       flags: 'i'
     });
+
     expect(extensionBridge.getSettings()).toEqual({
       valueIsRegex: true,
       value: 'bar'

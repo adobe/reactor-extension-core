@@ -21,12 +21,20 @@ var COOKIE_PREFIX = '_sdsat_';
 var STORAGE_NAMESPACE = 'visitorTracking';
 var MIGRATED_KEY = 'cookiesMigrated';
 
-var visitorTrackingLocalStorage = getNamespacedStorage('localStorage', STORAGE_NAMESPACE);
-var visitorTrackingSessionStorage = getNamespacedStorage('sessionStorage', STORAGE_NAMESPACE);
+var visitorTrackingLocalStorage = getNamespacedStorage(
+  'localStorage',
+  STORAGE_NAMESPACE
+);
+var visitorTrackingSessionStorage = getNamespacedStorage(
+  'sessionStorage',
+  STORAGE_NAMESPACE
+);
 
 // returns whether this is a new visitor session
-var trackLandingPageAndTime = function() {
-  var existingLandingPage = visitorTrackingSessionStorage.getItem('landingPage');
+var trackLandingPageAndTime = function () {
+  var existingLandingPage = visitorTrackingSessionStorage.getItem(
+    'landingPage'
+  );
 
   if (!existingLandingPage) {
     visitorTrackingSessionStorage.setItem('landingPage', window.location.href);
@@ -36,54 +44,60 @@ var trackLandingPageAndTime = function() {
   return !existingLandingPage;
 };
 
-var getLandingPage = function() {
+var getLandingPage = function () {
   return visitorTrackingSessionStorage.getItem('landingPage');
 };
 
-var getLandingTime = function() {
+var getLandingTime = function () {
   return Number(visitorTrackingSessionStorage.getItem('landingTime'));
 };
 
-var getSessionCount = function() {
+var getSessionCount = function () {
   return Number(visitorTrackingLocalStorage.getItem('sessionCount'));
 };
 
-var getLifetimePageViewCount = function() {
+var getLifetimePageViewCount = function () {
   return Number(visitorTrackingLocalStorage.getItem('pagesViewed'));
 };
 
-var getMinutesOnSite = function() {
+var getMinutesOnSite = function () {
   var now = new Date().getTime();
   return Math.floor((now - getLandingTime()) / 1000 / 60);
 };
 
-var getTrafficSource = function() {
+var getTrafficSource = function () {
   return visitorTrackingSessionStorage.getItem('trafficSource');
 };
 
-var getSessionPageViewCount = function() {
+var getSessionPageViewCount = function () {
   return Number(visitorTrackingSessionStorage.getItem('pagesViewed'));
 };
 
-var getIsNewVisitor = function() {
+var getIsNewVisitor = function () {
   return getSessionCount() === 1;
 };
 
-var trackSessionCount = function(newSession) {
+var trackSessionCount = function (newSession) {
   if (newSession) {
     visitorTrackingLocalStorage.setItem('sessionCount', getSessionCount() + 1);
   }
 };
 
-var trackSessionPageViewCount = function() {
-  visitorTrackingSessionStorage.setItem('pagesViewed', getSessionPageViewCount() + 1);
+var trackSessionPageViewCount = function () {
+  visitorTrackingSessionStorage.setItem(
+    'pagesViewed',
+    getSessionPageViewCount() + 1
+  );
 };
 
-var trackLifetimePageViewCount = function() {
-  visitorTrackingLocalStorage.setItem('pagesViewed', getLifetimePageViewCount() + 1);
+var trackLifetimePageViewCount = function () {
+  visitorTrackingLocalStorage.setItem(
+    'pagesViewed',
+    getLifetimePageViewCount() + 1
+  );
 };
 
-var trackTrafficSource = function() {
+var trackTrafficSource = function () {
   if (!visitorTrackingSessionStorage.getItem('trafficSource')) {
     visitorTrackingSessionStorage.setItem('trafficSource', document.referrer);
   }
@@ -93,7 +107,7 @@ var trackTrafficSource = function() {
 // DTM is running on the same domain it can still use the persisted values. Our migration strategy
 // is essentially copying data from cookies and then diverging the storage mechanism between
 // DTM and Launch (DTM uses cookies and Launch uses session and local storage).
-var migrateCookieData = function() {
+var migrateCookieData = function () {
   if (!visitorTrackingLocalStorage.getItem(MIGRATED_KEY)) {
     // We intentionally do not migrate session-based data since it would only affect a user that
     // came from a page running DTM to a page running Launch and only the first visit.
@@ -113,7 +127,7 @@ var migrateCookieData = function() {
   }
 };
 
-var trackVisitor = function() {
+var trackVisitor = function () {
   var newSession = trackLandingPageAndTime();
   trackSessionCount(newSession);
   trackLifetimePageViewCount();

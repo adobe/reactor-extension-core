@@ -11,19 +11,17 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
+import { CheckboxGroup } from '@adobe/react-spectrum';
 import DeviceType, { formConfig } from '../deviceType';
-import CheckboxList from '../../components/checkboxList';
+
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const selectedDeviceTypes = [
-  'Desktop',
-  'Android'
-];
+const selectedDeviceTypes = ['Desktop', 'Android'];
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const deviceOptionsCheckboxList = wrapper.find(CheckboxList);
+  const deviceOptionsCheckboxList = wrapper.find(CheckboxGroup);
 
   return {
     deviceOptionsCheckboxList
@@ -48,7 +46,9 @@ describe('device type condition view', () => {
 
     const { deviceOptionsCheckboxList } = getReactComponents(instance);
 
-    expect(deviceOptionsCheckboxList.props().value).toEqual(selectedDeviceTypes);
+    expect(deviceOptionsCheckboxList.props().value).toEqual(
+      selectedDeviceTypes
+    );
   });
 
   it('sets settings from form values', () => {

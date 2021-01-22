@@ -12,10 +12,10 @@
 
 'use strict';
 
-describe('dom ready event delegate', function() {
-  it('sends the trigger to the pageLifecycleEvents helper module', function() {
+describe('dom ready event delegate', function () {
+  it('sends the trigger to the pageLifecycleEvents helper module', function () {
     var domReadyInjector = require('inject-loader!../domReady');
-    var trigger = function() {};
+    var trigger = function () {};
     var pageLifecycleEventsSpy = jasmine.createSpyObj('pageLifecycleEvents', [
       'registerDomReadyTrigger'
     ]);
@@ -25,6 +25,8 @@ describe('dom ready event delegate', function() {
     });
 
     delegate({}, trigger);
-    expect(pageLifecycleEventsSpy.registerDomReadyTrigger).toHaveBeenCalledWith(trigger);
+    expect(pageLifecycleEventsSpy.registerDomReadyTrigger).toHaveBeenCalledWith(
+      trigger
+    );
   });
 });

@@ -11,16 +11,19 @@
  ****************************************************************************************/
 
 import React from 'react';
-
-import ElementFilter, { formConfig as elementFilterFormConfig } from './elementFilter';
-import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './advancedEventOptions';
+import ElementFilter, {
+  formConfig as elementFilterFormConfig
+} from './elementFilter';
+import AdvancedEventOptions, {
+  formConfig as advancedEventOptionsFormConfig
+} from './advancedEventOptions';
 import mergeFormConfigs from '../../utils/mergeFormConfigs';
 
-const StandardEvent = ({ fields }) => (
-  <div>
-    <ElementFilter fields={fields} />
-    <AdvancedEventOptions fields={fields} />
-  </div>
+const StandardEvent = ({ elementSpecificityLabel }) => (
+  <>
+    <ElementFilter elementSpecificityLabel={elementSpecificityLabel} />
+    <AdvancedEventOptions />
+  </>
 );
 
 export default StandardEvent;

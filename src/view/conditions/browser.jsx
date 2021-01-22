@@ -11,8 +11,8 @@
  ****************************************************************************************/
 
 import React from 'react';
+import { Checkbox, CheckboxGroup } from '@adobe/react-spectrum';
 import WrappedField from '../components/wrappedField';
-import CheckboxList from '../components/checkboxList';
 
 const browserOptions = [
   'Chrome',
@@ -24,7 +24,13 @@ const browserOptions = [
 ];
 
 const Browser = () => (
-  <WrappedField name="browsers" component={CheckboxList} options={browserOptions} />
+  <WrappedField label="Browsers" name="browsers" component={CheckboxGroup}>
+    {browserOptions.map((o) => (
+      <Checkbox value={o} key={o}>
+        {o}
+      </Checkbox>
+    ))}
+  </WrappedField>
 );
 
 export default Browser;
@@ -33,11 +39,13 @@ export const formConfig = {
   settingsToFormValues(values, settings) {
     return {
       ...values,
-      browsers: settings.browsers ?
-        // We have to take into consideration browser options that previously existed.
-        // If a user saved the condition using those options, we filter them out here.
-        settings.browsers.filter(browser => browserOptions.indexOf(browser) !== -1) :
-        []
+      browsers: settings.browsers
+        ? // We have to take into consideration browser options that previously existed.
+          // If a user saved the condition using those options, we filter them out here.
+          settings.browsers.filter(
+            (browser) => browserOptions.indexOf(browser) !== -1
+          )
+        : []
     };
   },
   formValuesToSettings(settings, values) {

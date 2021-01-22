@@ -17,17 +17,17 @@ var once = require('./helpers/once');
 
 var triggers = [];
 
-var getCurrentZoom = function() {
+var getCurrentZoom = function () {
   return document.documentElement.clientWidth / window.innerWidth;
 };
 
-var callTriggers = function(event) {
-  triggers.forEach(function(trigger) {
+var callTriggers = function (event) {
+  triggers.forEach(function (trigger) {
     trigger(event);
   });
 };
 
-var watchForZoom = once(function() {
+var watchForZoom = once(function () {
   if (!('ongestureend' in window) || !('ontouchend' in window)) {
     return;
   }
@@ -37,11 +37,11 @@ var watchForZoom = once(function() {
   var delayFire = 1000;
   var currentTimer;
 
-  document.addEventListener('gestureend', function() {
+  document.addEventListener('gestureend', function () {
     gestureEndTime = +new Date();
 
     // Could we use a generic throttling or debouncing function?
-    setTimeout(function() {
+    setTimeout(function () {
       var zoom = getCurrentZoom();
 
       if (zoom === lastZoom) {
@@ -54,7 +54,7 @@ var watchForZoom = once(function() {
         clearTimeout(currentTimer);
       }
 
-      currentTimer = setTimeout(function() {
+      currentTimer = setTimeout(function () {
         currentTimer = null;
 
         zoom = getCurrentZoom();
@@ -69,13 +69,13 @@ var watchForZoom = once(function() {
     }, 50);
   });
 
-  document.addEventListener('touchend', function() {
-    if (gestureEndTime && (+new Date() - gestureEndTime) < 50) {
+  document.addEventListener('touchend', function () {
+    if (gestureEndTime && +new Date() - gestureEndTime < 50) {
       return;
     }
 
     // Could we use a generic throttling or debouncing function?
-    setTimeout(function() {
+    setTimeout(function () {
       var zoom = getCurrentZoom();
 
       if (zoom === lastZoom) {
@@ -88,7 +88,7 @@ var watchForZoom = once(function() {
         clearTimeout(currentTimer);
       }
 
-      currentTimer = setTimeout(function() {
+      currentTimer = setTimeout(function () {
         currentTimer = null;
         zoom = getCurrentZoom();
         if (lastZoom === zoom) {
@@ -108,7 +108,7 @@ var watchForZoom = once(function() {
  * @param {Object} settings The event settings object.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function(settings, trigger) {
+module.exports = function (settings, trigger) {
   watchForZoom();
   triggers.push(trigger);
 };

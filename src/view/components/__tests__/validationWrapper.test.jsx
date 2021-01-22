@@ -12,15 +12,14 @@
 
 import { mount } from 'enzyme';
 import React from 'react';
-import OverlayTrigger from '@react/react-spectrum/OverlayTrigger';
-import Tooltip from '@react/react-spectrum/Tooltip';
+import { TooltipTrigger, Tooltip } from '@adobe/react-spectrum';
 import ValidationWrapper from '../validationWrapper';
 
-const render = props => mount(<ValidationWrapper {...props} />);
+const render = (props) => mount(<ValidationWrapper {...props} />);
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const overlayTrigger = wrapper.find(OverlayTrigger);
+  const overlayTrigger = wrapper.find(TooltipTrigger);
   const tooltip = wrapper.find(Tooltip);
 
   return {
@@ -30,17 +29,18 @@ const getReactComponents = (wrapper) => {
 };
 
 describe('validation wrapper', () => {
-  it('enables trigger when there\'s an error', () => {
-    const { overlayTrigger } = getReactComponents(render({
-      error: 'Bad things'
-    }));
+  it("enables trigger when there's an error", () => {
+    const { overlayTrigger } = getReactComponents(
+      render({
+        error: 'Bad things'
+      })
+    );
 
-    expect(overlayTrigger.props().disabled).toBe(false);
+    expect(overlayTrigger.props().isDisabled).toBe(false);
   });
 
-  it('disables trigger when there\'s no error', () => {
+  it("disables trigger when there's no error", () => {
     const { overlayTrigger } = getReactComponents(render({}));
-
-    expect(overlayTrigger.props().disabled).toBe(true);
+    expect(overlayTrigger.props().isDisabled).toBe(true);
   });
 });

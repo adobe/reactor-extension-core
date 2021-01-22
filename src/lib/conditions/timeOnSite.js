@@ -24,7 +24,7 @@ var compareNumbers = require('./helpers/compareNumbers');
  * compare against minutes.
  * @returns {boolean}
  */
-module.exports = function(settings) {
+module.exports = function (settings) {
   return compareNumbers(
     visitorTracking.getMinutesOnSite(),
     settings.operator,

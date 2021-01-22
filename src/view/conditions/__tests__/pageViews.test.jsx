@@ -11,27 +11,18 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@react/react-spectrum/Textfield';
-import Radio from '@react/react-spectrum/Radio';
-import Select from '@react/react-spectrum/Select';
+import { TextField, RadioGroup, Picker } from '@adobe/react-spectrum';
 import PageViews, { formConfig } from '../pageViews';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const radios = wrapper.find(Radio);
-
-  const lifetimeRadio = radios.filterWhere(n => n.prop('value') === 'lifetime');
-  const sessionRadio = radios.filterWhere(n => n.prop('value') === 'session');
-  const operatorSelect = wrapper.find(Select);
-  const countTextfield = wrapper.find(Textfield);
 
   return {
-    lifetimeRadio,
-    sessionRadio,
-    operatorSelect,
-    countTextfield
+    durationRadioGroup: wrapper.find(RadioGroup),
+    operatorSelect: wrapper.find(Picker),
+    countTextfield: wrapper.find(TextField)
   };
 };
 
@@ -64,24 +55,26 @@ describe('page views condition view', () => {
     const {
       operatorSelect,
       countTextfield,
-      lifetimeRadio,
-      sessionRadio
+      durationRadioGroup
     } = getReactComponents(instance);
 
     expect(operatorSelect.props().value).toBe('=');
     expect(countTextfield.props().value).toBe(100);
-    expect(lifetimeRadio.props().checked).toBe(false);
-    expect(sessionRadio.props().checked).toBe(true);
+    expect(durationRadioGroup.props().value).toBe('session');
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { operatorSelect, countTextfield, sessionRadio } = getReactComponents(instance);
+    const {
+      operatorSelect,
+      countTextfield,
+      durationRadioGroup
+    } = getReactComponents(instance);
 
     operatorSelect.props().onChange('=');
     countTextfield.props().onChange(100);
-    sessionRadio.props().onChange('session', { stopPropagation() {} });
+    durationRadioGroup.props().onChange('session', { stopPropagation() {} });
 
     expect(extensionBridge.getSettings()).toEqual({
       operator: '=',

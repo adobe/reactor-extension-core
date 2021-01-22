@@ -12,13 +12,15 @@
 
 export default [
   {
-    label: 'greater than',
-    value: '>'
-  }, {
-    label: 'equal to',
-    value: '='
-  }, {
-    label: 'less than',
-    value: '<'
+    name: 'greater than',
+    id: '>'
+  },
+  {
+    name: 'equal to',
+    id: '='
+  },
+  {
+    name: 'less than',
+    id: '<'
   }
 ];

@@ -28,7 +28,7 @@ var frequencies = {
 };
 var isIE10 = window.navigator.appVersion.indexOf('MSIE 10') !== -1;
 
-var stateByElement = enableWeakMapDefaultValue(new WeakMap(), function() {
+var stateByElement = enableWeakMapDefaultValue(new WeakMap(), function () {
   return {
     // When a user configures the event to fire the rule after an element has been inside
     // the viewport for a certain period of time, we run a timeout for that period of time after
@@ -51,7 +51,7 @@ var listenersBySelector = {};
  * @param elem
  * @returns {{top: number, left: number}}
  */
-var offset = function(elem) {
+var offset = function (elem) {
   var box;
 
   try {
@@ -79,14 +79,16 @@ var offset = function(elem) {
  * Viewport height.
  * @returns {number}
  */
-var getViewportHeight = function() {
+var getViewportHeight = function () {
   var height = window.innerHeight; // Safari, Opera
   var mode = document.compatMode;
 
-  if (mode) { // IE, Gecko
-    height = (mode === 'CSS1Compat') ?
-      document.documentElement.clientHeight : // Standards
-      document.body.clientHeight; // Quirks
+  if (mode) {
+    // IE, Gecko
+    height =
+      mode === 'CSS1Compat'
+        ? document.documentElement.clientHeight // Standards
+        : document.body.clientHeight; // Quirks
   }
 
   return height;
@@ -96,10 +98,10 @@ var getViewportHeight = function() {
  * Scroll top.
  * @returns {number}
  */
-var getScrollTop = function() {
-  return document.documentElement.scrollTop ?
-    document.documentElement.scrollTop :
-    document.body.scrollTop;
+var getScrollTop = function () {
+  return document.documentElement.scrollTop
+    ? document.documentElement.scrollTop
+    : document.body.scrollTop;
 };
 
 /**
@@ -109,17 +111,19 @@ var getScrollTop = function() {
  * @param scrollTop The scroll top. Passed in for optimization purposes.
  * @returns {boolean}
  */
-var elementIsInView = function(element, viewportHeight, scrollTop) {
+var elementIsInView = function (element, viewportHeight, scrollTop) {
   var top = offset(element).top;
   var height = element.offsetHeight;
-  return document.body.contains(element) &&
-    !(scrollTop > (top + height) || scrollTop + viewportHeight < top);
+  return (
+    document.body.contains(element) &&
+    !(scrollTop > top + height || scrollTop + viewportHeight < top)
+  );
 };
 
 /**
  * Handle when a targeted element is inside the viewport.
  */
-var handleElementInsideViewport = function(element) {
+var handleElementInsideViewport = function (element) {
   var elementState = stateByElement.get(element);
 
   if (elementState.inViewport) {
@@ -130,12 +134,12 @@ var handleElementInsideViewport = function(element) {
 
   // Evaluate the element against all stored listeners to see which ones should be triggered
   // due to the element being in the viewport.
-  Object.keys(listenersBySelector).forEach(function(selector) {
+  Object.keys(listenersBySelector).forEach(function (selector) {
     if (!matchesSelector(element, selector)) {
       return;
     }
 
-    listenersBySelector[selector].forEach(function(listener) {
+    listenersBySelector[selector].forEach(function (listener) {
       if (!matchesProperties(element, listener.settings.elementProperties)) {
         return;
       }
@@ -145,7 +149,7 @@ var handleElementInsideViewport = function(element) {
         return;
       }
 
-      var delayComplete = function() {
+      var delayComplete = function () {
         var frequency = listener.settings.frequency || frequencies.FIRST_ENTRY;
 
         // When a user configures the event to only fire a rule once, then after the rule
@@ -163,7 +167,7 @@ var handleElementInsideViewport = function(element) {
       };
 
       if (listener.settings.delay) {
-        var timeoutId = setTimeout(function() {
+        var timeoutId = setTimeout(function () {
           // One last check to make sure the element is still in view.
           if (elementIsInView(element, getViewportHeight(), getScrollTop())) {
             delayComplete();
@@ -181,7 +185,7 @@ var handleElementInsideViewport = function(element) {
 /**
  * Handle when a targeted element is outside the viewport.
  */
-var handleElementOutsideViewport = function(element) {
+var handleElementOutsideViewport = function (element) {
   var elementState = stateByElement.get(element);
   elementState.inViewport = false;
 
@@ -199,7 +203,7 @@ var handleElementOutsideViewport = function(element) {
  * can't trigger the same rule again. If another element matching the same selector comes into
  * the viewport, it may trigger the same rule again.
  */
-var checkForElementsInViewport = debounce(function() {
+var checkForElementsInViewport = debounce(function () {
   var selectors = Object.keys(listenersBySelector);
 
   if (!selectors.length) {
@@ -223,7 +227,7 @@ var checkForElementsInViewport = debounce(function() {
   }
 }, DEBOUNCE_DELAY);
 
-var initializeContentListeners = function() {
+var initializeContentListeners = function () {
   checkForElementsInViewport();
   setInterval(checkForElementsInViewport, POLL_INTERVAL);
   window.addEventListener('resize', checkForElementsInViewport);
@@ -266,7 +270,7 @@ if (isIE10) {
  * within the viewport before declaring that the event has occurred.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function(settings, trigger) {
+module.exports = function (settings, trigger) {
   var listeners = listenersBySelector[settings.elementSelector];
 
   if (!listeners) {

@@ -22,7 +22,7 @@ var queryString = require('@adobe/reactor-query-string');
  * @param {string} [settings.caseInsensitive] Whether casing should be ignored.
  * @returns {string}
  */
-module.exports = function(settings) {
+module.exports = function (settings) {
   var queryParams = queryString.parse(window.location.search);
 
   if (settings.caseInsensitive) {

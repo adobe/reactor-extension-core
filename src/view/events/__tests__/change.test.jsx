@@ -11,8 +11,7 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@react/react-spectrum/Textfield';
-import Checkbox from '@react/react-spectrum/Checkbox';
+import { Checkbox, TextField } from '@adobe/react-spectrum';
 import RegexToggle from '../../components/regexToggle';
 import WrappedField from '../../components/wrappedField';
 import Change, { formConfig } from '../change';
@@ -25,14 +24,22 @@ const getReactComponents = (wrapper) => {
   const checkboxes = wrapper.find(Checkbox);
   const fields = wrapper.find(WrappedField);
 
-  const showValueFieldCheckbox = checkboxes
-    .filterWhere(n => n.prop('name') === 'showValueField');
-  const valueTextfield = fields.filterWhere(n => n.prop('name') === 'value').find(Textfield);
-  const valueRegexToggle =
-    fields.filterWhere(n => n.prop('name') === 'valueIsRegex').find(RegexToggle);
-  const elementSelectorField = fields.filterWhere(n => n.prop('name') === 'elementSelector');
-  const elementSelectorTextfield = elementSelectorField.find(Textfield);
-  const bubbleStopCheckbox = checkboxes.filterWhere(n => n.prop('name') === 'bubbleStop');
+  const showValueFieldCheckbox = checkboxes.filterWhere(
+    (n) => n.prop('name') === 'showValueField'
+  );
+  const valueTextfield = fields
+    .filterWhere((n) => n.prop('name') === 'value')
+    .find(TextField);
+  const valueRegexToggle = fields
+    .filterWhere((n) => n.prop('name') === 'valueIsRegex')
+    .find(RegexToggle);
+  const elementSelectorField = fields.filterWhere(
+    (n) => n.prop('name') === 'elementSelector'
+  );
+  const elementSelectorTextfield = elementSelectorField.find(TextField);
+  const bubbleStopCheckbox = checkboxes.filterWhere(
+    (n) => n.prop('name') === 'bubbleStop'
+  );
   const advancedEventOptions = wrapper.find(AdvancedEventOptions);
 
   return {
@@ -85,7 +92,9 @@ describe('change event view', () => {
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { showValueFieldCheckbox, advancedEventOptions } = getReactComponents(instance);
+    const { showValueFieldCheckbox, advancedEventOptions } = getReactComponents(
+      instance
+    );
     showValueFieldCheckbox.props().onChange(true);
     advancedEventOptions.instance().toggleSelected();
 
@@ -102,7 +111,10 @@ describe('change event view', () => {
     bubbleStopCheckbox.props().onChange(true);
 
     const {
-      value, valueIsRegex, elementSelector, bubbleStop
+      value,
+      valueIsRegex,
+      elementSelector,
+      bubbleStop
     } = extensionBridge.getSettings();
 
     expect(value).toBe('abc');

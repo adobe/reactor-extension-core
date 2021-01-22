@@ -12,17 +12,20 @@
 
 'use strict';
 
-describe('direct call event delegate', function() {
+describe('direct call event delegate', function () {
   var delegate = require('../directCall');
 
   var trigger = jasmine.createSpy();
   var log = jasmine.createSpy();
 
-  beforeAll(function() {
+  beforeAll(function () {
     trigger = jasmine.createSpy();
-    delegate({
-      identifier: 'foo'
-    }, trigger);
+    delegate(
+      {
+        identifier: 'foo'
+      },
+      trigger
+    );
     mockTurbineVariable({
       logger: {
         log: log
@@ -30,16 +33,16 @@ describe('direct call event delegate', function() {
     });
   });
 
-  afterAll(function() {
+  afterAll(function () {
     resetTurbineVariable();
   });
 
-  beforeEach(function() {
+  beforeEach(function () {
     trigger.calls.reset();
     log.calls.reset();
   });
 
-  it('triggers rule with matching identifier and detail passed', function() {
+  it('triggers rule with matching identifier and detail passed', function () {
     var detail = { a: 'b' };
 
     _satellite.track('foo', detail);
@@ -50,14 +53,16 @@ describe('direct call event delegate', function() {
       detail: detail
     });
 
-    expect(turbine.logger.log).toHaveBeenCalledWith(
+    expect(
+      turbine.logger.log
+    ).toHaveBeenCalledWith(
       'Rules using the direct call event type with identifier "foo" ' +
-      'have been triggered with additional detail:',
+        'have been triggered with additional detail:',
       { a: 'b' }
     );
   });
 
-  it('triggers rule with matching identifier and no detail passed', function() {
+  it('triggers rule with matching identifier and no detail passed', function () {
     _satellite.track('foo');
 
     expect(trigger.calls.count()).toBe(1);
@@ -71,7 +76,7 @@ describe('direct call event delegate', function() {
     );
   });
 
-  it('logs a message when no rules found with matching identifier', function() {
+  it('logs a message when no rules found with matching identifier', function () {
     _satellite.track('baz');
 
     expect(turbine.logger.log).toHaveBeenCalledWith(

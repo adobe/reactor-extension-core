@@ -21,10 +21,10 @@ var unescapeHTMLEntities = require('./helpers/unescapeHtmlCode');
 
 var cspNonce;
 
-var postscribeWrite = (function() {
-  var write = function(source) {
+var postscribeWrite = (function () {
+  var write = function (source) {
     postscribe(document.body, source, {
-      beforeWriteToken: function(token) {
+      beforeWriteToken: function (token) {
         var tagName = token.tagName && token.tagName.toLowerCase();
 
         if (cspNonce && tagName === 'script') {
@@ -35,7 +35,7 @@ var postscribeWrite = (function() {
         // are not unescaped. That causes problems when loading scripts from external
         // sources. See https://jira.corp.adobe.com/browse/DTM-15058.
         if (tagName === 'script' || tagName === 'style') {
-          Object.keys(token.attrs || {}).forEach(function(key) {
+          Object.keys(token.attrs || {}).forEach(function (key) {
             token.attrs[key] = unescapeHTMLEntities(token.attrs[key]);
           });
 
@@ -46,7 +46,7 @@ var postscribeWrite = (function() {
 
         return token;
       },
-      error: function(error) {
+      error: function (error) {
         turbine.logger.error(error.msg);
       }
     });
@@ -62,7 +62,7 @@ var postscribeWrite = (function() {
   // Adding display elements like an img tag to document.head is against HTML spec, though it
   // does seem like an image request is still made. We opted instead to ensure we comply with
   // HTML spec and wait until we see that document.body is available before writing.
-  var flushQueue = function() {
+  var flushQueue = function () {
     if (document.body) {
       while (queue.length) {
         write(queue.shift());
@@ -73,13 +73,13 @@ var postscribeWrite = (function() {
     }
   };
 
-  return function(source) {
+  return function (source) {
     queue.push(source);
     flushQueue();
   };
 })();
 
-var libraryWasLoadedAsynchronously = (function() {
+var libraryWasLoadedAsynchronously = (function () {
   // document.currentScript is not supported by IE
   if (document.currentScript) {
     return document.currentScript.async;
@@ -116,7 +116,7 @@ var libraryWasLoadedAsynchronously = (function() {
  * @param {Object} event.target The element on which the event occurred.
  * <code>javascript</code> or <code>html</code>.
  */
-module.exports = function(settings, event) {
+module.exports = function (settings, event) {
   // ensure the nonce is up-to-date when the function is used
   cspNonce = turbine.getExtensionSettings().cspNonce;
 
@@ -133,7 +133,7 @@ module.exports = function(settings, event) {
   }
 
   if (action.settings.isExternal) {
-    return loadCodeSequentially(source).then(function(source) {
+    return loadCodeSequentially(source).then(function (source) {
       if (source) {
         decoratedResult = decorateCode(action, source);
         postscribeWrite(decoratedResult.code);

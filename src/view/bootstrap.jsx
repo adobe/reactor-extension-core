@@ -13,37 +13,46 @@
 /*eslint import/no-extraneous-dependencies: 0*/
 /*eslint no-underscore-dangle: 0*/
 
-import '@babel/polyfill';
 import React from 'react';
+import {
+  Provider as ProviderReactSpectrum,
+  lightTheme
+} from '@adobe/react-spectrum';
 import { Provider, connect } from 'react-redux';
 import { createStore } from 'redux';
 import { reduxForm } from 'redux-form';
 import reducer from './reduxActions/reducer';
 import bridgeAdapter from './bridgeAdapter';
 
-export default (View, formConfig, extensionBridge = window.extensionBridge, viewProps) => {
+export default (
+  View,
+  formConfig,
+  extensionBridge = window.extensionBridge,
+  viewProps
+) => {
   const store = createStore(
     reducer,
     {},
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   );
 
-  const ViewWrapper = ({ initializedByBridge, error, ...rest }) => (initializedByBridge ?
-    <View {...rest} componentsWithErrors={error || []} /> :
-    null);
+  const ViewWrapper = ({ initializedByBridge, error, ...rest }) =>
+    initializedByBridge ? (
+      <View {...rest} componentsWithErrors={error || []} />
+    ) : null;
 
-  const ReduxView = connect(
-    ({ initializedByBridge }) => ({ initializedByBridge })
-  )(ViewWrapper);
+  const ReduxView = connect(({ initializedByBridge }) => ({
+    initializedByBridge
+  }))(ViewWrapper);
 
   const ReduxFormView = reduxForm({
     form: 'default',
     // Proxy the provided validate reducer using a function that matches what redux-form expects.
     // Note that there's no technical reason why config.validate must be a reducer. It does
     // maintain some consistency with settingsToFormValues and formValuesToSettings.
-    validate: formConfig.validate ?
-      values => formConfig.validate({}, values, store.getState().meta) :
-      undefined,
+    validate: formConfig.validate
+      ? (values) => formConfig.validate({}, values, store.getState().meta)
+      : undefined,
     // ReduxForm will complain with we try to "submit" the form and don't have onSubmit defined.
     onSubmit: () => {}
   })(ReduxView);
@@ -52,7 +61,9 @@ export default (View, formConfig, extensionBridge = window.extensionBridge, view
 
   return (
     <Provider store={store}>
-      <ReduxFormView {...viewProps} />
+      <ProviderReactSpectrum colorScheme="light" theme={lightTheme}>
+        <ReduxFormView {...viewProps} />
+      </ProviderReactSpectrum>
     </Provider>
   );
 };

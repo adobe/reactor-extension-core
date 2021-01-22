@@ -11,21 +11,15 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@react/react-spectrum/Textfield';
-import WrappedField from '../components/wrappedField';
-import TooltipPlaceholder from '../components/tooltipPlaceholder';
+import FullWidthField from '../components/fullWidthField';
 
 const SessionStorage = () => (
-  <label className="u-alignItemsCenter u-flex">
-    <span className="u-gapRight">Session Storage Item Name</span>
-    <WrappedField
-      className="u-flexOne"
-      name="name"
-      component={Textfield}
-      componentClassName="u-fullWidth u-minFieldWidth"
-    />
-    <TooltipPlaceholder />
-  </label>
+  <FullWidthField
+    label="Session Storage Item Name"
+    name="name"
+    containerMinWidth="size-6000"
+    isRequired
+  />
 );
 
 export default SessionStorage;

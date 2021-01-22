@@ -26,17 +26,18 @@ var compareNumbers = require('./helpers/compareNumbers');
  * @param {number} settings.height The window height to compare against.
  * @returns {boolean}
  */
-module.exports = function(settings) {
+module.exports = function (settings) {
   var widthInRange = compareNumbers(
     window.screen.width,
     settings.widthOperator,
-    settings.width);
+    settings.width
+  );
 
   var heightInRange = compareNumbers(
     window.screen.height,
     settings.heightOperator,
-    settings.height);
+    settings.height
+  );
 
   return widthInRange && heightInRange;
 };
-

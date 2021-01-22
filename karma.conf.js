@@ -19,8 +19,6 @@ if (process.env.CI) {
     ')';
 
   defaultBrowsers = [
-    'SL_IE10',
-    'SL_IE11',
     'SL_EDGE',
     'SL_CHROME',
     'SL_FIREFOX',
@@ -50,7 +48,10 @@ const rules = [
     use: {
       loader: 'babel-loader',
       options: {
-        presets: ['@babel/react', ["@babel/env", { "targets": "> 0.25%, not dead, ie 11, ie 10" }]],
+        presets: [
+          '@babel/react',
+          ['@babel/env', { targets: '> 0.25%, not dead' }]
+        ],
         plugins: ['@babel/plugin-proposal-class-properties']
       }
     }
@@ -61,7 +62,7 @@ const rules = [
     use: {
       loader: 'babel-loader',
       options: {
-        presets: [["@babel/env", { "targets": "> 0.25%, not dead, ie 11, ie 10" }]]
+        presets: [['@babel/env', { targets: '> 0.25%, not dead' }]]
       }
     }
   },

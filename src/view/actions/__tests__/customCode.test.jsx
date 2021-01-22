@@ -13,8 +13,7 @@
 /* eslint no-useless-concat: 0 */
 
 import { mount } from 'enzyme';
-import Radio from '@react/react-spectrum/Radio';
-import Checkbox from '@react/react-spectrum/Checkbox';
+import { RadioGroup, Checkbox } from '@adobe/react-spectrum';
 import EditorButton from '../../components/editorButton';
 import CustomCode, { formConfig } from '../customCode';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
@@ -22,15 +21,13 @@ import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const radios = wrapper.find(Radio);
-  const javaScriptLanguageRadio = radios.filterWhere(n => n.prop('value') === 'javascript');
-  const htmlLanguageRadio = radios.filterWhere(n => n.prop('value') === 'html');
-  const globalCheckbox = wrapper.find(Checkbox).filterWhere(n => n.prop('name') === 'global');
+  const globalCheckbox = wrapper
+    .find(Checkbox)
+    .filterWhere((n) => n.prop('name') === 'global');
   const openEditorButton = wrapper.find(EditorButton);
 
   return {
-    javaScriptLanguageRadio,
-    htmlLanguageRadio,
+    customCodeRadioGroup: wrapper.find(RadioGroup),
     globalCheckbox,
     openEditorButton
   };
@@ -58,14 +55,9 @@ describe('custom code action view', () => {
       }
     });
 
-    let {
-      javaScriptLanguageRadio,
-      htmlLanguageRadio,
-      globalCheckbox
-    } = getReactComponents(instance);
+    let { customCodeRadioGroup, globalCheckbox } = getReactComponents(instance);
 
-    expect(javaScriptLanguageRadio.props().checked).toBe(false);
-    expect(htmlLanguageRadio.props().checked).toBe(true);
+    expect(customCodeRadioGroup.props().value).toBe('html');
     expect(globalCheckbox.exists()).toBe(false);
 
     extensionBridge.init({
@@ -76,34 +68,29 @@ describe('custom code action view', () => {
       }
     });
 
-    ({
-      javaScriptLanguageRadio,
-      htmlLanguageRadio,
-      globalCheckbox
-    } = getReactComponents(instance));
+    ({ customCodeRadioGroup, globalCheckbox } = getReactComponents(instance));
 
-    expect(javaScriptLanguageRadio.props().checked).toBe(true);
-    expect(htmlLanguageRadio.props().checked).toBe(false);
+    expect(customCodeRadioGroup.props().value).toBe('javascript');
     expect(globalCheckbox.props().checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const {
-      javaScriptLanguageRadio,
-      htmlLanguageRadio,
-      globalCheckbox
-    } = getReactComponents(instance);
+    const { customCodeRadioGroup, globalCheckbox } = getReactComponents(
+      instance
+    );
 
-    htmlLanguageRadio.props().onChange(true, { stopPropagation() {} });
+    customCodeRadioGroup.props().onChange('html', { stopPropagation() {} });
     globalCheckbox.props().onChange(true);
 
     expect(extensionBridge.getSettings()).toEqual({
       language: 'html'
     });
 
-    javaScriptLanguageRadio.props().onChange(true, { stopPropagation() {} });
+    customCodeRadioGroup
+      .props()
+      .onChange('javascript', { stopPropagation() {} });
 
     expect(extensionBridge.getSettings()).toEqual({
       language: 'javascript',
@@ -115,9 +102,7 @@ describe('custom code action view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const {
-      openEditorButton
-    } = getReactComponents(instance);
+    const { openEditorButton } = getReactComponents(instance);
 
     expect(openEditorButton.props().validationState).toBe('invalid');
   });
@@ -130,9 +115,7 @@ describe('custom code action view', () => {
       }
     });
 
-    const {
-      openEditorButton
-    } = getReactComponents(instance);
+    const { openEditorButton } = getReactComponents(instance);
 
     openEditorButton.props().onChange('foo bar');
 

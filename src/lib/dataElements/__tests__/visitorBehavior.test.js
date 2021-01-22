@@ -13,25 +13,25 @@
 'use strict';
 
 var mockVisitorTracking = {
-  getLandingPage: function() {
+  getLandingPage: function () {
     return 'http://landingpage.com/test.html';
   },
-  getTrafficSource: function() {
+  getTrafficSource: function () {
     return 'http://trafficsource.com';
   },
-  getMinutesOnSite: function() {
+  getMinutesOnSite: function () {
     return 4;
   },
-  getSessionCount: function() {
+  getSessionCount: function () {
     return 2;
   },
-  getSessionPageViewCount: function() {
+  getSessionPageViewCount: function () {
     return 11;
   },
-  getLifetimePageViewCount: function() {
+  getLifetimePageViewCount: function () {
     return 34;
   },
-  getIsNewVisitor: function() {
+  getIsNewVisitor: function () {
     return true;
   }
 };
@@ -40,16 +40,18 @@ var dataElementDelegate = require('inject-loader!../visitorBehavior')({
   '../helpers/visitorTracking': mockVisitorTracking
 });
 
-describe('visitor behavior data element delegate', function() {
-  it('returns landing page', function() {
+describe('visitor behavior data element delegate', function () {
+  it('returns landing page', function () {
     var settings = {
       attribute: 'landingPage'
     };
 
-    expect(dataElementDelegate(settings)).toBe('http://landingpage.com/test.html');
+    expect(dataElementDelegate(settings)).toBe(
+      'http://landingpage.com/test.html'
+    );
   });
 
-  it('returns traffic source', function() {
+  it('returns traffic source', function () {
     var settings = {
       attribute: 'trafficSource'
     };
@@ -57,7 +59,7 @@ describe('visitor behavior data element delegate', function() {
     expect(dataElementDelegate(settings)).toBe('http://trafficsource.com');
   });
 
-  it('returns minutes on site', function() {
+  it('returns minutes on site', function () {
     var settings = {
       attribute: 'minutesOnSite'
     };
@@ -65,7 +67,7 @@ describe('visitor behavior data element delegate', function() {
     expect(dataElementDelegate(settings)).toBe(4);
   });
 
-  it('returns session count', function() {
+  it('returns session count', function () {
     var settings = {
       attribute: 'sessionCount'
     };
@@ -73,7 +75,7 @@ describe('visitor behavior data element delegate', function() {
     expect(dataElementDelegate(settings)).toBe(2);
   });
 
-  it('returns session page view count', function() {
+  it('returns session page view count', function () {
     var settings = {
       attribute: 'sessionPageViewCount'
     };
@@ -81,7 +83,7 @@ describe('visitor behavior data element delegate', function() {
     expect(dataElementDelegate(settings)).toBe(11);
   });
 
-  it('returns lifetime page view count', function() {
+  it('returns lifetime page view count', function () {
     var settings = {
       attribute: 'lifetimePageViewCount'
     };
@@ -89,7 +91,7 @@ describe('visitor behavior data element delegate', function() {
     expect(dataElementDelegate(settings)).toBe(34);
   });
 
-  it('returns whether visitor is new', function() {
+  it('returns whether visitor is new', function () {
     var settings = {
       attribute: 'isNewVisitor'
     };

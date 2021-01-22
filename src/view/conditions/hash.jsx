@@ -11,38 +11,44 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@react/react-spectrum/Textfield';
+import { Flex, TextField, View } from '@adobe/react-spectrum';
 import { FieldArray } from 'redux-form';
 import WrappedField from '../components/wrappedField';
 
 import MultipleItemEditor from './components/multipleItemEditor';
 import RegexToggle from '../components/regexToggle';
+import NoWrapText from '../components/noWrapText';
 
-const renderItem = field => (
-  <div data-row className="u-inlineBlock u-flexOne u-alignItemsCenter u-flex">
-    <label className="u-gapRight u-flexOne u-alignItemsCenter u-flex">
-      <span className="u-gapRight">Hash equals</span>
+const renderItem = (field) => (
+  <Flex data-row flex gap="size-100" alignItems="end">
+    <NoWrapText>hash equals</NoWrapText>
+    <View flex>
       <WrappedField
-        className="u-flexOne"
+        width="100%"
+        label="Hash"
         name={`${field}.value`}
-        component={Textfield}
-        componentClassName="u-fullWidth u-minFieldWidth"
+        component={TextField}
+        isRequired
       />
-    </label>
+    </View>
+
     <WrappedField
       name={`${field}.valueIsRegex`}
       component={RegexToggle}
       valueFieldName={`${field}.value`}
     />
-  </div>
+  </Flex>
 );
 
 export default () => (
-  <FieldArray
-    name="hashes"
-    renderItem={renderItem}
-    component={MultipleItemEditor}
-  />
+  <Flex gap="size-100" direction="column" minWidth="size-6000">
+    <NoWrapText>Return true if</NoWrapText>
+    <FieldArray
+      name="hashes"
+      renderItem={renderItem}
+      component={MultipleItemEditor}
+    />
+  </Flex>
 );
 
 export const formConfig = {

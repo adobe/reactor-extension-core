@@ -11,14 +11,14 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Select from '@react/react-spectrum/Select';
+import { Picker } from '@adobe/react-spectrum';
 import PageInfo, { formConfig } from '../pageInfo';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const attributeSelect = wrapper.find(Select);
+  const attributeSelect = wrapper.find(Picker);
 
   return {
     attributeSelect

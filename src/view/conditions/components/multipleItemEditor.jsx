@@ -11,44 +11,35 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Button from '@react/react-spectrum/Button';
-import Close from '@react/react-spectrum/Icon/Close';
-
-import './multipleItemEditor.styl';
+import { ActionButton, Button, Flex, View, Text } from '@adobe/react-spectrum';
+import Delete from '@spectrum-icons/workflow/Delete';
+import Add from '@spectrum-icons/workflow/Add';
 
 export default ({ fields, renderItem }) => {
   const rows = fields.map((field, index) => (
-    <React.Fragment>
-      { index !== 0 ? <div className="MultipleItemEditor-orLabel u-gapRight">OR</div> : null }
-      <div data-type="row" key={field} className="u-noWrap u-gapBottom u-alignItemsCenter u-flex">
-        { renderItem(field) }
-        {
-          fields.length > 1 ?
-            (
-              <Button
-                className="u-gapLeft"
-                icon={<Close />}
-                variant="action"
-                quiet
-                onClick={fields.remove.bind(this, index)}
-              />
-            ) : null
-        }
-      </div>
-    </React.Fragment>
+    <View key={field}>
+      {index !== 0 ? <View>OR</View> : null}
+      <Flex data-type="row" alignItems="end">
+        {renderItem(field)}
+        {fields.length > 1 ? (
+          <ActionButton isQuiet onPress={fields.remove.bind(this, index)}>
+            <Delete />
+          </ActionButton>
+        ) : null}
+      </Flex>
+    </View>
   ));
 
   return (
-    <div>
-      { rows }
-      <div>
-        <Button
-          className="MultipleItemEditor-addPatternButton"
-          onClick={() => fields.push({})}
-        >
-          Add Another
+    <Flex direction="column" gap="size-100">
+      {rows}
+
+      <View marginTop="size-100">
+        <Button variant="primary" onPress={() => fields.push({})}>
+          <Add />
+          <Text>Add Another</Text>
         </Button>
-      </div>
-    </div>
+      </View>
+    </Flex>
   );
 };

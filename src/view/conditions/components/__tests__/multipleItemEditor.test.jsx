@@ -12,14 +12,14 @@
 
 import { mount } from 'enzyme';
 import React from 'react';
-import Button from '@react/react-spectrum/Button';
+import { ActionButton, Button } from '@adobe/react-spectrum';
 import MultipleItemEditor from '../multipleItemEditor';
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const rows = wrapper.find('div[data-type="row"]').map(row => ({
+  const rows = wrapper.find('div[data-type="row"]').map((row) => ({
     element: row,
-    removeButton: row.find(Button)
+    removeButton: row.find(ActionButton)
   }));
   const addButton = wrapper.find(Button).last();
 
@@ -31,17 +31,17 @@ const getReactComponents = (wrapper) => {
 
 const getTestProps = () => ({
   fields: {
-    map: fn => [0, 1].map(index => fn(`props[${index}]`, index)),
+    map: (fn) => [0, 1].map((index) => fn(`props[${index}]`, index)),
     push: jasmine.createSpy('push'),
     remove: jasmine.createSpy('remove'),
     length: 2
   },
   renderItem: jasmine
     .createSpy('renderItem')
-    .and.callFake(item => <span>{item.label}</span>)
+    .and.callFake((item) => <span>{item.label}</span>)
 });
 
-const render = props => mount(<MultipleItemEditor {...props} />);
+const render = (props) => mount(<MultipleItemEditor {...props} />);
 
 describe('multiple item editor', () => {
   it('renders a row for each item', () => {
@@ -57,8 +57,7 @@ describe('multiple item editor', () => {
     const props = getTestProps();
     const { addButton } = getReactComponents(render(props));
 
-    addButton.props().onClick();
-
+    addButton.props().onPress();
     expect(props.fields.push).toHaveBeenCalled();
   });
 
@@ -66,8 +65,7 @@ describe('multiple item editor', () => {
     const props = getTestProps();
     const { rows } = getReactComponents(render(props));
 
-    rows[1].removeButton.props().onClick();
-
+    rows[1].removeButton.props().onPress();
     expect(props.fields.remove).toHaveBeenCalledWith(1);
   });
 });

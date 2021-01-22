@@ -18,10 +18,10 @@
  * @param {Object} [context] The context in which to call the target function.
  * @returns {Function}
  */
-module.exports = function(fn, context) {
+module.exports = function (fn, context) {
   var result;
 
-  return function() {
+  return function () {
     if (fn) {
       result = fn.apply(context || this, arguments);
       fn = null;

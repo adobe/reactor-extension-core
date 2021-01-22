@@ -11,19 +11,17 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
+import { CheckboxGroup } from '@adobe/react-spectrum';
 import OperatingSystem, { formConfig } from '../operatingSystem';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
-import CheckboxList from '../../components/checkboxList';
+
 import bootstrap from '../../bootstrap';
 
-const selectedOperatingSystems = [
-  'Windows',
-  'Unix'
-];
+const selectedOperatingSystems = ['Windows', 'Unix'];
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const operatingSystemsCheckboxList = wrapper.find(CheckboxList);
+  const operatingSystemsCheckboxList = wrapper.find(CheckboxGroup);
 
   return {
     operatingSystemsCheckboxList
@@ -48,7 +46,9 @@ describe('operating system condition view', () => {
 
     const { operatingSystemsCheckboxList } = getReactComponents(instance);
 
-    expect(operatingSystemsCheckboxList.props().value).toEqual(selectedOperatingSystems);
+    expect(operatingSystemsCheckboxList.props().value).toEqual(
+      selectedOperatingSystems
+    );
   });
 
   it('sets settings from form values', () => {

@@ -14,10 +14,10 @@
 
 var dataElementDelegate = require('../customCode');
 
-describe('custom code data element delegate', function() {
-  it('returns the return value of a user-defined script', function() {
+describe('custom code data element delegate', function () {
+  it('returns the return value of a user-defined script', function () {
     var settings = {
-      source: function() {
+      source: function () {
         return 'foo';
       }
     };
@@ -25,14 +25,14 @@ describe('custom code data element delegate', function() {
     expect(dataElementDelegate(settings)).toBe('foo');
   });
 
-  it('receives the event parameter if provided', function() {
+  it('receives the event parameter if provided', function () {
     var settings = {
-      source: function(event) {
+      source: function (event) {
         return event.foo;
       }
     };
     var event = {
-      'foo': 'bar'
+      foo: 'bar'
     };
 
     expect(dataElementDelegate(settings, event)).toBe('bar');

@@ -23,7 +23,7 @@ window._satellite = window._satellite || {};
  * Public function intended to be called by the user.
  * @param {number} callbackId The identifier passed to _satellite._onCustomCodeSuccess().
  */
-window._satellite._onCustomCodeSuccess = function(callbackId) {
+window._satellite._onCustomCodeSuccess = function (callbackId) {
   var promiseHandlers = htmlCodePromises[callbackId];
   if (!promiseHandlers) {
     return;
@@ -37,7 +37,7 @@ window._satellite._onCustomCodeSuccess = function(callbackId) {
  * Public function intended to be called by the user.
  * @param {number} callbackId The identifier passed to _satellite._onCustomCodeSuccess().
  */
-window._satellite._onCustomCodeFailure = function(callbackId) {
+window._satellite._onCustomCodeFailure = function (callbackId) {
   var promiseHandlers = htmlCodePromises[callbackId];
   if (!promiseHandlers) {
     return;
@@ -47,19 +47,19 @@ window._satellite._onCustomCodeFailure = function(callbackId) {
   promiseHandlers.reject();
 };
 
-var reactorCallbackIdShouldBeReplaced = function(source) {
+var reactorCallbackIdShouldBeReplaced = function (source) {
   return source.indexOf('${reactorCallbackId}') !== -1;
 };
 
-var replaceCallbacksIds = function(source, callbackId) {
+var replaceCallbacksIds = function (source, callbackId) {
   return source.replace(/\${reactorCallbackId}/g, callbackId);
 };
 
-var isSourceLoadedFromFile = function(action) {
+var isSourceLoadedFromFile = function (action) {
   return action.settings.isExternal;
 };
 
-module.exports = function(action, source) {
+module.exports = function (action, source) {
   // We need to replace tokens only for sources loaded from external files. The sources from
   // inside the container are automatically taken care by Turbine.
   if (isSourceLoadedFromFile(action)) {
@@ -69,7 +69,7 @@ module.exports = function(action, source) {
   var promise;
 
   if (reactorCallbackIdShouldBeReplaced(source)) {
-    promise = new Promise(function(resolve, reject) {
+    promise = new Promise(function (resolve, reject) {
       htmlCodePromises[String(callbackId)] = {
         resolve: resolve,
         reject: reject

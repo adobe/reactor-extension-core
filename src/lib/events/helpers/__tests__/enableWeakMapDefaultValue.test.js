@@ -15,10 +15,12 @@
 var enableWeakMapDefaultValue = require('../enableWeakMapDefaultValue');
 var WeakMap = require('../weakMap');
 
-describe('enableWeakMapDefaultValue', function() {
-  it('stores and returns the provided default value', function() {
+describe('enableWeakMapDefaultValue', function () {
+  it('stores and returns the provided default value', function () {
     var map = new WeakMap();
-    enableWeakMapDefaultValue(map, function() { return []; });
+    enableWeakMapDefaultValue(map, function () {
+      return [];
+    });
 
     var key = {};
 

@@ -18,7 +18,7 @@
  * @param property The property name to be returned. It can contain dots. (eg. prop.subprop1)
  * @returns {*}
  */
-module.exports = function(obj, property) {
+module.exports = function (obj, property) {
   var propertyChain = property.split('.');
   var currentValue = obj;
 

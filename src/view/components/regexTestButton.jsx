@@ -11,15 +11,10 @@
  ****************************************************************************************/
 
 import React from 'react';
-import classNames from 'classnames';
+import { ActionButton } from '@adobe/react-spectrum';
 
 export default (props) => {
-  const {
-    value,
-    onChange,
-    flags = 'i',
-    className
-  } = props;
+  const { value, onChange, flags = 'i' } = props;
 
   const options = {
     pattern: value,
@@ -27,14 +22,13 @@ export default (props) => {
   };
 
   return (
-    <div className={classNames(className, 'u-inlineBlock')}>
-      <button
-        type="button"
-        className="u-buttonReset coral-Link"
-        onClick={() => window.extensionBridge.openRegexTester(options).then(onChange)}
-      >
-        Test
-      </button>
-    </div>
+    <ActionButton
+      isQuiet
+      onPress={() =>
+        window.extensionBridge.openRegexTester(options).then(onChange)
+      }
+    >
+      Test
+    </ActionButton>
   );
 };

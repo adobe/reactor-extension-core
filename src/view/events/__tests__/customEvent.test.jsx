@@ -11,8 +11,7 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@react/react-spectrum/Textfield';
-import Checkbox from '@react/react-spectrum/Checkbox';
+import { TextField, Checkbox } from '@adobe/react-spectrum';
 import WrappedField from '../../components/wrappedField';
 import CustomEvent, { formConfig } from '../customEvent';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
@@ -23,12 +22,15 @@ const getReactComponents = (wrapper) => {
   wrapper.update();
   const fields = wrapper.find(WrappedField);
 
-  const typeField = fields.filterWhere(n => n.prop('name') === 'type');
-  const typeTextfield = typeField.find(Textfield);
-  const elementSelectorField = fields.filterWhere(n => n.prop('name') === 'elementSelector');
-  const elementSelectorTextfield = elementSelectorField.find(Textfield);
-  const bubbleStopCheckbox = wrapper.find(Checkbox)
-    .filterWhere(n => n.prop('name') === 'bubbleStop');
+  const typeField = fields.filterWhere((n) => n.prop('name') === 'type');
+  const typeTextfield = typeField.find(TextField);
+  const elementSelectorField = fields.filterWhere(
+    (n) => n.prop('name') === 'elementSelector'
+  );
+  const elementSelectorTextfield = elementSelectorField.find(TextField);
+  const bubbleStopCheckbox = wrapper
+    .find(Checkbox)
+    .filterWhere((n) => n.prop('name') === 'bubbleStop');
   const advancedEventOptions = wrapper.find(AdvancedEventOptions);
 
   return {
@@ -98,7 +100,9 @@ describe('custom event event view', () => {
     extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { typeTextfield, elementSelectorTextfield } = getReactComponents(instance);
+    const { typeTextfield, elementSelectorTextfield } = getReactComponents(
+      instance
+    );
 
     expect(typeTextfield.props().validationState).toBe('invalid');
     expect(elementSelectorTextfield.props().validationState).toBe('invalid');

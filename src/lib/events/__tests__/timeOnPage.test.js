@@ -17,7 +17,7 @@ var visibilityApiInstance = visibilityApi();
 var visibilityChangeListener;
 
 var mockDocument = {
-  addEventListener: function(event, listener) {
+  addEventListener: function (event, listener) {
     if (event && event === visibilityApiInstance.visibilityChangeEventType) {
       visibilityChangeListener = listener;
     }
@@ -27,15 +27,17 @@ var mockDocument = {
 var Timer = require('../helpers/timer');
 var eventDelegateInjector = require('inject-loader!../timeOnPage');
 
-var isIE = function() {
+var isIE = function () {
   var myNav = navigator.userAgent.toLowerCase();
-  return (myNav.indexOf('msie') !== -1) ? parseInt(myNav.split('msie')[1]) : false;
+  return myNav.indexOf('msie') !== -1
+    ? parseInt(myNav.split('msie')[1])
+    : false;
 };
 
-describe('time on page event delegate', function() {
+describe('time on page event delegate', function () {
   var delegate;
 
-  beforeEach(function() {
+  beforeEach(function () {
     jasmine.clock().install();
 
     var baseTime = new Date();
@@ -47,14 +49,14 @@ describe('time on page event delegate', function() {
     });
   });
 
-  afterEach(function() {
+  afterEach(function () {
     jasmine.clock().uninstall();
   });
 
-  it('triggers rule', function() {
+  it('triggers rule', function () {
     var trigger = jasmine.createSpy('timeOnPageTrigger');
 
-    delegate({timeOnPage: 2}, trigger);
+    delegate({ timeOnPage: 2 }, trigger);
     jasmine.clock().tick(2000);
 
     var call = trigger.calls.mostRecent();
@@ -63,8 +65,8 @@ describe('time on page event delegate', function() {
     });
   });
 
-  if (!isIE () || isIE() > 9) {
-    it('stops the timer on tab blur', function() {
+  if (!isIE() || isIE() > 9) {
+    it('stops the timer on tab blur', function () {
       spyOn(Timer.prototype, 'pause');
 
       delegate({});
@@ -75,7 +77,7 @@ describe('time on page event delegate', function() {
       expect(Timer.prototype.pause).toHaveBeenCalled();
     });
 
-    it('resumes the timer on tab focus', function() {
+    it('resumes the timer on tab focus', function () {
       spyOn(Timer.prototype, 'resume');
 
       delegate({});

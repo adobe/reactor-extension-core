@@ -11,55 +11,46 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Checkbox from '@react/react-spectrum/Checkbox';
-import Textfield from '@react/react-spectrum/Textfield';
+import { Checkbox } from '@adobe/react-spectrum';
 import { formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
 import WrappedField from '../components/wrappedField';
 
-import ElementFilter, { formConfig as elementFilterFormConfig } from './components/elementFilter';
-import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
+import ElementFilter, {
+  formConfig as elementFilterFormConfig
+} from './components/elementFilter';
+import AdvancedEventOptions, {
+  formConfig as advancedEventOptionsFormConfig
+} from './components/advancedEventOptions';
 import mergeFormConfigs from '../utils/mergeFormConfigs';
-import RegexToggle from '../components/regexToggle';
+import FullWidthField from '../components/fullWidthField';
 
 const Change = ({ showValueField }) => (
-  <div>
-    <ElementFilter />
-    <div>
-      <WrappedField
-        name="showValueField"
-        className="u-block"
-        component={Checkbox}
-        label="and is changed to the following value..."
+  <>
+    <ElementFilter elementSpecificityLabel="When the user changes" />
+
+    <WrappedField name="showValueField" component={Checkbox}>
+      and is changed to the following value...
+    </WrappedField>
+
+    {showValueField ? (
+      <FullWidthField
+        containerMinWidth="size-6000"
+        label="Value"
+        name="value"
+        supportDataElement
+        regexName="valueIsRegex"
+        regexValueFieldName="value"
+        blankSpace={null}
       />
-      {
-        showValueField ?
-          (
-            <div className="u-alignItemsCenter u-flex">
-              <WrappedField
-                name="value"
-                className="u-gapRight u-flexOne u-alignItemsCenter u-flex"
-                placeholder="Value"
-                component={Textfield}
-                componentClassName="u-fullWidth u-minFieldWidth"
-                supportDataElement
-              />
-              <WrappedField
-                name="valueIsRegex"
-                component={RegexToggle}
-                valueFieldName="value"
-              />
-            </div>
-          ) :
-          null
-      }
-    </div>
+    ) : null}
+
     <AdvancedEventOptions />
-  </div>
+  </>
 );
 
 const valueSelector = formValueSelector('default');
-const stateToProps = state => ({
+const stateToProps = (state) => ({
   showValueField: valueSelector(state, 'showValueField')
 });
 

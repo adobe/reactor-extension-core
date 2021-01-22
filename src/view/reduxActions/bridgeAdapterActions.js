@@ -28,7 +28,7 @@ export default handleActions(
         ...action.payload
       }
     }),
-    [MARK_INIT_COMPLETE]: state => ({
+    [MARK_INIT_COMPLETE]: (state) => ({
       ...state,
       initializedByBridge: true
     })

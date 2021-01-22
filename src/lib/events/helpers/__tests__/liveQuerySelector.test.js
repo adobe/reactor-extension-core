@@ -14,10 +14,10 @@
 
 var POLL_INTERVAL = 3000;
 
-describe('liveQuerySelector', function() {
+describe('liveQuerySelector', function () {
   var liveQuerySelector;
 
-  beforeAll(function() {
+  beforeAll(function () {
     // The module may have been previously required by other another module (namely, hover.js)
     // which prevents us from installing a clock that is effective unless we clear the cache and
     // require the module again.
@@ -27,11 +27,11 @@ describe('liveQuerySelector', function() {
     liveQuerySelector = require('../liveQuerySelector');
   });
 
-  afterAll(function() {
+  afterAll(function () {
     jasmine.clock().uninstall();
   });
 
-  it('detects an element added before polling starts', function() {
+  it('detects an element added before polling starts', function () {
     var div = document.createElement('div');
     div.className = 'foo';
     document.body.appendChild(div);
@@ -46,9 +46,9 @@ describe('liveQuerySelector', function() {
     document.body.removeChild(div);
   });
 
-  it('detects an element added after polling starts', function() {
+  it('detects an element added after polling starts', function () {
     // Polling doesn't start until liveQuerySelector is called once.
-    liveQuerySelector('a', function() {});
+    liveQuerySelector('a', function () {});
     jasmine.clock().tick(5000);
 
     var div = document.createElement('div');
@@ -65,7 +65,7 @@ describe('liveQuerySelector', function() {
     document.body.removeChild(div);
   });
 
-  it('calls a callback twice when two elements exist that match the selector', function() {
+  it('calls a callback twice when two elements exist that match the selector', function () {
     var div = document.createElement('div');
     div.className = 'foo';
     document.body.appendChild(div);
@@ -84,7 +84,7 @@ describe('liveQuerySelector', function() {
     document.body.removeChild(div);
   });
 
-  it('calls two callbacks targeting the same element', function() {
+  it('calls two callbacks targeting the same element', function () {
     var div = document.createElement('div');
     div.className = 'foo';
     document.body.appendChild(div);
@@ -103,7 +103,7 @@ describe('liveQuerySelector', function() {
     document.body.removeChild(div);
   });
 
-  it('does not call the same callback again if the element is re-added', function() {
+  it('does not call the same callback again if the element is re-added', function () {
     var div = document.createElement('div');
     div.className = 'foo';
     document.body.appendChild(div);
@@ -127,5 +127,4 @@ describe('liveQuerySelector', function() {
 
     document.body.removeChild(div);
   });
-
 });

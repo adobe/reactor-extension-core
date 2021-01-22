@@ -16,7 +16,7 @@ var decorateNonGlobalJavaScriptCode = require('./decorators/decorateNonGlobalJav
 var decorateHtmlCode = require('./decorators/decorateHtmlCode');
 
 var decorators = {
-  javascript: function(action, source) {
+  javascript: function (action, source) {
     return action.settings.global
       ? decorateGlobalJavaScriptCode(action, source)
       : decorateNonGlobalJavaScriptCode(action, source);
@@ -24,6 +24,6 @@ var decorators = {
   html: decorateHtmlCode
 };
 
-module.exports = function(action, source) {
+module.exports = function (action, source) {
   return decorators[action.settings.language](action, source);
 };

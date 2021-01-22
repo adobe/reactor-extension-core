@@ -11,28 +11,23 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
+import { CheckboxGroup } from '@adobe/react-spectrum';
 import Domain, { formConfig } from '../domain';
-import CheckboxList from '../../components/checkboxList';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const domainsCheckboxList = wrapper.find(CheckboxList);
+  const domainsCheckboxList = wrapper.find(CheckboxGroup);
 
   return {
     domainsCheckboxList
   };
 };
 
-const domains = [
-  'adobe.com',
-  'example.com'
-];
+const domains = ['adobe.com', 'example.com'];
 
-const selectedDomains = [
-  'adobe.com'
-];
+const selectedDomains = ['adobe.com'];
 
 describe('domain condition view', () => {
   let extensionBridge;
@@ -55,7 +50,9 @@ describe('domain condition view', () => {
 
     const { domainsCheckboxList } = getReactComponents(instance);
 
-    expect(domainsCheckboxList.props().options).toEqual(domains);
+    expect(domainsCheckboxList.props().children.map((d) => d.key)).toEqual(
+      domains
+    );
     expect(domainsCheckboxList.props().value).toEqual(selectedDomains);
   });
 

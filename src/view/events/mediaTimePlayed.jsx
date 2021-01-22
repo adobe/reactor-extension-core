@@ -11,13 +11,17 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@react/react-spectrum/Textfield';
-import Select from '@react/react-spectrum/Select';
+import { Flex, TextField, Picker, Item } from '@adobe/react-spectrum';
 import WrappedField from '../components/wrappedField';
-import ElementFilter, { formConfig as elementFilterFormConfig } from './components/elementFilter';
-import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
+import ElementFilter, {
+  formConfig as elementFilterFormConfig
+} from './components/elementFilter';
+import AdvancedEventOptions, {
+  formConfig as advancedEventOptionsFormConfig
+} from './components/advancedEventOptions';
 import { isNumberLikeInRange } from '../utils/validators';
 import mergeFormConfigs from '../utils/mergeFormConfigs';
+import NoWrapText from '../components/noWrapText';
 
 const timePlayedUnit = {
   SECOND: 'second',
@@ -26,36 +30,48 @@ const timePlayedUnit = {
 
 const timePlayedUnitOptions = [
   {
-    value: timePlayedUnit.SECOND,
-    label: 'seconds'
+    id: timePlayedUnit.SECOND,
+    name: 'seconds'
   },
   {
-    value: timePlayedUnit.PERCENT,
-    label: 'percent'
+    id: timePlayedUnit.PERCENT,
+    name: 'percent'
   }
 ];
 
+const label = 'When media has been played for a specified amount of time on';
+
 const MediaTimePlayed = () => (
-  <div>
-    <ElementFilter />
-    <div className="u-gapTop">
-      <label>
-        <span className="u-verticalAlignMiddle u-gapRight">Trigger when</span>
-        <WrappedField
-          name="amount"
-          component={Textfield}
-        />
-      </label>
+  <>
+    <ElementFilter elementSpecificityLabel={label} />
+    <Flex
+      alignItems="end"
+      gap="size-100"
+      marginBottom="size-100"
+      minWidth="size-6000"
+      wrap
+    >
+      <NoWrapText>Trigger when</NoWrapText>
       <WrappedField
-        name="unit"
-        className="u-gapLeft"
-        component={Select}
-        options={timePlayedUnitOptions}
+        name="amount"
+        label="Amount"
+        isRequired
+        component={TextField}
       />
-      <span className="u-verticalAlignMiddle u-gapRight u-gapLeft">have passed</span>
-    </div>
+      <Flex alignItems="end" gap="size-100">
+        <WrappedField
+          name="unit"
+          label="Units"
+          component={Picker}
+          items={timePlayedUnitOptions}
+        >
+          {(item) => <Item>{item.name}</Item>}
+        </WrappedField>
+        <NoWrapText>have passed</NoWrapText>
+      </Flex>
+    </Flex>
     <AdvancedEventOptions />
-  </div>
+  </>
 );
 
 export default MediaTimePlayed;
@@ -78,7 +94,9 @@ export const formConfig = mergeFormConfigs(
         ...errors
       };
 
-      if (!isNumberLikeInRange(values.amount, { min: 0, minInclusive: false })) {
+      if (
+        !isNumberLikeInRange(values.amount, { min: 0, minInclusive: false })
+      ) {
         errors.amount = 'Please specify a positive number';
       }
 

@@ -11,15 +11,16 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@react/react-spectrum/Textfield';
+import { TextField } from '@adobe/react-spectrum';
 import DirectCall, { formConfig } from '../directCall';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const identifierTextfield =
-    wrapper.find(Textfield).filterWhere(n => n.prop('name') === 'identifier');
+  const identifierTextfield = wrapper
+    .find(TextField)
+    .filterWhere((n) => n.prop('name') === 'identifier');
 
   return {
     identifierTextfield

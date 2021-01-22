@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@react/react-spectrum/Textfield';
+import { TextField } from '@adobe/react-spectrum';
 import RegexToggle from '../../components/regexToggle';
 import Subdomain, { formConfig } from '../subdomain';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
@@ -19,8 +19,8 @@ import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const rows = wrapper.find('[data-row]').map(row => ({
-    subdomainTextfield: row.find(Textfield),
+  const rows = wrapper.find('div[data-row]').map((row) => ({
+    subdomainTextfield: row.find(TextField),
     subdomainRegexToggle: row.find(RegexToggle)
   }));
 
@@ -70,7 +70,6 @@ describe('subdomain condition view', () => {
 
     rows[0].subdomainTextfield.props().onChange('goo');
     rows[0].subdomainRegexToggle.props().onChange(true);
-
 
     expect(extensionBridge.getSettings()).toEqual({
       subdomains: [

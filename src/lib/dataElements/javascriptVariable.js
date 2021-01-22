@@ -19,6 +19,6 @@ var getObjectProperty = require('../helpers/getObjectProperty.js');
  * @param {string} settings.path The global path to the variable holding the data element value.
  * @returns {string}
  */
-module.exports = function(settings) {
+module.exports = function (settings) {
   return getObjectProperty(window, settings.path);
 };

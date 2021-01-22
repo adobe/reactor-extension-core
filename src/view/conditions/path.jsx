@@ -11,37 +11,42 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@react/react-spectrum/Textfield';
+import { Flex, TextField, View } from '@adobe/react-spectrum';
 import { FieldArray } from 'redux-form';
 import WrappedField from '../components/wrappedField';
 import RegexToggle from '../components/regexToggle';
 import MultipleItemEditor from './components/multipleItemEditor';
+import NoWrapText from '../components/noWrapText';
 
-const renderItem = field => (
-  <div data-row className="u-inlineBlock u-flexOne u-alignItemsCenter u-flex">
-    <label className="u-gapRight u-flexOne u-alignItemsCenter u-flex">
-      <span className="u-gapRight">Path equals</span>
+const renderItem = (field) => (
+  <Flex data-row flex gap="size-100" alignItems="end">
+    <NoWrapText>path equals</NoWrapText>
+    <View flex>
       <WrappedField
-        className="u-flexOne"
+        label="Path"
+        width="100%"
         name={`${field}.value`}
-        component={Textfield}
-        componentClassName="u-fullWidth u-minFieldWidth"
+        component={TextField}
+        isRequired
       />
-    </label>
+    </View>
     <WrappedField
       name={`${field}.valueIsRegex`}
       component={RegexToggle}
       valueFieldName={`${field}.value`}
     />
-  </div>
+  </Flex>
 );
 
 const Path = () => (
-  <FieldArray
-    name="paths"
-    renderItem={renderItem}
-    component={MultipleItemEditor}
-  />
+  <Flex gap="size-100" direction="column" minWidth="size-6000">
+    <NoWrapText>Return true if</NoWrapText>
+    <FieldArray
+      name="paths"
+      renderItem={renderItem}
+      component={MultipleItemEditor}
+    />
+  </Flex>
 );
 
 export default Path;

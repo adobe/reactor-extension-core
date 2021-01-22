@@ -35,7 +35,7 @@ var typesWatched = [];
  * rules on ancestor elements.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function(settings, trigger) {
+module.exports = function (settings, trigger) {
   var type = settings.type;
 
   if (typesWatched.indexOf(type) === -1) {
@@ -43,7 +43,7 @@ module.exports = function(settings, trigger) {
     window.addEventListener(type, bubbly.evaluateEvent, true);
   }
 
-  bubbly.addListener(settings, function(event) {
+  bubbly.addListener(settings, function (event) {
     if (event.nativeEvent.type === type) {
       // Copying detail up to the top-level makes it easier for users to consume and
       // makes it backward-compatible with DTM.

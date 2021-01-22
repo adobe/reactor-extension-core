@@ -10,7 +10,13 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import StandardEvent, { formConfig as standardEventFormConfig } from './components/standardEvent';
+import React from 'react';
+import StandardEvent, {
+  formConfig as standardEventFormConfig
+} from './components/standardEvent';
 
-export default StandardEvent;
+const label =
+  'When the user agent is trying to fetch media data, but data is unexpectedly not forthcoming on';
+
+export default () => <StandardEvent elementSpecificityLabel={label} />;
 export const formConfig = standardEventFormConfig;

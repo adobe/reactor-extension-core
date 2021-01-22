@@ -11,41 +11,29 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@react/react-spectrum/Textfield';
-import WrappedField from '../components/wrappedField';
-import TooltipPlaceholder from '../components/tooltipPlaceholder';
-import RegexToggle from '../components/regexToggle';
+import { Flex } from '@adobe/react-spectrum';
+import FullWidthField from '../components/fullWidthField';
 
 const Cookie = () => (
-  <div>
-    <label className="u-gapRight u-gapBottom u-noWrap u-alignItemsCenter u-flex">
-      <span className="u-gapRight">Cookie named</span>
-      <WrappedField
-        className="u-flexOne"
-        name="name"
-        component={Textfield}
-        componentClassName="u-fullWidth u-minFieldWidth"
-      />
-      <TooltipPlaceholder />
-    </label>
+  <Flex direction="column" gap="size-100" minWidth="size-6000">
+    <FullWidthField
+      beginText="Return true if the cookie named"
+      label="Cookie name"
+      name="name"
+      isRequired
+      blankSpace={{ width: 'size-1700', marginEnd: 'size-100' }}
+    />
 
-    <div className="u-inlineBlock u-gapRight u-gapBottom u-noWrap u-alignItemsCenter u-flex">
-      <label className="u-gapRight u-flexOne u-alignItemsCenter u-flex">
-        <span className="u-gapRight">has the value</span>
-        <WrappedField
-          className="u-flexOne"
-          name="value"
-          component={Textfield}
-          componentClassName="u-fullWidth u-minFieldWidth"
-        />
-      </label>
-      <WrappedField
-        name="valueIsRegex"
-        component={RegexToggle}
-        valueFieldName="value"
-      />
-    </div>
-  </div>
+    <FullWidthField
+      beginText="has the value"
+      label="Cookie value"
+      name="value"
+      blankSpace={null}
+      regexName="valueIsRegex"
+      regexValueFieldName="value"
+      isRequired
+    />
+  </Flex>
 );
 
 export default Cookie;
@@ -73,7 +61,8 @@ export const formConfig = {
     }
 
     if (!/^[A-Za-z0-9!#$%&'*+\-.^_|~]+$/.test(values.name)) {
-      errors.name = 'The cookie name can be any US-ASCII characters except control characters ' +
+      errors.name =
+        'The cookie name can be any US-ASCII characters except control characters ' +
         '(CTLs), spaces, or tabs. It also must not contain a separator character like the ' +
         'following: ( ) < > @ , ; : \\ " /  [ ] ? = { }';
     }

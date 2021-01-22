@@ -11,20 +11,14 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Radio from '@react/react-spectrum/Radio';
-import RadioGroup from '@react/react-spectrum/RadioGroup';
+import { RadioGroup, Radio } from '@adobe/react-spectrum';
 import WrappedField from '../components/wrappedField';
 
 const Protocol = () => (
-  <div>
-    <WrappedField
-      name="protocol"
-      component={RadioGroup}
-    >
-      <Radio value="http:" label="HTTP" />
-      <Radio value="https:" label="HTTPS" />
-    </WrappedField>
-  </div>
+  <WrappedField name="protocol" label="Protocol" component={RadioGroup}>
+    <Radio value="http:">HTTP</Radio>
+    <Radio value="https:">HTTPS</Radio>
+  </WrappedField>
 );
 
 export default Protocol;

@@ -14,13 +14,12 @@
 
 var dataElementDelegate = require('../constant');
 
-describe('constant data element delegate', function() {
-  it('returns the value set', function() {
+describe('constant data element delegate', function () {
+  it('returns the value set', function () {
     var settings = {
       value: 'foo'
     };
 
     expect(dataElementDelegate(settings)).toBe('foo');
   });
-
 });

@@ -14,36 +14,36 @@
 
 var conditionDelegate = require('../dateRange');
 
-describe('date range condition delegate', function() {
-  it('returns true when date is after start date', function() {
+describe('date range condition delegate', function () {
+  it('returns true when date is after start date', function () {
     var start = new Date();
     start.setHours(start.getHours() - 1);
     var settings = { start: start.toISOString() };
     expect(conditionDelegate(settings)).toBe(true);
   });
 
-  it('returns false when date is before start date', function() {
+  it('returns false when date is before start date', function () {
     var start = new Date();
     start.setHours(start.getHours() + 1);
     var settings = { start: start.toISOString() };
     expect(conditionDelegate(settings)).toBe(false);
   });
 
-  it('returns true when date is before end date', function() {
+  it('returns true when date is before end date', function () {
     var end = new Date();
     end.setHours(end.getHours() + 1);
     var settings = { end: end.toISOString() };
     expect(conditionDelegate(settings)).toBe(true);
   });
 
-  it('returns false when date is after end date', function() {
+  it('returns false when date is after end date', function () {
     var end = new Date();
     end.setHours(end.getHours() - 1);
     var settings = { end: end.toISOString() };
     expect(conditionDelegate(settings)).toBe(false);
   });
 
-  it('returns true when date is after start date and before end date', function() {
+  it('returns true when date is after start date and before end date', function () {
     var start = new Date();
     start.setHours(start.getHours() - 1);
     var end = new Date();
@@ -52,7 +52,7 @@ describe('date range condition delegate', function() {
     expect(conditionDelegate(settings)).toBe(true);
   });
 
-  it('returns false when date is before start date and end date', function() {
+  it('returns false when date is before start date and end date', function () {
     var start = new Date();
     start.setHours(start.getHours() + 1);
     var end = new Date();
@@ -61,7 +61,7 @@ describe('date range condition delegate', function() {
     expect(conditionDelegate(settings)).toBe(false);
   });
 
-  it('returns false when date is after start date and end date', function() {
+  it('returns false when date is after start date and end date', function () {
     var start = new Date();
     start.setHours(start.getHours() - 2);
     var end = new Date();

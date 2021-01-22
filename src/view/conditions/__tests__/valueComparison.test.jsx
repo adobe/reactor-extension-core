@@ -11,10 +11,7 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@react/react-spectrum/Textfield';
-import Select from '@react/react-spectrum/Select';
-import { Toast } from '@react/react-spectrum/Toast';
-import Checkbox from '@react/react-spectrum/Checkbox';
+import { TextField, Picker, Well, Checkbox } from '@adobe/react-spectrum';
 import WrappedField from '../../components/wrappedField';
 import ValueComparison, { formConfig } from '../valueComparison';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
@@ -23,19 +20,27 @@ import bootstrap from '../../bootstrap';
 const getReactComponents = (wrapper) => {
   wrapper.update();
   const fields = wrapper.find(WrappedField);
-  const leftOperandField = fields.filterWhere(n => n.prop('name') === 'leftOperand');
-  const leftOperandTextfield = leftOperandField.find(Textfield);
+  const leftOperandField = fields.filterWhere(
+    (n) => n.prop('name') === 'leftOperand'
+  );
+  const leftOperandTextfield = leftOperandField.find(TextField);
 
-  const operatorField = fields.filterWhere(n => n.prop('name') === 'operator');
-  const operatorSelect = operatorField.find(Select);
+  const operatorField = fields.filterWhere(
+    (n) => n.prop('name') === 'operator'
+  );
+  const operatorSelect = operatorField.find(Picker);
 
-  const rightOperandField = fields.filterWhere(n => n.prop('name') === 'rightOperand');
-  const rightOperandTextfield = rightOperandField.find(Textfield);
+  const rightOperandField = fields.filterWhere(
+    (n) => n.prop('name') === 'rightOperand'
+  );
+  const rightOperandTextfield = rightOperandField.find(TextField);
 
-  const caseInsensitiveField = fields.filterWhere(n => n.prop('name') === 'caseInsensitive');
+  const caseInsensitiveField = fields.filterWhere(
+    (n) => n.prop('name') === 'caseInsensitive'
+  );
   const caseInsensitiveCheckbox = caseInsensitiveField.find(Checkbox);
 
-  const noTypeConversionReminders = wrapper.find(Toast);
+  const noTypeConversionReminders = wrapper.find(Well);
 
   return {
     leftOperandTextfield,
@@ -56,10 +61,7 @@ describe('value comparison condition view', () => {
   });
 
   describe('equal-based comparisons', () => {
-    [
-      'equals',
-      'doesNotEqual'
-    ].forEach((operator) => {
+    ['equals', 'doesNotEqual'].forEach((operator) => {
       describe(`when operator is ${operator}`, () => {
         it('sets form values from settings ', () => {
           extensionBridge.init({
@@ -91,10 +93,9 @@ describe('value comparison condition view', () => {
         it('sets settings from form values', () => {
           extensionBridge.init();
 
-          const {
-            leftOperandTextfield,
-            operatorSelect
-          } = getReactComponents(instance);
+          const { leftOperandTextfield, operatorSelect } = getReactComponents(
+            instance
+          );
 
           leftOperandTextfield.props().onChange('%foo%');
           operatorSelect.props().onChange(operator);
@@ -132,7 +133,6 @@ describe('value comparison condition view', () => {
             leftOperandTextfield,
             rightOperandTextfield
           } = getReactComponents(instance);
-
 
           expect(leftOperandTextfield.props().validationState).toBe('invalid');
           // We allow empty strings for equals operands because users may want to check to
@@ -183,10 +183,9 @@ describe('value comparison condition view', () => {
         it('sets settings from form values', () => {
           extensionBridge.init();
 
-          const {
-            leftOperandTextfield,
-            operatorSelect
-          } = getReactComponents(instance);
+          const { leftOperandTextfield, operatorSelect } = getReactComponents(
+            instance
+          );
 
           leftOperandTextfield.props().onChange('%foo%');
           operatorSelect.props().onChange(operator);
@@ -265,17 +264,14 @@ describe('value comparison condition view', () => {
         it('sets settings from form values', () => {
           extensionBridge.init();
 
-          const {
-            leftOperandTextfield,
-            operatorSelect
-          } = getReactComponents(instance);
+          const { leftOperandTextfield, operatorSelect } = getReactComponents(
+            instance
+          );
 
           leftOperandTextfield.props().onChange('%foo%');
           operatorSelect.props().onChange(operator);
 
-          const {
-            rightOperandTextfield
-          } = getReactComponents(instance);
+          const { rightOperandTextfield } = getReactComponents(instance);
 
           rightOperandTextfield.props().onChange('456');
 
@@ -314,12 +310,7 @@ describe('value comparison condition view', () => {
   });
 
   describe('static right operand comparisons', () => {
-    [
-      'isTrue',
-      'isTruthy',
-      'isFalse',
-      'isFalsy'
-    ].forEach((operator) => {
+    ['isTrue', 'isTruthy', 'isFalse', 'isFalsy'].forEach((operator) => {
       describe(`when operator is ${operator}`, () => {
         it('sets form values from settings', () => {
           extensionBridge.init({
@@ -331,10 +322,9 @@ describe('value comparison condition view', () => {
             }
           });
 
-          const {
-            leftOperandTextfield,
-            operatorSelect
-          } = getReactComponents(instance);
+          const { leftOperandTextfield, operatorSelect } = getReactComponents(
+            instance
+          );
 
           expect(leftOperandTextfield.props().value).toBe('%foo%');
           expect(operatorSelect.props().value).toBe(operator);
@@ -343,10 +333,9 @@ describe('value comparison condition view', () => {
         it('sets settings from form values', () => {
           extensionBridge.init();
 
-          const {
-            leftOperandTextfield,
-            operatorSelect
-          } = getReactComponents(instance);
+          const { leftOperandTextfield, operatorSelect } = getReactComponents(
+            instance
+          );
 
           leftOperandTextfield.props().onChange('%foo%');
           operatorSelect.props().onChange(operator);
@@ -369,9 +358,7 @@ describe('value comparison condition view', () => {
           });
           expect(extensionBridge.validate()).toBe(false);
 
-          const {
-            leftOperandTextfield
-          } = getReactComponents(instance);
+          const { leftOperandTextfield } = getReactComponents(instance);
 
           expect(leftOperandTextfield.props().validationState).toBe('invalid');
         });
@@ -391,9 +378,7 @@ describe('value comparison condition view', () => {
       }
     });
 
-    const {
-      noTypeConversionReminders
-    } = getReactComponents(instance);
+    const { noTypeConversionReminders } = getReactComponents(instance);
 
     expect(noTypeConversionReminders.length).toBe(1);
   });

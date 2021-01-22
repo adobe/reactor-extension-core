@@ -11,22 +11,14 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Radio from '@react/react-spectrum/Radio';
+import { RadioGroup } from '@adobe/react-spectrum';
 import Protocol, { formConfig } from '../protocol';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const radios = wrapper.find(Radio);
-
-  const httpRadio = radios.filterWhere(n => n.prop('value') === 'http:');
-  const httpsRadio = radios.filterWhere(n => n.prop('value') === 'https:');
-
-  return {
-    httpRadio,
-    httpsRadio
-  };
+  return { radioGroup: wrapper.find(RadioGroup) };
 };
 
 describe('protocol condition view', () => {
@@ -41,10 +33,8 @@ describe('protocol condition view', () => {
   it('sets http radio as checked by default', () => {
     extensionBridge.init();
 
-    const { httpRadio, httpsRadio } = getReactComponents(instance);
-
-    expect(httpRadio.props().checked).toBe(true);
-    expect(httpsRadio.props().checked).toBe(false);
+    const { radioGroup } = getReactComponents(instance);
+    expect(radioGroup.props().value).toBe('http:');
   });
 
   it('sets form values from settings', () => {
@@ -54,18 +44,16 @@ describe('protocol condition view', () => {
       }
     });
 
-    const { httpRadio, httpsRadio } = getReactComponents(instance);
-
-    expect(httpRadio.props().checked).toBe(false, { stopPropagation() {} });
-    expect(httpsRadio.props().checked).toBe(true, { stopPropagation() {} });
+    const { radioGroup } = getReactComponents(instance);
+    expect(radioGroup.props().value).toBe('https:');
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { httpsRadio } = getReactComponents(instance);
+    const { radioGroup } = getReactComponents(instance);
 
-    httpsRadio.props().onChange('https:', { stopPropagation() {} });
+    radioGroup.props().onChange('https:', { stopPropagation() {} });
 
     expect(extensionBridge.getSettings()).toEqual({
       protocol: 'https:'

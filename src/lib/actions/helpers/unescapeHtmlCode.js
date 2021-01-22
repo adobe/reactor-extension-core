@@ -14,7 +14,7 @@ governing permissions and limitations under the License.
 var document = require('@adobe/reactor-document');
 var el = document.createElement('div');
 
-module.exports = function(html) {
+module.exports = function (html) {
   el.innerHTML = html;
 
   // IE and Firefox differ.

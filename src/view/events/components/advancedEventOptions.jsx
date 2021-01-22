@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Checkbox from '@react/react-spectrum/Checkbox';
+import { Checkbox, Flex, View } from '@adobe/react-spectrum';
 import WrappedField from '../../components/wrappedField';
 import DisclosureButton from '../../components/disclosureButton';
 
@@ -38,44 +38,35 @@ export default class AdvancedEventOptions extends React.Component {
 
     if (expanded) {
       advancedPanel = (
-        <div className="u-gapTop">
-          <WrappedField
-            name="bubbleFireIfParent"
-            className="u-block"
-            component={Checkbox}
-            label="Run this rule even when the event originates from a descendant element"
-          />
+        <Flex marginTop="size-50" marginStart="size-125" direction="column">
+          <WrappedField name="bubbleFireIfParent" component={Checkbox}>
+            Run this rule even when the event originates from a descendant
+            element
+          </WrappedField>
 
-          <WrappedField
-            name="bubbleFireIfChildFired"
-            className="u-block"
-            component={Checkbox}
-            label="Allow this rule to run even if the event already triggered a rule targeting
-              a descendant element"
-          />
+          <WrappedField name="bubbleFireIfChildFired" component={Checkbox}>
+            Allow this rule to run even if the event already triggered a rule
+            targeting a descendant element
+          </WrappedField>
 
-          <WrappedField
-            name="bubbleStop"
-            className="u-block"
-            component={Checkbox}
-            label="After the rule runs, prevent the event from triggering rules targeting
-              ancestor elements"
-          />
-        </div>
+          <WrappedField name="bubbleStop" component={Checkbox}>
+            After the rule runs, prevent the event from triggering rules
+            targeting ancestor elements
+          </WrappedField>
+        </Flex>
       );
     }
 
     return (
-      <div>
-        <div className="AdvancedEventOptions-disclosureButtonContainer">
-          <DisclosureButton
-            label="Advanced"
-            selected={expanded}
-            onClick={this.toggleSelected}
-          />
-        </div>
-        { advancedPanel }
-      </div>
+      <View>
+        <DisclosureButton
+          label="Advanced"
+          selected={expanded}
+          onClick={this.toggleSelected}
+        />
+
+        {advancedPanel}
+      </View>
     );
   }
 }

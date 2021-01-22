@@ -13,8 +13,8 @@ governing permissions and limitations under the License.
 
 var decorateNonGlobalJavaScriptCodeInjector = require('inject-loader!../decorateNonGlobalJavaScriptCode');
 
-describe('decorate non global javascript code', function() {
-  it('decorates javascript action and returns it on the code key', function() {
+describe('decorate non global javascript code', function () {
+  it('decorates javascript action and returns it on the code key', function () {
     var settings = {
       language: 'javascript',
       source: 'console.log("logging")'
@@ -39,7 +39,7 @@ describe('decorate non global javascript code', function() {
   it(
     'sends the event, target and our Promise to the random generated method ' +
       'for a javascript action',
-    function() {
+    function () {
       var event = {
         element: {},
         target: {}
@@ -51,7 +51,7 @@ describe('decorate non global javascript code', function() {
       };
       var spy = jasmine.createSpy('fn');
 
-      var mockPromise = function(fn) {
+      var mockPromise = function (fn) {
         return new Promise(fn);
       };
 
@@ -80,7 +80,7 @@ describe('decorate non global javascript code', function() {
     }
   );
 
-  it('clears the random generated method for a javascript action after its execution', function() {
+  it('clears the random generated method for a javascript action after its execution', function () {
     var settings = {
       language: 'javascript',
       source: 'console.log("logging")'
@@ -97,11 +97,11 @@ describe('decorate non global javascript code', function() {
     );
 
     expect(_satellite['_runScript1']).toBeDefined();
-    _satellite['_runScript1'](function() {});
+    _satellite['_runScript1'](function () {});
     expect(_satellite['_runScript1']).not.toBeDefined();
   });
 
-  it('handles javascript code that returns promises that resolve', function(done) {
+  it('handles javascript code that returns promises that resolve', function (done) {
     var settings = {
       language: 'javascript',
       // This code here is present only for example purposes. The code is not written to the page,
@@ -118,19 +118,19 @@ describe('decorate non global javascript code', function() {
         event: {}
       },
       settings.source
-    ).promise.then(function(r) {
+    ).promise.then(function (r) {
       expect(r).toBe('resolved from inside the promise');
       done();
     });
 
-    _satellite['_runScript1'](function(event, target, Promise) {
-      return new Promise(function(resolve, reject) {
+    _satellite['_runScript1'](function (event, target, Promise) {
+      return new Promise(function (resolve, reject) {
         resolve('resolved from inside the promise');
       });
     });
   });
 
-  it('handles javascript code that returns promises that reject', function(done) {
+  it('handles javascript code that returns promises that reject', function (done) {
     var settings = {
       language: 'javascript',
       // This code here is present only for example purposes. The code is not written to the page,
@@ -147,19 +147,19 @@ describe('decorate non global javascript code', function() {
         event: {}
       },
       settings.source
-    ).promise.catch(function(r) {
+    ).promise.catch(function (r) {
       expect(r).toBe('rejected from inside the promise');
       done();
     });
 
-    _satellite['_runScript1'](function(event, target, Promise) {
-      return new Promise(function(resolve, reject) {
+    _satellite['_runScript1'](function (event, target, Promise) {
+      return new Promise(function (resolve, reject) {
         reject('rejected from inside the promise');
       });
     });
   });
 
-  it('handles javascript code that throws error', function(done) {
+  it('handles javascript code that throws error', function (done) {
     var settings = {
       language: 'javascript',
       // This code here is present only for example purposes. The code is not written to the page,
@@ -176,17 +176,17 @@ describe('decorate non global javascript code', function() {
         event: {}
       },
       settings.source
-    ).promise.catch(function(e) {
+    ).promise.catch(function (e) {
       expect(e.message).toBe('error from inside code');
       done();
     });
 
-    _satellite['_runScript1'](function() {
+    _satellite['_runScript1'](function () {
       throw new Error('error from inside code');
     });
   });
 
-  it('returns a promise on the promise key', function() {
+  it('returns a promise on the promise key', function () {
     var settings = {
       language: 'javascript',
       source: 'console.log("logging")'
@@ -195,7 +195,7 @@ describe('decorate non global javascript code', function() {
     var p = Promise.resolve();
     var decorateNonGlobalJavaScriptCode = decorateNonGlobalJavaScriptCodeInjector(
       {
-        '@adobe/reactor-promise': function() {
+        '@adobe/reactor-promise': function () {
           return p;
         }
       }

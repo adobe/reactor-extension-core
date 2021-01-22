@@ -11,30 +11,23 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Checkbox from '@react/react-spectrum/Checkbox';
-import Textfield from '@react/react-spectrum/Textfield';
+import { Flex, Checkbox } from '@adobe/react-spectrum';
 import WrappedField from '../components/wrappedField';
-import TooltipPlaceholder from '../components/tooltipPlaceholder';
+import FullWidthField from '../components/fullWidthField';
 
 const QueryStringParameter = () => (
-  <div>
-    <label className="u-gapRight u-alignItemsCenter u-flex">
-      <span className="u-gapRight">URL Query String Parameter Name</span>
-      <WrappedField
-        className="u-flexOne"
-        name="name"
-        component={Textfield}
-        componentClassName="u-fullWidth u-minFieldWidth"
-      />
-      <TooltipPlaceholder />
-    </label>
-    <WrappedField
-      name="caseInsensitive"
-      component={Checkbox}
-    >
+  <Flex direction="column" gap="size-100">
+    <FullWidthField
+      label="URL Query String Parameter Name"
+      name="name"
+      containerMinWidth="size-6000"
+      isRequired
+    />
+
+    <WrappedField name="caseInsensitive" component={Checkbox}>
       Allow capitalization differences (case-insensitive)
     </WrappedField>
-  </div>
+  </Flex>
 );
 
 export default QueryStringParameter;

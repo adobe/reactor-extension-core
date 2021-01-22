@@ -11,21 +11,15 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@react/react-spectrum/Textfield';
-import WrappedField from '../components/wrappedField';
-import TooltipPlaceholder from '../components/tooltipPlaceholder';
+import FullWidthField from '../components/fullWidthField';
 
 const DirectCall = () => (
-  <label className="u-alignItemsCenter u-flex">
-    <span className="u-gapRight">Direct Call Identifier</span>
-    <WrappedField
-      className="u-flexOne"
-      name="identifier"
-      component={Textfield}
-      componentClassName="u-fullWidth u-minFieldWidth"
-    />
-    <TooltipPlaceholder />
-  </label>
+  <FullWidthField
+    label="Direct Call Identifier"
+    name="identifier"
+    containerMinWidth="size-6000"
+    isRequired
+  />
 );
 
 export default DirectCall;

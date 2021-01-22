@@ -14,7 +14,7 @@
 
 var textMatch = require('./../../helpers/textMatch');
 
-var getElementProperty = function(element, property) {
+var getElementProperty = function (element, property) {
   if (property === '@text' || property === 'innerText') {
     return element.textContent || element.innerText;
   } else if (property in element) {
@@ -36,11 +36,13 @@ var getElementProperty = function(element, property) {
  * object instance is intended to be a regular expression.
  * @returns {boolean} Whether the element matches the criteria.
  */
-module.exports = function(element, properties) {
+module.exports = function (element, properties) {
   if (properties) {
-    return properties.every(function(property) {
+    return properties.every(function (property) {
       var actualValue = getElementProperty(element, property.name);
-      var criterionValue = property.valueIsRegex ? new RegExp(property.value, 'i') : property.value;
+      var criterionValue = property.valueIsRegex
+        ? new RegExp(property.value, 'i')
+        : property.value;
       return textMatch(actualValue, criterionValue);
     });
   }

@@ -13,7 +13,7 @@
 'use strict';
 
 var mockVisitorTracking = {
-  getLandingPage: function() {
+  getLandingPage: function () {
     return 'http://landingpage.com/test.html';
   }
 };
@@ -23,30 +23,30 @@ var conditionDelegate = conditionDelegateInjector({
   '../helpers/visitorTracking': mockVisitorTracking
 });
 
-var getSettings = function(page, pageIsRegex) {
+var getSettings = function (page, pageIsRegex) {
   return {
     page: page,
     pageIsRegex: pageIsRegex
   };
 };
 
-describe('landing page condition delegate', function() {
-  it('returns true when the landing page matches a string', function() {
+describe('landing page condition delegate', function () {
+  it('returns true when the landing page matches a string', function () {
     var settings = getSettings('http://landingpage.com/test.html', false);
     expect(conditionDelegate(settings)).toBe(true);
   });
 
-  it('returns false when the landing page does not match a string', function() {
+  it('returns false when the landing page does not match a string', function () {
     var settings = getSettings('http://foo.com/bar.html', false);
     expect(conditionDelegate(settings)).toBe(false);
   });
 
-  it('returns true when the landing page matches a regex', function() {
+  it('returns true when the landing page matches a regex', function () {
     var settings = getSettings('Landingpage\\.com\\/t.st', true);
     expect(conditionDelegate(settings)).toBe(true);
   });
 
-  it('returns false when the landing page does not match a regex', function() {
+  it('returns false when the landing page does not match a regex', function () {
     var settings = getSettings('f.o', true);
     expect(conditionDelegate(settings)).toBe(false);
   });

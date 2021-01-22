@@ -21,7 +21,7 @@
  * random number.
  * @returns {number}
  */
-module.exports = function(settings) {
+module.exports = function (settings) {
   var min = Math.ceil(settings.min);
   var max = Math.floor(settings.max);
 

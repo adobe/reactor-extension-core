@@ -12,9 +12,11 @@
 
 'use strict';
 
-describe('media pause event delegate', function() {
+describe('media pause event delegate', function () {
   var testStandardEvent = require('./helpers/testStandardEvent');
   var delegate = require('../mediaPause');
 
-  testStandardEvent(function() { return delegate; }, 'pause');
+  testStandardEvent(function () {
+    return delegate;
+  }, 'pause');
 });

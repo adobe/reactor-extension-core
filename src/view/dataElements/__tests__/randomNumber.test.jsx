@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@react/react-spectrum/Textfield';
+import { TextField } from '@adobe/react-spectrum';
 import WrappedField from '../../components/wrappedField';
 import RandomNumber, { formConfig } from '../randomNumber';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
@@ -20,10 +20,10 @@ import bootstrap from '../../bootstrap';
 const getReactComponents = (wrapper) => {
   wrapper.update();
   const fields = wrapper.find(WrappedField);
-  const minField = fields.filterWhere(n => n.prop('name') === 'min');
-  const maxField = fields.filterWhere(n => n.prop('name') === 'max');
-  const minTextfield = minField.find(Textfield);
-  const maxTextfield = maxField.find(Textfield);
+  const minField = fields.filterWhere((n) => n.prop('name') === 'min');
+  const maxField = fields.filterWhere((n) => n.prop('name') === 'max');
+  const minTextfield = minField.find(TextField);
+  const maxTextfield = maxField.find(TextField);
 
   return {
     minTextfield,

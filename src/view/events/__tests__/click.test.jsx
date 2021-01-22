@@ -11,8 +11,7 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@react/react-spectrum/Textfield';
-import Checkbox from '@react/react-spectrum/Checkbox';
+import { TextField, Checkbox } from '@adobe/react-spectrum';
 import WrappedField from '../../components/wrappedField';
 import Click, { formConfig } from '../click';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
@@ -24,13 +23,20 @@ const getReactComponents = (wrapper) => {
   const checkboxes = wrapper.find(Checkbox);
   const fields = wrapper.find(WrappedField);
 
-  const delayLinkActivationCheckbox = checkboxes
-    .filterWhere(n => n.prop('name') === 'delayLinkActivation');
-  const anchorDelayField = fields.filterWhere(n => n.prop('name') === 'anchorDelay');
-  const anchorDelayTextfield = anchorDelayField.find(Textfield);
-  const elementSelectorField = fields.filterWhere(n => n.prop('name') === 'elementSelector');
-  const elementSelectorTextfield = elementSelectorField.find(Textfield);
-  const bubbleStopCheckbox = checkboxes.filterWhere(n => n.prop('name') === 'bubbleStop');
+  const delayLinkActivationCheckbox = checkboxes.filterWhere(
+    (n) => n.prop('name') === 'delayLinkActivation'
+  );
+  const anchorDelayField = fields.filterWhere(
+    (n) => n.prop('name') === 'anchorDelay'
+  );
+  const anchorDelayTextfield = anchorDelayField.find(TextField);
+  const elementSelectorField = fields.filterWhere(
+    (n) => n.prop('name') === 'elementSelector'
+  );
+  const elementSelectorTextfield = elementSelectorField.find(TextField);
+  const bubbleStopCheckbox = checkboxes.filterWhere(
+    (n) => n.prop('name') === 'bubbleStop'
+  );
   const advancedEventOptions = wrapper.find(AdvancedEventOptions);
 
   return {
@@ -93,7 +99,11 @@ describe('click event view', () => {
     elementSelectorTextfield.props().onChange('.foo');
     bubbleStopCheckbox.props().onChange(true);
 
-    const { anchorDelay, elementSelector, bubbleStop } = extensionBridge.getSettings();
+    const {
+      anchorDelay,
+      elementSelector,
+      bubbleStop
+    } = extensionBridge.getSettings();
 
     expect(anchorDelay).toBe(101);
     expect(elementSelector).toBe('.foo');

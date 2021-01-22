@@ -24,7 +24,9 @@ var textMatch = require('../helpers/textMatch');
  * be a regular expression.
  * @returns {boolean}
  */
-module.exports = function(settings) {
-  var acceptableValue = settings.valueIsRegex ? new RegExp(settings.value, 'i') : settings.value;
+module.exports = function (settings) {
+  var acceptableValue = settings.valueIsRegex
+    ? new RegExp(settings.value, 'i')
+    : settings.value;
   return textMatch(getObjectProperty(window, settings.name), acceptableValue);
 };

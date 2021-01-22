@@ -26,7 +26,7 @@ var PAGE_BOTTOM = 'PAGE_BOTTOM';
 
 var lifecycleEventsOrder = [PAGE_BOTTOM, DOM_READY, WINDOW_LOADED];
 
-var createSyntheticEvent = function(element, nativeEvent) {
+var createSyntheticEvent = function (element, nativeEvent) {
   return {
     element: element,
     target: element,
@@ -35,19 +35,19 @@ var createSyntheticEvent = function(element, nativeEvent) {
 };
 
 var registry = {};
-lifecycleEventsOrder.forEach(function(event) {
+lifecycleEventsOrder.forEach(function (event) {
   registry[event] = [];
 });
 
-var processRegistry = function(lifecycleEvent, nativeEvent) {
+var processRegistry = function (lifecycleEvent, nativeEvent) {
   lifecycleEventsOrder
     .slice(0, getLifecycleEventIndex(lifecycleEvent) + 1)
-    .forEach(function(lifecycleEvent) {
+    .forEach(function (lifecycleEvent) {
       processTriggers(nativeEvent, lifecycleEvent);
     });
 };
 
-var detectLifecycleEvent = function() {
+var detectLifecycleEvent = function () {
   if (document.readyState === 'complete') {
     return WINDOW_LOADED;
   } else if (document.readyState === 'interactive') {
@@ -55,18 +55,18 @@ var detectLifecycleEvent = function() {
   }
 };
 
-var getLifecycleEventIndex = function(event) {
+var getLifecycleEventIndex = function (event) {
   return lifecycleEventsOrder.indexOf(event);
 };
 
-var processTriggers = function(nativeEvent, lifecycleEvent) {
-  registry[lifecycleEvent].forEach(function(triggerData) {
+var processTriggers = function (nativeEvent, lifecycleEvent) {
+  registry[lifecycleEvent].forEach(function (triggerData) {
     processTrigger(nativeEvent, triggerData);
   });
   registry[lifecycleEvent] = [];
 };
 
-var processTrigger = function(nativeEvent, triggerData) {
+var processTrigger = function (nativeEvent, triggerData) {
   var trigger = triggerData.trigger;
   var syntheticEventFn = triggerData.syntheticEventFn;
 
@@ -95,7 +95,7 @@ window.addEventListener(
 // triggers for a lifecycle event only once. We used a `setTimeout` here to make sure all the rules
 // using Library Loaded are registered and executed synchronously and before rules using any of the
 // other lifecycle event types.
-window.setTimeout(function() {
+window.setTimeout(function () {
   var lifecycleEvent = detectLifecycleEvent();
   if (lifecycleEvent) {
     processRegistry(lifecycleEvent);
@@ -103,21 +103,21 @@ window.setTimeout(function() {
 }, 0);
 
 module.exports = {
-  registerLibraryLoadedTrigger: function(trigger) {
+  registerLibraryLoadedTrigger: function (trigger) {
     trigger();
   },
-  registerPageBottomTrigger: function(trigger) {
+  registerPageBottomTrigger: function (trigger) {
     registry[PAGE_BOTTOM].push({
       trigger: trigger
     });
   },
-  registerDomReadyTrigger: function(trigger) {
+  registerDomReadyTrigger: function (trigger) {
     registry[DOM_READY].push({
       trigger: trigger,
       syntheticEventFn: createSyntheticEvent.bind(null, document)
     });
   },
-  registerWindowLoadedTrigger: function(trigger) {
+  registerWindowLoadedTrigger: function (trigger) {
     registry[WINDOW_LOADED].push({
       trigger: trigger,
       syntheticEventFn: createSyntheticEvent.bind(null, window)

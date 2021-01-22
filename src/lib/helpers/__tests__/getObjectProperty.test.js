@@ -14,8 +14,8 @@
 
 var getObjectProperty = require('../getObjectProperty');
 
-describe('getObjectProperty', function() {
-  it('returns an object property value', function() {
+describe('getObjectProperty', function () {
+  it('returns an object property value', function () {
     var obj = {
       my: {
         path: 'bar'

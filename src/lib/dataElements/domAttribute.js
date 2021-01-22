@@ -20,7 +20,7 @@
  * element.
  * @returns {string}
  */
-module.exports = function(settings) {
+module.exports = function (settings) {
   var element = document.querySelector(settings.elementSelector);
 
   if (element) {

@@ -19,7 +19,7 @@ var visibilityChangeListener;
 
 var mockDocument = {
   location: 'somelocation',
-  addEventListener: function(event, listener) {
+  addEventListener: function (event, listener) {
     if (event && event === visibilityApiInstance.visibilityChangeEventType) {
       visibilityChangeListener = listener;
     }
@@ -30,14 +30,16 @@ var delegate = eventDelegateInjector({
   '@adobe/reactor-document': mockDocument
 });
 
-var isIE = function() {
+var isIE = function () {
   var myNav = navigator.userAgent.toLowerCase();
-  return (myNav.indexOf('msie') !== -1) ? parseInt(myNav.split('msie')[1]) : false;
+  return myNav.indexOf('msie') !== -1
+    ? parseInt(myNav.split('msie')[1])
+    : false;
 };
 
-describe('tab blur event delegate', function() {
-  if (!isIE () || isIE() > 9) {
-    it('triggers rule when the tabblur event occurs', function() {
+describe('tab blur event delegate', function () {
+  if (!isIE() || isIE() > 9) {
+    it('triggers rule when the tabblur event occurs', function () {
       var trigger = jasmine.createSpy();
 
       delegate({}, trigger);

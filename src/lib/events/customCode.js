@@ -18,6 +18,6 @@
  * @param {Object} settings The event settings object.
  * @param {Function} settings.source The custom script function.
  */
-module.exports = function(settings, trigger) {
+module.exports = function (settings, trigger) {
   settings.source(trigger);
 };

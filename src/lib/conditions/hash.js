@@ -24,12 +24,12 @@ var textMatch = require('../helpers/textMatch');
  * instance is intended to be a regular expression.
  * @returns {boolean}
  */
-module.exports = function(settings) {
+module.exports = function (settings) {
   var hash = document.location.hash;
-  return settings.hashes.some(function(acceptableHash) {
-    var acceptableValue = acceptableHash.valueIsRegex ?
-      new RegExp(acceptableHash.value, 'i') : acceptableHash.value;
+  return settings.hashes.some(function (acceptableHash) {
+    var acceptableValue = acceptableHash.valueIsRegex
+      ? new RegExp(acceptableHash.value, 'i')
+      : acceptableHash.value;
     return textMatch(hash, acceptableValue);
   });
 };
-

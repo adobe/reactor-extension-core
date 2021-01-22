@@ -13,18 +13,23 @@ governing permissions and limitations under the License.
 var Promise = require('@adobe/reactor-promise');
 var id = 0;
 
-module.exports = function(action, source) {
+module.exports = function (action, source) {
   var runScriptFnName = '_runScript' + ++id;
 
-  var promise = new Promise(function(resolve, reject) {
-    _satellite[runScriptFnName] = function(fn) {
+  var promise = new Promise(function (resolve, reject) {
+    _satellite[runScriptFnName] = function (fn) {
       delete _satellite[runScriptFnName];
 
       // Use Promise constructor instead of Promise.resolve() so we can
       // catch errors from custom code.
-      new Promise(function(_resolve) {
+      new Promise(function (_resolve) {
         _resolve(
-          fn.call(action.event.element, action.event, action.event.target, Promise)
+          fn.call(
+            action.event.element,
+            action.event,
+            action.event.target,
+            Promise
+          )
         );
       }).then(resolve, reject);
     };

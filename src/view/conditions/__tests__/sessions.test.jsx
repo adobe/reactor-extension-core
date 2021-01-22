@@ -11,16 +11,15 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@react/react-spectrum/Textfield';
-import Select from '@react/react-spectrum/Select';
+import { TextField, Picker } from '@adobe/react-spectrum';
 import Sessions, { formConfig } from '../sessions';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const operatorSelect = wrapper.find(Select);
-  const countTextfield = wrapper.find(Textfield);
+  const operatorSelect = wrapper.find(Picker);
+  const countTextfield = wrapper.find(TextField);
 
   return {
     operatorSelect,

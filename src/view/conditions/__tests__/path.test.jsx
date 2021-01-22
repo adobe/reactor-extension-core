@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@react/react-spectrum/Textfield';
+import { TextField } from '@adobe/react-spectrum';
 import RegexToggle from '../../components/regexToggle';
 import Path, { formConfig } from '../path';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
@@ -19,8 +19,8 @@ import bootstrap from '../../bootstrap';
 
 const getReactComponents = (wrapper) => {
   wrapper.update();
-  const rows = wrapper.find('[data-row]').map(row => ({
-    pathTextfield: row.find(Textfield),
+  const rows = wrapper.find('div[data-row]').map((row) => ({
+    pathTextfield: row.find(TextField),
     pathRegexToggle: row.find(RegexToggle)
   }));
 

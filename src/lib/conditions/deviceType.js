@@ -21,7 +21,6 @@ var clientInfo = require('./helpers/clientInfo');
  * @param {string[]} settings.deviceTypes An array of device types.
  * @returns {boolean}
  */
-module.exports = function(settings) {
+module.exports = function (settings) {
   return settings.deviceTypes.indexOf(clientInfo.deviceType) !== -1;
 };
-

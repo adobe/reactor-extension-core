@@ -11,38 +11,42 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@react/react-spectrum/Textfield';
+import { Flex, TextField, View } from '@adobe/react-spectrum';
 import { FieldArray } from 'redux-form';
 import WrappedField from '../components/wrappedField';
-
+import NoWrapText from '../components/noWrapText';
 import RegexToggle from '../components/regexToggle';
 import MultipleItemEditor from './components/multipleItemEditor';
 
-const renderItem = field => (
-  <div data-row className="u-inlineBlock u-flexOne u-alignItemsCenter u-flex">
-    <label className="u-gapRight u-flexOne u-alignItemsCenter u-flex">
-      <span className="u-gapRight">Subdomain equals</span>
+const renderItem = (field) => (
+  <Flex data-row flex gap="size-100" alignItems="end">
+    <NoWrapText>subdomain equals</NoWrapText>
+    <View flex>
       <WrappedField
-        className="u-flexOne"
+        label="Subdomain"
         name={`${field}.value`}
-        component={Textfield}
-        componentClassName="u-fullWidth u-minFieldWidth"
+        width="100%"
+        component={TextField}
+        isRequired
       />
-    </label>
+    </View>
     <WrappedField
       name={`${field}.valueIsRegex`}
       component={RegexToggle}
       valueFieldName={`${field}.value`}
     />
-  </div>
+  </Flex>
 );
 
 const Subdomain = () => (
-  <FieldArray
-    name="subdomains"
-    renderItem={renderItem}
-    component={MultipleItemEditor}
-  />
+  <Flex gap="size-100" direction="column" minWidth="size-6000">
+    <NoWrapText>Return true if</NoWrapText>
+    <FieldArray
+      name="subdomains"
+      renderItem={renderItem}
+      component={MultipleItemEditor}
+    />
+  </Flex>
 );
 
 export default Subdomain;

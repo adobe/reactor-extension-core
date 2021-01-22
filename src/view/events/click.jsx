@@ -13,39 +13,40 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
-import Checkbox from '@react/react-spectrum/Checkbox';
-import Textfield from '@react/react-spectrum/Textfield/index';
+import { Checkbox, TextField, View } from '@adobe/react-spectrum';
 import WrappedField from '../components/wrappedField';
-import ElementFilter, { formConfig as elementFilterFormConfig } from './components/elementFilter';
-import AdvancedEventOptions, { formConfig as advancedEventOptionsFormConfig } from './components/advancedEventOptions';
+import ElementFilter, {
+  formConfig as elementFilterFormConfig
+} from './components/elementFilter';
+import AdvancedEventOptions, {
+  formConfig as advancedEventOptionsFormConfig
+} from './components/advancedEventOptions';
 import mergeFormConfigs from '../utils/mergeFormConfigs';
 import { isNumberLikeInRange } from '../utils/validators';
 
 const Click = ({ delayLinkActivation }) => (
-  <div>
-    <ElementFilter />
-    <WrappedField
-      name="delayLinkActivation"
-      className="u-block"
-      component={Checkbox}
-      label="If the element is a link, delay navigation"
-    />
+  <>
+    <ElementFilter elementSpecificityLabel="When the user clicks on" />
+    <WrappedField name="delayLinkActivation" component={Checkbox}>
+      If the element is a link, delay navigation
+    </WrappedField>
 
     {delayLinkActivation ? (
-      <div className="FieldSubset">
-        <span className="u-verticalAlignMiddle u-gapRight">Link delay</span>
+      <View marginBottom="size-100">
         <WrappedField
           name="anchorDelay"
-          component={Textfield}
+          label="Link delay"
+          isRequired
+          component={TextField}
         />
-      </div>
+      </View>
     ) : null}
 
     <AdvancedEventOptions />
-  </div>
+  </>
 );
 
-export default connect(state => ({
+export default connect((state) => ({
   delayLinkActivation: formValueSelector('default')(
     state,
     'delayLinkActivation'
@@ -88,8 +89,12 @@ export const formConfig = mergeFormConfigs(
         ...errors
       };
 
-      if (values.delayLinkActivation && !isNumberLikeInRange(values.anchorDelay, { min: 1 })) {
-        errors.anchorDelay = 'Please specify a number greater than or equal to 1.';
+      if (
+        values.delayLinkActivation &&
+        !isNumberLikeInRange(values.anchorDelay, { min: 1 })
+      ) {
+        errors.anchorDelay =
+          'Please specify a number greater than or equal to 1.';
       }
 
       return errors;

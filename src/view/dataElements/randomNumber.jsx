@@ -11,27 +11,17 @@
  ****************************************************************************************/
 
 import React from 'react';
-import Textfield from '@react/react-spectrum/Textfield';
+import { TextField, Flex, Text } from '@adobe/react-spectrum';
 import WrappedField from '../components/wrappedField';
 import { isInteger } from '../utils/validators';
 
 const RandomNumber = () => (
-  <div>
-    <label>
-      <span className="u-verticalAlignMiddle u-gapRight">Minimum</span>
-      <WrappedField
-        name="min"
-        component={Textfield}
-      />
-    </label>
-    <label className="u-gapLeft">
-      <span className="u-verticalAlignMiddle u-gapRight">Maximum</span>
-      <WrappedField
-        name="max"
-        component={Textfield}
-      />
-    </label>
-  </div>
+  <Flex gap="size-100" alignItems="end" wrap minWidth="size-3000">
+    <Text marginBottom="size-75">Generate a number that is between</Text>
+    <WrappedField label="Minimum" name="min" component={TextField} isRequired />
+    <Text marginBottom="size-75">and</Text>
+    <WrappedField label="Maximum" name="max" component={TextField} isRequired />
+  </Flex>
 );
 
 export default RandomNumber;
@@ -64,7 +54,11 @@ export const formConfig = {
       errors.max = 'Please specify a maximum integer.';
     }
 
-    if (!errors.min && !errors.max && Number(values.min) >= Number(values.max)) {
+    if (
+      !errors.min &&
+      !errors.max &&
+      Number(values.min) >= Number(values.max)
+    ) {
       errors.min = 'Please ensure that minimum is less than maximum.';
       errors.max = errors.min;
     }

@@ -25,12 +25,12 @@ var textMatch = require('../helpers/textMatch');
  * object instance is intended to be a regular expression.
  * @returns {boolean}
  */
-module.exports = function(settings) {
+module.exports = function (settings) {
   var subdomain = document.location.hostname;
-  return settings.subdomains.some(function(acceptableSubdomain) {
-    var acceptableValue = acceptableSubdomain.valueIsRegex ?
-      new RegExp(acceptableSubdomain.value, 'i') : acceptableSubdomain.value;
+  return settings.subdomains.some(function (acceptableSubdomain) {
+    var acceptableValue = acceptableSubdomain.valueIsRegex
+      ? new RegExp(acceptableSubdomain.value, 'i')
+      : acceptableSubdomain.value;
     return textMatch(subdomain, acceptableValue);
   });
 };
-

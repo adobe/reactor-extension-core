@@ -12,10 +12,10 @@
 
 'use strict';
 
-describe('page bottom event delegate', function() {
-  it('sends the trigger to the pageLifecycleEvents helper module', function() {
+describe('page bottom event delegate', function () {
+  it('sends the trigger to the pageLifecycleEvents helper module', function () {
     var pageBottomInjector = require('inject-loader!../pageBottom');
-    var trigger = function() {};
+    var trigger = function () {};
     var pageLifecycleEventsSpy = jasmine.createSpyObj('pageLifecycleEvents', [
       'registerPageBottomTrigger'
     ]);
@@ -25,8 +25,8 @@ describe('page bottom event delegate', function() {
     });
 
     delegate({}, trigger);
-    expect(pageLifecycleEventsSpy.registerPageBottomTrigger).toHaveBeenCalledWith(
-      trigger
-    );
+    expect(
+      pageLifecycleEventsSpy.registerPageBottomTrigger
+    ).toHaveBeenCalledWith(trigger);
   });
 });

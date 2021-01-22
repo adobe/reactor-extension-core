@@ -11,8 +11,7 @@
  ****************************************************************************************/
 
 import { mount } from 'enzyme';
-import Textfield from '@react/react-spectrum/Textfield';
-import Radio from '@react/react-spectrum/Radio';
+import { TextField, RadioGroup } from '@adobe/react-spectrum';
 import WrappedField from '../../components/wrappedField';
 import EntersViewport, { formConfig } from '../entersViewport';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
@@ -22,18 +21,24 @@ const getReactComponents = (wrapper) => {
   wrapper.update();
   const fields = wrapper.find(WrappedField);
 
-  const elementSelectorField = fields.filterWhere(n => n.prop('name') === 'elementSelector');
-  const elementSelectorTextfield = elementSelectorField.find(Textfield);
-  const delayField = fields.filterWhere(n => n.prop('name') === 'delay');
-  const delayTextfield = delayField.find(Textfield);
-  const delayRadio = wrapper.find(Radio).filterWhere(n => n.prop('value') === 'delay');
-  const everyEntryRadio = wrapper.find(Radio).filterWhere(n => n.prop('value') === 'everyEntry');
+  const elementSelectorField = fields.filterWhere(
+    (n) => n.prop('name') === 'elementSelector'
+  );
+  const elementSelectorTextfield = elementSelectorField.find(TextField);
+  const delayField = fields.filterWhere((n) => n.prop('name') === 'delay');
+  const delayTextfield = delayField.find(TextField);
+  const delayTypeRadioGroup = wrapper
+    .find(RadioGroup)
+    .filterWhere((n) => n.prop('name') === 'delayType');
+  const frequencyRadioGroup = wrapper
+    .find(RadioGroup)
+    .filterWhere((n) => n.prop('name') === 'frequency');
 
   return {
     elementSelectorTextfield,
     delayTextfield,
-    delayRadio,
-    everyEntryRadio
+    delayTypeRadioGroup,
+    frequencyRadioGroup
   };
 };
 
@@ -58,29 +63,31 @@ describe('enters viewport event view', () => {
     const {
       elementSelectorTextfield,
       delayTextfield,
-      everyEntryRadio
+      frequencyRadioGroup
     } = getReactComponents(instance);
 
     expect(elementSelectorTextfield.props().value).toBe('.foo');
     expect(delayTextfield.props().value).toBe(100);
-    expect(everyEntryRadio.props().checked).toBe(true);
+    expect(frequencyRadioGroup.props().value).toBe('everyEntry');
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { delayRadio } = getReactComponents(instance);
-    delayRadio.props().onChange('delay', { stopPropagation() {} });
+    const { delayTypeRadioGroup } = getReactComponents(instance);
+    delayTypeRadioGroup.props().onChange('delay', { stopPropagation() {} });
 
     const {
       elementSelectorTextfield,
       delayTextfield,
-      everyEntryRadio
+      frequencyRadioGroup
     } = getReactComponents(instance);
 
     elementSelectorTextfield.props().onChange('.foo');
     delayTextfield.props().onChange(100);
-    everyEntryRadio.props().onChange(true, { stopPropagation() {} });
+    frequencyRadioGroup
+      .props()
+      .onChange('everyEntry', { stopPropagation() {} });
 
     const { elementSelector, delay, frequency } = extensionBridge.getSettings();
 
@@ -92,18 +99,15 @@ describe('enters viewport event view', () => {
   it('sets validation errors', () => {
     extensionBridge.init();
 
-    const {
-      delayRadio
-    } = getReactComponents(instance);
+    const { delayTypeRadioGroup } = getReactComponents(instance);
 
-    delayRadio.props().onChange('delay', { stopPropagation() {} });
+    delayTypeRadioGroup.props().onChange('delay', { stopPropagation() {} });
 
     expect(extensionBridge.validate()).toBe(false);
 
-    const {
-      delayTextfield,
-      elementSelectorTextfield
-    } = getReactComponents(instance);
+    const { delayTextfield, elementSelectorTextfield } = getReactComponents(
+      instance
+    );
 
     expect(delayTextfield.props().validationState).toBe('invalid');
     expect(elementSelectorTextfield.props().validationState).toBe('invalid');

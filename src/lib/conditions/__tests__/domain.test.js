@@ -23,19 +23,19 @@ var conditionDelegate = conditionDelegateInjector({
   '@adobe/reactor-document': mockDocument
 });
 
-var getSettings = function(domains) {
+var getSettings = function (domains) {
   return {
     domains: domains
   };
 };
 
-describe('domain condition delegate', function() {
-  it('returns true when the domain matches', function() {
+describe('domain condition delegate', function () {
+  it('returns true when the domain matches', function () {
     var settings = getSettings(['adobe.com', 'Example.com']);
     expect(conditionDelegate(settings)).toBe(true);
   });
 
-  it('returns false when the domain does not match', function() {
+  it('returns false when the domain does not match', function () {
     var settings = getSettings(['example..om', 'adobe.com']);
     expect(conditionDelegate(settings)).toBe(false);
 

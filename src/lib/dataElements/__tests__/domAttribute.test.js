@@ -14,10 +14,10 @@
 
 var dataElementDelegate = require('../domAttribute');
 
-describe('dom attribute data element delegate', function() {
+describe('dom attribute data element delegate', function () {
   var testElement;
 
-  beforeAll(function() {
+  beforeAll(function () {
     testElement = document.createElement('div');
     testElement.id = 'domDataElement';
     testElement.innerHTML = 'Foo Content';
@@ -25,11 +25,11 @@ describe('dom attribute data element delegate', function() {
     document.body.appendChild(testElement);
   });
 
-  afterAll(function() {
+  afterAll(function () {
     document.body.removeChild(testElement);
   });
 
-  it('returns the text value of the first matching element', function() {
+  it('returns the text value of the first matching element', function () {
     var settings = {
       elementSelector: '#domDataElement',
       elementProperty: 'text'
@@ -38,7 +38,7 @@ describe('dom attribute data element delegate', function() {
     expect(dataElementDelegate(settings)).toBe('Foo Content');
   });
 
-  it('returns an attribute of the first matching element', function() {
+  it('returns an attribute of the first matching element', function () {
     var settings = {
       elementSelector: '#domDataElement',
       elementProperty: 'data-cake'
@@ -47,7 +47,7 @@ describe('dom attribute data element delegate', function() {
     expect(dataElementDelegate(settings)).toBe('delish');
   });
 
-  it('returns undefined if element doesn\'t exist', function() {
+  it("returns undefined if element doesn't exist", function () {
     var settings = {
       elementSelector: '#doesntExist',
       elementProperty: 'data-cake'
@@ -56,7 +56,7 @@ describe('dom attribute data element delegate', function() {
     expect(dataElementDelegate(settings)).toBe(undefined);
   });
 
-  it('returns null if attribute doesn\'t exist', function() {
+  it("returns null if attribute doesn't exist", function () {
     var settings = {
       elementSelector: '#domDataElement',
       elementProperty: 'data-doesntexist'

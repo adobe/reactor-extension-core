@@ -12,14 +12,14 @@
 
 /*eslint max-len:0*/
 'use strict';
-describe('createBubbly', function() {
+describe('createBubbly', function () {
   var createBubbly = require('../createBubbly');
 
   var aElement;
   var bElement;
   var cElement;
 
-  var createElements = function() {
+  var createElements = function () {
     aElement = document.createElement('div');
     aElement.innerHTML = 'A';
     aElement.id = 'a';
@@ -37,48 +37,57 @@ describe('createBubbly', function() {
     document.body.appendChild(aElement);
   };
 
-  var removeElements = function() {
+  var removeElements = function () {
     document.body.removeChild(aElement);
     aElement = null;
     bElement = null;
     cElement = null;
   };
 
-  beforeEach(function() {
+  beforeEach(function () {
     createElements();
   });
 
-  afterEach(function() {
+  afterEach(function () {
     removeElements();
   });
 
-  it('handles a plethora of scenarios', function() {
-    var testScenario = function(options) {
+  it('handles a plethora of scenarios', function () {
+    var testScenario = function (options) {
       var bubbly = createBubbly();
       var aCallback = jasmine.createSpy();
       var bCallback = jasmine.createSpy();
       var cCallback = jasmine.createSpy();
 
-      bubbly.addListener({
-        elementSelector: '#a',
-        bubbleFireIfParent: true,
-        bubbleFireIfChildFired: true,
-        bubbleStop: false
-      }, aCallback);
+      bubbly.addListener(
+        {
+          elementSelector: '#a',
+          bubbleFireIfParent: true,
+          bubbleFireIfChildFired: true,
+          bubbleStop: false
+        },
+        aCallback
+      );
 
-      bubbly.addListener({
-        elementSelector: '#b',
-        bubbleFireIfParent: options.bubbleFireIfParent,
-        bubbleFireIfChildFired: options.bubbleFireIfChildFired,
-        bubbleStop: options.bubbleStop
-      }, bCallback);
+      bubbly.addListener(
+        {
+          elementSelector: '#b',
+          bubbleFireIfParent: options.bubbleFireIfParent,
+          bubbleFireIfChildFired: options.bubbleFireIfChildFired,
+          bubbleStop: options.bubbleStop
+        },
+        bCallback
+      );
 
-      bubbly.addListener({
-        elementSelector: '#c',
-        bubbleFireIfParent: true,
-        bubbleFireIfChildFired: true,
-        bubbleStop: false
-      }, cCallback);
+      bubbly.addListener(
+        {
+          elementSelector: '#c',
+          bubbleFireIfParent: true,
+          bubbleFireIfChildFired: true,
+          bubbleStop: false
+        },
+        cCallback
+      );
 
       bubbly.evaluateEvent({
         target: cElement
@@ -320,28 +329,34 @@ describe('createBubbly', function() {
     scenarios.forEach(testScenario);
   });
 
-  it('considers a rule not triggered when the listener callback returns false', function() {
+  it('considers a rule not triggered when the listener callback returns false', function () {
     var bubbly = createBubbly();
     var aCallback = jasmine.createSpy();
     var bCallback = jasmine.createSpy().and.returnValue(false);
 
-    bubbly.addListener({
-      elementSelector: '#a',
-      bubbleFireIfParent: true,
-      // This would typically prevent aCallback from being executed, but since the bCallback
-      // returned false that means b's rule didn't execute, which allows a's rule to execute.
-      bubbleFireIfChildFired: false,
-      bubbleStop: false
-    }, aCallback);
+    bubbly.addListener(
+      {
+        elementSelector: '#a',
+        bubbleFireIfParent: true,
+        // This would typically prevent aCallback from being executed, but since the bCallback
+        // returned false that means b's rule didn't execute, which allows a's rule to execute.
+        bubbleFireIfChildFired: false,
+        bubbleStop: false
+      },
+      aCallback
+    );
 
-    bubbly.addListener({
-      elementSelector: '#b',
-      bubbleFireIfParent: true,
-      bubbleFireIfChildFired: true,
-      // This would typically prevent aCallback from being executed, but since the bCallback
-      // returned false that means b's rule didn't execute, which allows a's rule to execute.
-      bubbleStop: true
-    }, bCallback);
+    bubbly.addListener(
+      {
+        elementSelector: '#b',
+        bubbleFireIfParent: true,
+        bubbleFireIfChildFired: true,
+        // This would typically prevent aCallback from being executed, but since the bCallback
+        // returned false that means b's rule didn't execute, which allows a's rule to execute.
+        bubbleStop: true
+      },
+      bCallback
+    );
 
     bubbly.evaluateEvent({
       target: bElement
@@ -351,16 +366,21 @@ describe('createBubbly', function() {
     expect(bCallback.calls.count()).toBe(1);
   });
 
-  it('calls the callback when the element matches elementProperties w/ string value', function() {
+  it('calls the callback when the element matches elementProperties w/ string value', function () {
     var bubbly = createBubbly();
     var callback = jasmine.createSpy();
 
-    bubbly.addListener({
-      elementProperties: [{
-        name: 'innerHTML',
-        value: 'C'
-      }]
-    }, callback);
+    bubbly.addListener(
+      {
+        elementProperties: [
+          {
+            name: 'innerHTML',
+            value: 'C'
+          }
+        ]
+      },
+      callback
+    );
 
     bubbly.evaluateEvent({
       target: cElement
@@ -369,36 +389,49 @@ describe('createBubbly', function() {
     expect(callback.calls.count()).toBe(1);
   });
 
-  it('does not call the callback when the element does not match elementProperties ' +
-      'w/ string value', function() {
+  it(
+    'does not call the callback when the element does not match elementProperties ' +
+      'w/ string value',
+    function () {
+      var bubbly = createBubbly();
+      var callback = jasmine.createSpy();
+
+      bubbly.addListener(
+        {
+          elementProperties: [
+            {
+              name: 'innerHTML',
+              value: 'no match'
+            }
+          ]
+        },
+        callback
+      );
+
+      bubbly.evaluateEvent({
+        target: cElement
+      });
+
+      expect(callback.calls.count()).toBe(0);
+    }
+  );
+
+  it('calls the callback when the element matches elementProperties w/ regex value', function () {
     var bubbly = createBubbly();
     var callback = jasmine.createSpy();
 
-    bubbly.addListener({
-      elementProperties: [{
-        name: 'innerHTML',
-        value: 'no match'
-      }]
-    }, callback);
-
-    bubbly.evaluateEvent({
-      target: cElement
-    });
-
-    expect(callback.calls.count()).toBe(0);
-  });
-
-  it('calls the callback when the element matches elementProperties w/ regex value', function() {
-    var bubbly = createBubbly();
-    var callback = jasmine.createSpy();
-
-    bubbly.addListener({
-      elementProperties: [{
-        name: 'innerHTML',
-        value: '^C$',
-        valueIsRegex: true
-      }]
-    }, callback);
+    bubbly.addListener(
+      {
+        elementProperties: [
+          {
+            name: 'innerHTML',
+            value: '^C$',
+            valueIsRegex: true
+          }
+        ]
+      },
+      callback
+    );
 
     bubbly.evaluateEvent({
       target: cElement
@@ -407,33 +440,44 @@ describe('createBubbly', function() {
     expect(callback.calls.count()).toBe(1);
   });
 
-  it('does not call the callback when the element does not match elementProperties ' +
-      'w/ regex value', function() {
+  it(
+    'does not call the callback when the element does not match elementProperties ' +
+      'w/ regex value',
+    function () {
+      var bubbly = createBubbly();
+      var callback = jasmine.createSpy();
+
+      bubbly.addListener(
+        {
+          elementProperties: [
+            {
+              name: 'innerHTML',
+              value: '^abc$',
+              valueIsRegex: true
+            }
+          ]
+        },
+        callback
+      );
+
+      bubbly.evaluateEvent({
+        target: cElement
+      });
+
+      expect(callback.calls.count()).toBe(0);
+    }
+  );
+
+  it('passes a synthetic event to the callback with attached native event', function () {
     var bubbly = createBubbly();
     var callback = jasmine.createSpy();
 
-    bubbly.addListener({
-      elementProperties: [{
-        name: 'innerHTML',
-        value: '^abc$',
-        valueIsRegex: true
-      }]
-    }, callback);
-
-    bubbly.evaluateEvent({
-      target: cElement
-    });
-
-    expect(callback.calls.count()).toBe(0);
-  });
-
-  it('passes a synthetic event to the callback with attached native event', function() {
-    var bubbly = createBubbly();
-    var callback = jasmine.createSpy();
-
-    bubbly.addListener({
-      elementSelector: '#a'
-    }, callback);
+    bubbly.addListener(
+      {
+        elementSelector: '#a'
+      },
+      callback
+    );
 
     var nativeEvent = {
       target: cElement
@@ -448,13 +492,16 @@ describe('createBubbly', function() {
     });
   });
 
-  it('passes a synthetic event to the callback with data from passed synthetic event', function() {
+  it('passes a synthetic event to the callback with data from passed synthetic event', function () {
     var bubbly = createBubbly();
     var callback = jasmine.createSpy();
 
-    bubbly.addListener({
-      elementSelector: '#a'
-    }, callback);
+    bubbly.addListener(
+      {
+        elementSelector: '#a'
+      },
+      callback
+    );
 
     var nativeEvent = {
       target: cElement,
@@ -470,8 +517,8 @@ describe('createBubbly', function() {
     });
   });
 
-  describe('when no element refinements are specified', function() {
-    it('calls the callback once if the target is a nested element', function() {
+  describe('when no element refinements are specified', function () {
+    it('calls the callback once if the target is a nested element', function () {
       var bubbly = createBubbly();
       var callback = jasmine.createSpy();
 
@@ -484,7 +531,7 @@ describe('createBubbly', function() {
       expect(callback.calls.count()).toBe(1);
     });
 
-    it('calls the callback once if the target is document', function() {
+    it('calls the callback once if the target is document', function () {
       var bubbly = createBubbly();
       var callback = jasmine.createSpy();
 

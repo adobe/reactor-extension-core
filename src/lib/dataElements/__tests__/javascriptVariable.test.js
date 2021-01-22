@@ -14,8 +14,8 @@
 
 var dataElementDelegate = require('../javascriptVariable');
 
-describe('javascript variable data element delegate', function() {
-  beforeAll(function() {
+describe('javascript variable data element delegate', function () {
+  beforeAll(function () {
     window.a = {
       b: [
         {
@@ -28,11 +28,11 @@ describe('javascript variable data element delegate', function() {
     };
   });
 
-  afterAll(function() {
+  afterAll(function () {
     delete window.a;
   });
 
-  it('returns a nested object property value', function() {
+  it('returns a nested object property value', function () {
     var settings = {
       path: 'a.b.1.c'
     };
@@ -42,7 +42,7 @@ describe('javascript variable data element delegate', function() {
     expect(value).toBe('bar');
   });
 
-  it('returns undefined if path does not exist', function() {
+  it('returns undefined if path does not exist', function () {
     var settings = {
       path: 'path.that.does.not.exist'
     };
@@ -52,7 +52,7 @@ describe('javascript variable data element delegate', function() {
     expect(value).toBe(undefined);
   });
 
-  it('finds value when path is prefixed with window', function() {
+  it('finds value when path is prefixed with window', function () {
     var settings = {
       path: 'window.a.b.1.c'
     };

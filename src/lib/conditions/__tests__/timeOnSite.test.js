@@ -13,7 +13,7 @@
 'use strict';
 
 var mockVisitorTracking = {
-  getMinutesOnSite: function() {
+  getMinutesOnSite: function () {
     return 5;
   }
 };
@@ -23,40 +23,40 @@ var conditionDelegate = conditionDelegateInjector({
   '../helpers/visitorTracking': mockVisitorTracking
 });
 
-var getSettings = function(minutes, operator) {
+var getSettings = function (minutes, operator) {
   return {
     minutes: minutes,
     operator: operator
   };
 };
 
-describe('time on site condition delegate', function() {
-  it('returns true when number of minutes is above "greater than" constraint', function() {
+describe('time on site condition delegate', function () {
+  it('returns true when number of minutes is above "greater than" constraint', function () {
     var settings = getSettings(4, '>');
     expect(conditionDelegate(settings)).toBe(true);
   });
 
-  it('returns false when number of minutes is below "greater than" constraint', function() {
+  it('returns false when number of minutes is below "greater than" constraint', function () {
     var settings = getSettings(6, '>');
     expect(conditionDelegate(settings)).toBe(false);
   });
 
-  it('returns true when number of minutes is below "less than" constraint', function() {
+  it('returns true when number of minutes is below "less than" constraint', function () {
     var settings = getSettings(6, '<');
     expect(conditionDelegate(settings)).toBe(true);
   });
 
-  it('returns false when number of minutes is above "less than" constraint', function() {
+  it('returns false when number of minutes is above "less than" constraint', function () {
     var settings = getSettings(4, '<');
     expect(conditionDelegate(settings)).toBe(false);
   });
 
-  it('returns true when number of minutes matches "equals" constraint', function() {
+  it('returns true when number of minutes matches "equals" constraint', function () {
     var settings = getSettings(5, '=');
     expect(conditionDelegate(settings)).toBe(true);
   });
 
-  it('returns false when number of minutes does not match "equals" constraint', function() {
+  it('returns false when number of minutes does not match "equals" constraint', function () {
     var settings = getSettings(11, '=');
     expect(conditionDelegate(settings)).toBe(false);
   });
