@@ -13,7 +13,6 @@
 /*eslint import/no-extraneous-dependencies: 0*/
 /*eslint no-underscore-dangle: 0*/
 
-import '@babel/polyfill';
 import React from 'react';
 import {
   Provider as ProviderReactSpectrum,
