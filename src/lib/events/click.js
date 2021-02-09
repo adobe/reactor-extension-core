@@ -16,14 +16,21 @@ var window = require('@adobe/reactor-window');
 var bubbly = require('./helpers/createBubbly')();
 var WeakMap = require('./helpers/weakMap');
 var evaluatedEvents = new WeakMap();
+var MIDDLE_MOUSE_BUTTON = 2;
 
 /**
  * Determines whether an element is a link that would navigate the user's current window to a
  * different URL.
- * @param node
+ * @param {MouseEvent} e
  * @returns {boolean}
  */
-var getDelayableLink = function (node) {
+var getDelayableLink = function (e) {
+  // user is modifying click with the keyboard, don't delay the navigation
+  if (e.ctrlKey || e.metaKey || e.button === MIDDLE_MOUSE_BUTTON) {
+    return undefined;
+  }
+
+  var node = e.target;
   while (node) {
     var tagName = node.tagName;
 
@@ -40,8 +47,8 @@ var getDelayableLink = function (node) {
       ) {
         return node;
       } else {
-        // No need to continue searching ancestry.
-        return;
+        // Found hyperlink conditions in which we don't want to delay navigation
+        return undefined;
       }
     }
 
@@ -53,25 +60,25 @@ document.addEventListener('click', bubbly.evaluateEvent, true);
 
 /**
  * The click event. This event occurs when a user has clicked an element.
- * @param {Object} settings The event settings object.
- * @param {string} [settings.elementSelector] The CSS selector the element must match in order for
+ * @param settings - The event settings object.
+ * @param {string} settings.elementSelector - The CSS selector the element must match in order for
  * the rule to fire.
- * @param {Object[]} [settings.elementProperties] Property values the element must have in order
+ * @param {Object[]} settings.elementProperties - Property values the element must have in order
  * for the rule to fire.
- * @param {string} settings.elementProperties[].name The property name.
- * @param {string} settings.elementProperties[].value The property value.
- * @param {number} [settings.anchorDelay] When present and a link is clicked, actual
+ * @param {string} settings.elementProperties[].name - The property name.
+ * @param {string} settings.elementProperties[].value - The property value.
+ * @param {number} settings.anchorDelay - When present and a link is clicked, actual
  * navigation will be postponed for a period of time equal with its value. This is typically used to
  * allow time for scripts within the rule to execute, beacons to be sent to servers, etc.
- * @param {boolean} [settings.elementProperties[].valueIsRegex=false] Whether <code>value</code>
+ * @param {boolean} settings.elementProperties[].valueIsRegex=false - Whether <code>value</code>
  * on the object instance is intended to be a regular expression.
- * @param {boolean} [settings.bubbleFireIfParent=true] Whether the rule should fire if
+ * @param {boolean} settings.bubbleFireIfParent=true - Whether the rule should fire if
  * the event originated from a descendant element.
- * @param {boolean} [settings.bubbleFireIfChildFired=true] Whether the rule should fire
+ * @param {boolean} settings.bubbleFireIfChildFired=true - Whether the rule should fire
  * if the same event has already triggered a rule targeting a descendant element.
- * @param {boolean} [settings.bubbleStop=false] Whether the event should not trigger
+ * @param {boolean} settings.bubbleStop=false - Whether the event should not trigger
  * rules on ancestor elements.
- * @param {ruleTrigger} trigger The trigger callback.
+ * @param {function} trigger - The trigger callback.
  */
 module.exports = function (settings, trigger) {
   bubbly.addListener(settings, function (syntheticEvent) {
@@ -91,7 +98,7 @@ module.exports = function (settings, trigger) {
 
     if (settings.anchorDelay) {
       if (!evaluatedEvents.has(nativeEvent)) {
-        var delayableLink = getDelayableLink(nativeEvent.target);
+        var delayableLink = getDelayableLink(nativeEvent);
         if (delayableLink) {
           nativeEvent.preventDefault();
           setTimeout(function () {
