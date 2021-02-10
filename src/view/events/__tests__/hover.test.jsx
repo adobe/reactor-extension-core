@@ -10,52 +10,60 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField, Checkbox, RadioGroup } from '@adobe/react-spectrum';
-import WrappedField from '../../components/wrappedField';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { sharedTestingElements } from '@test-helpers/react-testing-library';
 import Hover, { formConfig } from '../hover';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
-import AdvancedEventOptions from '../components/advancedEventOptions';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const fields = wrapper.find(WrappedField);
-
-  const elementSelectorField = fields.filterWhere(
-    (n) => n.prop('name') === 'elementSelector'
-  );
-  const elementSelectorTextfield = elementSelectorField.find(TextField);
-  const bubbleStopCheckbox = wrapper
-    .find(Checkbox)
-    .filterWhere((n) => n.prop('name') === 'bubbleStop');
-  const delayField = fields.filterWhere((n) => n.prop('name') === 'delay');
-  const delayTextfield = delayField.find(TextField);
-  const delayRadioGroup = wrapper.find(RadioGroup);
-
-  const advancedEventOptions = wrapper.find(AdvancedEventOptions);
-
-  return {
-    elementSelectorTextfield,
-    bubbleStopCheckbox,
-    delayTextfield,
-    delayRadioGroup,
-    advancedEventOptions
-  };
+// react-testing-library element selectors
+const pageElements = {
+  ...sharedTestingElements,
+  delayHover: {
+    radioGroup: {
+      getImmediately: () => screen.getByRole('radio', { name: /immediately/i }),
+      getAfterDelay: () => screen.getByRole('radio', { name: /after a delay/i })
+    },
+    getDelayTextBox: () => screen.getByRole('textbox', { name: /delay/i }),
+    getDataElementModalTrigger: () => {
+      return screen.getByRole('button', { name: /select a data element/i });
+    }
+  }
 };
 
 describe('hover event view', () => {
   let extensionBridge;
-  let instance;
 
   beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(Hover, formConfig, extensionBridge));
-
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(Hover, formConfig));
     extensionBridge.init();
+  });
 
-    const { advancedEventOptions } = getReactComponents(instance);
-    advancedEventOptions.instance().toggleSelected();
+  afterEach(() => {
+    delete window.extensionBridge;
+  });
+
+  it('the default hover options are chosen', () => {
+    expect(pageElements.elementsMatching.getCssSelectorTextBox().value).toBe(
+      ''
+    );
+
+    expect(
+      pageElements.delayHover.radioGroup.getImmediately().checked
+    ).toBeTrue();
+    expect(
+      pageElements.delayHover.radioGroup.getAfterDelay().checked
+    ).toBeFalse();
+
+    fireEvent.click(pageElements.advancedSettings.getSettingsToggleTrigger());
+    expect(
+      pageElements.advancedSettings.getBubbleFireIfParentCheckbox().value
+    ).toBe('true');
+    expect(
+      pageElements.advancedSettings.getBubbleFireIfChildFiredCheckbox().value
+    ).toBe('true');
   });
 
   it('sets form values from settings', () => {
@@ -67,30 +75,31 @@ describe('hover event view', () => {
       }
     });
 
-    const {
-      elementSelectorTextfield,
-      delayTextfield,
-      bubbleStopCheckbox
-    } = getReactComponents(instance);
+    expect(pageElements.elementsMatching.getCssSelectorTextBox().value).toBe(
+      '.foo'
+    );
 
-    expect(elementSelectorTextfield.props().value).toBe('.foo');
-    expect(delayTextfield.props().value).toBe(100);
-    expect(bubbleStopCheckbox.props().value).toBe(true);
+    fireEvent.click(pageElements.delayHover.radioGroup.getAfterDelay());
+    expect(pageElements.delayHover.getDelayTextBox().value).toBe('100');
+
+    fireEvent.click(pageElements.advancedSettings.getSettingsToggleTrigger());
+    expect(pageElements.advancedSettings.getBubbleStopCheckBox().value).toBe(
+      'true'
+    );
   });
 
   it('sets settings from form values', () => {
-    const { delayRadioGroup } = getReactComponents(instance);
-    delayRadioGroup.props().onChange('delay', { stopPropagation() {} });
+    fireEvent.change(pageElements.elementsMatching.getCssSelectorTextBox(), {
+      target: { value: '.foo' }
+    });
 
-    const {
-      elementSelectorTextfield,
-      delayTextfield,
-      bubbleStopCheckbox
-    } = getReactComponents(instance);
+    fireEvent.click(pageElements.delayHover.radioGroup.getAfterDelay());
+    fireEvent.change(pageElements.delayHover.getDelayTextBox(), {
+      target: { value: '100' }
+    });
 
-    elementSelectorTextfield.props().onChange('.foo');
-    delayTextfield.props().onChange(100);
-    bubbleStopCheckbox.props().onChange(true);
+    fireEvent.click(pageElements.advancedSettings.getSettingsToggleTrigger());
+    fireEvent.click(pageElements.advancedSettings.getBubbleStopCheckBox());
 
     const {
       elementSelector,
@@ -103,17 +112,66 @@ describe('hover event view', () => {
     expect(bubbleStop).toBe(true);
   });
 
-  it('sets validation errors', () => {
-    const { delayRadioGroup } = getReactComponents(instance);
+  it('sets validation errors for empty fields', () => {
+    expect(
+      pageElements.elementsMatching
+        .getCssSelectorTextBox()
+        .getAttribute('aria-invalid')
+    ).toBeFalsy();
+    fireEvent.focus(pageElements.elementsMatching.getCssSelectorTextBox());
+    fireEvent.blur(pageElements.elementsMatching.getCssSelectorTextBox());
+    expect(
+      pageElements.elementsMatching
+        .getCssSelectorTextBox()
+        .getAttribute('aria-invalid')
+    ).toBeTruthy();
 
-    delayRadioGroup.props().onChange('delay', { stopPropagation() {} });
-    expect(extensionBridge.validate()).toBe(false);
+    fireEvent.click(pageElements.delayHover.radioGroup.getAfterDelay());
+    expect(
+      pageElements.delayHover.getDelayTextBox().getAttribute('aria-invalid')
+    ).toBeFalsy();
+    fireEvent.focus(pageElements.delayHover.getDelayTextBox());
+    fireEvent.blur(pageElements.delayHover.getDelayTextBox());
+    expect(
+      pageElements.delayHover.getDelayTextBox().getAttribute('aria-invalid')
+    ).toBeTruthy();
+  });
 
-    const { delayTextfield, elementSelectorTextfield } = getReactComponents(
-      instance
-    );
+  it('sets validation error when the number < 1', () => {
+    fireEvent.click(pageElements.delayHover.radioGroup.getAfterDelay());
 
-    expect(delayTextfield.props().validationState).toBe('invalid');
-    expect(elementSelectorTextfield.props().validationState).toBe('invalid');
+    fireEvent.focus(pageElements.delayHover.getDelayTextBox());
+    fireEvent.change(pageElements.delayHover.getDelayTextBox(), {
+      target: { value: '0' }
+    });
+    fireEvent.blur(pageElements.delayHover.getDelayTextBox());
+
+    expect(
+      pageElements.delayHover.getDelayTextBox().getAttribute('aria-invalid')
+    ).toBeTruthy();
+  });
+
+  it('The afterDelay input supports opening the data element modal', () => {
+    spyOn(extensionBridge, 'openDataElementSelector').and.callFake(() => {
+      return Promise.resolve();
+    });
+
+    fireEvent.click(pageElements.delayHover.radioGroup.getAfterDelay());
+    fireEvent.click(pageElements.delayHover.getDataElementModalTrigger());
+    expect(extensionBridge.openDataElementSelector).toHaveBeenCalledTimes(1);
+  });
+
+  it('afterDelay handles data element names just fine', () => {
+    fireEvent.click(pageElements.delayHover.radioGroup.getAfterDelay());
+
+    fireEvent.focus(pageElements.delayHover.getDelayTextBox());
+    fireEvent.change(pageElements.delayHover.getDelayTextBox(), {
+      target: { value: '%Data Element 1%' }
+    });
+    fireEvent.blur(pageElements.delayHover.getDelayTextBox());
+
+    expect(
+      pageElements.delayHover.getDelayTextBox().getAttribute('aria-invalid')
+    ).toBeFalsy();
   });
 });

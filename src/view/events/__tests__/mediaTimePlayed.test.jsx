@@ -10,46 +10,46 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField, Checkbox, Picker } from '@adobe/react-spectrum';
-import WrappedField from '../../components/wrappedField';
-import AdvancedEventOptions from '../components/advancedEventOptions';
+import {
+  fireEvent,
+  render,
+  screen,
+  within,
+  waitFor
+} from '@testing-library/react';
+import { sharedTestingElements } from '@test-helpers/react-testing-library';
 import MediaTimePlayed, { formConfig } from '../mediaTimePlayed';
 import bootstrap from '../../bootstrap';
 import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const fields = wrapper.find(WrappedField);
-
-  const amountField = fields.filterWhere((n) => n.prop('name') === 'amount');
-  const amountTextfield = amountField.find(TextField);
-  const unitSelect = wrapper.find(Picker);
-  const elementSelectorField = fields.filterWhere(
-    (n) => n.prop('name') === 'elementSelector'
-  );
-  const elementSelectorTextfield = elementSelectorField.find(TextField);
-  const bubbleStopCheckbox = wrapper
-    .find(Checkbox)
-    .filterWhere((n) => n.prop('name') === 'bubbleStop');
-  const advancedEventOptions = wrapper.find(AdvancedEventOptions);
-
-  return {
-    amountTextfield,
-    unitSelect,
-    elementSelectorTextfield,
-    bubbleStopCheckbox,
-    advancedEventOptions
-  };
+// react-testing-library element selectors
+const pageElements = {
+  ...sharedTestingElements,
+  triggerWhen: {
+    getTextBox: () => {
+      return screen.getByRole('textbox', { name: /amount/i });
+    },
+    getUnitsDropdown: () => {
+      return screen.getByRole('button', { name: /units/i });
+    },
+    getDataElementModalTrigger: () => {
+      return screen.getByRole('button', { name: /select a data element/i });
+    }
+  }
 };
 
 describe('time played event view', () => {
   let extensionBridge;
-  let instance;
 
   beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(MediaTimePlayed, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(MediaTimePlayed, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
@@ -62,37 +62,30 @@ describe('time played event view', () => {
       }
     });
 
-    const { advancedEventOptions } = getReactComponents(instance);
-    advancedEventOptions.instance().toggleSelected();
+    expect(pageElements.elementsMatching.getCssSelectorTextBox().value).toBe(
+      '.foo'
+    );
 
-    const {
-      amountTextfield,
-      unitSelect,
-      elementSelectorTextfield,
-      bubbleStopCheckbox
-    } = getReactComponents(instance);
+    expect(pageElements.triggerWhen.getTextBox().value).toBe('55');
+    within(pageElements.triggerWhen.getUnitsDropdown()).getByText('percent');
 
-    expect(amountTextfield.props().value).toBe(55);
-    expect(unitSelect.props().value).toBe('percent');
-    expect(elementSelectorTextfield.props().value).toBe('.foo');
-    expect(bubbleStopCheckbox.props().value).toBe(true);
+    fireEvent.click(pageElements.advancedSettings.getSettingsToggleTrigger());
+    expect(pageElements.advancedSettings.getBubbleStopCheckBox().value).toBe(
+      'true'
+    );
   });
 
-  it('sets settings from form values', () => {
-    extensionBridge.init();
+  it('sets settings from form values', async () => {
+    fireEvent.change(pageElements.elementsMatching.getCssSelectorTextBox(), {
+      target: { value: '.foo' }
+    });
 
-    const {
-      amountTextfield,
-      elementSelectorTextfield,
-      advancedEventOptions
-    } = getReactComponents(instance);
+    fireEvent.change(pageElements.triggerWhen.getTextBox(), {
+      target: { value: '45' }
+    });
 
-    amountTextfield.props().onChange(45);
-    elementSelectorTextfield.props().onChange('.foo');
-
-    advancedEventOptions.instance().toggleSelected();
-    const { bubbleStopCheckbox } = getReactComponents(instance);
-    bubbleStopCheckbox.props().onChange(true);
+    fireEvent.click(pageElements.advancedSettings.getSettingsToggleTrigger());
+    fireEvent.click(pageElements.advancedSettings.getBubbleStopCheckBox());
 
     const {
       amount,
@@ -104,18 +97,53 @@ describe('time played event view', () => {
     expect(unit).toBe('second');
     expect(elementSelector).toBe('.foo');
     expect(bubbleStop).toBe(true);
+
+    // try changing the select box
+    fireEvent.click(pageElements.triggerWhen.getUnitsDropdown());
+    await waitFor(() =>
+      document.querySelector('div[role="presentation"][data-ismodal]')
+    );
+    screen.getByRole('option', { name: /percent/i }).click();
+
+    expect(extensionBridge.getSettings().unit).toBe('percent');
   });
 
   it('sets validation errors', () => {
-    extensionBridge.init();
+    fireEvent.focus(pageElements.elementsMatching.getCssSelectorTextBox());
+    fireEvent.blur(pageElements.elementsMatching.getCssSelectorTextBox());
+    expect(
+      pageElements.elementsMatching
+        .getCssSelectorTextBox()
+        .hasAttribute('aria-invalid')
+    ).toBeTrue();
+
+    fireEvent.focus(pageElements.triggerWhen.getTextBox());
+    fireEvent.blur(pageElements.triggerWhen.getTextBox());
+    expect(
+      pageElements.triggerWhen.getTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
 
     expect(extensionBridge.validate()).toBe(false);
+  });
 
-    const { amountTextfield, elementSelectorTextfield } = getReactComponents(
-      instance
-    );
+  it('The media amount input supports opening the data element modal', () => {
+    spyOn(extensionBridge, 'openDataElementSelector').and.callFake(() => {
+      return Promise.resolve();
+    });
 
-    expect(amountTextfield.props().validationState).toBe('invalid');
-    expect(elementSelectorTextfield.props().validationState).toBe('invalid');
+    fireEvent.click(pageElements.triggerWhen.getDataElementModalTrigger());
+    expect(extensionBridge.openDataElementSelector).toHaveBeenCalledTimes(1);
+  });
+
+  it('media amount handles data element names just fine', () => {
+    fireEvent.focus(pageElements.triggerWhen.getTextBox());
+    fireEvent.change(pageElements.triggerWhen.getTextBox(), {
+      target: { value: '%Data Element 1%' }
+    });
+    fireEvent.blur(pageElements.triggerWhen.getTextBox());
+
+    expect(
+      pageElements.triggerWhen.getTextBox().hasAttribute('aria-invalid')
+    ).toBeFalse();
   });
 });

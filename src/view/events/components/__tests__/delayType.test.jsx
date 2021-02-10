@@ -16,6 +16,7 @@ import DelayType, { formConfig } from '../delayType';
 import createExtensionBridge from '../../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../../bootstrap';
 
+// TODO
 const getReactComponents = (wrapper) => {
   wrapper.update();
 

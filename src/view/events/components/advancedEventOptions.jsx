@@ -24,11 +24,9 @@ export default class AdvancedEventOptions extends React.Component {
   }
 
   toggleSelected = () => {
-    const { expanded } = this.state;
-
-    this.setState({
+    this.setState(({ expanded }) => ({
       expanded: !expanded
-    });
+    }));
   };
 
   render() {

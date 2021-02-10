@@ -40,6 +40,14 @@
   },
   "globals": {
     "Simulate": true,
-    "_satellite": true
+    "_satellite": true,
+    "shared-testing-elements": true
+  },
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": "webpack.config.js"
+      }
+    }
   }
 }

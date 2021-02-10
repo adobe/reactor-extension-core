@@ -19,7 +19,7 @@ import ElementFilter, {
 import AdvancedEventOptions, {
   formConfig as advancedEventOptionsFormConfig
 } from './components/advancedEventOptions';
-import { isNumberLikeInRange } from '../utils/validators';
+import { isDataElementToken, isNumberLikeInRange } from '../utils/validators';
 import mergeFormConfigs from '../utils/mergeFormConfigs';
 import NoWrapText from '../components/noWrapText';
 
@@ -57,6 +57,7 @@ const MediaTimePlayed = () => (
         label="Amount"
         isRequired
         component={TextField}
+        supportDataElement
       />
       <Flex alignItems="end" gap="size-100">
         <WrappedField
@@ -95,9 +96,11 @@ export const formConfig = mergeFormConfigs(
       };
 
       if (
-        !isNumberLikeInRange(values.amount, { min: 0, minInclusive: false })
+        !isNumberLikeInRange(values.amount, { min: 0, minInclusive: false }) &&
+        !isDataElementToken(values.amount)
       ) {
-        errors.amount = 'Please specify a positive number';
+        errors.amount =
+          'Please specify a number greater than or equal to 1, or specify a data element.';
       }
 
       return errors;

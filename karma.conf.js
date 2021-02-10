@@ -297,6 +297,9 @@ module.exports = (config) => {
         document: 'document'
       },
       resolve: {
+        alias: {
+          '@test-helpers': path.resolve(__dirname, 'src/testHelpers')
+        },
         extensions: ['.js', '.jsx']
       },
       module: {
