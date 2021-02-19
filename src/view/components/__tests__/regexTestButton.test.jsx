@@ -11,18 +11,22 @@
  ****************************************************************************************/
 
 import React from 'react';
-import { ActionButton } from '@adobe/react-spectrum';
-import { mount } from 'enzyme';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
+import { fireEvent, render, screen } from '@testing-library/react';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import RegexTestButton from '../regexTestButton';
+
+// react-testing-library element selectors
+const pageElements = {
+  getRegexTestButton: () => screen.getByRole('button', { name: /test/i })
+};
 
 describe('regex test button', () => {
   let extensionBridge;
-  let instance;
   let onChange;
 
   beforeEach(() => {
     extensionBridge = createExtensionBridge();
+    window.extensionBridge = extensionBridge;
 
     spyOn(extensionBridge, 'openRegexTester').and.callFake(() => ({
       then(resolve) {
@@ -30,11 +34,9 @@ describe('regex test button', () => {
       }
     }));
 
-    window.extensionBridge = extensionBridge;
-
     onChange = jasmine.createSpy();
 
-    instance = mount(<RegexTestButton value="foo" onChange={onChange} />);
+    render(<RegexTestButton value="foo" onChange={onChange} />);
   });
 
   afterEach(() => {
@@ -42,9 +44,7 @@ describe('regex test button', () => {
   });
 
   it('supports regex testing+updating workflow', () => {
-    const button = instance.find(ActionButton);
-
-    button.props().onPress();
+    fireEvent.click(pageElements.getRegexTestButton());
 
     expect(extensionBridge.openRegexTester).toHaveBeenCalledWith({
       pattern: 'foo',

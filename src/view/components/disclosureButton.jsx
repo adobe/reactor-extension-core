@@ -17,7 +17,11 @@ import ChevronRight from '@spectrum-icons/workflow/ChevronRight';
 
 export default ({ onClick, selected, label }) => (
   <ActionButton isQuiet onPress={onClick}>
-    {selected ? <ChevronDown size="S" /> : <ChevronRight size="S" />}
+    {selected ? (
+      <ChevronDown size="S" data-testid="chevron-down" />
+    ) : (
+      <ChevronRight size="S" data-testid="chevron-right" />
+    )}
     <Text>{label}</Text>
   </ActionButton>
 );

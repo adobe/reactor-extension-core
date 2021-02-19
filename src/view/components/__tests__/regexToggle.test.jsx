@@ -11,25 +11,23 @@
  ****************************************************************************************/
 
 import React from 'react';
-import { mount } from 'enzyme';
-import { Switch, ActionButton } from '@adobe/react-spectrum';
+import { fireEvent, render, screen } from '@testing-library/react';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import WrappedField from '../wrappedField';
-
 import RegexToggle from '../regexToggle';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const regexSwitch = wrapper.find(Switch);
-  const testButton = wrapper.find(ActionButton);
-  const testButtonContainer = wrapper.find('#testButtonContainer');
-
-  return {
-    regexSwitch,
-    testButton,
-    testButtonContainer
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getRegexToggleSwitch: () => {
+    return screen.getByRole('switch', { name: /regex/i });
+  },
+  getRegexTestButton: () => {
+    return screen.getByRole('button', { name: /test/i });
+  },
+  queryForRegexTestButton: () => {
+    return screen.queryByRole('button', { name: /test/i });
+  }
 };
 
 const ConnectedRegexToggle = () => (
@@ -57,7 +55,6 @@ const formConfig = {
 
 describe('regex toggle', () => {
   let extensionBridge;
-  let instance;
 
   beforeEach(() => {
     extensionBridge = createExtensionBridge();
@@ -70,9 +67,8 @@ describe('regex toggle', () => {
 
     window.extensionBridge = extensionBridge;
 
-    instance = mount(
-      bootstrap(ConnectedRegexToggle, formConfig, extensionBridge)
-    );
+    render(bootstrap(ConnectedRegexToggle, formConfig));
+    extensionBridge.init();
   });
 
   afterEach(() => {
@@ -87,16 +83,11 @@ describe('regex toggle', () => {
       }
     });
 
-    const { regexSwitch } = getReactComponents(instance);
-    expect(regexSwitch.props().isSelected).toBe(true);
+    expect(pageElements.getRegexToggleSwitch().checked).toBeTrue();
   });
 
   it('calls onChange from ValueIsRegex field when switch is toggled', () => {
-    extensionBridge.init();
-
-    const { regexSwitch } = getReactComponents(instance);
-
-    regexSwitch.props().onChange(true);
+    fireEvent.click(pageElements.getRegexToggleSwitch());
 
     expect(extensionBridge.getSettings()).toEqual({
       valueIsRegex: true
@@ -111,8 +102,7 @@ describe('regex toggle', () => {
       }
     });
 
-    const { testButton } = getReactComponents(instance);
-    testButton.props().onPress();
+    fireEvent.click(pageElements.getRegexTestButton());
 
     expect(extensionBridge.openRegexTester).toHaveBeenCalledWith({
       pattern: 'foo',
@@ -132,9 +122,8 @@ describe('regex toggle', () => {
       }
     });
 
-    const { testButtonContainer } = getReactComponents(instance);
-
-    expect(testButtonContainer.props().style.visibility).toBe('visible');
+    expect(pageElements.getRegexToggleSwitch().checked).toBeTrue();
+    expect(pageElements.getRegexTestButton()).toBeTruthy();
   });
 
   it('hides test link when valueIsRegex=false', () => {
@@ -142,8 +131,7 @@ describe('regex toggle', () => {
       settings: {}
     });
 
-    const { testButtonContainer } = getReactComponents(instance);
-
-    expect(testButtonContainer.props().style.visibility).toBe('hidden');
+    expect(pageElements.getRegexToggleSwitch().checked).toBeFalse();
+    expect(pageElements.queryForRegexTestButton()).toBeNull();
   });
 });

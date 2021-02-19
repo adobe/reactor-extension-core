@@ -10,28 +10,29 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField } from '@adobe/react-spectrum';
+import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import Cookie, { formConfig } from '../cookie';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const nameTextfield = wrapper.find(TextField);
-
-  return {
-    nameTextfield
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getCookieTextBox: () => screen.getByRole('textbox', { name: /cookie name/i })
 };
 
 describe('cookie data element view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(Cookie, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(Cookie, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
@@ -41,16 +42,11 @@ describe('cookie data element view', () => {
       }
     });
 
-    const { nameTextfield } = getReactComponents(instance);
-
-    expect(nameTextfield.props().value).toBe('foo');
+    expect(pageElements.getCookieTextBox().value).toBe('foo');
   });
 
   it('sets settings from form values', () => {
-    extensionBridge.init();
-
-    const { nameTextfield } = getReactComponents(instance);
-    nameTextfield.props().onChange('foo');
+    userEvent.type(pageElements.getCookieTextBox(), 'foo');
 
     expect(extensionBridge.getSettings()).toEqual({
       name: 'foo'
@@ -58,11 +54,11 @@ describe('cookie data element view', () => {
   });
 
   it('sets errors if required values are not provided', () => {
-    extensionBridge.init();
+    fireEvent.focus(pageElements.getCookieTextBox());
+    fireEvent.blur(pageElements.getCookieTextBox());
+    expect(
+      pageElements.getCookieTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
     expect(extensionBridge.validate()).toBe(false);
-
-    const { nameTextfield } = getReactComponents(instance);
-
-    expect(nameTextfield.props().validationState).toBe('invalid');
   });
 });

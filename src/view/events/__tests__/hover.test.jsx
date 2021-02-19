@@ -12,13 +12,12 @@
 
 import { fireEvent, render, screen } from '@testing-library/react';
 import { sharedTestingElements } from '@test-helpers/react-testing-library';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import Hover, { formConfig } from '../hover';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 // react-testing-library element selectors
 const pageElements = {
-  ...sharedTestingElements,
   delayHover: {
     radioGroup: {
       getImmediately: () => screen.getByRole('radio', { name: /immediately/i }),
@@ -46,9 +45,9 @@ describe('hover event view', () => {
   });
 
   it('the default hover options are chosen', () => {
-    expect(pageElements.elementsMatching.getCssSelectorTextBox().value).toBe(
-      ''
-    );
+    expect(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox().value
+    ).toBe('');
 
     expect(
       pageElements.delayHover.radioGroup.getImmediately().checked
@@ -57,12 +56,14 @@ describe('hover event view', () => {
       pageElements.delayHover.radioGroup.getAfterDelay().checked
     ).toBeFalse();
 
-    fireEvent.click(pageElements.advancedSettings.getSettingsToggleTrigger());
+    fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
     expect(
-      pageElements.advancedSettings.getBubbleFireIfParentCheckbox().value
+      sharedTestingElements.advancedSettings.getBubbleFireIfParentCheckbox()
+        .value
     ).toBe('true');
     expect(
-      pageElements.advancedSettings.getBubbleFireIfChildFiredCheckbox().value
+      sharedTestingElements.advancedSettings.getBubbleFireIfChildFiredCheckbox()
+        .value
     ).toBe('true');
   });
 
@@ -75,31 +76,36 @@ describe('hover event view', () => {
       }
     });
 
-    expect(pageElements.elementsMatching.getCssSelectorTextBox().value).toBe(
-      '.foo'
-    );
+    expect(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox().value
+    ).toBe('.foo');
 
     fireEvent.click(pageElements.delayHover.radioGroup.getAfterDelay());
     expect(pageElements.delayHover.getDelayTextBox().value).toBe('100');
 
-    fireEvent.click(pageElements.advancedSettings.getSettingsToggleTrigger());
-    expect(pageElements.advancedSettings.getBubbleStopCheckBox().value).toBe(
-      'true'
-    );
+    fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
+    expect(
+      sharedTestingElements.advancedSettings.getBubbleStopCheckBox().value
+    ).toBe('true');
   });
 
   it('sets settings from form values', () => {
-    fireEvent.change(pageElements.elementsMatching.getCssSelectorTextBox(), {
-      target: { value: '.foo' }
-    });
+    fireEvent.change(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox(),
+      {
+        target: { value: '.foo' }
+      }
+    );
 
     fireEvent.click(pageElements.delayHover.radioGroup.getAfterDelay());
     fireEvent.change(pageElements.delayHover.getDelayTextBox(), {
       target: { value: '100' }
     });
 
-    fireEvent.click(pageElements.advancedSettings.getSettingsToggleTrigger());
-    fireEvent.click(pageElements.advancedSettings.getBubbleStopCheckBox());
+    fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
+    fireEvent.click(
+      sharedTestingElements.advancedSettings.getBubbleStopCheckBox()
+    );
 
     const {
       elementSelector,
@@ -114,14 +120,18 @@ describe('hover event view', () => {
 
   it('sets validation errors for empty fields', () => {
     expect(
-      pageElements.elementsMatching
+      sharedTestingElements.elementsMatching
         .getCssSelectorTextBox()
         .getAttribute('aria-invalid')
     ).toBeFalsy();
-    fireEvent.focus(pageElements.elementsMatching.getCssSelectorTextBox());
-    fireEvent.blur(pageElements.elementsMatching.getCssSelectorTextBox());
+    fireEvent.focus(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox()
+    );
+    fireEvent.blur(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox()
+    );
     expect(
-      pageElements.elementsMatching
+      sharedTestingElements.elementsMatching
         .getCssSelectorTextBox()
         .getAttribute('aria-invalid')
     ).toBeTruthy();

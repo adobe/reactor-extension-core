@@ -10,23 +10,29 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField } from '@adobe/react-spectrum';
-import RegexToggle from '../../components/regexToggle';
+import { fireEvent, render, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import PathAndQueryString, { formConfig } from '../pathAndQuerystring';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const rows = wrapper.find('div[data-row]').map((row) => ({
-    pathTextfield: row.find(TextField),
-    pathRegexToggle: row.find(RegexToggle)
-  }));
-
-  return {
-    rows
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getRows: () => {
+    return [].slice
+      .call(document.querySelectorAll('div[data-row]'))
+      .map((domNode) => ({
+        domNode,
+        withinRow: {
+          getPathTextBox: () => {
+            return within(domNode).getByRole('textbox', { name: /path/i });
+          },
+          getRegexToggleSwitch: () => {
+            return within(domNode).getByRole('switch', { name: /regex/i });
+          }
+        }
+      }));
+  }
 };
 
 const testProps = {
@@ -45,33 +51,38 @@ const testProps = {
 
 describe('path and query string condition view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(
-      bootstrap(PathAndQueryString, formConfig, extensionBridge)
-    );
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(PathAndQueryString, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
     extensionBridge.init(testProps);
+    const rows = pageElements.getRows();
+    expect(rows.length).toBe(2);
 
-    const { rows } = getReactComponents(instance);
+    const [firstRow, secondRow] = rows;
 
-    expect(rows[0].pathTextfield.props().value).toBe('foo');
-    expect(rows[1].pathTextfield.props().value).toBe('bar');
-    expect(rows[0].pathRegexToggle.props().value).toBe('');
-    expect(rows[1].pathRegexToggle.props().value).toBe(true);
+    expect(firstRow.withinRow.getPathTextBox().value).toBe('foo');
+    expect(firstRow.withinRow.getRegexToggleSwitch().checked).toBeFalse();
+
+    expect(secondRow.withinRow.getPathTextBox().value).toBe('bar');
+    expect(secondRow.withinRow.getRegexToggleSwitch().checked).toBeTrue();
   });
 
   it('sets settings from form values', () => {
-    extensionBridge.init();
+    const rows = pageElements.getRows();
+    expect(rows.length).toBe(1);
 
-    const { rows } = getReactComponents(instance);
-
-    rows[0].pathTextfield.props().onChange('goo');
-    rows[0].pathRegexToggle.props().onChange(true);
+    userEvent.type(rows[0].withinRow.getPathTextBox(), 'goo');
+    fireEvent.click(rows[0].withinRow.getRegexToggleSwitch());
 
     expect(extensionBridge.getSettings()).toEqual({
       paths: [
@@ -84,11 +95,13 @@ describe('path and query string condition view', () => {
   });
 
   it('sets errors if required values are not provided', () => {
-    extensionBridge.init();
+    const [row] = pageElements.getRows();
+    fireEvent.focus(row.withinRow.getPathTextBox());
+    fireEvent.blur(row.withinRow.getPathTextBox());
+
+    expect(
+      row.withinRow.getPathTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
     expect(extensionBridge.validate()).toBe(false);
-
-    const { rows } = getReactComponents(instance);
-
-    expect(rows[0].pathTextfield.props().validationState).toBe('invalid');
   });
 });

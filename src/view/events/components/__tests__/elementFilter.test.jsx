@@ -10,29 +10,33 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { RadioGroup } from '@adobe/react-spectrum';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { sharedTestingElements } from '@test-helpers/react-testing-library';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import ElementFilter, { formConfig } from '../elementFilter';
-import createExtensionBridge from '../../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../../bootstrap';
-import SpecificElements from '../specificElements';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-
-  return {
-    elementFilterRadioGroup: wrapper.find(RadioGroup),
-    specificElements: wrapper.find(SpecificElements)
-  };
+// react-testing-library element selectors
+const pageElements = {
+  radioGroup: {
+    getSpecificElements: () =>
+      screen.getByRole('radio', { name: /specific elements/i }),
+    getAnyElement: () => screen.getByRole('radio', { name: /any element/i })
+  }
 };
 
 describe('elementFilter', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(ElementFilter, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(ElementFilter, formConfig, extensionBridge));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('updates view properly when elementSelector is provided', () => {
@@ -42,23 +46,19 @@ describe('elementFilter', () => {
       }
     });
 
-    const { elementFilterRadioGroup, specificElements } = getReactComponents(
-      instance
-    );
-
-    expect(elementFilterRadioGroup.props().value).toBe('specific');
-    expect(specificElements).toBeDefined();
+    expect(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox().value
+    ).toBe('.foo');
+    expect(pageElements.radioGroup.getSpecificElements().checked).toBeTrue();
   });
 
   it('updates view properly when elementSelector is not provided', () => {
     extensionBridge.init({ settings: {} });
 
-    const { elementFilterRadioGroup, specificElements } = getReactComponents(
-      instance
-    );
-
-    expect(elementFilterRadioGroup.props().value).toBe('any');
-    expect(specificElements.exists()).toBe(false);
+    expect(pageElements.radioGroup.getAnyElement().checked).toBeTrue();
+    expect(
+      sharedTestingElements.elementsMatching.queryForCssSelectorTextBox()
+    ).toBeNull();
   });
 
   it(
@@ -77,9 +77,7 @@ describe('elementFilter', () => {
         }
       });
 
-      const { elementFilterRadioGroup } = getReactComponents(instance);
-
-      elementFilterRadioGroup.props().onChange('any', { stopPropagation() {} });
+      fireEvent.click(pageElements.radioGroup.getAnyElement());
 
       const {
         elementSelector,
@@ -92,26 +90,20 @@ describe('elementFilter', () => {
   );
 
   it('includes specificElements errors if specific element radio is selected', () => {
-    extensionBridge.init();
-
-    const { elementFilterRadioGroup } = getReactComponents(instance);
-
-    elementFilterRadioGroup.props().onChange('specific', {
-      stopPropagation() {}
-    });
+    fireEvent.click(pageElements.radioGroup.getSpecificElements());
 
     expect(extensionBridge.validate()).toBe(false);
+    expect(
+      sharedTestingElements.elementsMatching
+        .getCssSelectorTextBox()
+        .hasAttribute('aria-invalid')
+    ).toBeTrue();
   });
 
   it('excludes specificElements errors if any element radio is selected', () => {
     extensionBridge.init();
 
-    const { elementFilterRadioGroup } = getReactComponents(instance);
-
-    elementFilterRadioGroup.props().onChange('any', {
-      stopPropagation() {}
-    });
-
+    fireEvent.click(pageElements.radioGroup.getAnyElement());
     expect(extensionBridge.validate()).toBe(true);
   });
 });

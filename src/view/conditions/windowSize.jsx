@@ -26,7 +26,7 @@ import NoWrapText from '../components/noWrapText';
 
 const WindowSize = () => (
   <Flex gap="size-100" direction="column" minWidth="size-6000">
-    <Flex alignItems="end" gap="size-100">
+    <Flex alignItems="end" gap="size-100" data-row="true">
       <Text marginBottom="size-75">
         Return true if the user&rsquo;s window size width is
       </Text>
@@ -50,7 +50,7 @@ const WindowSize = () => (
       </View>
       <NoWrapText>px</NoWrapText>
     </Flex>
-    <Flex alignItems="end" gap="size-100">
+    <Flex alignItems="end" gap="size-100" data-row="true">
       <NoWrapText>and height is</NoWrapText>
       <WrappedField
         label="Operator"

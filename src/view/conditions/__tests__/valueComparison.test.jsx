@@ -10,58 +10,70 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField, Picker, Well, Checkbox } from '@adobe/react-spectrum';
-import WrappedField from '../../components/wrappedField';
+import {
+  fireEvent,
+  render,
+  screen,
+  waitForElementToBeRemoved,
+  within
+} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import ValueComparison, { formConfig } from '../valueComparison';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const fields = wrapper.find(WrappedField);
-  const leftOperandField = fields.filterWhere(
-    (n) => n.prop('name') === 'leftOperand'
-  );
-  const leftOperandTextfield = leftOperandField.find(TextField);
-
-  const operatorField = fields.filterWhere(
-    (n) => n.prop('name') === 'operator'
-  );
-  const operatorSelect = operatorField.find(Picker);
-
-  const rightOperandField = fields.filterWhere(
-    (n) => n.prop('name') === 'rightOperand'
-  );
-  const rightOperandTextfield = rightOperandField.find(TextField);
-
-  const caseInsensitiveField = fields.filterWhere(
-    (n) => n.prop('name') === 'caseInsensitive'
-  );
-  const caseInsensitiveCheckbox = caseInsensitiveField.find(Checkbox);
-
-  const noTypeConversionReminders = wrapper.find(Well);
-
-  return {
-    leftOperandTextfield,
-    operatorSelect,
-    rightOperandTextfield,
-    caseInsensitiveCheckbox,
-    noTypeConversionReminders
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getLeftOperandTextBox: () => {
+    return screen.getByRole('textbox', { name: /left operand/i });
+  },
+  getLeftOperandDataElementTrigger: () => {
+    const [left] = screen.getAllByRole('button', {
+      name: /select a data element/i
+    });
+    return left;
+  },
+  getOperatorDropdownTrigger: () => {
+    return screen.getByRole('button', { name: /operator/i });
+  },
+  getRightOperandTextBox: () => {
+    return screen.getByRole('textbox', { name: /right operand/i });
+  },
+  getRightOperandDataElementTrigger: () => {
+    const [, right] = screen.getAllByRole('button', {
+      name: /select a data element/i
+    });
+    return right;
+  },
+  getCaseInsensitiveCheckBox: () => {
+    return screen.getByRole('checkbox', { name: /case insensitive/i });
+  },
+  waitForDynamicOptionText: (text) => {
+    // return screen.findByRole('option', { name: new RegExp(text, 'i') });
+    return screen.findByRole('option', { name: text });
+  }
 };
 
 describe('value comparison condition view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(ValueComparison, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(ValueComparison, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   describe('equal-based comparisons', () => {
-    ['equals', 'doesNotEqual'].forEach((operator) => {
+    // [new RegExp(/equals/, 'i'), new RegExp(/does not equal/, 'i')].forEach(
+    [
+      { operator: 'equals', text: new RegExp(/equals/, 'i') },
+      { operator: 'doesNotEqual', text: new RegExp(/does not equal/, 'i') }
+    ].forEach(({ operator, text }) => {
       describe(`when operator is ${operator}`, () => {
         it('sets form values from settings ', () => {
           extensionBridge.init({
@@ -77,36 +89,25 @@ describe('value comparison condition view', () => {
             }
           });
 
-          const {
-            leftOperandTextfield,
-            operatorSelect,
-            rightOperandTextfield,
-            caseInsensitiveCheckbox
-          } = getReactComponents(instance);
-
-          expect(leftOperandTextfield.props().value).toBe('%foo%');
-          expect(operatorSelect.props().value).toBe(operator);
-          expect(rightOperandTextfield.props().value).toBe('0');
-          expect(caseInsensitiveCheckbox.props().checked).toBe(true);
+          expect(pageElements.getLeftOperandTextBox().value).toBe('%foo%');
+          expect(
+            within(pageElements.getOperatorDropdownTrigger()).getByText(text)
+          ).toBeTruthy();
+          expect(pageElements.getRightOperandTextBox().value).toBe('0');
+          expect(pageElements.getCaseInsensitiveCheckBox().checked).toBeTrue();
         });
 
-        it('sets settings from form values', () => {
-          extensionBridge.init();
+        it('sets settings from form values', async () => {
+          userEvent.type(pageElements.getLeftOperandTextBox(), '%foo%');
 
-          const { leftOperandTextfield, operatorSelect } = getReactComponents(
-            instance
-          );
+          fireEvent.click(pageElements.getOperatorDropdownTrigger());
+          const option = await pageElements.waitForDynamicOptionText(text);
+          option.click();
+          // wait for the UI to settle before interacting with more elements
+          await waitForElementToBeRemoved(option);
 
-          leftOperandTextfield.props().onChange('%foo%');
-          operatorSelect.props().onChange(operator);
-
-          const {
-            rightOperandTextfield,
-            caseInsensitiveCheckbox
-          } = getReactComponents(instance);
-
-          rightOperandTextfield.props().onChange('123');
-          caseInsensitiveCheckbox.props().onChange(true);
+          userEvent.type(pageElements.getRightOperandTextBox(), '123');
+          fireEvent.click(pageElements.getCaseInsensitiveCheckBox());
 
           expect(extensionBridge.getSettings()).toEqual({
             leftOperand: '%foo%',
@@ -127,17 +128,20 @@ describe('value comparison condition view', () => {
             }
           });
 
+          // this field is required
+          fireEvent.focus(pageElements.getLeftOperandTextBox());
+          fireEvent.blur(pageElements.getLeftOperandTextBox());
+          expect(
+            pageElements.getLeftOperandTextBox().hasAttribute('aria-invalid')
+          ).toBeTrue();
+
           expect(extensionBridge.validate()).toBe(false);
 
-          const {
-            leftOperandTextfield,
-            rightOperandTextfield
-          } = getReactComponents(instance);
-
-          expect(leftOperandTextfield.props().validationState).toBe('invalid');
           // We allow empty strings for equals operands because users may want to check to
           // see if a value equals an empty string.
-          expect(rightOperandTextfield.props().validationState).toBeUndefined();
+          expect(
+            pageElements.getRightOperandTextBox().hasAttribute('aria-invalid')
+          ).toBeFalse();
         });
       });
     });
@@ -145,15 +149,24 @@ describe('value comparison condition view', () => {
 
   describe('string-based comparisons', () => {
     [
-      'contains',
-      'doesNotContain',
-      'startsWith',
-      'doesNotStartWith',
-      'endsWith',
-      'doesNotEndWith',
-      'matchesRegex',
-      'doesNotMatchRegex'
-    ].forEach((operator) => {
+      { operator: 'contains', text: new RegExp(/contains/, 'i') },
+      { operator: 'doesNotContain', text: new RegExp(/does not contain/, 'i') },
+      { operator: 'startsWith', text: new RegExp(/starts with/, 'i') },
+      {
+        operator: 'doesNotStartWith',
+        text: new RegExp(/does not start with/, 'i')
+      },
+      { operator: 'endsWith', text: new RegExp(/ends with/, 'i') },
+      {
+        operator: 'doesNotEndWith',
+        text: new RegExp(/does not end with/, 'i')
+      },
+      { operator: 'matchesRegex', text: new RegExp(/matches regex/, 'i') },
+      {
+        operator: 'doesNotMatchRegex',
+        text: new RegExp(/does not match regex/, 'i')
+      }
+    ].forEach(({ operator, text }) => {
       describe(`when operator is ${operator}`, () => {
         it('sets form values from settings ', () => {
           extensionBridge.init({
@@ -167,36 +180,24 @@ describe('value comparison condition view', () => {
             }
           });
 
-          const {
-            leftOperandTextfield,
-            operatorSelect,
-            rightOperandTextfield,
-            caseInsensitiveCheckbox
-          } = getReactComponents(instance);
-
-          expect(leftOperandTextfield.props().value).toBe('%foo%');
-          expect(operatorSelect.props().value).toBe(operator);
-          expect(rightOperandTextfield.props().value).toBe('bar');
-          expect(caseInsensitiveCheckbox.props().checked).toBe(true);
+          expect(pageElements.getLeftOperandTextBox().value).toBe('%foo%');
+          expect(
+            within(pageElements.getOperatorDropdownTrigger()).getByText(text)
+          ).toBeTruthy();
+          expect(pageElements.getRightOperandTextBox().value).toBe('bar');
+          expect(pageElements.getCaseInsensitiveCheckBox().checked).toBeTrue();
         });
 
-        it('sets settings from form values', () => {
-          extensionBridge.init();
+        it('sets settings from form values', async () => {
+          userEvent.type(pageElements.getLeftOperandTextBox(), '%foo%');
+          fireEvent.click(pageElements.getOperatorDropdownTrigger());
+          const option = await pageElements.waitForDynamicOptionText(text);
+          option.click();
+          // wait for the UI to settle before interacting with more elements
+          await waitForElementToBeRemoved(option);
 
-          const { leftOperandTextfield, operatorSelect } = getReactComponents(
-            instance
-          );
-
-          leftOperandTextfield.props().onChange('%foo%');
-          operatorSelect.props().onChange(operator);
-
-          const {
-            rightOperandTextfield,
-            caseInsensitiveCheckbox
-          } = getReactComponents(instance);
-
-          rightOperandTextfield.props().onChange('bar');
-          caseInsensitiveCheckbox.props().onChange(true);
+          userEvent.type(pageElements.getRightOperandTextBox(), 'bar');
+          fireEvent.click(pageElements.getCaseInsensitiveCheckBox());
 
           expect(extensionBridge.getSettings()).toEqual({
             leftOperand: '%foo%',
@@ -219,167 +220,193 @@ describe('value comparison condition view', () => {
 
           expect(extensionBridge.validate()).toBe(false);
 
-          const {
-            leftOperandTextfield,
-            rightOperandTextfield
-          } = getReactComponents(instance);
-
-          expect(leftOperandTextfield.props().validationState).toBe('invalid');
-          expect(rightOperandTextfield.props().validationState).toBe('invalid');
+          expect(
+            pageElements.getLeftOperandTextBox().hasAttribute('aria-invalid')
+          ).toBeTrue();
+          expect(
+            pageElements.getRightOperandTextBox().hasAttribute('aria-invalid')
+          ).toBeTrue();
         });
       });
     });
-  });
 
-  describe('number-based comparisons', () => {
-    [
-      'lessThan',
-      'lessThanOrEqual',
-      'greaterThan',
-      'greaterThanOrEqual'
-    ].forEach((operator) => {
-      describe(`when operator is ${operator}`, () => {
-        it('sets form values from settings', () => {
-          extensionBridge.init({
-            settings: {
+    describe('number-based comparisons', () => {
+      [
+        { operator: 'lessThan', text: new RegExp(/is less than$/, 'i') },
+        {
+          operator: 'lessThanOrEqual',
+          text: new RegExp(/is less than or equal to$/, 'i')
+        },
+        { operator: 'greaterThan', text: new RegExp(/is greater than$/, 'i') },
+        {
+          operator: 'greaterThanOrEqual',
+          text: new RegExp(/is greater than or equal to$/, 'i')
+        }
+      ].forEach(({ operator, text }) => {
+        describe(`when operator is ${operator}`, () => {
+          it('sets form values from settings', () => {
+            extensionBridge.init({
+              settings: {
+                leftOperand: '%foo%',
+                comparison: {
+                  operator
+                },
+                rightOperand: 456
+              }
+            });
+
+            expect(pageElements.getLeftOperandTextBox().value).toBe('%foo%');
+            expect(
+              within(pageElements.getOperatorDropdownTrigger()).findByText(text)
+            ).toBeTruthy();
+            expect(pageElements.getRightOperandTextBox().value).toBe('456');
+          });
+
+          it('sets settings from form values', async () => {
+            userEvent.type(pageElements.getLeftOperandTextBox(), '%foo%');
+
+            fireEvent.click(pageElements.getOperatorDropdownTrigger());
+            const option = await pageElements.waitForDynamicOptionText(text);
+            option.click();
+            // wait for the UI to settle before interacting with more elements
+            await waitForElementToBeRemoved(option);
+
+            userEvent.type(pageElements.getRightOperandTextBox(), '456');
+
+            expect(extensionBridge.getSettings()).toEqual({
               leftOperand: '%foo%',
               comparison: {
                 operator
               },
               rightOperand: 456
-            }
+            });
           });
 
-          const {
-            leftOperandTextfield,
-            operatorSelect,
-            rightOperandTextfield
-          } = getReactComponents(instance);
+          it('sets errors if required values are not provided', () => {
+            extensionBridge.init({
+              settings: {
+                leftOperand: '',
+                comparison: {
+                  operator
+                },
+                rightOperand: ''
+              }
+            });
 
-          expect(leftOperandTextfield.props().value).toBe('%foo%');
-          expect(operatorSelect.props().value).toBe(operator);
-          expect(rightOperandTextfield.props().value).toBe('456');
-        });
+            expect(extensionBridge.validate()).toBe(false);
 
-        it('sets settings from form values', () => {
-          extensionBridge.init();
-
-          const { leftOperandTextfield, operatorSelect } = getReactComponents(
-            instance
-          );
-
-          leftOperandTextfield.props().onChange('%foo%');
-          operatorSelect.props().onChange(operator);
-
-          const { rightOperandTextfield } = getReactComponents(instance);
-
-          rightOperandTextfield.props().onChange('456');
-
-          expect(extensionBridge.getSettings()).toEqual({
-            leftOperand: '%foo%',
-            comparison: {
-              operator
-            },
-            rightOperand: 456
+            expect(
+              pageElements.getLeftOperandTextBox().hasAttribute('aria-invalid')
+            ).toBeTrue();
+            expect(
+              pageElements.getRightOperandTextBox().hasAttribute('aria-invalid')
+            ).toBeTrue();
           });
-        });
-
-        it('sets errors if required values are not provided', () => {
-          extensionBridge.init({
-            settings: {
-              leftOperand: '',
-              comparison: {
-                operator
-              },
-              rightOperand: ''
-            }
-          });
-
-          expect(extensionBridge.validate()).toBe(false);
-
-          const {
-            leftOperandTextfield,
-            rightOperandTextfield
-          } = getReactComponents(instance);
-
-          expect(leftOperandTextfield.props().validationState).toBe('invalid');
-          expect(rightOperandTextfield.props().validationState).toBe('invalid');
         });
       });
     });
-  });
 
-  describe('static right operand comparisons', () => {
-    ['isTrue', 'isTruthy', 'isFalse', 'isFalsy'].forEach((operator) => {
-      describe(`when operator is ${operator}`, () => {
-        it('sets form values from settings', () => {
-          extensionBridge.init({
-            settings: {
+    describe('static right operand comparisons', () => {
+      [
+        { operator: 'isTrue', text: new RegExp(/is true/, 'i') },
+        {
+          operator: 'isTruthy',
+          text: new RegExp(/is truthy/, 'i')
+        },
+        { operator: 'isFalse', text: new RegExp(/is false/, 'i') },
+        {
+          operator: 'isFalsy',
+          text: new RegExp(/is falsy/, 'i')
+        }
+      ].forEach(({ operator, text }) => {
+        describe(`when operator is ${operator}`, () => {
+          it('sets form values from settings', () => {
+            extensionBridge.init({
+              settings: {
+                leftOperand: '%foo%',
+                comparison: {
+                  operator
+                }
+              }
+            });
+
+            expect(pageElements.getLeftOperandTextBox().value).toBe('%foo%');
+            expect(
+              within(pageElements.getOperatorDropdownTrigger()).getByText(text)
+            ).toBeTruthy();
+          });
+
+          it('sets settings from form values', async () => {
+            userEvent.type(pageElements.getLeftOperandTextBox(), '%foo%');
+
+            fireEvent.click(pageElements.getOperatorDropdownTrigger());
+            const option = await pageElements.waitForDynamicOptionText(text);
+            option.click();
+
+            expect(extensionBridge.getSettings()).toEqual({
               leftOperand: '%foo%',
               comparison: {
                 operator
               }
-            }
+            });
           });
 
-          const { leftOperandTextfield, operatorSelect } = getReactComponents(
-            instance
-          );
-
-          expect(leftOperandTextfield.props().value).toBe('%foo%');
-          expect(operatorSelect.props().value).toBe(operator);
-        });
-
-        it('sets settings from form values', () => {
-          extensionBridge.init();
-
-          const { leftOperandTextfield, operatorSelect } = getReactComponents(
-            instance
-          );
-
-          leftOperandTextfield.props().onChange('%foo%');
-          operatorSelect.props().onChange(operator);
-
-          expect(extensionBridge.getSettings()).toEqual({
-            leftOperand: '%foo%',
-            comparison: {
-              operator
-            }
-          });
-        });
-
-        it('sets errors if required values are not provided', () => {
-          extensionBridge.init({
-            settings: {
-              comparison: {
-                operator
+          it('sets errors if required values are not provided', () => {
+            extensionBridge.init({
+              settings: {
+                comparison: {
+                  operator
+                }
               }
-            }
+            });
+            expect(extensionBridge.validate()).toBe(false);
+            expect(
+              pageElements.getLeftOperandTextBox().hasAttribute('aria-invalid')
+            ).toBeTrue();
           });
-          expect(extensionBridge.validate()).toBe(false);
-
-          const { leftOperandTextfield } = getReactComponents(instance);
-
-          expect(leftOperandTextfield.props().validationState).toBe('invalid');
         });
       });
     });
+
+    it('warns user about no type conversions for specific string values', () => {
+      extensionBridge.init({
+        settings: {
+          leftOperand: '%foo%',
+          comparison: {
+            operator: 'equals',
+            caseInsensitive: true
+          },
+          rightOperand: 'true'
+        }
+      });
+
+      expect(screen.getByText(/Be aware that the value/i)).toBeTruthy();
+    });
   });
 
-  it('warns user about no type conversions for specific string values', () => {
-    extensionBridge.init({
-      settings: {
-        leftOperand: '%foo%',
-        comparison: {
-          operator: 'equals',
-          caseInsensitive: true
-        },
-        rightOperand: 'true'
+  it('The left operand can trigger the data element modal', () => {
+    spyOn(extensionBridge, 'openDataElementSelector').and.callFake(() => ({
+      then(resolve) {
+        resolve('%foo bar%');
       }
-    });
+    }));
 
-    const { noTypeConversionReminders } = getReactComponents(instance);
+    fireEvent.click(pageElements.getLeftOperandDataElementTrigger());
 
-    expect(noTypeConversionReminders.length).toBe(1);
+    expect(extensionBridge.getSettings().leftOperand).toBe('%foo bar%');
+    expect(extensionBridge.getSettings().rightOperand).toBeFalsy();
+  });
+
+  it('The right operand can trigger the data element modal', () => {
+    spyOn(extensionBridge, 'openDataElementSelector').and.callFake(() => ({
+      then(resolve) {
+        resolve('%foo bar%');
+      }
+    }));
+
+    fireEvent.click(pageElements.getRightOperandDataElementTrigger());
+
+    expect(extensionBridge.getSettings().rightOperand).toBe('%foo bar%');
+    expect(extensionBridge.getSettings().leftOperand).toBeFalsy();
   });
 });

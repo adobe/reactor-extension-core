@@ -10,23 +10,36 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField } from '@adobe/react-spectrum';
-import RegexToggle from '../../components/regexToggle';
+import { fireEvent, render, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import Path, { formConfig } from '../path';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const rows = wrapper.find('div[data-row]').map((row) => ({
-    pathTextfield: row.find(TextField),
-    pathRegexToggle: row.find(RegexToggle)
-  }));
-
-  return {
-    rows
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getRegexRows: () => {
+    return [].slice
+      .call(document.querySelectorAll('div[data-type="row"]')) // get the dom nodes
+      .map((domNode) => {
+        return {
+          domNode,
+          // Decorate the returned rows to have react-testing-library getters
+          withinRow: {
+            getPathTextBox: () => {
+              return within(domNode).getByRole('textbox', {
+                name: /path/i
+              });
+            },
+            regex: {
+              getToggleSwitch: () => {
+                return within(domNode).getByRole('switch', { name: /regex/i });
+              }
+            }
+          }
+        };
+      });
+  }
 };
 
 const testProps = {
@@ -45,31 +58,38 @@ const testProps = {
 
 describe('path condition view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(Path, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(Path, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
     extensionBridge.init(testProps);
 
-    const { rows } = getReactComponents(instance);
+    const rows = pageElements.getRegexRows();
+    expect(rows.length).toBe(2);
 
-    expect(rows[0].pathTextfield.props().value).toBe('foo');
-    expect(rows[1].pathTextfield.props().value).toBe('bar');
-    expect(rows[0].pathRegexToggle.props().value).toBe('');
-    expect(rows[1].pathRegexToggle.props().value).toBe(true);
+    const [firstRow, secondRow] = rows;
+    expect(firstRow.withinRow.getPathTextBox().value).toBe('foo');
+    expect(firstRow.withinRow.regex.getToggleSwitch().checked).toBeFalse();
+
+    expect(secondRow.withinRow.getPathTextBox().value).toBe('bar');
+    expect(secondRow.withinRow.regex.getToggleSwitch().checked).toBeTrue();
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { rows } = getReactComponents(instance);
-
-    rows[0].pathTextfield.props().onChange('goo');
-    rows[0].pathRegexToggle.props().onChange(true);
+    const [firstRow] = pageElements.getRegexRows();
+    userEvent.type(firstRow.withinRow.getPathTextBox(), 'goo');
+    fireEvent.click(firstRow.withinRow.regex.getToggleSwitch());
 
     expect(extensionBridge.getSettings()).toEqual({
       paths: [
@@ -82,11 +102,13 @@ describe('path condition view', () => {
   });
 
   it('sets errors if required values are not provided', () => {
-    extensionBridge.init();
+    const [firstRow] = pageElements.getRegexRows();
+    fireEvent.focus(firstRow.withinRow.getPathTextBox());
+    fireEvent.blur(firstRow.withinRow.getPathTextBox());
+    expect(
+      firstRow.withinRow.getPathTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
+
     expect(extensionBridge.validate()).toBe(false);
-
-    const { rows } = getReactComponents(instance);
-
-    expect(rows[0].pathTextfield.props().validationState).toBe('invalid');
   });
 });

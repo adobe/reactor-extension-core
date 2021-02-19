@@ -12,13 +12,12 @@
 
 import { render, fireEvent, screen } from '@testing-library/react';
 import { sharedTestingElements } from '@test-helpers/react-testing-library';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import Click, { formConfig } from '../click';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 // react-testing-library element selectors
 const pageElements = {
-  ...sharedTestingElements,
   linkDelay: {
     getCheckBox: () => {
       return screen.getByRole('checkbox', { name: /delay navigation/i });
@@ -45,26 +44,28 @@ describe('click event view', () => {
   });
 
   it('the default click options are chosen', () => {
-    expect(pageElements.elementsMatching.getCssSelectorTextBox().value).toBe(
-      ''
-    );
     expect(
-      pageElements.elementsMatching.radioGroup
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox().value
+    ).toBe('');
+    expect(
+      sharedTestingElements.elementsMatching.radioGroup
         .getSpecificElements()
         .hasAttribute('checked')
     ).toBeTrue();
     expect(
-      pageElements.elementsMatching.radioGroup
+      sharedTestingElements.elementsMatching.radioGroup
         .getAnyElement()
         .hasAttribute('checked')
     ).toBeFalse();
 
-    fireEvent.click(pageElements.advancedSettings.getSettingsToggleTrigger());
+    fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
     expect(
-      pageElements.advancedSettings.getBubbleFireIfParentCheckbox().value
+      sharedTestingElements.advancedSettings.getBubbleFireIfParentCheckbox()
+        .value
     ).toBe('true');
     expect(
-      pageElements.advancedSettings.getBubbleFireIfChildFiredCheckbox().value
+      sharedTestingElements.advancedSettings.getBubbleFireIfChildFiredCheckbox()
+        .value
     ).toBe('true');
   });
 
@@ -77,25 +78,32 @@ describe('click event view', () => {
       }
     });
 
-    fireEvent.click(pageElements.advancedSettings.getSettingsToggleTrigger());
+    fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
 
     expect(pageElements.linkDelay.getTextBox().value).toBe('101');
-    expect(pageElements.elementsMatching.getCssSelectorTextBox().value).toBe(
-      '.foo'
-    );
-    expect(pageElements.advancedSettings.getBubbleStopCheckBox().value).toBe(
-      'true'
-    );
+    expect(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox().value
+    ).toBe('.foo');
+    expect(
+      sharedTestingElements.advancedSettings.getBubbleStopCheckBox().value
+    ).toBe('true');
   });
 
   it('sets settings from form values', () => {
-    fireEvent.focus(pageElements.elementsMatching.getCssSelectorTextBox());
-    fireEvent.change(pageElements.elementsMatching.getCssSelectorTextBox(), {
-      target: { value: '.foo' }
-    });
-    fireEvent.blur(pageElements.elementsMatching.getCssSelectorTextBox());
+    fireEvent.focus(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox()
+    );
+    fireEvent.change(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox(),
+      {
+        target: { value: '.foo' }
+      }
+    );
+    fireEvent.blur(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox()
+    );
     expect(
-      pageElements.elementsMatching
+      sharedTestingElements.elementsMatching
         .getCssSelectorTextBox()
         .hasAttribute('aria-invalid')
     ).toBeFalse();
@@ -110,8 +118,10 @@ describe('click event view', () => {
       pageElements.linkDelay.getTextBox().hasAttribute('aria-invalid')
     ).toBeFalse();
 
-    fireEvent.click(pageElements.advancedSettings.getSettingsToggleTrigger());
-    fireEvent.click(pageElements.advancedSettings.getBubbleStopCheckBox());
+    fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
+    fireEvent.click(
+      sharedTestingElements.advancedSettings.getBubbleStopCheckBox()
+    );
 
     const {
       elementSelector,
@@ -125,11 +135,15 @@ describe('click event view', () => {
   });
 
   it('sets validation errors when element selector is missing', () => {
-    fireEvent.focus(pageElements.elementsMatching.getCssSelectorTextBox());
-    fireEvent.blur(pageElements.elementsMatching.getCssSelectorTextBox());
+    fireEvent.focus(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox()
+    );
+    fireEvent.blur(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox()
+    );
 
     expect(
-      pageElements.elementsMatching
+      sharedTestingElements.elementsMatching
         .getCssSelectorTextBox()
         .hasAttribute('aria-invalid')
     ).toBeTrue();

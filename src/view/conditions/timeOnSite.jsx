@@ -13,7 +13,7 @@
 import React from 'react';
 import { Picker, TextField, Item, Flex } from '@adobe/react-spectrum';
 import WrappedField from '../components/wrappedField';
-import { isNumberLike } from '../utils/validators';
+import { isDataElementToken, isNumberLikeInRange } from '../utils/validators';
 import comparisonOperatorOptions from './comparisonOperatorOptions';
 import NoWrapText from '../components/noWrapText';
 
@@ -34,6 +34,7 @@ const TimeOnSite = () => (
         name="minutes"
         component={TextField}
         isRequired
+        supportDataElement
       />
 
       <NoWrapText>minutes on site</NoWrapText>
@@ -63,8 +64,12 @@ export const formConfig = {
       ...errors
     };
 
-    if (!isNumberLike(values.minutes)) {
-      errors.minutes = 'Please specify a positive number of minutes.';
+    if (
+      !isNumberLikeInRange(values.minutes, { min: 1 }) &&
+      !isDataElementToken(values.minutes)
+    ) {
+      errors.minutes =
+        'Please specify a positive number of minutes, or specify a data element.';
     }
 
     return errors;

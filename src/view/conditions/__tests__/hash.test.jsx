@@ -10,23 +10,29 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField } from '@adobe/react-spectrum';
-import RegexToggle from '../../components/regexToggle';
+import { fireEvent, render, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import Hash, { formConfig } from '../hash';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const rows = wrapper.find('div[data-row]').map((row) => ({
-    hashTextfield: row.find(TextField),
-    hashRegexToggle: row.find(RegexToggle)
-  }));
-
-  return {
-    rows
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getRows: () => {
+    return [].slice
+      .call(document.querySelectorAll('div[data-row]'))
+      .map((domNode) => ({
+        domNode,
+        withinRow: {
+          getHashTextBox: () => {
+            return within(domNode).getByRole('textbox', { name: /hash/i });
+          },
+          getRegexToggleSwitch: () => {
+            return within(domNode).getByRole('switch', { name: /regex/i });
+          }
+        }
+      }));
+  }
 };
 
 const testProps = {
@@ -45,30 +51,36 @@ const testProps = {
 
 describe('hash condition view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(Hash, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(Hash, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
     extensionBridge.init(testProps);
 
-    const { rows } = getReactComponents(instance);
+    const rows = pageElements.getRows();
+    expect(rows.length).toBe(2);
+    const [firstRow, secondRow] = rows;
 
-    expect(rows[0].hashTextfield.props().value).toBe('foo');
-    expect(rows[0].hashRegexToggle.props().value).toBe('');
-    expect(rows[1].hashTextfield.props().value).toBe('bar');
-    expect(rows[1].hashRegexToggle.props().value).toBe(true);
+    expect(firstRow.withinRow.getHashTextBox().value).toBe('foo');
+    expect(firstRow.withinRow.getRegexToggleSwitch().checked).toBeFalse();
+
+    expect(secondRow.withinRow.getHashTextBox().value).toBe('bar');
+    expect(secondRow.withinRow.getRegexToggleSwitch().checked).toBeTrue();
   });
 
   it('sets settings from form values', () => {
-    extensionBridge.init();
-
-    const { rows } = getReactComponents(instance);
-    rows[0].hashTextfield.props().onChange('goo');
-    rows[0].hashRegexToggle.props().onChange(true);
+    const [row] = pageElements.getRows();
+    userEvent.type(row.withinRow.getHashTextBox(), 'goo');
+    fireEvent.click(row.withinRow.getRegexToggleSwitch());
 
     expect(extensionBridge.getSettings()).toEqual({
       hashes: [
@@ -81,11 +93,13 @@ describe('hash condition view', () => {
   });
 
   it('sets errors if required values are not provided', () => {
-    extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { rows } = getReactComponents(instance);
-
-    expect(rows[0].hashTextfield.props().validationState).toBe('invalid');
+    expect(
+      pageElements
+        .getRows()[0]
+        .withinRow.getHashTextBox()
+        .hasAttribute('aria-invalid')
+    ).toBeTrue();
   });
 });

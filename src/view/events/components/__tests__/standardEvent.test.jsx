@@ -10,39 +10,25 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField, Checkbox } from '@adobe/react-spectrum';
-import WrappedField from '../../../components/wrappedField';
+import { fireEvent, render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { sharedTestingElements } from '@test-helpers/react-testing-library';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import StandardEvent, { formConfig } from '../standardEvent';
-import createExtensionBridge from '../../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../../bootstrap';
-import AdvancedEventOptions from '../advancedEventOptions';
-
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const advancedEventOptions = wrapper.find(AdvancedEventOptions);
-  const elementSelectorField = wrapper
-    .find(WrappedField)
-    .filterWhere((n) => n.prop('name') === 'elementSelector');
-  const elementSelectorTextfield = elementSelectorField.find(TextField);
-  const bubbleStopCheckbox = wrapper
-    .find(Checkbox)
-    .filterWhere((n) => n.prop('name') === 'bubbleStop');
-
-  return {
-    elementSelectorTextfield,
-    bubbleStopCheckbox,
-    advancedEventOptions
-  };
-};
 
 describe('standard event view', () => {
   let extensionBridge;
-  let instance;
 
   beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(StandardEvent, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(StandardEvent, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
@@ -53,42 +39,47 @@ describe('standard event view', () => {
       }
     });
 
-    const { advancedEventOptions } = getReactComponents(instance);
-    advancedEventOptions.instance().toggleSelected();
+    expect(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox().value
+    ).toBe('.foo');
 
-    const { elementSelectorTextfield, bubbleStopCheckbox } = getReactComponents(
-      instance
-    );
-
-    expect(elementSelectorTextfield.props().value).toBe('.foo');
-    expect(bubbleStopCheckbox.props().value).toBe(true);
+    fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
+    expect(
+      sharedTestingElements.advancedSettings.getBubbleStopCheckBox().checked
+    ).toBeTrue();
   });
 
   it('sets settings from form values', () => {
-    extensionBridge.init();
-
-    const { advancedEventOptions } = getReactComponents(instance);
-    advancedEventOptions.instance().toggleSelected();
-
-    const { elementSelectorTextfield, bubbleStopCheckbox } = getReactComponents(
-      instance
+    userEvent.type(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox(),
+      '.foo'
+    );
+    fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
+    fireEvent.click(
+      sharedTestingElements.advancedSettings.getBubbleStopCheckBox()
     );
 
-    elementSelectorTextfield.props().onChange('.foo');
-    bubbleStopCheckbox.props().onChange(true);
-
-    const { elementSelector, bubbleStop } = extensionBridge.getSettings();
-    expect(elementSelector).toBe('.foo');
-    expect(bubbleStop).toBe(true);
+    expect(extensionBridge.getSettings()).toEqual({
+      elementSelector: '.foo',
+      bubbleStop: true,
+      bubbleFireIfParent: true,
+      bubbleFireIfChildFired: true
+    });
   });
 
   it('sets validation errors', () => {
-    extensionBridge.init();
+    fireEvent.focus(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox()
+    );
+    fireEvent.blur(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox()
+    );
 
+    expect(
+      sharedTestingElements.elementsMatching
+        .getCssSelectorTextBox()
+        .hasAttribute('aria-invalid')
+    ).toBeTrue();
     expect(extensionBridge.validate()).toBe(false);
-
-    const { elementSelectorTextfield } = getReactComponents(instance);
-
-    expect(elementSelectorTextfield.props().validationState).toBe('invalid');
   });
 });

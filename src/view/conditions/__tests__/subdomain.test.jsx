@@ -10,23 +10,42 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField } from '@adobe/react-spectrum';
-import RegexToggle from '../../components/regexToggle';
+import { fireEvent, render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import Subdomain, { formConfig } from '../subdomain';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const rows = wrapper.find('div[data-row]').map((row) => ({
-    subdomainTextfield: row.find(TextField),
-    subdomainRegexToggle: row.find(RegexToggle)
-  }));
-
-  return {
-    rows
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getAddSubDomainRowButton: () => {
+    return screen.getByRole('button', { name: /add another/i });
+  },
+  getRegexRows: () => {
+    return [].slice
+      .call(document.querySelectorAll('div[data-type="row"]')) // get the dom nodes
+      .map((domNode) => {
+        return {
+          domNode,
+          // Decorate the returned rows to have react-testing-library getters
+          withinRow: {
+            getSubDomainTextBox: () => {
+              return within(domNode).getByRole('textbox', {
+                name: /subdomain/i
+              });
+            },
+            regex: {
+              getToggleSwitch: () => {
+                return within(domNode).getByRole('switch', { name: /regex/i });
+              },
+              getTestButton: () => {
+                return within(domNode).getByRole('button', { name: /test/i });
+              }
+            }
+          }
+        };
+      });
+  }
 };
 
 const testProps = {
@@ -45,31 +64,40 @@ const testProps = {
 
 describe('subdomain condition view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(Subdomain, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(Subdomain, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
     extensionBridge.init(testProps);
 
-    const { rows } = getReactComponents(instance);
+    const rows = pageElements.getRegexRows();
+    expect(rows.length).toBe(2);
 
-    expect(rows[0].subdomainTextfield.props().value).toBe('foo');
-    expect(rows[1].subdomainTextfield.props().value).toBe('bar');
-    expect(rows[0].subdomainRegexToggle.props().value).toBe('');
-    expect(rows[1].subdomainRegexToggle.props().value).toBe(true);
+    const [firstRow, secondRow] = rows;
+
+    expect(firstRow.withinRow.getSubDomainTextBox().value).toBe('foo');
+    expect(firstRow.withinRow.regex.getToggleSwitch().checked).toBe(false);
+
+    expect(secondRow.withinRow.getSubDomainTextBox().value).toBe('bar');
+    expect(secondRow.withinRow.regex.getToggleSwitch().checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
-    extensionBridge.init();
+    const rows = pageElements.getRegexRows();
+    expect(rows.length).toBe(1);
+    const [row] = rows;
 
-    const { rows } = getReactComponents(instance);
-
-    rows[0].subdomainTextfield.props().onChange('goo');
-    rows[0].subdomainRegexToggle.props().onChange(true);
+    userEvent.type(row.withinRow.getSubDomainTextBox(), 'goo');
+    fireEvent.click(row.withinRow.regex.getToggleSwitch());
 
     expect(extensionBridge.getSettings()).toEqual({
       subdomains: [
@@ -82,11 +110,47 @@ describe('subdomain condition view', () => {
   });
 
   it('sets errors if required values are not provided', () => {
-    extensionBridge.init();
+    const [row] = pageElements.getRegexRows();
+    expect(
+      row.withinRow.getSubDomainTextBox().hasAttribute('aria-invalid')
+    ).toBeFalse();
+
+    fireEvent.focus(row.withinRow.getSubDomainTextBox());
+    fireEvent.blur(row.withinRow.getSubDomainTextBox());
+
+    expect(
+      row.withinRow.getSubDomainTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
     expect(extensionBridge.validate()).toBe(false);
+  });
 
-    const { rows } = getReactComponents(instance);
+  it('regex rows are independent', () => {
+    spyOn(extensionBridge, 'openRegexTester').and.callFake(() => ({
+      then(resolve) {
+        resolve('Edited Regex 1234');
+      }
+    }));
 
-    expect(rows[0].subdomainTextfield.props().validationState).toBe('invalid');
+    fireEvent.click(pageElements.getAddSubDomainRowButton());
+
+    const rows = pageElements.getRegexRows();
+    const [firstRow, secondRow] = rows;
+    expect(rows.length).toBe(2);
+
+    userEvent.type(firstRow.withinRow.getSubDomainTextBox(), 'first row value');
+    userEvent.type(
+      secondRow.withinRow.getSubDomainTextBox(),
+      'second row value'
+    );
+
+    fireEvent.click(secondRow.withinRow.regex.getToggleSwitch());
+    fireEvent.click(secondRow.withinRow.regex.getTestButton());
+
+    expect(firstRow.withinRow.getSubDomainTextBox().value).toBe(
+      'first row value'
+    );
+    expect(secondRow.withinRow.getSubDomainTextBox().value).toBe(
+      'Edited Regex 1234'
+    );
   });
 });

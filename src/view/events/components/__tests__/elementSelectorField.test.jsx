@@ -10,27 +10,25 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField } from '@adobe/react-spectrum';
+import { fireEvent, render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { sharedTestingElements } from '@test-helpers/react-testing-library';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import ElementSelector, { formConfig } from '../elementSelector';
-import createExtensionBridge from '../../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../../bootstrap';
-
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-
-  return {
-    textfield: wrapper.find(TextField)
-  };
-};
 
 describe('elementSelector', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(ElementSelector, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(ElementSelector, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
@@ -40,17 +38,16 @@ describe('elementSelector', () => {
       }
     });
 
-    const { textfield } = getReactComponents(instance);
-
-    expect(textfield.props().value).toBe('foo');
+    expect(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox().value
+    ).toBe('foo');
   });
 
   it('sets settings from form values', () => {
-    extensionBridge.init();
-
-    const { textfield } = getReactComponents(instance);
-
-    textfield.props().onChange('some prop set');
+    userEvent.type(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox(),
+      'some prop set'
+    );
 
     expect(extensionBridge.getSettings()).toEqual({
       elementSelector: 'some prop set'
@@ -58,12 +55,16 @@ describe('elementSelector', () => {
   });
 
   it('sets error if element selector field is empty', () => {
-    extensionBridge.init();
-
-    expect(extensionBridge.validate()).toBe(false);
-
-    const { textfield } = getReactComponents(instance);
-
-    expect(textfield.props().validationState).toBe('invalid');
+    fireEvent.focus(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox()
+    );
+    fireEvent.blur(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox()
+    );
+    expect(
+      sharedTestingElements.elementsMatching
+        .getCssSelectorTextBox()
+        .hasAttribute('aria-invalid')
+    ).toBeTrue();
   });
 });

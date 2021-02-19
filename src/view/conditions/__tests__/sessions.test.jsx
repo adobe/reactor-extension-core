@@ -10,38 +10,43 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField, Picker } from '@adobe/react-spectrum';
+import { fireEvent, render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import Sessions, { formConfig } from '../sessions';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const operatorSelect = wrapper.find(Picker);
-  const countTextfield = wrapper.find(TextField);
-
-  return {
-    operatorSelect,
-    countTextfield
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getCountTextBox: () => screen.getByRole('textbox', { name: /count/i }),
+  getOperatorDropdownTrigger: () => {
+    return screen.getByRole('button', { name: /operator/i });
+  },
+  waitForEqualToOption: () => {
+    return screen.findByRole('option', { name: /equal to/i });
+  }
 };
 
 describe('sessions condition view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(Sessions, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(Sessions, formConfig, extensionBridge));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets operator to greater than by default', () => {
-    extensionBridge.init();
-
-    const { operatorSelect } = getReactComponents(instance);
-
-    expect(operatorSelect.props().value).toBe('>');
+    expect(
+      within(pageElements.getOperatorDropdownTrigger()).getByText(
+        /greater than/i
+      )
+    ).toBeTruthy();
   });
 
   it('sets form values from settings', () => {
@@ -52,19 +57,18 @@ describe('sessions condition view', () => {
       }
     });
 
-    const { operatorSelect, countTextfield } = getReactComponents(instance);
-
-    expect(operatorSelect.props().value).toBe('=');
-    expect(countTextfield.props().value).toBe(100);
+    expect(pageElements.getCountTextBox().value).toBe('100');
+    expect(
+      within(pageElements.getOperatorDropdownTrigger()).getByText(/equal to/i)
+    ).toBeTruthy();
   });
 
-  it('sets settings from form values', () => {
-    extensionBridge.init();
+  it('sets settings from form values', async () => {
+    userEvent.type(pageElements.getCountTextBox(), '100');
 
-    const { operatorSelect, countTextfield } = getReactComponents(instance);
-
-    operatorSelect.props().onChange('=');
-    countTextfield.props().onChange(100);
+    fireEvent.click(pageElements.getOperatorDropdownTrigger());
+    const equalOption = await pageElements.waitForEqualToOption();
+    equalOption.click();
 
     expect(extensionBridge.getSettings()).toEqual({
       operator: '=',
@@ -73,25 +77,23 @@ describe('sessions condition view', () => {
   });
 
   it('sets errors if required values are not provided', () => {
-    extensionBridge.init();
+    fireEvent.focus(pageElements.getCountTextBox());
+    fireEvent.blur(pageElements.getCountTextBox());
+    expect(
+      pageElements.getCountTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
+
     expect(extensionBridge.validate()).toBe(false);
-
-    const { countTextfield } = getReactComponents(instance);
-
-    expect(countTextfield.props().validationState).toBe('invalid');
   });
 
   it('sets error if count value is not a number', () => {
-    extensionBridge.init();
-
-    let { countTextfield } = getReactComponents(instance);
-
-    countTextfield.props().onChange('12.abc');
+    fireEvent.focus(pageElements.getCountTextBox());
+    userEvent.type(pageElements.getCountTextBox(), '12.abc');
+    fireEvent.blur(pageElements.getCountTextBox());
+    expect(
+      pageElements.getCountTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
 
     expect(extensionBridge.validate()).toBe(false);
-
-    ({ countTextfield } = getReactComponents(instance));
-
-    expect(countTextfield.props().validationState).toBe('invalid');
   });
 });

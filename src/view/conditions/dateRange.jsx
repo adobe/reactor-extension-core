@@ -97,6 +97,7 @@ export const formConfig = {
     // upon re-opening of the view, the UTC time can correctly be converted back to the selected
     // time zone and the selected time zone can be shown in the UI.
     const timezone = values.timezone || DEFAULT_TIMEZONE;
+    settings.timezone = timezone;
 
     if (values.start) {
       settings.start = moment.tz(values.start, timezone).utc().format();
@@ -104,10 +105,6 @@ export const formConfig = {
 
     if (values.end) {
       settings.end = moment.tz(values.end, timezone).utc().format();
-    }
-
-    if (timezone !== DEFAULT_TIMEZONE) {
-      settings.timezone = timezone;
     }
 
     return settings;

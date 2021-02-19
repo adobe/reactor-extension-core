@@ -10,23 +10,44 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
 import React from 'react';
-import { ActionButton, Button } from '@adobe/react-spectrum';
+import { fireEvent, render, screen, within } from '@testing-library/react';
+import { TextField } from '@adobe/react-spectrum';
 import MultipleItemEditor from '../multipleItemEditor';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const rows = wrapper.find('div[data-type="row"]').map((row) => ({
-    element: row,
-    removeButton: row.find(ActionButton)
-  }));
-  const addButton = wrapper.find(Button).last();
-
-  return {
-    rows,
-    addButton
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getAddSubDomainRowButton: () => {
+    return screen.getByRole('button', { name: /add another/i });
+  },
+  getRegexRows: () => {
+    return [].slice
+      .call(document.querySelectorAll('div[data-type="row"]')) // get the dom nodes
+      .map((domNode) => {
+        return {
+          domNode,
+          // Decorate the returned rows to have react-testing-library getters
+          withinRow: {
+            getTextBox: () => {
+              return within(domNode).getByRole('textbox', {
+                name: /row input box/i
+              });
+            },
+            regex: {
+              getToggleSwitch: () => {
+                return within(domNode).getByRole('switch', { name: /regex/i });
+              },
+              getTestButton: () => {
+                return within(domNode).getByRole('button', { name: /test/i });
+              }
+            },
+            getRemoveButton: () => {
+              return within(domNode).getByRole('img', { hidden: true });
+            }
+          }
+        };
+      });
+  }
 };
 
 const getTestProps = () => ({
@@ -38,34 +59,39 @@ const getTestProps = () => ({
   },
   renderItem: jasmine
     .createSpy('renderItem')
-    .and.callFake((item) => <span>{item.label}</span>)
+    .and.callFake((rowData) => (
+      <TextField label="Row Input Box" value={rowData} />
+    ))
 });
 
-const render = (props) => mount(<MultipleItemEditor {...props} />);
-
 describe('multiple item editor', () => {
+  let props;
+
+  beforeEach(() => {
+    props = getTestProps();
+    render(<MultipleItemEditor {...props} />);
+  });
+
   it('renders a row for each item', () => {
-    const props = getTestProps();
-    const { rows } = getReactComponents(render(props));
-    expect(props.renderItem).toHaveBeenCalledTimes(2);
-    expect(rows[0]).toBeDefined();
-    expect(rows[1]).toBeDefined();
-    expect(rows[0].element).not.toBe(rows[1].element);
+    const rows = pageElements.getRegexRows();
+    expect(rows.length).toBe(2);
+
+    const [firstRow, secondRow] = rows;
+    expect(firstRow.withinRow.getTextBox().value).toBe('props[0]');
+    expect(secondRow.withinRow.getTextBox().value).toBe('props[1]');
   });
 
   it('calls onAddItem when add button is clicked', () => {
-    const props = getTestProps();
-    const { addButton } = getReactComponents(render(props));
-
-    addButton.props().onPress();
+    fireEvent.click(pageElements.getAddSubDomainRowButton());
     expect(props.fields.push).toHaveBeenCalled();
   });
 
   it('calls onRemoveItem when remove button is clicked for a row', () => {
-    const props = getTestProps();
-    const { rows } = getReactComponents(render(props));
+    const rows = pageElements.getRegexRows();
+    expect(rows.length).toBe(2);
 
-    rows[1].removeButton.props().onPress();
-    expect(props.fields.remove).toHaveBeenCalledWith(1);
+    fireEvent.click(rows[1].withinRow.getRemoveButton());
+    const someMouseEvent = jasmine.any(Object);
+    expect(props.fields.remove).toHaveBeenCalledWith(1, someMouseEvent);
   });
 });

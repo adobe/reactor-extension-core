@@ -10,21 +10,33 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+/*eslint import/no-extraneous-dependencies: 0*/
+import { screen, waitFor } from '@testing-library/react';
 
-var screen = require('@testing-library/react').screen;
+export const DEBUG_UTILITIES = {
+  WAIT_MAX_TIMEOUT: async (timeout = 4900) => {
+    await waitFor(
+      () => {
+        return new Promise((resolve) => {
+          setTimeout(resolve, timeout);
+        });
+      },
+      { timeout: 5000 }
+    );
+  }
+};
 
-var sharedTestingElements = {
+export const sharedTestingElements = {
   advancedSettings: {
-    getSettingsToggleTrigger: function () {
+    getToggleTrigger: () => {
       return screen.getByText(/advanced/i);
     },
-    getBubbleFireIfParentCheckbox: function () {
+    getBubbleFireIfParentCheckbox: () => {
       return screen.getByRole('checkbox', {
         name: /run this rule even when the event originates from a descendant element/i
       });
     },
-    getBubbleFireIfChildFiredCheckbox: function () {
+    getBubbleFireIfChildFiredCheckbox: () => {
       return screen.getByRole('checkbox', {
         name: new RegExp(
           [
@@ -35,7 +47,7 @@ var sharedTestingElements = {
         )
       });
     },
-    getBubbleStopCheckBox: function () {
+    getBubbleStopCheckBox: () => {
       return screen.getByRole('checkbox', {
         name: new RegExp(
           [
@@ -49,19 +61,35 @@ var sharedTestingElements = {
   },
   elementsMatching: {
     radioGroup: {
-      getSpecificElements: function () {
+      getSpecificElements: () => {
         return screen.getByRole('radio', { name: /specific elements/i });
       },
-      getAnyElement: function () {
+      getAnyElement: () => {
         return screen.getByRole('radio', { name: /any element/i });
       }
     },
-    getCssSelectorTextBox: function () {
+    getCssSelectorTextBox: () => {
       return screen.getByRole('textbox', { name: /selector/i });
+    },
+    queryForCssSelectorTextBox: () => {
+      return screen.queryByRole('textbox', { name: /selector/i });
+    }
+  },
+  customCodeEditor: {
+    getTriggerButton: () => {
+      return screen.getByRole('button', { name: /open editor/i });
     }
   }
 };
 
-module.exports = {
-  sharedTestingElements: sharedTestingElements
-};
+export function isButtonValid(el) {
+  return Array.from(el.classList).join().indexOf('--warning') === -1;
+}
+
+export function elementIsPosition(el, position) {
+  if (!['top', 'bottom', 'left', 'right'].includes(position)) {
+    throw new Error(`unknown position type of ${position}`);
+  }
+
+  return Array.from(el.classList).join().indexOf(position) !== -1;
+}

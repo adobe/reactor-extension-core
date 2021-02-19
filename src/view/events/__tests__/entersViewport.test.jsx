@@ -12,13 +12,12 @@
 
 import { fireEvent, render, screen } from '@testing-library/react';
 import { sharedTestingElements } from '@test-helpers/react-testing-library';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import EntersViewport, { formConfig } from '../entersViewport';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 // react-testing-library element selectors
 const pageElements = {
-  ...sharedTestingElements,
   delayWhenEnters: {
     radioGroup: {
       getImmediately: () => screen.getByRole('radio', { name: /immediately/i }),
@@ -67,9 +66,9 @@ describe('enters viewport event view', () => {
         frequency: 'everyEntry'
       }
     });
-    expect(pageElements.elementsMatching.getCssSelectorTextBox().value).toBe(
-      '.foo'
-    );
+    expect(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox().value
+    ).toBe('.foo');
 
     fireEvent.click(pageElements.delayWhenEnters.radioGroup.getAfterDelay());
     expect(pageElements.delayWhenEnters.getDelayTextBox().value).toBe('100');
@@ -81,13 +80,20 @@ describe('enters viewport event view', () => {
   });
 
   it('sets settings from form values', () => {
-    fireEvent.focus(pageElements.elementsMatching.getCssSelectorTextBox());
-    fireEvent.change(pageElements.elementsMatching.getCssSelectorTextBox(), {
-      target: { value: '.foo' }
-    });
-    fireEvent.blur(pageElements.elementsMatching.getCssSelectorTextBox());
+    fireEvent.focus(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox()
+    );
+    fireEvent.change(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox(),
+      {
+        target: { value: '.foo' }
+      }
+    );
+    fireEvent.blur(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox()
+    );
     expect(
-      pageElements.elementsMatching
+      sharedTestingElements.elementsMatching
         .getCssSelectorTextBox()
         .hasAttribute('aria-invalid')
     ).toBeFalse();
@@ -114,10 +120,14 @@ describe('enters viewport event view', () => {
   });
 
   it('sets validation errors', () => {
-    fireEvent.focus(pageElements.elementsMatching.getCssSelectorTextBox());
-    fireEvent.blur(pageElements.elementsMatching.getCssSelectorTextBox());
+    fireEvent.focus(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox()
+    );
+    fireEvent.blur(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox()
+    );
     expect(
-      pageElements.elementsMatching
+      sharedTestingElements.elementsMatching
         .getCssSelectorTextBox()
         .hasAttribute('aria-invalid')
     ).toBeTrue();

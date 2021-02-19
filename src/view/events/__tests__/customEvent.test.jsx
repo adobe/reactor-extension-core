@@ -10,44 +10,31 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField, Checkbox } from '@adobe/react-spectrum';
-import WrappedField from '../../components/wrappedField';
+import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { sharedTestingElements } from '@test-helpers/react-testing-library';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import CustomEvent, { formConfig } from '../customEvent';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
-import AdvancedEventOptions from '../components/advancedEventOptions';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const fields = wrapper.find(WrappedField);
-
-  const typeField = fields.filterWhere((n) => n.prop('name') === 'type');
-  const typeTextfield = typeField.find(TextField);
-  const elementSelectorField = fields.filterWhere(
-    (n) => n.prop('name') === 'elementSelector'
-  );
-  const elementSelectorTextfield = elementSelectorField.find(TextField);
-  const bubbleStopCheckbox = wrapper
-    .find(Checkbox)
-    .filterWhere((n) => n.prop('name') === 'bubbleStop');
-  const advancedEventOptions = wrapper.find(AdvancedEventOptions);
-
-  return {
-    typeTextfield,
-    elementSelectorTextfield,
-    bubbleStopCheckbox,
-    advancedEventOptions
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getEventTypeTextBox: () =>
+    screen.getByRole('textbox', { name: /custom event type/i })
 };
 
 describe('custom event event view', () => {
   let extensionBridge;
-  let instance;
 
   beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(CustomEvent, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(CustomEvent, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
@@ -59,52 +46,57 @@ describe('custom event event view', () => {
       }
     });
 
-    const { advancedEventOptions } = getReactComponents(instance);
-    advancedEventOptions.instance().toggleSelected();
+    expect(pageElements.getEventTypeTextBox().value).toBe('bar');
+    expect(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox().value
+    ).toBe('.foo');
 
-    const {
-      typeTextfield,
-      elementSelectorTextfield,
-      bubbleStopCheckbox
-    } = getReactComponents(instance);
-
-    expect(typeTextfield.props().value).toBe('bar');
-    expect(elementSelectorTextfield.props().value).toBe('.foo');
-    expect(bubbleStopCheckbox.props().value).toBe(true);
+    fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
+    expect(
+      sharedTestingElements.advancedSettings.getBubbleStopCheckBox().checked
+    ).toBeTrue();
   });
 
   it('sets settings from form values', () => {
-    extensionBridge.init();
+    userEvent.type(pageElements.getEventTypeTextBox(), 'bar');
+    userEvent.type(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox(),
+      '.foo'
+    );
 
-    const { advancedEventOptions } = getReactComponents(instance);
-    advancedEventOptions.instance().toggleSelected();
+    fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
+    fireEvent.click(
+      sharedTestingElements.advancedSettings.getBubbleStopCheckBox()
+    );
 
-    const {
-      typeTextfield,
-      elementSelectorTextfield,
-      bubbleStopCheckbox
-    } = getReactComponents(instance);
-
-    typeTextfield.props().onChange('bar');
-    elementSelectorTextfield.props().onChange('.foo');
-    bubbleStopCheckbox.props().onChange(true);
-
-    const { type, elementSelector, bubbleStop } = extensionBridge.getSettings();
-
-    expect(type).toBe('bar');
-    expect(elementSelector).toBe('.foo');
-    expect(bubbleStop).toBe(true);
+    expect(extensionBridge.getSettings()).toEqual({
+      elementSelector: '.foo',
+      type: 'bar',
+      bubbleStop: true,
+      bubbleFireIfParent: true,
+      bubbleFireIfChildFired: true
+    });
   });
 
   it('sets errors if required values are not provided', () => {
-    extensionBridge.init();
-    expect(extensionBridge.validate()).toBe(false);
+    fireEvent.focus(pageElements.getEventTypeTextBox());
+    fireEvent.blur(pageElements.getEventTypeTextBox());
+    expect(
+      pageElements.getEventTypeTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
 
-    const { typeTextfield, elementSelectorTextfield } = getReactComponents(
-      instance
+    fireEvent.focus(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox()
     );
+    fireEvent.blur(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox()
+    );
+    expect(
+      sharedTestingElements.elementsMatching
+        .getCssSelectorTextBox()
+        .hasAttribute('aria-invalid')
+    ).toBeTrue();
 
-    expect(typeTextfield.props().validationState).toBe('invalid');
-    expect(elementSelectorTextfield.props().validationState).toBe('invalid');
+    expect(extensionBridge.validate()).toBe(false);
   });
 });

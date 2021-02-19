@@ -10,34 +10,38 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField } from '@adobe/react-spectrum';
-import WrappedField from '../../components/wrappedField';
+import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import RandomNumber, { formConfig } from '../randomNumber';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const fields = wrapper.find(WrappedField);
-  const minField = fields.filterWhere((n) => n.prop('name') === 'min');
-  const maxField = fields.filterWhere((n) => n.prop('name') === 'max');
-  const minTextfield = minField.find(TextField);
-  const maxTextfield = maxField.find(TextField);
+// react-testing-library element selectors
+const pageElements = {
+  getMinTextBox: () => screen.getByRole('textbox', { name: /min/i }),
+  getMaxTextBox: () => screen.getByRole('textbox', { name: /max/i })
+};
 
-  return {
-    minTextfield,
-    maxTextfield
-  };
+// todo: need to debug why we can't triple click and clear fields
+//  then use `userEvent.clear` and delete this function.
+const simulate = {
+  clear: (element) => {
+    fireEvent.change(element, { target: { value: '' } });
+  }
 };
 
 describe('random number data element view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(RandomNumber, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(RandomNumber, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
@@ -48,20 +52,14 @@ describe('random number data element view', () => {
       }
     });
 
-    const { minTextfield, maxTextfield } = getReactComponents(instance);
-
-    expect(minTextfield.props().value).toBe(100);
-    expect(maxTextfield.props().value).toBe(200);
+    expect(pageElements.getMinTextBox().value).toBe('100');
+    expect(pageElements.getMaxTextBox().value).toBe('200');
   });
 
   it('sets form values with defaults', () => {
-    extensionBridge.init();
-
-    const { minTextfield, maxTextfield } = getReactComponents(instance);
-
     expect(extensionBridge.validate()).toBe(true);
-    expect(minTextfield.props().value).toBe(0);
-    expect(maxTextfield.props().value).toBe(1000000000);
+    expect(pageElements.getMinTextBox().value).toBe('0');
+    expect(pageElements.getMaxTextBox().value).toBe('1000000000');
   });
 
   it('sets default values and validate passes', () => {
@@ -76,11 +74,11 @@ describe('random number data element view', () => {
   });
 
   it('sets settings from form values', () => {
-    extensionBridge.init();
+    simulate.clear(pageElements.getMinTextBox());
+    userEvent.type(pageElements.getMinTextBox(), '100');
 
-    const { minTextfield, maxTextfield } = getReactComponents(instance);
-    minTextfield.props().onChange('100');
-    maxTextfield.props().onChange('200');
+    simulate.clear(pageElements.getMaxTextBox());
+    userEvent.type(pageElements.getMaxTextBox(), '200');
 
     expect(extensionBridge.getSettings()).toEqual({
       min: 100,
@@ -89,47 +87,48 @@ describe('random number data element view', () => {
   });
 
   it('sets errors if values are not provided', () => {
-    extensionBridge.init();
-
-    let { minTextfield, maxTextfield } = getReactComponents(instance);
-    minTextfield.props().onChange('');
-    maxTextfield.props().onChange('');
+    simulate.clear(pageElements.getMinTextBox());
+    simulate.clear(pageElements.getMaxTextBox());
 
     expect(extensionBridge.validate()).toBe(false);
 
-    ({ minTextfield, maxTextfield } = getReactComponents(instance));
-
-    expect(minTextfield.props().validationState).toBe('invalid');
-    expect(maxTextfield.props().validationState).toBe('invalid');
+    expect(
+      pageElements.getMinTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
+    expect(
+      pageElements.getMaxTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
   });
 
   it('sets errors if values are not integers', () => {
-    extensionBridge.init();
-
-    let { minTextfield, maxTextfield } = getReactComponents(instance);
-    minTextfield.props().onChange('1.5');
-    maxTextfield.props().onChange('asdf');
+    simulate.clear(pageElements.getMinTextBox());
+    userEvent.type(pageElements.getMinTextBox(), '1.5');
+    userEvent.type(pageElements.getMaxTextBox(), 'asdf');
 
     expect(extensionBridge.validate()).toBe(false);
 
-    ({ minTextfield, maxTextfield } = getReactComponents(instance));
-
-    expect(minTextfield.props().validationState).toBe('invalid');
-    expect(maxTextfield.props().validationState).toBe('invalid');
+    expect(
+      pageElements.getMinTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
+    expect(
+      pageElements.getMaxTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
   });
 
   it('sets errors if min is greater than max', () => {
-    extensionBridge.init();
+    simulate.clear(pageElements.getMinTextBox());
+    userEvent.type(pageElements.getMinTextBox(), '200');
 
-    let { minTextfield, maxTextfield } = getReactComponents(instance);
-    minTextfield.props().onChange('200');
-    maxTextfield.props().onChange('100');
+    simulate.clear(pageElements.getMaxTextBox());
+    userEvent.type(pageElements.getMaxTextBox(), '100');
 
     expect(extensionBridge.validate()).toBe(false);
 
-    ({ minTextfield, maxTextfield } = getReactComponents(instance));
-
-    expect(minTextfield.props().validationState).toBe('invalid');
-    expect(maxTextfield.props().validationState).toBe('invalid');
+    expect(
+      pageElements.getMinTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
+    expect(
+      pageElements.getMaxTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
   });
 });

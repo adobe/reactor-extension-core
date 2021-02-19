@@ -10,31 +10,30 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { CheckboxGroup } from '@adobe/react-spectrum';
+import { fireEvent, render, screen } from '@testing-library/react';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import OperatingSystem, { formConfig } from '../operatingSystem';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
-
 import bootstrap from '../../bootstrap';
 
-const selectedOperatingSystems = ['Windows', 'Unix'];
-
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const operatingSystemsCheckboxList = wrapper.find(CheckboxGroup);
-
-  return {
-    operatingSystemsCheckboxList
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getWindowsCheckbox: () => screen.getByRole('checkbox', { name: /windows/i }),
+  getUnixCheckbox: () => screen.getByRole('checkbox', { name: /unix/i })
 };
 
 describe('operating system condition view', () => {
+  const selectedOperatingSystems = ['Windows', 'Unix'];
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(OperatingSystem, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(OperatingSystem, formConfig, extensionBridge));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
@@ -44,26 +43,33 @@ describe('operating system condition view', () => {
       }
     });
 
-    const { operatingSystemsCheckboxList } = getReactComponents(instance);
-
-    expect(operatingSystemsCheckboxList.props().value).toEqual(
-      selectedOperatingSystems
-    );
+    expect(pageElements.getWindowsCheckbox().checked).toBeTrue();
+    expect(pageElements.getUnixCheckbox().checked).toBeTrue();
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { operatingSystemsCheckboxList } = getReactComponents(instance);
-    operatingSystemsCheckboxList.props().onChange(selectedOperatingSystems);
-
     expect(extensionBridge.getSettings()).toEqual({
-      operatingSystems: selectedOperatingSystems
+      operatingSystems: []
     });
-  });
 
-  it('sets operatingSystems to an empty array if nothing is selected', () => {
-    extensionBridge.init();
+    fireEvent.click(pageElements.getWindowsCheckbox());
+    expect(extensionBridge.getSettings()).toEqual({
+      operatingSystems: ['Windows']
+    });
+
+    fireEvent.click(pageElements.getUnixCheckbox());
+    expect(extensionBridge.getSettings()).toEqual({
+      operatingSystems: ['Windows', 'Unix']
+    });
+
+    fireEvent.click(pageElements.getWindowsCheckbox());
+    expect(extensionBridge.getSettings()).toEqual({
+      operatingSystems: ['Unix']
+    });
+
+    fireEvent.click(pageElements.getUnixCheckbox());
     expect(extensionBridge.getSettings()).toEqual({
       operatingSystems: []
     });

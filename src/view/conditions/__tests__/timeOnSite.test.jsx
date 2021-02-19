@@ -10,38 +10,52 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField, Picker } from '@adobe/react-spectrum';
+import {
+  fireEvent,
+  render,
+  screen,
+  waitForElementToBeRemoved,
+  within
+} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import TimeOnSite, { formConfig } from '../timeOnSite';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const operatorSelect = wrapper.find(Picker);
-  const minutesTextfield = wrapper.find(TextField);
-
-  return {
-    operatorSelect,
-    minutesTextfield
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getMinutesTextBox: () => {
+    return screen.getByRole('textbox', { name: /minutes/i });
+  },
+  getDropdownTrigger: () => {
+    return screen.getByRole('button', { name: /operator/i });
+  },
+  waitForEqualToOption: () => {
+    return screen.findByRole('option', { name: /equal to/i });
+  },
+  getDataElementModalTrigger: () => {
+    return screen.getByRole('button', { name: /select a data element/i });
+  }
 };
 
 describe('time on site condition view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(TimeOnSite, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(TimeOnSite, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets operator to greater than by default', () => {
-    extensionBridge.init();
-
-    const { operatorSelect } = getReactComponents(instance);
-
-    expect(operatorSelect.props().value).toBe('>');
+    expect(
+      within(pageElements.getDropdownTrigger()).getByText(/greater than/i)
+    ).toBeTruthy();
   });
 
   it('sets form values from settings', () => {
@@ -52,19 +66,20 @@ describe('time on site condition view', () => {
       }
     });
 
-    const { operatorSelect, minutesTextfield } = getReactComponents(instance);
-
-    expect(operatorSelect.props().value).toBe('=');
-    expect(minutesTextfield.props().value).toBe(100);
+    expect(
+      within(pageElements.getDropdownTrigger()).getByText(/equal to/i)
+    ).toBeTruthy();
+    expect(pageElements.getMinutesTextBox().value).toBe('100');
   });
 
-  it('sets settings from form values', () => {
-    extensionBridge.init();
+  it('sets settings from form values', async () => {
+    fireEvent.click(pageElements.getDropdownTrigger());
+    const equalOption = await pageElements.waitForEqualToOption();
+    equalOption.click();
+    // wait for the UI to settle before interacting with more elements
+    await waitForElementToBeRemoved(equalOption);
 
-    const { operatorSelect, minutesTextfield } = getReactComponents(instance);
-
-    operatorSelect.props().onChange('=');
-    minutesTextfield.props().onChange(100);
+    userEvent.type(pageElements.getMinutesTextBox(), '100');
 
     expect(extensionBridge.getSettings()).toEqual({
       operator: '=',
@@ -73,25 +88,52 @@ describe('time on site condition view', () => {
   });
 
   it('sets errors if required values are not provided', () => {
-    extensionBridge.init();
+    fireEvent.focus(pageElements.getMinutesTextBox());
+    fireEvent.blur(pageElements.getMinutesTextBox());
+
+    expect(
+      pageElements.getMinutesTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
     expect(extensionBridge.validate()).toBe(false);
-
-    const { minutesTextfield } = getReactComponents(instance);
-
-    expect(minutesTextfield.props().validationState).toBe('invalid');
   });
 
   it('sets error if count value is not a number', () => {
-    extensionBridge.init();
+    fireEvent.focus(pageElements.getMinutesTextBox());
+    userEvent.type(pageElements.getMinutesTextBox(), '12.abc');
+    fireEvent.blur(pageElements.getMinutesTextBox());
 
-    let { minutesTextfield } = getReactComponents(instance);
-
-    minutesTextfield.props().onChange('12.abc');
-
+    expect(
+      pageElements.getMinutesTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
     expect(extensionBridge.validate()).toBe(false);
+  });
 
-    ({ minutesTextfield } = getReactComponents(instance));
+  it('sets validation error when the number < 1', async () => {
+    fireEvent.focus(pageElements.getMinutesTextBox());
+    userEvent.type(pageElements.getMinutesTextBox(), '-1');
+    fireEvent.blur(pageElements.getMinutesTextBox());
 
-    expect(minutesTextfield.props().validationState).toBe('invalid');
+    expect(
+      pageElements.getMinutesTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
+  });
+
+  it('The timeOnSite input supports opening the data element modal', () => {
+    spyOn(extensionBridge, 'openDataElementSelector').and.callFake(() => {
+      return Promise.resolve();
+    });
+
+    fireEvent.click(pageElements.getDataElementModalTrigger());
+    expect(extensionBridge.openDataElementSelector).toHaveBeenCalledTimes(1);
+  });
+
+  it('timeOnSite handles data element names just fine', () => {
+    fireEvent.focus(pageElements.getMinutesTextBox());
+    userEvent.type(pageElements.getMinutesTextBox(), '%Data Element 1%');
+    fireEvent.blur(pageElements.getMinutesTextBox());
+
+    expect(
+      pageElements.getMinutesTextBox().hasAttribute('aria-invalid')
+    ).toBeFalse();
   });
 });

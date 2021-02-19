@@ -10,31 +10,35 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { RadioGroup } from '@adobe/react-spectrum';
+import { fireEvent, render, screen } from '@testing-library/react';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import Protocol, { formConfig } from '../protocol';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  return { radioGroup: wrapper.find(RadioGroup) };
+// react-testing-library element selectors
+const pageElements = {
+  radioGroup: {
+    getHttp: () => screen.getByRole('radio', { name: /http$/i }),
+    getHttps: () => screen.getByRole('radio', { name: /^https/i })
+  }
 };
 
 describe('protocol condition view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(Protocol, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(Protocol, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets http radio as checked by default', () => {
-    extensionBridge.init();
-
-    const { radioGroup } = getReactComponents(instance);
-    expect(radioGroup.props().value).toBe('http:');
+    expect(pageElements.radioGroup.getHttp().checked).toBeTrue();
   });
 
   it('sets form values from settings', () => {
@@ -44,16 +48,11 @@ describe('protocol condition view', () => {
       }
     });
 
-    const { radioGroup } = getReactComponents(instance);
-    expect(radioGroup.props().value).toBe('https:');
+    expect(pageElements.radioGroup.getHttps().checked).toBeTrue();
   });
 
   it('sets settings from form values', () => {
-    extensionBridge.init();
-
-    const { radioGroup } = getReactComponents(instance);
-
-    radioGroup.props().onChange('https:', { stopPropagation() {} });
+    fireEvent.click(pageElements.radioGroup.getHttps());
 
     expect(extensionBridge.getSettings()).toEqual({
       protocol: 'https:'

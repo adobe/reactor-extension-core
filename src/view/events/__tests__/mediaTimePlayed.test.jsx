@@ -10,27 +10,25 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import {
-  fireEvent,
-  render,
-  screen,
-  within,
-  waitFor
-} from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import { sharedTestingElements } from '@test-helpers/react-testing-library';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import MediaTimePlayed, { formConfig } from '../mediaTimePlayed';
 import bootstrap from '../../bootstrap';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 
 // react-testing-library element selectors
 const pageElements = {
-  ...sharedTestingElements,
   triggerWhen: {
     getTextBox: () => {
       return screen.getByRole('textbox', { name: /amount/i });
     },
-    getUnitsDropdown: () => {
-      return screen.getByRole('button', { name: /units/i });
+    unitsDropdown: {
+      getTrigger: () => {
+        return screen.getByRole('button', { name: /units/i });
+      },
+      waitForPercentOption: () => {
+        return screen.findByRole('option', { name: /percent/i });
+      }
     },
     getDataElementModalTrigger: () => {
       return screen.getByRole('button', { name: /select a data element/i });
@@ -62,30 +60,39 @@ describe('time played event view', () => {
       }
     });
 
-    expect(pageElements.elementsMatching.getCssSelectorTextBox().value).toBe(
-      '.foo'
-    );
+    expect(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox().value
+    ).toBe('.foo');
 
     expect(pageElements.triggerWhen.getTextBox().value).toBe('55');
-    within(pageElements.triggerWhen.getUnitsDropdown()).getByText('percent');
+    expect(
+      within(pageElements.triggerWhen.unitsDropdown.getTrigger()).getByText(
+        'percent'
+      )
+    ).toBeTruthy();
 
-    fireEvent.click(pageElements.advancedSettings.getSettingsToggleTrigger());
-    expect(pageElements.advancedSettings.getBubbleStopCheckBox().value).toBe(
-      'true'
-    );
+    fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
+    expect(
+      sharedTestingElements.advancedSettings.getBubbleStopCheckBox().value
+    ).toBe('true');
   });
 
   it('sets settings from form values', async () => {
-    fireEvent.change(pageElements.elementsMatching.getCssSelectorTextBox(), {
-      target: { value: '.foo' }
-    });
+    fireEvent.change(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox(),
+      {
+        target: { value: '.foo' }
+      }
+    );
 
     fireEvent.change(pageElements.triggerWhen.getTextBox(), {
       target: { value: '45' }
     });
 
-    fireEvent.click(pageElements.advancedSettings.getSettingsToggleTrigger());
-    fireEvent.click(pageElements.advancedSettings.getBubbleStopCheckBox());
+    fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
+    fireEvent.click(
+      sharedTestingElements.advancedSettings.getBubbleStopCheckBox()
+    );
 
     const {
       amount,
@@ -99,20 +106,22 @@ describe('time played event view', () => {
     expect(bubbleStop).toBe(true);
 
     // try changing the select box
-    fireEvent.click(pageElements.triggerWhen.getUnitsDropdown());
-    await waitFor(() =>
-      document.querySelector('div[role="presentation"][data-ismodal]')
-    );
-    screen.getByRole('option', { name: /percent/i }).click();
+    fireEvent.click(pageElements.triggerWhen.unitsDropdown.getTrigger());
+    const percentOption = await pageElements.triggerWhen.unitsDropdown.waitForPercentOption();
+    percentOption.click();
 
     expect(extensionBridge.getSettings().unit).toBe('percent');
   });
 
   it('sets validation errors', () => {
-    fireEvent.focus(pageElements.elementsMatching.getCssSelectorTextBox());
-    fireEvent.blur(pageElements.elementsMatching.getCssSelectorTextBox());
+    fireEvent.focus(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox()
+    );
+    fireEvent.blur(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox()
+    );
     expect(
-      pageElements.elementsMatching
+      sharedTestingElements.elementsMatching
         .getCssSelectorTextBox()
         .hasAttribute('aria-invalid')
     ).toBeTrue();

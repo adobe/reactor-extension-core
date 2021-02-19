@@ -10,40 +10,32 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField } from '@adobe/react-spectrum';
-import RegexToggle from '../../components/regexToggle';
-import WrappedField from '../../components/wrappedField';
+import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import QueryStringParameter, { formConfig } from '../queryStringParameter';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const fields = wrapper.find(WrappedField);
-
-  const nameField = fields.filterWhere((n) => n.prop('name') === 'name');
-  const nameTextfield = nameField.find(TextField);
-  const valueField = fields.filterWhere((n) => n.prop('name') === 'value');
-  const valueTextfield = valueField.find(TextField);
-  const valueRegexToggle = wrapper.find(RegexToggle);
-
-  return {
-    nameTextfield,
-    valueTextfield,
-    valueRegexToggle
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getParameterNameTextBox: () =>
+    screen.getByRole('textbox', { name: /parameter/i }),
+  getValueTextBox: () => screen.getByRole('textbox', { name: /value/i }),
+  getRegexToggleSwitch: () => screen.getByRole('switch', { name: /regex/i })
 };
 
 describe('query string parameter condition view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(
-      bootstrap(QueryStringParameter, formConfig, extensionBridge)
-    );
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(QueryStringParameter, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
@@ -55,29 +47,15 @@ describe('query string parameter condition view', () => {
       }
     });
 
-    const {
-      nameTextfield,
-      valueTextfield,
-      valueRegexToggle
-    } = getReactComponents(instance);
-
-    expect(nameTextfield.props().value).toBe('foo');
-    expect(valueTextfield.props().value).toBe('bar');
-    expect(valueRegexToggle.props().value).toBe(true);
+    expect(pageElements.getParameterNameTextBox().value).toBe('foo');
+    expect(pageElements.getValueTextBox().value).toBe('bar');
+    expect(pageElements.getRegexToggleSwitch().checked).toBeTrue();
   });
 
   it('sets settings from form values', () => {
-    extensionBridge.init();
-
-    const {
-      nameTextfield,
-      valueTextfield,
-      valueRegexToggle
-    } = getReactComponents(instance);
-
-    nameTextfield.props().onChange('foo');
-    valueTextfield.props().onChange('bar');
-    valueRegexToggle.props().onChange(true);
+    userEvent.type(pageElements.getParameterNameTextBox(), 'foo');
+    userEvent.type(pageElements.getValueTextBox(), 'bar');
+    fireEvent.click(pageElements.getRegexToggleSwitch());
 
     expect(extensionBridge.getSettings()).toEqual({
       name: 'foo',
@@ -87,12 +65,16 @@ describe('query string parameter condition view', () => {
   });
 
   it('sets errors if required values are not provided', () => {
-    extensionBridge.init();
-    expect(extensionBridge.validate()).toBe(false);
+    fireEvent.focus(pageElements.getParameterNameTextBox());
+    fireEvent.blur(pageElements.getParameterNameTextBox());
+    expect(
+      pageElements.getParameterNameTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
 
-    const { nameTextfield, valueTextfield } = getReactComponents(instance);
-
-    expect(nameTextfield.props().validationState).toBe('invalid');
-    expect(valueTextfield.props().validationState).toBe('invalid');
+    fireEvent.focus(pageElements.getValueTextBox());
+    fireEvent.blur(pageElements.getValueTextBox());
+    expect(
+      pageElements.getValueTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
   });
 });

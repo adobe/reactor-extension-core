@@ -10,32 +10,35 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField, Checkbox, Well } from '@adobe/react-spectrum';
+import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import Sampling, { formConfig } from '../sampling';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const rateTextfield = wrapper.find(TextField);
-  const persistCohortCheckbox = wrapper.find(Checkbox);
-  const cohortResetWarning = wrapper.find(Well);
-
-  return {
-    rateTextfield,
-    persistCohortCheckbox,
-    cohortResetWarning
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getRateTextBox: () => screen.getByRole('textbox', { name: /rate/i }),
+  getPersistCohortCheckbox: () =>
+    screen.getByRole('checkbox', { name: /persist cohort/i })
 };
 
 describe('sampling condition view', () => {
+  const warningText = new RegExp(
+    /Changing the sampling value will reset the cohort the next time the rule is published./,
+    'i'
+  );
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(Sampling, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(Sampling, formConfig, extensionBridge));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
@@ -46,23 +49,14 @@ describe('sampling condition view', () => {
       }
     });
 
-    const { rateTextfield, persistCohortCheckbox } = getReactComponents(
-      instance
-    );
-
-    expect(rateTextfield.props().value).toBe('25');
-    expect(persistCohortCheckbox.props().value).toBe(true);
+    expect(pageElements.getRateTextBox().value).toBe('25');
+    expect(pageElements.getPersistCohortCheckbox().checked).toBeTrue();
   });
 
   it('sets settings from form values', () => {
-    extensionBridge.init();
-
-    const { rateTextfield, persistCohortCheckbox } = getReactComponents(
-      instance
-    );
-
-    rateTextfield.props().onChange('25');
-    persistCohortCheckbox.props().onChange(true);
+    userEvent.clear(pageElements.getRateTextBox());
+    userEvent.type(pageElements.getRateTextBox(), '25');
+    fireEvent.click(pageElements.getPersistCohortCheckbox());
 
     expect(extensionBridge.getSettings()).toEqual({
       rate: 0.25,
@@ -70,69 +64,71 @@ describe('sampling condition view', () => {
     });
   });
 
+  it('sets the default form values', () => {
+    expect(pageElements.getRateTextBox().value).toBe('50');
+    expect(pageElements.getPersistCohortCheckbox().checked).toBeFalse();
+
+    expect(extensionBridge.getSettings()).toEqual({
+      rate: 0.5
+    });
+  });
+
   it('sets error if rate is not provided', () => {
-    extensionBridge.init();
-
-    let { rateTextfield } = getReactComponents(instance);
-
-    rateTextfield.props().onChange('');
+    fireEvent.focus(pageElements.getRateTextBox());
+    userEvent.clear(pageElements.getRateTextBox());
+    fireEvent.blur(pageElements.getRateTextBox());
+    expect(
+      pageElements.getRateTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
     expect(extensionBridge.validate()).toBe(false);
-
-    ({ rateTextfield } = getReactComponents(instance));
-
-    expect(rateTextfield.props().validationState).toBe('invalid');
   });
 
   it('sets error if rate is not a number', () => {
-    extensionBridge.init();
+    fireEvent.focus(pageElements.getRateTextBox());
+    userEvent.clear(pageElements.getRateTextBox());
+    userEvent.type(pageElements.getRateTextBox(), 'abc');
+    fireEvent.blur(pageElements.getRateTextBox());
 
-    let { rateTextfield } = getReactComponents(instance);
-
-    rateTextfield.props().onChange('abc');
+    expect(
+      pageElements.getRateTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
     expect(extensionBridge.validate()).toBe(false);
-
-    ({ rateTextfield } = getReactComponents(instance));
-
-    expect(rateTextfield.props().validationState).toBe('invalid');
   });
 
   it('sets error if rate is less than 0', () => {
-    extensionBridge.init();
+    fireEvent.focus(pageElements.getRateTextBox());
+    userEvent.clear(pageElements.getRateTextBox());
+    userEvent.type(pageElements.getRateTextBox(), '-1');
+    fireEvent.blur(pageElements.getRateTextBox());
 
-    let { rateTextfield } = getReactComponents(instance);
-
-    rateTextfield.props().onChange('-1');
+    expect(
+      pageElements.getRateTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
     expect(extensionBridge.validate()).toBe(false);
-
-    ({ rateTextfield } = getReactComponents(instance));
-
-    expect(rateTextfield.props().validationState).toBe('invalid');
   });
 
-  it('sets error if rate is greater than 1', () => {
-    extensionBridge.init();
+  it('sets error if rate is greater than 101', () => {
+    fireEvent.focus(pageElements.getRateTextBox());
+    userEvent.clear(pageElements.getRateTextBox());
+    userEvent.type(pageElements.getRateTextBox(), '101');
+    fireEvent.blur(pageElements.getRateTextBox());
 
-    let { rateTextfield } = getReactComponents(instance);
-
-    rateTextfield.props().onChange('101');
+    expect(
+      pageElements.getRateTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
     expect(extensionBridge.validate()).toBe(false);
-
-    ({ rateTextfield } = getReactComponents(instance));
-
-    expect(rateTextfield.props().validationState).toBe('invalid');
   });
 
   it('sets error if rate is not an integer', () => {
-    extensionBridge.init();
+    fireEvent.focus(pageElements.getRateTextBox());
+    userEvent.clear(pageElements.getRateTextBox());
+    userEvent.type(pageElements.getRateTextBox(), '55.55');
+    fireEvent.blur(pageElements.getRateTextBox());
 
-    let { rateTextfield } = getReactComponents(instance);
-
-    rateTextfield.props().onChange('55.55');
+    expect(
+      pageElements.getRateTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
     expect(extensionBridge.validate()).toBe(false);
-
-    ({ rateTextfield } = getReactComponents(instance));
-
-    expect(rateTextfield.props().validationState).toBe('invalid');
   });
 
   it('shows cohort reset warning when rate changes', () => {
@@ -143,25 +139,15 @@ describe('sampling condition view', () => {
       }
     });
 
-    const { rateTextfield } = getReactComponents(instance);
-
-    rateTextfield.props().onChange('70');
-
-    const { cohortResetWarning } = getReactComponents(instance);
-
-    expect(cohortResetWarning.exists()).toBe(true);
+    expect(screen.queryByText(warningText)).toBeFalsy();
+    userEvent.clear(pageElements.getRateTextBox());
+    userEvent.type(pageElements.getRateTextBox(), '70');
+    expect(screen.getByText(warningText)).toBeTruthy();
   });
 
   it('does not show cohort reset warning when rate changes and condition is new', () => {
-    extensionBridge.init();
-
-    const { rateTextfield } = getReactComponents(instance);
-
-    rateTextfield.props().onChange('70');
-
-    const { cohortResetWarning } = getReactComponents(instance);
-
-    expect(cohortResetWarning.exists()).toBe(false);
+    userEvent.type(pageElements.getRateTextBox(), '70');
+    expect(screen.queryByText(warningText)).toBeFalsy();
   });
 
   it(
@@ -174,16 +160,11 @@ describe('sampling condition view', () => {
         }
       });
 
-      const { rateTextfield, persistCohortCheckbox } = getReactComponents(
-        instance
-      );
+      userEvent.clear(pageElements.getRateTextBox());
+      userEvent.type(pageElements.getRateTextBox(), '70');
+      fireEvent.click(pageElements.getPersistCohortCheckbox());
 
-      persistCohortCheckbox.props().onChange(true);
-      rateTextfield.props().onChange('70');
-
-      const { cohortResetWarning } = getReactComponents(instance);
-
-      expect(cohortResetWarning.exists()).toBe(false);
+      expect(screen.queryByText(warningText)).toBeFalsy();
     }
   );
 });

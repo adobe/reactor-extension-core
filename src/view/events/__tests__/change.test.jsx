@@ -10,55 +10,45 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { Checkbox, TextField } from '@adobe/react-spectrum';
-import RegexToggle from '../../components/regexToggle';
-import WrappedField from '../../components/wrappedField';
+import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { sharedTestingElements } from '@test-helpers/react-testing-library';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import Change, { formConfig } from '../change';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
-import AdvancedEventOptions from '../components/advancedEventOptions';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const checkboxes = wrapper.find(Checkbox);
-  const fields = wrapper.find(WrappedField);
-
-  const showValueFieldCheckbox = checkboxes.filterWhere(
-    (n) => n.prop('name') === 'showValueField'
-  );
-  const valueTextfield = fields
-    .filterWhere((n) => n.prop('name') === 'value')
-    .find(TextField);
-  const valueRegexToggle = fields
-    .filterWhere((n) => n.prop('name') === 'valueIsRegex')
-    .find(RegexToggle);
-  const elementSelectorField = fields.filterWhere(
-    (n) => n.prop('name') === 'elementSelector'
-  );
-  const elementSelectorTextfield = elementSelectorField.find(TextField);
-  const bubbleStopCheckbox = checkboxes.filterWhere(
-    (n) => n.prop('name') === 'bubbleStop'
-  );
-  const advancedEventOptions = wrapper.find(AdvancedEventOptions);
-
-  return {
-    showValueFieldCheckbox,
-    valueTextfield,
-    valueRegexToggle,
-    elementSelectorTextfield,
-    bubbleStopCheckbox,
-    advancedEventOptions
-  };
+// react-testing-library element selectors
+const pageElements = {
+  valueField: {
+    getShowFieldCheckBox: () => {
+      return screen.getByRole('checkbox', {
+        name: /and is changed to the following value/i
+      });
+    },
+    getValueTextBox: () => {
+      return screen.getByRole('textbox', { name: /value/i });
+    },
+    getDataElementModalTrigger: () => {
+      return screen.getByRole('button', { name: /select a data element/i });
+    },
+    getRegexToggleSwitch: () => {
+      return screen.getByRole('switch', { name: /regex/i });
+    }
+  }
 };
 
 describe('change event view', () => {
   let extensionBridge;
-  let instance;
 
   beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(Change, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(Change, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
@@ -71,44 +61,33 @@ describe('change event view', () => {
       }
     });
 
-    const { advancedEventOptions } = getReactComponents(instance);
-    advancedEventOptions.instance().toggleSelected();
+    expect(pageElements.valueField.getShowFieldCheckBox().checked).toBeTrue();
+    expect(pageElements.valueField.getValueTextBox().value).toBe('abc');
+    expect(pageElements.valueField.getRegexToggleSwitch().checked).toBeTrue();
+    expect(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox().value
+    ).toBe('.foo');
 
-    const {
-      showValueFieldCheckbox,
-      valueTextfield,
-      valueRegexToggle,
-      elementSelectorTextfield,
-      bubbleStopCheckbox
-    } = getReactComponents(instance);
-
-    expect(showValueFieldCheckbox.props().value).toBe(true);
-    expect(valueTextfield.props().value).toBe('abc');
-    expect(valueRegexToggle.props().value).toBe(true);
-    expect(elementSelectorTextfield.props().value).toBe('.foo');
-    expect(bubbleStopCheckbox.props().value).toBe(true);
+    fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
+    expect(
+      sharedTestingElements.advancedSettings.getBubbleStopCheckBox().checked
+    ).toBeTrue();
   });
 
-  it('sets settings from form values', () => {
-    extensionBridge.init();
+  it('sets settings from form values', async () => {
+    fireEvent.click(pageElements.valueField.getShowFieldCheckBox());
 
-    const { showValueFieldCheckbox, advancedEventOptions } = getReactComponents(
-      instance
+    userEvent.type(pageElements.valueField.getValueTextBox(), 'abc');
+    fireEvent.click(pageElements.valueField.getRegexToggleSwitch());
+    userEvent.type(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox(),
+      '.foo'
     );
-    showValueFieldCheckbox.props().onChange(true);
-    advancedEventOptions.instance().toggleSelected();
 
-    const {
-      valueTextfield,
-      valueRegexToggle,
-      elementSelectorTextfield,
-      bubbleStopCheckbox
-    } = getReactComponents(instance);
-
-    valueTextfield.props().onChange('abc');
-    valueRegexToggle.props().onChange(true);
-    elementSelectorTextfield.props().onChange('.foo');
-    bubbleStopCheckbox.props().onChange(true);
+    fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
+    fireEvent.click(
+      sharedTestingElements.advancedSettings.getBubbleStopCheckBox()
+    );
 
     const {
       value,
@@ -124,11 +103,18 @@ describe('change event view', () => {
   });
 
   it('sets validation errors', () => {
-    extensionBridge.init();
+    fireEvent.focus(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox()
+    );
+    fireEvent.blur(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox()
+    );
+    expect(
+      sharedTestingElements.elementsMatching
+        .getCssSelectorTextBox()
+        .hasAttribute('aria-invalid')
+    ).toBeTruthy();
+
     expect(extensionBridge.validate()).toBe(false);
-
-    const { elementSelectorTextfield } = getReactComponents(instance);
-
-    expect(elementSelectorTextfield.props().validationState).toBe('invalid');
   });
 });

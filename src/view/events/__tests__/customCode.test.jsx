@@ -10,56 +10,51 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import EditorButton from '../../components/editorButton';
+import { fireEvent, render } from '@testing-library/react';
+import {
+  sharedTestingElements,
+  isButtonValid
+} from '@test-helpers/react-testing-library';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import CustomCode, { formConfig } from '../customCode';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
-
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const openEditorButton = wrapper.find(EditorButton);
-
-  return {
-    openEditorButton
-  };
-};
 
 describe('custom code event view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
     window.extensionBridge = extensionBridge;
-
-    instance = mount(bootstrap(CustomCode, formConfig, extensionBridge));
+    render(bootstrap(CustomCode, formConfig));
+    extensionBridge.init();
   });
 
-  afterAll(() => {
+  afterEach(() => {
     delete window.extensionBridge;
   });
 
   it('sets error if source is empty', () => {
-    extensionBridge.init();
-
     expect(extensionBridge.validate()).toBe(false);
 
-    const { openEditorButton } = getReactComponents(instance);
-
-    expect(openEditorButton.props().validationState).toBe('invalid');
+    expect(
+      isButtonValid(sharedTestingElements.customCodeEditor.getTriggerButton())
+    ).toBeFalse();
   });
 
   it('allows user to provide custom code', () => {
+    spyOn(extensionBridge, 'openCodeEditor').and.callFake(() => ({
+      then(resolve) {
+        resolve('foo bar');
+      }
+    }));
+
     extensionBridge.init({
       settings: {
         source: 'foo'
       }
     });
 
-    const { openEditorButton } = getReactComponents(instance);
-
-    openEditorButton.props().onChange('foo bar');
+    fireEvent.click(sharedTestingElements.customCodeEditor.getTriggerButton());
 
     expect(extensionBridge.getSettings()).toEqual({
       source: 'foo bar'

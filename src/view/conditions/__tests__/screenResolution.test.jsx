@@ -10,55 +10,69 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField, Picker } from '@adobe/react-spectrum';
-import WrappedField from '../../components/wrappedField';
+import {
+  fireEvent,
+  render,
+  screen,
+  waitForElementToBeRemoved,
+  within
+} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import ScreenResolution, { formConfig } from '../screenResolution';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const comparisonOperatorSelects = wrapper.find(Picker);
-  const fields = wrapper.find(WrappedField);
-
-  const widthOperatorSelect = comparisonOperatorSelects.filterWhere(
-    (n) => n.prop('name') === 'widthOperator'
-  );
-  const heightOperatorSelect = comparisonOperatorSelects.filterWhere(
-    (n) => n.prop('name') === 'heightOperator'
-  );
-  const widthField = fields.filterWhere((n) => n.prop('name') === 'width');
-  const widthTextfield = widthField.find(TextField);
-  const heightField = fields.filterWhere((n) => n.prop('name') === 'height');
-  const heightTextfield = heightField.find(TextField);
-
-  return {
-    widthOperatorSelect,
-    widthTextfield,
-    heightOperatorSelect,
-    heightTextfield
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getWidthTextBox: () => {
+    return screen.getByRole('textbox', { name: /width/i });
+  },
+  getWidthDropDownTrigger: () => {
+    const [button] = screen.getAllByRole('button', {
+      name: /operator/i
+    });
+    return button;
+  },
+  getHeightTextBox: () => {
+    return screen.getByRole('textbox', { name: /height/i });
+  },
+  getHeightDropDownTrigger: () => {
+    const [button] = screen
+      .getAllByRole('button', {
+        name: /operator/i
+      })
+      .slice(-1);
+    return button;
+  },
+  waitForLessThanOption: () => {
+    return screen.findByRole('option', { name: /less than$/i });
+  },
+  waitForEqualToOption: () => {
+    return screen.findByRole('option', { name: /equal to/i });
+  }
 };
 
 describe('screen resolution condition view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(ScreenResolution, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(ScreenResolution, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets operators to greater than by default', () => {
-    extensionBridge.init();
-
-    const { widthOperatorSelect, heightOperatorSelect } = getReactComponents(
-      instance
-    );
-
-    expect(widthOperatorSelect.props().value).toBe('>');
-    expect(heightOperatorSelect.props().value).toBe('>');
+    expect(
+      within(pageElements.getWidthDropDownTrigger()).getByText(/greater than/i)
+    ).toBeTruthy();
+    expect(
+      within(pageElements.getHeightDropDownTrigger()).getByText(/greater than/i)
+    ).toBeTruthy();
   });
 
   it('sets form values from settings', () => {
@@ -71,33 +85,30 @@ describe('screen resolution condition view', () => {
       }
     });
 
-    const {
-      widthOperatorSelect,
-      widthTextfield,
-      heightOperatorSelect,
-      heightTextfield
-    } = getReactComponents(instance);
+    expect(
+      within(pageElements.getWidthDropDownTrigger()).getByText(/equal to/i)
+    ).toBeTruthy();
+    expect(pageElements.getWidthTextBox().value).toBe('100');
 
-    expect(widthOperatorSelect.props().value).toBe('=');
-    expect(widthTextfield.props().value).toBe(100);
-    expect(heightOperatorSelect.props().value).toBe('<');
-    expect(heightTextfield.props().value).toBe(200);
+    expect(
+      within(pageElements.getHeightDropDownTrigger()).getByText(/less than/i)
+    ).toBeTruthy();
+    expect(pageElements.getHeightTextBox().value).toBe('200');
   });
 
-  it('sets settings from form values', () => {
-    extensionBridge.init();
+  it('sets settings from form values', async () => {
+    fireEvent.click(pageElements.getWidthDropDownTrigger());
+    const equalToOption = await pageElements.waitForEqualToOption();
+    equalToOption.click();
+    await waitForElementToBeRemoved(equalToOption);
 
-    const {
-      widthOperatorSelect,
-      widthTextfield,
-      heightOperatorSelect,
-      heightTextfield
-    } = getReactComponents(instance);
+    fireEvent.click(pageElements.getHeightDropDownTrigger());
+    const lessThanOption = await pageElements.waitForLessThanOption();
+    lessThanOption.click();
+    await waitForElementToBeRemoved(lessThanOption);
 
-    widthOperatorSelect.props().onChange('=');
-    widthTextfield.props().onChange(100);
-    heightOperatorSelect.props().onChange('<');
-    heightTextfield.props().onChange(200);
+    userEvent.type(pageElements.getWidthTextBox(), '100');
+    userEvent.type(pageElements.getHeightTextBox(), '200');
 
     expect(extensionBridge.getSettings()).toEqual({
       widthOperator: '=',
@@ -108,28 +119,27 @@ describe('screen resolution condition view', () => {
   });
 
   it('sets errors if required values are not provided', () => {
-    extensionBridge.init();
     expect(extensionBridge.validate()).toBe(false);
 
-    const { widthTextfield, heightTextfield } = getReactComponents(instance);
-
-    expect(widthTextfield.props().validationState).toBe('invalid');
-    expect(heightTextfield.props().validationState).toBe('invalid');
+    expect(
+      pageElements.getWidthTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
+    expect(
+      pageElements.getHeightTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
   });
 
   it('sets errors if values are not numbers', () => {
-    extensionBridge.init();
-
-    let { widthTextfield, heightTextfield } = getReactComponents(instance);
-
-    widthTextfield.props().onChange('12.abc');
-    heightTextfield.props().onChange('12.abc');
+    userEvent.type(pageElements.getWidthTextBox(), '12.abc');
+    userEvent.type(pageElements.getHeightTextBox(), '12.abc');
 
     expect(extensionBridge.validate()).toBe(false);
 
-    ({ widthTextfield, heightTextfield } = getReactComponents(instance));
-
-    expect(widthTextfield.props().validationState).toBe('invalid');
-    expect(heightTextfield.props().validationState).toBe('invalid');
+    expect(
+      pageElements.getWidthTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
+    expect(
+      pageElements.getHeightTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
   });
 });

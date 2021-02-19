@@ -10,53 +10,24 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { Checkbox } from '@adobe/react-spectrum';
+import { fireEvent, render } from '@testing-library/react';
+import { sharedTestingElements } from '@test-helpers/react-testing-library';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import AdvancedEventOptions, { formConfig } from '../advancedEventOptions';
-import createExtensionBridge from '../../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../../bootstrap';
-
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const checkboxes = wrapper.find(Checkbox);
-
-  const bubbleFireIfParentCheckbox = checkboxes.filterWhere(
-    (n) => n.prop('name') === 'bubbleFireIfParent'
-  );
-  const bubbleFireIfChildFiredCheckbox = checkboxes.filterWhere(
-    (n) => n.prop('name') === 'bubbleFireIfChildFired'
-  );
-  const bubbleStopCheckbox = checkboxes.filterWhere(
-    (n) => n.prop('name') === 'bubbleStop'
-  );
-
-  return {
-    bubbleFireIfParentCheckbox,
-    bubbleFireIfChildFiredCheckbox,
-    bubbleStopCheckbox
-  };
-};
 
 describe('advancedEventOptions', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(
-      bootstrap(AdvancedEventOptions, formConfig, extensionBridge)
-    );
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(AdvancedEventOptions, formConfig));
     extensionBridge.init();
   });
 
-  beforeEach(() => {
-    instance.update();
-    instance.find(AdvancedEventOptions).instance().toggleSelected();
-  });
-
   afterEach(() => {
-    instance.update();
-    instance.find(AdvancedEventOptions).instance().toggleSelected();
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
@@ -68,15 +39,19 @@ describe('advancedEventOptions', () => {
       }
     });
 
-    const {
-      bubbleFireIfParentCheckbox,
-      bubbleFireIfChildFiredCheckbox,
-      bubbleStopCheckbox
-    } = getReactComponents(instance);
+    fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
 
-    expect(bubbleFireIfParentCheckbox.props().checked).toBe(true);
-    expect(bubbleFireIfChildFiredCheckbox.props().checked).toBe(true);
-    expect(bubbleStopCheckbox.props().checked).toBe(true);
+    expect(
+      sharedTestingElements.advancedSettings.getBubbleFireIfParentCheckbox()
+        .checked
+    ).toBeTrue();
+    expect(
+      sharedTestingElements.advancedSettings.getBubbleFireIfChildFiredCheckbox()
+        .checked
+    ).toBeTrue();
+    expect(
+      sharedTestingElements.advancedSettings.getBubbleStopCheckBox().checked
+    ).toBeTrue();
   });
 
   it('has bubbleFireIfParent set to true by default', () => {
@@ -84,9 +59,11 @@ describe('advancedEventOptions', () => {
       settings: {}
     });
 
-    const { bubbleFireIfParentCheckbox } = getReactComponents(instance);
-
-    expect(bubbleFireIfParentCheckbox.props().checked).toBe(true);
+    fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
+    expect(
+      sharedTestingElements.advancedSettings.getBubbleFireIfParentCheckbox()
+        .checked
+    ).toBeTrue();
   });
 
   it('has bubbleFireIfChildFired set to true by default', () => {
@@ -94,32 +71,82 @@ describe('advancedEventOptions', () => {
       settings: {}
     });
 
-    const { bubbleFireIfChildFiredCheckbox } = getReactComponents(instance);
-
-    expect(bubbleFireIfChildFiredCheckbox.props().checked).toBe(true);
+    fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
+    expect(
+      sharedTestingElements.advancedSettings.getBubbleFireIfChildFiredCheckbox()
+        .checked
+    ).toBeTrue();
   });
 
-  it('sets settings from form values', () => {
-    extensionBridge.init();
+  it('by default, the checkboxes are in the expected their expected states', () => {
+    fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
 
-    const {
-      bubbleFireIfParentCheckbox,
-      bubbleFireIfChildFiredCheckbox,
-      bubbleStopCheckbox
-    } = getReactComponents(instance);
+    expect(
+      sharedTestingElements.advancedSettings.getBubbleFireIfParentCheckbox()
+        .checked
+    ).toBeTrue();
+    expect(
+      sharedTestingElements.advancedSettings.getBubbleFireIfChildFiredCheckbox()
+        .checked
+    ).toBeTrue();
+    expect(
+      sharedTestingElements.advancedSettings.getBubbleStopCheckBox().checked
+    ).toBeFalse();
+  });
 
-    bubbleFireIfParentCheckbox.props().onChange(true);
-    bubbleFireIfChildFiredCheckbox.props().onChange(true);
-    bubbleStopCheckbox.props().onChange(true);
+  it('sets settings from form values', async () => {
+    fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
 
-    const {
-      bubbleFireIfParent,
-      bubbleStop,
-      bubbleFireIfChildFired
-    } = extensionBridge.getSettings();
+    // this checkbox defaults on. checking our form really works.
+    fireEvent.click(
+      sharedTestingElements.advancedSettings.getBubbleFireIfParentCheckbox()
+    );
+    expect(
+      sharedTestingElements.advancedSettings.getBubbleFireIfParentCheckbox()
+        .checked
+    ).toBeFalse();
+    expect(extensionBridge.getSettings().bubbleFireIfParent).toBeFalse();
+    fireEvent.click(
+      sharedTestingElements.advancedSettings.getBubbleFireIfParentCheckbox()
+    );
+    expect(
+      sharedTestingElements.advancedSettings.getBubbleFireIfParentCheckbox()
+        .checked
+    ).toBeTrue();
+    expect(extensionBridge.getSettings().bubbleFireIfParent).toBeTrue();
 
-    expect(bubbleFireIfParent).toBe(true);
-    expect(bubbleStop).toBe(true);
-    expect(bubbleFireIfChildFired).toBe(true);
+    // this checkbox defaults on. checking our form really works.
+    fireEvent.click(
+      sharedTestingElements.advancedSettings.getBubbleFireIfChildFiredCheckbox()
+    );
+    expect(
+      sharedTestingElements.advancedSettings.getBubbleFireIfChildFiredCheckbox()
+        .checked
+    ).toBeFalse();
+    expect(extensionBridge.getSettings().bubbleFireIfChildFired).toBeFalse();
+    fireEvent.click(
+      sharedTestingElements.advancedSettings.getBubbleFireIfChildFiredCheckbox()
+    );
+    expect(
+      sharedTestingElements.advancedSettings.getBubbleFireIfChildFiredCheckbox()
+        .checked
+    ).toBeTrue();
+    expect(extensionBridge.getSettings().bubbleFireIfChildFired).toBeTrue();
+
+    // this checkbox defaults off. checking our form really works.
+    fireEvent.click(
+      sharedTestingElements.advancedSettings.getBubbleStopCheckBox()
+    );
+    expect(
+      sharedTestingElements.advancedSettings.getBubbleStopCheckBox().checked
+    ).toBeTrue();
+    expect(extensionBridge.getSettings().bubbleStop).toBeTrue();
+    fireEvent.click(
+      sharedTestingElements.advancedSettings.getBubbleStopCheckBox()
+    );
+    expect(
+      sharedTestingElements.advancedSettings.getBubbleStopCheckBox().checked
+    ).toBeFalse();
+    expect(extensionBridge.getSettings().bubbleStop).toBeFalse();
   });
 });
