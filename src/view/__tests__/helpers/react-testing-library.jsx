@@ -13,6 +13,7 @@
 /*eslint import/no-extraneous-dependencies: 0*/
 import { screen, waitFor } from '@testing-library/react';
 
+// this function is nice for pausing the UI to see what's going on in Karma
 export const DEBUG_UTILITIES = {
   WAIT_MAX_TIMEOUT: async (timeout = 4900) => {
     await waitFor(
@@ -26,6 +27,9 @@ export const DEBUG_UTILITIES = {
   }
 };
 
+// put elements in here that are repeated on other views.
+// NOTE: regex toggles aren't here because sometimes they're in rows, other times
+// they're the only toggle on the page.
 export const sharedTestingElements = {
   advancedSettings: {
     getToggleTrigger: () => {
@@ -82,10 +86,12 @@ export const sharedTestingElements = {
   }
 };
 
+// used for testing validity of spectrum buttons
 export function isButtonValid(el) {
   return Array.from(el.classList).join().indexOf('--warning') === -1;
 }
 
+// helpful for testing tooltips
 export function elementIsPosition(el, position) {
   if (!['top', 'bottom', 'left', 'right'].includes(position)) {
     throw new Error(`unknown position type of ${position}`);

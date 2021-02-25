@@ -40,8 +40,7 @@
   },
   "globals": {
     "Simulate": true,
-    "_satellite": true,
-    "shared-testing-elements": true
+    "_satellite": true
   },
   "settings": {
     "import/resolver": {
