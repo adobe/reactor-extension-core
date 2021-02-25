@@ -54,8 +54,6 @@
     "camelcase": "^6.2.0",
     "capitalize": "^2.0.3",
     "css-loader": "^5.0.1",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.5",
     "eslint": "^7.15.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^7.0.0",
