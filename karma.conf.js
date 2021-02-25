@@ -22,7 +22,7 @@ if (process.env.CI) {
     'SL_EDGE',
     'SL_CHROME',
     'SL_FIREFOX',
-    'SL_ANDROID',
+    // 'SL_ANDROID', Nuking for now
     'SL_SAFARI'
   ];
   reporters.push('saucelabs');

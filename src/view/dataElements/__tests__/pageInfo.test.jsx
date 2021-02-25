@@ -11,6 +11,7 @@
  ****************************************************************************************/
 
 import { render, screen, within, fireEvent } from '@testing-library/react';
+import { clickSpectrumOption } from '@test-helpers/react-testing-library';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import PageInfo, { formConfig } from '../pageInfo';
 import bootstrap from '../../bootstrap';
@@ -60,7 +61,7 @@ describe('page info data element view', () => {
   it('sets settings from form values', async () => {
     fireEvent.click(pageElements.getDropdownTrigger());
     const protocolOption = await pageElements.waitForProtocolOption();
-    protocolOption.click();
+    clickSpectrumOption(protocolOption);
 
     expect(extensionBridge.getSettings()).toEqual({
       attribute: 'protocol'

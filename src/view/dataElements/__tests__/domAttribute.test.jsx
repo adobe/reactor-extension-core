@@ -10,14 +10,12 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import {
-  fireEvent,
-  render,
-  screen,
-  within,
-  waitForElementToBeRemoved
-} from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import {
+  clickSpectrumOption,
+  safelyWaitForElementToBeRemoved
+} from '@test-helpers/react-testing-library';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import DomAttribute, { formConfig } from '../domAttribute';
 import bootstrap from '../../bootstrap';
@@ -111,7 +109,7 @@ describe('DOM attribute data element view', () => {
     userEvent.type(pageElements.getElementSelectorTextBox(), 'foo');
     fireEvent.click(pageElements.getElementPropertyPresetsDropdown());
     const htmlOption = await pageElements.waitForHTMLOption();
-    htmlOption.click();
+    clickSpectrumOption(htmlOption);
 
     expect(extensionBridge.getSettings()).toEqual({
       elementSelector: 'foo',
@@ -124,9 +122,10 @@ describe('DOM attribute data element view', () => {
 
     fireEvent.click(pageElements.getElementPropertyPresetsDropdown());
     const customOption = await pageElements.waitForCustomOption();
-    customOption.click();
-    // wait for the UI to settle before interacting with more elements
-    await waitForElementToBeRemoved(customOption);
+    clickSpectrumOption(customOption);
+    await safelyWaitForElementToBeRemoved(() =>
+      screen.queryByRole('option', { name: /other attribute/i })
+    );
 
     userEvent.type(pageElements.getCustomElementPropertyTextBox(), 'bar');
 

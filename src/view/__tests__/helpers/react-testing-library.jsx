@@ -11,7 +11,12 @@
  ****************************************************************************************/
 
 /*eslint import/no-extraneous-dependencies: 0*/
-import { screen, waitFor } from '@testing-library/react';
+import {
+  screen,
+  waitFor,
+  waitForElementToBeRemoved
+} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 // this function is nice for pausing the UI to see what's going on in Karma
 export const DEBUG_UTILITIES = {
@@ -89,6 +94,19 @@ export const sharedTestingElements = {
 // used for testing validity of spectrum buttons
 export function isButtonValid(el) {
   return Array.from(el.classList).join().indexOf('--warning') === -1;
+}
+
+export function clickSpectrumOption(element) {
+  userEvent.click(element);
+  element.click();
+}
+
+export function safelyWaitForElementToBeRemoved(callback) {
+  return waitForElementToBeRemoved(callback).catch(() => {
+    // who cares if the element has already left the DOM?
+    // well, RTL does (which is dumb), so we'll let the error
+    // get swallowed.
+  });
 }
 
 // helpful for testing tooltips

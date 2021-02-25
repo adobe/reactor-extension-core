@@ -10,14 +10,12 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import {
-  fireEvent,
-  render,
-  screen,
-  waitForElementToBeRemoved,
-  within
-} from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import {
+  clickSpectrumOption,
+  safelyWaitForElementToBeRemoved
+} from '@test-helpers/react-testing-library';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import ValueComparison, { formConfig } from '../valueComparison';
 import bootstrap from '../../bootstrap';
@@ -69,7 +67,6 @@ describe('value comparison condition view', () => {
   });
 
   describe('equal-based comparisons', () => {
-    // [new RegExp(/equals/, 'i'), new RegExp(/does not equal/, 'i')].forEach(
     [
       { operator: 'equals', text: new RegExp(/equals/, 'i') },
       { operator: 'doesNotEqual', text: new RegExp(/does not equal/, 'i') }
@@ -102,9 +99,10 @@ describe('value comparison condition view', () => {
 
           fireEvent.click(pageElements.getOperatorDropdownTrigger());
           const option = await pageElements.waitForDynamicOptionText(text);
-          option.click();
-          // wait for the UI to settle before interacting with more elements
-          await waitForElementToBeRemoved(option);
+          clickSpectrumOption(option);
+          await safelyWaitForElementToBeRemoved(() =>
+            screen.queryByRole('option', { name: text })
+          );
 
           userEvent.type(pageElements.getRightOperandTextBox(), '123');
           fireEvent.click(pageElements.getCaseInsensitiveCheckBox());
@@ -149,22 +147,25 @@ describe('value comparison condition view', () => {
 
   describe('string-based comparisons', () => {
     [
-      { operator: 'contains', text: new RegExp(/contains/, 'i') },
-      { operator: 'doesNotContain', text: new RegExp(/does not contain/, 'i') },
-      { operator: 'startsWith', text: new RegExp(/starts with/, 'i') },
+      { operator: 'contains', text: new RegExp(/contains$/, 'i') },
+      {
+        operator: 'doesNotContain',
+        text: new RegExp(/does not contain$/, 'i')
+      },
+      { operator: 'startsWith', text: new RegExp(/starts with$/, 'i') },
       {
         operator: 'doesNotStartWith',
-        text: new RegExp(/does not start with/, 'i')
+        text: new RegExp(/does not start with$/, 'i')
       },
-      { operator: 'endsWith', text: new RegExp(/ends with/, 'i') },
+      { operator: 'endsWith', text: new RegExp(/ends with$/, 'i') },
       {
         operator: 'doesNotEndWith',
-        text: new RegExp(/does not end with/, 'i')
+        text: new RegExp(/does not end with$/, 'i')
       },
-      { operator: 'matchesRegex', text: new RegExp(/matches regex/, 'i') },
+      { operator: 'matchesRegex', text: new RegExp(/matches regex$/, 'i') },
       {
         operator: 'doesNotMatchRegex',
-        text: new RegExp(/does not match regex/, 'i')
+        text: new RegExp(/does not match regex$/, 'i')
       }
     ].forEach(({ operator, text }) => {
       describe(`when operator is ${operator}`, () => {
@@ -190,11 +191,13 @@ describe('value comparison condition view', () => {
 
         it('sets settings from form values', async () => {
           userEvent.type(pageElements.getLeftOperandTextBox(), '%foo%');
+
           fireEvent.click(pageElements.getOperatorDropdownTrigger());
           const option = await pageElements.waitForDynamicOptionText(text);
-          option.click();
-          // wait for the UI to settle before interacting with more elements
-          await waitForElementToBeRemoved(option);
+          clickSpectrumOption(option);
+          await safelyWaitForElementToBeRemoved(() =>
+            screen.queryByRole('option', { name: text })
+          );
 
           userEvent.type(pageElements.getRightOperandTextBox(), 'bar');
           fireEvent.click(pageElements.getCaseInsensitiveCheckBox());
@@ -267,9 +270,10 @@ describe('value comparison condition view', () => {
 
             fireEvent.click(pageElements.getOperatorDropdownTrigger());
             const option = await pageElements.waitForDynamicOptionText(text);
-            option.click();
-            // wait for the UI to settle before interacting with more elements
-            await waitForElementToBeRemoved(option);
+            clickSpectrumOption(option);
+            await safelyWaitForElementToBeRemoved(() =>
+              screen.queryByRole('option', { name: text })
+            );
 
             userEvent.type(pageElements.getRightOperandTextBox(), '456');
 
@@ -341,7 +345,7 @@ describe('value comparison condition view', () => {
 
             fireEvent.click(pageElements.getOperatorDropdownTrigger());
             const option = await pageElements.waitForDynamicOptionText(text);
-            option.click();
+            clickSpectrumOption(option);
 
             expect(extensionBridge.getSettings()).toEqual({
               leftOperand: '%foo%',

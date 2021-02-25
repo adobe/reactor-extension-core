@@ -11,7 +11,10 @@
  ****************************************************************************************/
 
 import { fireEvent, render, screen, within } from '@testing-library/react';
-import { sharedTestingElements } from '@test-helpers/react-testing-library';
+import {
+  clickSpectrumOption,
+  sharedTestingElements
+} from '@test-helpers/react-testing-library';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import MediaTimePlayed, { formConfig } from '../mediaTimePlayed';
 import bootstrap from '../../bootstrap';
@@ -108,7 +111,7 @@ describe('time played event view', () => {
     // try changing the select box
     fireEvent.click(pageElements.triggerWhen.unitsDropdown.getTrigger());
     const percentOption = await pageElements.triggerWhen.unitsDropdown.waitForPercentOption();
-    percentOption.click();
+    clickSpectrumOption(percentOption);
 
     expect(extensionBridge.getSettings().unit).toBe('percent');
   });

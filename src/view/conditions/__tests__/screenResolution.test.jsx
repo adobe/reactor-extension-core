@@ -10,14 +10,12 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import {
-  fireEvent,
-  render,
-  screen,
-  waitForElementToBeRemoved,
-  within
-} from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import {
+  clickSpectrumOption,
+  safelyWaitForElementToBeRemoved
+} from '@test-helpers/react-testing-library';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import ScreenResolution, { formConfig } from '../screenResolution';
 import bootstrap from '../../bootstrap';
@@ -99,13 +97,17 @@ describe('screen resolution condition view', () => {
   it('sets settings from form values', async () => {
     fireEvent.click(pageElements.getWidthDropDownTrigger());
     const equalToOption = await pageElements.waitForEqualToOption();
-    equalToOption.click();
-    await waitForElementToBeRemoved(equalToOption);
+    clickSpectrumOption(equalToOption);
+    await safelyWaitForElementToBeRemoved(() =>
+      screen.queryByRole('option', { name: /equal to/i })
+    );
 
     fireEvent.click(pageElements.getHeightDropDownTrigger());
     const lessThanOption = await pageElements.waitForLessThanOption();
-    lessThanOption.click();
-    await waitForElementToBeRemoved(lessThanOption);
+    clickSpectrumOption(lessThanOption);
+    await safelyWaitForElementToBeRemoved(() =>
+      screen.queryByRole('option', { name: /less than$/i })
+    );
 
     userEvent.type(pageElements.getWidthTextBox(), '100');
     userEvent.type(pageElements.getHeightTextBox(), '200');

@@ -10,14 +10,12 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import {
-  fireEvent,
-  screen,
-  render,
-  within,
-  waitForElementToBeRemoved
-} from '@testing-library/react';
+import { fireEvent, screen, render, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import {
+  clickSpectrumOption,
+  safelyWaitForElementToBeRemoved
+} from '@test-helpers/react-testing-library';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import WindowSize, { formConfig } from '../windowSize';
 import bootstrap from '../../bootstrap';
@@ -45,7 +43,7 @@ const pageElements = {
       });
   },
   waitForLessThanOption: () => {
-    return screen.findByRole('option', { name: /less than/i });
+    return screen.findByRole('option', { name: /less than$/i });
   },
   waitForEqualToOption: () => {
     return screen.findByRole('option', { name: /equal to/i });
@@ -106,16 +104,18 @@ describe('window size condition view', () => {
 
     fireEvent.click(widthRow.withinRow.getDropdownTrigger());
     const equalToOption = await pageElements.waitForEqualToOption();
-    equalToOption.click();
-    // wait for the UI to settle before interacting with more elements
-    await waitForElementToBeRemoved(equalToOption);
+    clickSpectrumOption(equalToOption);
+    await safelyWaitForElementToBeRemoved(() =>
+      screen.queryByRole('option', { name: /equal to/i })
+    );
     userEvent.type(widthRow.withinRow.getValueTextBox(), '100');
 
     fireEvent.click(heightRow.withinRow.getDropdownTrigger());
     const lessThanOption = await pageElements.waitForLessThanOption();
-    lessThanOption.click();
-    // wait for the UI to settle before interacting with more elements
-    await waitForElementToBeRemoved(lessThanOption);
+    clickSpectrumOption(lessThanOption);
+    await safelyWaitForElementToBeRemoved(() =>
+      screen.queryByRole('option', { name: /less than$/i })
+    );
     userEvent.type(heightRow.withinRow.getValueTextBox(), '200');
 
     expect(extensionBridge.getSettings()).toEqual({

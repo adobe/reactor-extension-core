@@ -10,13 +10,11 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import {
-  fireEvent,
-  render,
-  screen,
-  waitForElementToBeRemoved,
-  within
-} from '@testing-library/react';
+  clickSpectrumOption,
+  safelyWaitForElementToBeRemoved
+} from '@test-helpers/react-testing-library';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import MaxFrequency, { formConfig } from '../maxFrequency';
 import bootstrap from '../../bootstrap';
@@ -75,9 +73,10 @@ describe('max frequency condition view', () => {
   it('sets settings from form values', async () => {
     fireEvent.click(pageElements.unitsDropdown.getTrigger());
     const sessionOption = await pageElements.unitsDropdown.waitForSessionOption();
-    sessionOption.click();
-    // wait for the UI to settle before interacting with more elements
-    await waitForElementToBeRemoved(sessionOption);
+    clickSpectrumOption(sessionOption);
+    await safelyWaitForElementToBeRemoved(() =>
+      screen.queryByRole('option', { name: /session/i })
+    );
 
     fireEvent.change(pageElements.getCountTextBox(), {
       target: { value: '3' }
@@ -140,7 +139,7 @@ describe('max frequency condition view', () => {
     it('sets settings from form values', async () => {
       fireEvent.click(pageElements.unitsDropdown.getTrigger());
       const visitorOption = await pageElements.unitsDropdown.waitForVisitorOption();
-      visitorOption.click();
+      clickSpectrumOption(visitorOption);
 
       expect(extensionBridge.getSettings()).toEqual({
         unit: 'visitor'

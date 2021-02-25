@@ -12,6 +12,7 @@
 
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { clickSpectrumOption } from '@test-helpers/react-testing-library';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import DateRange, { formConfig } from '../dateRange';
 import bootstrap from '../../bootstrap';
@@ -162,7 +163,7 @@ describe('date range condition view', () => {
     simulate.clear(pageElements.timeZoneDropdown.getTextBox());
     userEvent.type(pageElements.timeZoneDropdown.getTextBox(), 'US/Mountain');
     const option = await pageElements.timeZoneDropdown.waitForMountainTimeZoneOption();
-    option.click();
+    clickSpectrumOption(option);
 
     expect(extensionBridge.getSettings()).toEqual({
       start: '2017-11-03T17:24:00Z',

@@ -11,6 +11,7 @@
  ****************************************************************************************/
 
 import { fireEvent, render, screen, within } from '@testing-library/react';
+import { clickSpectrumOption } from '@test-helpers/react-testing-library';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import VisitorBehavior, { formConfig } from '../visitorBehavior';
 import bootstrap from '../../bootstrap';
@@ -61,7 +62,7 @@ describe('visitor behavior data element view', () => {
     fireEvent.click(pageElements.getDropdownTrigger());
 
     const minutesOnSiteOption = await pageElements.waitForMinutesOnSiteOption();
-    minutesOnSiteOption.click();
+    clickSpectrumOption(minutesOnSiteOption);
 
     expect(extensionBridge.getSettings()).toEqual({
       attribute: 'minutesOnSite'

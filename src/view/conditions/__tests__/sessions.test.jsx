@@ -12,6 +12,7 @@
 
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { clickSpectrumOption } from '@test-helpers/react-testing-library';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import Sessions, { formConfig } from '../sessions';
 import bootstrap from '../../bootstrap';
@@ -68,7 +69,7 @@ describe('sessions condition view', () => {
 
     fireEvent.click(pageElements.getOperatorDropdownTrigger());
     const equalOption = await pageElements.waitForEqualToOption();
-    equalOption.click();
+    clickSpectrumOption(equalOption);
 
     expect(extensionBridge.getSettings()).toEqual({
       operator: '=',

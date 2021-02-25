@@ -10,13 +10,11 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import {
-  fireEvent,
-  render,
-  screen,
-  waitForElementToBeRemoved,
-  within
-} from '@testing-library/react';
+  clickSpectrumOption,
+  safelyWaitForElementToBeRemoved
+} from '@test-helpers/react-testing-library';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import PageViews, { formConfig } from '../pageViews';
 import bootstrap from '../../bootstrap';
@@ -83,9 +81,10 @@ describe('page views condition view', () => {
   it('sets settings from form values', async () => {
     fireEvent.click(pageElements.operatorDropdown.getTrigger());
     const equalTo = await pageElements.operatorDropdown.waitForEqualToOption();
-    equalTo.click();
-    // wait for the UI to settle before interacting with more elements
-    await waitForElementToBeRemoved(equalTo);
+    clickSpectrumOption(equalTo);
+    await safelyWaitForElementToBeRemoved(() =>
+      screen.queryByRole('option', { name: /equal to/i })
+    );
 
     fireEvent.change(pageElements.getCountTextBox(), {
       target: { value: '100' }

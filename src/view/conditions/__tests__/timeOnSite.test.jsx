@@ -10,14 +10,12 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import {
-  fireEvent,
-  render,
-  screen,
-  waitForElementToBeRemoved,
-  within
-} from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import {
+  clickSpectrumOption,
+  safelyWaitForElementToBeRemoved
+} from '@test-helpers/react-testing-library';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import TimeOnSite, { formConfig } from '../timeOnSite';
 import bootstrap from '../../bootstrap';
@@ -75,9 +73,10 @@ describe('time on site condition view', () => {
   it('sets settings from form values', async () => {
     fireEvent.click(pageElements.getDropdownTrigger());
     const equalOption = await pageElements.waitForEqualToOption();
-    equalOption.click();
-    // wait for the UI to settle before interacting with more elements
-    await waitForElementToBeRemoved(equalOption);
+    clickSpectrumOption(equalOption);
+    await safelyWaitForElementToBeRemoved(() =>
+      screen.queryByRole('option', { name: /equal to/i })
+    );
 
     userEvent.type(pageElements.getMinutesTextBox(), '100');
 
