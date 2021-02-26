@@ -17,7 +17,7 @@ import { formValueSelector, getFormInitialValues } from 'redux-form';
 import { connect } from 'react-redux';
 import InfoTip from '../components/infoTip';
 import WrappedField from '../components/wrappedField';
-import WarningContainer from '../components/warningContainer';
+import HelpText from '../components/helpText';
 import NoWrapText from '../components/noWrapText';
 
 const Sampling = ({ showCohortResetInfo }) => (
@@ -27,6 +27,12 @@ const Sampling = ({ showCohortResetInfo }) => (
       <WrappedField label="Rate" name="rate" component={TextField} isRequired />
       <Text marginBottom="size-75">percent of the time.</Text>
     </Flex>
+    {Boolean(showCohortResetInfo) && (
+      <HelpText marginBottom="size-200">
+        Changing the sampling value will reset the cohort the next time the rule
+        is published.
+      </HelpText>
+    )}
 
     <Flex alignItems="center" marginTop="size-100">
       <WrappedField name="persistCohort" component={Checkbox}>
@@ -39,13 +45,6 @@ const Sampling = ({ showCohortResetInfo }) => (
         user and vice versa.
       </InfoTip>
     </Flex>
-
-    {showCohortResetInfo ? (
-      <WarningContainer>
-        Changing the sampling value will reset the cohort the next time the rule
-        is published.
-      </WarningContainer>
-    ) : null}
   </>
 );
 

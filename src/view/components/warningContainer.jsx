@@ -10,16 +10,13 @@ governing permissions and limitations under the License.
 */
 
 import React from 'react';
-import { Flex, View, Well, Text } from '@adobe/react-spectrum';
-import Alert from '@spectrum-icons/workflow/Alert';
+import { Flex, Well } from '@adobe/react-spectrum';
+import HelpText from './helpText';
 
-export default ({ children, ...rest }) => (
-  <Well {...rest}>
-    <Flex gap="size-100">
-      <View>
-        <Alert aria-label="Alert" color="notice" />
-      </View>
-      <Text marginTop="size-50">{children}</Text>
+export default ({ color = 'notice', children, ...containerPositioning }) => (
+  <Well {...containerPositioning}>
+    <Flex gap="size-200">
+      <HelpText color={color}>{children}</HelpText>
     </Flex>
   </Well>
 );
