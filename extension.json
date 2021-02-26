@@ -1145,7 +1145,13 @@
           }
         },
         "additionalProperties": false
-      }
+      },
+      "transforms": [
+        {
+          "type": "remove",
+          "propertyPath": "timezone"
+        }
+      ]
     },
     {
       "name": "device-type",
