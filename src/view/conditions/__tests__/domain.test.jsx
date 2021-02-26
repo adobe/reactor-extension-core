@@ -10,19 +10,19 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { CheckboxGroup } from '@adobe/react-spectrum';
+import { fireEvent, render, screen } from '@testing-library/react';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import Domain, { formConfig } from '../domain';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const domainsCheckboxList = wrapper.find(CheckboxGroup);
-
-  return {
-    domainsCheckboxList
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getAdobeDomainCheckbox: () => {
+    return screen.getByRole('checkbox', { name: /adobe.com/i });
+  },
+  getExampleDomainCheckbox: () => {
+    return screen.getByRole('checkbox', { name: /example.com/i });
+  }
 };
 
 const domains = ['adobe.com', 'example.com'];
@@ -31,11 +31,20 @@ const selectedDomains = ['adobe.com'];
 
 describe('domain condition view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(Domain, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(Domain, formConfig, extensionBridge));
+    extensionBridge.init({
+      propertySettings: {
+        domains
+      }
+    });
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
@@ -48,27 +57,31 @@ describe('domain condition view', () => {
       }
     });
 
-    const { domainsCheckboxList } = getReactComponents(instance);
-
-    expect(domainsCheckboxList.props().children.map((d) => d.key)).toEqual(
-      domains
-    );
-    expect(domainsCheckboxList.props().value).toEqual(selectedDomains);
+    expect(pageElements.getAdobeDomainCheckbox().checked).toBeTrue();
+    expect(pageElements.getExampleDomainCheckbox().checked).toBeFalse();
   });
 
   it('sets settings from form values', () => {
-    extensionBridge.init();
-
-    const { domainsCheckboxList } = getReactComponents(instance);
-    domainsCheckboxList.props().onChange(selectedDomains);
-
     expect(extensionBridge.getSettings()).toEqual({
-      domains: selectedDomains
+      domains: []
     });
-  });
 
-  it('sets domains to an empty array if nothing is selected', () => {
-    extensionBridge.init();
+    fireEvent.click(pageElements.getAdobeDomainCheckbox());
+    expect(extensionBridge.getSettings()).toEqual({
+      domains: ['adobe.com']
+    });
+
+    fireEvent.click(pageElements.getExampleDomainCheckbox());
+    expect(extensionBridge.getSettings()).toEqual({
+      domains: ['adobe.com', 'example.com']
+    });
+
+    fireEvent.click(pageElements.getAdobeDomainCheckbox());
+    expect(extensionBridge.getSettings()).toEqual({
+      domains: ['example.com']
+    });
+
+    fireEvent.click(pageElements.getExampleDomainCheckbox());
     expect(extensionBridge.getSettings()).toEqual({
       domains: []
     });

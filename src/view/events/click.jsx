@@ -22,7 +22,7 @@ import AdvancedEventOptions, {
   formConfig as advancedEventOptionsFormConfig
 } from './components/advancedEventOptions';
 import mergeFormConfigs from '../utils/mergeFormConfigs';
-import { isNumberLikeInRange } from '../utils/validators';
+import { isDataElementToken, isNumberLikeInRange } from '../utils/validators';
 
 const Click = ({ delayLinkActivation }) => (
   <>
@@ -38,6 +38,7 @@ const Click = ({ delayLinkActivation }) => (
           label="Link delay"
           isRequired
           component={TextField}
+          supportDataElement
         />
       </View>
     ) : null}
@@ -91,10 +92,11 @@ export const formConfig = mergeFormConfigs(
 
       if (
         values.delayLinkActivation &&
-        !isNumberLikeInRange(values.anchorDelay, { min: 1 })
+        !isNumberLikeInRange(values.anchorDelay, { min: 1 }) &&
+        !isDataElementToken(values.anchorDelay)
       ) {
         errors.anchorDelay =
-          'Please specify a number greater than or equal to 1.';
+          'Please specify a number greater than or equal to 1, or specify a data element.';
       }
 
       return errors;

@@ -10,28 +10,25 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField } from '@adobe/react-spectrum';
+import { fireEvent, render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { sharedTestingElements } from '@test-helpers/react-testing-library';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import ElementExists, { formConfig } from '../elementExists';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
-
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const elementSelectorTextfield = wrapper.find(TextField);
-
-  return {
-    elementSelectorTextfield
-  };
-};
 
 describe('element exists event view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(ElementExists, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(ElementExists, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
@@ -41,29 +38,34 @@ describe('element exists event view', () => {
       }
     });
 
-    const { elementSelectorTextfield } = getReactComponents(instance);
-
-    expect(elementSelectorTextfield.props().value).toBe('.foo');
+    expect(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox().value
+    ).toBe('.foo');
   });
 
   it('sets settings from form values', () => {
-    extensionBridge.init();
-
-    const { elementSelectorTextfield } = getReactComponents(instance);
-
-    elementSelectorTextfield.props().onChange('.foo');
+    userEvent.type(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox(),
+      '.foo'
+    );
 
     const { elementSelector } = extensionBridge.getSettings();
-
     expect(elementSelector).toBe('.foo');
   });
 
   it('sets validation errors', () => {
-    extensionBridge.init();
+    fireEvent.focus(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox()
+    );
+    fireEvent.blur(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox()
+    );
+
+    expect(
+      sharedTestingElements.elementsMatching
+        .getCssSelectorTextBox()
+        .hasAttribute('aria-invalid')
+    ).toBeTrue();
     expect(extensionBridge.validate()).toBe(false);
-
-    const { elementSelectorTextfield } = getReactComponents(instance);
-
-    expect(elementSelectorTextfield.props().validationState).toBe('invalid');
   });
 });

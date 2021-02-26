@@ -10,37 +10,54 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField, RadioGroup, Picker } from '@adobe/react-spectrum';
+import { fireEvent, render, screen, within } from '@testing-library/react';
+import {
+  clickSpectrumOption,
+  safelyWaitForElementToBeRemoved
+} from '@test-helpers/react-testing-library';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import PageViews, { formConfig } from '../pageViews';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-
-  return {
-    durationRadioGroup: wrapper.find(RadioGroup),
-    operatorSelect: wrapper.find(Picker),
-    countTextfield: wrapper.find(TextField)
-  };
+// react-testing-library element selectors
+const pageElements = {
+  operatorDropdown: {
+    getTrigger: () => screen.getByRole('button', { name: /operator/i }),
+    waitForEqualToOption: () => {
+      return screen.findByRole('option', { name: /equal to/i });
+    }
+  },
+  getCountTextBox: () => screen.getByRole('textbox', { name: /count/i }),
+  duration: {
+    radioGroup: {
+      getLifeTime: () => screen.getByRole('radio', { name: /lifetime/i }),
+      getCurrentSession: () => {
+        return screen.getByRole('radio', { name: /current session/i });
+      }
+    }
+  }
 };
 
 describe('page views condition view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(PageViews, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(PageViews, formConfig));
+    extensionBridge.init();
   });
 
-  it('sets operator to greater than by default', () => {
-    extensionBridge.init();
+  afterEach(() => {
+    delete window.extensionBridge;
+  });
 
-    const { operatorSelect } = getReactComponents(instance);
-
-    expect(operatorSelect.props().value).toBe('>');
+  it('sets operator to greater than by default', async () => {
+    expect(
+      within(pageElements.operatorDropdown.getTrigger()).getByText(
+        /greater than/i
+      )
+    ).toBeTruthy();
   });
 
   it('sets form values from settings', () => {
@@ -52,29 +69,28 @@ describe('page views condition view', () => {
       }
     });
 
-    const {
-      operatorSelect,
-      countTextfield,
-      durationRadioGroup
-    } = getReactComponents(instance);
-
-    expect(operatorSelect.props().value).toBe('=');
-    expect(countTextfield.props().value).toBe(100);
-    expect(durationRadioGroup.props().value).toBe('session');
+    expect(
+      within(pageElements.operatorDropdown.getTrigger()).getByText(/equal to/i)
+    ).toBeTruthy();
+    expect(pageElements.getCountTextBox().value).toBe('100');
+    expect(
+      pageElements.duration.radioGroup.getCurrentSession().checked
+    ).toBeTruthy();
   });
 
-  it('sets settings from form values', () => {
-    extensionBridge.init();
+  it('sets settings from form values', async () => {
+    fireEvent.click(pageElements.operatorDropdown.getTrigger());
+    const equalTo = await pageElements.operatorDropdown.waitForEqualToOption();
+    clickSpectrumOption(equalTo);
+    await safelyWaitForElementToBeRemoved(() =>
+      screen.queryByRole('option', { name: /equal to/i })
+    );
 
-    const {
-      operatorSelect,
-      countTextfield,
-      durationRadioGroup
-    } = getReactComponents(instance);
+    fireEvent.change(pageElements.getCountTextBox(), {
+      target: { value: '100' }
+    });
 
-    operatorSelect.props().onChange('=');
-    countTextfield.props().onChange(100);
-    durationRadioGroup.props().onChange('session', { stopPropagation() {} });
+    fireEvent.click(pageElements.duration.radioGroup.getCurrentSession());
 
     expect(extensionBridge.getSettings()).toEqual({
       operator: '=',
@@ -84,25 +100,24 @@ describe('page views condition view', () => {
   });
 
   it('sets errors if required values are not provided', () => {
-    extensionBridge.init();
+    fireEvent.focus(pageElements.getCountTextBox());
+    fireEvent.blur(pageElements.getCountTextBox());
+    expect(
+      pageElements.getCountTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
+
     expect(extensionBridge.validate()).toBe(false);
-
-    const { countTextfield } = getReactComponents(instance);
-
-    expect(countTextfield.props().validationState).toBe('invalid');
   });
 
   it('sets error if count value is not a number', () => {
-    extensionBridge.init();
+    fireEvent.change(pageElements.getCountTextBox(), {
+      target: { value: '12.abc' }
+    });
+    fireEvent.blur(pageElements.getCountTextBox());
 
-    let { countTextfield } = getReactComponents(instance);
-
-    countTextfield.props().onChange('12.abc');
-
+    expect(
+      pageElements.getCountTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
     expect(extensionBridge.validate()).toBe(false);
-
-    ({ countTextfield } = getReactComponents(instance));
-
-    expect(countTextfield.props().validationState).toBe('invalid');
   });
 });

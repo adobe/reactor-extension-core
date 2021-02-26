@@ -1,10 +1,5 @@
 'use strict';
 
-var enzyme = require('enzyme');
-var Adapter = require('enzyme-adapter-react-16');
-
-enzyme.configure({ adapter: new Adapter() });
-
 // TEST_BASE_PATH is defined inside karma.conf.js.
 var testsContext = require.context(
   TEST_BASE_PATH,

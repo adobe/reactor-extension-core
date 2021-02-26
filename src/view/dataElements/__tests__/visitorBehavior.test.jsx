@@ -10,28 +10,34 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { Picker } from '@adobe/react-spectrum';
+import { fireEvent, render, screen, within } from '@testing-library/react';
+import { clickSpectrumOption } from '@test-helpers/react-testing-library';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import VisitorBehavior, { formConfig } from '../visitorBehavior';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const attributeSelect = wrapper.find(Picker);
-
-  return {
-    attributeSelect
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getDropdownTrigger: () => {
+    return screen.getByRole('button', { name: /attribute/i });
+  },
+  waitForMinutesOnSiteOption: () => {
+    return screen.findByRole('option', { name: /minutes on site/i });
+  }
 };
 
 describe('visitor behavior data element view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(VisitorBehavior, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(VisitorBehavior, formConfig, extensionBridge));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
@@ -41,24 +47,22 @@ describe('visitor behavior data element view', () => {
       }
     });
 
-    const { attributeSelect } = getReactComponents(instance);
-
-    expect(attributeSelect.props().value).toBe('minutesOnSite');
+    expect(
+      within(pageElements.getDropdownTrigger()).getByText(/minutes on site/i)
+    ).toBeTruthy();
   });
 
   it('sets form value defaults', () => {
-    extensionBridge.init();
-
-    const { attributeSelect } = getReactComponents(instance);
-
-    expect(attributeSelect.props().value).toBe('landingPage');
+    expect(
+      within(pageElements.getDropdownTrigger()).getByText(/landing page/i)
+    ).toBeTruthy();
   });
 
-  it('sets settings from form values', () => {
-    extensionBridge.init();
+  it('sets settings from form values', async () => {
+    fireEvent.click(pageElements.getDropdownTrigger());
 
-    const { attributeSelect } = getReactComponents(instance);
-    attributeSelect.props().onChange('minutesOnSite');
+    const minutesOnSiteOption = await pageElements.waitForMinutesOnSiteOption();
+    clickSpectrumOption(minutesOnSiteOption);
 
     expect(extensionBridge.getSettings()).toEqual({
       attribute: 'minutesOnSite'

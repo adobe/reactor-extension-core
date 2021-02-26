@@ -10,30 +10,31 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField } from '@adobe/react-spectrum';
+import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import JavaScriptVariable, { formConfig } from '../javascriptVariable';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const pathTextfield = wrapper.find(TextField);
-
-  return {
-    pathTextfield
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getPathTextBox: () => {
+    return screen.getByRole('textbox', { name: /javascript variable name/i });
+  }
 };
 
 describe('javascript variable data element view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(
-      bootstrap(JavaScriptVariable, formConfig, extensionBridge)
-    );
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(JavaScriptVariable, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
@@ -43,17 +44,11 @@ describe('javascript variable data element view', () => {
       }
     });
 
-    const { pathTextfield } = getReactComponents(instance);
-
-    expect(pathTextfield.props().value).toBe('foo');
+    expect(pageElements.getPathTextBox().value).toBe('foo');
   });
 
   it('sets settings from form values', () => {
-    extensionBridge.init();
-
-    const { pathTextfield } = getReactComponents(instance);
-
-    pathTextfield.props().onChange('foo');
+    userEvent.type(pageElements.getPathTextBox(), 'foo');
 
     expect(extensionBridge.getSettings()).toEqual({
       path: 'foo'
@@ -61,11 +56,12 @@ describe('javascript variable data element view', () => {
   });
 
   it('sets errors if required values are not provided', () => {
-    extensionBridge.init();
+    fireEvent.focus(pageElements.getPathTextBox());
+    fireEvent.blur(pageElements.getPathTextBox());
+
+    expect(
+      pageElements.getPathTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
     expect(extensionBridge.validate()).toBe(false);
-
-    const { pathTextfield } = getReactComponents(instance);
-
-    expect(pathTextfield.props().validationState).toBe('invalid');
   });
 });

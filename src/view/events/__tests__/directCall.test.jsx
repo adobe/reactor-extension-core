@@ -10,30 +10,31 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField } from '@adobe/react-spectrum';
+import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import DirectCall, { formConfig } from '../directCall';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const identifierTextfield = wrapper
-    .find(TextField)
-    .filterWhere((n) => n.prop('name') === 'identifier');
-
-  return {
-    identifierTextfield
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getIdentifierTextBox: () => {
+    return screen.getByRole('textbox', { name: /identifier/i });
+  }
 };
 
 describe('direct call event view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(DirectCall, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(DirectCall, formConfig, extensionBridge));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
@@ -43,16 +44,11 @@ describe('direct call event view', () => {
       }
     });
 
-    const { identifierTextfield } = getReactComponents(instance);
-
-    expect(identifierTextfield.props().value).toBe('foo');
+    expect(pageElements.getIdentifierTextBox().value).toBe('foo');
   });
 
   it('sets settings from form values', () => {
-    extensionBridge.init();
-
-    const { identifierTextfield } = getReactComponents(instance);
-    identifierTextfield.props().onChange('foo');
+    userEvent.type(pageElements.getIdentifierTextBox(), 'foo');
 
     expect(extensionBridge.getSettings()).toEqual({
       identifier: 'foo'
@@ -60,11 +56,12 @@ describe('direct call event view', () => {
   });
 
   it('sets errors if required values are not provided', () => {
-    extensionBridge.init();
+    fireEvent.focus(pageElements.getIdentifierTextBox());
+    fireEvent.blur(pageElements.getIdentifierTextBox());
+
+    expect(
+      pageElements.getIdentifierTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
     expect(extensionBridge.validate()).toBe(false);
-
-    const { identifierTextfield } = getReactComponents(instance);
-
-    expect(identifierTextfield.props().validationState).toBe('invalid');
   });
 });

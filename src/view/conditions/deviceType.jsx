@@ -50,7 +50,9 @@ export default DeviceType;
 
 export const formConfig = {
   settingsToFormValues(values, settings) {
+    const initialState = { deviceTypes: [] };
     return {
+      ...initialState,
       ...values,
       ...settings
     };

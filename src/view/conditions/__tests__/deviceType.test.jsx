@@ -10,31 +10,32 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { CheckboxGroup } from '@adobe/react-spectrum';
+import { fireEvent, render, screen } from '@testing-library/react';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import DeviceType, { formConfig } from '../deviceType';
 
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const selectedDeviceTypes = ['Desktop', 'Android'];
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const deviceOptionsCheckboxList = wrapper.find(CheckboxGroup);
-
-  return {
-    deviceOptionsCheckboxList
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getDesktopCheckBox: () => screen.getByRole('checkbox', { name: /Desktop/i }),
+  getAndroidCheckBox: () => screen.getByRole('checkbox', { name: /Android/i })
 };
 
 describe('device type condition view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(DeviceType, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(DeviceType, formConfig, extensionBridge));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
@@ -44,26 +45,31 @@ describe('device type condition view', () => {
       }
     });
 
-    const { deviceOptionsCheckboxList } = getReactComponents(instance);
-
-    expect(deviceOptionsCheckboxList.props().value).toEqual(
-      selectedDeviceTypes
-    );
+    expect(pageElements.getDesktopCheckBox().checked).toBeTrue();
+    expect(pageElements.getAndroidCheckBox().checked).toBeTrue();
   });
 
   it('sets settings from form values', () => {
-    extensionBridge.init();
-
-    const { deviceOptionsCheckboxList } = getReactComponents(instance);
-    deviceOptionsCheckboxList.props().onChange(selectedDeviceTypes);
-
     expect(extensionBridge.getSettings()).toEqual({
-      deviceTypes: selectedDeviceTypes
+      deviceTypes: []
     });
-  });
 
-  it('sets deviceTypes to an empty array if nothing is selected', () => {
-    extensionBridge.init();
+    fireEvent.click(pageElements.getAndroidCheckBox());
+    expect(extensionBridge.getSettings()).toEqual({
+      deviceTypes: ['Android']
+    });
+
+    fireEvent.click(pageElements.getDesktopCheckBox());
+    expect(extensionBridge.getSettings()).toEqual({
+      deviceTypes: ['Android', 'Desktop']
+    });
+
+    fireEvent.click(pageElements.getAndroidCheckBox());
+    expect(extensionBridge.getSettings()).toEqual({
+      deviceTypes: ['Desktop']
+    });
+
+    fireEvent.click(pageElements.getDesktopCheckBox());
     expect(extensionBridge.getSettings()).toEqual({
       deviceTypes: []
     });

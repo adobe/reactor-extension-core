@@ -10,37 +10,34 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { RadioGroup } from '@adobe/react-spectrum';
+import { fireEvent, render, screen } from '@testing-library/react';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import NewReturningVisitor, { formConfig } from '../newReturningVisitor';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-
-  return {
-    radioGroup: wrapper.find(RadioGroup)
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getNewVisitorRadio: () => screen.getByRole('radio', { name: /new visitor/i }),
+  getReturningVisitorRadio: () =>
+    screen.getByRole('radio', { name: /returning visitor/i })
 };
 
 describe('new/returning visitor condition view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(
-      bootstrap(NewReturningVisitor, formConfig, extensionBridge)
-    );
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(NewReturningVisitor, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets new visitor radio as checked by default', () => {
-    extensionBridge.init();
-
-    const { radioGroup } = getReactComponents(instance);
-
-    expect(radioGroup.props().value).toBe('new');
+    expect(pageElements.getNewVisitorRadio().checked).toBeTrue();
   });
 
   it('sets form values from settings', () => {
@@ -50,15 +47,11 @@ describe('new/returning visitor condition view', () => {
       }
     });
 
-    const { radioGroup } = getReactComponents(instance);
-    expect(radioGroup.props().value).toBe('returning');
+    expect(pageElements.getReturningVisitorRadio().checked).toBeTrue();
   });
 
   it('sets settings from form values', () => {
-    extensionBridge.init();
-
-    const { radioGroup } = getReactComponents(instance);
-    radioGroup.props().onChange('returning', { stopPropagation() {} });
+    fireEvent.click(pageElements.getReturningVisitorRadio());
 
     expect(extensionBridge.getSettings()).toEqual({
       isNewVisitor: false

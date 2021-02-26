@@ -14,7 +14,7 @@ import React from 'react';
 import { TextField, Flex } from '@adobe/react-spectrum';
 import WrappedField from '../components/wrappedField';
 import NoWrapText from '../components/noWrapText';
-import { isNumberLikeInRange } from '../utils/validators';
+import { isNumberLikeInRange, isDataElementToken } from '../utils/validators';
 
 const TimeOnPage = () => (
   <Flex alignItems="end" gap="size-100" minWidth="size-6000">
@@ -24,6 +24,7 @@ const TimeOnPage = () => (
       name="timeOnPage"
       isRequired
       component={TextField}
+      supportDataElement
     />
     <NoWrapText>seconds spent on the page</NoWrapText>
   </Flex>
@@ -47,8 +48,12 @@ export const formConfig = {
       ...errors
     };
 
-    if (!isNumberLikeInRange(values.timeOnPage, { min: 1 })) {
-      errors.timeOnPage = 'Please specify a number greater than or equal to 1.';
+    if (
+      !isNumberLikeInRange(values.timeOnPage, { min: 1 }) &&
+      !isDataElementToken(values.timeOnPage)
+    ) {
+      errors.timeOnPage =
+        'Please specify a number greater than or equal to 1, or specify a data element.';
     }
 
     return errors;

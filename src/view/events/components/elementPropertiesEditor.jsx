@@ -26,7 +26,12 @@ import WrappedField from '../../components/wrappedField';
 import RegexToggle from '../../components/regexToggle';
 
 const ElementPropertiesRenderer = ({ fields }) => (
-  <Flex direction="column" gap="size-200" minWidth="size-6000">
+  <Flex
+    direction="column"
+    gap="size-200"
+    minWidth="size-6000"
+    data-testid="element-properties-editor"
+  >
     {fields.map((field, index) => (
       <Flex key={field} data-row gap="size-100" alignItems="end">
         <View flex>

@@ -156,6 +156,9 @@ module.exports = env => {
       ]
     },
     resolve: {
+      alias: {
+        '@test-helpers': path.resolve(__dirname, 'src/view/__tests__/helpers')
+      },
       extensions: ['.js', '.jsx']
     }
   };

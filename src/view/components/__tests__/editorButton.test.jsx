@@ -10,25 +10,23 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
 import React from 'react';
-import { Button } from '@adobe/react-spectrum';
+import { fireEvent, render as rtlRender, screen } from '@testing-library/react';
+import { isButtonValid } from '@test-helpers/react-testing-library';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import EditorButton from '../editorButton';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 
-const render = (props) => mount(<EditorButton {...props} />);
+const render = (props) => rtlRender(<EditorButton {...props} />);
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  return {
-    button: wrapper.find(Button)
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getButton: () => screen.getByRole('button')
 };
 
 describe('editor button', () => {
   let extensionBridge;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
     window.extensionBridge = extensionBridge;
     spyOn(window.extensionBridge, 'openCodeEditor').and.callFake((options) => ({
@@ -38,32 +36,28 @@ describe('editor button', () => {
     }));
   });
 
-  afterAll(() => {
+  afterEach(() => {
     delete window.extensionBridge;
   });
 
   it('sets button variant to warning when invalid', () => {
-    const { button } = getReactComponents(
-      render({
-        validationState: 'invalid'
-      })
-    );
+    render({
+      validationState: 'invalid'
+    });
 
-    expect(button.props().variant).toBe('negative');
+    expect(isButtonValid(pageElements.getButton())).toBeFalse();
   });
 
   it('supports code editing workflow', () => {
     const onChange = jasmine.createSpy();
-    const { button } = getReactComponents(
-      render({
-        invalid: true,
-        value: 'foo',
-        language: 'html',
-        onChange
-      })
-    );
+    render({
+      invalid: true,
+      value: 'foo',
+      language: 'html',
+      onChange
+    });
 
-    button.props().onPress();
+    fireEvent.click(pageElements.getButton());
 
     expect(extensionBridge.openCodeEditor).toHaveBeenCalledWith({
       code: 'foo',

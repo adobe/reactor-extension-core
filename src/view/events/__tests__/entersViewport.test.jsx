@@ -10,84 +10,107 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField, RadioGroup } from '@adobe/react-spectrum';
-import WrappedField from '../../components/wrappedField';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { sharedTestingElements } from '@test-helpers/react-testing-library';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import EntersViewport, { formConfig } from '../entersViewport';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const fields = wrapper.find(WrappedField);
-
-  const elementSelectorField = fields.filterWhere(
-    (n) => n.prop('name') === 'elementSelector'
-  );
-  const elementSelectorTextfield = elementSelectorField.find(TextField);
-  const delayField = fields.filterWhere((n) => n.prop('name') === 'delay');
-  const delayTextfield = delayField.find(TextField);
-  const delayTypeRadioGroup = wrapper
-    .find(RadioGroup)
-    .filterWhere((n) => n.prop('name') === 'delayType');
-  const frequencyRadioGroup = wrapper
-    .find(RadioGroup)
-    .filterWhere((n) => n.prop('name') === 'frequency');
-
-  return {
-    elementSelectorTextfield,
-    delayTextfield,
-    delayTypeRadioGroup,
-    frequencyRadioGroup
-  };
+// react-testing-library element selectors
+const pageElements = {
+  delayWhenEnters: {
+    radioGroup: {
+      getImmediately: () => screen.getByRole('radio', { name: /immediately/i }),
+      getAfterDelay: () => screen.getByRole('radio', { name: /after a delay/i })
+    },
+    getDelayTextBox: () => screen.getByRole('textbox', { name: /delay/i }),
+    getDataElementModalTrigger: () => {
+      return screen.getByRole('button', { name: /select a data element/i });
+    }
+  },
+  frequency: {
+    radioGroup: {
+      getFirstTime: () => {
+        return screen.getByRole('radio', {
+          name: /first time element enters viewport/i
+        });
+      },
+      getEveryTime: () => {
+        return screen.getByRole('radio', {
+          name: /every time element enters viewport/i
+        });
+      }
+    }
+  }
 };
 
 describe('enters viewport event view', () => {
   let extensionBridge;
-  let instance;
 
   beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(EntersViewport, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(EntersViewport, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
     extensionBridge.init({
       settings: {
         elementSelector: '.foo',
-        delay: 100,
+        delay: '100',
         frequency: 'everyEntry'
       }
     });
+    expect(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox().value
+    ).toBe('.foo');
 
-    const {
-      elementSelectorTextfield,
-      delayTextfield,
-      frequencyRadioGroup
-    } = getReactComponents(instance);
+    fireEvent.click(pageElements.delayWhenEnters.radioGroup.getAfterDelay());
+    expect(pageElements.delayWhenEnters.getDelayTextBox().value).toBe('100');
 
-    expect(elementSelectorTextfield.props().value).toBe('.foo');
-    expect(delayTextfield.props().value).toBe(100);
-    expect(frequencyRadioGroup.props().value).toBe('everyEntry');
+    expect(
+      pageElements.frequency.radioGroup.getFirstTime().checked
+    ).toBeFalse();
+    expect(pageElements.frequency.radioGroup.getEveryTime().checked).toBeTrue();
   });
 
   it('sets settings from form values', () => {
-    extensionBridge.init();
+    fireEvent.focus(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox()
+    );
+    fireEvent.change(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox(),
+      {
+        target: { value: '.foo' }
+      }
+    );
+    fireEvent.blur(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox()
+    );
+    expect(
+      sharedTestingElements.elementsMatching
+        .getCssSelectorTextBox()
+        .hasAttribute('aria-invalid')
+    ).toBeFalse();
 
-    const { delayTypeRadioGroup } = getReactComponents(instance);
-    delayTypeRadioGroup.props().onChange('delay', { stopPropagation() {} });
+    fireEvent.click(pageElements.delayWhenEnters.radioGroup.getAfterDelay());
+    fireEvent.focus(pageElements.delayWhenEnters.getDelayTextBox());
+    fireEvent.change(pageElements.delayWhenEnters.getDelayTextBox(), {
+      target: { value: '100' }
+    });
+    fireEvent.blur(pageElements.delayWhenEnters.getDelayTextBox());
+    expect(
+      pageElements.delayWhenEnters
+        .getDelayTextBox()
+        .hasAttribute('aria-invalid')
+    ).toBeFalse();
 
-    const {
-      elementSelectorTextfield,
-      delayTextfield,
-      frequencyRadioGroup
-    } = getReactComponents(instance);
-
-    elementSelectorTextfield.props().onChange('.foo');
-    delayTextfield.props().onChange(100);
-    frequencyRadioGroup
-      .props()
-      .onChange('everyEntry', { stopPropagation() {} });
+    fireEvent.click(pageElements.frequency.radioGroup.getEveryTime());
 
     const { elementSelector, delay, frequency } = extensionBridge.getSettings();
 
@@ -97,19 +120,67 @@ describe('enters viewport event view', () => {
   });
 
   it('sets validation errors', () => {
-    extensionBridge.init();
-
-    const { delayTypeRadioGroup } = getReactComponents(instance);
-
-    delayTypeRadioGroup.props().onChange('delay', { stopPropagation() {} });
-
-    expect(extensionBridge.validate()).toBe(false);
-
-    const { delayTextfield, elementSelectorTextfield } = getReactComponents(
-      instance
+    fireEvent.focus(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox()
     );
+    fireEvent.blur(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox()
+    );
+    expect(
+      sharedTestingElements.elementsMatching
+        .getCssSelectorTextBox()
+        .hasAttribute('aria-invalid')
+    ).toBeTrue();
 
-    expect(delayTextfield.props().validationState).toBe('invalid');
-    expect(elementSelectorTextfield.props().validationState).toBe('invalid');
+    fireEvent.click(pageElements.delayWhenEnters.radioGroup.getAfterDelay());
+    fireEvent.focus(pageElements.delayWhenEnters.getDelayTextBox());
+    fireEvent.blur(pageElements.delayWhenEnters.getDelayTextBox());
+
+    expect(
+      pageElements.delayWhenEnters
+        .getDelayTextBox()
+        .hasAttribute('aria-invalid')
+    ).toBeTrue();
+  });
+
+  it('sets validation error when the number < 1', () => {
+    fireEvent.click(pageElements.delayWhenEnters.radioGroup.getAfterDelay());
+
+    fireEvent.focus(pageElements.delayWhenEnters.getDelayTextBox());
+    fireEvent.change(pageElements.delayWhenEnters.getDelayTextBox(), {
+      target: { value: '0' }
+    });
+    fireEvent.blur(pageElements.delayWhenEnters.getDelayTextBox());
+    expect(
+      pageElements.delayWhenEnters
+        .getDelayTextBox()
+        .hasAttribute('aria-invalid')
+    ).toBeTrue();
+  });
+
+  it('The delayWhenEnters input supports opening the data element modal', () => {
+    spyOn(extensionBridge, 'openDataElementSelector').and.callFake(() => {
+      return Promise.resolve();
+    });
+
+    fireEvent.click(pageElements.delayWhenEnters.radioGroup.getAfterDelay());
+    fireEvent.click(pageElements.delayWhenEnters.getDataElementModalTrigger());
+    expect(extensionBridge.openDataElementSelector).toHaveBeenCalledTimes(1);
+  });
+
+  it('delayWhenEnters handles data element names just fine', () => {
+    fireEvent.click(pageElements.delayWhenEnters.radioGroup.getAfterDelay());
+
+    fireEvent.focus(pageElements.delayWhenEnters.getDelayTextBox());
+    fireEvent.change(pageElements.delayWhenEnters.getDelayTextBox(), {
+      target: { value: '%Data Element 1%' }
+    });
+    fireEvent.blur(pageElements.delayWhenEnters.getDelayTextBox());
+
+    expect(
+      pageElements.delayWhenEnters
+        .getDelayTextBox()
+        .hasAttribute('aria-invalid')
+    ).toBeFalse();
   });
 });

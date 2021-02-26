@@ -10,39 +10,50 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField, Picker } from '@adobe/react-spectrum';
+import { fireEvent, render, screen, within } from '@testing-library/react';
+import {
+  clickSpectrumOption,
+  safelyWaitForElementToBeRemoved
+} from '@test-helpers/react-testing-library';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import MaxFrequency, { formConfig } from '../maxFrequency';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const countTextfield = wrapper.find(TextField);
-  const unitSelect = wrapper.find(Picker);
-
-  return {
-    countTextfield,
-    unitSelect
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getCountTextBox: () => screen.getByRole('textbox', { name: /count/i }),
+  unitsDropdown: {
+    getTrigger: () => {
+      return screen.getByRole('button', { name: /unit/i });
+    },
+    waitForSessionOption: () => {
+      return screen.findByRole('option', { name: /session/i });
+    },
+    waitForVisitorOption: () => {
+      return screen.findByRole('option', { name: /visitor/i });
+    }
+  }
 };
 
 describe('max frequency condition view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(MaxFrequency, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(MaxFrequency, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values to defaults', () => {
-    extensionBridge.init();
-
-    const { unitSelect, countTextfield } = getReactComponents(instance);
-
-    expect(unitSelect.props().value).toBe('pageView');
-    expect(countTextfield.props().value).toBe('1');
+    expect(
+      within(pageElements.unitsDropdown.getTrigger()).findByText(/page view/i)
+    ).toBeTruthy();
+    expect(pageElements.getCountTextBox().value).toBe('1');
   });
 
   it('sets form values from settings', () => {
@@ -53,19 +64,23 @@ describe('max frequency condition view', () => {
       }
     });
 
-    const { countTextfield, unitSelect } = getReactComponents(instance);
-
-    expect(countTextfield.props().value).toBe('3');
-    expect(unitSelect.props().value).toBe('session');
+    expect(
+      within(pageElements.unitsDropdown.getTrigger()).findByText(/session/i)
+    ).toBeTruthy();
+    expect(pageElements.getCountTextBox().value).toBe('3');
   });
 
-  it('sets settings from form values', () => {
-    extensionBridge.init();
+  it('sets settings from form values', async () => {
+    fireEvent.click(pageElements.unitsDropdown.getTrigger());
+    const sessionOption = await pageElements.unitsDropdown.waitForSessionOption();
+    clickSpectrumOption(sessionOption);
+    await safelyWaitForElementToBeRemoved(() =>
+      screen.queryByRole('option', { name: /session/i })
+    );
 
-    const { unitSelect, countTextfield } = getReactComponents(instance);
-
-    unitSelect.props().onChange('session');
-    countTextfield.props().onChange('3');
+    fireEvent.change(pageElements.getCountTextBox(), {
+      target: { value: '3' }
+    });
 
     expect(extensionBridge.getSettings()).toEqual({
       count: 3,
@@ -81,23 +96,27 @@ describe('max frequency condition view', () => {
       }
     });
 
-    let { countTextfield } = getReactComponents(instance);
+    fireEvent.focus(pageElements.getCountTextBox());
+    fireEvent.change(pageElements.getCountTextBox(), {
+      target: { value: '-1' }
+    });
+    fireEvent.blur(pageElements.getCountTextBox());
 
-    countTextfield.props().onChange('-1');
-
+    expect(
+      pageElements.getCountTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
     expect(extensionBridge.validate()).toBe(false);
 
-    ({ countTextfield } = getReactComponents(instance));
+    fireEvent.focus(pageElements.getCountTextBox());
+    fireEvent.change(pageElements.getCountTextBox(), {
+      target: { value: '' }
+    });
+    fireEvent.blur(pageElements.getCountTextBox());
 
-    expect(countTextfield.props().validationState).toBe('invalid');
-
-    countTextfield.props().onChange('');
-
+    expect(
+      pageElements.getCountTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
     expect(extensionBridge.validate()).toBe(false);
-
-    ({ countTextfield } = getReactComponents(instance));
-
-    expect(countTextfield.props().validationState).toBe('invalid');
   });
 
   describe('visitor unit', () => {
@@ -108,18 +127,19 @@ describe('max frequency condition view', () => {
         }
       });
 
-      const { countTextfield, unitSelect } = getReactComponents(instance);
+      expect(screen.queryAllByRole('textbox', { name: /count/i }).length).toBe(
+        0
+      );
 
-      expect(countTextfield.exists()).toBe(false);
-      expect(unitSelect.props().value).toBe('visitor');
+      expect(
+        within(pageElements.unitsDropdown.getTrigger()).findByText(/visitor/i)
+      ).toBeTruthy();
     });
 
-    it('sets settings from form values', () => {
-      extensionBridge.init();
-
-      const { unitSelect } = getReactComponents(instance);
-
-      unitSelect.props().onChange('visitor');
+    it('sets settings from form values', async () => {
+      fireEvent.click(pageElements.unitsDropdown.getTrigger());
+      const visitorOption = await pageElements.unitsDropdown.waitForVisitorOption();
+      clickSpectrumOption(visitorOption);
 
       expect(extensionBridge.getSettings()).toEqual({
         unit: 'visitor'

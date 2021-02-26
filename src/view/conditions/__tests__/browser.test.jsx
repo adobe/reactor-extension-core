@@ -10,30 +10,42 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { CheckboxGroup } from '@adobe/react-spectrum';
+import { fireEvent, render, screen } from '@testing-library/react';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import Browser, { formConfig } from '../browser';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
 const selectedBrowsers = ['Chrome', 'Safari'];
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const browsersCheckboxList = wrapper.find(CheckboxGroup);
-
-  return {
-    browsersCheckboxList
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getChromeCheckbox: () => screen.getByRole('checkbox', { name: /chrome/i }),
+  getSafariCheckbox: () => {
+    return screen.getByRole('checkbox', { name: 'Safari' });
+  },
+  getMobileSafariCheckbox: () => {
+    return screen.getByRole('checkbox', {
+      name: 'Mobile Safari'
+    });
+  }
 };
 
 describe('browser condition view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(Browser, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(Browser, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
+  });
+
+  it('The expected number of checkboxes are on the page', () => {
+    expect(screen.getAllByRole('checkbox').length).toBe(6);
   });
 
   it('sets form values from settings', () => {
@@ -43,24 +55,42 @@ describe('browser condition view', () => {
       }
     });
 
-    const { browsersCheckboxList } = getReactComponents(instance);
-
-    expect(browsersCheckboxList.props().value).toEqual(selectedBrowsers);
+    expect(pageElements.getChromeCheckbox().checked).toBe(true);
+    expect(pageElements.getSafariCheckbox().checked).toBe(true);
+    expect(pageElements.getMobileSafariCheckbox().checked).toBe(false);
   });
 
   it('sets settings from form values', () => {
-    extensionBridge.init();
-
-    const { browsersCheckboxList } = getReactComponents(instance);
-    browsersCheckboxList.props().onChange(selectedBrowsers);
-
     expect(extensionBridge.getSettings()).toEqual({
-      browsers: selectedBrowsers
+      browsers: []
     });
-  });
 
-  it('sets browsers to an empty array if nothing is selected', () => {
-    extensionBridge.init();
+    fireEvent.click(pageElements.getSafariCheckbox());
+    expect(extensionBridge.getSettings()).toEqual({
+      browsers: ['Safari']
+    });
+
+    fireEvent.click(pageElements.getChromeCheckbox());
+    expect(extensionBridge.getSettings()).toEqual({
+      browsers: ['Safari', 'Chrome']
+    });
+
+    fireEvent.click(pageElements.getMobileSafariCheckbox());
+    expect(extensionBridge.getSettings()).toEqual({
+      browsers: ['Safari', 'Chrome', 'Mobile Safari']
+    });
+
+    fireEvent.click(pageElements.getChromeCheckbox());
+    expect(extensionBridge.getSettings()).toEqual({
+      browsers: ['Safari', 'Mobile Safari']
+    });
+
+    fireEvent.click(pageElements.getSafariCheckbox());
+    expect(extensionBridge.getSettings()).toEqual({
+      browsers: ['Mobile Safari']
+    });
+
+    fireEvent.click(pageElements.getMobileSafariCheckbox());
     expect(extensionBridge.getSettings()).toEqual({
       browsers: []
     });

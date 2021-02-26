@@ -10,31 +10,34 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField } from '@adobe/react-spectrum';
-import RegexToggle from '../../components/regexToggle';
+import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import LandingPage, { formConfig } from '../landingPage';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const pageTextfield = wrapper.find(TextField);
-  const pageRegexToggle = wrapper.find(RegexToggle);
-
-  return {
-    pageTextfield,
-    pageRegexToggle
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getLandingPageTextBox: () => screen.getByRole('textbox', { name: /page/i }),
+  regex: {
+    getToggleSwitch: () => {
+      return screen.getByRole('switch', { name: /regex/i });
+    }
+  }
 };
 
 describe('landing page condition view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(LandingPage, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(LandingPage, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
@@ -45,19 +48,13 @@ describe('landing page condition view', () => {
       }
     });
 
-    const { pageTextfield, pageRegexToggle } = getReactComponents(instance);
-
-    expect(pageTextfield.props().value).toBe('foo');
-    expect(pageRegexToggle.props().value).toBe(true);
+    expect(pageElements.getLandingPageTextBox().value).toBe('foo');
+    expect(pageElements.regex.getToggleSwitch().checked).toBeTrue();
   });
 
   it('sets settings from form values', () => {
-    extensionBridge.init();
-
-    const { pageTextfield, pageRegexToggle } = getReactComponents(instance);
-
-    pageTextfield.props().onChange('foo');
-    pageRegexToggle.props().onChange(true);
+    userEvent.type(pageElements.getLandingPageTextBox(), 'foo');
+    fireEvent.click(pageElements.regex.getToggleSwitch());
 
     expect(extensionBridge.getSettings()).toEqual({
       page: 'foo',
@@ -66,11 +63,11 @@ describe('landing page condition view', () => {
   });
 
   it('sets errors if required values are not provided', () => {
-    extensionBridge.init();
+    fireEvent.focus(pageElements.getLandingPageTextBox());
+    fireEvent.blur(pageElements.getLandingPageTextBox());
+    expect(
+      pageElements.getLandingPageTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
     expect(extensionBridge.validate()).toBe(false);
-
-    const { pageTextfield } = getReactComponents(instance);
-
-    expect(pageTextfield.props().validationState).toBe('invalid');
   });
 });

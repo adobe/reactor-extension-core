@@ -10,37 +10,35 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { Checkbox, TextField } from '@adobe/react-spectrum';
-import WrappedField from '../../../components/wrappedField';
+import { fireEvent, render, screen } from '@testing-library/react';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import SpecificElements, { formConfig } from '../specificElements';
-import createExtensionBridge from '../../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../../bootstrap';
-import ElementPropertiesEditor from '../elementPropertiesEditor';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const showElementPropertiesCheckbox = wrapper.find(Checkbox);
-  const elementPropertiesEditor = wrapper.find(ElementPropertiesEditor);
-  const elementSelectorTextfield = wrapper
-    .find(WrappedField)
-    .filterWhere((n) => n.prop('name') === 'elementSelector')
-    .find(TextField);
-
-  return {
-    showElementPropertiesCheckbox,
-    elementPropertiesEditor,
-    elementSelectorTextfield
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getPropertiesCheckbox: () => {
+    return screen.getByRole('checkbox', {
+      name: /and having certain property values/i
+    });
+  },
+  getElementSelectorTextBox: () => {
+    return screen.getByRole('textbox', { name: /selector/i });
+  }
 };
 
 describe('specificElements', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(SpecificElements, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(SpecificElements, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('updates view properly when elementProperties provided', () => {
@@ -60,12 +58,8 @@ describe('specificElements', () => {
       }
     });
 
-    const {
-      showElementPropertiesCheckbox,
-      elementPropertiesEditor
-    } = getReactComponents(instance);
-    expect(showElementPropertiesCheckbox.props().checked).toBe(true);
-    expect(elementPropertiesEditor.exists()).toBe(true);
+    expect(pageElements.getPropertiesCheckbox().checked).toBeTrue();
+    expect(screen.getByTestId('element-properties-editor')).toBeTruthy();
   });
 
   it('updates view properly when elementProperties not provided', () => {
@@ -75,12 +69,9 @@ describe('specificElements', () => {
       }
     });
 
-    const {
-      showElementPropertiesCheckbox,
-      elementPropertiesEditor
-    } = getReactComponents(instance);
-    expect(showElementPropertiesCheckbox.props().checked).toBe(false);
-    expect(elementPropertiesEditor.exists()).toBe(false);
+    expect(pageElements.getElementSelectorTextBox().value).toBe('.foo');
+    expect(pageElements.getPropertiesCheckbox().checked).toBeFalse();
+    expect(screen.queryByTestId('element-properties-editor')).toBeFalsy();
   });
 
   it('removes elementProperties from settings if element properties hidden', () => {
@@ -96,21 +87,19 @@ describe('specificElements', () => {
       }
     });
 
-    const { showElementPropertiesCheckbox } = getReactComponents(instance);
-
-    showElementPropertiesCheckbox.props().onChange(false);
+    fireEvent.click(pageElements.getPropertiesCheckbox());
 
     expect(extensionBridge.getSettings().elementProperties).toBeUndefined();
   });
 
-  it('sets error if elementSelector is not specified', () => {
-    extensionBridge.init();
+  it('sets error if elementSelector is not specified', async () => {
+    fireEvent.focus(pageElements.getElementSelectorTextBox());
+    fireEvent.blur(pageElements.getElementSelectorTextBox());
+    expect(
+      pageElements.getElementSelectorTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
 
     expect(extensionBridge.validate()).toBe(false);
-
-    const { elementSelectorTextfield } = getReactComponents(instance);
-
-    expect(elementSelectorTextfield.props().validationState).toBe('invalid');
   });
 
   it('removes elementProperties error if element properties not shown', () => {
@@ -127,9 +116,7 @@ describe('specificElements', () => {
       }
     });
 
-    const { showElementPropertiesCheckbox } = getReactComponents(instance);
-
-    showElementPropertiesCheckbox.props().onChange(false);
+    fireEvent.click(pageElements.getPropertiesCheckbox());
 
     expect(extensionBridge.validate()).toBe(true);
   });

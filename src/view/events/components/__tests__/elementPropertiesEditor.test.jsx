@@ -10,55 +10,52 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField, Button, ActionButton } from '@adobe/react-spectrum';
-import RegexToggle from '../../../components/regexToggle';
-import WrappedField from '../../../components/wrappedField';
+import { fireEvent, render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import ElementPropertiesEditor, {
   formConfig
 } from '../elementPropertiesEditor';
-import createExtensionBridge from '../../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-
-  const rows = wrapper.find('div[data-row]').map((row) => {
-    const fields = row.find(WrappedField);
-    const nameField = fields.filterWhere(
-      (n) => n.prop('name').indexOf('.name') !== -1
-    );
-    const valueField = fields.filterWhere(
-      (n) => n.prop('name').indexOf('.value') !== -1
-    );
-
-    return {
-      nameTextfield: nameField.find(TextField),
-      valueTextfield: valueField.find(TextField),
-      valueRegexToggle: row.find(RegexToggle),
-      removeButton: row
-        .find(ActionButton)
-        .filterWhere((n) => n.prop('aria-label') === 'Remove row')
-    };
-  });
-
-  const addButton = wrapper.find(Button).last();
-
-  return {
-    rows,
-    addButton
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getRows: () => {
+    return [].slice
+      .call(document.querySelectorAll('div[data-row]'))
+      .map((domNode) => ({
+        domNode,
+        withinRow: {
+          getNameTextBox: () => {
+            return within(domNode).getByRole('textbox', { name: /property/i });
+          },
+          getValueTextBox: () => {
+            return within(domNode).getByRole('textbox', { name: /value/i });
+          },
+          getRegexToggleSwitch: () => {
+            return within(domNode).getByRole('switch', { name: /regex/i });
+          },
+          getRemoveButton: () => {
+            return within(domNode).getByRole('button', { name: /remove row/i });
+          }
+        }
+      }));
+  },
+  getAddButton: () => screen.getByRole('button', { name: /add/i })
 };
 
 describe('elementPropertiesEditor', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(
-      bootstrap(ElementPropertiesEditor, formConfig, extensionBridge)
-    );
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(ElementPropertiesEditor, formConfig, extensionBridge));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
@@ -74,20 +71,23 @@ describe('elementPropertiesEditor', () => {
       }
     });
 
-    const { rows } = getReactComponents(instance);
-    expect(rows[0].nameTextfield.props().value).toBe('some prop');
-    expect(rows[0].valueTextfield.props().value).toBe('some value');
-    expect(rows[0].valueRegexToggle.props().value).toBe(true);
+    const rows = pageElements.getRows();
+    expect(rows.length).toBe(1);
+    const [row] = rows;
+
+    expect(row.withinRow.getNameTextBox().value).toBe('some prop');
+    expect(row.withinRow.getValueTextBox().value).toBe('some value');
+    expect(row.withinRow.getRegexToggleSwitch().checked).toBeTrue();
   });
 
   it('sets settings from form values', () => {
     extensionBridge.init();
 
-    const { rows } = getReactComponents(instance);
+    const [row] = pageElements.getRows();
 
-    rows[0].nameTextfield.props().onChange('some prop set');
-    rows[0].valueTextfield.props().onChange('some value set');
-    rows[0].valueRegexToggle.props().onChange(true);
+    userEvent.type(row.withinRow.getNameTextBox(), 'some prop set');
+    userEvent.type(row.withinRow.getValueTextBox(), 'some value set');
+    fireEvent.click(row.withinRow.getRegexToggleSwitch());
 
     const { elementProperties } = extensionBridge.getSettings();
     expect(elementProperties).toEqual([
@@ -99,30 +99,22 @@ describe('elementPropertiesEditor', () => {
     ]);
   });
 
-  it('sets error if element property name field is empty and value is not empty', () => {
-    extensionBridge.init();
-
-    let { rows } = getReactComponents(instance);
-
-    rows[0].valueTextfield.props().onChange('foo');
+  it('sets error if element property name field is empty and value is not empty', async () => {
+    const [row] = pageElements.getRows();
+    fireEvent.focus(row.withinRow.getValueTextBox());
+    userEvent.type(row.withinRow.getValueTextBox(), 'foo');
+    fireEvent.blur(row.withinRow.getValueTextBox());
 
     expect(extensionBridge.validate()).toBe(false);
-
-    ({ rows } = getReactComponents(instance));
-
-    expect(rows[0].nameTextfield.props().validationState).toBe('invalid');
+    expect(
+      row.withinRow.getNameTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
   });
 
   it('creates a new row when the add button is clicked', () => {
-    extensionBridge.init();
-
-    const { addButton } = getReactComponents(instance);
-    addButton.props().onPress();
-
-    const { rows } = getReactComponents(instance);
-
-    // First row is visible by default.
-    expect(rows.length).toBe(2);
+    expect(pageElements.getRows().length).toBe(1);
+    fireEvent.click(pageElements.getAddButton());
+    expect(pageElements.getRows().length).toBe(2);
   });
 
   it('deletes a row when requested from row', () => {
@@ -143,12 +135,15 @@ describe('elementPropertiesEditor', () => {
       }
     });
 
-    let { rows } = getReactComponents(instance);
-    rows[0].removeButton.props().onPress();
+    expect(pageElements.getRows().length).toBe(2);
+    fireEvent.click(pageElements.getRows()[0].withinRow.getRemoveButton());
 
-    ({ rows } = getReactComponents(instance));
-
+    const rows = pageElements.getRows();
     expect(rows.length).toBe(1);
-    expect(rows[0].nameTextfield.props().value).toBe('some prop2');
+    const [row] = rows;
+
+    expect(row.withinRow.getNameTextBox().value).toBe('some prop2');
+    expect(row.withinRow.getValueTextBox().value).toBe('some value2');
+    expect(row.withinRow.getRegexToggleSwitch().checked).toBeTrue();
   });
 });

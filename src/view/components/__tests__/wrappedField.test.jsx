@@ -11,30 +11,19 @@
  ****************************************************************************************/
 
 import React from 'react';
-import { mount } from 'enzyme';
 import {
-  TextField,
-  Checkbox,
-  RadioGroup,
-  ActionButton
-} from '@adobe/react-spectrum';
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within
+} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
+import { elementIsPosition } from '@test-helpers/react-testing-library';
+import { TextField, Checkbox } from '@adobe/react-spectrum';
 import WrappedField from '../wrappedField';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
-import ValidationWrapper from '../validationWrapper';
-
-const getReactComponents = (wrapper, InputComponentClass) => {
-  wrapper.update();
-  const inputComponent = wrapper.find(InputComponentClass);
-  const validationWrapper = wrapper.find(ValidationWrapper);
-  const dataElementButton = wrapper.find(ActionButton);
-
-  return {
-    inputComponent,
-    validationWrapper,
-    dataElementButton
-  };
-};
 
 const ConnectedWrappedField = ({
   className,
@@ -77,7 +66,7 @@ const formConfig = {
 
 let extensionBridge;
 
-const render = (props) => {
+const renderComponent = (props) => {
   extensionBridge = createExtensionBridge();
 
   spyOn(extensionBridge, 'openDataElementSelector').and.callFake((options) => ({
@@ -87,10 +76,8 @@ const render = (props) => {
   }));
 
   window.extensionBridge = extensionBridge;
-
-  return mount(
-    bootstrap(ConnectedWrappedField, formConfig, extensionBridge, props)
-  );
+  render(bootstrap(ConnectedWrappedField, formConfig, extensionBridge, props));
+  extensionBridge.init();
 };
 
 describe('wrapped field', () => {
@@ -99,7 +86,7 @@ describe('wrapped field', () => {
   });
 
   it('sets the value on the input component', () => {
-    const instance = render({
+    renderComponent({
       label: 'product',
       name: 'product',
       component: TextField
@@ -111,108 +98,69 @@ describe('wrapped field', () => {
       }
     });
 
-    const { inputComponent } = getReactComponents(instance, TextField);
-
-    expect(inputComponent.props().value).toBe('foo');
+    const inputComponent = screen.getByRole('textbox', { name: /product/i });
+    expect(inputComponent.value).toBe('foo');
   });
 
   it('provides onChange on the input component', () => {
-    const instance = render({
+    renderComponent({
       label: 'product',
       name: 'product',
       component: TextField
     });
 
-    extensionBridge.init();
-
-    const { inputComponent } = getReactComponents(instance, TextField);
-
-    inputComponent.props().onChange('foo');
+    const inputComponent = screen.getByRole('textbox', { name: /product/i });
+    fireEvent.change(inputComponent, { target: { value: 'foo' } });
 
     expect(extensionBridge.getSettings()).toEqual({
       product: 'foo'
     });
   });
 
-  it('handles validation error', () => {
-    const instance = render({
-      label: 'product',
-      name: 'product',
-      component: TextField
-    });
-
-    extensionBridge.init();
-    extensionBridge.validate();
-
-    const { inputComponent, validationWrapper } = getReactComponents(
-      instance,
-      TextField
-    );
-
-    expect(inputComponent.props().validationState).toBe('invalid');
-    expect(validationWrapper.props().error).toBe('Bad things');
-  });
-
-  it('supports error tooltip placement', () => {
-    const instance = render({
+  it('handles validation error', async () => {
+    renderComponent({
       label: 'product',
       name: 'product',
       component: TextField,
       errorTooltipPlacement: 'bottom'
     });
 
-    extensionBridge.init();
+    expect(extensionBridge.validate()).toBe(false);
 
-    const { validationWrapper } = getReactComponents(instance, TextField);
+    const inputComponent = screen.getByRole('textbox', { name: /product/i });
+    expect(inputComponent.hasAttribute('aria-invalid')).toBe(true);
 
-    expect(validationWrapper.props().placement).toBe('bottom');
+    userEvent.hover(inputComponent);
+    userEvent.unhover(inputComponent);
+    userEvent.hover(inputComponent);
+
+    const tooltip = await waitFor(() => screen.getByRole('tooltip'));
+    within(tooltip).getByText(/bad things/i);
+    expect(elementIsPosition(tooltip, 'bottom')).toBe(true);
   });
 
   it('sets "type" on Field to "checkbox" when Checkbox component is used', () => {
-    const instance = render({
+    renderComponent({
       label: 'product',
       name: 'product',
       component: Checkbox,
       children: 'some'
     });
 
-    extensionBridge.init();
-
-    const { inputComponent } = getReactComponents(instance, Checkbox);
-
-    expect(inputComponent.props().type).toBe('checkbox');
-  });
-
-  it('sets "selectedValue" when RadioGroup component is used', () => {
-    const instance = render({
-      label: 'product',
-      name: 'product',
-      component: RadioGroup
-    });
-
-    extensionBridge.init({
-      settings: {
-        product: 'foo'
-      }
-    });
-
-    const { inputComponent } = getReactComponents(instance, RadioGroup);
-    expect(inputComponent.props().value).toBe('foo');
+    expect(screen.getAllByRole('checkbox').length).toBe(1);
   });
 
   it('supports selecting a data element token', () => {
-    const instance = render({
+    renderComponent({
       label: 'product',
       name: 'product',
       component: TextField,
       supportDataElement: true
     });
 
-    extensionBridge.init();
-
-    const { dataElementButton } = getReactComponents(instance, TextField);
-
-    dataElementButton.props().onPress();
+    fireEvent.click(
+      screen.getByRole('button', { name: /select a data element/i })
+    );
 
     expect(extensionBridge.getSettings()).toEqual({
       product: '%foo%'
@@ -220,18 +168,16 @@ describe('wrapped field', () => {
   });
 
   it('supports selecting a data element name', () => {
-    const instance = render({
+    renderComponent({
       label: 'product',
       name: 'product',
       component: TextField,
       supportDataElementName: true
     });
 
-    extensionBridge.init();
-
-    const { dataElementButton } = getReactComponents(instance, TextField);
-
-    dataElementButton.props().onPress();
+    fireEvent.click(
+      screen.getByRole('button', { name: /select a data element/i })
+    );
 
     expect(extensionBridge.getSettings()).toEqual({
       product: 'foo'

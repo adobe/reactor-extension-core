@@ -22,7 +22,10 @@ import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
 import WrappedField from '../../components/wrappedField';
 
-import { isNumberLikeInRange } from '../../utils/validators';
+import {
+  isNumberLikeInRange,
+  isDataElementToken
+} from '../../utils/validators';
 
 const DelayType = ({ delayType }) => (
   <View>
@@ -38,6 +41,7 @@ const DelayType = ({ delayType }) => (
           component={TextField}
           label="Delay"
           isRequired
+          supportDataElement
         />
         <View marginBottom="size-75">milliseconds</View>
       </Flex>
@@ -78,9 +82,11 @@ export const formConfig = {
 
     if (
       values.delayType === 'delay' &&
-      !isNumberLikeInRange(values.delay, { min: 1 })
+      !isNumberLikeInRange(values.delay, { min: 1 }) &&
+      !isDataElementToken(values.delay)
     ) {
-      errors.delay = 'Please specify a number greater than or equal to 1.';
+      errors.delay =
+        'Please specify a number greater than or equal to 1, or specify a data element.';
     }
 
     return errors;

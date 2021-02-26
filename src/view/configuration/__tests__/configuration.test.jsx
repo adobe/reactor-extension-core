@@ -10,28 +10,31 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField } from '@adobe/react-spectrum';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import Configuration, { formConfig } from '../configuration';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const cspNonceTextfield = wrapper.find(TextField);
-
-  return {
-    cspNonceTextfield
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getCSPNonceTextBox: () => {
+    return screen.getByRole('textbox', { name: /nonce/i });
+  }
 };
 
 describe('extension configuration view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(Configuration, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(Configuration, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
@@ -41,17 +44,11 @@ describe('extension configuration view', () => {
       }
     });
 
-    const { cspNonceTextfield } = getReactComponents(instance);
-
-    expect(cspNonceTextfield.props().value).toBe('%foo%');
+    expect(pageElements.getCSPNonceTextBox().value).toBe('%foo%');
   });
 
   it('sets settings from form values', () => {
-    extensionBridge.init();
-
-    const { cspNonceTextfield } = getReactComponents(instance);
-
-    cspNonceTextfield.props().onChange('%foo%');
+    userEvent.type(pageElements.getCSPNonceTextBox(), '%foo%');
 
     expect(extensionBridge.getSettings()).toEqual({
       cspNonce: '%foo%'
@@ -71,11 +68,11 @@ describe('extension configuration view', () => {
         cspNonce: 'foo'
       }
     });
+
     expect(extensionBridge.validate()).toBe(false);
-
-    const { cspNonceTextfield } = getReactComponents(instance);
-
-    expect(cspNonceTextfield.props().validationState).toBe('invalid');
+    expect(
+      pageElements.getCSPNonceTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
   });
 
   it('sets errors if cspNonce contains two data elements', () => {
@@ -84,11 +81,11 @@ describe('extension configuration view', () => {
         cspNonce: '%foo%%bar%'
       }
     });
+
     expect(extensionBridge.validate()).toBe(false);
-
-    const { cspNonceTextfield } = getReactComponents(instance);
-
-    expect(cspNonceTextfield.props().validationState).toBe('invalid');
+    expect(
+      pageElements.getCSPNonceTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
   });
 
   it('removes cspNonce from the settings object if the value is falsy', () => {
@@ -98,12 +95,9 @@ describe('extension configuration view', () => {
       }
     });
 
-    const { cspNonceTextfield } = getReactComponents(instance);
-
-    cspNonceTextfield.props().onChange('');
+    userEvent.clear(pageElements.getCSPNonceTextBox());
 
     expect(extensionBridge.getSettings()).toEqual({});
-
     expect(extensionBridge.validate()).toBe(true);
   });
 });

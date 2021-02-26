@@ -10,51 +10,63 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField, Checkbox } from '@adobe/react-spectrum';
-import WrappedField from '../../components/wrappedField';
+import { render, fireEvent, screen } from '@testing-library/react';
+import { sharedTestingElements } from '@test-helpers/react-testing-library';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import Click, { formConfig } from '../click';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
-import AdvancedEventOptions from '../components/advancedEventOptions';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const checkboxes = wrapper.find(Checkbox);
-  const fields = wrapper.find(WrappedField);
-
-  const delayLinkActivationCheckbox = checkboxes.filterWhere(
-    (n) => n.prop('name') === 'delayLinkActivation'
-  );
-  const anchorDelayField = fields.filterWhere(
-    (n) => n.prop('name') === 'anchorDelay'
-  );
-  const anchorDelayTextfield = anchorDelayField.find(TextField);
-  const elementSelectorField = fields.filterWhere(
-    (n) => n.prop('name') === 'elementSelector'
-  );
-  const elementSelectorTextfield = elementSelectorField.find(TextField);
-  const bubbleStopCheckbox = checkboxes.filterWhere(
-    (n) => n.prop('name') === 'bubbleStop'
-  );
-  const advancedEventOptions = wrapper.find(AdvancedEventOptions);
-
-  return {
-    delayLinkActivationCheckbox,
-    elementSelectorTextfield,
-    anchorDelayTextfield,
-    bubbleStopCheckbox,
-    advancedEventOptions
-  };
+// react-testing-library element selectors
+const pageElements = {
+  linkDelay: {
+    getCheckBox: () => {
+      return screen.getByRole('checkbox', { name: /delay navigation/i });
+    },
+    getTextBox: () => screen.getByRole('textbox', { name: /link delay/i }),
+    getDataElementModalTrigger: () => {
+      return screen.getByRole('button', { name: /select a data element/i });
+    }
+  }
 };
 
 describe('click event view', () => {
   let extensionBridge;
-  let instance;
 
   beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(Click, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(Click, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
+  });
+
+  it('the default click options are chosen', () => {
+    expect(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox().value
+    ).toBe('');
+    expect(
+      sharedTestingElements.elementsMatching.radioGroup
+        .getSpecificElements()
+        .hasAttribute('checked')
+    ).toBeTrue();
+    expect(
+      sharedTestingElements.elementsMatching.radioGroup
+        .getAnyElement()
+        .hasAttribute('checked')
+    ).toBeFalse();
+
+    fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
+    expect(
+      sharedTestingElements.advancedSettings.getBubbleFireIfParentCheckbox()
+        .value
+    ).toBe('true');
+    expect(
+      sharedTestingElements.advancedSettings.getBubbleFireIfChildFiredCheckbox()
+        .value
+    ).toBe('true');
   });
 
   it('sets form values from settings', () => {
@@ -66,81 +78,139 @@ describe('click event view', () => {
       }
     });
 
-    const { advancedEventOptions } = getReactComponents(instance);
-    advancedEventOptions.instance().toggleSelected();
+    fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
 
-    const {
-      anchorDelayTextfield,
-      elementSelectorTextfield,
-      bubbleStopCheckbox
-    } = getReactComponents(instance);
-
-    expect(anchorDelayTextfield.props().value).toBe(101);
-    expect(elementSelectorTextfield.props().value).toBe('.foo');
-    expect(bubbleStopCheckbox.props().value).toBe(true);
+    expect(pageElements.linkDelay.getTextBox().value).toBe('101');
+    expect(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox().value
+    ).toBe('.foo');
+    expect(
+      sharedTestingElements.advancedSettings.getBubbleStopCheckBox().value
+    ).toBe('true');
   });
 
   it('sets settings from form values', () => {
-    extensionBridge.init();
+    fireEvent.focus(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox()
+    );
+    fireEvent.change(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox(),
+      {
+        target: { value: '.foo' }
+      }
+    );
+    fireEvent.blur(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox()
+    );
+    expect(
+      sharedTestingElements.elementsMatching
+        .getCssSelectorTextBox()
+        .hasAttribute('aria-invalid')
+    ).toBeFalse();
 
-    const { advancedEventOptions } = getReactComponents(instance);
-    advancedEventOptions.instance().toggleSelected();
+    fireEvent.click(pageElements.linkDelay.getCheckBox());
+    fireEvent.focus(pageElements.linkDelay.getTextBox());
+    fireEvent.change(pageElements.linkDelay.getTextBox(), {
+      target: { value: '101' }
+    });
+    fireEvent.blur(pageElements.linkDelay.getTextBox());
+    expect(
+      pageElements.linkDelay.getTextBox().hasAttribute('aria-invalid')
+    ).toBeFalse();
+
+    fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
+    fireEvent.click(
+      sharedTestingElements.advancedSettings.getBubbleStopCheckBox()
+    );
 
     const {
-      delayLinkActivationCheckbox,
-      elementSelectorTextfield,
-      bubbleStopCheckbox
-    } = getReactComponents(instance);
-
-    delayLinkActivationCheckbox.props().onChange(true);
-    const { anchorDelayTextfield } = getReactComponents(instance);
-
-    anchorDelayTextfield.props().onChange(101);
-    elementSelectorTextfield.props().onChange('.foo');
-    bubbleStopCheckbox.props().onChange(true);
-
-    const {
-      anchorDelay,
       elementSelector,
+      anchorDelay,
       bubbleStop
     } = extensionBridge.getSettings();
 
-    expect(anchorDelay).toBe(101);
     expect(elementSelector).toBe('.foo');
+    expect(anchorDelay).toBe(101);
     expect(bubbleStop).toBe(true);
   });
 
-  it('sets default anchor delay to 100', () => {
-    extensionBridge.init();
-    const { delayLinkActivationCheckbox } = getReactComponents(instance);
-    delayLinkActivationCheckbox.props().onChange(true);
+  it('sets validation errors when element selector is missing', () => {
+    fireEvent.focus(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox()
+    );
+    fireEvent.blur(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox()
+    );
 
-    const { anchorDelayTextfield } = getReactComponents(instance);
-    expect(anchorDelayTextfield.props().value).toBe(100);
-  });
+    expect(
+      sharedTestingElements.elementsMatching
+        .getCssSelectorTextBox()
+        .hasAttribute('aria-invalid')
+    ).toBeTrue();
 
-  it('sets validation error when element selector is missing', () => {
-    extensionBridge.init();
-    expect(extensionBridge.validate()).toBe(false);
-
-    const { elementSelectorTextfield } = getReactComponents(instance);
-
-    expect(elementSelectorTextfield.props().validationState).toBe('invalid');
-  });
-
-  it('sets validation error when anchor delay is missing', () => {
-    extensionBridge.init({
-      elementSelector: 'div'
+    fireEvent.click(pageElements.linkDelay.getCheckBox());
+    fireEvent.focus(pageElements.linkDelay.getTextBox());
+    fireEvent.change(pageElements.linkDelay.getTextBox(), {
+      target: { value: '' }
     });
-    const { delayLinkActivationCheckbox } = getReactComponents(instance);
-    delayLinkActivationCheckbox.props().onChange(true);
+    fireEvent.blur(pageElements.linkDelay.getTextBox());
 
-    let { anchorDelayTextfield } = getReactComponents(instance);
-    anchorDelayTextfield.props().onChange('');
+    expect(
+      pageElements.linkDelay.getTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
+  });
 
-    expect(extensionBridge.validate()).toBe(false);
+  it('sets default linkDelay to 100', () => {
+    fireEvent.click(pageElements.linkDelay.getCheckBox());
 
-    ({ anchorDelayTextfield } = getReactComponents(instance));
-    expect(anchorDelayTextfield.props().validationState).toBe('invalid');
+    fireEvent.focus(pageElements.linkDelay.getTextBox());
+    expect(pageElements.linkDelay.getTextBox().value).toBe('100');
+    fireEvent.blur(pageElements.linkDelay.getTextBox());
+
+    expect(
+      pageElements.linkDelay.getTextBox().getAttribute('aria-invalid')
+    ).toBeFalsy();
+  });
+
+  it('sets validation error when the number < 1', () => {
+    fireEvent.click(pageElements.linkDelay.getCheckBox());
+
+    expect(
+      pageElements.linkDelay.getTextBox().hasAttribute('aria-invalid')
+    ).toBeFalse();
+
+    fireEvent.focus(pageElements.linkDelay.getTextBox());
+    fireEvent.change(pageElements.linkDelay.getTextBox(), {
+      target: { value: '0' }
+    });
+    fireEvent.blur(pageElements.linkDelay.getTextBox());
+
+    expect(
+      pageElements.linkDelay.getTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
+  });
+
+  it('The linkDelay input supports opening the data element modal', () => {
+    spyOn(extensionBridge, 'openDataElementSelector').and.callFake(() => {
+      return Promise.resolve();
+    });
+
+    fireEvent.click(pageElements.linkDelay.getCheckBox());
+    fireEvent.click(pageElements.linkDelay.getDataElementModalTrigger());
+    expect(extensionBridge.openDataElementSelector).toHaveBeenCalledTimes(1);
+  });
+
+  it('linkDelay handles data element names just fine', () => {
+    fireEvent.click(pageElements.linkDelay.getCheckBox());
+
+    fireEvent.focus(pageElements.linkDelay.getTextBox());
+    fireEvent.change(pageElements.linkDelay.getTextBox(), {
+      target: { value: '%Data Element 1%' }
+    });
+    fireEvent.blur(pageElements.linkDelay.getTextBox());
+
+    expect(
+      pageElements.linkDelay.getTextBox().hasAttribute('aria-invalid')
+    ).toBeFalse();
   });
 });

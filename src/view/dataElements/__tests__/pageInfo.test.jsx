@@ -10,28 +10,34 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { Picker } from '@adobe/react-spectrum';
+import { render, screen, within, fireEvent } from '@testing-library/react';
+import { clickSpectrumOption } from '@test-helpers/react-testing-library';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import PageInfo, { formConfig } from '../pageInfo';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const attributeSelect = wrapper.find(Picker);
-
-  return {
-    attributeSelect
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getDropdownTrigger: () => {
+    return screen.getByRole('button', { name: /attribute/i });
+  },
+  waitForProtocolOption: () => {
+    return screen.findByRole('option', { name: /protocol/i });
+  }
 };
 
 describe('page info data element view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(PageInfo, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(PageInfo, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
@@ -41,24 +47,21 @@ describe('page info data element view', () => {
       }
     });
 
-    const { attributeSelect } = getReactComponents(instance);
-
-    expect(attributeSelect.props().value).toBe('protocol');
+    expect(
+      within(pageElements.getDropdownTrigger()).getByText(/protocol/i)
+    ).toBeTruthy();
   });
 
   it('sets form value defaults', () => {
-    extensionBridge.init();
-
-    const { attributeSelect } = getReactComponents(instance);
-
-    expect(attributeSelect.props().value).toBe('url');
+    expect(
+      within(pageElements.getDropdownTrigger()).getByText(/url/i)
+    ).toBeTruthy();
   });
 
-  it('sets settings from form values', () => {
-    extensionBridge.init();
-
-    const { attributeSelect } = getReactComponents(instance);
-    attributeSelect.props().onChange('protocol');
+  it('sets settings from form values', async () => {
+    fireEvent.click(pageElements.getDropdownTrigger());
+    const protocolOption = await pageElements.waitForProtocolOption();
+    clickSpectrumOption(protocolOption);
 
     expect(extensionBridge.getSettings()).toEqual({
       attribute: 'protocol'

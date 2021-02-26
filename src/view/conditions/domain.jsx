@@ -35,7 +35,11 @@ export default connect(stateToProps)(Domain);
 
 export const formConfig = {
   settingsToFormValues(values, settings) {
+    const initialState = {
+      domains: []
+    };
     return {
+      ...initialState,
       ...values,
       ...settings
     };

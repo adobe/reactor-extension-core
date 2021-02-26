@@ -10,28 +10,29 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField } from '@adobe/react-spectrum';
+import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import ConstantValue, { formConfig } from '../constant';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const valueTextfield = wrapper.find(TextField);
-
-  return {
-    valueTextfield
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getValueTextBox: () => screen.getByRole('textbox', { name: /value/i })
 };
 
 describe('constant data element view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(ConstantValue, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(ConstantValue, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
@@ -41,16 +42,11 @@ describe('constant data element view', () => {
       }
     });
 
-    const { valueTextfield } = getReactComponents(instance);
-
-    expect(valueTextfield.props().value).toBe('foo');
+    expect(pageElements.getValueTextBox().value).toBe('foo');
   });
 
   it('sets settings from form values', () => {
-    extensionBridge.init();
-
-    const { valueTextfield } = getReactComponents(instance);
-    valueTextfield.props().onChange('foo');
+    userEvent.type(pageElements.getValueTextBox(), 'foo');
 
     expect(extensionBridge.getSettings()).toEqual({
       value: 'foo'
@@ -58,11 +54,12 @@ describe('constant data element view', () => {
   });
 
   it('sets errors if required values are not provided', () => {
-    extensionBridge.init();
+    fireEvent.focus(pageElements.getValueTextBox());
+    fireEvent.blur(pageElements.getValueTextBox());
+
+    expect(
+      pageElements.getValueTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
     expect(extensionBridge.validate()).toBe(false);
-
-    const { valueTextfield } = getReactComponents(instance);
-
-    expect(valueTextfield.props().validationState).toBe('invalid');
   });
 });

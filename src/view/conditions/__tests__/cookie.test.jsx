@@ -10,37 +10,42 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField } from '@adobe/react-spectrum';
-import RegexToggle from '../../components/regexToggle';
-import WrappedField from '../../components/wrappedField';
+import { fireEvent, render, screen } from '@testing-library/react';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
+import userEvent from '@testing-library/user-event';
 import Cookie, { formConfig } from '../cookie';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const fields = wrapper.find(WrappedField);
-  const nameField = fields.filterWhere((n) => n.prop('name') === 'name');
-  const nameTextfield = nameField.find(TextField);
-  const valueField = fields.filterWhere((n) => n.prop('name') === 'value');
-  const valueTextfield = valueField.find(TextField);
-  const valueRegexToggle = wrapper.find(RegexToggle);
-
-  return {
-    nameTextfield,
-    valueTextfield,
-    valueRegexToggle
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getCookieNameTextBox: () => {
+    return screen.getByRole('textbox', { name: /cookie name/i });
+  },
+  getCookieValueTextBox: () => {
+    return screen.getByRole('textbox', { name: /cookie value/i });
+  },
+  regex: {
+    getToggleSwitch: () => {
+      return screen.getByRole('switch', { name: /regex/i });
+    },
+    getTestButton: () => {
+      return screen.getByRole('button', { name: /test/i });
+    }
+  }
 };
 
 describe('cookie condition view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(Cookie, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(Cookie, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
@@ -52,29 +57,15 @@ describe('cookie condition view', () => {
       }
     });
 
-    const {
-      nameTextfield,
-      valueTextfield,
-      valueRegexToggle
-    } = getReactComponents(instance);
-
-    expect(nameTextfield.props().value).toBe('foo');
-    expect(valueTextfield.props().value).toBe('bar');
-    expect(valueRegexToggle.props().value).toBe(true);
+    expect(pageElements.getCookieNameTextBox().value).toBe('foo');
+    expect(pageElements.getCookieValueTextBox().value).toBe('bar');
+    expect(pageElements.regex.getToggleSwitch().checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
-    extensionBridge.init();
-
-    const {
-      nameTextfield,
-      valueTextfield,
-      valueRegexToggle
-    } = getReactComponents(instance);
-
-    nameTextfield.props().onChange('foo');
-    valueTextfield.props().onChange('bar');
-    valueRegexToggle.props().onChange(true);
+    userEvent.type(pageElements.getCookieNameTextBox(), 'foo');
+    userEvent.type(pageElements.getCookieValueTextBox(), 'bar');
+    fireEvent.click(pageElements.regex.getToggleSwitch());
 
     expect(extensionBridge.getSettings()).toEqual({
       name: 'foo',
@@ -84,12 +75,37 @@ describe('cookie condition view', () => {
   });
 
   it('sets errors if required values are not provided', () => {
-    extensionBridge.init();
+    fireEvent.focus(pageElements.getCookieNameTextBox());
+    fireEvent.blur(pageElements.getCookieNameTextBox());
+    expect(
+      pageElements.getCookieNameTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
+
+    fireEvent.focus(pageElements.getCookieValueTextBox());
+    fireEvent.blur(pageElements.getCookieValueTextBox());
+    expect(
+      pageElements.getCookieValueTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
+
     expect(extensionBridge.validate()).toBe(false);
+  });
 
-    const { nameTextfield, valueTextfield } = getReactComponents(instance);
+  it('the regex test button gives an example regex', () => {
+    spyOn(extensionBridge, 'openRegexTester').and.callFake(() => ({
+      then(resolve) {
+        resolve('Edited Regex 1234');
+      }
+    }));
 
-    expect(nameTextfield.props().validationState).toBe('invalid');
-    expect(valueTextfield.props().validationState).toBe('invalid');
+    userEvent.type(pageElements.getCookieValueTextBox(), 'initial value');
+    fireEvent.click(pageElements.regex.getToggleSwitch());
+    fireEvent.click(pageElements.regex.getTestButton());
+
+    expect(pageElements.getCookieValueTextBox().value).not.toBe(
+      'initial value'
+    );
+    expect(pageElements.getCookieValueTextBox().value).toBe(
+      'Edited Regex 1234'
+    );
   });
 });

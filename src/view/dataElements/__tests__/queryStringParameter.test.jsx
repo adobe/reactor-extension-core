@@ -10,41 +10,42 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField, Checkbox } from '@adobe/react-spectrum';
-
+import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import QueryStringParameter, { formConfig } from '../queryStringParameter';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const nameTextfield = wrapper.find(TextField);
-  const caseInsensitiveCheckbox = wrapper.find(Checkbox);
-
-  return {
-    nameTextfield,
-    caseInsensitiveCheckbox
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getNameTextBox: () => {
+    return screen.getByRole('textbox', {
+      name: /query string parameter name/i
+    });
+  },
+  getCaseInsensitiveCheckBox: () => {
+    return screen.getByRole('checkbox', {
+      name: /allow capitalization differences/i
+    });
+  }
 };
 
 describe('query string parameter data element view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(
-      bootstrap(QueryStringParameter, formConfig, extensionBridge)
-    );
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(QueryStringParameter, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('checks case insensitive checkbox by default', () => {
-    extensionBridge.init();
-
-    const { caseInsensitiveCheckbox } = getReactComponents(instance);
-
-    expect(caseInsensitiveCheckbox.props().checked).toBe(true);
+    expect(pageElements.getCaseInsensitiveCheckBox().checked).toBeTrue();
   });
 
   it('sets form values from settings', () => {
@@ -55,23 +56,13 @@ describe('query string parameter data element view', () => {
       }
     });
 
-    const { nameTextfield, caseInsensitiveCheckbox } = getReactComponents(
-      instance
-    );
-
-    expect(nameTextfield.props().value).toBe('foo');
-    expect(caseInsensitiveCheckbox.props().checked).toBe(false);
+    expect(pageElements.getNameTextBox().value).toBe('foo');
+    expect(pageElements.getCaseInsensitiveCheckBox().checked).toBeFalse();
   });
 
   it('sets settings from form values', () => {
-    extensionBridge.init();
-
-    const { nameTextfield, caseInsensitiveCheckbox } = getReactComponents(
-      instance
-    );
-
-    nameTextfield.props().onChange('foo');
-    caseInsensitiveCheckbox.props().onChange(false);
+    userEvent.type(pageElements.getNameTextBox(), 'foo');
+    fireEvent.click(pageElements.getCaseInsensitiveCheckBox());
 
     expect(extensionBridge.getSettings()).toEqual({
       name: 'foo',
@@ -80,11 +71,12 @@ describe('query string parameter data element view', () => {
   });
 
   it('sets errors if required values are not provided', () => {
-    extensionBridge.init();
+    fireEvent.focus(pageElements.getNameTextBox());
+    fireEvent.blur(pageElements.getNameTextBox());
+
+    expect(
+      pageElements.getNameTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
     expect(extensionBridge.validate()).toBe(false);
-
-    const { nameTextfield } = getReactComponents(instance);
-
-    expect(nameTextfield.props().validationState).toBe('invalid');
   });
 });

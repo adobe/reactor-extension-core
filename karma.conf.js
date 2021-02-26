@@ -22,7 +22,7 @@ if (process.env.CI) {
     'SL_EDGE',
     'SL_CHROME',
     'SL_FIREFOX',
-    'SL_ANDROID',
+    // 'SL_ANDROID', Nuking for now
     'SL_SAFARI'
   ];
   reporters.push('saucelabs');
@@ -297,6 +297,9 @@ module.exports = (config) => {
         document: 'document'
       },
       resolve: {
+        alias: {
+          '@test-helpers': path.resolve(__dirname, 'src/view/__tests__/helpers')
+        },
         extensions: ['.js', '.jsx']
       },
       module: {

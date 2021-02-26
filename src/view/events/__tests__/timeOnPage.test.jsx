@@ -10,28 +10,33 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField } from '@adobe/react-spectrum';
+import { fireEvent, render, screen } from '@testing-library/react';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import TimeOnPage, { formConfig } from '../timeOnPage';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const timeOnPageTextfield = wrapper.find(TextField);
-
-  return {
-    timeOnPageTextfield
-  };
+// react-testing-library element selectors
+const pageElements = {
+  timeOnPage: {
+    getTextBox: () => screen.getByRole('textbox', { name: /time on page/i }),
+    getDataElementModalTrigger: () => {
+      return screen.getByRole('button', { name: /select a data element/i });
+    }
+  }
 };
 
 describe('time on page event view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(TimeOnPage, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(TimeOnPage, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
@@ -41,16 +46,18 @@ describe('time on page event view', () => {
       }
     });
 
-    const { timeOnPageTextfield } = getReactComponents(instance);
-
-    expect(timeOnPageTextfield.props().value).toBe(44);
+    expect(pageElements.timeOnPage.getTextBox().value).toBe('44');
   });
 
   it('sets settings from form values', () => {
-    extensionBridge.init();
-
-    const { timeOnPageTextfield } = getReactComponents(instance);
-    timeOnPageTextfield.props().onChange('55');
+    fireEvent.focus(pageElements.timeOnPage.getTextBox());
+    fireEvent.change(pageElements.timeOnPage.getTextBox(), {
+      target: { value: '55' }
+    });
+    fireEvent.blur(pageElements.timeOnPage.getTextBox());
+    expect(
+      pageElements.timeOnPage.getTextBox().hasAttribute('aria-invalid')
+    ).toBeFalse();
 
     expect(extensionBridge.getSettings()).toEqual({
       timeOnPage: 55
@@ -58,25 +65,60 @@ describe('time on page event view', () => {
   });
 
   it('sets errors if required values are not provided', () => {
-    extensionBridge.init();
-    expect(extensionBridge.validate()).toBe(false);
-
-    const { timeOnPageTextfield } = getReactComponents(instance);
-
-    expect(timeOnPageTextfield.props().validationState).toBe('invalid');
+    fireEvent.focus(pageElements.timeOnPage.getTextBox());
+    fireEvent.blur(pageElements.timeOnPage.getTextBox());
+    expect(
+      pageElements.timeOnPage.getTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
   });
 
   it('sets error if timeOnPage value is not a number', () => {
-    extensionBridge.init();
-
-    let { timeOnPageTextfield } = getReactComponents(instance);
-
-    timeOnPageTextfield.props().onChange('12.abc');
+    fireEvent.focus(pageElements.timeOnPage.getTextBox());
+    fireEvent.change(pageElements.timeOnPage.getTextBox(), {
+      target: { value: '12.abc' }
+    });
+    fireEvent.blur(pageElements.timeOnPage.getTextBox());
+    expect(
+      pageElements.timeOnPage.getTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
 
     expect(extensionBridge.validate()).toBe(false);
+  });
 
-    ({ timeOnPageTextfield } = getReactComponents(instance));
+  it('sets validation error when the number < 1', () => {
+    expect(
+      pageElements.timeOnPage.getTextBox().hasAttribute('aria-invalid')
+    ).toBeFalse();
 
-    expect(timeOnPageTextfield.props().validationState).toBe('invalid');
+    fireEvent.focus(pageElements.timeOnPage.getTextBox());
+    fireEvent.change(pageElements.timeOnPage.getTextBox(), {
+      target: { value: '0' }
+    });
+    fireEvent.blur(pageElements.timeOnPage.getTextBox());
+
+    expect(
+      pageElements.timeOnPage.getTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
+  });
+
+  it('The timeOnPage input supports opening the data element modal', () => {
+    spyOn(extensionBridge, 'openDataElementSelector').and.callFake(() => {
+      return Promise.resolve();
+    });
+
+    fireEvent.click(pageElements.timeOnPage.getDataElementModalTrigger());
+    expect(extensionBridge.openDataElementSelector).toHaveBeenCalledTimes(1);
+  });
+
+  it('timeOnPage handles data element names just fine', () => {
+    fireEvent.focus(pageElements.timeOnPage.getTextBox());
+    fireEvent.change(pageElements.timeOnPage.getTextBox(), {
+      target: { value: '%Data Element 1%' }
+    });
+    fireEvent.blur(pageElements.timeOnPage.getTextBox());
+
+    expect(
+      pageElements.timeOnPage.getTextBox().hasAttribute('aria-invalid')
+    ).toBeFalse();
   });
 });

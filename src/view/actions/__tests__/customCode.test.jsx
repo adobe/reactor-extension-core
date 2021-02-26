@@ -10,44 +10,46 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-/* eslint no-useless-concat: 0 */
-
-import { mount } from 'enzyme';
-import { RadioGroup, Checkbox } from '@adobe/react-spectrum';
-import EditorButton from '../../components/editorButton';
+import { fireEvent, render, screen } from '@testing-library/react';
+import {
+  isButtonValid,
+  sharedTestingElements
+} from '@test-helpers/react-testing-library';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import CustomCode, { formConfig } from '../customCode';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const globalCheckbox = wrapper
-    .find(Checkbox)
-    .filterWhere((n) => n.prop('name') === 'global');
-  const openEditorButton = wrapper.find(EditorButton);
-
-  return {
-    customCodeRadioGroup: wrapper.find(RadioGroup),
-    globalCheckbox,
-    openEditorButton
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getExecuteGloballyCheckbox: () => {
+    return screen.getByRole('checkbox', { name: /execute globally/i });
+  },
+  codeLanguage: {
+    radioGroup: {
+      getJavaScript: () => {
+        return screen.getByRole('radio', { name: /javascript/i });
+      },
+      getHTML: () => screen.getByRole('radio', { name: /html/i })
+    }
+  }
 };
 
 describe('custom code action view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
     window.extensionBridge = extensionBridge;
-    instance = mount(bootstrap(CustomCode, formConfig, extensionBridge));
+    render(bootstrap(CustomCode, formConfig));
+    extensionBridge.init();
   });
 
-  afterAll(() => {
+  afterEach(() => {
     delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
+    // html tests
     extensionBridge.init({
       settings: {
         language: 'html',
@@ -55,11 +57,15 @@ describe('custom code action view', () => {
       }
     });
 
-    let { customCodeRadioGroup, globalCheckbox } = getReactComponents(instance);
+    expect(pageElements.codeLanguage.radioGroup.getJavaScript().checked).toBe(
+      false
+    );
+    expect(pageElements.codeLanguage.radioGroup.getHTML().checked).toBe(true);
+    expect(
+      screen.queryByRole('checkbox', { name: /execute globally/i })
+    ).toBeNull();
 
-    expect(customCodeRadioGroup.props().value).toBe('html');
-    expect(globalCheckbox.exists()).toBe(false);
-
+    // javascript tests
     extensionBridge.init({
       settings: {
         language: 'javascript',
@@ -67,31 +73,20 @@ describe('custom code action view', () => {
         source: 'bar'
       }
     });
-
-    ({ customCodeRadioGroup, globalCheckbox } = getReactComponents(instance));
-
-    expect(customCodeRadioGroup.props().value).toBe('javascript');
-    expect(globalCheckbox.props().checked).toBe(true);
+    expect(pageElements.codeLanguage.radioGroup.getJavaScript().checked).toBe(
+      true
+    );
+    expect(pageElements.getExecuteGloballyCheckbox().checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
-    extensionBridge.init();
-
-    const { customCodeRadioGroup, globalCheckbox } = getReactComponents(
-      instance
-    );
-
-    customCodeRadioGroup.props().onChange('html', { stopPropagation() {} });
-    globalCheckbox.props().onChange(true);
-
+    fireEvent.click(pageElements.codeLanguage.radioGroup.getHTML());
     expect(extensionBridge.getSettings()).toEqual({
       language: 'html'
     });
 
-    customCodeRadioGroup
-      .props()
-      .onChange('javascript', { stopPropagation() {} });
-
+    fireEvent.click(pageElements.codeLanguage.radioGroup.getJavaScript());
+    fireEvent.click(pageElements.getExecuteGloballyCheckbox());
     expect(extensionBridge.getSettings()).toEqual({
       language: 'javascript',
       global: true
@@ -99,15 +94,17 @@ describe('custom code action view', () => {
   });
 
   it('sets errors if required values are not provided', () => {
-    extensionBridge.init();
+    expect(
+      isButtonValid(sharedTestingElements.customCodeEditor.getTriggerButton())
+    ).toBeTrue();
+
     expect(extensionBridge.validate()).toBe(false);
-
-    const { openEditorButton } = getReactComponents(instance);
-
-    expect(openEditorButton.props().validationState).toBe('invalid');
+    expect(
+      isButtonValid(sharedTestingElements.customCodeEditor.getTriggerButton())
+    ).toBeFalse();
   });
 
-  it('allows user to provide custom code', () => {
+  it('allows user to provide custom code', async () => {
     extensionBridge.init({
       settings: {
         language: 'javascript',
@@ -115,9 +112,13 @@ describe('custom code action view', () => {
       }
     });
 
-    const { openEditorButton } = getReactComponents(instance);
+    spyOn(extensionBridge, 'openCodeEditor').and.callFake(() => ({
+      then(resolve) {
+        resolve('foo bar');
+      }
+    }));
 
-    openEditorButton.props().onChange('foo bar');
+    fireEvent.click(sharedTestingElements.customCodeEditor.getTriggerButton());
 
     expect(extensionBridge.getSettings()).toEqual({
       language: 'javascript',

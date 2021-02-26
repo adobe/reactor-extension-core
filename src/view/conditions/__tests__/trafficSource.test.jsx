@@ -10,31 +10,34 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField } from '@adobe/react-spectrum';
-import RegexToggle from '../../components/regexToggle';
+import { fireEvent, render, screen } from '@testing-library/react';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
+import userEvent from '@testing-library/user-event';
 import TrafficSource, { formConfig } from '../trafficSource';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const sourceTextfield = wrapper.find(TextField);
-  const valueRegexToggle = wrapper.find(RegexToggle);
-
-  return {
-    sourceTextfield,
-    valueRegexToggle
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getSourceTextBox: () => screen.getByRole('textbox', { name: /source/i }),
+  regex: {
+    getToggleSwitch: () => {
+      return screen.getByRole('switch', { name: /regex/i });
+    }
+  }
 };
 
 describe('traffic source condition view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(TrafficSource, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(TrafficSource, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('sets form values from settings', () => {
@@ -45,19 +48,13 @@ describe('traffic source condition view', () => {
       }
     });
 
-    const { sourceTextfield, valueRegexToggle } = getReactComponents(instance);
-
-    expect(sourceTextfield.props().value).toBe('foo');
-    expect(valueRegexToggle.props().value).toBe(true);
+    expect(pageElements.getSourceTextBox().value).toBe('foo');
+    expect(pageElements.regex.getToggleSwitch().checked).toBeTrue();
   });
 
   it('sets settings from form values', () => {
-    extensionBridge.init();
-
-    const { sourceTextfield, valueRegexToggle } = getReactComponents(instance);
-
-    sourceTextfield.props().onChange('foo');
-    valueRegexToggle.props().onChange(true);
+    userEvent.type(pageElements.getSourceTextBox(), 'foo');
+    fireEvent.click(pageElements.regex.getToggleSwitch());
 
     expect(extensionBridge.getSettings()).toEqual({
       source: 'foo',
@@ -66,11 +63,11 @@ describe('traffic source condition view', () => {
   });
 
   it('sets errors if required values are not provided', () => {
-    extensionBridge.init();
+    fireEvent.focus(pageElements.getSourceTextBox());
+    fireEvent.blur(pageElements.getSourceTextBox());
+    expect(
+      pageElements.getSourceTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
     expect(extensionBridge.validate()).toBe(false);
-
-    const { sourceTextfield } = getReactComponents(instance);
-
-    expect(sourceTextfield.props().validationState).toBe('invalid');
   });
 });

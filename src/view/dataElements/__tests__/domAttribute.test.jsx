@@ -10,51 +10,53 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { mount } from 'enzyme';
-import { TextField, Picker } from '@adobe/react-spectrum';
-import WrappedField from '../../components/wrappedField';
+import { fireEvent, render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import {
+  clickSpectrumOption,
+  safelyWaitForElementToBeRemoved
+} from '@test-helpers/react-testing-library';
+import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import DomAttribute, { formConfig } from '../domAttribute';
-import createExtensionBridge from '../../__tests__/helpers/createExtensionBridge';
 import bootstrap from '../../bootstrap';
 
-const getReactComponents = (wrapper) => {
-  wrapper.update();
-  const fields = wrapper.find(WrappedField);
-
-  const elementPropertyPresetsSelect = wrapper.find(Picker);
-  const elementSelectorField = fields.filterWhere(
-    (n) => n.prop('name') === 'elementSelector'
-  );
-  const elementSelectorTextfield = elementSelectorField.find(TextField);
-  const customElementPropertyField = fields.filterWhere(
-    (n) => n.prop('name') === 'customElementProperty'
-  );
-  const customElementPropertyTextfield = customElementPropertyField.find(
-    TextField
-  );
-
-  return {
-    elementPropertyPresetsSelect,
-    elementSelectorTextfield,
-    customElementPropertyTextfield
-  };
+// react-testing-library element selectors
+const pageElements = {
+  getElementPropertyPresetsDropdown: () => {
+    return screen.getByRole('button', { name: /use the value of/i });
+  },
+  getElementSelectorTextBox: () => {
+    return screen.getByRole('textbox', { name: /element selector/i });
+  },
+  getCustomElementPropertyTextBox: () => {
+    return screen.getByRole('textbox', { name: /custom element property/i });
+  },
+  queryForCustomElementPropertyTextBox: () => {
+    return screen.queryByRole('textbox', { name: /custom element property/i });
+  },
+  waitForHTMLOption: () => screen.findByRole('option', { name: /html/i }),
+  waitForCustomOption: () =>
+    screen.findByRole('option', { name: /other attribute/i })
 };
 
 describe('DOM attribute data element view', () => {
   let extensionBridge;
-  let instance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     extensionBridge = createExtensionBridge();
-    instance = mount(bootstrap(DomAttribute, formConfig, extensionBridge));
+    window.extensionBridge = extensionBridge;
+    render(bootstrap(DomAttribute, formConfig));
+    extensionBridge.init();
+  });
+
+  afterEach(() => {
+    delete window.extensionBridge;
   });
 
   it('selects ID preset for new settings', () => {
-    extensionBridge.init();
-
-    const { elementPropertyPresetsSelect } = getReactComponents(instance);
-
-    expect(elementPropertyPresetsSelect.props().value).toBe('id');
+    expect(
+      within(pageElements.getElementPropertyPresetsDropdown()).getByText(/id/i)
+    ).toBeTruthy();
   });
 
   it('sets form values from settings using element property preset', () => {
@@ -65,15 +67,15 @@ describe('DOM attribute data element view', () => {
       }
     });
 
-    const {
-      elementSelectorTextfield,
-      elementPropertyPresetsSelect,
-      customElementPropertyTextfield
-    } = getReactComponents(instance);
-
-    expect(elementSelectorTextfield.props().value).toBe('foo');
-    expect(elementPropertyPresetsSelect.props().value).toBe('custom');
-    expect(customElementPropertyTextfield.props().value).toBe('innerHTML');
+    expect(pageElements.getElementSelectorTextBox().value).toBe('foo');
+    expect(
+      within(pageElements.getElementPropertyPresetsDropdown()).getByText(
+        /other attribute/i
+      )
+    ).toBeTruthy();
+    expect(pageElements.getCustomElementPropertyTextBox().value).toBe(
+      'innerHTML'
+    );
   });
 
   it('sets form values from settings using custom element property', () => {
@@ -84,37 +86,30 @@ describe('DOM attribute data element view', () => {
       }
     });
 
-    const {
-      elementSelectorTextfield,
-      elementPropertyPresetsSelect,
-      customElementPropertyTextfield
-    } = getReactComponents(instance);
-
-    expect(elementSelectorTextfield.props().value).toBe('foo');
-    expect(elementPropertyPresetsSelect.props().value).toBe('custom');
-    expect(customElementPropertyTextfield.props().value).toBe('bar');
+    expect(pageElements.getElementSelectorTextBox().value).toBe('foo');
+    expect(
+      within(pageElements.getElementPropertyPresetsDropdown()).getByText(
+        /other attribute/i
+      )
+    ).toBeTruthy();
+    expect(pageElements.getCustomElementPropertyTextBox().value).toBe('bar');
   });
 
   it('sets error if element selector not provided', () => {
-    extensionBridge.init();
+    fireEvent.focus(pageElements.getElementSelectorTextBox());
+    fireEvent.blur(pageElements.getElementSelectorTextBox());
 
+    expect(
+      pageElements.getElementSelectorTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
     expect(extensionBridge.validate()).toBe(false);
-
-    const { elementSelectorTextfield } = getReactComponents(instance);
-
-    expect(elementSelectorTextfield.props().validationState).toBe('invalid');
   });
 
-  it('sets settings from form values using element property preset', () => {
-    extensionBridge.init();
-
-    const {
-      elementSelectorTextfield,
-      elementPropertyPresetsSelect
-    } = getReactComponents(instance);
-
-    elementSelectorTextfield.props().onChange('foo');
-    elementPropertyPresetsSelect.props().onChange('innerHTML');
+  it('sets settings from form values using element property preset', async () => {
+    userEvent.type(pageElements.getElementSelectorTextBox(), 'foo');
+    fireEvent.click(pageElements.getElementPropertyPresetsDropdown());
+    const htmlOption = await pageElements.waitForHTMLOption();
+    clickSpectrumOption(htmlOption);
 
     expect(extensionBridge.getSettings()).toEqual({
       elementSelector: 'foo',
@@ -122,20 +117,17 @@ describe('DOM attribute data element view', () => {
     });
   });
 
-  it('sets settings from form values using custom element property', () => {
-    extensionBridge.init();
+  it('sets settings from form values using custom element property', async () => {
+    userEvent.type(pageElements.getElementSelectorTextBox(), 'foo');
 
-    const {
-      elementSelectorTextfield,
-      elementPropertyPresetsSelect
-    } = getReactComponents(instance);
+    fireEvent.click(pageElements.getElementPropertyPresetsDropdown());
+    const customOption = await pageElements.waitForCustomOption();
+    clickSpectrumOption(customOption);
+    await safelyWaitForElementToBeRemoved(() =>
+      screen.queryByRole('option', { name: /other attribute/i })
+    );
 
-    elementSelectorTextfield.props().onChange('foo');
-    elementPropertyPresetsSelect.props().onChange('custom');
-
-    const { customElementPropertyTextfield } = getReactComponents(instance);
-
-    customElementPropertyTextfield.props().onChange('bar');
+    userEvent.type(pageElements.getCustomElementPropertyTextBox(), 'bar');
 
     expect(extensionBridge.getSettings()).toEqual({
       elementSelector: 'foo',
@@ -152,11 +144,10 @@ describe('DOM attribute data element view', () => {
     });
 
     expect(extensionBridge.validate()).toBe(false);
-
-    const { customElementPropertyTextfield } = getReactComponents(instance);
-
-    expect(customElementPropertyTextfield.props().validationState).toBe(
-      'invalid'
-    );
+    expect(
+      pageElements
+        .getCustomElementPropertyTextBox()
+        .hasAttribute('aria-invalid')
+    ).toBeTruthy();
   });
 });
