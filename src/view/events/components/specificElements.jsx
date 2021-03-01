@@ -21,7 +21,7 @@ import ElementSelector, {
 import ElementPropertiesEditor, {
   formConfig as elementPropertiesEditorFormConfig
 } from './elementPropertiesEditor';
-import WarningContainer from '../../components/warningContainer';
+import HelpText from '../../components/helpText';
 import mergeFormConfigs from '../../utils/mergeFormConfigs';
 
 const SpecificElements = ({ ...props }) => {
@@ -37,11 +37,11 @@ const SpecificElements = ({ ...props }) => {
         </WrappedField>
         {showElementPropertiesFilter ? (
           <>
-            <WarningContainer marginBottom="size-200">
+            <HelpText marginBottom="size-200">
               Using this option to target elements will add logic to the
               JavaScript library that will adversely affect performance. Adobe
               recommends using the CSS selector option above.
-            </WarningContainer>
+            </HelpText>
 
             <ElementPropertiesEditor />
           </>

@@ -28,7 +28,7 @@ import { TextField, Checkbox, Picker, Item, Flex } from '@adobe/react-spectrum';
 import { formValueSelector } from 'redux-form';
 import RegexTestButton from '../components/regexTestButton';
 import WrappedField from '../components/wrappedField';
-import WarningContainer from '../components/warningContainer';
+import HelpText from '../components/helpText';
 import NoWrapText from '../components/noWrapText';
 import { isDataElementToken, isNumberLike } from '../utils/validators';
 
@@ -180,11 +180,11 @@ const NoTypeConversionReminder = ({ operator, value }) => {
   return (operator === operators.EQUALS ||
     operator === operators.DOES_NOT_EQUAL) &&
     sketchyStrings.indexOf(value.toLowerCase()) !== -1 ? (
-    <WarningContainer>
+    <HelpText>
       Be aware that the value &quot;
       {value}
       &quot; will be compared as a string.
-    </WarningContainer>
+    </HelpText>
   ) : null;
 };
 

@@ -23,6 +23,7 @@ import AdvancedEventOptions, {
 } from './components/advancedEventOptions';
 import mergeFormConfigs from '../utils/mergeFormConfigs';
 import { isDataElementToken, isNumberLikeInRange } from '../utils/validators';
+import HelpText from '../components/helpText';
 
 const Click = ({ delayLinkActivation }) => (
   <>
@@ -33,6 +34,10 @@ const Click = ({ delayLinkActivation }) => (
 
     {delayLinkActivation ? (
       <View marginBottom="size-100">
+        <HelpText marginBottom="size-200">
+          Link Delay is provided for backward compatibility with DTM
+          implementations, but is no longer supported or recommended for use.
+        </HelpText>
         <WrappedField
           name="anchorDelay"
           label="Link delay"

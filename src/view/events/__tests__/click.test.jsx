@@ -25,6 +25,16 @@ const pageElements = {
     getTextBox: () => screen.getByRole('textbox', { name: /link delay/i }),
     getDataElementModalTrigger: () => {
       return screen.getByRole('button', { name: /select a data element/i });
+    },
+    getDeprecationText: () => {
+      return screen.getByText(
+        /ink Delay is provided for backward compatibility/i
+      );
+    },
+    queryForDeprecationText: () => {
+      return screen.queryByText(
+        /link Delay is provided for backward compatibility/i
+      );
     }
   }
 };
@@ -212,5 +222,30 @@ describe('click event view', () => {
     expect(
       pageElements.linkDelay.getTextBox().hasAttribute('aria-invalid')
     ).toBeFalse();
+  });
+
+  describe('deprecation warning', () => {
+    it('does not show the message by default', () => {
+      expect(pageElements.linkDelay.queryForDeprecationText()).toBeNull();
+    });
+
+    it('shows the deprecation message when the user clicks the checkbox', () => {
+      fireEvent.click(pageElements.linkDelay.getCheckBox());
+      expect(pageElements.linkDelay.getDeprecationText()).toBeTruthy();
+    });
+
+    it(
+      'shows the deprecation message when the user already had linkDelay enabled ' +
+        'in settings',
+      () => {
+        extensionBridge.init({
+          settings: {
+            anchorDelay: 101
+          }
+        });
+
+        expect(pageElements.linkDelay.getDeprecationText()).toBeTruthy();
+      }
+    );
   });
 });

@@ -38,6 +38,14 @@ describe('device type condition view', () => {
     delete window.extensionBridge;
   });
 
+  it('shows a deprecation message', () => {
+    expect(
+      screen.getByText(
+        /This condition type is no longer supported. Please avoid its use./i
+      )
+    ).toBeTruthy();
+  });
+
   it('sets form values from settings', () => {
     extensionBridge.init({
       settings: {
