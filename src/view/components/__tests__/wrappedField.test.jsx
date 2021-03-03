@@ -110,7 +110,7 @@ describe('wrapped field', () => {
     });
 
     const inputComponent = screen.getByRole('textbox', { name: /product/i });
-    fireEvent.change(inputComponent, { target: { value: 'foo' } });
+    userEvent.type(inputComponent, 'foo');
 
     expect(extensionBridge.getSettings()).toEqual({
       product: 'foo'

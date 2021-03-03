@@ -12,18 +12,13 @@
 
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { clickSpectrumOption } from '@test-helpers/react-testing-library';
+import {
+  simulate,
+  clickSpectrumOption
+} from '@test-helpers/react-testing-library';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import DateRange, { formConfig } from '../dateRange';
 import bootstrap from '../../bootstrap';
-
-// todo: need to debug why we can't triple click and clear fields
-//  then use `userEvent.clear` and delete this function.
-const simulate = {
-  clear: (element) => {
-    fireEvent.change(element, { target: { value: '' } });
-  }
-};
 
 // react-testing-library element selectors
 const pageElements = {

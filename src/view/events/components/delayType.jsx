@@ -56,6 +56,8 @@ const stateToProps = (state) => ({
 
 export default connect(stateToProps)(DelayType);
 
+const minNumberOptions = { min: 1 };
+
 export const formConfig = {
   settingsToFormValues(values, settings) {
     return {
@@ -70,7 +72,9 @@ export const formConfig = {
     };
 
     if (values.delayType === 'delay') {
-      settings.delay = Number(values.delay);
+      settings.delay = isNumberLikeInRange(values.delay, minNumberOptions)
+        ? Number(values.delay)
+        : String(values.delay);
     }
 
     return settings;
@@ -82,7 +86,7 @@ export const formConfig = {
 
     if (
       values.delayType === 'delay' &&
-      !isNumberLikeInRange(values.delay, { min: 1 }) &&
+      !isNumberLikeInRange(values.delay, minNumberOptions) &&
       !isDataElementToken(values.delay)
     ) {
       errors.delay =

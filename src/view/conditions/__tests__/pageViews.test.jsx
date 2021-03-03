@@ -11,6 +11,7 @@
  ****************************************************************************************/
 
 import { fireEvent, render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {
   clickSpectrumOption,
   safelyWaitForElementToBeRemoved
@@ -85,10 +86,7 @@ describe('page views condition view', () => {
     await safelyWaitForElementToBeRemoved(() =>
       screen.queryByRole('option', { name: /equal to/i })
     );
-
-    fireEvent.change(pageElements.getCountTextBox(), {
-      target: { value: '100' }
-    });
+    userEvent.type(pageElements.getCountTextBox(), '100');
 
     fireEvent.click(pageElements.duration.radioGroup.getCurrentSession());
 
@@ -110,9 +108,7 @@ describe('page views condition view', () => {
   });
 
   it('sets error if count value is not a number', () => {
-    fireEvent.change(pageElements.getCountTextBox(), {
-      target: { value: '12.abc' }
-    });
+    userEvent.type(pageElements.getCountTextBox(), '12.abc');
     fireEvent.blur(pageElements.getCountTextBox());
 
     expect(

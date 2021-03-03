@@ -77,6 +77,8 @@ const MediaTimePlayed = () => (
 
 export default MediaTimePlayed;
 
+const minNumberOptions = { min: 1 };
+
 export const formConfig = mergeFormConfigs(
   elementFilterFormConfig,
   advancedEventOptionsFormConfig,
@@ -88,7 +90,9 @@ export const formConfig = mergeFormConfigs(
     formValuesToSettings: (settings, values) => ({
       ...settings,
       unit: values.unit,
-      amount: Number(values.amount)
+      amount: isNumberLikeInRange(values.amount, minNumberOptions)
+        ? Number(values.amount)
+        : String(values.amount)
     }),
     validate: (errors, values) => {
       errors = {
@@ -96,7 +100,7 @@ export const formConfig = mergeFormConfigs(
       };
 
       if (
-        !isNumberLikeInRange(values.amount, { min: 0, minInclusive: false }) &&
+        !isNumberLikeInRange(values.amount, minNumberOptions) &&
         !isDataElementToken(values.amount)
       ) {
         errors.amount =

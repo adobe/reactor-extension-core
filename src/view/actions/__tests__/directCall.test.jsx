@@ -11,6 +11,7 @@
  ****************************************************************************************/
 
 import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import DirectCallIdentifier, { formConfig } from '../directCall';
 import bootstrap from '../../bootstrap';
@@ -46,9 +47,7 @@ describe('direct call action view', () => {
   });
 
   it('sets settings from form values', () => {
-    fireEvent.change(pageElements.getIdentifierTextBox(), {
-      target: { value: 'foo' }
-    });
+    userEvent.type(pageElements.getIdentifierTextBox(), 'foo');
 
     expect(extensionBridge.getSettings()).toEqual({
       identifier: 'foo'

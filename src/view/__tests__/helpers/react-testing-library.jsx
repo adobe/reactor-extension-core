@@ -12,6 +12,7 @@
 
 /*eslint import/no-extraneous-dependencies: 0*/
 import {
+  fireEvent,
   screen,
   waitFor,
   waitForElementToBeRemoved
@@ -29,6 +30,14 @@ export const DEBUG_UTILITIES = {
       },
       { timeout: 5000 }
     );
+  }
+};
+
+// todo: need to debug why we can't triple click and clear fields
+//  then use `userEvent.clear` and delete this function.
+export const simulate = {
+  clear: (element) => {
+    fireEvent.change(element, { target: { value: '' } });
   }
 };
 

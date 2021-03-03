@@ -32,6 +32,8 @@ const TimeOnPage = () => (
 
 export default TimeOnPage;
 
+const minNumberOptions = { min: 1 };
+
 export const formConfig = {
   settingsToFormValues(values, settings) {
     return {
@@ -41,7 +43,9 @@ export const formConfig = {
   },
   formValuesToSettings: (settings, values) => ({
     ...settings,
-    timeOnPage: Number(values.timeOnPage)
+    timeOnPage: isNumberLikeInRange(values.timeOnPage, minNumberOptions)
+      ? Number(values.timeOnPage)
+      : String(values.timeOnPage)
   }),
   validate: (errors, values) => {
     errors = {
@@ -49,7 +53,7 @@ export const formConfig = {
     };
 
     if (
-      !isNumberLikeInRange(values.timeOnPage, { min: 1 }) &&
+      !isNumberLikeInRange(values.timeOnPage, minNumberOptions) &&
       !isDataElementToken(values.timeOnPage)
     ) {
       errors.timeOnPage =

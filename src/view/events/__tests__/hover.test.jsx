@@ -11,6 +11,7 @@
  ****************************************************************************************/
 
 import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { sharedTestingElements } from '@test-helpers/react-testing-library';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import Hover, { formConfig } from '../hover';
@@ -90,17 +91,13 @@ describe('hover event view', () => {
   });
 
   it('sets settings from form values', () => {
-    fireEvent.change(
+    userEvent.type(
       sharedTestingElements.elementsMatching.getCssSelectorTextBox(),
-      {
-        target: { value: '.foo' }
-      }
+      '.foo'
     );
 
     fireEvent.click(pageElements.delayHover.radioGroup.getAfterDelay());
-    fireEvent.change(pageElements.delayHover.getDelayTextBox(), {
-      target: { value: '100' }
-    });
+    userEvent.type(pageElements.delayHover.getDelayTextBox(), '100');
 
     fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
     fireEvent.click(
@@ -151,9 +148,7 @@ describe('hover event view', () => {
     fireEvent.click(pageElements.delayHover.radioGroup.getAfterDelay());
 
     fireEvent.focus(pageElements.delayHover.getDelayTextBox());
-    fireEvent.change(pageElements.delayHover.getDelayTextBox(), {
-      target: { value: '0' }
-    });
+    userEvent.type(pageElements.delayHover.getDelayTextBox(), '0');
     fireEvent.blur(pageElements.delayHover.getDelayTextBox());
 
     expect(
@@ -175,13 +170,16 @@ describe('hover event view', () => {
     fireEvent.click(pageElements.delayHover.radioGroup.getAfterDelay());
 
     fireEvent.focus(pageElements.delayHover.getDelayTextBox());
-    fireEvent.change(pageElements.delayHover.getDelayTextBox(), {
-      target: { value: '%Data Element 1%' }
-    });
+    userEvent.type(
+      pageElements.delayHover.getDelayTextBox(),
+      '%Data Element 1%'
+    );
     fireEvent.blur(pageElements.delayHover.getDelayTextBox());
 
     expect(
       pageElements.delayHover.getDelayTextBox().getAttribute('aria-invalid')
     ).toBeFalsy();
+
+    expect(extensionBridge.getSettings().delay).toBe('%Data Element 1%');
   });
 });
