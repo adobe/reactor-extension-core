@@ -33,8 +33,9 @@ export const DEBUG_UTILITIES = {
   }
 };
 
-// todo: need to debug why we can't triple click and clear fields
-//  then use `userEvent.clear` and delete this function.
+// todo: Spectrum V3 has broken input interactions when surrounding TextField
+//  with TooltipTrigger. Keep leaning on that team, then delete this and replace
+//  usages with userEvent.clear
 export const simulate = {
   clear: (element) => {
     fireEvent.change(element, { target: { value: '' } });
