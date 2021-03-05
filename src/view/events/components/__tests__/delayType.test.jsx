@@ -106,4 +106,20 @@ describe('delayType', () => {
     expect(pageElements.getTextBox().hasAttribute('aria-invalid')).toBeTrue();
     expect(extensionBridge.validate()).toBe(false);
   });
+
+  it('delayType handles data element names just fine', () => {
+    fireEvent.click(pageElements.radioGroup.getAfterDelay());
+    userEvent.type(pageElements.getTextBox(), '%Data Element 1%');
+    expect(extensionBridge.getSettings().delay).toBe('%Data Element 1%');
+  });
+
+  it('The delayType input supports opening the data element modal', () => {
+    spyOn(extensionBridge, 'openDataElementSelector').and.callFake(() => {
+      return Promise.resolve();
+    });
+
+    fireEvent.click(pageElements.radioGroup.getAfterDelay());
+    fireEvent.click(pageElements.getDataElementModalTrigger());
+    expect(extensionBridge.openDataElementSelector).toHaveBeenCalledTimes(1);
+  });
 });

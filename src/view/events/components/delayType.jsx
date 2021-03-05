@@ -62,7 +62,11 @@ export const formConfig = {
   settingsToFormValues(values, settings) {
     return {
       ...values,
-      delayType: settings.delay > 0 ? 'delay' : 'immediate',
+      delayType:
+        (Number.isFinite(settings.delay) && settings.delay > 0) || // a true time
+        Boolean(settings.delay) // a non-empty string, most likely a data element
+          ? 'delay'
+          : 'immediate',
       delay: settings.delay > 0 ? settings.delay : ''
     };
   },

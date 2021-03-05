@@ -134,5 +134,9 @@ describe('time on site condition view', () => {
     expect(
       pageElements.getMinutesTextBox().hasAttribute('aria-invalid')
     ).toBeFalse();
+
+    expect(
+      expect(extensionBridge.getSettings().minutes).toBe('%Data Element 1%')
+    );
   });
 });

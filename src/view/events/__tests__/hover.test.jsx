@@ -68,7 +68,7 @@ describe('hover event view', () => {
     ).toBe('true');
   });
 
-  it('sets form values from settings', () => {
+  it('sets form values from settings (non-data element delay)', () => {
     extensionBridge.init({
       settings: {
         elementSelector: '.foo',
@@ -81,8 +81,36 @@ describe('hover event view', () => {
       sharedTestingElements.elementsMatching.getCssSelectorTextBox().value
     ).toBe('.foo');
 
-    fireEvent.click(pageElements.delayHover.radioGroup.getAfterDelay());
+    expect(
+      pageElements.delayHover.radioGroup.getAfterDelay().checked
+    ).toBeTrue();
     expect(pageElements.delayHover.getDelayTextBox().value).toBe('100');
+
+    fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
+    expect(
+      sharedTestingElements.advancedSettings.getBubbleStopCheckBox().value
+    ).toBe('true');
+  });
+
+  it('sets form values from settings (non-data element delay)', () => {
+    extensionBridge.init({
+      settings: {
+        elementSelector: '.foo',
+        delay: '%Data Element 1%',
+        bubbleStop: true
+      }
+    });
+
+    expect(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox().value
+    ).toBe('.foo');
+
+    expect(
+      pageElements.delayHover.radioGroup.getAfterDelay().checked
+    ).toBeTrue();
+    expect(pageElements.delayHover.getDelayTextBox().value).toBe(
+      '%Data Element 1%'
+    );
 
     fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
     expect(
@@ -156,7 +184,7 @@ describe('hover event view', () => {
     ).toBeTruthy();
   });
 
-  it('The afterDelay input supports opening the data element modal', () => {
+  it('The hover afterDelay input supports opening the data element modal', () => {
     spyOn(extensionBridge, 'openDataElementSelector').and.callFake(() => {
       return Promise.resolve();
     });
@@ -166,7 +194,7 @@ describe('hover event view', () => {
     expect(extensionBridge.openDataElementSelector).toHaveBeenCalledTimes(1);
   });
 
-  it('afterDelay handles data element names just fine', () => {
+  it('hover afterDelay handles data element names just fine', () => {
     fireEvent.click(pageElements.delayHover.radioGroup.getAfterDelay());
 
     fireEvent.focus(pageElements.delayHover.getDelayTextBox());

@@ -59,7 +59,7 @@ describe('enters viewport event view', () => {
     delete window.extensionBridge;
   });
 
-  it('sets form values from settings', () => {
+  it('sets form values from settings (non-data element delay)', () => {
     extensionBridge.init({
       settings: {
         elementSelector: '.foo',
@@ -71,8 +71,35 @@ describe('enters viewport event view', () => {
       sharedTestingElements.elementsMatching.getCssSelectorTextBox().value
     ).toBe('.foo');
 
-    fireEvent.click(pageElements.delayWhenEnters.radioGroup.getAfterDelay());
+    expect(
+      pageElements.delayWhenEnters.radioGroup.getAfterDelay().checked
+    ).toBeTrue();
     expect(pageElements.delayWhenEnters.getDelayTextBox().value).toBe('100');
+
+    expect(
+      pageElements.frequency.radioGroup.getFirstTime().checked
+    ).toBeFalse();
+    expect(pageElements.frequency.radioGroup.getEveryTime().checked).toBeTrue();
+  });
+
+  it('sets form values from settings (data element delay)', () => {
+    extensionBridge.init({
+      settings: {
+        elementSelector: '.foo',
+        delay: '%Data Element 1%',
+        frequency: 'everyEntry'
+      }
+    });
+    expect(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox().value
+    ).toBe('.foo');
+
+    expect(
+      pageElements.delayWhenEnters.radioGroup.getAfterDelay().checked
+    ).toBeTrue();
+    expect(pageElements.delayWhenEnters.getDelayTextBox().value).toBe(
+      '%Data Element 1%'
+    );
 
     expect(
       pageElements.frequency.radioGroup.getFirstTime().checked

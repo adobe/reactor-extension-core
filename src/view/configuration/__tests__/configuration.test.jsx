@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import Configuration, { formConfig } from '../configuration';
@@ -20,6 +20,9 @@ import bootstrap from '../../bootstrap';
 const pageElements = {
   getCSPNonceTextBox: () => {
     return screen.getByRole('textbox', { name: /nonce/i });
+  },
+  getDataElementModalTrigger: () => {
+    return screen.getByRole('button', { name: /select a data element/i });
   }
 };
 
@@ -47,12 +50,30 @@ describe('extension configuration view', () => {
     expect(pageElements.getCSPNonceTextBox().value).toBe('%foo%');
   });
 
-  it('sets settings from form values', () => {
+  it('does not support non-data element values', () => {
+    userEvent.type(pageElements.getCSPNonceTextBox(), 'abc123');
+
+    expect(extensionBridge.validate()).toBeFalse();
+    expect(
+      pageElements.getCSPNonceTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
+  });
+
+  it('supports a data element', () => {
     userEvent.type(pageElements.getCSPNonceTextBox(), '%foo%');
 
     expect(extensionBridge.getSettings()).toEqual({
       cspNonce: '%foo%'
     });
+  });
+
+  it('supports opening the data element modal', () => {
+    spyOn(extensionBridge, 'openDataElementSelector').and.callFake(() => {
+      return Promise.resolve();
+    });
+
+    fireEvent.click(pageElements.getDataElementModalTrigger());
+    expect(extensionBridge.openDataElementSelector).toHaveBeenCalledTimes(1);
   });
 
   it('passes validation when cspNonce is not provided', () => {

@@ -117,4 +117,31 @@ describe('change event view', () => {
 
     expect(extensionBridge.validate()).toBe(false);
   });
+
+  it('The change input supports opening the data element modal', () => {
+    spyOn(extensionBridge, 'openDataElementSelector').and.callFake(() => {
+      return Promise.resolve();
+    });
+
+    fireEvent.click(pageElements.valueField.getShowFieldCheckBox());
+    fireEvent.click(pageElements.valueField.getDataElementModalTrigger());
+    expect(extensionBridge.openDataElementSelector).toHaveBeenCalledTimes(1);
+  });
+
+  it('change handles data element names just fine', () => {
+    fireEvent.click(pageElements.valueField.getShowFieldCheckBox());
+
+    fireEvent.focus(pageElements.valueField.getValueTextBox());
+    userEvent.type(
+      pageElements.valueField.getValueTextBox(),
+      '%Data Element 1%'
+    );
+    fireEvent.blur(pageElements.valueField.getValueTextBox());
+
+    expect(
+      pageElements.valueField.getValueTextBox().hasAttribute('aria-invalid')
+    ).toBeFalse();
+
+    expect(extensionBridge.getSettings().value).toBe('%Data Element 1%');
+  });
 });

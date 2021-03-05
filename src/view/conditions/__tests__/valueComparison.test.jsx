@@ -37,6 +37,9 @@ const pageElements = {
   getRightOperandTextBox: () => {
     return screen.getByRole('textbox', { name: /right operand/i });
   },
+  queryRightOperandTextBox: () => {
+    return screen.queryByRole('textbox', { name: /right operand/i });
+  },
   getRightOperandDataElementTrigger: () => {
     const [, right] = screen.getAllByRole('button', {
       name: /select a data element/i
@@ -169,7 +172,7 @@ describe('value comparison condition view', () => {
       }
     ].forEach(({ operator, text }) => {
       describe(`when operator is ${operator}`, () => {
-        it('sets form values from settings ', () => {
+        it('sets form values from settings (non-data element version)', () => {
           extensionBridge.init({
             settings: {
               leftOperand: '%foo%',
@@ -189,7 +192,27 @@ describe('value comparison condition view', () => {
           expect(pageElements.getCaseInsensitiveCheckBox().checked).toBeTrue();
         });
 
-        it('sets settings from form values', async () => {
+        it('sets form values from settings (data element version)', () => {
+          extensionBridge.init({
+            settings: {
+              leftOperand: '%foo%',
+              comparison: {
+                operator,
+                caseInsensitive: true
+              },
+              rightOperand: '%bar%'
+            }
+          });
+
+          expect(pageElements.getLeftOperandTextBox().value).toBe('%foo%');
+          expect(
+            within(pageElements.getOperatorDropdownTrigger()).getByText(text)
+          ).toBeTruthy();
+          expect(pageElements.getRightOperandTextBox().value).toBe('%bar%');
+          expect(pageElements.getCaseInsensitiveCheckBox().checked).toBeTrue();
+        });
+
+        it('sets settings from form values (non-data element version)', async () => {
           userEvent.type(pageElements.getLeftOperandTextBox(), '%foo%');
 
           fireEvent.click(pageElements.getOperatorDropdownTrigger());
@@ -209,6 +232,29 @@ describe('value comparison condition view', () => {
               caseInsensitive: true
             },
             rightOperand: 'bar'
+          });
+        });
+
+        it('sets settings from form values (data element version)', async () => {
+          userEvent.type(pageElements.getLeftOperandTextBox(), '%foo%');
+
+          fireEvent.click(pageElements.getOperatorDropdownTrigger());
+          const option = await pageElements.waitForDynamicOptionText(text);
+          clickSpectrumOption(option);
+          await safelyWaitForElementToBeRemoved(() =>
+            screen.queryByRole('option', { name: text })
+          );
+
+          userEvent.type(pageElements.getRightOperandTextBox(), '%bar%');
+          fireEvent.click(pageElements.getCaseInsensitiveCheckBox());
+
+          expect(extensionBridge.getSettings()).toEqual({
+            leftOperand: '%foo%',
+            comparison: {
+              operator,
+              caseInsensitive: true
+            },
+            rightOperand: '%bar%'
           });
         });
 
@@ -247,7 +293,7 @@ describe('value comparison condition view', () => {
         }
       ].forEach(({ operator, text }) => {
         describe(`when operator is ${operator}`, () => {
-          it('sets form values from settings', () => {
+          it('sets form values from settings (non-data element version)', () => {
             extensionBridge.init({
               settings: {
                 leftOperand: '%foo%',
@@ -265,7 +311,25 @@ describe('value comparison condition view', () => {
             expect(pageElements.getRightOperandTextBox().value).toBe('456');
           });
 
-          it('sets settings from form values', async () => {
+          it('sets form values from settings (data element version)', () => {
+            extensionBridge.init({
+              settings: {
+                leftOperand: '%foo%',
+                comparison: {
+                  operator
+                },
+                rightOperand: '%bar%'
+              }
+            });
+
+            expect(pageElements.getLeftOperandTextBox().value).toBe('%foo%');
+            expect(
+              within(pageElements.getOperatorDropdownTrigger()).findByText(text)
+            ).toBeTruthy();
+            expect(pageElements.getRightOperandTextBox().value).toBe('%bar%');
+          });
+
+          it('sets settings from form values (non-data element version)', async () => {
             userEvent.type(pageElements.getLeftOperandTextBox(), '%foo%');
 
             fireEvent.click(pageElements.getOperatorDropdownTrigger());
@@ -283,6 +347,27 @@ describe('value comparison condition view', () => {
                 operator
               },
               rightOperand: 456
+            });
+          });
+
+          it('sets settings from form values (data element version)', async () => {
+            userEvent.type(pageElements.getLeftOperandTextBox(), '%foo%');
+
+            fireEvent.click(pageElements.getOperatorDropdownTrigger());
+            const option = await pageElements.waitForDynamicOptionText(text);
+            clickSpectrumOption(option);
+            await safelyWaitForElementToBeRemoved(() =>
+              screen.queryByRole('option', { name: text })
+            );
+
+            userEvent.type(pageElements.getRightOperandTextBox(), '%bar%');
+
+            expect(extensionBridge.getSettings()).toEqual({
+              leftOperand: '%foo%',
+              comparison: {
+                operator
+              },
+              rightOperand: '%bar%'
             });
           });
 
@@ -335,6 +420,8 @@ describe('value comparison condition view', () => {
             });
 
             expect(pageElements.getLeftOperandTextBox().value).toBe('%foo%');
+            // these comparisons don't have the right operand
+            expect(pageElements.queryRightOperandTextBox()).toBeNull();
             expect(
               within(pageElements.getOperatorDropdownTrigger()).getByText(text)
             ).toBeTruthy();
@@ -346,6 +433,9 @@ describe('value comparison condition view', () => {
             fireEvent.click(pageElements.getOperatorDropdownTrigger());
             const option = await pageElements.waitForDynamicOptionText(text);
             clickSpectrumOption(option);
+
+            // these comparisons don't have the right operand
+            expect(pageElements.queryRightOperandTextBox()).toBeNull();
 
             expect(extensionBridge.getSettings()).toEqual({
               leftOperand: '%foo%',
