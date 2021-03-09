@@ -36,13 +36,14 @@ const TimeOnSite = () => (
         isRequired
         supportDataElement
       />
-
       <NoWrapText>minutes on site</NoWrapText>
     </Flex>
   </Flex>
 );
 
 export default TimeOnSite;
+
+const minNumberOptions = { min: 1 };
 
 export const formConfig = {
   settingsToFormValues(values, settings) {
@@ -56,7 +57,9 @@ export const formConfig = {
     return {
       ...settings,
       ...values,
-      minutes: Number(values.minutes)
+      minutes: isNumberLikeInRange(values.minutes, minNumberOptions)
+        ? Number(values.minutes)
+        : String(values.minutes)
     };
   },
   validate(errors, values) {

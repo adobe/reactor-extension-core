@@ -11,7 +11,9 @@
  ****************************************************************************************/
 
 import { fireEvent, render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {
+  simulate,
   clickSpectrumOption,
   safelyWaitForElementToBeRemoved
 } from '@test-helpers/react-testing-library';
@@ -78,9 +80,8 @@ describe('max frequency condition view', () => {
       screen.queryByRole('option', { name: /session/i })
     );
 
-    fireEvent.change(pageElements.getCountTextBox(), {
-      target: { value: '3' }
-    });
+    simulate.clear(pageElements.getCountTextBox());
+    userEvent.type(pageElements.getCountTextBox(), '3');
 
     expect(extensionBridge.getSettings()).toEqual({
       count: 3,
@@ -97,9 +98,7 @@ describe('max frequency condition view', () => {
     });
 
     fireEvent.focus(pageElements.getCountTextBox());
-    fireEvent.change(pageElements.getCountTextBox(), {
-      target: { value: '-1' }
-    });
+    userEvent.type(pageElements.getCountTextBox(), '-1');
     fireEvent.blur(pageElements.getCountTextBox());
 
     expect(
@@ -108,9 +107,7 @@ describe('max frequency condition view', () => {
     expect(extensionBridge.validate()).toBe(false);
 
     fireEvent.focus(pageElements.getCountTextBox());
-    fireEvent.change(pageElements.getCountTextBox(), {
-      target: { value: '' }
-    });
+    simulate.clear(pageElements.getCountTextBox());
     fireEvent.blur(pageElements.getCountTextBox());
 
     expect(

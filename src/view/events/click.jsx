@@ -59,6 +59,8 @@ export default connect((state) => ({
   )
 }))(Click);
 
+const minNumberOptions = { min: 1 };
+
 export const formConfig = mergeFormConfigs(
   elementFilterFormConfig,
   advancedEventOptionsFormConfig,
@@ -81,7 +83,9 @@ export const formConfig = mergeFormConfigs(
     formValuesToSettings: (settings, values) => {
       const newSettings = {
         ...settings,
-        anchorDelay: Number(values.anchorDelay)
+        anchorDelay: isNumberLikeInRange(values.anchorDelay, minNumberOptions)
+          ? Number(values.anchorDelay)
+          : String(values.anchorDelay)
       };
 
       if (!values.delayLinkActivation) {
@@ -97,7 +101,7 @@ export const formConfig = mergeFormConfigs(
 
       if (
         values.delayLinkActivation &&
-        !isNumberLikeInRange(values.anchorDelay, { min: 1 }) &&
+        !isNumberLikeInRange(values.anchorDelay, minNumberOptions) &&
         !isDataElementToken(values.anchorDelay)
       ) {
         errors.anchorDelay =

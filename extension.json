@@ -1,7 +1,7 @@
 {
   "name": "core",
   "platform": "web",
-  "version": "2.0.0",
+  "version": "2.0.4",
   "displayName": "Core",
   "description": "Provides default event, condition, and data element types available to all Launch properties.",
   "exchangeUrl": "https://www.adobeexchange.com/experiencecloud.details.100223.adobe-launch-core-extension.html",
@@ -171,8 +171,16 @@
             "type": "boolean"
           },
           "anchorDelay": {
-            "type": "number",
-            "minimum": 1
+            "oneOf": [
+              {
+                "type": "number",
+                "minimum": 1
+              },
+              {
+                "type": "string",
+                "pattern": "^%([^%]+)%$"
+              }
+            ]
           }
         },
         "additionalProperties": false
@@ -422,8 +430,16 @@
             }
           },
           "delay": {
-            "type": "number",
-            "minimum": 1
+            "oneOf": [
+              {
+                "type": "number",
+                "minimum": 1
+              },
+              {
+                "type": "string",
+                "pattern": "^%([^%]+)%$"
+              }
+            ]
           },
           "frequency": {
             "type": "string",
@@ -525,8 +541,16 @@
             "type": "boolean"
           },
           "delay": {
-            "type": "number",
-            "minimum": 1
+            "oneOf": [
+              {
+                "type": "number",
+                "minimum": 1
+              },
+              {
+                "type": "string",
+                "pattern": "^%([^%]+)%$"
+              }
+            ]
           }
         },
         "additionalProperties": false,
@@ -922,8 +946,16 @@
         "type": "object",
         "properties": {
           "timeOnPage": {
-            "type": "number",
-            "minimum": 1
+            "oneOf": [
+              {
+                "type": "number",
+                "minimum": 1
+              },
+              {
+                "type": "string",
+                "pattern": "^%([^%]+)%$"
+              }
+            ]
           }
         },
         "additionalProperties": false,
@@ -974,8 +1006,16 @@
             "type": "boolean"
           },
           "amount": {
-            "type": "number",
-            "minimum": 0
+            "oneOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "string",
+                "pattern": "^%([^%]+)%$"
+              }
+            ]
           },
           "unit": {
             "type": "string",
@@ -1579,7 +1619,15 @@
             "enum": [">", "=", "<"]
           },
           "minutes": {
-            "type": "number"
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string",
+                "pattern": "^%([^%]+)%$"
+              }
+            ]
           }
         },
         "additionalProperties": false,

@@ -11,6 +11,7 @@
  ****************************************************************************************/
 
 import { fireEvent, render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {
   clickSpectrumOption,
   sharedTestingElements
@@ -81,16 +82,11 @@ describe('time played event view', () => {
   });
 
   it('sets settings from form values', async () => {
-    fireEvent.change(
+    userEvent.type(
       sharedTestingElements.elementsMatching.getCssSelectorTextBox(),
-      {
-        target: { value: '.foo' }
-      }
+      '.foo'
     );
-
-    fireEvent.change(pageElements.triggerWhen.getTextBox(), {
-      target: { value: '45' }
-    });
+    userEvent.type(pageElements.triggerWhen.getTextBox(), '45');
 
     fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
     fireEvent.click(
@@ -149,13 +145,13 @@ describe('time played event view', () => {
 
   it('media amount handles data element names just fine', () => {
     fireEvent.focus(pageElements.triggerWhen.getTextBox());
-    fireEvent.change(pageElements.triggerWhen.getTextBox(), {
-      target: { value: '%Data Element 1%' }
-    });
+    userEvent.type(pageElements.triggerWhen.getTextBox(), '%Data Element 1%');
     fireEvent.blur(pageElements.triggerWhen.getTextBox());
 
     expect(
       pageElements.triggerWhen.getTextBox().hasAttribute('aria-invalid')
     ).toBeFalse();
+
+    expect(extensionBridge.getSettings().amount).toBe('%Data Element 1%');
   });
 });

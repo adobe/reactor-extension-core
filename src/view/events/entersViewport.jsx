@@ -40,8 +40,8 @@ const EntersViewport = () => (
 export default EntersViewport;
 
 export const formConfig = mergeFormConfigs(
-  specificElementsFormConfig,
   delayTypeFormConfig,
+  specificElementsFormConfig,
   {
     settingsToFormValues: (values, settings) => ({
       ...values,

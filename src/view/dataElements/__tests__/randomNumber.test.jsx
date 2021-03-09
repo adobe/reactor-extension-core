@@ -10,8 +10,9 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { simulate } from '@test-helpers/react-testing-library';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import RandomNumber, { formConfig } from '../randomNumber';
 import bootstrap from '../../bootstrap';
@@ -20,14 +21,6 @@ import bootstrap from '../../bootstrap';
 const pageElements = {
   getMinTextBox: () => screen.getByRole('textbox', { name: /min/i }),
   getMaxTextBox: () => screen.getByRole('textbox', { name: /max/i })
-};
-
-// todo: need to debug why we can't triple click and clear fields
-//  then use `userEvent.clear` and delete this function.
-const simulate = {
-  clear: (element) => {
-    fireEvent.change(element, { target: { value: '' } });
-  }
 };
 
 describe('random number data element view', () => {

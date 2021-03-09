@@ -11,6 +11,7 @@
  ****************************************************************************************/
 
 import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { sharedTestingElements } from '@test-helpers/react-testing-library';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import EntersViewport, { formConfig } from '../entersViewport';
@@ -58,7 +59,7 @@ describe('enters viewport event view', () => {
     delete window.extensionBridge;
   });
 
-  it('sets form values from settings', () => {
+  it('sets form values from settings (non-data element delay)', () => {
     extensionBridge.init({
       settings: {
         elementSelector: '.foo',
@@ -70,8 +71,35 @@ describe('enters viewport event view', () => {
       sharedTestingElements.elementsMatching.getCssSelectorTextBox().value
     ).toBe('.foo');
 
-    fireEvent.click(pageElements.delayWhenEnters.radioGroup.getAfterDelay());
+    expect(
+      pageElements.delayWhenEnters.radioGroup.getAfterDelay().checked
+    ).toBeTrue();
     expect(pageElements.delayWhenEnters.getDelayTextBox().value).toBe('100');
+
+    expect(
+      pageElements.frequency.radioGroup.getFirstTime().checked
+    ).toBeFalse();
+    expect(pageElements.frequency.radioGroup.getEveryTime().checked).toBeTrue();
+  });
+
+  it('sets form values from settings (data element delay)', () => {
+    extensionBridge.init({
+      settings: {
+        elementSelector: '.foo',
+        delay: '%Data Element 1%',
+        frequency: 'everyEntry'
+      }
+    });
+    expect(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox().value
+    ).toBe('.foo');
+
+    expect(
+      pageElements.delayWhenEnters.radioGroup.getAfterDelay().checked
+    ).toBeTrue();
+    expect(pageElements.delayWhenEnters.getDelayTextBox().value).toBe(
+      '%Data Element 1%'
+    );
 
     expect(
       pageElements.frequency.radioGroup.getFirstTime().checked
@@ -83,11 +111,9 @@ describe('enters viewport event view', () => {
     fireEvent.focus(
       sharedTestingElements.elementsMatching.getCssSelectorTextBox()
     );
-    fireEvent.change(
+    userEvent.type(
       sharedTestingElements.elementsMatching.getCssSelectorTextBox(),
-      {
-        target: { value: '.foo' }
-      }
+      '.foo'
     );
     fireEvent.blur(
       sharedTestingElements.elementsMatching.getCssSelectorTextBox()
@@ -100,9 +126,7 @@ describe('enters viewport event view', () => {
 
     fireEvent.click(pageElements.delayWhenEnters.radioGroup.getAfterDelay());
     fireEvent.focus(pageElements.delayWhenEnters.getDelayTextBox());
-    fireEvent.change(pageElements.delayWhenEnters.getDelayTextBox(), {
-      target: { value: '100' }
-    });
+    userEvent.type(pageElements.delayWhenEnters.getDelayTextBox(), '100');
     fireEvent.blur(pageElements.delayWhenEnters.getDelayTextBox());
     expect(
       pageElements.delayWhenEnters
@@ -147,9 +171,7 @@ describe('enters viewport event view', () => {
     fireEvent.click(pageElements.delayWhenEnters.radioGroup.getAfterDelay());
 
     fireEvent.focus(pageElements.delayWhenEnters.getDelayTextBox());
-    fireEvent.change(pageElements.delayWhenEnters.getDelayTextBox(), {
-      target: { value: '0' }
-    });
+    userEvent.type(pageElements.delayWhenEnters.getDelayTextBox(), '0');
     fireEvent.blur(pageElements.delayWhenEnters.getDelayTextBox());
     expect(
       pageElements.delayWhenEnters
@@ -172,9 +194,10 @@ describe('enters viewport event view', () => {
     fireEvent.click(pageElements.delayWhenEnters.radioGroup.getAfterDelay());
 
     fireEvent.focus(pageElements.delayWhenEnters.getDelayTextBox());
-    fireEvent.change(pageElements.delayWhenEnters.getDelayTextBox(), {
-      target: { value: '%Data Element 1%' }
-    });
+    userEvent.type(
+      pageElements.delayWhenEnters.getDelayTextBox(),
+      '%Data Element 1%'
+    );
     fireEvent.blur(pageElements.delayWhenEnters.getDelayTextBox());
 
     expect(
@@ -182,5 +205,7 @@ describe('enters viewport event view', () => {
         .getDelayTextBox()
         .hasAttribute('aria-invalid')
     ).toBeFalse();
+
+    expect(extensionBridge.getSettings().delay).toBe('%Data Element 1%');
   });
 });

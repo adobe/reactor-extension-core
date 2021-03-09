@@ -11,6 +11,7 @@
  ****************************************************************************************/
 
 import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { sharedTestingElements } from '@test-helpers/react-testing-library';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import Hover, { formConfig } from '../hover';
@@ -67,7 +68,7 @@ describe('hover event view', () => {
     ).toBe('true');
   });
 
-  it('sets form values from settings', () => {
+  it('sets form values from settings (non-data element delay)', () => {
     extensionBridge.init({
       settings: {
         elementSelector: '.foo',
@@ -80,7 +81,9 @@ describe('hover event view', () => {
       sharedTestingElements.elementsMatching.getCssSelectorTextBox().value
     ).toBe('.foo');
 
-    fireEvent.click(pageElements.delayHover.radioGroup.getAfterDelay());
+    expect(
+      pageElements.delayHover.radioGroup.getAfterDelay().checked
+    ).toBeTrue();
     expect(pageElements.delayHover.getDelayTextBox().value).toBe('100');
 
     fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
@@ -89,18 +92,40 @@ describe('hover event view', () => {
     ).toBe('true');
   });
 
-  it('sets settings from form values', () => {
-    fireEvent.change(
-      sharedTestingElements.elementsMatching.getCssSelectorTextBox(),
-      {
-        target: { value: '.foo' }
+  it('sets form values from settings (non-data element delay)', () => {
+    extensionBridge.init({
+      settings: {
+        elementSelector: '.foo',
+        delay: '%Data Element 1%',
+        bubbleStop: true
       }
+    });
+
+    expect(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox().value
+    ).toBe('.foo');
+
+    expect(
+      pageElements.delayHover.radioGroup.getAfterDelay().checked
+    ).toBeTrue();
+    expect(pageElements.delayHover.getDelayTextBox().value).toBe(
+      '%Data Element 1%'
+    );
+
+    fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
+    expect(
+      sharedTestingElements.advancedSettings.getBubbleStopCheckBox().value
+    ).toBe('true');
+  });
+
+  it('sets settings from form values', () => {
+    userEvent.type(
+      sharedTestingElements.elementsMatching.getCssSelectorTextBox(),
+      '.foo'
     );
 
     fireEvent.click(pageElements.delayHover.radioGroup.getAfterDelay());
-    fireEvent.change(pageElements.delayHover.getDelayTextBox(), {
-      target: { value: '100' }
-    });
+    userEvent.type(pageElements.delayHover.getDelayTextBox(), '100');
 
     fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
     fireEvent.click(
@@ -151,9 +176,7 @@ describe('hover event view', () => {
     fireEvent.click(pageElements.delayHover.radioGroup.getAfterDelay());
 
     fireEvent.focus(pageElements.delayHover.getDelayTextBox());
-    fireEvent.change(pageElements.delayHover.getDelayTextBox(), {
-      target: { value: '0' }
-    });
+    userEvent.type(pageElements.delayHover.getDelayTextBox(), '0');
     fireEvent.blur(pageElements.delayHover.getDelayTextBox());
 
     expect(
@@ -161,7 +184,7 @@ describe('hover event view', () => {
     ).toBeTruthy();
   });
 
-  it('The afterDelay input supports opening the data element modal', () => {
+  it('The hover afterDelay input supports opening the data element modal', () => {
     spyOn(extensionBridge, 'openDataElementSelector').and.callFake(() => {
       return Promise.resolve();
     });
@@ -171,17 +194,20 @@ describe('hover event view', () => {
     expect(extensionBridge.openDataElementSelector).toHaveBeenCalledTimes(1);
   });
 
-  it('afterDelay handles data element names just fine', () => {
+  it('hover afterDelay handles data element names just fine', () => {
     fireEvent.click(pageElements.delayHover.radioGroup.getAfterDelay());
 
     fireEvent.focus(pageElements.delayHover.getDelayTextBox());
-    fireEvent.change(pageElements.delayHover.getDelayTextBox(), {
-      target: { value: '%Data Element 1%' }
-    });
+    userEvent.type(
+      pageElements.delayHover.getDelayTextBox(),
+      '%Data Element 1%'
+    );
     fireEvent.blur(pageElements.delayHover.getDelayTextBox());
 
     expect(
       pageElements.delayHover.getDelayTextBox().getAttribute('aria-invalid')
     ).toBeFalsy();
+
+    expect(extensionBridge.getSettings().delay).toBe('%Data Element 1%');
   });
 });

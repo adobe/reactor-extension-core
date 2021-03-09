@@ -11,6 +11,7 @@
  ****************************************************************************************/
 
 import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import TimeOnPage, { formConfig } from '../timeOnPage';
 import bootstrap from '../../bootstrap';
@@ -51,9 +52,7 @@ describe('time on page event view', () => {
 
   it('sets settings from form values', () => {
     fireEvent.focus(pageElements.timeOnPage.getTextBox());
-    fireEvent.change(pageElements.timeOnPage.getTextBox(), {
-      target: { value: '55' }
-    });
+    userEvent.type(pageElements.timeOnPage.getTextBox(), '55');
     fireEvent.blur(pageElements.timeOnPage.getTextBox());
     expect(
       pageElements.timeOnPage.getTextBox().hasAttribute('aria-invalid')
@@ -74,9 +73,7 @@ describe('time on page event view', () => {
 
   it('sets error if timeOnPage value is not a number', () => {
     fireEvent.focus(pageElements.timeOnPage.getTextBox());
-    fireEvent.change(pageElements.timeOnPage.getTextBox(), {
-      target: { value: '12.abc' }
-    });
+    userEvent.type(pageElements.timeOnPage.getTextBox(), '12.abc');
     fireEvent.blur(pageElements.timeOnPage.getTextBox());
     expect(
       pageElements.timeOnPage.getTextBox().hasAttribute('aria-invalid')
@@ -91,9 +88,7 @@ describe('time on page event view', () => {
     ).toBeFalse();
 
     fireEvent.focus(pageElements.timeOnPage.getTextBox());
-    fireEvent.change(pageElements.timeOnPage.getTextBox(), {
-      target: { value: '0' }
-    });
+    userEvent.type(pageElements.timeOnPage.getTextBox(), '0');
     fireEvent.blur(pageElements.timeOnPage.getTextBox());
 
     expect(
@@ -112,13 +107,13 @@ describe('time on page event view', () => {
 
   it('timeOnPage handles data element names just fine', () => {
     fireEvent.focus(pageElements.timeOnPage.getTextBox());
-    fireEvent.change(pageElements.timeOnPage.getTextBox(), {
-      target: { value: '%Data Element 1%' }
-    });
+    userEvent.type(pageElements.timeOnPage.getTextBox(), '%Data Element 1%');
     fireEvent.blur(pageElements.timeOnPage.getTextBox());
 
     expect(
       pageElements.timeOnPage.getTextBox().hasAttribute('aria-invalid')
     ).toBeFalse();
+
+    expect(extensionBridge.getSettings().timeOnPage).toBe('%Data Element 1%');
   });
 });

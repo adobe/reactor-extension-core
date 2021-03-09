@@ -11,7 +11,11 @@
  ****************************************************************************************/
 
 import { render, fireEvent, screen } from '@testing-library/react';
-import { sharedTestingElements } from '@test-helpers/react-testing-library';
+import userEvent from '@testing-library/user-event';
+import {
+  simulate,
+  sharedTestingElements
+} from '@test-helpers/react-testing-library';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import Click, { formConfig } from '../click';
 import bootstrap from '../../bootstrap';
@@ -103,11 +107,9 @@ describe('click event view', () => {
     fireEvent.focus(
       sharedTestingElements.elementsMatching.getCssSelectorTextBox()
     );
-    fireEvent.change(
+    userEvent.type(
       sharedTestingElements.elementsMatching.getCssSelectorTextBox(),
-      {
-        target: { value: '.foo' }
-      }
+      '.foo'
     );
     fireEvent.blur(
       sharedTestingElements.elementsMatching.getCssSelectorTextBox()
@@ -120,9 +122,8 @@ describe('click event view', () => {
 
     fireEvent.click(pageElements.linkDelay.getCheckBox());
     fireEvent.focus(pageElements.linkDelay.getTextBox());
-    fireEvent.change(pageElements.linkDelay.getTextBox(), {
-      target: { value: '101' }
-    });
+    simulate.clear(pageElements.linkDelay.getTextBox());
+    userEvent.type(pageElements.linkDelay.getTextBox(), '101');
     fireEvent.blur(pageElements.linkDelay.getTextBox());
     expect(
       pageElements.linkDelay.getTextBox().hasAttribute('aria-invalid')
@@ -160,9 +161,7 @@ describe('click event view', () => {
 
     fireEvent.click(pageElements.linkDelay.getCheckBox());
     fireEvent.focus(pageElements.linkDelay.getTextBox());
-    fireEvent.change(pageElements.linkDelay.getTextBox(), {
-      target: { value: '' }
-    });
+    simulate.clear(pageElements.linkDelay.getTextBox());
     fireEvent.blur(pageElements.linkDelay.getTextBox());
 
     expect(
@@ -180,6 +179,8 @@ describe('click event view', () => {
     expect(
       pageElements.linkDelay.getTextBox().getAttribute('aria-invalid')
     ).toBeFalsy();
+
+    expect(extensionBridge.getSettings().anchorDelay).toBe(100);
   });
 
   it('sets validation error when the number < 1', () => {
@@ -190,9 +191,8 @@ describe('click event view', () => {
     ).toBeFalse();
 
     fireEvent.focus(pageElements.linkDelay.getTextBox());
-    fireEvent.change(pageElements.linkDelay.getTextBox(), {
-      target: { value: '0' }
-    });
+    simulate.clear(pageElements.linkDelay.getTextBox());
+    userEvent.type(pageElements.linkDelay.getTextBox(), '0');
     fireEvent.blur(pageElements.linkDelay.getTextBox());
 
     expect(
@@ -214,14 +214,15 @@ describe('click event view', () => {
     fireEvent.click(pageElements.linkDelay.getCheckBox());
 
     fireEvent.focus(pageElements.linkDelay.getTextBox());
-    fireEvent.change(pageElements.linkDelay.getTextBox(), {
-      target: { value: '%Data Element 1%' }
-    });
+    simulate.clear(pageElements.linkDelay.getTextBox());
+    userEvent.type(pageElements.linkDelay.getTextBox(), '%Data Element 1%');
     fireEvent.blur(pageElements.linkDelay.getTextBox());
 
     expect(
       pageElements.linkDelay.getTextBox().hasAttribute('aria-invalid')
     ).toBeFalse();
+
+    expect(extensionBridge.getSettings().anchorDelay).toBe('%Data Element 1%');
   });
 
   describe('deprecation warning', () => {
