@@ -65,6 +65,18 @@ describe('time on page event delegate', function () {
     });
   });
 
+  it('triggers rule when timeOnPage is a string', function () {
+    var trigger = jasmine.createSpy('timeOnPageTrigger');
+
+    delegate({ timeOnPage: '2' }, trigger);
+    jasmine.clock().tick(2000);
+
+    var call = trigger.calls.mostRecent();
+    expect(call.args[0]).toEqual({
+      timeOnPage: 2
+    });
+  });
+
   if (!isIE() || isIE() > 9) {
     it('stops the timer on tab blur', function () {
       spyOn(Timer.prototype, 'pause');

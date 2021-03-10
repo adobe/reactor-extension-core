@@ -19,6 +19,8 @@ var debounce = require('./helpers/debounce');
 var enableWeakMapDefaultValue = require('./helpers/enableWeakMapDefaultValue');
 var matchesSelector = require('./helpers/matchesSelector');
 var matchesProperties = require('./helpers/matchesProperties');
+var castToNumberIfString = require('../helpers/stringAndNumberUtils')
+  .castToNumberIfString;
 
 var POLL_INTERVAL = 3000;
 var DEBOUNCE_DELAY = 200;
@@ -266,7 +268,7 @@ if (isIE10) {
  * @param {string} settings.elementProperties[].value The property value.
  * @param {boolean} [settings.elementProperties[].valueIsRegex=false] Whether <code>value</code>
  * on the object instance is intended to be a regular expression.
- * @param {number} [settings.delay] The number of milliseconds the element must be
+ * @param {number|string} [settings.delay] The number of milliseconds the element must be
  * within the viewport before declaring that the event has occurred.
  * @param {ruleTrigger} trigger The trigger callback.
  */
@@ -277,6 +279,7 @@ module.exports = function (settings, trigger) {
     listeners = listenersBySelector[settings.elementSelector] = [];
   }
 
+  settings.delay = castToNumberIfString(settings.delay);
   listeners.push({
     settings: settings,
     trigger: trigger

@@ -14,6 +14,8 @@
 
 var bubbly = require('./helpers/createBubbly')();
 var WeakMap = require('./helpers/weakMap');
+var castToNumberIfString = require('../helpers/stringAndNumberUtils')
+  .castToNumberIfString;
 var lastTriggeredByElement = new WeakMap();
 
 var relevantMarkers = [];
@@ -79,7 +81,7 @@ document.addEventListener('timeupdate', handleTimeUpdate, true);
  * @param {string} settings.elementProperties[].value The property value.
  * @param {boolean} [settings.elementProperties[].valueIsRegex=false] Whether <code>value</code>
  * on the object instance is intended to be a regular expression.
- * @param {number} settings.amount The amount of time the media must be played before
+ * @param {number|string} settings.amount The amount of time the media must be played before
  * this event is fired. This value may either be number of seconds (20 for 20 seconds) or a
  * percent value (20 for 20%).
  * @param {timePlayedUnit} settings.unit The unit of duration measurement.
@@ -92,25 +94,28 @@ document.addEventListener('timeupdate', handleTimeUpdate, true);
  * @param {ruleTrigger} trigger The trigger callback.
  */
 module.exports = function (settings, trigger) {
+  var amount = castToNumberIfString(settings.amount);
+
   var doesMarkerMatch = function (marker) {
-    return marker.amount === settings.amount && marker.unit === settings.unit;
+    return marker.amount === amount && marker.unit === settings.unit;
   };
 
   var markerRegistered = relevantMarkers.some(doesMarkerMatch);
 
   if (!markerRegistered) {
     relevantMarkers.push({
-      amount: settings.amount,
+      amount: amount,
       unit: settings.unit
     });
   }
 
   bubbly.addListener(settings, function (syntheticEvent) {
+    var amount = castToNumberIfString(settings.amount);
     // Bubbling for this event is dependent upon the amount and unit configured for rules.
     // An event can "bubble up" to other rules with the same amount and unit but not to rules with
     // a different amount or unit. See the tests for how this plays out.
     if (
-      syntheticEvent.amount === settings.amount &&
+      syntheticEvent.amount === amount &&
       syntheticEvent.unit === settings.unit
     ) {
       trigger(syntheticEvent);

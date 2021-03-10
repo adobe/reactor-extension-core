@@ -300,6 +300,21 @@ describe('click event delegate', function () {
       expect(defaultPrevented).toBe(true);
     });
 
+    it('delays navigation if anchorDelay is a string', function () {
+      link.setAttribute('target', '_top');
+
+      delegate(
+        {
+          anchorDelay: '100'
+        },
+        triggerSpy
+      );
+
+      link.click();
+
+      expect(defaultPrevented).toBe(true);
+    });
+
     it('does not delay navigation if the link has target=_parent', function () {
       link.setAttribute('target', '_parent');
 
