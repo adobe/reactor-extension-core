@@ -66,6 +66,40 @@ describe('hover event delegate', function () {
     liveQuerySelector.__reset();
   });
 
+  it(
+    'can properly parse settings.delay when it is a string ' +
+      '(from data element value)',
+    function () {
+      var trigger = jasmine.createSpy();
+
+      delegate(
+        {
+          elementSelector: '#a',
+          bubbleFireIfParent: true,
+          bubbleFireIfChildFired: true,
+          bubbleStop: false,
+          delay: '1000'
+        },
+        trigger
+      );
+
+      jasmine.clock().tick(POLL_INTERVAL);
+
+      Simulate.mouseenter(aElement);
+
+      jasmine.clock().tick(1100);
+
+      expect(trigger.calls.count()).toEqual(1);
+
+      assertTriggerCall({
+        call: trigger.calls.mostRecent(),
+        element: aElement,
+        target: aElement,
+        delay: 1000 // the string was properly parsed to a number
+      });
+    }
+  );
+
   it('triggers multiple rules with no delay targeting nested elements', function () {
     var aTrigger = jasmine.createSpy();
     var bTrigger = jasmine.createSpy();

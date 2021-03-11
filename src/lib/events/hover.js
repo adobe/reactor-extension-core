@@ -17,6 +17,8 @@ var liveQuerySelector = require('./helpers/liveQuerySelector');
 var matchesProperties = require('./helpers/matchesProperties');
 var WeakMap = require('./helpers/weakMap');
 var trackedDelaysByElement = new WeakMap();
+var castToNumberIfString = require('../helpers/stringAndNumberUtils')
+  .castToNumberIfString;
 
 /**
  * After a mouseenter has occurred, waits a given amount of time before declaring that a hover
@@ -81,7 +83,7 @@ var watchElement = function (element, trackedDelays) {
  * @param {string} settings.elementProperties[].value The property value.
  * @param {boolean} [settings.elementProperties[].valueIsRegex=false] Whether <code>value</code>
  * on the object instance is intended to be a regular expression.
- * @param {number} [settings.delay] The number of milliseconds the pointer must be on
+ * @param {number|string} [settings.delay] The number of milliseconds the pointer must be on
  * top of the element before declaring that a hover has occurred.
  * @param {boolean} [settings.bubbleFireIfParent=true] Whether the rule should fire
  * if the event originated from a descendant element.
@@ -92,7 +94,8 @@ var watchElement = function (element, trackedDelays) {
  * @param {ruleTrigger} trigger The trigger callback.
  */
 module.exports = function (settings, trigger) {
-  var delay = settings.delay || 0;
+  // if settings.delay can't be parsed, fall back to no delay
+  var delay = castToNumberIfString(settings.delay) || 0;
 
   bubbly.addListener(settings, function (syntheticEvent) {
     // Bubbling for this event is dependent upon the delay configured for rules.

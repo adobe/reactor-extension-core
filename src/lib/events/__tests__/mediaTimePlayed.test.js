@@ -217,6 +217,83 @@ describe('media time played event delegate', function () {
   );
 
   it(
+    'triggers multiple rules with the same amount using second unit targeting ' +
+      'nested elements (as strings)',
+    function () {
+      var aTrigger = jasmine.createSpy();
+      var bTrigger = jasmine.createSpy();
+
+      delegate(
+        {
+          elementSelector: '#a',
+          amount: '5',
+          unit: 'second',
+          bubbleFireIfParent: true,
+          bubbleFireIfChildFired: true,
+          bubbleStop: false
+        },
+        aTrigger
+      );
+
+      delegate(
+        {
+          elementSelector: '#b',
+          amount: '5',
+          unit: 'second',
+          bubbleFireIfParent: true,
+          bubbleFireIfChildFired: true,
+          bubbleStop: false
+        },
+        bTrigger
+      );
+
+      expect(aTrigger.calls.count()).toEqual(0);
+      expect(bTrigger.calls.count()).toEqual(0);
+
+      var seekable = {
+        start: function () {
+          return 30;
+        },
+        end: function () {
+          return 100;
+        },
+        length: 1
+      };
+
+      bElement.seekable = seekable;
+      bElement.currentTime = 34;
+
+      Simulate.timeupdate(bElement);
+
+      expect(aTrigger.calls.count()).toEqual(0);
+      expect(bTrigger.calls.count()).toEqual(0);
+
+      bElement.currentTime = 35;
+
+      Simulate.timeupdate(bElement);
+
+      expect(aTrigger.calls.count()).toEqual(1);
+      expect(bTrigger.calls.count()).toEqual(1);
+
+      assertTriggerCall({
+        call: aTrigger.calls.first(),
+        element: aElement,
+        target: bElement,
+        amount: 5,
+        unit: 'second'
+      });
+
+      assertTriggerCall({
+        call: bTrigger.calls.first(),
+        element: bElement,
+        target: bElement,
+        amount: 5,
+        unit: 'second'
+      });
+    }
+  );
+
+  it(
     'triggers multiple rules with the different amounts using second unit targeting nested ' +
       'elements',
     function () {

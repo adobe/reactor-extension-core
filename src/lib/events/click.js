@@ -17,6 +17,8 @@ var bubbly = require('./helpers/createBubbly')();
 var WeakMap = require('./helpers/weakMap');
 var evaluatedEvents = new WeakMap();
 var MIDDLE_MOUSE_BUTTON = 2;
+var castToNumberIfString = require('../helpers/stringAndNumberUtils')
+  .castToNumberIfString;
 
 /**
  * Determines whether an element is a link that would navigate the user's current window to a
@@ -67,7 +69,7 @@ document.addEventListener('click', bubbly.evaluateEvent, true);
  * for the rule to fire.
  * @param {string} settings.elementProperties[].name - The property name.
  * @param {string} settings.elementProperties[].value - The property value.
- * @param {number} [settings.anchorDelay] - When present and a link is clicked, actual
+ * @param {number|string} [settings.anchorDelay] - When present and a link is clicked, actual
  * navigation will be postponed for a period of time equal with its value. This is typically used to
  * allow time for scripts within the rule to execute, beacons to be sent to servers, etc.
  * @param {boolean} settings.elementProperties[].valueIsRegex=false - Whether <code>value</code>
@@ -96,14 +98,15 @@ module.exports = function (settings, trigger) {
       return;
     }
 
-    if (settings.anchorDelay) {
+    var anchorDelay = castToNumberIfString(settings.anchorDelay);
+    if (anchorDelay) {
       if (!evaluatedEvents.has(nativeEvent)) {
         var delayableLink = getDelayableLink(nativeEvent);
         if (delayableLink) {
           nativeEvent.preventDefault();
           setTimeout(function () {
             window.location = delayableLink.href;
-          }, settings.anchorDelay);
+          }, anchorDelay);
         }
         evaluatedEvents.set(nativeEvent, true);
       }

@@ -170,6 +170,33 @@ describe('enters viewport event delegate', function () {
       expect(a2Trigger.calls.count()).toEqual(1);
     });
 
+    it('handles settings.delay as a string', function () {
+      var trigger = jasmine.createSpy();
+
+      delegate(
+        {
+          elementSelector: 'div',
+          elementProperties: [
+            {
+              name: 'customProp',
+              value: 'foo'
+            }
+          ],
+          delay: '100'
+        },
+        trigger
+      );
+
+      jasmine.clock().tick(POLL_INTERVAL);
+
+      assertTriggerCall({
+        call: trigger.calls.first(),
+        element: aElement,
+        target: aElement,
+        delay: 100
+      });
+    });
+
     it('triggers multiple rules targeting the same element with same delay', function () {
       var aTrigger = jasmine.createSpy();
       var a2Trigger = jasmine.createSpy();

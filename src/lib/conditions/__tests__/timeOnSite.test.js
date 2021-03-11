@@ -36,6 +36,15 @@ describe('time on site condition delegate', function () {
     expect(conditionDelegate(settings)).toBe(true);
   });
 
+  it(
+    'returns true when number of minutes is above "greater than" ' +
+      'constraint (as a string)',
+    function () {
+      var settings = getSettings('4', '>');
+      expect(conditionDelegate(settings)).toBe(true);
+    }
+  );
+
   it('returns false when number of minutes is below "greater than" constraint', function () {
     var settings = getSettings(6, '>');
     expect(conditionDelegate(settings)).toBe(false);
@@ -45,6 +54,15 @@ describe('time on site condition delegate', function () {
     var settings = getSettings(6, '<');
     expect(conditionDelegate(settings)).toBe(true);
   });
+
+  it(
+    'returns true when number of minutes is below "less than" constraint ' +
+      '(as a string)',
+    function () {
+      var settings = getSettings('6', '<');
+      expect(conditionDelegate(settings)).toBe(true);
+    }
+  );
 
   it('returns false when number of minutes is above "less than" constraint', function () {
     var settings = getSettings(4, '<');

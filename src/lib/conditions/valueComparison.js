@@ -13,24 +13,15 @@
 /*eslint eqeqeq:0*/
 'use strict';
 
-var isNumber = function (value) {
-  return typeof value === 'number' && isFinite(value); // isFinite weeds out NaNs.
-};
-
-var isString = function (value) {
-  return typeof value === 'string' || value instanceof String;
-};
+var isString = require('../helpers/stringAndNumberUtils').isString;
+var isNumber = require('../helpers/stringAndNumberUtils').isNumber;
+var castToStringIfNumber = require('../helpers/stringAndNumberUtils')
+  .castToStringIfNumber;
+var castToNumberIfString = require('../helpers/stringAndNumberUtils')
+  .castToNumberIfString;
 
 var updateCase = function (operand, caseInsensitive) {
   return caseInsensitive && isString(operand) ? operand.toLowerCase() : operand;
-};
-
-var castToStringIfNumber = function (operand) {
-  return isNumber(operand) ? String(operand) : operand;
-};
-
-var castToNumberIfString = function (operand) {
-  return isString(operand) ? Number(operand) : operand;
 };
 
 var guardStringCompare = function (compare) {

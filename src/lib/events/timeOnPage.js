@@ -15,6 +15,8 @@ var document = require('@adobe/reactor-document');
 var once = require('./helpers/once');
 var visibilityApi = require('./helpers/visibilityApi')();
 var Timer = require('./helpers/timer');
+var castToNumberIfString = require('../helpers/stringAndNumberUtils')
+  .castToNumberIfString;
 
 var hiddenProperty = visibilityApi.hiddenProperty;
 var visibilityChangeEventType = visibilityApi.visibilityChangeEventType;
@@ -56,13 +58,13 @@ var setupTimer = once(function () {
  * passes the provided markers. The timer will be paused whenever the user will switch to another
  * tab and it will be resumed when the user returns back to the tab.
  * @param {Object} settings The event settings object.
- * @param {number} settings.timeOnPage The number of seconds the user must be on the page
+ * @param {number|string} settings.timeOnPage The number of seconds the user must be on the page
  * before the rule is triggered.
  * @param {ruleTrigger} trigger The trigger callback.
  */
 module.exports = function (settings, trigger) {
   var timer = setupTimer();
-  var timeOnPageMilliseconds = settings.timeOnPage * 1000;
+  var timeOnPageMilliseconds = castToNumberIfString(settings.timeOnPage) * 1000;
 
   timer.addMarker(timeOnPageMilliseconds);
 
