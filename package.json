@@ -92,5 +92,8 @@
   },
   "resolutions": {
     "@react/collection-view": "file:react-collection-view-4.1.5.tgz"
+  },
+  "engines": {
+    "node": ">=12.13.0"
   }
 }

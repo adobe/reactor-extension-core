@@ -7,7 +7,7 @@ This is the Core extension for [Adobe Experience Platform Launch](https://www.ad
 
 ## Contributing
 
-Contributions are welcomed! Read the [Contributing Guide](CONTRIBUTING.md) for more information about how our community works.
+Contributions are welcomed! Read the [Contributing Guide](.github/CONTRIBUTING.md) for more information about how our community works.
 
 1. [Install node.js](https://nodejs.org/).
 1. [Install Yarn](https://yarnpkg.com/en/docs/install).
