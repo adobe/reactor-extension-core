@@ -31,6 +31,7 @@ if (process.env.CI) {
 }
 
 if (process.env.SAUCE_USERNAME) {
+  console.log('>>>>>>PUSHING SAUCE REPORTER<<<<<<')
   reporters.push('saucelabs');
 }
 
