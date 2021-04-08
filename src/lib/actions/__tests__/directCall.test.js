@@ -24,19 +24,16 @@ describe('direct call action delegate', function () {
     });
 
     var settings = {
-      identifier: 'foo'
-    };
-
-    var event = {
-      prop: 'x'
+      identifier: 'foo',
+      payload: {bar: 'baz'}
     };
 
     // run the Action
-    delegate(settings, event);
+    delegate(settings, payload);
 
     // check that the Action has called _satellite.track() properly
     expect(mockWindow._satellite.track).toHaveBeenCalledWith('foo', {
-      prop: 'x'
+      bar: 'baz'
     });
   });
 });
