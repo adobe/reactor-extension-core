@@ -12,14 +12,28 @@
 
 import React from 'react';
 import FullWidthField from '../components/fullWidthField';
+import EditorButton from '../components/editorButton';
+import WrappedField from '../components/wrappedField';
 
 const DirectCall = () => (
-  <FullWidthField
-    label="Direct Call Identifier"
-    name="identifier"
-    containerMinWidth="size-6000"
-    isRequired
-  />
+  <>
+    <FullWidthField
+      label="Direct Call Identifier"
+      name="identifier"
+      containerMinWidth="size-6000"
+      isRequired
+    />
+
+    <p>
+      The code you provide in the editor will be added to the call as the event detail. It has to be valid JSON.
+    </p>
+
+    <WrappedField
+      name="payload"
+      component={EditorButton}
+      language="javascript"
+    />
+  </>
 );
 
 export default DirectCall;
@@ -44,6 +58,10 @@ export const formConfig = {
 
     if (!values.identifier) {
       errors.identifier = 'Please specify an identifier.';
+    }
+
+    if (!values.payload) {
+      errors.payload = 'Please provide custom script.';
     }
 
     return errors;
