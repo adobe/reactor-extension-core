@@ -19,7 +19,7 @@ export default ({ color = 'notice', children, ...containerProps }) => (
       // for when spectrum views support color slot context...
       color={color}
     >
-      <Flex gap="size-100">
+      <Flex gap="size-100" UNSAFE_className="warning-container-content">
         <Alert
           aria-label="Alert"
           size="S"
