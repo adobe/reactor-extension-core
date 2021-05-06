@@ -12,11 +12,11 @@
 
 'use strict';
 
-var sequentiallyLoadCodePromiseInjector = require('inject-loader!../loadCodeSequentially');
 var Promise = require('@adobe/reactor-promise');
+var sequentiallyLoadCodePromise = require('../loadCodeSequentially');
 
-var sequentiallyLoadCodePromise = sequentiallyLoadCodePromiseInjector({
-  './getSourceByUrl': function (sourceUrl) {
+window._satellite = {
+  retrieveScript: function (sourceUrl) {
     if (sourceUrl === 'url1') {
       return new Promise(function (resolve) {
         setTimeout(function () {
@@ -27,7 +27,7 @@ var sequentiallyLoadCodePromise = sequentiallyLoadCodePromiseInjector({
       return Promise.resolve('url2 source code');
     }
   }
-});
+};
 
 describe('load code sequentially', function () {
   it('does the correct loaded order', function (done) {
