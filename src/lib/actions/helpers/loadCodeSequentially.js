@@ -13,13 +13,12 @@
 'use strict';
 
 var Promise = require('@adobe/reactor-promise');
-var getSourceByUrl = require('./getSourceByUrl');
 
 var previousExecuteCodePromise = Promise.resolve();
 
 module.exports = function (sourceUrl) {
   var sequentiallyLoadCodePromise = new Promise(function (resolve) {
-    var loadCodePromise = getSourceByUrl(sourceUrl);
+    var loadCodePromise = window._satellite.retrieveScript(sourceUrl);
 
     Promise.all([loadCodePromise, previousExecuteCodePromise]).then(function (
       values
