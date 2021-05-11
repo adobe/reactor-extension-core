@@ -13,7 +13,7 @@
 import React from 'react';
 import { ActionButton } from '@adobe/react-spectrum';
 
-export default (props) => {
+export default React.forwardRef((props, ref) => {
   const { value, onChange, flags = 'i' } = props;
 
   const options = {
@@ -23,6 +23,7 @@ export default (props) => {
 
   return (
     <ActionButton
+      ref={ref}
       isQuiet
       onPress={() =>
         window.extensionBridge.openRegexTester(options).then(onChange)
@@ -31,4 +32,4 @@ export default (props) => {
       Test
     </ActionButton>
   );
-};
+});

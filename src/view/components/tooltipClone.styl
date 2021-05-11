@@ -1,0 +1,87 @@
+#spectrum-alternative-ToolTip-Root {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1000;
+
+  .spectrum-alternative-ToolTip {
+    position: absolute;
+    text-align: center;
+    color: var(--spectrum-global-color-static-white,#fff);
+    background-color: var(--spectrum-global-color-static-red-700,#c9252d)
+    border-radius: var(--spectrum-global-dimension-size-50);
+    opacity: 0;
+    width: 100px;
+    padding: var(--spectrum-global-dimension-size-50) var(--spectrum-global-dimension-size-125);
+    min-height: var(--spectrum-global-dimension-size-300);
+    font-size: var(--spectrum-global-dimension-font-size-75);
+    font-weight: var(--spectrum-global-font-weight-light, 300);
+    line-height: var(--spectrum-global-dimension-font-size-200);
+    word-break: break-word;
+    box-sizing: border-box;
+    cursor: default;
+    pointer-events: none;
+    font-family: adobe-clean-ux, adobe-clean, "Source Sans Pro", -apple-system, system-ui, "Segoe UI", Roboto, sans-serif;
+
+    &.is-open {
+      opacity: 1;
+    }
+
+    .arrow {
+      display: block;
+      position: absolute;
+      z-index: 100;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+
+      &:before {
+        content: '';
+        display: block;
+        width: 0;
+        height: 0;
+        position: absolute;
+      }
+
+      &.arrow-placement-top { // placement top points down
+        &:before {
+          border-top: 8px solid var(--spectrum-global-color-static-red-700,#c9252d);
+          border-left: 8px solid transparent;
+          border-right: 8px solid transparent;
+          left: calc(50% - 8px);
+          bottom: -8px;
+        }
+      }
+
+      &.arrow-placement-bottom { // placement bottom points up
+        &:before {
+          border-bottom: 8px solid var(--spectrum-global-color-static-red-700,#c9252d);
+          border-left: 8px solid transparent;
+          border-right: 8px solid transparent;
+          left: calc(50% - 8px);
+          top: -8px;
+        }
+      }
+
+      &.arrow-placement-right { // placement right points left
+        &:before {
+          border-top: 8px solid transparent;
+          border-bottom: 8px solid transparent;
+          border-right: 8px solid var(--spectrum-global-color-static-red-700,#c9252d);
+          left: -8px;
+          top: calc(50% - 8px);
+        }
+      }
+
+      &.arrow-placement-left { // placement left points right
+        &:before {
+          border-top: 8px solid transparent;
+          border-bottom: 8px solid transparent;
+          border-left: 8px solid var(--spectrum-global-color-static-red-700,#c9252d);
+          right: -8px;
+          top: calc(50% - 8px);
+        }
+      }
+    }
+  }
+}

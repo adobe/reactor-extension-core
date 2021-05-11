@@ -13,14 +13,17 @@ const onClick = ({ onChange, value, language }) => {
 
   window.extensionBridge.openCodeEditor(options).then(onChange);
 };
-export default ({ onChange, value, language, validationState }) => (
-  <Flex alignItems="center" gap="size-100">
-    <Button
-      variant={validationState === 'invalid' ? 'negative' : 'primary'}
-      onPress={() => onClick({ onChange, value, language })}
-    >
-      <Code />
-      <Text>Open Editor</Text>
-    </Button>
-  </Flex>
+export default React.forwardRef(
+  ({ onChange, value, language, validationState }, ref) => (
+    <Flex alignItems="center" gap="size-100">
+      <Button
+        variant={validationState === 'invalid' ? 'negative' : 'primary'}
+        onPress={() => onClick({ onChange, value, language })}
+        ref={ref}
+      >
+        <Code />
+        <Text>Open Editor</Text>
+      </Button>
+    </Flex>
+  )
 );

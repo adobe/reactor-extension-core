@@ -15,30 +15,36 @@ import WrappedField from './wrappedField';
 import RegexToggle from './regexToggle';
 import NoWrapText from './noWrapText';
 
-export default ({
-  component = TextField,
-  blankSpace = { width: 'size-1600' },
-  beginText,
-  regexName,
-  regexValueFieldName,
-  containerMinWidth,
-  children,
-  ...rest
-}) => (
-  <Flex alignItems="end" gap="size-100" minWidth={containerMinWidth}>
-    {beginText && <NoWrapText>{beginText}</NoWrapText>}
-    <View flex>
-      <WrappedField width="100%" component={component} {...rest}>
-        {children}
-      </WrappedField>
-    </View>
-    {regexName && regexValueFieldName && (
-      <WrappedField
-        name={regexName}
-        component={RegexToggle}
-        valueFieldName={regexValueFieldName}
-      />
-    )}
-    {blankSpace && <View {...blankSpace} />}
-  </Flex>
+export default React.forwardRef(
+  (
+    {
+      component = TextField,
+      blankSpace = { width: 'size-1600' },
+      beginText,
+      regexName,
+      regexValueFieldName,
+      containerMinWidth,
+      children,
+      ...rest
+    },
+    ref
+  ) => (
+    <Flex alignItems="end" gap="size-100" minWidth={containerMinWidth}>
+      {beginText && <NoWrapText>{beginText}</NoWrapText>}
+      <View flex>
+        <WrappedField width="100%" component={component} {...rest}>
+          {children}
+        </WrappedField>
+      </View>
+      {regexName && regexValueFieldName && (
+        <WrappedField
+          name={regexName}
+          component={RegexToggle}
+          valueFieldName={regexValueFieldName}
+          ref={ref}
+        />
+      )}
+      {blankSpace && <View {...blankSpace} />}
+    </Flex>
+  )
 );

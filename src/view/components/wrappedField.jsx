@@ -16,9 +16,11 @@ import React from 'react';
 import { Field } from 'redux-form';
 import { Checkbox, ActionButton, Flex, Picker } from '@adobe/react-spectrum';
 import { ComboBox } from '@react-spectrum/combobox';
-
 import Data from '@spectrum-icons/workflow/Data';
-import ValidationWrapper from './validationWrapper';
+import {
+  CoreExtensionToolTipTrigger,
+  CoreExtensionToolTip
+} from './tooltipClone';
 
 const addDataElementToken = (value, dataElementToken) =>
   `${value || ''}${dataElementToken}`;
@@ -79,35 +81,34 @@ class DecoratedInput extends React.Component {
       fieldComponentsProps.inputValue = input.value;
     }
 
+    const error = meta.touched && meta.error;
+
     return (
-      <ValidationWrapper
-        error={meta.touched && meta.error}
-        placement={
-          errorTooltipPlacement || (FieldComponent === ComboBox && 'bottom')
-        }
-      >
-        <Flex alignItems="end">
+      <Flex alignItems="end">
+        <CoreExtensionToolTipTrigger isDisabled={!error}>
           <FieldComponent {...fieldComponentsProps}>{children}</FieldComponent>
-          {supportDataElement || supportDataElementName ? (
-            <ActionButton
-              aria-label="Select a data element"
-              isQuiet
-              onPress={this.openDataElementSelector(supportDataElement)}
-            >
-              <Data />
-            </ActionButton>
-          ) : null}
-        </Flex>
-      </ValidationWrapper>
+          <CoreExtensionToolTip>{error}</CoreExtensionToolTip>
+        </CoreExtensionToolTipTrigger>
+        {supportDataElement || supportDataElementName ? (
+          <ActionButton
+            aria-label="Select a data element"
+            isQuiet
+            onPress={this.openDataElementSelector(supportDataElement)}
+          >
+            <Data />
+          </ActionButton>
+        ) : null}
+      </Flex>
     );
   }
 }
 
-export default ({ component: Component, ...rest }) => {
+const WrappedFieldWithRef = ({ component: Component, ...rest }, ref) => {
   const fieldProps = {
     component: DecoratedInput,
     fieldComponent: Component,
-    ...rest
+    ...rest,
+    ref
   };
 
   if (fieldProps.isRequired) {
@@ -122,3 +123,5 @@ export default ({ component: Component, ...rest }) => {
 
   return <Field {...fieldProps} />;
 };
+
+export default React.forwardRef(WrappedFieldWithRef);

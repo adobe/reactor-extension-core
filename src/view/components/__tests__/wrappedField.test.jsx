@@ -122,7 +122,7 @@ describe('wrapped field', () => {
       label: 'product',
       name: 'product',
       component: TextField,
-      errorTooltipPlacement: 'bottom'
+      errorTooltipPlacement: 'right'
     });
 
     expect(extensionBridge.validate()).toBe(false);
@@ -131,12 +131,10 @@ describe('wrapped field', () => {
     expect(inputComponent.hasAttribute('aria-invalid')).toBe(true);
 
     userEvent.hover(inputComponent);
-    userEvent.unhover(inputComponent);
-    userEvent.hover(inputComponent);
 
     const tooltip = await waitFor(() => screen.getByRole('tooltip'));
     within(tooltip).getByText(/bad things/i);
-    expect(elementIsPosition(tooltip, 'bottom')).toBe(true);
+    expect(elementIsPosition(tooltip, 'right')).toBe(true);
   });
 
   it('sets "type" on Field to "checkbox" when Checkbox component is used', () => {
@@ -181,6 +179,30 @@ describe('wrapped field', () => {
 
     expect(extensionBridge.getSettings()).toEqual({
       product: 'foo'
+    });
+  });
+
+  it('can gracefully support typing into fields with errors', () => {
+    renderComponent({
+      label: 'product',
+      name: 'product',
+      component: TextField
+    });
+
+    const getProductTextField = () =>
+      screen.getByRole('textbox', {
+        name: /product/i
+      });
+
+    // ensure an error first
+    fireEvent.focus(getProductTextField());
+    fireEvent.blur(getProductTextField());
+    expect(getProductTextField().hasAttribute('aria-invalid')).toBeTrue();
+
+    userEvent.type(getProductTextField(), 'some words');
+
+    expect(extensionBridge.getSettings()).toEqual({
+      product: 'some words'
     });
   });
 });
