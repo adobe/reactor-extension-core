@@ -18,7 +18,7 @@
  * @param {string} settings.attribute The attribute that should be returned.
  * @returns {string}
  */
-module.exports = function (settings) {
+module.exports = function (settings,event) {
       switch (settings.attribute) {
         case 'buildDate':
           return turbine.buildInfo.buildDate;
@@ -26,5 +26,15 @@ module.exports = function (settings) {
           return turbine.buildInfo.environment;
         case 'property':
           return _satellite.property.name;
+        case 'ruleName':
+          return event.$rule.name;
+        case 'ruleId':
+          return event.$rule.id;
+        case 'eventType':
+          return event.$type;
+        case 'eventDetail':
+          return event.detail;
+        case 'DCRIdentifier':
+          return event.identifier;
       }
 };

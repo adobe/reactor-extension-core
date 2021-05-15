@@ -26,6 +26,26 @@ const options = [
   {
     id: 'property',
     name: 'Property Name'
+  },
+  {
+    id: 'ruleName',
+    name: 'Rule Name'
+  },
+  {
+    id: 'ruleId',
+    name: 'Rule Id'
+  },
+  {
+    id: 'eventType',
+    name: 'Event Type'
+  },
+  {
+    id: 'eventDetail',
+    name: 'Event Detail Payload'
+  },
+  {
+    id: 'DCRIdentifier',
+    name: 'Direct Call Rule Identifier'
   }
 ];
 
