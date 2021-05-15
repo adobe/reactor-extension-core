@@ -17,7 +17,6 @@
  import RegexTestButton from '../components/regexTestButton';
  import WrappedField from '../components/wrappedField';
  import NoWrapText from '../components/noWrapText';
- import EditorButton from '../components/editorButton';
  import { isDataElementToken, isNumberLike } from '../utils/validators';
  
  const operators = {
@@ -25,12 +24,17 @@
   UPPERCASE_VALUE: 'uppercaseValue',
   LOWERCASE_VALUE: 'lowercaseValue',
   SUBSTRING: 'substring',
-  JOIN: 'join',
-  SPLIT: 'split',
   REGEX_REPLACE: 'regexReplace',
   SIMPLE_REPLACE: 'simpleReplace',
   REGEX_MATCH: 'regexMatch',
-  EVAL: "eval"
+  LENGTH: 'length',
+  INDEX_OF: 'indexOf',
+  LAST_INDEX_OF: 'lastIndexOf',
+  JOIN: 'join',
+  SPLIT: 'split',
+  ARRAY_POP: 'arrayPop',
+  ARRAY_SHIFT: 'arrayShift',
+  SLICE: 'slice'
  };
  
  const metaByOperator = {
@@ -58,21 +62,39 @@
      requiresMin: true,
      requiresMax: true
    },
-   [operators.JOIN]: {
-     label: 'Join Array',
-     requiresDelimiter: true
-   },
-   [operators.SPLIT]: {
-     label: 'Split to Array',
-     requiresDelimiter: true
-   },
    [operators.REGEX_MATCH]: {
      label: 'Extract Value with Regex',
      requiresRegex: true
    },
-   [operators.EVAL]: {
-     label: 'Eval',
-     requiresCode: true
+   [operators.LENGTH]: {
+     label: 'Length of String or Array'
+   },
+   [operators.INDEX_OF]: {
+     label: 'First index of character in string',
+     requiresSearchValue: true
+   },
+   [operators.LAST_INDEX_OF]: {
+     label: 'Last index of character in string',
+     requiresSearchValue: true
+   },
+   [operators.JOIN]: {
+    label: 'Join Array',
+    requiresDelimiter: true
+  },
+  [operators.SPLIT]: {
+    label: 'Split to Array',
+    requiresDelimiter: true
+  },
+   [operators.ARRAY_POP]: {
+     label: 'Array Pop'
+   },
+   [operators.ARRAY_SHIFT]: {
+     label: 'Array Shift'
+   },
+   [operators.SLICE]: {
+     label: 'Array or String Slice',
+     requiresMin: true,
+     requiresMax: true
    }
  };
  
@@ -169,6 +191,19 @@
       </Flex>
  </>)
 }
+if (metaByOperator[operator].requiresSearchValue) {
+  return (<>
+  <Flex gap="size-100">
+    <WrappedField
+        label="Search Value"
+        name="search"
+        component={TextField}
+        width="size-3000"
+        supportDataElement
+      />
+ </Flex>
+ </>)
+}
  if (metaByOperator[operator].requiresMax) {
   return (<>
   <Flex gap="size-100">
@@ -192,24 +227,6 @@
 };
 
  const JSTools = ({ operator, ...rest }) => {
-  if (metaByOperator[operator].requiresCode) {
-    return (<>
-    <NoWrapText>Apply simple JavaScript Operations</NoWrapText>
-      <Flex gap="size-100">
-       <WrappedField
-         width="size-3000"
-         name="operator"
-         label="Function"
-         component={Picker}
-         items={operatorOptions}
-       >
-         {(item) => <Item>{item.name}</Item>}
-       </WrappedField>
-       <WrappedField name="sourceCode" component={EditorButton} />
-     </Flex>
-   </>)
-  }
-  else{
     return(
    <Flex gap="size-100" direction="column">
     <NoWrapText>Apply simple JavaScript Operations</NoWrapText>
@@ -233,7 +250,7 @@
      <RegexFields operator={operator} {...rest} />
      <OtherFields operator={operator} {...rest} />
    </Flex>)
-  }
+  
  };
  
  const valueSelector = formValueSelector('default');
@@ -259,7 +276,6 @@
        replacement: settings.replacement || '',
        delimiter: settings.delimiter || '',
        caseInsensitive: settings.caseInsensitive || '',
-       sourceCode: settings.sourceCode || '',
        replaceAll: settings.replaceAll || '',
      };
    },
@@ -291,10 +307,6 @@
 
     if (operatorMeta.requiresSearchValue) {
       settings.search = values.search;
-    }
-
-    if (operatorMeta.requiresCode) {
-      settings.sourceCode = values.sourceCode;
     }
 
     if (operatorMeta.requiresMin && operatorMeta.requiresMax) {
@@ -336,24 +348,17 @@
       ) {
         errors.search = 'Please specify a value to search for';
       }
-
-      if (
-        operatorMeta.requiresCode &&
-        (!values.sourceCode || values.sourceCode.length>500)
-      ) {
-        errors.sourceCode = 'Please specify a script no longer than 500 characters';
-      }
  
-       if (
-         operatorMeta.requiresMin && operatorMeta.requiresMax
-       ) {
-        if (values.stringStart && !isNumberLike(values.stringStart)) {
-          errors.stringStart = 'Please specify a number';
-        }
-        if (values.stringEnd && !isNumberLike(values.stringEnd)) {
-          errors.stringEnd = 'Please specify a number';
-        }
-       }
+      if (
+        operatorMeta.requiresMin && operatorMeta.requiresMax
+      ) {
+      if (values.stringStart && !isNumberLike(values.stringStart)) {
+        errors.stringStart = 'Please specify a number';
+      }
+      if (values.stringEnd && !isNumberLike(values.stringEnd)) {
+        errors.stringEnd = 'Please specify a number';
+      }
+      }
      }
  
      return errors;

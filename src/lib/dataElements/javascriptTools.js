@@ -18,7 +18,7 @@
  * @param {string} settings.operator The attribute that contains the desired operation.
  * @returns {string}
  */
-module.exports = function (settings) {
+module.exports = function (settings,event) {
       switch (settings.operator) {
         case 'substring':
           return settings.sourceValue.substring((settings.stringStart!=''?settings.stringStart:undefined),(settings.stringEnd!=''?settings.stringEnd:undefined));
@@ -34,13 +34,23 @@ module.exports = function (settings) {
         case 'regexMatch':
           var re = new RegExp(settings.regexInput, (settings.caseInsensitive?"i":""));
           return settings.sourceValue.match(re)[1];
-        case 'eval':
-          return eval(settings.sourceCode);
         case 'capitalizeValue':
           return settings.sourceValue.charAt(0).toUpperCase() + settings.sourceValue.slice(1);;
         case 'uppercaseValue':
           return settings.sourceValue.toUpperCase();
         case 'lowercaseValue':
           return settings.sourceValue.toLowerCase();
+        case 'length':
+          return settings.sourceValue.length;
+        case 'indexOf':
+          return settings.sourceValue.indexOf(settings.search);
+        case 'lastIndexOf':
+          return settings.sourceValue.lastIndexOf(settings.search);
+        case 'arrayPop':
+          return settings.sourceValue.pop();
+        case 'arrayShift':
+          return settings.sourceValue.shift();
+        case 'slice':
+          return settings.sourceValue.slice((settings.stringStart!=''?settings.stringStart:undefined),(settings.stringEnd!=''?settings.stringEnd:undefined));
       }
 };
