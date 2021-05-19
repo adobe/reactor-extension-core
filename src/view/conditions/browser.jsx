@@ -11,8 +11,9 @@
  ****************************************************************************************/
 
 import React from 'react';
-import { Checkbox, CheckboxGroup } from '@adobe/react-spectrum';
+import { Flex, Checkbox, CheckboxGroup } from '@adobe/react-spectrum';
 import WrappedField from '../components/wrappedField';
+import WarningContainer from '../components/warningContainer';
 
 const browserOptions = [
   'Chrome',
@@ -24,13 +25,18 @@ const browserOptions = [
 ];
 
 const Browser = () => (
-  <WrappedField label="Browsers" name="browsers" component={CheckboxGroup}>
-    {browserOptions.map((o) => (
-      <Checkbox value={o} key={o}>
-        {o}
-      </Checkbox>
-    ))}
-  </WrappedField>
+  <Flex gap="size-100" direction="column">
+    <WarningContainer>
+      This condition type is no longer supported. Please avoid its use.
+    </WarningContainer>
+    <WrappedField label="Browsers" name="browsers" component={CheckboxGroup}>
+      {browserOptions.map((o) => (
+        <Checkbox value={o} key={o}>
+          {o}
+        </Checkbox>
+      ))}
+    </WrappedField>
+  </Flex>
 );
 
 export default Browser;

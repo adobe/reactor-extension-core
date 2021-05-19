@@ -11,8 +11,9 @@
  ****************************************************************************************/
 
 import React from 'react';
-import { CheckboxGroup, Checkbox } from '@adobe/react-spectrum';
+import { Flex, CheckboxGroup, Checkbox } from '@adobe/react-spectrum';
 import WrappedField from '../components/wrappedField';
+import WarningContainer from '../components/warningContainer';
 
 const operatingSystemOptions = [
   'Windows',
@@ -24,18 +25,23 @@ const operatingSystemOptions = [
 ];
 
 const OperatingSystem = () => (
-  <WrappedField
-    label="Operating Systems"
-    name="operatingSystems"
-    component={CheckboxGroup}
-    options={operatingSystemOptions}
-  >
-    {operatingSystemOptions.map((o) => (
-      <Checkbox value={o} key={o}>
-        {o}
-      </Checkbox>
-    ))}
-  </WrappedField>
+  <Flex gap="size-100" direction="column">
+    <WarningContainer>
+      This condition type is no longer supported. Please avoid its use.
+    </WarningContainer>
+    <WrappedField
+      label="Operating Systems"
+      name="operatingSystems"
+      component={CheckboxGroup}
+      options={operatingSystemOptions}
+    >
+      {operatingSystemOptions.map((o) => (
+        <Checkbox value={o} key={o}>
+          {o}
+        </Checkbox>
+      ))}
+    </WrappedField>
+  </Flex>
 );
 
 export default OperatingSystem;

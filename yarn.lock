@@ -126,10 +126,10 @@
   dependencies:
     querystring "0.2.0"
 
-"@adobe/reactor-sandbox@^11.1.6":
-  version "11.1.6"
-  resolved "https://registry.yarnpkg.com/@adobe/reactor-sandbox/-/reactor-sandbox-11.1.6.tgz#cadc880e9c73ce5ac5976b8cf3663763b8696630"
-  integrity sha512-v2ZLhKpJK3cJ0pFvJjEKIT7SJ4xv1VTeVnQjcgiUSwp6U8JQOXDewMQuKNMmLNxp4CYb4aHzVNu1YzyBxKuNiQ==
+"@adobe/reactor-sandbox@^11.1.7":
+  version "11.1.7"
+  resolved "https://registry.yarnpkg.com/@adobe/reactor-sandbox/-/reactor-sandbox-11.1.7.tgz#a4763ad21272b57cc01614149122385f483395d8"
+  integrity sha512-3njmmbC/rkuhtj8AE+GgG1AT7Mp2mtVrJX2ObynO/drA0PSeWyOxxx8BLsWZ2+I9Jp8i95tsXUlvVU5puAk1yQ==
   dependencies:
     "@adobe/react-spectrum" "^3.7.0"
     "@adobe/reactor-babel-plugin-replace-tokens-edge" "^1.0.0"
