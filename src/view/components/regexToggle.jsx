@@ -15,7 +15,7 @@ import { Switch, Flex } from '@adobe/react-spectrum';
 import WrappedField from './wrappedField';
 import RegexTestButton from './regexTestButton';
 
-export default (props) => {
+export default React.forwardRef((props, ref) => {
   const { value: valueIsRegex, onChange, valueFieldName } = props;
 
   return (
@@ -31,8 +31,12 @@ export default (props) => {
         id="testButtonContainer"
         style={{ visibility: valueIsRegex ? 'visible' : 'hidden' }}
       >
-        <WrappedField name={valueFieldName} component={RegexTestButton} />
+        <WrappedField
+          name={valueFieldName}
+          component={RegexTestButton}
+          ref={ref}
+        />
       </span>
     </Flex>
   );
-};
+});
