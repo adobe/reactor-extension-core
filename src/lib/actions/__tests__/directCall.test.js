@@ -15,25 +15,61 @@
 var directCallActionDelegateInjector = require('inject-loader!../directCall');
 
 describe('direct call action delegate', function () {
-  it('triggers the specified direct-call Event Type', function () {
-    var mockWindow = {};
+  var mockWindow = {};
+  var delegate;
+
+  beforeEach(function () {
     mockWindow._satellite = jasmine.createSpyObj('_satellite', ['track']);
 
-    var delegate = directCallActionDelegateInjector({
+    delegate = directCallActionDelegateInjector({
       '@adobe/reactor-window': mockWindow
     });
+  });
 
+  it('triggers the specified direct-call Event Type without a detail', function () {
     var settings = {
-      identifier: 'foo',
-      payload: {bar: 'baz'}
+      identifier: 'foo'
     };
 
     // run the Action
-    delegate(settings, payload);
+    delegate(settings);
 
     // check that the Action has called _satellite.track() properly
-    expect(mockWindow._satellite.track).toHaveBeenCalledWith('foo', {
+    expect(mockWindow._satellite.track).toHaveBeenCalledWith('foo');
+  });
+
+  it('triggers the specified direct-call Event Type with a user-defined detail', function () {
+    var detailObject = {
       bar: 'baz'
+    };
+
+    var settings = {
+      identifier: 'foo',
+      detail: function () {
+        return detailObject;
+      }
+    };
+
+    var event = {
+      element: {},
+      target: {}
+    };
+
+    spyOn(settings, 'detail').and.callThrough();
+    delegate(settings, event);
+
+    // check that the Action has called _satellite.track() properly
+    expect(mockWindow._satellite.track).toHaveBeenCalledWith(
+      'foo',
+      detailObject
+    );
+
+    // check that _satellite.track() has received the detail object properly
+    expect(settings.detail.calls.first()).toEqual({
+      object: event.element,
+      invocationOrder: jasmine.any(Number),
+      args: [event, event.target],
+      returnValue: detailObject
     });
   });
 });

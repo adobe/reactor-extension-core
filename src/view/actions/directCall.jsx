@@ -11,8 +11,9 @@
  ****************************************************************************************/
 
 import React from 'react';
-import FullWidthField from '../components/fullWidthField';
 import EditorButton from '../components/editorButton';
+import FullWidthField from '../components/fullWidthField';
+import InfoTip from '../components/infoTip';
 import WrappedField from '../components/wrappedField';
 
 const DirectCall = () => (
@@ -24,15 +25,21 @@ const DirectCall = () => (
       isRequired
     />
 
-    <p>
-      The code you provide in the editor will be added to the call as the event detail. It has to be valid JSON.
-    </p>
+    <div className="u-gapTop">
+      <p>
+        (optional) The code that you provide in the editor will be run to
+        provide an event detail to the Direct Call.
+      </p>
 
-    <WrappedField
-      name="payload"
-      component={EditorButton}
-      language="javascript"
-    />
+      <WrappedField
+        name="detail"
+        component={EditorButton}
+        language="javascript"
+      />
+      <InfoTip placement="bottom">
+        Enter a script that returns a valid JavaScript key-value object.
+      </InfoTip>
+    </div>
   </>
 );
 
@@ -60,9 +67,7 @@ export const formConfig = {
       errors.identifier = 'Please specify an identifier.';
     }
 
-    if (!values.payload) {
-      errors.payload = 'Please provide custom script.';
-    }
+    // values.detail is optional, so skip its validation
 
     return errors;
   }

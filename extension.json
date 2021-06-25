@@ -2552,11 +2552,22 @@
           "identifier": {
             "type": "string",
             "minLength": 1
+          },
+          "detail": {
+            "type": "string",
+            "minLength": 2
           }
         },
         "additionalProperties": false,
         "required": ["identifier"]
-      }
+      },
+      "transforms": [
+        {
+          "type": "function",
+          "propertyPath": "detail",
+          "parameters": ["event", "target"]
+        }
+      ]
     }
   ]
 }

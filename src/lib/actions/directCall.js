@@ -19,10 +19,20 @@ var window = require('@adobe/reactor-window');
  * @param {Object} settings Action settings.
  * @param {string} settings.identifier The identifier of the "Direct Call" Event Type that should
  * be called.
- * @param {Object} settings.payload The payload to be passed into the event object of the triggered rule.
+ * @param {Object} settings.detail The detail to be passed into the event object of the triggered
+ * rule.
+ * @param {Object} event The underlying event object that triggered the rule.
+ * @param {Object} event.element The element that the rule was targeting.
+ * @param {Object} event.target The element on which the event occurred.
  */
 module.exports = function (settings, event) {
   if (settings && settings.identifier) {
-    window._satellite.track(settings.identifier, settings.payload);
+    var detail = settings.detail;
+    if (detail) {
+      detail = detail.call(event.element, event, event.target);
+      window._satellite.track(settings.identifier, detail);
+    } else {
+      window._satellite.track(settings.identifier);
+    }
   }
 };

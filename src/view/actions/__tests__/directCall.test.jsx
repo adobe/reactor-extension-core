@@ -12,6 +12,7 @@
 
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import sharedTestingElements from '@test-helpers/react-testing-library';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import DirectCallIdentifier, { formConfig } from '../directCall';
 import bootstrap from '../../bootstrap';
@@ -62,5 +63,27 @@ describe('direct call action view', () => {
       pageElements.getIdentifierTextBox().hasAttribute('aria-invalid')
     ).toBeTrue();
     expect(extensionBridge.validate()).toBe(false);
+  });
+
+  it('allows user to provide custom detail', async () => {
+    extensionBridge.init({
+      settings: {
+        identifier: 'foo',
+        detail: 'return {bar: "baz"}'
+      }
+    });
+
+    spyOn(extensionBridge, 'openCodeEditor').and.callFake(() => ({
+      then(resolve) {
+        resolve('return {bar: "stamp"}');
+      }
+    }));
+
+    fireEvent.click(sharedTestingElements.customCodeEditor.getTriggerButton());
+
+    expect(extensionBridge.getSettings()).toEqual({
+      identifier: 'foo',
+      detail: 'return {bar: "stamp"}'
+    });
   });
 });
