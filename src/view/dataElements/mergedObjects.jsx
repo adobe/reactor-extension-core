@@ -1,5 +1,5 @@
 /***************************************************************************************
- * Copyright 2019 Adobe. All rights reserved.
+ * Copyright 2021 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License. You may obtain a copy
  * of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -14,46 +14,55 @@ import React from 'react';
 import { Flex, TextField, View } from '@adobe/react-spectrum';
 import { FieldArray } from 'redux-form';
 import WrappedField from '../components/wrappedField';
-import NoWrapText from '../components/noWrapText';
-import RegexToggle from '../components/regexToggle';
 import MultipleItemEditor from '../components/multipleItemEditor';
+import { isDataElementToken } from '../utils/validators';
 
-const createItem = () => ({});
+const createItem = () => '';
 
 const renderItem = (field) => (
-  <Flex data-row flex gap="size-100" alignItems="end">
-    <NoWrapText>subdomain equals</NoWrapText>
-    <View flex>
-      <WrappedField
-        label="Subdomain"
-        name={`${field}.value`}
-        width="100%"
-        component={TextField}
-        isRequired
-      />
-    </View>
+  <View flex data-row>
     <WrappedField
-      name={`${field}.valueIsRegex`}
-      component={RegexToggle}
-      valueFieldName={`${field}.value`}
+      label="Object"
+      width="100%"
+      name={field}
+      component={TextField}
+      isRequired
+      supportDataElement
     />
-  </Flex>
+  </View>
 );
 
-const Subdomain = () => (
-  <Flex gap="size-100" direction="column" minWidth="size-6000">
-    <NoWrapText>Return true if</NoWrapText>
-    <FieldArray
-      name="subdomains"
-      renderItem={renderItem}
-      component={MultipleItemEditor}
-      interstitialLabel="OR"
-      createItem={createItem}
-    />
-  </Flex>
+const MergedObjects = () => (
+  <div>
+    <View maxWidth="700px">
+      <p>
+        Select data elements below that will each provide an object. These
+        objects will be deeply (recursively) merged together to produce a new
+        object. The source objects will not be modified. Arrays that exist
+        within the same property on multiple objects will be concatenated
+        together.
+      </p>
+    </View>
+    {
+      // marginEnd is to leave room for validation tooltips
+    }
+    <Flex
+      gap="size-100"
+      direction="column"
+      minWidth="size-6000"
+      marginEnd="size-1600"
+    >
+      <FieldArray
+        name="objects"
+        renderItem={renderItem}
+        component={MultipleItemEditor}
+        createItem={createItem}
+      />
+    </Flex>
+  </div>
 );
 
-export default Subdomain;
+export default MergedObjects;
 
 export const formConfig = {
   settingsToFormValues(values, settings) {
@@ -62,19 +71,17 @@ export const formConfig = {
       ...settings
     };
 
-    if (!values.subdomains) {
-      values.subdomains = [];
+    if (!values.objects) {
+      values.objects = [];
     }
 
-    if (!values.subdomains.length) {
-      values.subdomains.push(createItem());
+    if (!values.objects.length) {
+      values.objects.push(createItem());
     }
 
     return values;
   },
   formValuesToSettings(settings, values) {
-    // We intentionally don't filter out empty values because a user may be attempting
-    // to match no subdomain.
     return {
       ...settings,
       ...values
@@ -85,17 +92,13 @@ export const formConfig = {
       ...errors
     };
 
-    const subdomainsErrors = (values.subdomains || []).map((subdomain) => {
-      const result = {};
-
-      if (!subdomain.value) {
-        result.value = 'Please specify a subdomain.';
-      }
-
-      return result;
+    const objectsErrors = (values.objects || []).map((object) => {
+      return isDataElementToken(object)
+        ? undefined
+        : 'Please specify a data element';
     });
 
-    errors.subdomains = subdomainsErrors;
+    errors.objects = objectsErrors;
 
     return errors;
   }

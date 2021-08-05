@@ -1983,6 +1983,28 @@
       }
     },
     {
+      "name": "merged-objects",
+      "displayName": "Merged Objects",
+      "libPath": "src/lib/dataElements/mergedObjects.js",
+      "viewPath": "dataElements/mergedObjects.html",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "objects": {
+            "type": "array",
+            "minLength": 1,
+            "items": {
+              "type": "string",
+              "pattern": "^%([^%]+)%$"
+            }
+          }
+        },
+        "additionalProperties": false,
+        "required": ["objects"]
+      }
+    },
+    {
       "name": "page-info",
       "displayName": "Page Info",
       "libPath": "src/lib/dataElements/pageInfo.js",

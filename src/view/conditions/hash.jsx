@@ -15,9 +15,11 @@ import { Flex, TextField, View } from '@adobe/react-spectrum';
 import { FieldArray } from 'redux-form';
 import WrappedField from '../components/wrappedField';
 
-import MultipleItemEditor from './components/multipleItemEditor';
+import MultipleItemEditor from '../components/multipleItemEditor';
 import RegexToggle from '../components/regexToggle';
 import NoWrapText from '../components/noWrapText';
+
+const createItem = () => ({});
 
 const renderItem = (field) => (
   <Flex data-row flex gap="size-100" alignItems="end">
@@ -47,6 +49,8 @@ export default () => (
       name="hashes"
       renderItem={renderItem}
       component={MultipleItemEditor}
+      interstitialLabel="OR"
+      createItem={createItem}
     />
   </Flex>
 );
@@ -63,7 +67,7 @@ export const formConfig = {
     }
 
     if (!values.hashes.length) {
-      values.hashes.push({});
+      values.hashes.push(createItem());
     }
 
     return values;

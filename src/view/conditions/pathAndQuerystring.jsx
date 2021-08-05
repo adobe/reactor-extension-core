@@ -15,8 +15,10 @@ import { Flex, TextField, View } from '@adobe/react-spectrum';
 import { FieldArray } from 'redux-form';
 import WrappedField from '../components/wrappedField';
 import RegexToggle from '../components/regexToggle';
-import MultipleItemEditor from './components/multipleItemEditor';
+import MultipleItemEditor from '../components/multipleItemEditor';
 import NoWrapText from '../components/noWrapText';
+
+const createItem = () => ({});
 
 const renderItem = (field) => (
   <Flex data-row flex gap="size-100" alignItems="end">
@@ -46,6 +48,8 @@ const PathAndQueryString = () => (
       name="paths"
       renderItem={renderItem}
       component={MultipleItemEditor}
+      interstitialLabel="OR"
+      createItem={createItem}
     />
   </Flex>
 );
@@ -64,7 +68,7 @@ export const formConfig = {
     }
 
     if (!values.paths.length) {
-      values.paths.push({});
+      values.paths.push(createItem());
     }
 
     return values;
