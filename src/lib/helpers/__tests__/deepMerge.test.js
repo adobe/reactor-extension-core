@@ -15,21 +15,32 @@
 var deepMerge = require('../deepMerge');
 
 describe('deepMerge', function () {
-  it('ignores undefined and null arguments', function () {
+  fit('handles non-plain-object sources gracefully', function () {
     var result = deepMerge(
       {},
+      ['a', 'b', 'c'],
+      'de',
+      123456789,
+      true,
+      function () {},
+      /abc/,
       null,
       {
-        a: 'b'
+        f: 'g'
       },
       undefined,
       {
-        c: 'd'
+        h: 'i'
       }
     );
+
+    // This follows the same approach as the native Object.assign.
     expect(result).toEqual({
-      a: 'b',
-      c: 'd'
+      0: 'd',
+      1: 'e',
+      2: 'c',
+      f: 'g',
+      h: 'i'
     });
   });
 
