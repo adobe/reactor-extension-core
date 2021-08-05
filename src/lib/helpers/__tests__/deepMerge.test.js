@@ -15,7 +15,7 @@
 var deepMerge = require('../deepMerge');
 
 describe('deepMerge', function () {
-  fit('handles non-plain-object sources gracefully', function () {
+  it('handles non-plain-object sources gracefully', function () {
     var result = deepMerge(
       {},
       ['a', 'b', 'c'],
