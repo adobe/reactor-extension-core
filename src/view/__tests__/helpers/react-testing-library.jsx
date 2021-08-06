@@ -10,7 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-/*eslint import/no-extraneous-dependencies: 0*/
 import {
   fireEvent,
   screen,
@@ -18,6 +17,8 @@ import {
   waitForElementToBeRemoved
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
+window.requestAnimationFrame = (ckb) => ckb();
 
 // this function is nice for pausing the UI to see what's going on in Karma
 export const DEBUG_UTILITIES = {
