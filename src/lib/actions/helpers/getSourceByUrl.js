@@ -13,6 +13,8 @@
 'use strict';
 var loadScript = require('@adobe/reactor-load-script');
 var Promise = require('@adobe/reactor-promise');
+var findScriptByRegexPattern = require('../../helpers/findPageScript')
+  .byRegexPattern;
 
 var codeBySourceUrl = {};
 var scriptStore = {};
@@ -25,8 +27,17 @@ var loadScriptOnlyOnce = function (url) {
   return scriptStore[url];
 };
 
-_satellite.__registerScript = function (sourceUrl, code) {
-  codeBySourceUrl[sourceUrl] = code;
+_satellite.__registerScript = function (scriptGuid, code) {
+  var scriptUrl;
+  if (document.currentScript) {
+    // use getAttribute in case it's a relative url
+    scriptUrl = document.currentScript.getAttribute('src');
+  } else {
+    var pattern = new RegExp('.*' + scriptGuid + '.*');
+    // use getAttribute in case it's a relative url
+    scriptUrl = findScriptByRegexPattern(pattern).getAttribute('src');
+  }
+  codeBySourceUrl[scriptUrl] = code;
 };
 
 module.exports = function (sourceUrl) {

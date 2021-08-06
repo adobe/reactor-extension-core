@@ -14,6 +14,7 @@
 
 var Promise = require('@adobe/reactor-promise');
 var customCodeInjector = require('inject-loader!../customCode');
+var getTurbineScriptInjector = require('inject-loader!../../helpers/findPageScript');
 
 var LAUNCH_LIB_EXAMPLE_SRC =
   'assets.adobedtm.com/launch-ENad46b63a40c84a86a0de29087f7ecb24-development.min.js';
@@ -32,7 +33,10 @@ var createCustomCodeDelegate = function (mocks) {
       mocks.loadCodeSequentially ||
       function () {
         return Promise.resolve('inside external file');
-      }
+      },
+    '../helpers/findPageScript': getTurbineScriptInjector({
+      '@adobe/reactor-document': mocks.document
+    })
   });
 };
 

@@ -18,6 +18,7 @@ var decorateCode = require('./helpers/decorateCode');
 var loadCodeSequentially = require('./helpers/loadCodeSequentially');
 var postscribe = require('../../../node_modules/postscribe/dist/postscribe');
 var unescapeHTMLEntities = require('./helpers/unescapeHtmlCode');
+var getTurbineScript = require('../helpers/findPageScript').getTurbine;
 
 var cspNonce;
 
@@ -84,15 +85,9 @@ var libraryWasLoadedAsynchronously = (function () {
   if (document.currentScript) {
     return document.currentScript.async;
   } else {
-    var scripts = document.querySelectorAll('script');
-    for (var i = 0; i < scripts.length; i++) {
-      var script = scripts[i];
-      // Find the script that loaded our library. Take into account embed scripts migrated
-      // from DTM. We'll also consider that they may have added a querystring for cache-busting
-      // or whatever.
-      if (/(launch|satelliteLib)-[^\/]+.js(\?.*)?$/.test(script.src)) {
-        return script.async;
-      }
+    var script = getTurbineScript();
+    if (script) {
+      return script.async;
     }
     // We couldn't find the Launch script, so we'll assume it was loaded asynchronously. This
     // is the safer assumption.
