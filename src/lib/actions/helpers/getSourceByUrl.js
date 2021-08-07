@@ -13,8 +13,8 @@
 'use strict';
 var loadScript = require('@adobe/reactor-load-script');
 var Promise = require('@adobe/reactor-promise');
-var findScriptByRegexPattern = require('../../helpers/findPageScript')
-  .byRegexPattern;
+var findScriptByRegexPattern =
+  require('../../helpers/findPageScript').byRegexPattern;
 
 var codeBySourceUrl = {};
 var scriptStore = {};

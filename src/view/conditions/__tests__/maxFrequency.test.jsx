@@ -74,7 +74,8 @@ describe('max frequency condition view', () => {
 
   it('sets settings from form values', async () => {
     fireEvent.click(pageElements.unitsDropdown.getTrigger());
-    const sessionOption = await pageElements.unitsDropdown.waitForSessionOption();
+    const sessionOption =
+      await pageElements.unitsDropdown.waitForSessionOption();
     clickSpectrumOption(sessionOption);
     await safelyWaitForElementToBeRemoved(() =>
       screen.queryByRole('option', { name: /session/i })
@@ -135,7 +136,8 @@ describe('max frequency condition view', () => {
 
     it('sets settings from form values', async () => {
       fireEvent.click(pageElements.unitsDropdown.getTrigger());
-      const visitorOption = await pageElements.unitsDropdown.waitForVisitorOption();
+      const visitorOption =
+        await pageElements.unitsDropdown.waitForVisitorOption();
       clickSpectrumOption(visitorOption);
 
       expect(extensionBridge.getSettings()).toEqual({

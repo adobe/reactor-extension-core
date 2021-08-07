@@ -15,8 +15,8 @@ var document = require('@adobe/reactor-document');
 var once = require('./helpers/once');
 var visibilityApi = require('./helpers/visibilityApi')();
 var Timer = require('./helpers/timer');
-var castToNumberIfString = require('../helpers/stringAndNumberUtils')
-  .castToNumberIfString;
+var castToNumberIfString =
+  require('../helpers/stringAndNumberUtils').castToNumberIfString;
 
 var hiddenProperty = visibilityApi.hiddenProperty;
 var visibilityChangeEventType = visibilityApi.visibilityChangeEventType;

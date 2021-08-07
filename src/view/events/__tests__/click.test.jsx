@@ -134,11 +134,8 @@ describe('click event view', () => {
       sharedTestingElements.advancedSettings.getBubbleStopCheckBox()
     );
 
-    const {
-      elementSelector,
-      anchorDelay,
-      bubbleStop
-    } = extensionBridge.getSettings();
+    const { elementSelector, anchorDelay, bubbleStop } =
+      extensionBridge.getSettings();
 
     expect(elementSelector).toBe('.foo');
     expect(anchorDelay).toBe(101);

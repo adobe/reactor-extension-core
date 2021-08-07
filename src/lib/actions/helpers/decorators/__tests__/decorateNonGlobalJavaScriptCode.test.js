@@ -20,7 +20,8 @@ describe('decorate non global javascript code', function () {
       source: 'console.log("logging")'
     };
 
-    var decorateNonGlobalJavaScriptCode = decorateNonGlobalJavaScriptCodeInjector();
+    var decorateNonGlobalJavaScriptCode =
+      decorateNonGlobalJavaScriptCodeInjector();
     var decoratedResult = decorateNonGlobalJavaScriptCode(
       {
         settings: settings,
@@ -55,11 +56,10 @@ describe('decorate non global javascript code', function () {
         return new Promise(fn);
       };
 
-      var decorateNonGlobalJavaScriptCode = decorateNonGlobalJavaScriptCodeInjector(
-        {
+      var decorateNonGlobalJavaScriptCode =
+        decorateNonGlobalJavaScriptCodeInjector({
           '@adobe/reactor-promise': mockPromise
-        }
-      );
+        });
 
       decorateNonGlobalJavaScriptCode(
         {
@@ -86,7 +86,8 @@ describe('decorate non global javascript code', function () {
       source: 'console.log("logging")'
     };
 
-    var decorateNonGlobalJavaScriptCode = decorateNonGlobalJavaScriptCodeInjector();
+    var decorateNonGlobalJavaScriptCode =
+      decorateNonGlobalJavaScriptCodeInjector();
     decorateNonGlobalJavaScriptCode(
       {
         settings: settings,
@@ -110,7 +111,8 @@ describe('decorate non global javascript code', function () {
       source: 'return new Promise(function() {...})'
     };
 
-    var decorateNonGlobalJavaScriptCode = decorateNonGlobalJavaScriptCodeInjector();
+    var decorateNonGlobalJavaScriptCode =
+      decorateNonGlobalJavaScriptCodeInjector();
 
     decorateNonGlobalJavaScriptCode(
       {
@@ -139,7 +141,8 @@ describe('decorate non global javascript code', function () {
       source: 'return new Promise(function() {...})'
     };
 
-    var decorateNonGlobalJavaScriptCode = decorateNonGlobalJavaScriptCodeInjector();
+    var decorateNonGlobalJavaScriptCode =
+      decorateNonGlobalJavaScriptCodeInjector();
 
     decorateNonGlobalJavaScriptCode(
       {
@@ -168,7 +171,8 @@ describe('decorate non global javascript code', function () {
       source: 'return new Promise(function() {...})'
     };
 
-    var decorateNonGlobalJavaScriptCode = decorateNonGlobalJavaScriptCodeInjector();
+    var decorateNonGlobalJavaScriptCode =
+      decorateNonGlobalJavaScriptCodeInjector();
 
     decorateNonGlobalJavaScriptCode(
       {
@@ -193,13 +197,12 @@ describe('decorate non global javascript code', function () {
     };
 
     var p = Promise.resolve();
-    var decorateNonGlobalJavaScriptCode = decorateNonGlobalJavaScriptCodeInjector(
-      {
+    var decorateNonGlobalJavaScriptCode =
+      decorateNonGlobalJavaScriptCodeInjector({
         '@adobe/reactor-promise': function () {
           return p;
         }
-      }
-    );
+      });
 
     var decoratedResult = decorateNonGlobalJavaScriptCode(
       {

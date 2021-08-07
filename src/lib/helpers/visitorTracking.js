@@ -32,9 +32,8 @@ var visitorTrackingSessionStorage = getNamespacedStorage(
 
 // returns whether this is a new visitor session
 var trackLandingPageAndTime = function () {
-  var existingLandingPage = visitorTrackingSessionStorage.getItem(
-    'landingPage'
-  );
+  var existingLandingPage =
+    visitorTrackingSessionStorage.getItem('landingPage');
 
   if (!existingLandingPage) {
     visitorTrackingSessionStorage.setItem('landingPage', window.location.href);

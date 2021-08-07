@@ -132,11 +132,8 @@ describe('hover event view', () => {
       sharedTestingElements.advancedSettings.getBubbleStopCheckBox()
     );
 
-    const {
-      elementSelector,
-      delay,
-      bubbleStop
-    } = extensionBridge.getSettings();
+    const { elementSelector, delay, bubbleStop } =
+      extensionBridge.getSettings();
 
     expect(elementSelector).toBe('.foo');
     expect(delay).toBe(100);

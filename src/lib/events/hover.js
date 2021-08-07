@@ -17,8 +17,8 @@ var liveQuerySelector = require('./helpers/liveQuerySelector');
 var matchesProperties = require('./helpers/matchesProperties');
 var WeakMap = require('./helpers/weakMap');
 var trackedDelaysByElement = new WeakMap();
-var castToNumberIfString = require('../helpers/stringAndNumberUtils')
-  .castToNumberIfString;
+var castToNumberIfString =
+  require('../helpers/stringAndNumberUtils').castToNumberIfString;
 
 /**
  * After a mouseenter has occurred, waits a given amount of time before declaring that a hover

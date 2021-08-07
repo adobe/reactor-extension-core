@@ -14,8 +14,8 @@
 
 var visitorTracking = require('../helpers/visitorTracking');
 var compareNumbers = require('./helpers/compareNumbers');
-var castToNumberIfString = require('../helpers/stringAndNumberUtils')
-  .castToNumberIfString;
+var castToNumberIfString =
+  require('../helpers/stringAndNumberUtils').castToNumberIfString;
 
 /**
  * Time on site condition. Determines if the user has been on the site for a certain amount

@@ -53,9 +53,7 @@ describe('direct call event delegate', function () {
       detail: detail
     });
 
-    expect(
-      turbine.logger.log
-    ).toHaveBeenCalledWith(
+    expect(turbine.logger.log).toHaveBeenCalledWith(
       'Rules using the direct call event type with identifier "foo" ' +
         'have been triggered with additional detail:',
       { a: 'b' }

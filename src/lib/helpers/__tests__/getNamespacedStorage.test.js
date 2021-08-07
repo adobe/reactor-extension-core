@@ -51,11 +51,10 @@ describe('getNamespacedStorage', function () {
 
           mockWindow[storageType] = createMockStorage();
 
-          var getNamespacedStorage = require('inject-loader!../getNamespacedStorage')(
-            {
+          var getNamespacedStorage =
+            require('inject-loader!../getNamespacedStorage')({
               '@adobe/reactor-window': mockWindow
-            }
-          );
+            });
 
           var storage = getNamespacedStorage(storageType, 'featurex');
 
@@ -66,11 +65,10 @@ describe('getNamespacedStorage', function () {
         it('proper error handling if storage is disabled', function () {
           var mockWindow = createMockWindowUnavailableStorage();
 
-          var getNamespacedStorage = require('inject-loader!../getNamespacedStorage')(
-            {
+          var getNamespacedStorage =
+            require('inject-loader!../getNamespacedStorage')({
               '@adobe/reactor-window': mockWindow
-            }
-          );
+            });
 
           var storage = getNamespacedStorage(storageType, 'featurex');
 
@@ -85,11 +83,10 @@ describe('getNamespacedStorage', function () {
           var mockWindow = {};
           mockWindow[storageType] = createMockStorage();
 
-          var getNamespacedStorage = require('inject-loader!../getNamespacedStorage')(
-            {
+          var getNamespacedStorage =
+            require('inject-loader!../getNamespacedStorage')({
               '@adobe/reactor-window': mockWindow
-            }
-          );
+            });
 
           var storage = getNamespacedStorage(storageType, 'featurex');
 
@@ -100,11 +97,10 @@ describe('getNamespacedStorage', function () {
         it('proper error handling if storage is disabled', function () {
           var mockWindow = createMockWindowUnavailableStorage();
 
-          var getNamespacedStorage = require('inject-loader!../getNamespacedStorage')(
-            {
+          var getNamespacedStorage =
+            require('inject-loader!../getNamespacedStorage')({
               '@adobe/reactor-window': mockWindow
-            }
-          );
+            });
 
           var storage = getNamespacedStorage(storageType, 'featurex');
 

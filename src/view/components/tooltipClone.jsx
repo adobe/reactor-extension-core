@@ -116,9 +116,8 @@ export const CoreExtensionToolTipTrigger = ({
   const [isHovered, setIsHovered] = useState(false);
   const [placement, setPlacement] = useState(suggestedPlacement);
   // The FormInput is a Spectrum TextField, Checkbox, etc
-  const [FormInput, TooltipContent, ...otherChildren] = React.Children.toArray(
-    children
-  );
+  const [FormInput, TooltipContent, ...otherChildren] =
+    React.Children.toArray(children);
   const formInputRef = useRef();
   const tooltipRef = useRef();
   // re-define the FormInput as a TooltipTrigger (onHover)
@@ -128,7 +127,11 @@ export const CoreExtensionToolTipTrigger = ({
 
   function onMouseEnter(e) {
     const portalDivRef = document.getElementById(TOOLTIP_ID);
-    const { top, left, placement: usedPlacement } = determineToolTipPosition(
+    const {
+      top,
+      left,
+      placement: usedPlacement
+    } = determineToolTipPosition(
       e?.currentTarget,
       tooltipRef?.current,
       suggestedPlacement

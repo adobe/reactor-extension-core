@@ -93,12 +93,8 @@ describe('time played event view', () => {
       sharedTestingElements.advancedSettings.getBubbleStopCheckBox()
     );
 
-    const {
-      amount,
-      unit,
-      elementSelector,
-      bubbleStop
-    } = extensionBridge.getSettings();
+    const { amount, unit, elementSelector, bubbleStop } =
+      extensionBridge.getSettings();
     expect(amount).toBe(45);
     expect(unit).toBe('second');
     expect(elementSelector).toBe('.foo');
@@ -106,7 +102,8 @@ describe('time played event view', () => {
 
     // try changing the select box
     fireEvent.click(pageElements.triggerWhen.unitsDropdown.getTrigger());
-    const percentOption = await pageElements.triggerWhen.unitsDropdown.waitForPercentOption();
+    const percentOption =
+      await pageElements.triggerWhen.unitsDropdown.waitForPercentOption();
     clickSpectrumOption(percentOption);
 
     expect(extensionBridge.getSettings().unit).toBe('percent');
