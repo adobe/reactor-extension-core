@@ -14,8 +14,14 @@
 
 import React from 'react';
 import { Field } from 'redux-form';
-import { Checkbox, ActionButton, Flex, Picker } from '@adobe/react-spectrum';
-import { ComboBox } from '@react-spectrum/combobox';
+import {
+  ComboBox,
+  Checkbox,
+  ActionButton,
+  Flex,
+  Picker
+} from '@adobe/react-spectrum';
+
 import Data from '@spectrum-icons/workflow/Data';
 import {
   CoreExtensionToolTipTrigger,
@@ -26,24 +32,26 @@ const addDataElementToken = (value, dataElementToken) =>
   `${value || ''}${dataElementToken}`;
 
 class DecoratedInput extends React.Component {
-  openDataElementSelector = (tokenize = false) => () => {
-    const {
-      input: { onChange, value }
-    } = this.props;
+  openDataElementSelector =
+    (tokenize = false) =>
+    () => {
+      const {
+        input: { onChange, value }
+      } = this.props;
 
-    // Whenever we're dealing with a data element token, we add it to whatever the existing value
-    // is. If we're not dealing with a token, we replace the value entirely. This is just due
-    // to how we want the UX to flow.
-    window.extensionBridge
-      .openDataElementSelector({
-        tokenize
-      })
-      .then((dataElement) => {
-        onChange(
-          tokenize ? addDataElementToken(value, dataElement) : dataElement
-        );
-      });
-  };
+      // Whenever we're dealing with a data element token, we add it to whatever the existing value
+      // is. If we're not dealing with a token, we replace the value entirely. This is just due
+      // to how we want the UX to flow.
+      window.extensionBridge
+        .openDataElementSelector({
+          tokenize
+        })
+        .then((dataElement) => {
+          onChange(
+            tokenize ? addDataElementToken(value, dataElement) : dataElement
+          );
+        });
+    };
 
   render() {
     const {
@@ -80,6 +88,9 @@ class DecoratedInput extends React.Component {
       fieldComponentsProps.onSelectionChange = input.onChange;
       fieldComponentsProps.inputValue = input.value;
     }
+
+    const { onBlur } = fieldComponentsProps;
+    fieldComponentsProps.onBlur = (e) => onBlur(e.value);
 
     const error = meta.touched && meta.error;
 

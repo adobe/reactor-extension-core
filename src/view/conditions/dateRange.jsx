@@ -12,8 +12,7 @@
 
 import React from 'react';
 import Provider from '@react/react-spectrum/Provider';
-import { Flex, Text } from '@adobe/react-spectrum';
-import { ComboBox, Item } from '@react-spectrum/combobox';
+import { ComboBox, Item, Flex, Text } from '@adobe/react-spectrum';
 import moment from 'moment-timezone';
 import Datepicker from '@react/react-spectrum/Datepicker';
 import InfoTip from '../components/infoTip';
