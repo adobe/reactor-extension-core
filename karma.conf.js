@@ -128,7 +128,7 @@ module.exports = (config) => {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine', 'jasmine-matchers'],
+    frameworks: ['webpack', 'jasmine', 'jasmine-matchers'],
 
     // list of files / patterns to load in the browser
     files: [
@@ -307,7 +307,14 @@ module.exports = (config) => {
       },
       plugins: [
         new DefinePlugin({
-          TEST_BASE_PATH: JSON.stringify(process.cwd() + argv.testBasePath)
+          TEST_BASE_PATH: JSON.stringify(process.cwd() + argv.testBasePath),
+          'process.browser': 'true',
+          'process.env.SCALE_MEDIUM': 'true',
+          'process.env.SCALE_LARGE': 'false',
+          'process.env.THEME_LIGHT': 'false',
+          'process.env.THEME_LIGHTEST': 'true',
+          'process.env.THEME_DARK': 'false',
+          'process.env.THEME_DARKEST': 'false'
         }),
         new SourceMapDevToolPlugin({})
       ]
