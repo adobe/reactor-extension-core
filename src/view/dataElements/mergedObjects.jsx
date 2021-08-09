@@ -38,10 +38,12 @@ const MergedObjects = () => (
       <p>
         Select data elements below that will each provide an object. These
         objects will be deeply (recursively) merged together to produce a new
-        object. The source objects will not be modified. If a specific property
-        exists on multiple objects, the value from the latter object will be
-        used. If the value from each objects is an array, however, the arrays
-        will be concatenated.
+        object. The source objects will not be modified. If a property is found
+        at the same location on multiple source objects, the value from the
+        latter object will be used. If a source property value is{' '}
+        <code>undefined</code>, it will not override a value from a prior source
+        object. If arrays are found at the same location on multiple source
+        objects, the arrays will be concatenated.
       </p>
     </View>
     {

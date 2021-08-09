@@ -78,16 +78,16 @@ describe('deepMerge', function () {
     expect(fourthObj).toEqual({ f: [{ i: 'j' }, { k: 'l' }, ['m', 'n']] });
   });
 
-  it('does not merge undefined property values', function () {
+  it('does not merge undefined property values unless dest value does not exist', function () {
     var result = deepMerge(
       {},
       {
         a: 'b'
       },
-      { a: undefined }
+      { a: undefined, b: undefined }
     );
 
-    expect(result).toEqual({ a: 'b' });
+    expect(result).toEqual({ a: 'b', b: undefined });
   });
 
   it('merges null property values', function () {

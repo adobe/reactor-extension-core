@@ -37,7 +37,7 @@ function deepMerge(target) {
       var mergedValue = merged[key];
       var sourceValue = source[key];
 
-      if (sourceValue === undefined) {
+      if (sourceValue === undefined && mergedValue !== undefined) {
         return;
       }
 
@@ -63,7 +63,9 @@ function deepMerge(target) {
  * and objects within the source objects are cloned when being merged into the
  * target object. None of the source objects are modified. Arrays that exist
  * within the same property on multiple objects will be concatenated
- * together. Undefined object property values are not merged.
+ * together. Undefined object property values are not merged. Values that are
+ * neither plain objects nor arrays are merged by assignment and no effort is
+ * made to merge their contents.
  *
  * @param {Object} target A target object that all other
  * arguments will be merged into.
