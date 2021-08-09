@@ -19,7 +19,7 @@ import { isDataElementToken } from '../utils/validators';
 
 const createItem = () => '';
 
-const renderItem = (field) => (
+const renderItem = field => (
   <View flex data-row>
     <WrappedField
       label="Object"
@@ -38,9 +38,10 @@ const MergedObjects = () => (
       <p>
         Select data elements below that will each provide an object. These
         objects will be deeply (recursively) merged together to produce a new
-        object. The source objects will not be modified. Arrays that exist
-        within the same property on multiple objects will be concatenated
-        together.
+        object. The source objects will not be modified. If a specific property
+        exists on multiple objects, the value from the latter object will be
+        used. If the value from each objects is an array, however, the arrays
+        will be concatenated.
       </p>
     </View>
     {
@@ -92,7 +93,7 @@ export const formConfig = {
       ...errors
     };
 
-    const objectsErrors = (values.objects || []).map((object) => {
+    const objectsErrors = (values.objects || []).map(object => {
       return isDataElementToken(object)
         ? undefined
         : 'Please specify a data element';
