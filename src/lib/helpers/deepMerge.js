@@ -61,11 +61,13 @@ function deepMerge(target) {
 /**
  * Performs a deep merge of source objects into a target object. All arrays
  * and objects within the source objects are cloned when being merged into the
- * target object. None of the source objects are modified. Arrays that exist
- * within the same property on multiple objects will be concatenated
- * together. Undefined object property values are not merged. Values that are
- * neither plain objects nor arrays are merged by assignment and no effort is
- * made to merge their contents.
+ * target object. None of the source objects are modified. If a property is
+ * found at the same location on multiple source objects, the value from the
+ * latter object will be used. If a source property value is undefined,
+ * it will not override a value from a prior source object. If arrays are found
+ * at the same location on multiple source objects, the arrays will be
+ * concatenated. Values that are neither plain objects nor arrays are merged by
+ * assignment and no effort is made to merge their contents.
  *
  * @param {Object} target A target object that all other
  * arguments will be merged into.
