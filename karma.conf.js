@@ -200,37 +200,43 @@ module.exports = (config) => {
         base: 'SauceLabs',
         browserName: 'chrome',
         browserVersion: 'latest',
-        platformName: 'Windows 10'
+        platformName: 'Windows 10',
+        'sauce:options': { screenResolution: '1600x1200' }
       },
       SL_FIREFOX: {
         base: 'SauceLabs',
         browserName: 'firefox',
         browserVersion: 'latest',
-        platformName: 'Windows 10'
+        platformName: 'Windows 10',
+        'sauce:options': { screenResolution: '1600x1200' }
       },
       SL_SAFARI: {
         base: 'SauceLabs',
         browserName: 'safari',
         browserVersion: 'latest',
-        platformName: 'macOS 10.15'
+        platformName: 'macOS 10.15',
+        'sauce:options': { screenResolution: '1600x1200' }
       },
       SL_IE10: {
         base: 'SauceLabs',
         browserName: 'internet explorer',
         platformName: 'Windows 7',
-        browserVersion: '10'
+        browserVersion: '10',
+        'sauce:options': { screenResolution: '1600x1200' }
       },
       SL_IE11: {
         base: 'SauceLabs',
         browserName: 'internet explorer',
         platformName: 'Windows 7',
-        browserVersion: '11'
+        browserVersion: '11',
+        'sauce:options': { screenResolution: '1600x1200' }
       },
       SL_EDGE: {
         base: 'SauceLabs',
         browserName: 'MicrosoftEdge',
         browserVersion: 'latest',
-        platformName: 'Windows 10'
+        platformName: 'Windows 10',
+        'sauce:options': { screenResolution: '1600x1200' }
       },
       SL_IOS: {
         base: 'SauceLabs',
@@ -284,10 +290,10 @@ module.exports = (config) => {
       combineBrowserReports: true
     },
 
-    captureTimeout: 60000,
-    browserDisconnectTimeout: 20000,
+    captureTimeout: 600000,
+    browserDisconnectTimeout: 200000,
     browserDisconnectTolerance: 3,
-    browserNoActivityTimeout: 300000,
+    browserNoActivityTimeout: 3000000,
 
     webpack: {
       devtool: false,
