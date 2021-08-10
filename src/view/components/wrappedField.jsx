@@ -89,6 +89,9 @@ class DecoratedInput extends React.Component {
       fieldComponentsProps.inputValue = input.value;
     }
 
+    // redux-form onBlur doesn't work with the FocusEvent that is sent by react-spectrum.
+    // We are sending the field value as a parameter otherwise the component (picker/combobox)
+    // value would be cleared out on blur.
     const { onBlur } = fieldComponentsProps;
     fieldComponentsProps.onBlur = (e) => onBlur(e.value);
 
