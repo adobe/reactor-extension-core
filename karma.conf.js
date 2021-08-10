@@ -290,10 +290,10 @@ module.exports = (config) => {
       combineBrowserReports: true
     },
 
-    captureTimeout: 600000,
-    browserDisconnectTimeout: 200000,
+    captureTimeout: 60000,
+    browserDisconnectTimeout: 20000,
     browserDisconnectTolerance: 3,
-    browserNoActivityTimeout: 3000000,
+    browserNoActivityTimeout: 300000,
 
     webpack: {
       devtool: false,
