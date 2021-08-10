@@ -214,7 +214,7 @@ module.exports = (config) => {
         base: 'SauceLabs',
         browserName: 'safari',
         browserVersion: 'latest',
-        platformName: 'macOS 10.15',
+        platformName: 'macOS 11',
         'sauce:options': { screenResolution: '1600x1200' }
       },
       SL_IE10: {
