@@ -19,8 +19,8 @@ var debounce = require('./helpers/debounce');
 var enableWeakMapDefaultValue = require('./helpers/enableWeakMapDefaultValue');
 var matchesSelector = require('./helpers/matchesSelector');
 var matchesProperties = require('./helpers/matchesProperties');
-var castToNumberIfString = require('../helpers/stringAndNumberUtils')
-  .castToNumberIfString;
+var castToNumberIfString =
+  require('../helpers/stringAndNumberUtils').castToNumberIfString;
 
 var POLL_INTERVAL = 3000;
 var DEBOUNCE_DELAY = 200;

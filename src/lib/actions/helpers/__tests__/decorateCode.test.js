@@ -24,7 +24,8 @@ describe('decorate code', function () {
       'decorateNonGlobalJavaScriptCode'
     );
     var decorateCode = decorateCodeInjector({
-      './decorators/decorateNonGlobalJavaScriptCode': decorateNonGlobalJavaScriptCodeSpy
+      './decorators/decorateNonGlobalJavaScriptCode':
+        decorateNonGlobalJavaScriptCodeSpy
     });
 
     decorateCode(
@@ -56,7 +57,8 @@ describe('decorate code', function () {
       'decorateGlobalJavaScriptCode'
     );
     var decorateCode = decorateCodeInjector({
-      './decorators/decorateGlobalJavaScriptCode': decorateGlobalJavaScriptCodeSpy
+      './decorators/decorateGlobalJavaScriptCode':
+        decorateGlobalJavaScriptCodeSpy
     });
 
     decorateCode(

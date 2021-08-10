@@ -157,7 +157,8 @@ describe('date range condition view', () => {
     await pageElements.waitForOptionsToAppear();
     simulate.clear(pageElements.timeZoneDropdown.getTextBox());
     userEvent.type(pageElements.timeZoneDropdown.getTextBox(), 'US/Mountain');
-    const option = await pageElements.timeZoneDropdown.waitForMountainTimeZoneOption();
+    const option =
+      await pageElements.timeZoneDropdown.waitForMountainTimeZoneOption();
     clickSpectrumOption(option);
 
     expect(extensionBridge.getSettings()).toEqual({

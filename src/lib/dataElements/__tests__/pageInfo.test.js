@@ -15,8 +15,7 @@
 var dataElementDelegate = require('inject-loader!../pageInfo')({
   '@adobe/reactor-document': {
     location: {
-      href:
-        'http://www.adobe.com/creativecloud/photography.html?promoid=NQCJRBTZ&mv=other',
+      href: 'http://www.adobe.com/creativecloud/photography.html?promoid=NQCJRBTZ&mv=other',
       hostname: 'www.adobe.com',
       pathname: '/creativecloud/photography.html',
       protocol: 'http:'

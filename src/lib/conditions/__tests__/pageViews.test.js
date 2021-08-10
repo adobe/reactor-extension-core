@@ -47,8 +47,10 @@ describe('page views condition delegate', function () {
     describe('with "' + duration + '" duration', function () {
       // Make sure we're calling the correct method with respect to duration.
       var assertCorrectMethodCall = function () {
-        var lifetimeCallCount = mockVisitorTracking.getLifetimePageViewCount.calls.count();
-        var sessionCallCount = mockVisitorTracking.getSessionPageViewCount.calls.count();
+        var lifetimeCallCount =
+          mockVisitorTracking.getLifetimePageViewCount.calls.count();
+        var sessionCallCount =
+          mockVisitorTracking.getSessionPageViewCount.calls.count();
         expect(lifetimeCallCount).toBe(duration === 'lifetime' ? 1 : 0);
         expect(sessionCallCount).toBe(duration === 'session' ? 1 : 0);
       };

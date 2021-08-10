@@ -15,10 +15,10 @@
 
 var isString = require('../helpers/stringAndNumberUtils').isString;
 var isNumber = require('../helpers/stringAndNumberUtils').isNumber;
-var castToStringIfNumber = require('../helpers/stringAndNumberUtils')
-  .castToStringIfNumber;
-var castToNumberIfString = require('../helpers/stringAndNumberUtils')
-  .castToNumberIfString;
+var castToStringIfNumber =
+  require('../helpers/stringAndNumberUtils').castToStringIfNumber;
+var castToNumberIfString =
+  require('../helpers/stringAndNumberUtils').castToNumberIfString;
 
 var updateCase = function (operand, caseInsensitive) {
   return caseInsensitive && isString(operand) ? operand.toLowerCase() : operand;

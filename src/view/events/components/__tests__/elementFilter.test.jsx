@@ -79,10 +79,8 @@ describe('elementFilter', () => {
 
       fireEvent.click(pageElements.radioGroup.getAnyElement());
 
-      const {
-        elementSelector,
-        elementProperties
-      } = extensionBridge.getSettings();
+      const { elementSelector, elementProperties } =
+        extensionBridge.getSettings();
 
       expect(elementSelector).toBeUndefined();
       expect(elementProperties).toBeUndefined();

@@ -17,8 +17,8 @@ var bubbly = require('./helpers/createBubbly')();
 var WeakMap = require('./helpers/weakMap');
 var evaluatedEvents = new WeakMap();
 var MIDDLE_MOUSE_BUTTON = 2;
-var castToNumberIfString = require('../helpers/stringAndNumberUtils')
-  .castToNumberIfString;
+var castToNumberIfString =
+  require('../helpers/stringAndNumberUtils').castToNumberIfString;
 
 /**
  * Determines whether an element is a link that would navigate the user's current window to a

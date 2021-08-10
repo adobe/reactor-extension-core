@@ -2,7 +2,6 @@
 
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const WebpackShellPlugin = require('webpack-shell-plugin');
 const webpack = require('webpack');
 const extension = require('./extension');
 const camelCase = require('camelcase');
@@ -12,17 +11,17 @@ const createEntryFile = require('./createEntryFile');
 const entries = {};
 const plugins = [];
 
-module.exports = env => {
+module.exports = (env) => {
   // Each view becomes its own "app". These are automatically generated based on naming convention.
   ['event', 'condition', 'action', 'dataElement', 'configuration'].forEach(
-    type => {
+    (type) => {
       const typePluralized = type + 's';
       const delegates =
         type === 'configuration'
           ? [extension['configuration']]
           : extension[typePluralized];
 
-      delegates.forEach(itemDescriptor => {
+      delegates.forEach((itemDescriptor) => {
         let itemNameCapitalized;
         let chunkName;
 
@@ -68,19 +67,6 @@ module.exports = env => {
       'process.env.THEME_DARKEST': 'false'
     })
   );
-
-  if (env === 'sandbox') {
-    // This allows us to run the sandbox after the initial build takes place. By not starting up the
-    // sandbox while simultaneously building the view, we ensure:
-    // (1) Whatever we see in the browser contains the latest view files.
-    // (2) The sandbox can validate our extension.json and find that the view files it references
-    // actually exist because they have already been built.
-    plugins.push(
-      new WebpackShellPlugin({
-        onBuildEnd: ['./node_modules/.bin/reactor-sandbox']
-      })
-    );
-  }
 
   return {
     optimization: {

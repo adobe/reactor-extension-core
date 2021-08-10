@@ -89,12 +89,8 @@ describe('change event view', () => {
       sharedTestingElements.advancedSettings.getBubbleStopCheckBox()
     );
 
-    const {
-      value,
-      valueIsRegex,
-      elementSelector,
-      bubbleStop
-    } = extensionBridge.getSettings();
+    const { value, valueIsRegex, elementSelector, bubbleStop } =
+      extensionBridge.getSettings();
 
     expect(value).toBe('abc');
     expect(valueIsRegex).toBe(true);

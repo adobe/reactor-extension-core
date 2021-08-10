@@ -10,7 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-/*eslint import/no-extraneous-dependencies: 0*/
 import {
   fireEvent,
   screen,
@@ -18,6 +17,22 @@ import {
   waitForElementToBeRemoved
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
+const animationFrameRequests = {};
+window.requestAnimationFrame = (ckb) => {
+  const timeoutId = window.setTimeout(() => {
+    ckb();
+  }, 0);
+  animationFrameRequests[timeoutId] = timeoutId;
+  return timeoutId;
+};
+window.cancelAnimationFrame = (timeoutId) => {
+  if (animationFrameRequests.hasOwnProperty(timeoutId)) {
+    delete animationFrameRequests[timeoutId];
+    clearTimeout(timeoutId);
+  }
+};
+window.ResizeObserver = () => ({ observe: () => {}, unobserve: () => {} });
 
 // this function is nice for pausing the UI to see what's going on in Karma
 export const DEBUG_UTILITIES = {

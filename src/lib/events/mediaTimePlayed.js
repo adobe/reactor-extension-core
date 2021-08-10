@@ -14,8 +14,8 @@
 
 var bubbly = require('./helpers/createBubbly')();
 var WeakMap = require('./helpers/weakMap');
-var castToNumberIfString = require('../helpers/stringAndNumberUtils')
-  .castToNumberIfString;
+var castToNumberIfString =
+  require('../helpers/stringAndNumberUtils').castToNumberIfString;
 var lastTriggeredByElement = new WeakMap();
 
 var relevantMarkers = [];

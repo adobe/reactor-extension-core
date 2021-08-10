@@ -585,8 +585,8 @@ describe('enters viewport event delegate', function () {
           jasmine.any(Function)
         );
 
-        var windowLoadCallback = mockWindow.addEventListener.calls.first()
-          .args[1];
+        var windowLoadCallback =
+          mockWindow.addEventListener.calls.first().args[1];
         windowLoadCallback();
 
         jasmine.clock().tick(DEBOUNCE_DELAY); // Skip past debounce.
@@ -627,8 +627,8 @@ describe('enters viewport event delegate', function () {
           jasmine.any(Function)
         );
 
-        var domContentLoadedCallback = mockDocument.addEventListener.calls.first()
-          .args[1];
+        var domContentLoadedCallback =
+          mockDocument.addEventListener.calls.first().args[1];
         domContentLoadedCallback();
 
         jasmine.clock().tick(DEBOUNCE_DELAY); // Skip past debounce.
