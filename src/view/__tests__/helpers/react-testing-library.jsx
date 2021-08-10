@@ -18,7 +18,20 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-window.requestAnimationFrame = (ckb) => ckb();
+const animationFrameRequests = {};
+window.requestAnimationFrame = (ckb) => {
+  const timeoutId = window.setTimeout(() => {
+    ckb();
+  }, 0);
+  animationFrameRequests[timeoutId] = timeoutId;
+  return timeoutId;
+};
+window.cancelAnimationFrame = (timeoutId) => {
+  if (animationFrameRequests.hasOwnProperty(timeoutId)) {
+    delete animationFrameRequests[timeoutId];
+    clearTimeout(timeoutId);
+  }
+};
 window.ResizeObserver = () => ({ observe: () => {}, unobserve: () => {} });
 
 // this function is nice for pausing the UI to see what's going on in Karma

@@ -100,15 +100,15 @@ describe('value comparison condition view', () => {
         it('sets settings from form values', async () => {
           userEvent.type(pageElements.getLeftOperandTextBox(), '%foo%');
 
-          userEvent.type(pageElements.getRightOperandTextBox(), '123');
-          fireEvent.click(pageElements.getCaseInsensitiveCheckBox());
-
           fireEvent.click(pageElements.getOperatorDropdownTrigger());
           const option = await pageElements.waitForDynamicOptionText(text);
           clickSpectrumOption(option);
           await safelyWaitForElementToBeRemoved(() =>
             screen.queryByRole('option', { name: text })
           );
+
+          userEvent.type(pageElements.getRightOperandTextBox(), '123');
+          fireEvent.click(pageElements.getCaseInsensitiveCheckBox());
 
           expect(extensionBridge.getSettings()).toEqual({
             leftOperand: '%foo%',
