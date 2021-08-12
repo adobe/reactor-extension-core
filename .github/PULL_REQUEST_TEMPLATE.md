@@ -32,7 +32,6 @@
 
 - [ ] I have signed the [Adobe Open Source CLA](http://opensource.adobe.com/cla.html).
 - [ ] My code follows the code style of this project.
-- [ ] My change requires a change to the documentation.
-- [ ] I have updated the documentation accordingly.
+- [ ] I have updated the Experience League documentation for the [Core Extension](https://git.corp.adobe.com/AdobeDocs/experience-platform.en/tree/master/help/tags/extensions/web/core)
 - [ ] All tests pass and I've made any necessary test changes.
 - [ ] I have run the extension sandbox successfully.

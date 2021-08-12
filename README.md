@@ -1,9 +1,9 @@
-# Core Extension for Adobe Experience Platform Launch
+# Core Extension for Adobe Experience Platform Tags
 
 [![Build Status](https://img.shields.io/github/workflow/status/adobe/reactor-extension-core/ci?style=flat)](https://github.com/adobe/reactor-extension-core/actions)
 [![Coverage Status](https://coveralls.io/repos/github/adobe/reactor-extension-core/badge.svg?branch=master)](https://coveralls.io/github/adobe/reactor-extension-core?branch=master)
 
-This is the Core extension for [Adobe Experience Platform Launch](https://www.adobe.com/experience-platform/launch.html). It provides default event, condition, and data element types available to all Launch properties.
+This is the Core extension for [Adobe Experience Platform Tags](https://experienceleague.adobe.com/docs/experience-platform_en/tags/). It provides default event, condition, and data element types available to all Tags properties.
 
 ## Contributing
 
