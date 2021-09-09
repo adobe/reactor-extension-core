@@ -11,9 +11,7 @@
  ****************************************************************************************/
 
 import React from 'react';
-import { connect } from 'react-redux';
 import { TextField, Flex } from '@adobe/react-spectrum';
-import { formValueSelector } from 'redux-form';
 import ValueComparison, {
   formConfig as valueComparisonFormConfig
 } from '../conditions/valueComparison';
