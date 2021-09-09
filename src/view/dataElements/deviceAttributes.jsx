@@ -26,7 +26,7 @@ const options = [
   }
 ];
 
-const VisitorAttributes = () => (
+const DeviceAttributes = () => (
   <FullWidthField
     label="Attribute"
     name="attribute"
@@ -38,7 +38,7 @@ const VisitorAttributes = () => (
   </FullWidthField>
 );
 
-export default VisitorAttributes;
+export default DeviceAttributes;
 
 export const formConfig = {
   settingsToFormValues(values, settings) {

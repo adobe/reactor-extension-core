@@ -11,29 +11,29 @@ governing permissions and limitations under the License.
 
 'use strict';
 
-var visitorAttributesDelegateInjector = require('inject-loader!../visitorAttributes');
+var deviceAttributesDelegateInjector = require('inject-loader!../deviceAttributes');
 
 describe('visitor attributes data element delegate', function () {
   it('returns the window size', function () {
-    var visitorAttributesDelegate = visitorAttributesDelegateInjector({
+    var deviceAttributesDelegate = deviceAttributesDelegateInjector({
       '@adobe/reactor-window': {
         screen: { width: 100, height: 200 }
       }
     });
 
-    expect(visitorAttributesDelegate({ attribute: 'screenSize' })).toBe(
+    expect(deviceAttributesDelegate({ attribute: 'screenSize' })).toBe(
       '100x200'
     );
   });
 
   it('returns the window size', function () {
-    var visitorAttributesDelegate = visitorAttributesDelegateInjector({
+    var deviceAttributesDelegate = deviceAttributesDelegateInjector({
       '@adobe/reactor-document': {
         documentElement: { clientWidth: 150, clientHeight: 250 }
       }
     });
 
-    expect(visitorAttributesDelegate({ attribute: 'windowSize' })).toBe(
+    expect(deviceAttributesDelegate({ attribute: 'windowSize' })).toBe(
       '150x250'
     );
   });

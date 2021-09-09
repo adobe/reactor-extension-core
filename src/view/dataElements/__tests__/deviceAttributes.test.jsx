@@ -13,7 +13,7 @@
 import { render, screen, within, fireEvent } from '@testing-library/react';
 import { clickSpectrumOption } from '@test-helpers/react-testing-library';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import VisitorAttributes, { formConfig } from '../visitorAttributes';
+import DeviceAttributes, { formConfig } from '../deviceAttributes';
 import bootstrap from '../../bootstrap';
 
 // react-testing-library element selectors
@@ -32,7 +32,7 @@ describe('visitor attributes data element view', () => {
   beforeEach(() => {
     extensionBridge = createExtensionBridge();
     window.extensionBridge = extensionBridge;
-    render(bootstrap(VisitorAttributes, formConfig));
+    render(bootstrap(DeviceAttributes, formConfig));
     extensionBridge.init();
   });
 

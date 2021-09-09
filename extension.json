@@ -2466,15 +2466,15 @@
       }
     },
     {
-      "displayName": "Visitor Attributes",
-      "name": "visitor-attributes",
+      "displayName": "Device Attributes",
+      "name": "device-attributes",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
         "properties": {}
       },
-      "libPath": "src/lib/dataElements/visitorAttributes.js",
-      "viewPath": "dataElements/visitorAttributes.html"
+      "libPath": "src/lib/dataElements/deviceAttributes.js",
+      "viewPath": "dataElements/deviceAttributes.html"
     },
     {
       "name": "visitor-behavior",
