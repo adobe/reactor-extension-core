@@ -1,3 +1,5 @@
+/* eslint-env es6 */
+
 'use strict';
 
 const DefinePlugin = require('webpack').DefinePlugin;
@@ -147,9 +149,9 @@ module.exports = (config) => {
       {
         pattern: 'src/**/__tests__/**/*',
         // When this is false, any change to the files in __test__ without the .test.js extension
-        // still triggers a re-run of tests. I don't know why but ultimately that's the result we want.
-        // When it's set to true, Karma starts getting messed up and running tests multiple times when
-        // such files are changed. o_O
+        // still triggers a re-run of tests. I don't know why but ultimately that's the result we
+        // want. When it's set to true, Karma starts getting messed up and running tests multiple
+        // times when such files are changed. o_O
         // Sounds like https://github.com/webpack/karma-webpack/issues/44
         watched: false,
         included: false,

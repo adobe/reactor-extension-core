@@ -1,3 +1,5 @@
+/* eslint-env es6 */
+
 'use strict';
 
 const path = require('path');
@@ -45,11 +47,7 @@ module.exports = (env) => {
               title: itemDescriptor.displayName,
               filename: `${chunkName}.html`,
               template: 'src/view/template.html',
-              chunks: ['common', chunkName],
-              react_dev_hook:
-                env === 'sandbox'
-                  ? '<script> try { __REACT_DEVTOOLS_GLOBAL_HOOK__ = parent.__REACT_DEVTOOLS_GLOBAL_HOOK__ } catch(error) {}</script>'
-                  : ''
+              chunks: ['common', chunkName]
             })
           );
         }
