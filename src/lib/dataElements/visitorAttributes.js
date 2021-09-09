@@ -11,7 +11,6 @@
  ****************************************************************************************/
 
 'use strict';
-const clientInfo = require('../conditions/helpers/clientInfo');
 
 /**
  * The visitor attributes data element.
@@ -19,17 +18,19 @@ const clientInfo = require('../conditions/helpers/clientInfo');
  * @param {string} settings.attribute The attribute that should be returned.
  * @returns {string}
  */
+
+var document = require('@adobe/reactor-document');
+var window = require('@adobe/reactor-window');
+
 module.exports = function (settings) {
-      switch (settings.attribute) {
-        case 'browser':
-          return clientInfo.browser;
-        case 'operatingSystem':
-          return clientInfo.os;
-        case 'deviceType':
-          return clientInfo.deviceType;
-        case 'windowSize':
-          return document.documentElement.clientWidth + "x" + document.documentElement.clientHeight;
-        case 'screenSize':
-          return window.screen.width + "x" + window.screen.height;
-      }
+  switch (settings.attribute) {
+    case 'windowSize':
+      return (
+        document.documentElement.clientWidth +
+        'x' +
+        document.documentElement.clientHeight
+      );
+    case 'screenSize':
+      return window.screen.width + 'x' + window.screen.height;
+  }
 };

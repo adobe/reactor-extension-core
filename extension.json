@@ -58,10 +58,7 @@
                 }
               },
               "additionalProperties": false,
-              "required": [
-                "name",
-                "value"
-              ]
+              "required": ["name", "value"]
             }
           },
           "bubbleFireIfParent": {
@@ -108,10 +105,7 @@
                 }
               },
               "additionalProperties": false,
-              "required": [
-                "name",
-                "value"
-              ]
+              "required": ["name", "value"]
             }
           },
           "bubbleFireIfParent": {
@@ -164,10 +158,7 @@
                 }
               },
               "additionalProperties": false,
-              "required": [
-                "name",
-                "value"
-              ]
+              "required": ["name", "value"]
             }
           },
           "bubbleFireIfParent": {
@@ -211,17 +202,13 @@
           }
         },
         "additionalProperties": false,
-        "required": [
-          "source"
-        ]
+        "required": ["source"]
       },
       "transforms": [
         {
           "type": "function",
           "propertyPath": "source",
-          "parameters": [
-            "trigger"
-          ]
+          "parameters": ["trigger"]
         }
       ]
     },
@@ -260,10 +247,7 @@
                 }
               },
               "additionalProperties": false,
-              "required": [
-                "name",
-                "value"
-              ]
+              "required": ["name", "value"]
             }
           },
           "bubbleFireIfParent": {
@@ -277,9 +261,7 @@
           }
         },
         "additionalProperties": false,
-        "required": [
-          "type"
-        ]
+        "required": ["type"]
       }
     },
     {
@@ -298,9 +280,7 @@
           }
         },
         "additionalProperties": false,
-        "required": [
-          "name"
-        ]
+        "required": ["name"]
       }
     },
     {
@@ -319,9 +299,7 @@
           }
         },
         "additionalProperties": false,
-        "required": [
-          "identifier"
-        ]
+        "required": ["identifier"]
       }
     },
     {
@@ -362,17 +340,12 @@
                 }
               },
               "additionalProperties": false,
-              "required": [
-                "name",
-                "value"
-              ]
+              "required": ["name", "value"]
             }
           }
         },
         "additionalProperties": false,
-        "required": [
-          "elementSelector"
-        ]
+        "required": ["elementSelector"]
       }
     },
     {
@@ -406,10 +379,7 @@
                 }
               },
               "additionalProperties": false,
-              "required": [
-                "name",
-                "value"
-              ]
+              "required": ["name", "value"]
             }
           },
           "bubbleFireIfParent": {
@@ -456,10 +426,7 @@
                 }
               },
               "additionalProperties": false,
-              "required": [
-                "name",
-                "value"
-              ]
+              "required": ["name", "value"]
             }
           },
           "delay": {
@@ -476,16 +443,11 @@
           },
           "frequency": {
             "type": "string",
-            "enum": [
-              "firstEntry",
-              "everyEntry"
-            ]
+            "enum": ["firstEntry", "everyEntry"]
           }
         },
         "additionalProperties": false,
-        "required": [
-          "elementSelector"
-        ]
+        "required": ["elementSelector"]
       }
     },
     {
@@ -519,10 +481,7 @@
                 }
               },
               "additionalProperties": false,
-              "required": [
-                "name",
-                "value"
-              ]
+              "required": ["name", "value"]
             }
           },
           "bubbleFireIfParent": {
@@ -569,10 +528,7 @@
                 }
               },
               "additionalProperties": false,
-              "required": [
-                "name",
-                "value"
-              ]
+              "required": ["name", "value"]
             }
           },
           "bubbleFireIfParent": {
@@ -598,9 +554,7 @@
           }
         },
         "additionalProperties": false,
-        "required": [
-          "elementSelector"
-        ]
+        "required": ["elementSelector"]
       }
     },
     {
@@ -634,10 +588,7 @@
                 }
               },
               "additionalProperties": false,
-              "required": [
-                "name",
-                "value"
-              ]
+              "required": ["name", "value"]
             }
           },
           "bubbleFireIfParent": {
@@ -684,10 +635,7 @@
                 }
               },
               "additionalProperties": false,
-              "required": [
-                "name",
-                "value"
-              ]
+              "required": ["name", "value"]
             }
           },
           "bubbleFireIfParent": {
@@ -741,10 +689,7 @@
                 }
               },
               "additionalProperties": false,
-              "required": [
-                "name",
-                "value"
-              ]
+              "required": ["name", "value"]
             }
           },
           "bubbleFireIfParent": {
@@ -819,10 +764,7 @@
                 }
               },
               "additionalProperties": false,
-              "required": [
-                "name",
-                "value"
-              ]
+              "required": ["name", "value"]
             }
           },
           "bubbleFireIfParent": {
@@ -869,10 +811,7 @@
                 }
               },
               "additionalProperties": false,
-              "required": [
-                "name",
-                "value"
-              ]
+              "required": ["name", "value"]
             }
           },
           "bubbleFireIfParent": {
@@ -919,10 +858,7 @@
                 }
               },
               "additionalProperties": false,
-              "required": [
-                "name",
-                "value"
-              ]
+              "required": ["name", "value"]
             }
           },
           "bubbleFireIfParent": {
@@ -969,10 +905,7 @@
                 }
               },
               "additionalProperties": false,
-              "required": [
-                "name",
-                "value"
-              ]
+              "required": ["name", "value"]
             }
           },
           "bubbleFireIfParent": {
@@ -1026,9 +959,7 @@
           }
         },
         "additionalProperties": false,
-        "required": [
-          "timeOnPage"
-        ]
+        "required": ["timeOnPage"]
       }
     },
     {
@@ -1062,10 +993,7 @@
                 }
               },
               "additionalProperties": false,
-              "required": [
-                "name",
-                "value"
-              ]
+              "required": ["name", "value"]
             }
           },
           "bubbleFireIfParent": {
@@ -1091,17 +1019,11 @@
           },
           "unit": {
             "type": "string",
-            "enum": [
-              "percent",
-              "second"
-            ]
+            "enum": ["percent", "second"]
           }
         },
         "additionalProperties": false,
-        "required": [
-          "amount",
-          "unit"
-        ]
+        "required": ["amount", "unit"]
       }
     },
     {
@@ -1135,10 +1057,7 @@
                 }
               },
               "additionalProperties": false,
-              "required": [
-                "name",
-                "value"
-              ]
+              "required": ["name", "value"]
             }
           },
           "bubbleFireIfParent": {
@@ -1189,9 +1108,7 @@
           }
         },
         "additionalProperties": false,
-        "required": [
-          "browsers"
-        ]
+        "required": ["browsers"]
       }
     },
     {
@@ -1216,10 +1133,7 @@
           }
         },
         "additionalProperties": false,
-        "required": [
-          "name",
-          "value"
-        ]
+        "required": ["name", "value"]
       }
     },
     {
@@ -1238,18 +1152,13 @@
           }
         },
         "additionalProperties": false,
-        "required": [
-          "source"
-        ]
+        "required": ["source"]
       },
       "transforms": [
         {
           "type": "function",
           "propertyPath": "source",
-          "parameters": [
-            "event",
-            "target"
-          ]
+          "parameters": ["event", "target"]
         }
       ]
     },
@@ -1312,9 +1221,7 @@
           }
         },
         "additionalProperties": false,
-        "required": [
-          "deviceTypes"
-        ]
+        "required": ["deviceTypes"]
       }
     },
     {
@@ -1335,9 +1242,7 @@
           }
         },
         "additionalProperties": false,
-        "required": [
-          "domains"
-        ]
+        "required": ["domains"]
       }
     },
     {
@@ -1364,17 +1269,13 @@
                 }
               },
               "additionalProperties": false,
-              "required": [
-                "value"
-              ]
+              "required": ["value"]
             },
             "minItems": 1
           }
         },
         "additionalProperties": false,
-        "required": [
-          "hashes"
-        ]
+        "required": ["hashes"]
       }
     },
     {
@@ -1396,9 +1297,7 @@
           }
         },
         "additionalProperties": false,
-        "required": [
-          "page"
-        ]
+        "required": ["page"]
       }
     },
     {
@@ -1432,24 +1331,17 @@
               }
             },
             "additionalProperties": false,
-            "required": [
-              "count",
-              "unit"
-            ]
+            "required": ["count", "unit"]
           },
           {
             "properties": {
               "unit": {
                 "type": "string",
-                "enum": [
-                  "visitor"
-                ]
+                "enum": ["visitor"]
               }
             },
             "additionalProperties": false,
-            "required": [
-              "unit"
-            ]
+            "required": ["unit"]
           }
         ]
       }
@@ -1469,9 +1361,7 @@
           }
         },
         "additionalProperties": false,
-        "required": [
-          "isNewVisitor"
-        ]
+        "required": ["isNewVisitor"]
       }
     },
     {
@@ -1488,21 +1378,12 @@
             "type": "array",
             "items": {
               "type": "string",
-              "enum": [
-                "Windows",
-                "MacOS",
-                "Linux",
-                "Unix",
-                "iOS",
-                "Android"
-              ]
+              "enum": ["Windows", "MacOS", "Linux", "Unix", "iOS", "Android"]
             }
           }
         },
         "additionalProperties": false,
-        "required": [
-          "operatingSystems"
-        ]
+        "required": ["operatingSystems"]
       }
     },
     {
@@ -1517,29 +1398,18 @@
         "properties": {
           "operator": {
             "type": "string",
-            "enum": [
-              ">",
-              "=",
-              "<"
-            ]
+            "enum": [">", "=", "<"]
           },
           "count": {
             "type": "number"
           },
           "duration": {
             "type": "string",
-            "enum": [
-              "lifetime",
-              "session"
-            ]
+            "enum": ["lifetime", "session"]
           }
         },
         "additionalProperties": false,
-        "required": [
-          "operator",
-          "count",
-          "duration"
-        ]
+        "required": ["operator", "count", "duration"]
       }
     },
     {
@@ -1566,17 +1436,13 @@
                 }
               },
               "additionalProperties": false,
-              "required": [
-                "value"
-              ]
+              "required": ["value"]
             },
             "minItems": 1
           }
         },
         "additionalProperties": false,
-        "required": [
-          "paths"
-        ]
+        "required": ["paths"]
       }
     },
     {
@@ -1603,17 +1469,13 @@
                 }
               },
               "additionalProperties": false,
-              "required": [
-                "value"
-              ]
+              "required": ["value"]
             },
             "minItems": 1
           }
         },
         "additionalProperties": false,
-        "required": [
-          "paths"
-        ]
+        "required": ["paths"]
       }
     },
     {
@@ -1628,16 +1490,11 @@
         "properties": {
           "protocol": {
             "type": "string",
-            "enum": [
-              "http:",
-              "https:"
-            ]
+            "enum": ["http:", "https:"]
           }
         },
         "additionalProperties": false,
-        "required": [
-          "protocol"
-        ]
+        "required": ["protocol"]
       }
     },
     {
@@ -1652,34 +1509,21 @@
         "properties": {
           "widthOperator": {
             "type": "string",
-            "enum": [
-              ">",
-              "=",
-              "<"
-            ]
+            "enum": [">", "=", "<"]
           },
           "width": {
             "type": "number"
           },
           "heightOperator": {
             "type": "string",
-            "enum": [
-              ">",
-              "=",
-              "<"
-            ]
+            "enum": [">", "=", "<"]
           },
           "height": {
             "type": "number"
           }
         },
         "additionalProperties": false,
-        "required": [
-          "widthOperator",
-          "width",
-          "heightOperator",
-          "height"
-        ]
+        "required": ["widthOperator", "width", "heightOperator", "height"]
       }
     },
     {
@@ -1702,9 +1546,7 @@
           }
         },
         "additionalProperties": false,
-        "required": [
-          "rate"
-        ]
+        "required": ["rate"]
       }
     },
     {
@@ -1719,21 +1561,14 @@
         "properties": {
           "operator": {
             "type": "string",
-            "enum": [
-              ">",
-              "=",
-              "<"
-            ]
+            "enum": [">", "=", "<"]
           },
           "count": {
             "type": "number"
           }
         },
         "additionalProperties": false,
-        "required": [
-          "operator",
-          "count"
-        ]
+        "required": ["operator", "count"]
       }
     },
     {
@@ -1760,17 +1595,13 @@
                 }
               },
               "additionalProperties": false,
-              "required": [
-                "value"
-              ]
+              "required": ["value"]
             },
             "minItems": 1
           }
         },
         "additionalProperties": false,
-        "required": [
-          "subdomains"
-        ]
+        "required": ["subdomains"]
       }
     },
     {
@@ -1785,11 +1616,7 @@
         "properties": {
           "operator": {
             "type": "string",
-            "enum": [
-              ">",
-              "=",
-              "<"
-            ]
+            "enum": [">", "=", "<"]
           },
           "minutes": {
             "oneOf": [
@@ -1804,10 +1631,7 @@
           }
         },
         "additionalProperties": false,
-        "required": [
-          "operator",
-          "minutes"
-        ]
+        "required": ["operator", "minutes"]
       }
     },
     {
@@ -1829,9 +1653,7 @@
           }
         },
         "additionalProperties": false,
-        "required": [
-          "source"
-        ]
+        "required": ["source"]
       }
     },
     {
@@ -1857,10 +1679,7 @@
           }
         },
         "additionalProperties": false,
-        "required": [
-          "name",
-          "value"
-        ]
+        "required": ["name", "value"]
       }
     },
     {
@@ -1884,18 +1703,13 @@
                 "properties": {
                   "operator": {
                     "type": "string",
-                    "enum": [
-                      "equals",
-                      "doesNotEqual"
-                    ]
+                    "enum": ["equals", "doesNotEqual"]
                   },
                   "caseInsensitive": {
                     "type": "boolean"
                   }
                 },
-                "required": [
-                  "operator"
-                ],
+                "required": ["operator"],
                 "additionalProperties": false
               },
               "rightOperand": {
@@ -1909,10 +1723,215 @@
                 ]
               }
             },
+            "required": ["leftOperand", "comparison", "rightOperand"],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "leftOperand": {
+                "type": "string",
+                "pattern": "^%([^%]+)%$"
+              },
+              "comparison": {
+                "type": "object",
+                "properties": {
+                  "operator": {
+                    "type": "string",
+                    "enum": [
+                      "contains",
+                      "doesNotContain",
+                      "startsWith",
+                      "doesNotStartWith",
+                      "endsWith",
+                      "doesNotEndWith",
+                      "matchesRegex",
+                      "doesNotMatchRegex"
+                    ]
+                  },
+                  "caseInsensitive": {
+                    "type": "boolean"
+                  }
+                },
+                "required": ["operator"],
+                "additionalProperties": false
+              },
+              "rightOperand": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": ["leftOperand", "comparison", "rightOperand"],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "leftOperand": {
+                "type": "string",
+                "pattern": "^%([^%]+)%$"
+              },
+              "comparison": {
+                "type": "object",
+                "properties": {
+                  "operator": {
+                    "type": "string",
+                    "enum": [
+                      "lessThan",
+                      "lessThanOrEqual",
+                      "greaterThan",
+                      "greaterThanOrEqual"
+                    ]
+                  }
+                },
+                "required": ["operator"],
+                "additionalProperties": false
+              },
+              "rightOperand": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^%([^%]+)%$"
+                  }
+                ]
+              }
+            },
+            "required": ["leftOperand", "comparison", "rightOperand"],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "leftOperand": {
+                "type": "string",
+                "pattern": "^%([^%]+)%$"
+              },
+              "comparison": {
+                "type": "object",
+                "properties": {
+                  "operator": {
+                    "type": "string",
+                    "enum": ["isTrue", "isTruthy", "isFalse", "isFalsy"]
+                  }
+                },
+                "required": ["operator"],
+                "additionalProperties": false
+              }
+            },
+            "required": ["leftOperand", "comparison"],
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "variable",
+      "categoryName": "Data",
+      "displayName": "Variable",
+      "libPath": "src/lib/conditions/variable.js",
+      "viewPath": "conditions/variable.html",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "value": {
+            "type": "string",
+            "minLength": 1
+          },
+          "valueIsRegex": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": ["name", "value"]
+      }
+    },
+    {
+      "name": "window-size",
+      "categoryName": "Technology",
+      "displayName": "Window Size",
+      "libPath": "src/lib/conditions/windowSize.js",
+      "viewPath": "conditions/windowSize.html",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "widthOperator": {
+            "type": "string",
+            "enum": [">", "=", "<"]
+          },
+          "width": {
+            "type": "number"
+          },
+          "heightOperator": {
+            "type": "string",
+            "enum": [">", "=", "<"]
+          },
+          "height": {
+            "type": "number"
+          }
+        },
+        "additionalProperties": false,
+        "required": ["widthOperator", "width", "heightOperator", "height"]
+      }
+    }
+  ],
+  "dataElements": [
+    {
+      "displayName": "Conditional Value",
+      "name": "conditional-value",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "oneOf": [
+          {
+            "properties": {
+              "leftOperand": {
+                "type": "string",
+                "pattern": "^%([^%]+)%$"
+              },
+              "comparison": {
+                "type": "object",
+                "properties": {
+                  "operator": {
+                    "type": "string",
+                    "enum": ["equals", "doesNotEqual"]
+                  },
+                  "caseInsensitive": {
+                    "type": "boolean"
+                  }
+                },
+                "required": ["operator"],
+                "additionalProperties": false
+              },
+              "rightOperand": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "conditionalValue": {
+                "type": "string",
+                "minLength": 1
+              },
+              "fallbackValue": {
+                "type": "string"
+              }
+            },
             "required": [
               "leftOperand",
               "comparison",
-              "rightOperand"
+              "rightOperand",
+              "conditionalValue",
+              "fallbackValue"
             ],
             "additionalProperties": false
           },
@@ -1942,20 +1961,27 @@
                     "type": "boolean"
                   }
                 },
-                "required": [
-                  "operator"
-                ],
+                "required": ["operator"],
                 "additionalProperties": false
               },
               "rightOperand": {
                 "type": "string",
                 "minLength": 1
+              },
+              "conditionalValue": {
+                "type": "string",
+                "minLength": 1
+              },
+              "fallbackValue": {
+                "type": "string"
               }
             },
             "required": [
               "leftOperand",
               "comparison",
-              "rightOperand"
+              "rightOperand",
+              "conditionalValue",
+              "fallbackValue"
             ],
             "additionalProperties": false
           },
@@ -1978,9 +2004,7 @@
                     ]
                   }
                 },
-                "required": [
-                  "operator"
-                ],
+                "required": ["operator"],
                 "additionalProperties": false
               },
               "rightOperand": {
@@ -1993,12 +2017,21 @@
                     "pattern": "^%([^%]+)%$"
                   }
                 ]
+              },
+              "conditionalValue": {
+                "type": "string",
+                "minLength": 1
+              },
+              "fallbackValue": {
+                "type": "string"
               }
             },
             "required": [
               "leftOperand",
               "comparison",
-              "rightOperand"
+              "rightOperand",
+              "conditionalValue",
+              "fallbackValue"
             ],
             "additionalProperties": false
           },
@@ -2013,109 +2046,29 @@
                 "properties": {
                   "operator": {
                     "type": "string",
-                    "enum": [
-                      "isTrue",
-                      "isTruthy",
-                      "isFalse",
-                      "isFalsy"
-                    ]
+                    "enum": ["isTrue", "isTruthy", "isFalse", "isFalsy"]
                   }
                 },
-                "required": [
-                  "operator"
-                ],
+                "required": ["operator"],
                 "additionalProperties": false
+              },
+              "conditionalValue": {
+                "type": "string",
+                "minLength": 1
+              },
+              "fallbackValue": {
+                "type": "string"
               }
             },
             "required": [
               "leftOperand",
-              "comparison"
+              "comparison",
+              "conditionalValue",
+              "fallbackValue"
             ],
             "additionalProperties": false
           }
         ]
-      }
-    },
-    {
-      "name": "variable",
-      "categoryName": "Data",
-      "displayName": "Variable",
-      "libPath": "src/lib/conditions/variable.js",
-      "viewPath": "conditions/variable.html",
-      "schema": {
-        "$schema": "http://json-schema.org/draft-04/schema#",
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "minLength": 1
-          },
-          "value": {
-            "type": "string",
-            "minLength": 1
-          },
-          "valueIsRegex": {
-            "type": "boolean"
-          }
-        },
-        "additionalProperties": false,
-        "required": [
-          "name",
-          "value"
-        ]
-      }
-    },
-    {
-      "name": "window-size",
-      "categoryName": "Technology",
-      "displayName": "Window Size",
-      "libPath": "src/lib/conditions/windowSize.js",
-      "viewPath": "conditions/windowSize.html",
-      "schema": {
-        "$schema": "http://json-schema.org/draft-04/schema#",
-        "type": "object",
-        "properties": {
-          "widthOperator": {
-            "type": "string",
-            "enum": [
-              ">",
-              "=",
-              "<"
-            ]
-          },
-          "width": {
-            "type": "number"
-          },
-          "heightOperator": {
-            "type": "string",
-            "enum": [
-              ">",
-              "=",
-              "<"
-            ]
-          },
-          "height": {
-            "type": "number"
-          }
-        },
-        "additionalProperties": false,
-        "required": [
-          "widthOperator",
-          "width",
-          "heightOperator",
-          "height"
-        ]
-      }
-    }
-  ],
-  "dataElements": [
-    {
-      "displayName": "Conditional Value",
-      "name": "conditional-value",
-      "schema": {
-        "$schema": "http://json-schema.org/draft-04/schema#",
-        "type": "object",
-        "properties": {}
       },
       "libPath": "src/lib/dataElements/conditionalValue.js",
       "viewPath": "dataElements/conditionalValue.html"
@@ -2135,9 +2088,7 @@
           }
         },
         "additionalProperties": false,
-        "required": [
-          "value"
-        ]
+        "required": ["value"]
       }
     },
     {
@@ -2155,9 +2106,7 @@
           }
         },
         "additionalProperties": false,
-        "required": [
-          "name"
-        ]
+        "required": ["name"]
       }
     },
     {
@@ -2175,17 +2124,13 @@
           }
         },
         "additionalProperties": false,
-        "required": [
-          "source"
-        ]
+        "required": ["source"]
       },
       "transforms": [
         {
           "type": "function",
           "propertyPath": "source",
-          "parameters": [
-            "event"
-          ]
+          "parameters": ["event"]
         }
       ]
     },
@@ -2208,22 +2153,32 @@
           }
         },
         "additionalProperties": false,
-        "required": [
-          "elementSelector",
-          "elementProperty"
-        ]
+        "required": ["elementSelector", "elementProperty"]
       }
     },
     {
-      "displayName": "Launch Environment",
-      "name": "launch-environment",
+      "displayName": "Runtime Environment",
+      "name": "runtime-environment",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
-        "properties": {}
+        "properties": {
+          "attribute": {
+            "enum": [
+              "environment",
+              "buildDate",
+              "propertyName",
+              "ruleName",
+              "ruleId",
+              "eventType",
+              "eventDetail",
+              "DCRIdentifier"
+            ]
+          }
+        }
       },
-      "libPath": "src/lib/dataElements/launchEnvironment.js",
-      "viewPath": "dataElements/launchEnvironment.html"
+      "libPath": "src/lib/dataElements/runtimeEnvironment.js",
+      "viewPath": "dataElements/runtimeEnvironment.html"
     },
     {
       "name": "local-storage",
@@ -2240,9 +2195,7 @@
           }
         },
         "additionalProperties": false,
-        "required": [
-          "name"
-        ]
+        "required": ["name"]
       }
     },
     {
@@ -2288,9 +2241,7 @@
           }
         },
         "additionalProperties": false,
-        "required": [
-          "attribute"
-        ]
+        "required": ["attribute"]
       }
     },
     {
@@ -2311,9 +2262,7 @@
           }
         },
         "additionalProperties": false,
-        "required": [
-          "name"
-        ]
+        "required": ["name"]
       }
     },
     {
@@ -2332,10 +2281,7 @@
             "type": "integer"
           }
         },
-        "required": [
-          "min",
-          "max"
-        ],
+        "required": ["min", "max"],
         "additionalProperties": false
       }
     },
@@ -2354,9 +2300,7 @@
           }
         },
         "additionalProperties": false,
-        "required": [
-          "name"
-        ]
+        "required": ["name"]
       }
     },
     {
@@ -2365,7 +2309,140 @@
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
-        "properties": {}
+        "oneOf": [
+          {
+            "properties": {
+              "sourceValue": {
+                "type": "string",
+                "pattern": "^%([^%]+)%$"
+              },
+              "operator": {
+                "enum": ["simpleReplace"]
+              },
+              "searchValue": {
+                "type": "string",
+                "minLength": 1
+              },
+              "replacementValue": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": ["sourceValue", "operator", "searchValue"]
+          },
+          {
+            "properties": {
+              "sourceValue": {
+                "type": "string",
+                "pattern": "^%([^%]+)%$"
+              },
+              "operator": {
+                "enum": ["regexReplace"]
+              },
+              "regexInput": {
+                "type": "string",
+                "minLength": 1
+              },
+              "replacementValue": {
+                "type": "string"
+              },
+              "caseInsensitive": {
+                "type": "boolean"
+              },
+              "replaceAll": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false,
+            "required": ["sourceValue", "operator", "regexInput"]
+          },
+          {
+            "properties": {
+              "sourceValue": {
+                "type": "string",
+                "pattern": "^%([^%]+)%$"
+              },
+              "operator": {
+                "enum": ["substring", "slice"]
+              },
+              "start": {
+                "type": "number"
+              },
+              "end": {
+                "type": "number"
+              }
+            },
+            "additionalProperties": false,
+            "required": ["sourceValue", "operator", "start"]
+          },
+          {
+            "properties": {
+              "sourceValue": {
+                "type": "string",
+                "pattern": "^%([^%]+)%$"
+              },
+              "operator": {
+                "enum": ["regexMatch"]
+              },
+              "regexInput": {
+                "type": "string",
+                "minLength": 1
+              },
+              "caseInsensitive": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false,
+            "required": ["sourceValue", "operator", "regexInput"]
+          },
+          {
+            "properties": {
+              "sourceValue": {
+                "type": "string",
+                "pattern": "^%([^%]+)%$"
+              },
+              "operator": {
+                "enum": ["length", "arrayPop", "arrayShift"]
+              }
+            },
+            "additionalProperties": false,
+            "required": ["sourceValue", "operator"]
+          },
+          {
+            "properties": {
+              "sourceValue": {
+                "type": "string",
+                "pattern": "^%([^%]+)%$"
+              },
+              "operator": {
+                "enum": ["indexOf", "lastIndexOf"]
+              },
+              "searchValue": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": false,
+            "required": ["sourceValue", "operator", "searchValue"]
+          },
+          {
+            "properties": {
+              "sourceValue": {
+                "type": "string",
+                "pattern": "^%([^%]+)%$"
+              },
+              "operator": {
+                "enum": ["join", "split"]
+              },
+              "delimiter": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": false,
+            "required": ["sourceValue", "operator", "delimiter"]
+          }
+        ]
       },
       "libPath": "src/lib/dataElements/javascriptTools.js",
       "viewPath": "dataElements/javascriptTools.html"
@@ -2385,9 +2462,7 @@
           }
         },
         "additionalProperties": false,
-        "required": [
-          "path"
-        ]
+        "required": ["path"]
       }
     },
     {
@@ -2423,9 +2498,7 @@
           }
         },
         "additionalProperties": false,
-        "required": [
-          "attribute"
-        ]
+        "required": ["attribute"]
       }
     }
   ],
@@ -2442,9 +2515,7 @@
           {
             "properties": {
               "language": {
-                "enum": [
-                  "javascript"
-                ]
+                "enum": ["javascript"]
               },
               "global": {
                 "type": "boolean"
@@ -2455,17 +2526,12 @@
               }
             },
             "additionalProperties": false,
-            "required": [
-              "language",
-              "source"
-            ]
+            "required": ["language", "source"]
           },
           {
             "properties": {
               "language": {
-                "enum": [
-                  "html"
-                ]
+                "enum": ["html"]
               },
               "source": {
                 "type": "string",
@@ -2473,10 +2539,7 @@
               }
             },
             "additionalProperties": false,
-            "required": [
-              "language",
-              "source"
-            ]
+            "required": ["language", "source"]
           }
         ]
       },
@@ -2502,9 +2565,7 @@
           }
         },
         "additionalProperties": false,
-        "required": [
-          "identifier"
-        ]
+        "required": ["identifier"]
       }
     }
   ]

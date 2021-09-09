@@ -34,6 +34,7 @@ export default () => (
       nonce that you generate to authenticate inline scripts, please provide the
       data element that references your nonce.
     </InfoTip>
+    <View width="size-1600" />
   </Flex>
 );
 

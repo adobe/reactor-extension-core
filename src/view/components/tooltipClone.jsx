@@ -2,6 +2,19 @@ import React, { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import './tooltipClone.styl';
 
+const isLabelTextfieldOnTop = (el) =>
+  Boolean(el?.className?.match(/positiontop/gi));
+
+const getLabelOffset = (el) => {
+  let labelOffset = 0;
+  if (isLabelTextfieldOnTop(el)) {
+    const labelEl = el.querySelector('[class*="FieldLabel"]');
+    labelOffset = labelEl?.offsetHeight;
+  }
+
+  return labelOffset;
+};
+
 const determineToolTipPosition = (targetElement, tooltipElement, placement) => {
   const triggerRect = targetElement?.getBoundingClientRect?.() || {
     top: 0,
@@ -18,19 +31,29 @@ const determineToolTipPosition = (targetElement, tooltipElement, placement) => {
   const getLeftCalc = () => ({
     top:
       triggerRect.top +
-      (targetElement.offsetHeight - tooltipElement?.offsetHeight) / 2,
+      (targetElement.offsetHeight -
+        tooltipElement?.offsetHeight +
+        getLabelOffset(targetElement)) /
+        2,
     left: triggerRect.left - tooltipElement?.offsetWidth - spacing,
     width: tooltipElement?.offsetWidth,
     placement: 'left'
   });
-  const getRightCalc = () => ({
-    top:
-      triggerRect.top +
-      (targetElement.offsetHeight - tooltipElement?.offsetHeight) / 2,
-    left: triggerRect.right + spacing,
-    width: tooltipElement?.offsetWidth,
-    placement: 'right'
-  });
+
+  const getRightCalc = () => {
+    return {
+      top:
+        triggerRect.top +
+        (targetElement.offsetHeight -
+          tooltipElement?.offsetHeight +
+          getLabelOffset(targetElement)) /
+          2,
+      left: triggerRect.right + spacing,
+      width: tooltipElement?.offsetWidth,
+      placement: 'right'
+    };
+  };
+
   const getTopCalc = () => ({
     // the label adds some to the height, so subtract the spacing from that height first
     top: triggerRect.top - (tooltipElement.offsetHeight - spacing) - spacingSM,
@@ -40,6 +63,7 @@ const determineToolTipPosition = (targetElement, tooltipElement, placement) => {
     height: tooltipElement?.offsetHeight,
     placement: 'top'
   });
+
   const getBottomCalc = () => ({
     top: triggerRect.bottom + spacing,
     left:
@@ -136,6 +160,7 @@ export const CoreExtensionToolTipTrigger = ({
       tooltipRef?.current,
       suggestedPlacement
     );
+
     portalDivRef.style.top = `${top}px`;
     portalDivRef.style.left = `${left}px`;
     setPlacement(usedPlacement);

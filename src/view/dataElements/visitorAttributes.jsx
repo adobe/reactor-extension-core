@@ -16,21 +16,10 @@ import FullWidthField from '../components/fullWidthField';
 
 const options = [
   {
-    id: 'browser',
-    name: 'Browser Family'
-  },
-  {
     id: 'windowSize',
     name: 'Browser Window Size'
   },
-  {
-    id: 'deviceType',
-    name: 'Device Type'
-  },
-  {
-    id: 'operatingSystem',
-    name: 'Operating System'
-  },
+
   {
     id: 'screenSize',
     name: 'Screen Size'
@@ -55,7 +44,7 @@ export const formConfig = {
   settingsToFormValues(values, settings) {
     return {
       ...values,
-      attribute: settings.attribute || 'browser'
+      attribute: settings.attribute || 'windowSize'
     };
   },
   formValuesToSettings(settings, values) {

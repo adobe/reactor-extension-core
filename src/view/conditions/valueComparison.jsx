@@ -225,9 +225,9 @@ const RightOperandFields = ({ operator, caseInsensitive, rightOperand }) => {
   return null;
 };
 
-const ValueComparison = ({ operator, ...rest }) => (
+const ValueComparison = ({ operator, label = 'Return true if', ...rest }) => (
   <Flex gap="size-100" direction="column">
-    <NoWrapText>Return true if</NoWrapText>
+    <NoWrapText>{label}</NoWrapText>
     <WrappedField
       minWidth="size-3000"
       label="Left Operand"

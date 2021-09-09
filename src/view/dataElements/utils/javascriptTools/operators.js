@@ -9,12 +9,17 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-'use strict';
-
-var valueComparison = require('../conditions/valueComparison');
-
-module.exports = function (settings) {
-  return valueComparison(settings)
-    ? settings.conditionalValue
-    : settings.fallbackValue;
+export default {
+  SUBSTRING: 'substring',
+  REGEX_REPLACE: 'regexReplace',
+  SIMPLE_REPLACE: 'simpleReplace',
+  REGEX_MATCH: 'regexMatch',
+  LENGTH: 'length',
+  INDEX_OF: 'indexOf',
+  LAST_INDEX_OF: 'lastIndexOf',
+  JOIN: 'join',
+  SPLIT: 'split',
+  ARRAY_POP: 'arrayPop',
+  ARRAY_SHIFT: 'arrayShift',
+  SLICE: 'slice'
 };

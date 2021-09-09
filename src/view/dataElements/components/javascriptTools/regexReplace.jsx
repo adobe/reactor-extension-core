@@ -9,12 +9,24 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-'use strict';
+import React from 'react';
 
-var valueComparison = require('../conditions/valueComparison');
+import ReplacementValue, {
+  formConfig as replacementValueFormConfig
+} from './replacementValue';
+import RegexMatch, { formConfig as regexMatchFormConfig } from './regexMatch';
+import mergeFormConfigs from '../../../utils/mergeFormConfigs';
 
-module.exports = function (settings) {
-  return valueComparison(settings)
-    ? settings.conditionalValue
-    : settings.fallbackValue;
+export default ({ caseInsensitive }) => {
+  return (
+    <>
+      <RegexMatch caseInsensitive={caseInsensitive} />
+      <ReplacementValue />
+    </>
+  );
 };
+
+export const formConfig = mergeFormConfigs(
+  regexMatchFormConfig,
+  replacementValueFormConfig
+);

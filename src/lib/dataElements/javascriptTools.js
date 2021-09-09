@@ -12,45 +12,92 @@
 
 'use strict';
 
+var isString = require('../helpers/stringAndNumberUtils').isString;
+
 /**
- * The launch environment data element.
+ * The javascript tools data element.
  * @param {Object} settings The data element settings object.
  * @param {string} settings.operator The attribute that contains the desired operation.
  * @returns {string}
  */
-module.exports = function (settings,event) {
-      switch (settings.operator) {
-        case 'substring':
-          return settings.sourceValue.substring((settings.stringStart!=''?settings.stringStart:undefined),(settings.stringEnd!=''?settings.stringEnd:undefined));
-        case 'join':
-          return settings.sourceValue.join(settings.delimiter);
-        case 'split':
-          return settings.sourceValue.split(settings.delimiter);
-        case 'regexReplace':
-          var re = new RegExp(settings.regexInput, (settings.caseInsensitive?"i":"")+(settings.replaceAll?"g":""));
-          return (settings.replaceAll?settings.sourceValue.replaceAll(re, settings.replacement):settings.sourceValue.replace(re, settings.replacement));
-        case 'simpleReplace':
-          return (settings.replaceAll?settings.sourceValue.replaceAll(settings.search, settings.replacement):settings.sourceValue.replace(settings.search, settings.replacement));
-        case 'regexMatch':
-          var re = new RegExp(settings.regexInput, (settings.caseInsensitive?"i":""));
-          return settings.sourceValue.match(re)[1];
-        case 'capitalizeValue':
-          return settings.sourceValue.charAt(0).toUpperCase() + settings.sourceValue.slice(1);;
-        case 'uppercaseValue':
-          return settings.sourceValue.toUpperCase();
-        case 'lowercaseValue':
-          return settings.sourceValue.toLowerCase();
-        case 'length':
-          return settings.sourceValue.length;
-        case 'indexOf':
-          return settings.sourceValue.indexOf(settings.search);
-        case 'lastIndexOf':
-          return settings.sourceValue.lastIndexOf(settings.search);
-        case 'arrayPop':
-          return settings.sourceValue.pop();
-        case 'arrayShift':
-          return settings.sourceValue.shift();
-        case 'slice':
-          return settings.sourceValue.slice((settings.stringStart!=''?settings.stringStart:undefined),(settings.stringEnd!=''?settings.stringEnd:undefined));
+module.exports = function (settings) {
+  var value = settings.sourceValue;
+
+  switch (settings.operator) {
+    case 'simpleReplace':
+      value = String(value);
+      var method = settings.replaceAll === true ? 'replaceAll' : 'replace';
+      return value[method](settings.searchValue, settings.replacementValue);
+
+    case 'regexReplace':
+      value = String(value);
+      var re = new RegExp(
+        settings.regexInput,
+        (settings.caseInsensitive === true ? 'i' : '') +
+          (settings.replaceAll === true ? 'g' : '')
+      );
+
+      return value.replace(re, settings.replacementValue);
+
+    case 'substring':
+      value = String(value);
+      return value.substring(
+        settings.start,
+        settings.end != null ? settings.end : undefined
+      );
+
+    case 'regexMatch':
+      value = String(value);
+
+      var re = new RegExp(
+        settings.regexInput,
+        settings.caseInsensitive ? 'i' : ''
+      );
+
+      return value.match(re)[0];
+
+    case 'length':
+      if (!Array.isArray(value) && !isString(value)) {
+        return 0;
       }
+
+      return value.length;
+
+    case 'slice':
+      if (!Array.isArray(value) && !isString(value)) {
+        value = String(value);
+      }
+
+      return value.slice(
+        settings.start,
+        settings.end != null ? settings.end : undefined
+      );
+
+    case 'indexOf':
+    case 'lastIndexOf':
+      value = String(value);
+      return value[settings.operator](settings.searchValue);
+
+    case 'join':
+      if (!Array.isArray(value)) {
+        return value;
+      }
+      return value.join(settings.delimiter);
+
+    case 'split':
+      value = String(value);
+      return value.split(settings.delimiter);
+
+    case 'arrayPop':
+      if (!Array.isArray(value)) {
+        return value;
+      }
+      return value.pop();
+
+    case 'arrayShift':
+      if (!Array.isArray(value)) {
+        return value;
+      }
+      return value.shift();
+  }
 };

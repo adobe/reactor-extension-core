@@ -99,7 +99,10 @@ class DecoratedInput extends React.Component {
 
     return (
       <Flex alignItems="end">
-        <CoreExtensionToolTipTrigger isDisabled={!error}>
+        <CoreExtensionToolTipTrigger
+          isDisabled={!error}
+          placement={errorTooltipPlacement}
+        >
           <FieldComponent {...fieldComponentsProps}>{children}</FieldComponent>
           <CoreExtensionToolTip>{error}</CoreExtensionToolTip>
         </CoreExtensionToolTipTrigger>
