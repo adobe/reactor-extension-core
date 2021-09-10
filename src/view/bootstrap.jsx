@@ -45,13 +45,15 @@ export default (
     initializedByBridge
   }))(ViewWrapper);
 
+  const { validate: formConfigValidate } = formConfig;
+
   const ReduxFormView = reduxForm({
     form: 'default',
     // Proxy the provided validate reducer using a function that matches what redux-form expects.
     // Note that there's no technical reason why config.validate must be a reducer. It does
     // maintain some consistency with settingsToFormValues and formValuesToSettings.
-    validate: formConfig.validate
-      ? (values) => formConfig.validate({}, values, store.getState().meta)
+    validate: formConfigValidate
+      ? (values) => formConfigValidate({}, values, store.getState().meta)
       : undefined,
     // ReduxForm will complain with we try to "submit" the form and don't have onSubmit defined.
     onSubmit: () => {}

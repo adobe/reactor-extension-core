@@ -12,7 +12,7 @@
 
 'use strict';
 
-var isPlainObject = require('../../../node_modules/is-plain-object/dist/is-plain-object')
-  .isPlainObject;
+var isPlainObject =
+  require('../../../node_modules/is-plain-object/dist/is-plain-object').isPlainObject;
 
 module.exports = isPlainObject;

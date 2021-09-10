@@ -19,7 +19,7 @@ import { isDataElementToken } from '../utils/validators';
 
 const createItem = () => '';
 
-const renderItem = field => (
+const renderItem = (field) => (
   <View flex data-row>
     <WrappedField
       label="Object"
@@ -95,7 +95,7 @@ export const formConfig = {
       ...errors
     };
 
-    const objectsErrors = (values.objects || []).map(object => {
+    const objectsErrors = (values.objects || []).map((object) => {
       return isDataElementToken(object)
         ? undefined
         : 'Please specify a data element';
