@@ -16,7 +16,9 @@ import { FieldArray } from 'redux-form';
 import WrappedField from '../components/wrappedField';
 import NoWrapText from '../components/noWrapText';
 import RegexToggle from '../components/regexToggle';
-import MultipleItemEditor from './components/multipleItemEditor';
+import MultipleItemEditor from '../components/multipleItemEditor';
+
+const createItem = () => ({});
 
 const renderItem = (field) => (
   <Flex data-row flex gap="size-100" alignItems="end">
@@ -45,6 +47,8 @@ const Subdomain = () => (
       name="subdomains"
       renderItem={renderItem}
       component={MultipleItemEditor}
+      interstitialLabel="OR"
+      createItem={createItem}
     />
   </Flex>
 );
@@ -63,7 +67,7 @@ export const formConfig = {
     }
 
     if (!values.subdomains.length) {
-      values.subdomains.push({});
+      values.subdomains.push(createItem());
     }
 
     return values;

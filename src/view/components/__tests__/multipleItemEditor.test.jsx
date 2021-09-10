@@ -20,6 +20,9 @@ const pageElements = {
   getAddSubDomainRowButton: () => {
     return screen.getByRole('button', { name: /add another/i });
   },
+  getInterstitialLabels: () => {
+    return document.querySelectorAll('div[data-type="interstitial"]');
+  },
   getRegexRows: () => {
     return [].slice
       .call(document.querySelectorAll('div[data-type="row"]')) // get the dom nodes
@@ -61,7 +64,9 @@ const getTestProps = () => ({
     .createSpy('renderItem')
     .and.callFake((rowData) => (
       <TextField label="Row Input Box" value={rowData} />
-    ))
+    )),
+  createItem: jasmine.createSpy().and.returnValue({}),
+  interstitialLabel: 'OR'
 });
 
 describe('multiple item editor', () => {
@@ -81,12 +86,19 @@ describe('multiple item editor', () => {
     expect(secondRow.withinRow.getTextBox().value).toBe('props[1]');
   });
 
-  it('calls onAddItem when add button is clicked', () => {
-    fireEvent.click(pageElements.getAddSubDomainRowButton());
-    expect(props.fields.push).toHaveBeenCalled();
+  it('renders an interstitial label', () => {
+    const interstitialLabels = pageElements.getInterstitialLabels();
+    expect(interstitialLabels.length).toBe(1);
+    expect(interstitialLabels[0].innerHTML).toBe('OR');
   });
 
-  it('calls onRemoveItem when remove button is clicked for a row', () => {
+  it('calls fields.push when add button is clicked', () => {
+    fireEvent.click(pageElements.getAddSubDomainRowButton());
+    expect(props.createItem).toHaveBeenCalled();
+    expect(props.fields.push).toHaveBeenCalledWith({});
+  });
+
+  it('calls fields.remove when remove button is clicked for a row', () => {
     const rows = pageElements.getRegexRows();
     expect(rows.length).toBe(2);
 

@@ -15,10 +15,12 @@ import { ActionButton, Button, Flex, View, Text } from '@adobe/react-spectrum';
 import Delete from '@spectrum-icons/workflow/Delete';
 import Add from '@spectrum-icons/workflow/Add';
 
-export default ({ fields, renderItem }) => {
+export default ({ fields, renderItem, createItem, interstitialLabel }) => {
   const rows = fields.map((field, index) => (
     <View key={field}>
-      {index !== 0 ? <View>OR</View> : null}
+      {interstitialLabel && index !== 0 ? (
+        <View data-type="interstitial">{interstitialLabel}</View>
+      ) : null}
       <Flex data-type="row" alignItems="end">
         {renderItem(field)}
         {fields.length > 1 ? (
@@ -35,7 +37,7 @@ export default ({ fields, renderItem }) => {
       {rows}
 
       <View marginTop="size-100">
-        <Button variant="primary" onPress={() => fields.push({})}>
+        <Button variant="primary" onPress={() => fields.push(createItem())}>
           <Add />
           <Text>Add Another</Text>
         </Button>
