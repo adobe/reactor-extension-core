@@ -27,6 +27,10 @@ const options = [
     name: 'Property Name'
   },
   {
+    id: 'propertyId',
+    name: 'Property ID'
+  },
+  {
     id: 'ruleName',
     name: 'Rule Name'
   },
@@ -55,6 +59,7 @@ const LaunchEnvironment = () => (
     component={Picker}
     items={options}
     containerMinWidth="size-6000"
+    width="size-6000"
   >
     {(item) => <Item>{item.name}</Item>}
   </FullWidthField>

@@ -28,6 +28,8 @@ module.exports = function (settings, event) {
       return turbine.buildInfo.environment;
     case 'propertyName':
       return window._satellite.property.name;
+    case 'propertyId':
+      return window._satellite.property.id;
     case 'ruleName':
       return event.$rule.name;
     case 'ruleId':

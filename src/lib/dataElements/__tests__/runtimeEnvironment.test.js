@@ -89,7 +89,7 @@ describe('runtime environment data element delegate', function () {
     beforeAll(function () {
       runtimeEnvironmentDelegate = runtimeEnvironmentDelegateInjector({
         '@adobe/reactor-window': {
-          _satellite: { property: { name: 'property name' } }
+          _satellite: { property: { name: 'property name', id: 'PR123' } }
         }
       });
     });
@@ -97,6 +97,12 @@ describe('runtime environment data element delegate', function () {
     it('returns the property name', function () {
       expect(runtimeEnvironmentDelegate({ attribute: 'propertyName' })).toBe(
         'property name'
+      );
+    });
+
+    it('returns the property id', function () {
+      expect(runtimeEnvironmentDelegate({ attribute: 'propertyId' })).toBe(
+        'PR123'
       );
     });
   });
