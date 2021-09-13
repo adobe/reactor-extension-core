@@ -15,7 +15,7 @@ import FullWidthField from '../components/fullWidthField';
 
 const options = [
   {
-    id: 'environment',
+    id: 'environmentStage',
     name: 'Environment Stage'
   },
   {
@@ -71,7 +71,7 @@ export const formConfig = {
   settingsToFormValues(values, settings) {
     return {
       ...values,
-      attribute: settings.attribute || 'buildDate'
+      attribute: settings.attribute || 'environmentStage'
     };
   },
   formValuesToSettings(settings, values) {

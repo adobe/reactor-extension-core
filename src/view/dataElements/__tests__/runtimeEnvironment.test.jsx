@@ -53,7 +53,7 @@ describe('runtime environment data element view', () => {
 
   it('sets form value defaults', () => {
     expect(
-      within(pageElements.getDropdownTrigger()).getByText(/Library Build Date/i)
+      within(pageElements.getDropdownTrigger()).getByText(/Environment Stage/i)
     ).toBeTruthy();
   });
 

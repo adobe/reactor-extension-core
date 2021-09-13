@@ -104,9 +104,9 @@ describe('runtime environment data element delegate', function () {
     });
 
     it('returns the environment', function () {
-      expect(runtimeEnvironmentDelegate({ attribute: 'environment' })).toBe(
-        'stage'
-      );
+      expect(
+        runtimeEnvironmentDelegate({ attribute: 'environmentStage' })
+      ).toBe('stage');
     });
   });
 });

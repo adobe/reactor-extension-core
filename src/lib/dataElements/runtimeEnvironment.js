@@ -24,7 +24,7 @@ module.exports = function (settings, event) {
   switch (settings.attribute) {
     case 'buildDate':
       return turbine.buildInfo.buildDate;
-    case 'environment':
+    case 'environmentStage':
       return window._satellite.environment.stage;
     case 'propertyName':
       return window._satellite.property.name;

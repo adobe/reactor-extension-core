@@ -2165,7 +2165,7 @@
         "properties": {
           "attribute": {
             "enum": [
-              "environment",
+              "environmentStage",
               "buildDate",
               "propertyName",
               "propertyId",
