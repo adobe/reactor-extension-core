@@ -188,7 +188,7 @@ describe('javascript tools data element delegate', function () {
       ).toBe(3);
     });
 
-    it('returns the lenght of other types', function () {
+    it('returns the length of other types', function () {
       expect(
         javascriptToolsDelegate({
           sourceValue: 5555,
