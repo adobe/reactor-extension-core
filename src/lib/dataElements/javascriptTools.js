@@ -11,7 +11,9 @@ governing permissions and limitations under the License.
 
 'use strict';
 
-var isString = require('../helpers/stringAndNumberUtils').isString;
+var stringAndNumberUtils = require('../helpers/stringAndNumberUtils');
+var isString = stringAndNumberUtils.isString;
+var castToStringIfNumber = stringAndNumberUtils.castToStringIfNumber;
 
 /**
  * The javascript tools data element.
@@ -24,12 +26,22 @@ module.exports = function (settings) {
 
   switch (settings.operator) {
     case 'simpleReplace':
-      value = String(value);
+      value = castToStringIfNumber(value);
+
+      if (!isString(value)) {
+        return value;
+      }
+
       var method = settings.replaceAll === true ? 'replaceAll' : 'replace';
       return value[method](settings.searchValue, settings.replacementValue);
 
     case 'regexReplace':
-      value = String(value);
+      value = castToStringIfNumber(value);
+
+      if (!isString(value)) {
+        return value;
+      }
+
       var re = new RegExp(
         settings.regexInput,
         (settings.caseInsensitive === true ? 'i' : '') +
@@ -39,14 +51,23 @@ module.exports = function (settings) {
       return value.replace(re, settings.replacementValue);
 
     case 'substring':
-      value = String(value);
+      value = castToStringIfNumber(value);
+
+      if (!isString(value)) {
+        return value;
+      }
+
       return value.substring(
         settings.start,
         settings.end != null ? settings.end : undefined
       );
 
     case 'regexMatch':
-      value = String(value);
+      value = castToStringIfNumber(value);
+
+      if (!isString(value)) {
+        return value;
+      }
 
       var re = new RegExp(
         settings.regexInput,
@@ -63,8 +84,10 @@ module.exports = function (settings) {
       return value.length;
 
     case 'slice':
+      value = castToStringIfNumber(value);
+
       if (!Array.isArray(value) && !isString(value)) {
-        value = String(value);
+        return value;
       }
 
       return value.slice(
@@ -74,7 +97,12 @@ module.exports = function (settings) {
 
     case 'indexOf':
     case 'lastIndexOf':
-      value = String(value);
+      value = castToStringIfNumber(value);
+
+      if (!isString(value)) {
+        return value;
+      }
+
       return value[settings.operator](settings.searchValue);
 
     case 'join':
@@ -84,7 +112,12 @@ module.exports = function (settings) {
       return value.join(settings.delimiter);
 
     case 'split':
-      value = String(value);
+      value = castToStringIfNumber(value);
+
+      if (!isString(value)) {
+        return value;
+      }
+
       return value.split(settings.delimiter);
 
     case 'arrayPop':

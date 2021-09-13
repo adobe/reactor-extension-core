@@ -38,7 +38,7 @@ describe('javascript tools data element delegate', function () {
       ).toBe('saae');
     });
 
-    it('replaces the search value if the source is not a string', function () {
+    it('replaces the search value if the source is a number', function () {
       expect(
         javascriptToolsDelegate({
           sourceValue: 555,
@@ -47,6 +47,17 @@ describe('javascript tools data element delegate', function () {
           replacementValue: 'a'
         })
       ).toBe('a55');
+    });
+
+    it('returns the original value if it is not a string or number', function () {
+      expect(
+        javascriptToolsDelegate({
+          sourceValue: null,
+          operator: 'simpleReplace',
+          searchValue: '5',
+          replacementValue: 'a'
+        })
+      ).toBe(null);
     });
   });
 
@@ -86,7 +97,7 @@ describe('javascript tools data element delegate', function () {
       ).toBe('saarce');
     });
 
-    it('replaces the regex input if the source is not a string', function () {
+    it('replaces the regex input if the source is a number', function () {
       expect(
         javascriptToolsDelegate({
           sourceValue: 5555,
@@ -95,6 +106,17 @@ describe('javascript tools data element delegate', function () {
           replacementValue: 'a'
         })
       ).toBe('a55');
+    });
+
+    it('returns the original value if it is not a string or number', function () {
+      expect(
+        javascriptToolsDelegate({
+          sourceValue: null,
+          operator: 'regexReplace',
+          regexInput: '5{2}',
+          replacementValue: 'a'
+        })
+      ).toBe(null);
     });
   });
 
@@ -122,7 +144,7 @@ describe('javascript tools data element delegate', function () {
 
     it(
       'returns the part between the start index and the end index when the' +
-        ' value is not string',
+        ' value is a number',
       function () {
         expect(
           javascriptToolsDelegate({
@@ -134,6 +156,17 @@ describe('javascript tools data element delegate', function () {
         ).toBe('456');
       }
     );
+
+    it('returns the original value if it is not a string or number', function () {
+      expect(
+        javascriptToolsDelegate({
+          sourceValue: null,
+          operator: 'substring',
+          start: 3,
+          end: 6
+        })
+      ).toBe(null);
+    });
   });
 
   describe('when the operator is regexMatch', function () {
@@ -158,7 +191,7 @@ describe('javascript tools data element delegate', function () {
       ).toBe('oO');
     });
 
-    it('replaces the regex input if the source is not a string', function () {
+    it('replaces the regex input if the source is a number', function () {
       expect(
         javascriptToolsDelegate({
           sourceValue: 5555,
@@ -166,6 +199,16 @@ describe('javascript tools data element delegate', function () {
           regexInput: '5{2}'
         })
       ).toBe('55');
+    });
+
+    it('returns the original value if it is not a string or number', function () {
+      expect(
+        javascriptToolsDelegate({
+          sourceValue: null,
+          operator: 'regexMatch',
+          regexInput: '5{2}'
+        })
+      ).toBe(null);
     });
   });
 
@@ -244,7 +287,7 @@ describe('javascript tools data element delegate', function () {
         });
       });
 
-      describe('and the source value is not a string or array', function () {
+      describe('and the source value is a number', function () {
         it('returns the part between the start index and the end index', function () {
           expect(
             javascriptToolsDelegate({
@@ -266,6 +309,16 @@ describe('javascript tools data element delegate', function () {
           ).toBe('45678');
         });
       });
+
+      it('returns the original value if it is not a string or number', function () {
+        expect(
+          javascriptToolsDelegate({
+            sourceValue: null,
+            operator: 'slice',
+            start: 3
+          })
+        ).toBe(null);
+      });
     });
 
     describe('when operator is indexOf', function () {
@@ -279,7 +332,7 @@ describe('javascript tools data element delegate', function () {
         ).toBe(2);
       });
 
-      it('returns the first index of the non string searched value', function () {
+      it('returns the first index of the searched value when it is a number', function () {
         expect(
           javascriptToolsDelegate({
             sourceValue: 12345678,
@@ -287,6 +340,16 @@ describe('javascript tools data element delegate', function () {
             searchValue: 3
           })
         ).toBe(2);
+      });
+
+      it('returns the original value if it is not a string or number', function () {
+        expect(
+          javascriptToolsDelegate({
+            sourceValue: null,
+            operator: 'indexOf',
+            searchValue: 3
+          })
+        ).toBe(null);
       });
     });
 
@@ -301,7 +364,7 @@ describe('javascript tools data element delegate', function () {
         ).toBe(9);
       });
 
-      it('returns the last index of the non string searched value', function () {
+      it('returns the last index of the searched value when it is a number', function () {
         expect(
           javascriptToolsDelegate({
             sourceValue: 123456738,
@@ -309,6 +372,16 @@ describe('javascript tools data element delegate', function () {
             searchValue: 3
           })
         ).toBe(7);
+      });
+
+      it('returns the original value if it is not a string or number', function () {
+        expect(
+          javascriptToolsDelegate({
+            sourceValue: null,
+            operator: 'lastIndexOf',
+            searchValue: 3
+          })
+        ).toBe(null);
       });
     });
 
@@ -354,6 +427,16 @@ describe('javascript tools data element delegate', function () {
           delimiter: ''
         })
       ).toEqual(['1', '2', '3', '4', '5', '6', '7', '8']);
+    });
+
+    it('returns the original value if it is not a string or number', function () {
+      expect(
+        javascriptToolsDelegate({
+          sourceValue: null,
+          operator: 'split',
+          delimiter: ''
+        })
+      ).toBe(null);
     });
   });
 
