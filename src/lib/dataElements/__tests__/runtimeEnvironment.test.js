@@ -63,7 +63,7 @@ describe('runtime environment data element delegate', function () {
 
     beforeAll(function () {
       mockTurbineVariable({
-        buildInfo: { buildDate: 'build date', environment: 'stage' }
+        buildInfo: { buildDate: 'build date' }
       });
     });
 
@@ -76,12 +76,6 @@ describe('runtime environment data element delegate', function () {
         'build date'
       );
     });
-
-    it('returns the environment', function () {
-      expect(runtimeEnvironmentDelegate({ attribute: 'environment' })).toBe(
-        'stage'
-      );
-    });
   });
 
   describe('from the satellite parameter', function () {
@@ -89,7 +83,10 @@ describe('runtime environment data element delegate', function () {
     beforeAll(function () {
       runtimeEnvironmentDelegate = runtimeEnvironmentDelegateInjector({
         '@adobe/reactor-window': {
-          _satellite: { property: { name: 'property name', id: 'PR123' } }
+          _satellite: {
+            property: { name: 'property name', id: 'PR123' },
+            environment: { stage: 'stage' }
+          }
         }
       });
     });
@@ -103,6 +100,12 @@ describe('runtime environment data element delegate', function () {
     it('returns the property id', function () {
       expect(runtimeEnvironmentDelegate({ attribute: 'propertyId' })).toBe(
         'PR123'
+      );
+    });
+
+    it('returns the environment', function () {
+      expect(runtimeEnvironmentDelegate({ attribute: 'environment' })).toBe(
+        'stage'
       );
     });
   });

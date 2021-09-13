@@ -25,7 +25,7 @@ module.exports = function (settings, event) {
     case 'buildDate':
       return turbine.buildInfo.buildDate;
     case 'environment':
-      return turbine.buildInfo.environment;
+      return window._satellite.environment.stage;
     case 'propertyName':
       return window._satellite.property.name;
     case 'propertyId':
