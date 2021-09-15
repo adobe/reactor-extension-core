@@ -2472,7 +2472,11 @@
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
-        "properties": {}
+        "properties": {
+          "attribute": {
+            "enum": ["windowSize", "screenSize"]
+          }
+        }
       },
       "libPath": "src/lib/dataElements/deviceAttributes.js",
       "viewPath": "dataElements/deviceAttributes.html"
