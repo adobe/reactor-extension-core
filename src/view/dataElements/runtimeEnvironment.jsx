@@ -59,7 +59,8 @@ const LaunchEnvironment = () => (
     component={Picker}
     items={options}
     containerMinWidth="size-6000"
-    width="size-6000"
+    maxWidth="size-6000"
+    minWidth="size-3000"
   >
     {(item) => <Item>{item.name}</Item>}
   </FullWidthField>
