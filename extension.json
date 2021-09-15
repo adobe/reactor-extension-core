@@ -1882,6 +1882,198 @@
   ],
   "dataElements": [
     {
+      "displayName": "Conditional Value",
+      "name": "conditional-value",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "oneOf": [
+          {
+            "properties": {
+              "leftOperand": {
+                "type": "string",
+                "pattern": "^%([^%]+)%$"
+              },
+              "comparison": {
+                "type": "object",
+                "properties": {
+                  "operator": {
+                    "type": "string",
+                    "enum": ["equals", "doesNotEqual"]
+                  },
+                  "caseInsensitive": {
+                    "type": "boolean"
+                  }
+                },
+                "required": ["operator"],
+                "additionalProperties": false
+              },
+              "rightOperand": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "conditionalValue": {
+                "type": "string",
+                "minLength": 1
+              },
+              "fallbackValue": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "leftOperand",
+              "comparison",
+              "rightOperand",
+              "conditionalValue",
+              "fallbackValue"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "leftOperand": {
+                "type": "string",
+                "pattern": "^%([^%]+)%$"
+              },
+              "comparison": {
+                "type": "object",
+                "properties": {
+                  "operator": {
+                    "type": "string",
+                    "enum": [
+                      "contains",
+                      "doesNotContain",
+                      "startsWith",
+                      "doesNotStartWith",
+                      "endsWith",
+                      "doesNotEndWith",
+                      "matchesRegex",
+                      "doesNotMatchRegex"
+                    ]
+                  },
+                  "caseInsensitive": {
+                    "type": "boolean"
+                  }
+                },
+                "required": ["operator"],
+                "additionalProperties": false
+              },
+              "rightOperand": {
+                "type": "string",
+                "minLength": 1
+              },
+              "conditionalValue": {
+                "type": "string",
+                "minLength": 1
+              },
+              "fallbackValue": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "leftOperand",
+              "comparison",
+              "rightOperand",
+              "conditionalValue",
+              "fallbackValue"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "leftOperand": {
+                "type": "string",
+                "pattern": "^%([^%]+)%$"
+              },
+              "comparison": {
+                "type": "object",
+                "properties": {
+                  "operator": {
+                    "type": "string",
+                    "enum": [
+                      "lessThan",
+                      "lessThanOrEqual",
+                      "greaterThan",
+                      "greaterThanOrEqual"
+                    ]
+                  }
+                },
+                "required": ["operator"],
+                "additionalProperties": false
+              },
+              "rightOperand": {
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^%([^%]+)%$"
+                  }
+                ]
+              },
+              "conditionalValue": {
+                "type": "string",
+                "minLength": 1
+              },
+              "fallbackValue": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "leftOperand",
+              "comparison",
+              "rightOperand",
+              "conditionalValue",
+              "fallbackValue"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "properties": {
+              "leftOperand": {
+                "type": "string",
+                "pattern": "^%([^%]+)%$"
+              },
+              "comparison": {
+                "type": "object",
+                "properties": {
+                  "operator": {
+                    "type": "string",
+                    "enum": ["isTrue", "isTruthy", "isFalse", "isFalsy"]
+                  }
+                },
+                "required": ["operator"],
+                "additionalProperties": false
+              },
+              "conditionalValue": {
+                "type": "string",
+                "minLength": 1
+              },
+              "fallbackValue": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "leftOperand",
+              "comparison",
+              "conditionalValue",
+              "fallbackValue"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "libPath": "src/lib/dataElements/conditionalValue.js",
+      "viewPath": "dataElements/conditionalValue.html"
+    },
+    {
       "name": "constant",
       "displayName": "Constant",
       "libPath": "src/lib/dataElements/constant.js",
@@ -1963,6 +2155,31 @@
         "additionalProperties": false,
         "required": ["elementSelector", "elementProperty"]
       }
+    },
+    {
+      "displayName": "Runtime Environment",
+      "name": "runtime-environment",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "attribute": {
+            "enum": [
+              "environmentStage",
+              "buildDate",
+              "propertyName",
+              "propertyId",
+              "ruleName",
+              "ruleId",
+              "eventType",
+              "eventDetail",
+              "DCRIdentifier"
+            ]
+          }
+        }
+      },
+      "libPath": "src/lib/dataElements/runtimeEnvironment.js",
+      "viewPath": "dataElements/runtimeEnvironment.html"
     },
     {
       "name": "local-storage",
@@ -2088,6 +2305,150 @@
       }
     },
     {
+      "displayName": "JavaScript Tools",
+      "name": "javascript-tools",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "oneOf": [
+          {
+            "properties": {
+              "sourceValue": {
+                "type": "string",
+                "pattern": "^%([^%]+)%$"
+              },
+              "operator": {
+                "enum": ["simpleReplace"]
+              },
+              "searchValue": {
+                "type": "string",
+                "minLength": 1
+              },
+              "replacementValue": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": ["sourceValue", "operator", "searchValue"]
+          },
+          {
+            "properties": {
+              "sourceValue": {
+                "type": "string",
+                "pattern": "^%([^%]+)%$"
+              },
+              "operator": {
+                "enum": ["regexReplace"]
+              },
+              "regexInput": {
+                "type": "string",
+                "minLength": 1
+              },
+              "replacementValue": {
+                "type": "string"
+              },
+              "caseInsensitive": {
+                "type": "boolean"
+              },
+              "replaceAll": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false,
+            "required": ["sourceValue", "operator", "regexInput"]
+          },
+          {
+            "properties": {
+              "sourceValue": {
+                "type": "string",
+                "pattern": "^%([^%]+)%$"
+              },
+              "operator": {
+                "enum": ["substring", "slice"]
+              },
+              "start": {
+                "type": "number"
+              },
+              "end": {
+                "type": "number"
+              }
+            },
+            "additionalProperties": false,
+            "required": ["sourceValue", "operator", "start"]
+          },
+          {
+            "properties": {
+              "sourceValue": {
+                "type": "string",
+                "pattern": "^%([^%]+)%$"
+              },
+              "operator": {
+                "enum": ["regexMatch"]
+              },
+              "regexInput": {
+                "type": "string",
+                "minLength": 1
+              },
+              "caseInsensitive": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false,
+            "required": ["sourceValue", "operator", "regexInput"]
+          },
+          {
+            "properties": {
+              "sourceValue": {
+                "type": "string",
+                "pattern": "^%([^%]+)%$"
+              },
+              "operator": {
+                "enum": ["length", "arrayPop", "arrayShift"]
+              }
+            },
+            "additionalProperties": false,
+            "required": ["sourceValue", "operator"]
+          },
+          {
+            "properties": {
+              "sourceValue": {
+                "type": "string",
+                "pattern": "^%([^%]+)%$"
+              },
+              "operator": {
+                "enum": ["indexOf", "lastIndexOf"]
+              },
+              "searchValue": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": false,
+            "required": ["sourceValue", "operator", "searchValue"]
+          },
+          {
+            "properties": {
+              "sourceValue": {
+                "type": "string",
+                "pattern": "^%([^%]+)%$"
+              },
+              "operator": {
+                "enum": ["join", "split"]
+              },
+              "delimiter": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": false,
+            "required": ["sourceValue", "operator", "delimiter"]
+          }
+        ]
+      },
+      "libPath": "src/lib/dataElements/javascriptTools.js",
+      "viewPath": "dataElements/javascriptTools.html"
+    },
+    {
       "name": "javascript-variable",
       "displayName": "JavaScript Variable",
       "libPath": "src/lib/dataElements/javascriptVariable.js",
@@ -2104,6 +2465,17 @@
         "additionalProperties": false,
         "required": ["path"]
       }
+    },
+    {
+      "displayName": "Device Attributes",
+      "name": "device-attributes",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {}
+      },
+      "libPath": "src/lib/dataElements/deviceAttributes.js",
+      "viewPath": "dataElements/deviceAttributes.html"
     },
     {
       "name": "visitor-behavior",

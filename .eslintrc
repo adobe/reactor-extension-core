@@ -4,7 +4,7 @@
     "jasmine": true,
     "node": true
   },
-  "extends": ["plugin:prettier/recommended", "prettier"],
+  "extends": ["plugin:prettier/recommended"],
   "rules": {
     "camelcase": [2, { "properties": "always" }],
     "semi": [2, "always"],

@@ -142,3 +142,18 @@ export function elementIsPosition(el, position) {
 
   return Array.from(el.classList).join().indexOf(position) !== -1;
 }
+
+export function fillInTextBox(textBox, text) {
+  fireEvent.focus(textBox);
+  userEvent.type(textBox, text);
+  fireEvent.blur(textBox);
+}
+
+export async function changePickerValue(pickerTrigger, value) {
+  fireEvent.click(pickerTrigger);
+  const option = await screen.findByRole('option', { name: value });
+  clickSpectrumOption(option);
+  await safelyWaitForElementToBeRemoved(() =>
+    screen.queryByRole('option', { name: value })
+  );
+}

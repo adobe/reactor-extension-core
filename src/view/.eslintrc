@@ -8,7 +8,7 @@
       "experimentalObjectRestSpread": true
     }
   },
-  "extends": ["airbnb", "plugin:prettier/recommended", "prettier"],
+  "extends": ["airbnb", "plugin:prettier/recommended"],
   "rules": {
     "jsx-a11y/label-has-associated-control": [
       2,
