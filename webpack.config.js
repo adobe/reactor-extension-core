@@ -62,7 +62,8 @@ module.exports = (env) => {
       'process.env.THEME_LIGHT': 'false',
       'process.env.THEME_LIGHTEST': 'true',
       'process.env.THEME_DARK': 'false',
-      'process.env.THEME_DARKEST': 'false'
+      'process.env.THEME_DARKEST': 'false',
+      'process.browser': 'true'
     })
   );
 
