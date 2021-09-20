@@ -19,10 +19,20 @@ import bootstrap from '../../bootstrap';
 const pageElements = {
   getConditionalValueTextBox: () =>
     screen.getByRole('textbox', { name: /if true, return this string value/i }),
+  getReturnConditionalValueCheckbox: () => {
+    return screen.getByRole('checkbox', {
+      name: /return conditional value/i
+    });
+  },
   getFallbackValueTextBox: () =>
     screen.getByRole('textbox', {
       name: /otherwise, return this string value/i
-    })
+    }),
+  getReturnFallbackValueCheckbox: () => {
+    return screen.getByRole('checkbox', {
+      name: /return fallback value/i
+    });
+  }
 };
 
 describe('conditional value data element view', () => {
@@ -39,6 +49,10 @@ describe('conditional value data element view', () => {
     delete window.extensionBridge;
   });
 
+  it('has the return conditional value checkbox checked by default', () => {
+    expect(pageElements.getReturnConditionalValueCheckbox().checked).toBeTrue();
+  });
+
   it('sets form values from settings', () => {
     extensionBridge.init({
       settings: {
@@ -52,12 +66,15 @@ describe('conditional value data element view', () => {
       }
     });
 
+    expect(pageElements.getReturnConditionalValueCheckbox().checked).toBeTrue();
     expect(pageElements.getConditionalValueTextBox().value).toBe('a');
+    expect(pageElements.getReturnFallbackValueCheckbox().checked).toBeTrue();
     expect(pageElements.getFallbackValueTextBox().value).toBe('b');
   });
 
   it('sets settings from form values', () => {
     fillInTextBox(pageElements.getConditionalValueTextBox(), 'a');
+    fireEvent.click(pageElements.getReturnFallbackValueCheckbox());
     fillInTextBox(pageElements.getFallbackValueTextBox(), 'b');
 
     expect(extensionBridge.getSettings()).toEqual({
@@ -71,27 +88,79 @@ describe('conditional value data element view', () => {
     });
   });
 
-  it('sets errors if required values are not provided', () => {
-    extensionBridge.init({
-      settings: {
+  it('sets settings values as numbers when it is the case', () => {
+    fillInTextBox(pageElements.getConditionalValueTextBox(), '56');
+    fireEvent.click(pageElements.getReturnFallbackValueCheckbox());
+    fillInTextBox(pageElements.getFallbackValueTextBox(), '76');
+
+    expect(extensionBridge.getSettings()).toEqual({
+      leftOperand: '',
+      comparison: {
+        operator: 'equals'
+      },
+      rightOperand: '',
+      conditionalValue: 56,
+      fallbackValue: 76
+    });
+  });
+
+  it(
+    'does not set conditional value when the return conditional value checkbox is ' +
+      'not checked',
+    () => {
+      extensionBridge.init({
+        settings: {
+          leftOperand: '%Data Element 1%',
+          comparison: {
+            operator: 'equals'
+          },
+          rightOperand: 1,
+          conditionalValue: 'a',
+          fallbackValue: 'b'
+        }
+      });
+
+      fillInTextBox(pageElements.getConditionalValueTextBox(), '56');
+      fireEvent.click(pageElements.getReturnConditionalValueCheckbox());
+
+      expect(extensionBridge.getSettings()).toEqual({
         leftOperand: '%Data Element 1%',
         comparison: {
           operator: 'equals'
         },
-        rightOperand: '',
-        conditionalValue: '',
-        fallbackValue: ''
-      }
-    });
+        rightOperand: 1,
+        fallbackValue: 'b'
+      });
+    }
+  );
 
-    const conditionalValueTextBox = pageElements.getConditionalValueTextBox();
-    fireEvent.focus(conditionalValueTextBox);
-    fireEvent.blur(conditionalValueTextBox);
+  it(
+    'does not set fallback value when the return fallback value checkbox is ' +
+      'not checked',
+    () => {
+      extensionBridge.init({
+        settings: {
+          leftOperand: '%Data Element 1%',
+          comparison: {
+            operator: 'equals'
+          },
+          rightOperand: 1,
+          conditionalValue: 'a',
+          fallbackValue: 'b'
+        }
+      });
 
-    expect(
-      pageElements.getConditionalValueTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+      fillInTextBox(pageElements.getFallbackValueTextBox(), '76');
+      fireEvent.click(pageElements.getReturnFallbackValueCheckbox());
 
-    expect(extensionBridge.validate()).toBe(false);
-  });
+      expect(extensionBridge.getSettings()).toEqual({
+        leftOperand: '%Data Element 1%',
+        comparison: {
+          operator: 'equals'
+        },
+        rightOperand: 1,
+        conditionalValue: 'a'
+      });
+    }
+  );
 });
