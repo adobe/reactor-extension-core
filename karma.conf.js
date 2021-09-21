@@ -326,7 +326,11 @@ module.exports = (config) => {
         new SourceMapDevToolPlugin({})
       ]
     },
-
+    client: {
+      jasmine: {
+        // seed: 55788
+      }
+    },
     webpackServer: {
       debug: false,
       progress: true,
