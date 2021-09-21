@@ -10,12 +10,9 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { fireEvent, screen, render, within } from '@testing-library/react';
+import { fireEvent, render, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {
-  clickSpectrumOption,
-  safelyWaitForElementToBeRemoved
-} from '@test-helpers/react-testing-library';
+import { changePickerValue } from '@test-helpers/react-testing-library';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import WindowSize, { formConfig } from '../windowSize';
 import bootstrap from '../../bootstrap';
@@ -41,12 +38,6 @@ const pageElements = {
           }
         };
       });
-  },
-  waitForLessThanOption: () => {
-    return screen.findByRole('option', { name: /less than$/i });
-  },
-  waitForEqualToOption: () => {
-    return screen.findByRole('option', { name: /equal to/i });
   }
 };
 
@@ -102,19 +93,15 @@ describe('window size condition view', () => {
   it('sets settings from form values', async () => {
     const [widthRow, heightRow] = pageElements.getRows();
 
-    fireEvent.click(widthRow.withinRow.getDropdownTrigger());
-    const equalToOption = await pageElements.waitForEqualToOption();
-    clickSpectrumOption(equalToOption);
-    await safelyWaitForElementToBeRemoved(() =>
-      screen.queryByRole('option', { name: /equal to/i })
+    await changePickerValue(
+      widthRow.withinRow.getDropdownTrigger(),
+      /equal to/i
     );
     userEvent.type(widthRow.withinRow.getValueTextBox(), '100');
 
-    fireEvent.click(heightRow.withinRow.getDropdownTrigger());
-    const lessThanOption = await pageElements.waitForLessThanOption();
-    clickSpectrumOption(lessThanOption);
-    await safelyWaitForElementToBeRemoved(() =>
-      screen.queryByRole('option', { name: /less than$/i })
+    await changePickerValue(
+      heightRow.withinRow.getDropdownTrigger(),
+      /less than/i
     );
     userEvent.type(heightRow.withinRow.getValueTextBox(), '200');
 

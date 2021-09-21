@@ -55,11 +55,10 @@ describe('visitor tracking', function () {
     window.localStorage.clear();
   };
 
-  afterEach(cleanUp);
+  beforeEach(cleanUp);
 
   beforeAll(function () {
     cleanUp();
-    spyOn(cookie, 'set').and.callThrough();
     mockTurbineVariable({
       logger: mockLogger
     });

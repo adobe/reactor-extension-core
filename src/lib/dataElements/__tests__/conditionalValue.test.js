@@ -28,6 +28,23 @@ describe('conditional value data element delegate', function () {
     expect(conditionalValueDelegate(settings)).toBe('a');
   });
 
+  it(
+    'returns undefined when value comparison returns true and there is no' +
+      ' conditionalValue',
+    function () {
+      var settings = {
+        leftOperand: 1,
+        comparison: {
+          operator: 'equals'
+        },
+        rightOperand: 1,
+        fallbackValue: 'b'
+      };
+
+      expect(conditionalValueDelegate(settings)).toBeUndefined();
+    }
+  );
+
   it('returns the falback value when value comparison returns false', function () {
     var settings = {
       leftOperand: 1,
@@ -41,4 +58,21 @@ describe('conditional value data element delegate', function () {
 
     expect(conditionalValueDelegate(settings)).toBe('b');
   });
+
+  it(
+    'returns undefined when value comparison returns false and there is no' +
+      ' fallbackValue',
+    function () {
+      var settings = {
+        leftOperand: 1,
+        comparison: {
+          operator: 'equals'
+        },
+        rightOperand: 2,
+        conditionalValue: 'a'
+      };
+
+      expect(conditionalValueDelegate(settings)).toBeUndefined();
+    }
+  );
 });

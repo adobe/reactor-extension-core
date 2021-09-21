@@ -10,12 +10,9 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {
-  clickSpectrumOption,
-  safelyWaitForElementToBeRemoved
-} from '@test-helpers/react-testing-library';
+import { changePickerValue } from '@test-helpers/react-testing-library';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import ScreenResolution, { formConfig } from '../screenResolution';
 import bootstrap from '../../bootstrap';
@@ -41,12 +38,6 @@ const pageElements = {
       })
       .slice(-1);
     return button;
-  },
-  waitForLessThanOption: () => {
-    return screen.findByRole('option', { name: /less than$/i });
-  },
-  waitForEqualToOption: () => {
-    return screen.findByRole('option', { name: /equal to/i });
   }
 };
 
@@ -95,18 +86,13 @@ describe('screen resolution condition view', () => {
   });
 
   it('sets settings from form values', async () => {
-    fireEvent.click(pageElements.getWidthDropDownTrigger());
-    const equalToOption = await pageElements.waitForEqualToOption();
-    clickSpectrumOption(equalToOption);
-    await safelyWaitForElementToBeRemoved(() =>
-      screen.queryByRole('option', { name: /equal to/i })
+    await changePickerValue(
+      pageElements.getWidthDropDownTrigger(),
+      /equal to/i
     );
-
-    fireEvent.click(pageElements.getHeightDropDownTrigger());
-    const lessThanOption = await pageElements.waitForLessThanOption();
-    clickSpectrumOption(lessThanOption);
-    await safelyWaitForElementToBeRemoved(() =>
-      screen.queryByRole('option', { name: /less than$/i })
+    await changePickerValue(
+      pageElements.getHeightDropDownTrigger(),
+      /less than/i
     );
 
     userEvent.type(pageElements.getWidthTextBox(), '100');

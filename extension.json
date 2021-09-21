@@ -1919,20 +1919,27 @@
                 ]
               },
               "conditionalValue": {
-                "type": "string",
-                "minLength": 1
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
               },
               "fallbackValue": {
-                "type": "string"
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
               }
             },
-            "required": [
-              "leftOperand",
-              "comparison",
-              "rightOperand",
-              "conditionalValue",
-              "fallbackValue"
-            ],
+            "required": ["leftOperand", "comparison", "rightOperand"],
             "additionalProperties": false
           },
           {

@@ -9,7 +9,7 @@ const packageDescriptor = require('./package.json');
 
 let defaultBrowsers = ['Chrome'];
 let startConnect = false;
-const reporters = ['dots'];
+const reporters = ['dots', 'jasmine-order'];
 let buildId;
 
 if (process.env.CI) {
@@ -296,7 +296,6 @@ module.exports = (config) => {
     browserDisconnectTimeout: 20000,
     browserDisconnectTolerance: 3,
     browserNoActivityTimeout: 300000,
-
     webpack: {
       devtool: false,
       mode: 'development',
@@ -327,7 +326,11 @@ module.exports = (config) => {
         new SourceMapDevToolPlugin({})
       ]
     },
-
+    client: {
+      jasmine: {
+        // seed: 55788
+      }
+    },
     webpackServer: {
       debug: false,
       progress: true,

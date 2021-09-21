@@ -10,76 +10,111 @@ governing permissions and limitations under the License.
 */
 
 import React from 'react';
-import { TextField, Flex } from '@adobe/react-spectrum';
+import { TextField, Flex, Checkbox, View } from '@adobe/react-spectrum';
+import { connect } from 'react-redux';
+import { formValueSelector } from 'redux-form';
 import ValueComparison, {
   formConfig as valueComparisonFormConfig
 } from '../conditions/valueComparison';
 import WrappedField from '../components/wrappedField';
+import InfoTip from '../components/infoTip';
 import mergeFormConfigs from '../utils/mergeFormConfigs';
+import { isNumberLike } from '../utils/validators';
 
-const ConditionalField = () => {
+const ReturnField = ({
+  shouldReturnValue,
+  checkboxName,
+  checkboxLabel,
+  inputName,
+  inputLabel,
+  inputPlaceholder
+}) => {
   return (
     <>
-      <WrappedField
-        label="If true, return this string value"
-        name="conditionalValue"
-        placeholder="Value if true"
-        width="size-3000"
-        component={TextField}
-        supportDataElement
-        isRequired
-      />
+      <Flex alignItems="center">
+        <WrappedField name={checkboxName} component={Checkbox}>
+          {checkboxLabel}
+        </WrappedField>
+        <View position="relative" left="-1rem">
+          <InfoTip>
+            No value will be returned when this option is not checked. If it is
+            checked and the input is empty then an empty string will be
+            returned.
+          </InfoTip>
+        </View>
+      </Flex>
+      {shouldReturnValue && (
+        <WrappedField
+          label={inputLabel}
+          name={inputName}
+          placeholder={inputPlaceholder}
+          width="size-3000"
+          component={TextField}
+          supportDataElement
+        />
+      )}
     </>
   );
 };
 
-const FallbackField = () => {
-  return (
-    <>
-      <WrappedField
-        label="Otherwise, return this string value"
-        name="fallbackValue"
-        placeholder="Value if false"
-        width="size-3000"
-        component={TextField}
-        supportDataElement
-      />
-    </>
-  );
-};
-
-const ConditionalValue = () => (
+const ConditionalValue = ({ returnConditionalValue, returnFallbackValue }) => (
   <Flex gap="size-100" direction="column">
     <ValueComparison label="Compare two values and return a value based on the result" />
-    <ConditionalField />
-    <FallbackField />
+
+    <ReturnField
+      shouldReturnValue={returnConditionalValue}
+      checkboxName="returnConditionalValue"
+      checkboxLabel="Return conditional value"
+      inputLabel="If true, return this string value"
+      inputName="conditionalValue"
+      inputPlaceholder="Value if true"
+    />
+
+    <ReturnField
+      shouldReturnValue={returnFallbackValue}
+      checkboxName="returnFallbackValue"
+      checkboxLabel="Return fallback value"
+      inputLabel="Otherwise, return this string value"
+      inputName="fallbackValue"
+      inputPlaceholder="Value if false"
+    />
   </Flex>
 );
 
-export default ConditionalValue;
+const valueSelector = formValueSelector('default');
+const stateToProps = (state) => ({
+  returnConditionalValue: valueSelector(state, 'returnConditionalValue'),
+  returnFallbackValue: valueSelector(state, 'returnFallbackValue')
+});
+
+export default connect(stateToProps)(ConditionalValue);
 
 export const formConfig = mergeFormConfigs(valueComparisonFormConfig, {
   settingsToFormValues(values, settings) {
     return {
       ...values,
+      returnConditionalValue: settings.conditionalValue != null || true,
       conditionalValue: settings.conditionalValue || '',
+      returnFallbackValue: settings.fallbackValue != null || false,
       fallbackValue: settings.fallbackValue || ''
     };
   },
   formValuesToSettings(settings, values) {
-    settings = {
-      ...settings,
-      conditionalValue: values.conditionalValue,
-      fallbackValue: values.fallbackValue
-    };
+    if (values.returnConditionalValue) {
+      settings.conditionalValue = isNumberLike(values.conditionalValue)
+        ? Number(values.conditionalValue)
+        : values.conditionalValue;
+    }
+
+    if (values.returnFallbackValue) {
+      settings.fallbackValue = isNumberLike(values.fallbackValue)
+        ? Number(values.fallbackValue)
+        : values.fallbackValue;
+    }
 
     return settings;
   },
-  validate(errors, values) {
-    if (!values.conditionalValue) {
-      errors.conditionalValue = 'Please specify a value or data element';
-    }
-
+  validate(errors) {
     return errors;
   }
 });
