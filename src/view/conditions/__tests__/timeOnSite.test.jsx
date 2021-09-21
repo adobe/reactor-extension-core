@@ -12,10 +12,7 @@
 
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {
-  clickSpectrumOption,
-  safelyWaitForElementToBeRemoved
-} from '@test-helpers/react-testing-library';
+import { changePickerValue } from '@test-helpers/react-testing-library';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import TimeOnSite, { formConfig } from '../timeOnSite';
 import bootstrap from '../../bootstrap';
@@ -27,9 +24,6 @@ const pageElements = {
   },
   getDropdownTrigger: () => {
     return screen.getByRole('button', { name: /operator/i });
-  },
-  waitForEqualToOption: () => {
-    return screen.findByRole('option', { name: /equal to/i });
   },
   getDataElementModalTrigger: () => {
     return screen.getByRole('button', { name: /select a data element/i });
@@ -71,13 +65,7 @@ describe('time on site condition view', () => {
   });
 
   it('sets settings from form values', async () => {
-    fireEvent.click(pageElements.getDropdownTrigger());
-    const equalOption = await pageElements.waitForEqualToOption();
-    clickSpectrumOption(equalOption);
-    await safelyWaitForElementToBeRemoved(() =>
-      screen.queryByRole('option', { name: /equal to/i })
-    );
-
+    await changePickerValue(pageElements.getDropdownTrigger(), /equal to/i);
     userEvent.type(pageElements.getMinutesTextBox(), '100');
 
     expect(extensionBridge.getSettings()).toEqual({

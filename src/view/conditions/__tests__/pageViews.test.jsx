@@ -12,10 +12,7 @@
 
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {
-  clickSpectrumOption,
-  safelyWaitForElementToBeRemoved
-} from '@test-helpers/react-testing-library';
+import { changePickerValue } from '@test-helpers/react-testing-library';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import PageViews, { formConfig } from '../pageViews';
 import bootstrap from '../../bootstrap';
@@ -23,10 +20,7 @@ import bootstrap from '../../bootstrap';
 // react-testing-library element selectors
 const pageElements = {
   operatorDropdown: {
-    getTrigger: () => screen.getByRole('button', { name: /operator/i }),
-    waitForEqualToOption: () => {
-      return screen.findByRole('option', { name: /equal to/i });
-    }
+    getTrigger: () => screen.getByRole('button', { name: /operator/i })
   },
   getCountTextBox: () => screen.getByRole('textbox', { name: /count/i }),
   duration: {
@@ -80,14 +74,12 @@ describe('page views condition view', () => {
   });
 
   it('sets settings from form values', async () => {
-    fireEvent.click(pageElements.operatorDropdown.getTrigger());
-    const equalTo = await pageElements.operatorDropdown.waitForEqualToOption();
-    clickSpectrumOption(equalTo);
-    await safelyWaitForElementToBeRemoved(() =>
-      screen.queryByRole('option', { name: /equal to/i })
+    await changePickerValue(
+      pageElements.operatorDropdown.getTrigger(),
+      /equal to/i
     );
-    userEvent.type(pageElements.getCountTextBox(), '100');
 
+    userEvent.type(pageElements.getCountTextBox(), '100');
     fireEvent.click(pageElements.duration.radioGroup.getCurrentSession());
 
     expect(extensionBridge.getSettings()).toEqual({

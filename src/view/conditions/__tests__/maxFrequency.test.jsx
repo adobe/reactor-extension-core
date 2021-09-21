@@ -14,8 +14,7 @@ import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
   simulate,
-  clickSpectrumOption,
-  safelyWaitForElementToBeRemoved
+  changePickerValue
 } from '@test-helpers/react-testing-library';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import MaxFrequency, { formConfig } from '../maxFrequency';
@@ -27,12 +26,6 @@ const pageElements = {
   unitsDropdown: {
     getTrigger: () => {
       return screen.getByRole('button', { name: /unit/i });
-    },
-    waitForSessionOption: () => {
-      return screen.findByRole('option', { name: /session/i });
-    },
-    waitForVisitorOption: () => {
-      return screen.findByRole('option', { name: /visitor/i });
     }
   }
 };
@@ -73,12 +66,9 @@ describe('max frequency condition view', () => {
   });
 
   it('sets settings from form values', async () => {
-    fireEvent.click(pageElements.unitsDropdown.getTrigger());
-    const sessionOption =
-      await pageElements.unitsDropdown.waitForSessionOption();
-    clickSpectrumOption(sessionOption);
-    await safelyWaitForElementToBeRemoved(() =>
-      screen.queryByRole('option', { name: /session/i })
+    await changePickerValue(
+      pageElements.unitsDropdown.getTrigger(),
+      /session/i
     );
 
     simulate.clear(pageElements.getCountTextBox());
@@ -135,10 +125,10 @@ describe('max frequency condition view', () => {
     });
 
     it('sets settings from form values', async () => {
-      fireEvent.click(pageElements.unitsDropdown.getTrigger());
-      const visitorOption =
-        await pageElements.unitsDropdown.waitForVisitorOption();
-      clickSpectrumOption(visitorOption);
+      await changePickerValue(
+        pageElements.unitsDropdown.getTrigger(),
+        /visitor/i
+      );
 
       expect(extensionBridge.getSettings()).toEqual({
         unit: 'visitor'

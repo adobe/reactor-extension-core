@@ -12,10 +12,7 @@
 
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {
-  clickSpectrumOption,
-  safelyWaitForElementToBeRemoved
-} from '@test-helpers/react-testing-library';
+import { changePickerValue } from '@test-helpers/react-testing-library';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import DomAttribute, { formConfig } from '../domAttribute';
 import bootstrap from '../../bootstrap';
@@ -33,10 +30,7 @@ const pageElements = {
   },
   queryForCustomElementPropertyTextBox: () => {
     return screen.queryByRole('textbox', { name: /custom element property/i });
-  },
-  waitForHTMLOption: () => screen.findByRole('option', { name: /html/i }),
-  waitForCustomOption: () =>
-    screen.findByRole('option', { name: /other attribute/i })
+  }
 };
 
 describe('DOM attribute data element view', () => {
@@ -107,9 +101,10 @@ describe('DOM attribute data element view', () => {
 
   it('sets settings from form values using element property preset', async () => {
     userEvent.type(pageElements.getElementSelectorTextBox(), 'foo');
-    fireEvent.click(pageElements.getElementPropertyPresetsDropdown());
-    const htmlOption = await pageElements.waitForHTMLOption();
-    clickSpectrumOption(htmlOption);
+    await changePickerValue(
+      pageElements.getElementPropertyPresetsDropdown(),
+      /html/i
+    );
 
     expect(extensionBridge.getSettings()).toEqual({
       elementSelector: 'foo',
@@ -119,14 +114,10 @@ describe('DOM attribute data element view', () => {
 
   it('sets settings from form values using custom element property', async () => {
     userEvent.type(pageElements.getElementSelectorTextBox(), 'foo');
-
-    fireEvent.click(pageElements.getElementPropertyPresetsDropdown());
-    const customOption = await pageElements.waitForCustomOption();
-    clickSpectrumOption(customOption);
-    await safelyWaitForElementToBeRemoved(() =>
-      screen.queryByRole('option', { name: /other attribute/i })
+    await changePickerValue(
+      pageElements.getElementPropertyPresetsDropdown(),
+      /other attribute/i
     );
-
     userEvent.type(pageElements.getCustomElementPropertyTextBox(), 'bar');
 
     expect(extensionBridge.getSettings()).toEqual({
