@@ -153,7 +153,5 @@ export async function changePickerValue(pickerTrigger, value) {
   fireEvent.click(pickerTrigger);
   const option = await screen.findByRole('option', { name: value });
   clickSpectrumOption(option);
-  await safelyWaitForElementToBeRemoved(() =>
-    screen.queryByRole('option', { name: value })
-  );
+  await safelyWaitForElementToBeRemoved(option);
 }

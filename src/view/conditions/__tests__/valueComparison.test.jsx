@@ -14,11 +14,13 @@ import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
   clickSpectrumOption,
-  safelyWaitForElementToBeRemoved
+  changePickerValue
 } from '@test-helpers/react-testing-library';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import ValueComparison, { formConfig } from '../valueComparison';
 import bootstrap from '../../bootstrap';
+
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 1540000;
 
 // react-testing-library element selectors
 const pageElements = {
@@ -31,28 +33,22 @@ const pageElements = {
     });
     return left;
   },
-  getOperatorDropdownTrigger: () => {
-    return screen.getByRole('button', { name: /operator/i });
-  },
-  getRightOperandTextBox: () => {
-    return screen.getByRole('textbox', { name: /right operand/i });
-  },
-  queryRightOperandTextBox: () => {
-    return screen.queryByRole('textbox', { name: /right operand/i });
-  },
+  getOperatorDropdownTrigger: () =>
+    screen.getByRole('button', { name: /operator/i }),
+  getRightOperandTextBox: () =>
+    screen.getByRole('textbox', { name: /right operand/i }),
+  queryRightOperandTextBox: () =>
+    screen.queryByRole('textbox', { name: /right operand/i }),
   getRightOperandDataElementTrigger: () => {
     const [, right] = screen.getAllByRole('button', {
       name: /select a data element/i
     });
     return right;
   },
-  getCaseInsensitiveCheckBox: () => {
-    return screen.getByRole('checkbox', { name: /case insensitive/i });
-  },
-  waitForDynamicOptionText: (text) => {
-    // return screen.findByRole('option', { name: new RegExp(text, 'i') });
-    return screen.findByRole('option', { name: text });
-  }
+  getCaseInsensitiveCheckBox: () =>
+    screen.getByRole('checkbox', { name: /case insensitive/i }),
+  waitForDynamicOptionText: (text) =>
+    screen.findByRole('option', { name: text })
 };
 
 describe('value comparison condition view', () => {
@@ -100,11 +96,9 @@ describe('value comparison condition view', () => {
         it('sets settings from form values', async () => {
           userEvent.type(pageElements.getLeftOperandTextBox(), '%foo%');
 
-          fireEvent.click(pageElements.getOperatorDropdownTrigger());
-          const option = await pageElements.waitForDynamicOptionText(text);
-          clickSpectrumOption(option);
-          await safelyWaitForElementToBeRemoved(() =>
-            screen.queryByRole('option', { name: text })
+          await changePickerValue(
+            pageElements.getOperatorDropdownTrigger(),
+            text
           );
 
           userEvent.type(pageElements.getRightOperandTextBox(), '123');
@@ -215,11 +209,9 @@ describe('value comparison condition view', () => {
         it('sets settings from form values (non-data element version)', async () => {
           userEvent.type(pageElements.getLeftOperandTextBox(), '%foo%');
 
-          fireEvent.click(pageElements.getOperatorDropdownTrigger());
-          const option = await pageElements.waitForDynamicOptionText(text);
-          clickSpectrumOption(option);
-          await safelyWaitForElementToBeRemoved(() =>
-            screen.queryByRole('option', { name: text })
+          await changePickerValue(
+            pageElements.getOperatorDropdownTrigger(),
+            text
           );
 
           userEvent.type(pageElements.getRightOperandTextBox(), 'bar');
@@ -238,11 +230,9 @@ describe('value comparison condition view', () => {
         it('sets settings from form values (data element version)', async () => {
           userEvent.type(pageElements.getLeftOperandTextBox(), '%foo%');
 
-          fireEvent.click(pageElements.getOperatorDropdownTrigger());
-          const option = await pageElements.waitForDynamicOptionText(text);
-          clickSpectrumOption(option);
-          await safelyWaitForElementToBeRemoved(() =>
-            screen.queryByRole('option', { name: text })
+          await changePickerValue(
+            pageElements.getOperatorDropdownTrigger(),
+            text
           );
 
           userEvent.type(pageElements.getRightOperandTextBox(), '%bar%');
@@ -332,11 +322,9 @@ describe('value comparison condition view', () => {
           it('sets settings from form values (non-data element version)', async () => {
             userEvent.type(pageElements.getLeftOperandTextBox(), '%foo%');
 
-            fireEvent.click(pageElements.getOperatorDropdownTrigger());
-            const option = await pageElements.waitForDynamicOptionText(text);
-            clickSpectrumOption(option);
-            await safelyWaitForElementToBeRemoved(() =>
-              screen.queryByRole('option', { name: text })
+            await changePickerValue(
+              pageElements.getOperatorDropdownTrigger(),
+              text
             );
 
             userEvent.type(pageElements.getRightOperandTextBox(), '456');
@@ -353,11 +341,9 @@ describe('value comparison condition view', () => {
           it('sets settings from form values (data element version)', async () => {
             userEvent.type(pageElements.getLeftOperandTextBox(), '%foo%');
 
-            fireEvent.click(pageElements.getOperatorDropdownTrigger());
-            const option = await pageElements.waitForDynamicOptionText(text);
-            clickSpectrumOption(option);
-            await safelyWaitForElementToBeRemoved(() =>
-              screen.queryByRole('option', { name: text })
+            await changePickerValue(
+              pageElements.getOperatorDropdownTrigger(),
+              text
             );
 
             userEvent.type(pageElements.getRightOperandTextBox(), '%bar%');
