@@ -94,9 +94,11 @@ export const formConfig = mergeFormConfigs(valueComparisonFormConfig, {
     return {
       ...values,
       returnConditionalValue: settings.conditionalValue != null || true,
-      conditionalValue: settings.conditionalValue || '',
+      conditionalValue:
+        settings.conditionalValue != null ? settings.conditionalValue : '',
       returnFallbackValue: settings.fallbackValue != null || false,
-      fallbackValue: settings.fallbackValue || ''
+      fallbackValue:
+        settings.fallbackValue != null ? settings.fallbackValue : ''
     };
   },
   formValuesToSettings(settings, values) {

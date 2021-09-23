@@ -88,6 +88,22 @@ describe('conditional value data element view', () => {
     });
   });
 
+  it('sets settings from form values when values are falsy', () => {
+    fillInTextBox(pageElements.getConditionalValueTextBox(), '0');
+    fireEvent.click(pageElements.getReturnFallbackValueCheckbox());
+    fillInTextBox(pageElements.getFallbackValueTextBox(), '0');
+
+    expect(extensionBridge.getSettings()).toEqual({
+      leftOperand: '',
+      comparison: {
+        operator: 'equals'
+      },
+      rightOperand: '',
+      conditionalValue: 0,
+      fallbackValue: 0
+    });
+  });
+
   it('sets settings values as numbers when it is the case', () => {
     fillInTextBox(pageElements.getConditionalValueTextBox(), '56');
     fireEvent.click(pageElements.getReturnFallbackValueCheckbox());
