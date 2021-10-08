@@ -18,7 +18,7 @@ import bootstrap from '../../bootstrap';
 // react-testing-library element selectors
 const pageElements = {
   getConditionalValueTextBox: () =>
-    screen.getByRole('textbox', { name: /if true, return this string value/i }),
+    screen.getByRole('textbox', { name: /if true, return this value/i }),
   getReturnConditionalValueCheckbox: () => {
     return screen.getByRole('checkbox', {
       name: /return conditional value/i
@@ -26,7 +26,7 @@ const pageElements = {
   },
   getFallbackValueTextBox: () =>
     screen.getByRole('textbox', {
-      name: /otherwise, return this string value/i
+      name: /otherwise, return this value/i
     }),
   getReturnFallbackValueCheckbox: () => {
     return screen.getByRole('checkbox', {
