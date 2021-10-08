@@ -65,7 +65,7 @@ const ConditionalValue = ({ returnConditionalValue, returnFallbackValue }) => (
       shouldReturnValue={returnConditionalValue}
       checkboxName="returnConditionalValue"
       checkboxLabel="Return conditional value"
-      inputLabel="If true, return this string value"
+      inputLabel="If true, return this value"
       inputName="conditionalValue"
       inputPlaceholder="Value if true"
     />
@@ -74,7 +74,7 @@ const ConditionalValue = ({ returnConditionalValue, returnFallbackValue }) => (
       shouldReturnValue={returnFallbackValue}
       checkboxName="returnFallbackValue"
       checkboxLabel="Return fallback value"
-      inputLabel="Otherwise, return this string value"
+      inputLabel="Otherwise, return this value"
       inputName="fallbackValue"
       inputPlaceholder="Value if false"
     />

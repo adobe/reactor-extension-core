@@ -1919,24 +1919,10 @@
                 ]
               },
               "conditionalValue": {
-                "oneOf": [
-                  {
-                    "type": "number"
-                  },
-                  {
-                    "type": "string"
-                  }
-                ]
+                "$ref": "#/$defs/stringOrNumericField"
               },
               "fallbackValue": {
-                "oneOf": [
-                  {
-                    "type": "number"
-                  },
-                  {
-                    "type": "string"
-                  }
-                ]
+                "$ref": "#/$defs/stringOrNumericField"
               }
             },
             "required": ["leftOperand", "comparison", "rightOperand"],
@@ -1976,20 +1962,13 @@
                 "minLength": 1
               },
               "conditionalValue": {
-                "type": "string",
-                "minLength": 1
+                "$ref": "#/$defs/stringOrNumericField"
               },
               "fallbackValue": {
-                "type": "string"
+                "$ref": "#/$defs/stringOrNumericField"
               }
             },
-            "required": [
-              "leftOperand",
-              "comparison",
-              "rightOperand",
-              "conditionalValue",
-              "fallbackValue"
-            ],
+            "required": ["leftOperand", "comparison", "rightOperand"],
             "additionalProperties": false
           },
           {
@@ -2026,20 +2005,13 @@
                 ]
               },
               "conditionalValue": {
-                "type": "string",
-                "minLength": 1
+                "$ref": "#/$defs/stringOrNumericField"
               },
               "fallbackValue": {
-                "type": "string"
+                "$ref": "#/$defs/stringOrNumericField"
               }
             },
-            "required": [
-              "leftOperand",
-              "comparison",
-              "rightOperand",
-              "conditionalValue",
-              "fallbackValue"
-            ],
+            "required": ["leftOperand", "comparison", "rightOperand"],
             "additionalProperties": false
           },
           {
@@ -2060,22 +2032,28 @@
                 "additionalProperties": false
               },
               "conditionalValue": {
-                "type": "string",
-                "minLength": 1
+                "$ref": "#/$defs/stringOrNumericField"
               },
               "fallbackValue": {
-                "type": "string"
+                "$ref": "#/$defs/stringOrNumericField"
               }
             },
-            "required": [
-              "leftOperand",
-              "comparison",
-              "conditionalValue",
-              "fallbackValue"
-            ],
+            "required": ["leftOperand", "comparison"],
             "additionalProperties": false
           }
-        ]
+        ],
+        "$defs": {
+          "stringOrNumericField": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          }
+        }
       },
       "libPath": "src/lib/dataElements/conditionalValue.js",
       "viewPath": "dataElements/conditionalValue.html"
