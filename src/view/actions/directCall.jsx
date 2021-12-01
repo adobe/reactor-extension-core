@@ -18,7 +18,6 @@ import {
   Well,
   View
 } from '@adobe/react-spectrum';
-import { isPlainObject } from 'is-plain-object';
 import CloseIcon from '@spectrum-icons/workflow/Close';
 import { FieldArray } from 'redux-form';
 import FullWidthField, {
@@ -45,8 +44,8 @@ const DetailObjectRows = ({ fields }) => {
             <span className="codeLine">
               <em>
                 {String.fromCharCode(FORWARD_SLASH)}&nbsp;
-                {String.fromCharCode(FORWARD_SLASH)}&nbsp; enhances the direct
-                this information
+                {String.fromCharCode(FORWARD_SLASH)}&nbsp; enhance the direct
+                call with this information (optional)
               </em>
             </span>
             <span className="codeLine">
@@ -59,23 +58,27 @@ const DetailObjectRows = ({ fields }) => {
                 width="100%"
                 margin="size-200"
                 alignItems="center"
+                data-test-detail-row
               >
                 <WrappedField
+                  aria-label="Key"
                   name={`${detailRow}.key`}
                   type="text"
                   component={TextField}
                   placeholder="key"
-                  supportDataElement
                   isRequired
+                  data-test-row-key
                 />
                 <span className="codeText">{String.fromCharCode(COLON)}</span>
                 <WrappedField
+                  aria-label="Value"
                   name={`${detailRow}.value`}
                   type="text"
                   component={TextField}
                   placeholder="value"
                   supportDataElement
                   isRequired
+                  data-test-row-value
                 />
                 <ActionButton
                   aria-label="Delete"
@@ -102,29 +105,29 @@ const DetailObjectRows = ({ fields }) => {
         </View>
         <View {...DEFAULT_BLANK_SPACE_PROPS} />
       </Flex>
-      <ActionButton marginTop="size-200" onPress={() => fields.push({})}>
-        Add Field
+      <ActionButton
+        marginTop="size-200"
+        onPress={() => fields.push({})}
+        aria-label="Add detail field"
+      >
+        Add Detail Field
       </ActionButton>
     </>
   );
 };
 
-const filterEmptySimpleViewRows = (detailObjectEntries) => {
-  const sanitized = {};
-  if (!detailObjectEntries?.length) {
-    return sanitized;
+const filterEmptyDetailObjectRows = (detailObjectsArray) => {
+  if (!detailObjectsArray?.length) {
+    return detailObjectsArray;
   }
 
-  return detailObjectEntries.reduce((entries, nextRow) => {
+  return detailObjectsArray.reduce((entries, nextRow) => {
     const { key, value } = nextRow;
-    if (key?.length && value?.length) {
-      return {
-        ...entries,
-        [key]: value
-      };
+    if (nextRow.key?.length && nextRow.value?.length) {
+      return entries.concat({ key, value });
     }
     return entries;
-  }, sanitized);
+  }, []);
 };
 
 const DirectCall = () => (
@@ -136,7 +139,7 @@ const DirectCall = () => (
       isRequired
     />
 
-    <FieldArray component={DetailObjectRows} name="detailObjectEntries" />
+    <FieldArray component={DetailObjectRows} name="eventObjectEntries" />
   </div>
 );
 
@@ -144,31 +147,34 @@ export default DirectCall;
 
 export const formConfig = {
   settingsToFormValues(values, settings) {
-    const detailObject = isPlainObject(settings.detail) ? settings.detail : {};
-
-    const settingsObjectEntries = Object.entries(detailObject);
-
-    if (settingsObjectEntries.length) {
-      return {
-        ...settings,
-        detailObjectEntries: settingsObjectEntries.map(([key, value]) => ({
-          key,
-          value
-        }))
-      };
+    let eventObjectEntries;
+    if (Array.isArray(settings.detail?.eventObjectEntries)) {
+      eventObjectEntries = settings.detail.eventObjectEntries;
+    } else {
+      eventObjectEntries = [{}];
     }
 
     return {
       ...settings,
-      detailObjectEntries: [{}]
+      eventObjectEntries
     };
   },
   formValuesToSettings(settings, values) {
-    return {
+    const eventObjectEntries = filterEmptyDetailObjectRows(
+      values.eventObjectEntries
+    );
+
+    const newSettings = {
       ...settings,
-      identifier: values.identifier,
-      detail: filterEmptySimpleViewRows(values.detailObjectEntries)
+      identifier: values.identifier
     };
+    if (eventObjectEntries.length) {
+      newSettings.detail = {
+        eventObjectEntries
+      };
+    }
+
+    return newSettings;
   },
   validate(errors, values) {
     errors = { ...errors };
@@ -177,15 +183,18 @@ export const formConfig = {
       errors.identifier = 'Please specify an identifier.';
     }
 
-    errors.detailObjectEntries = [];
-    values.detailObjectEntries?.forEach((row, index) => {
-      errors.detailObjectEntries[index] = {};
+    errors.eventObjectEntries = [];
+    values.eventObjectEntries?.forEach((row, index) => {
+      errors.eventObjectEntries[index] = {};
       const isRowEmpty = !row.key?.length && !row.value?.length;
       if (!isRowEmpty) {
         if (!row.key?.length) {
-          errors.detailObjectEntries[index].key = 'This is required';
+          errors.eventObjectEntries[index].key = 'This is required';
         } else if (!row?.value?.length) {
-          errors.detailObjectEntries[index].value = 'This is required';
+          // value supports undefined/null if that's what a dataElement would reduce to,
+          // but we require on this form that either a string value is given or
+          // the name of a dataElement.
+          errors.eventObjectEntries[index].value = 'This is required';
         }
       }
     });

@@ -2554,20 +2554,32 @@
             "minLength": 1
           },
           "detail": {
-            "type": "string",
-            "minLength": 2
+            "type": "object",
+            "properties": {
+              "eventObjectEntries": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "key": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": ["key"]
+                }
+              }
+            },
+            "additionalProperties": false
           }
         },
         "additionalProperties": false,
         "required": ["identifier"]
-      },
-      "transforms": [
-        {
-          "type": "function",
-          "propertyPath": "detail",
-          "parameters": ["event", "target"]
-        }
-      ]
+      }
     }
   ]
 }

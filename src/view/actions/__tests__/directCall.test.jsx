@@ -10,17 +10,41 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import sharedTestingElements from '@test-helpers/react-testing-library';
 import createExtensionBridge from '@test-helpers/createExtensionBridge';
 import DirectCallIdentifier, { formConfig } from '../directCall';
 import bootstrap from '../../bootstrap';
 
 // react-testing-library element selectors
 const pageElements = {
-  getIdentifierTextBox: () =>
-    screen.getByRole('textbox', { name: /direct call identifier/i })
+  getIdentifierTextBox: () => {
+    return screen.getByRole('textbox', { name: /direct call identifier/i });
+  },
+  getRows: () => {
+    return [].slice
+      .call(document.querySelectorAll('[data-test-detail-row]'))
+      .map((domNode) => ({
+        domNode,
+        withinRow: {
+          getEventObjectKeyTextBox: () => {
+            return within(domNode).getByPlaceholderText('key', {
+              exact: false // ignore case
+            });
+          },
+          getEventObjectValueTextBox: () => {
+            return within(domNode).getByPlaceholderText('value', {
+              exact: false // ignore case
+            });
+          }
+        }
+      }));
+  },
+  getAddRowButton: () => {
+    return screen.getByRole('button', {
+      name: /add detail field/i
+    });
+  }
 };
 
 describe('direct call action view', () => {
@@ -40,22 +64,62 @@ describe('direct call action view', () => {
   it('sets form values from settings', () => {
     extensionBridge.init({
       settings: {
-        identifier: 'foo'
+        identifier: 'foo',
+        detail: {
+          eventObjectEntries: [
+            { key: 'first key', value: 'first value' },
+            { key: 'second key', value: 'second value' }
+          ]
+        }
       }
     });
 
     expect(pageElements.getIdentifierTextBox().value).toBe('foo');
+    const eventObjectRows = pageElements.getRows();
+    expect(eventObjectRows.length).toBe(2);
+    const [firstRow, secondRow] = eventObjectRows;
+    expect(firstRow.withinRow.getEventObjectKeyTextBox().value).toBe(
+      'first key'
+    );
+    expect(firstRow.withinRow.getEventObjectValueTextBox().value).toBe(
+      'first value'
+    );
+    expect(secondRow.withinRow.getEventObjectKeyTextBox().value).toBe(
+      'second key'
+    );
+    expect(secondRow.withinRow.getEventObjectValueTextBox().value).toBe(
+      'second value'
+    );
   });
 
   it('sets settings from form values', () => {
     userEvent.type(pageElements.getIdentifierTextBox(), 'foo');
 
+    // give a second row
+    fireEvent.click(pageElements.getAddRowButton());
+
+    const [firstRow, secondRow] = pageElements.getRows();
+    userEvent.type(firstRow.withinRow.getEventObjectKeyTextBox(), 'foo');
+    userEvent.type(firstRow.withinRow.getEventObjectValueTextBox(), 'bar');
+    userEvent.type(secondRow.withinRow.getEventObjectKeyTextBox(), 'biz');
+    userEvent.type(secondRow.withinRow.getEventObjectValueTextBox(), 'baz');
+
+    // add a third row that we won't interact with
+    fireEvent.click(pageElements.getAddRowButton());
+    expect(pageElements.getRows().length).toBe(3);
+
     expect(extensionBridge.getSettings()).toEqual({
-      identifier: 'foo'
+      identifier: 'foo',
+      detail: {
+        eventObjectEntries: [
+          { key: 'foo', value: 'bar' },
+          { key: 'biz', value: 'baz' }
+        ]
+      }
     });
   });
 
-  it('sets errors if required values are not provided', () => {
+  it('the always-required fields show errors when they are focused and blurred', () => {
     fireEvent.focus(pageElements.getIdentifierTextBox());
     fireEvent.blur(pageElements.getIdentifierTextBox());
 
@@ -65,25 +129,72 @@ describe('direct call action view', () => {
     expect(extensionBridge.validate()).toBe(false);
   });
 
-  it('allows user to provide custom detail', async () => {
+  it('the detail rows show errors when appropriate', () => {
+    const rows = pageElements.getRows();
+
+    // focus/blurring the boxes
+    fireEvent.focus(rows[0].withinRow.getEventObjectKeyTextBox());
+    fireEvent.blur(rows[0].withinRow.getEventObjectKeyTextBox());
+    expect(
+      rows[0].withinRow.getEventObjectKeyTextBox().hasAttribute('aria-invalid')
+    ).toBeFalse();
+    fireEvent.focus(rows[0].withinRow.getEventObjectValueTextBox());
+    fireEvent.blur(rows[0].withinRow.getEventObjectValueTextBox());
+    expect(
+      rows[0].withinRow
+        .getEventObjectValueTextBox()
+        .hasAttribute('aria-invalid')
+    ).toBeFalse();
+
+    // validate shouldn't cause these empty boxes to show an error
+    extensionBridge.validate();
+    expect(extensionBridge.getSettings()).toEqual({ identifier: undefined });
+    expect(
+      rows[0].withinRow.getEventObjectKeyTextBox().hasAttribute('aria-invalid')
+    ).toBeFalse();
+    expect(
+      rows[0].withinRow
+        .getEventObjectValueTextBox()
+        .hasAttribute('aria-invalid')
+    ).toBeFalse();
+
+    // make the value text box invalid
+    userEvent.type(rows[0].withinRow.getEventObjectKeyTextBox(), 'foo');
+    expect(
+      rows[0].withinRow.getEventObjectKeyTextBox().hasAttribute('aria-invalid')
+    ).toBeFalse();
+    expect(
+      rows[0].withinRow
+        .getEventObjectValueTextBox()
+        .hasAttribute('aria-invalid')
+    ).toBeTrue();
+    expect(extensionBridge.getSettings()).toEqual({ identifier: undefined });
+
+    userEvent.clear(rows[0].withinRow.getEventObjectKeyTextBox());
+    userEvent.type(rows[0].withinRow.getEventObjectValueTextBox(), 'foo');
+
+    // make the key text box invalid
+    expect(
+      rows[0].withinRow.getEventObjectKeyTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
+    expect(
+      rows[0].withinRow
+        .getEventObjectValueTextBox()
+        .hasAttribute('aria-invalid')
+    ).toBeFalse();
+    expect(extensionBridge.getSettings()).toEqual({ identifier: undefined });
+  });
+
+  it('providing custom detail is optional', async () => {
     extensionBridge.init({
       settings: {
-        identifier: 'foo',
-        detail: 'return {bar: "baz"}'
+        identifier: 'foo'
       }
     });
 
-    spyOn(extensionBridge, 'openCodeEditor').and.callFake(() => ({
-      then(resolve) {
-        resolve('return {bar: "stamp"}');
-      }
-    }));
-
-    fireEvent.click(sharedTestingElements.customCodeEditor.getTriggerButton());
-
+    expect(extensionBridge.validate()).toBeTrue();
     expect(extensionBridge.getSettings()).toEqual({
-      identifier: 'foo',
-      detail: 'return {bar: "stamp"}'
+      identifier: 'foo'
     });
   });
 });
