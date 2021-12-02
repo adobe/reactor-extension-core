@@ -19,18 +19,19 @@ var window = require('@adobe/reactor-window');
  * @param {Object} settings Action settings.
  * @param {string} settings.identifier The identifier of the "Direct Call" Event Type that should
  * be called.
- * @param {Object} settings.detail The detail to be passed into the event object of the triggered
- * rule.
- * @param {Object} event The underlying event object that triggered the rule.
- * @param {Object} event.element The element that the rule was targeting.
- * @param {Object} event.target The element on which the event occurred.
+ * @param {Array} settings.detail.eventObjectEntries A list of {key, value} tuples that will be
+ * provided to _satellite.track as additional event detail.
  */
-module.exports = function (settings, event) {
+module.exports = function (settings) {
   if (settings && settings.identifier) {
-    var detail = settings.detail;
-    if (detail) {
-      detail = detail.call(event.element, event, event.target);
-      window._satellite.track(settings.identifier, detail);
+    var _detail = settings.detail;
+    if (_detail && Array.isArray(_detail.eventObjectEntries)) {
+      var detailEvent = {};
+      // iterate over the array and build the object
+      _detail.eventObjectEntries.forEach(function (tuple) {
+        detailEvent[tuple.key] = tuple.value;
+      });
+      window._satellite.track(settings.identifier, detailEvent);
     } else {
       window._satellite.track(settings.identifier);
     }

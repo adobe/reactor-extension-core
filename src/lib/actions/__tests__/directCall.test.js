@@ -39,14 +39,13 @@ describe('direct call action delegate', function () {
   });
 
   it('triggers the specified direct-call Event Type with a user-defined detail', function () {
-    var detailObject = {
-      bar: 'baz'
-    };
-
     var settings = {
       identifier: 'foo',
-      detail: function () {
-        return detailObject;
+      detail: {
+        eventObjectEntries: [
+          { key: 'firstKey', value: 'first value' },
+          { key: 'secondKey', value: 'second value' }
+        ]
       }
     };
 
@@ -55,21 +54,12 @@ describe('direct call action delegate', function () {
       target: {}
     };
 
-    spyOn(settings, 'detail').and.callThrough();
     delegate(settings, event);
 
     // check that the Action has called _satellite.track() properly
-    expect(mockWindow._satellite.track).toHaveBeenCalledWith(
-      'foo',
-      detailObject
-    );
-
-    // check that _satellite.track() has received the detail object properly
-    expect(settings.detail.calls.first()).toEqual({
-      object: event.element,
-      invocationOrder: jasmine.any(Number),
-      args: [event, event.target],
-      returnValue: detailObject
+    expect(mockWindow._satellite.track).toHaveBeenCalledWith('foo', {
+      firstKey: 'first value',
+      secondKey: 'second value'
     });
   });
 });
