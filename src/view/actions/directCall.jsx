@@ -44,8 +44,8 @@ const DetailObjectRows = ({ fields }) => {
             <span className="codeLine">
               <em>
                 {String.fromCharCode(FORWARD_SLASH)}&nbsp;
-                {String.fromCharCode(FORWARD_SLASH)}&nbsp; enhance the direct
-                call with this information (optional)
+                {String.fromCharCode(FORWARD_SLASH)}&nbsp; (optional) - enhance
+                the direct call with this information
               </em>
             </span>
             <span className="codeLine">

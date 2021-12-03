@@ -25,7 +25,11 @@ var window = require('@adobe/reactor-window');
 module.exports = function (settings) {
   if (settings && settings.identifier) {
     var _detail = settings.detail;
-    if (_detail && Array.isArray(_detail.eventObjectEntries)) {
+    if (
+      _detail &&
+      Array.isArray(_detail.eventObjectEntries) &&
+      _detail.eventObjectEntries.length
+    ) {
       var detailEvent = {};
       // iterate over the array and build the object
       _detail.eventObjectEntries.forEach(function (tuple) {
