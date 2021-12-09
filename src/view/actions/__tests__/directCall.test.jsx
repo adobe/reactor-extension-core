@@ -41,9 +41,7 @@ const pageElements = {
       }));
   },
   getAddRowButton: () => {
-    return screen.getByRole('button', {
-      name: /add detail field/i
-    });
+    return screen.getByText(/add another/i);
   }
 };
 

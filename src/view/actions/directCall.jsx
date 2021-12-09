@@ -11,22 +11,15 @@
  ****************************************************************************************/
 
 import React from 'react';
-import {
-  ActionButton,
-  TextField,
-  Flex,
-  Well,
-  View
-} from '@adobe/react-spectrum';
-import CloseIcon from '@spectrum-icons/workflow/Close';
+import { TextField, Flex } from '@adobe/react-spectrum';
 import { FieldArray } from 'redux-form';
-import FullWidthField, {
-  DEFAULT_BLANK_SPACE_PROPS
-} from '../components/fullWidthField';
+import FullWidthField from '../components/fullWidthField';
 import WrappedField from '../components/wrappedField';
+import SpectrumLabel from '../components/spectrumLabel';
+import InfoTip from '../components/infoTip';
+import MultipleItemEditor from '../components/multipleItemEditor';
 import './directCall.styl';
 
-const FORWARD_SLASH = 0x2215;
 const OPENING_CURLY = 0x007b;
 const CLOSING_CURLY = 0x007d;
 const COLON = 0x003a;
@@ -34,87 +27,30 @@ const SEMICOLON = 0x003b;
 
 const containerMinWidth = 'size-6000';
 
-const DetailObjectRows = ({ fields }) => {
-  return (
-    <>
-      {/* Matches the structure inside FullWidthField */}
-      <Flex alignItems="end" gap="size-100" minWidth={containerMinWidth}>
-        <View flex>
-          <Well marginTop="size-200">
-            <span className="codeLine">
-              <em>
-                {String.fromCharCode(FORWARD_SLASH)}&nbsp;
-                {String.fromCharCode(FORWARD_SLASH)}&nbsp; (optional) - enhance
-                the direct call with this information
-              </em>
-            </span>
-            <span className="codeLine">
-              const detail = {String.fromCharCode(OPENING_CURLY)}
-            </span>
-            {fields.map((detailRow, index) => (
-              <Flex
-                key={detailRow}
-                gap="size-100"
-                width="100%"
-                margin="size-200"
-                alignItems="center"
-                data-test-detail-row
-              >
-                <WrappedField
-                  aria-label="Key"
-                  name={`${detailRow}.key`}
-                  type="text"
-                  component={TextField}
-                  placeholder="key"
-                  isRequired
-                  data-test-row-key
-                />
-                <span className="codeText">{String.fromCharCode(COLON)}</span>
-                <WrappedField
-                  aria-label="Value"
-                  name={`${detailRow}.value`}
-                  type="text"
-                  component={TextField}
-                  placeholder="value"
-                  supportDataElement
-                  isRequired
-                  data-test-row-value
-                />
-                <ActionButton
-                  aria-label="Delete"
-                  isQuiet
-                  onPress={() => {
-                    fields.remove(index);
-                    if (fields.length === 1) {
-                      fields.push({});
-                    }
-                  }}
-                >
-                  <CloseIcon size="XS" />
-                </ActionButton>
-              </Flex>
-            ))}
-            <span className="codeLine">
-              {String.fromCharCode(CLOSING_CURLY)}
-              {String.fromCharCode(SEMICOLON)}
-            </span>
-            <span className="codeLine">
-              return detail{String.fromCharCode(SEMICOLON)}
-            </span>
-          </Well>
-        </View>
-        <View {...DEFAULT_BLANK_SPACE_PROPS} />
-      </Flex>
-      <ActionButton
-        marginTop="size-200"
-        onPress={() => fields.push({})}
-        aria-label="Add detail field"
-      >
-        Add Detail Field
-      </ActionButton>
-    </>
-  );
-};
+const renderItem = (detailRow) => (
+  <Flex gap="size-100" alignItems="center" data-test-detail-row>
+    <WrappedField
+      aria-label="Key"
+      name={`${detailRow}.key`}
+      type="text"
+      component={TextField}
+      placeholder="key"
+      isRequired
+      data-test-row-key
+    />
+    <span className="codeText">{String.fromCharCode(COLON)}</span>
+    <WrappedField
+      aria-label="Value"
+      name={`${detailRow}.value`}
+      type="text"
+      component={TextField}
+      placeholder="value"
+      supportDataElement
+      isRequired
+      data-test-row-value
+    />
+  </Flex>
+);
 
 const filterEmptyDetailObjectRows = (detailObjectsArray) => {
   if (!detailObjectsArray?.length) {
@@ -139,7 +75,31 @@ const DirectCall = () => (
       isRequired
     />
 
-    <FieldArray component={DetailObjectRows} name="eventObjectEntries" />
+    <Flex marginTop="size-200" alignItems="center">
+      <SpectrumLabel>Event Detail (optional)</SpectrumLabel>
+      <InfoTip>
+        Supply details about this Direct Call Action to the Rules that will
+        catch this direct call identifier.
+      </InfoTip>
+    </Flex>
+    <span className="codeLine mb10">
+      const detail = {String.fromCharCode(OPENING_CURLY)}
+    </span>
+    <FieldArray
+      name="eventObjectEntries"
+      renderItem={renderItem}
+      component={MultipleItemEditor}
+      createItem={() => {
+        return {};
+      }}
+    />
+    <span className="codeLine mt10">
+      {String.fromCharCode(CLOSING_CURLY)}
+      {String.fromCharCode(SEMICOLON)}
+    </span>
+    <span className="codeLine">
+      return detail{String.fromCharCode(SEMICOLON)}
+    </span>
   </div>
 );
 
