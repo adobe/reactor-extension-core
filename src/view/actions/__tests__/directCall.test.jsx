@@ -146,7 +146,9 @@ describe('direct call action view', () => {
 
     // validate shouldn't cause these empty boxes to show an error
     extensionBridge.validate();
-    expect(extensionBridge.getSettings()).toEqual({ identifier: undefined });
+    expect(extensionBridge.getSettings()).toEqual({
+      identifier: undefined
+    });
     expect(
       rows[0].withinRow.getEventObjectKeyTextBox().hasAttribute('aria-invalid')
     ).toBeFalse();
@@ -166,7 +168,12 @@ describe('direct call action view', () => {
         .getEventObjectValueTextBox()
         .hasAttribute('aria-invalid')
     ).toBeFalse();
-    expect(extensionBridge.getSettings()).toEqual({ identifier: undefined });
+    expect(extensionBridge.getSettings()).toEqual({
+      identifier: undefined,
+      detail: {
+        eventObjectEntries: [{ key: 'foo', value: '' }]
+      }
+    });
 
     userEvent.clear(rows[0].withinRow.getEventObjectKeyTextBox());
     userEvent.type(rows[0].withinRow.getEventObjectValueTextBox(), 'foo');
@@ -180,7 +187,9 @@ describe('direct call action view', () => {
         .getEventObjectValueTextBox()
         .hasAttribute('aria-invalid')
     ).toBeFalse();
-    expect(extensionBridge.getSettings()).toEqual({ identifier: undefined });
+    expect(extensionBridge.getSettings()).toEqual({
+      identifier: undefined
+    });
   });
 
   it('keys can not be repeated', () => {
@@ -210,6 +219,25 @@ describe('direct call action view', () => {
     expect(
       rows[1].withinRow.getEventObjectKeyTextBox().hasAttribute('aria-invalid')
     ).toBeTrue();
+  });
+
+  it('keys are required, values are optional', () => {
+    userEvent.type(pageElements.getIdentifierTextBox(), 'identifier');
+
+    const [firstRow] = pageElements.getRows();
+    userEvent.type(firstRow.withinRow.getEventObjectValueTextBox(), 'value');
+    expect(extensionBridge.validate()).toBeFalse();
+
+    userEvent.clear(firstRow.withinRow.getEventObjectValueTextBox());
+    userEvent.type(firstRow.withinRow.getEventObjectKeyTextBox(), 'key');
+    expect(extensionBridge.validate()).toBeTrue();
+
+    expect(extensionBridge.getSettings()).toEqual({
+      identifier: 'identifier',
+      detail: {
+        eventObjectEntries: [{ key: 'key', value: '' }]
+      }
+    });
   });
 
   it('providing custom detail is optional', async () => {

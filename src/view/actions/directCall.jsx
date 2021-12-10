@@ -63,8 +63,8 @@ const filterEmptyDetailObjectRows = (detailObjectsArray) => {
   }
 
   return detailObjectsArray.reduce((entries, nextRow) => {
-    const { key, value } = nextRow;
-    if (nextRow.key?.length && nextRow.value?.length) {
+    const { key, value = '' } = nextRow;
+    if (nextRow.key?.length) {
       return entries.concat({ key, value });
     }
     return entries;
