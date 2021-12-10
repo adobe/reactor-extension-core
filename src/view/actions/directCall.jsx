@@ -28,7 +28,12 @@ const SEMICOLON = 0x003b;
 const containerMinWidth = 'size-6000';
 
 const renderItem = (detailRow) => (
-  <Flex gap="size-100" alignItems="center" data-test-detail-row>
+  <Flex
+    UNSAFE_className="directCallMultipleItemEditor-body"
+    gap="size-100"
+    alignItems="center"
+    data-test-detail-row
+  >
     <WrappedField
       aria-label="Key"
       name={`${detailRow}.key`}
@@ -78,8 +83,8 @@ const DirectCall = () => (
     <Flex marginTop="size-200" alignItems="center">
       <SpectrumLabel>Event Detail (optional)</SpectrumLabel>
       <InfoTip>
-        Supply details about this Direct Call Action to the Rules that will
-        catch this direct call identifier.
+        This detail object will be passed on to any Rule listening for the
+        direct call identifier above.
       </InfoTip>
     </Flex>
     <span className="codeLine mb10">
@@ -92,6 +97,7 @@ const DirectCall = () => (
       createItem={() => {
         return {};
       }}
+      className="directCallMultipleItemEditor-footer"
     />
     <span className="codeLine mt10">
       {String.fromCharCode(CLOSING_CURLY)}
@@ -139,6 +145,23 @@ export const formConfig = {
   validate(errors, values) {
     errors = { ...errors };
 
+    const keyNamesToCount = values?.eventObjectEntries?.reduce(
+      (obj, { key }) => {
+        if (key?.length) {
+          let newCount = 1;
+          if (obj.hasOwnProperty(key)) {
+            newCount = obj[key] + 1;
+          }
+          return {
+            ...obj,
+            [key]: newCount
+          };
+        }
+        return obj;
+      },
+      {}
+    );
+
     if (!values.identifier) {
       errors.identifier = 'Please specify an identifier.';
     }
@@ -150,11 +173,8 @@ export const formConfig = {
       if (!isRowEmpty) {
         if (!row.key?.length) {
           errors.eventObjectEntries[index].key = 'This is required';
-        } else if (!row?.value?.length) {
-          // value supports undefined/null if that's what a dataElement would reduce to,
-          // but we require on this form that either a string value is given or
-          // the name of a dataElement.
-          errors.eventObjectEntries[index].value = 'This is required';
+        } else if (keyNamesToCount[row.key] > 1) {
+          errors.eventObjectEntries[index].key = 'This key is repeated';
         }
       }
     });

@@ -15,7 +15,13 @@ import { ActionButton, Button, Flex, View, Text } from '@adobe/react-spectrum';
 import Delete from '@spectrum-icons/workflow/Delete';
 import Add from '@spectrum-icons/workflow/Add';
 
-export default ({ fields, renderItem, createItem, interstitialLabel }) => {
+export default ({
+  fields,
+  renderItem,
+  createItem,
+  interstitialLabel,
+  className
+}) => {
   const rows = fields.map((field, index) => (
     <View key={field}>
       {interstitialLabel && index !== 0 ? (
@@ -33,7 +39,7 @@ export default ({ fields, renderItem, createItem, interstitialLabel }) => {
   ));
 
   return (
-    <Flex direction="column" gap="size-100">
+    <Flex UNSAFE_className={className} direction="column" gap="size-100">
       {rows}
 
       <View marginTop="size-100">
