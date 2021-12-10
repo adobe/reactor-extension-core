@@ -156,7 +156,7 @@ describe('direct call action view', () => {
         .hasAttribute('aria-invalid')
     ).toBeFalse();
 
-    // make the value text box invalid
+    // value is optional
     userEvent.type(rows[0].withinRow.getEventObjectKeyTextBox(), 'foo');
     expect(
       rows[0].withinRow.getEventObjectKeyTextBox().hasAttribute('aria-invalid')
@@ -165,7 +165,7 @@ describe('direct call action view', () => {
       rows[0].withinRow
         .getEventObjectValueTextBox()
         .hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBeFalse();
     expect(extensionBridge.getSettings()).toEqual({ identifier: undefined });
 
     userEvent.clear(rows[0].withinRow.getEventObjectKeyTextBox());
@@ -181,6 +181,35 @@ describe('direct call action view', () => {
         .hasAttribute('aria-invalid')
     ).toBeFalse();
     expect(extensionBridge.getSettings()).toEqual({ identifier: undefined });
+  });
+
+  it('keys can not be repeated', () => {
+    // give a second row
+    fireEvent.click(pageElements.getAddRowButton());
+
+    const rows = pageElements.getRows();
+
+    userEvent.type(rows[0].withinRow.getEventObjectKeyTextBox(), 'test');
+    userEvent.type(rows[1].withinRow.getEventObjectKeyTextBox(), 'tes');
+
+    extensionBridge.validate();
+    expect(
+      rows[0].withinRow.getEventObjectKeyTextBox().hasAttribute('aria-invalid')
+    ).toBeFalse();
+    expect(
+      rows[1].withinRow.getEventObjectKeyTextBox().hasAttribute('aria-invalid')
+    ).toBeFalse();
+
+    userEvent.clear(rows[1].withinRow.getEventObjectKeyTextBox());
+    userEvent.type(rows[1].withinRow.getEventObjectKeyTextBox(), 'test');
+
+    extensionBridge.validate();
+    expect(
+      rows[0].withinRow.getEventObjectKeyTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
+    expect(
+      rows[1].withinRow.getEventObjectKeyTextBox().hasAttribute('aria-invalid')
+    ).toBeTrue();
   });
 
   it('providing custom detail is optional', async () => {
