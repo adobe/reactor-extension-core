@@ -15,11 +15,15 @@ import WrappedField from './wrappedField';
 import RegexToggle from './regexToggle';
 import NoWrapText from './noWrapText';
 
+export const DEFAULT_BLANK_SPACE_PROPS = {
+  width: 'size-1600'
+};
+
 export default React.forwardRef(
   (
     {
       component = TextField,
-      blankSpace = { width: 'size-1600' },
+      blankSpace = DEFAULT_BLANK_SPACE_PROPS,
       beginText,
       regexName,
       regexValueFieldName,

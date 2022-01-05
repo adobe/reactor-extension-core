@@ -1,7 +1,7 @@
 {
   "name": "core",
   "platform": "web",
-  "version": "3.2.2",
+  "version": "3.3.0",
   "displayName": "Core",
   "description": "Provides default event, condition, and data element types available to all Launch properties.",
   "exchangeUrl": "https://www.adobeexchange.com/experiencecloud.details.100223.adobe-launch-core-extension.html",
@@ -2552,6 +2552,29 @@
           "identifier": {
             "type": "string",
             "minLength": 1
+          },
+          "detail": {
+            "type": "object",
+            "properties": {
+              "eventObjectEntries": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "key": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": ["key"]
+                }
+              }
+            },
+            "additionalProperties": false
           }
         },
         "additionalProperties": false,

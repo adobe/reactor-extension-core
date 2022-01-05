@@ -15,28 +15,51 @@
 var directCallActionDelegateInjector = require('inject-loader!../directCall');
 
 describe('direct call action delegate', function () {
-  it('triggers the specified direct-call Event Type', function () {
-    var mockWindow = {};
+  var mockWindow = {};
+  var delegate;
+
+  beforeEach(function () {
     mockWindow._satellite = jasmine.createSpyObj('_satellite', ['track']);
 
-    var delegate = directCallActionDelegateInjector({
+    delegate = directCallActionDelegateInjector({
       '@adobe/reactor-window': mockWindow
     });
+  });
 
+  it('triggers the specified direct-call Event Type without a detail', function () {
     var settings = {
       identifier: 'foo'
     };
 
-    var event = {
-      prop: 'x'
+    // run the Action
+    delegate(settings);
+
+    // check that the Action has called _satellite.track() properly
+    expect(mockWindow._satellite.track).toHaveBeenCalledWith('foo');
+  });
+
+  it('triggers the specified direct-call Event Type with a user-defined detail', function () {
+    var settings = {
+      identifier: 'foo',
+      detail: {
+        eventObjectEntries: [
+          { key: 'firstKey', value: 'first value' },
+          { key: 'secondKey', value: 'second value' }
+        ]
+      }
     };
 
-    // run the Action
+    var event = {
+      element: {},
+      target: {}
+    };
+
     delegate(settings, event);
 
     // check that the Action has called _satellite.track() properly
     expect(mockWindow._satellite.track).toHaveBeenCalledWith('foo', {
-      prop: 'x'
+      firstKey: 'first value',
+      secondKey: 'second value'
     });
   });
 });
