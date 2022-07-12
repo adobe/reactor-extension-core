@@ -27,9 +27,27 @@ var textMatch = require('../helpers/textMatch');
  * @returns {boolean}
  */
 module.exports = function (settings) {
-  var acceptableValue = settings.valueIsRegex
-    ? new RegExp(settings.value, 'i')
-    : settings.value;
   var queryParams = queryString.parse(window.location.search);
-  return textMatch(queryParams[settings.name], acceptableValue);
+  if (!queryParams.hasOwnProperty(settings.name)) {
+    return false;
+  }
+
+  var queryParamValues;
+  if (!Array.isArray(settings.value)) {
+    // legacy support
+    queryParamValues = [
+      { value: settings.value, valueIsRegex: Boolean(settings.valueIsRegex) }
+    ];
+  } else {
+    queryParamValues = settings.value;
+  }
+
+  var queryParamValue = queryParams[settings.name];
+  return queryParamValues.some(function (acceptableQueryParamValue) {
+    var acceptableValue = acceptableQueryParamValue.valueIsRegex
+      ? new RegExp(acceptableQueryParamValue.value, 'i')
+      : acceptableQueryParamValue.value;
+
+    return textMatch(queryParamValue, acceptableValue);
+  });
 };

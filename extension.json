@@ -1,7 +1,7 @@
 {
   "name": "core",
   "platform": "web",
-  "version": "3.3.0",
+  "version": "3.3.1",
   "displayName": "Core",
   "description": "Provides default event, condition, and data element types available to all Launch properties.",
   "exchangeUrl": "https://www.adobeexchange.com/experiencecloud.details.100223.adobe-launch-core-extension.html",
@@ -118,7 +118,28 @@
             "type": "boolean"
           },
           "value": {
-            "type": "string"
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "string"
+                    },
+                    "valueIsRegex": {
+                      "type": "boolean"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": ["value"]
+                },
+                "minItems": 1
+              }
+            ]
           },
           "valueIsRegex": {
             "type": "boolean"
@@ -1125,8 +1146,30 @@
             "pattern": "^[A-Za-z0-9!#$%&'*+\\-.^_|~]+$"
           },
           "value": {
-            "type": "string",
-            "minLength": 1
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "valueIsRegex": {
+                      "type": "boolean"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": ["value"]
+                },
+                "minItems": 1
+              }
+            ]
           },
           "valueIsRegex": {
             "type": "boolean"
@@ -1289,8 +1332,30 @@
         "type": "object",
         "properties": {
           "page": {
-            "type": "string",
-            "minLength": 1
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "pageIsRegex": {
+                      "type": "boolean"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": ["value"]
+                },
+                "minItems": 1
+              }
+            ]
           },
           "pageIsRegex": {
             "type": "boolean"
@@ -1645,8 +1710,30 @@
         "type": "object",
         "properties": {
           "source": {
-            "type": "string",
-            "minLength": 1
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "sourceIsRegex": {
+                      "type": "boolean"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": ["value"]
+                },
+                "minItems": 1
+              }
+            ]
           },
           "sourceIsRegex": {
             "type": "boolean"
@@ -1671,8 +1758,30 @@
             "minLength": 1
           },
           "value": {
-            "type": "string",
-            "minLength": 1
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "valueIsRegex": {
+                      "type": "boolean"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": ["value"]
+                },
+                "minItems": 1
+              }
+            ]
           },
           "valueIsRegex": {
             "type": "boolean"
@@ -1839,8 +1948,30 @@
             "minLength": 1
           },
           "value": {
-            "type": "string",
-            "minLength": 1
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "valueIsRegex": {
+                      "type": "boolean"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": ["value"]
+                },
+                "minItems": 1
+              }
+            ]
           },
           "valueIsRegex": {
             "type": "boolean"

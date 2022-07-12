@@ -18,14 +18,38 @@ var textMatch = require('../helpers/textMatch');
 /**
  * Landing page condition. Determines if the actual landing page matches an acceptable landing page.
  * @param {Object} settings Condition settings.
- * @param {string} settings.page An acceptable landing page.
- * @param {boolean} [settings.pageIsRegex=false] Whether <code>settings.page</code> is intended to
+ * @param {Object[]} settings.page Acceptable landing page values to match.
+ * @param {string} settings.page[].value An acceptable landing page value.
+ * @param {string} [settings.value[].pageIsRegex=false] Is the landing page
+ * value a Regular Expression?
+ * DEPRECATED @param {string=} settings.page An acceptable landing page.
+ * DEPRECATED @param {boolean=} [settings.pageIsRegex=false] Whether
+ * <code>settings.page</code> is intended to
  * be a regular expression.
  * @returns {boolean}
  */
 module.exports = function (settings) {
-  var acceptablePage = settings.pageIsRegex
-    ? new RegExp(settings.page, 'i')
-    : settings.page;
-  return textMatch(visitorTracking.getLandingPage(), acceptablePage);
+  // empty strings aren't allowed because a landing page value is required in the UI.
+  var storedLandingPage = visitorTracking.getLandingPage();
+  if (!storedLandingPage) {
+    return false;
+  }
+
+  var landingPageValues;
+  if (!Array.isArray(settings.page)) {
+    // legacy support
+    landingPageValues = [
+      { value: settings.page, pageIsRegex: Boolean(settings.pageIsRegex) }
+    ];
+  } else {
+    landingPageValues = settings.page;
+  }
+
+  return landingPageValues.some(function (acceptablePageValue) {
+    var acceptableValue = acceptablePageValue.pageIsRegex
+      ? new RegExp(acceptablePageValue.value, 'i')
+      : acceptablePageValue.value;
+
+    return textMatch(storedLandingPage, acceptableValue);
+  });
 };

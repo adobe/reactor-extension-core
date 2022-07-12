@@ -11,8 +11,36 @@
  ****************************************************************************************/
 
 import React from 'react';
-import { Flex } from '@adobe/react-spectrum';
+import { Flex, TextField, View } from '@adobe/react-spectrum';
+import { FieldArray } from 'redux-form';
 import FullWidthField from '../components/fullWidthField';
+import MultipleItemEditor from '../components/multipleItemEditor';
+import NoWrapText from '../components/noWrapText';
+import WrappedField from '../components/wrappedField';
+import RegexToggle from '../components/regexToggle';
+
+const createItem = () => ({});
+
+const renderItem = (field) => (
+  <Flex data-row flex gap="size-100" alignItems="end">
+    <NoWrapText>has value</NoWrapText>
+    <View flex>
+      <WrappedField
+        label="Value"
+        width="100%"
+        name={`${field}.value`}
+        component={TextField}
+        isRequired
+      />
+    </View>
+
+    <WrappedField
+      name={`${field}.valueIsRegex`}
+      component={RegexToggle}
+      valueFieldName={`${field}.value`}
+    />
+  </Flex>
+);
 
 const Cookie = () => (
   <Flex direction="column" gap="size-100" minWidth="size-6000">
@@ -24,14 +52,12 @@ const Cookie = () => (
       blankSpace={{ width: 'size-1700', marginEnd: 'size-100' }}
     />
 
-    <FullWidthField
-      beginText="has the value"
-      label="Cookie value"
+    <FieldArray
       name="value"
-      blankSpace={null}
-      regexName="valueIsRegex"
-      regexValueFieldName="value"
-      isRequired
+      renderItem={renderItem}
+      component={MultipleItemEditor}
+      interstitialLabel="OR"
+      createItem={createItem}
     />
   </Flex>
 );
@@ -40,12 +66,36 @@ export default Cookie;
 
 export const formConfig = {
   settingsToFormValues(values, settings) {
-    return {
+    values = {
       ...values,
       ...settings
     };
+
+    /** backwards compat changes **/
+    // historically, settings.value was a simple string, and we could only compare
+    // against one cookie value. This component was changed to support many cookie
+    // values to compare against, but we provide an "upgrade path" here.
+    if (!Array.isArray(values.value)) {
+      values.value = [];
+      if (typeof settings.value === 'string') {
+        values.value.push({
+          value: settings.value,
+          valueIsRegex: Boolean(settings.valueIsRegex)
+        });
+      } else {
+        values.value.push(createItem());
+      }
+    }
+    delete values.valueIsRegex;
+    /** end backwards compat changes **/
+
+    return values;
   },
   formValuesToSettings(settings, values) {
+    /** legacy top level keys **/
+    delete settings.valueIsRegex;
+    /** end legacy top level keys **/
+
     return {
       ...settings,
       ...values
@@ -67,9 +117,14 @@ export const formConfig = {
         'following: ( ) < > @ , ; : \\ " /  [ ] ? = { }';
     }
 
-    if (!values.value) {
-      errors.value = 'Please specify a cookie value.';
-    }
+    // values.value is now an array
+    errors.value = (values.value || []).map((cookieValue) => {
+      const result = {};
+      if (!cookieValue.value) {
+        result.value = 'Please specify a cookie value.';
+      }
+      return result;
+    });
 
     return errors;
   }

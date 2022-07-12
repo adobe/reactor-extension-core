@@ -19,14 +19,38 @@ var visitorTracking = require('../helpers/visitorTracking');
  * Traffic source condition. Determines if the actual traffic source matches an acceptable traffic
  * source.
  * @param {Object} settings Condition settings.
- * @param {string} settings.source An acceptable traffic source.
- * @param {boolean} [settings.sourceIsRegex=false] Whether <code>settings.source</code> is intended
+ * @param {Object[]} settings.source Acceptable traffic values to match.
+ * @param {string} settings.source[].value An acceptable traffic source value.
+ * @param {string} [settings.value[].sourceIsRegex=false] Is the traffic source
+ * value a Regular Expression?
+ * DEPRECATED @param {string} settings.source An acceptable traffic source.
+ * DEPRECATED @param {boolean} [settings.sourceIsRegex=false] Whether
+ * <code>settings.source</code> is intended
  * to be a regular expression.
  * @returns {boolean}
  */
 module.exports = function (settings) {
-  var acceptableSource = settings.sourceIsRegex
-    ? new RegExp(settings.source, 'i')
-    : settings.source;
-  return textMatch(visitorTracking.getTrafficSource(), acceptableSource);
+  // empty strings aren't allowed because a traffic source value is required in the UI.
+  var storedTrafficSource = visitorTracking.getTrafficSource();
+  if (!storedTrafficSource) {
+    return false;
+  }
+
+  var trafficSourceValues;
+  if (!Array.isArray(settings.source)) {
+    // legacy support
+    trafficSourceValues = [
+      { value: settings.source, sourceIsRegex: Boolean(settings.sourceIsRegex) }
+    ];
+  } else {
+    trafficSourceValues = settings.source;
+  }
+
+  return trafficSourceValues.some(function (acceptableTrafficSource) {
+    var acceptableValue = acceptableTrafficSource.sourceIsRegex
+      ? new RegExp(acceptableTrafficSource.value, 'i')
+      : acceptableTrafficSource.value;
+
+    return textMatch(storedTrafficSource, acceptableValue);
+  });
 };
