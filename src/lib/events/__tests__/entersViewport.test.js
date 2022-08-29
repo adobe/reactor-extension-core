@@ -11,11 +11,7 @@
  ****************************************************************************************/
 
 'use strict';
-
 var entersViewportInjector = require('inject-loader!../entersViewport');
-
-var POLL_INTERVAL = 3000;
-var DEBOUNCE_DELAY = 200;
 
 /**
  * Provides a document object that provides native functionality but
@@ -26,14 +22,8 @@ var getDocumentProxy = function () {
     get body() {
       return document.body;
     },
-    get scrollTop() {
-      return document.scrollTop;
-    },
     get documentElement() {
       return document.documentElement;
-    },
-    get compatMode() {
-      return document.compatMode;
     },
     querySelectorAll: function () {
       return document.querySelectorAll.apply(document, arguments);
@@ -50,36 +40,37 @@ var getDocumentProxy = function () {
  */
 var getWindowProxy = function () {
   return {
-    get pageXOffset() {
-      return window.pageXOffset;
-    },
-    get pageYOffset() {
-      return window.pageYOffset;
-    },
-    get innerHeight() {
-      return window.innerHeight;
-    },
     addEventListener: function () {
       return window.addEventListener.apply(window, arguments);
+    },
+    setInterval: function () {
+      return window.setInterval.apply(window, arguments);
     }
   };
 };
 
 describe('enters viewport event delegate', function () {
   var aElement;
+  var aElementId;
   var bElement;
+  var bElementId;
+  var customPropValue;
 
   var createElements = function () {
+    var timeMillis = Date.now();
+    customPropValue = 'foo-' + timeMillis;
     aElement = document.createElement('div');
-    aElement.id = 'a';
+    aElement.id = 'a-' + timeMillis;
+    aElementId = '#a-' + timeMillis;
     aElement.innerHTML = 'a';
-    aElement.customProp = 'foo';
-    document.body.insertBefore(aElement, document.body.firstChild);
+    aElement.customProp = customPropValue;
+    document.body.appendChild(aElement);
 
     bElement = document.createElement('div');
-    bElement.id = 'b';
+    bElement.id = 'b-' + timeMillis;
+    bElementId = '#b-' + timeMillis;
     bElement.innerHTML = 'b';
-    bElement.customProp = 'foo';
+    bElement.customProp = customPropValue;
     aElement.appendChild(bElement);
   };
 
@@ -87,32 +78,27 @@ describe('enters viewport event delegate', function () {
     if (aElement) {
       document.body.removeChild(aElement);
     }
+
     aElement = bElement = null;
   };
 
   var assertTriggerCall = function (options) {
-    expect(options.call.args[0]).toEqual({
+    expect(options.element).not.toBeFalsy();
+    expect(options.target).not.toBeFalsy();
+    expect(options.callData).toEqual({
       element: options.element,
       target: options.target,
       delay: options.delay
     });
   };
 
-  beforeAll(function () {
-    jasmine.clock().install();
-  });
-
-  afterAll(function () {
-    jasmine.clock().uninstall();
-  });
-
   beforeEach(function () {
     createElements();
+    window.scrollTo(0, 0);
   });
 
   afterEach(function () {
     removeElements();
-    window.scrollTo(0, 0);
   });
 
   describe('with document.readyState at complete', function () {
@@ -127,173 +113,293 @@ describe('enters viewport event delegate', function () {
       });
     });
 
-    it('calls trigger with event and related element', function () {
-      var aTrigger = jasmine.createSpy();
+    it('calls trigger with event and related element', function (done) {
+      // when the trigger function is called, assert the result it was called with
+      var triggerA = {
+        triggerFn: null
+      };
+
+      triggerA.triggerFn = function (callData) {
+        assertTriggerCall({
+          callData: callData,
+          element: aElement,
+          target: aElement
+        });
+        done();
+      };
 
       delegate(
         {
-          elementSelector: '#a'
+          elementSelector: aElementId
         },
-        aTrigger
+        triggerA.triggerFn
       );
+    });
 
-      jasmine.clock().tick(POLL_INTERVAL);
+    it('triggers multiple rules targeting the same element with no delay', function (done) {
+      var triggerA = {
+        triggerFn: null,
+        count: 0
+      };
+      var triggerA2 = {
+        triggerFn: null,
+        count: 0
+      };
 
-      assertTriggerCall({
-        call: aTrigger.calls.mostRecent(),
-        element: aElement,
-        target: aElement
+      var initialTime;
+
+      // wait for both trigger functions to have been called
+      Promise.all([
+        new Promise(function (resolve) {
+          triggerA.triggerFn = function () {
+            triggerA.count += 1;
+            resolve();
+          };
+        }),
+        new Promise(function (resolve) {
+          triggerA2.triggerFn = function () {
+            triggerA2.count += 1;
+            resolve();
+          };
+        })
+      ]).then(function () {
+        var elapsedTime = Date.now() - initialTime;
+        expect(triggerA.count).toBe(1);
+        expect(triggerA2.count).toBe(1);
+        expect(elapsedTime).toBeLessThan(1000);
+        done();
       });
-    });
 
-    it('triggers multiple rules targeting the same element with no delay', function () {
-      var aTrigger = jasmine.createSpy();
-      var a2Trigger = jasmine.createSpy();
-
+      initialTime = Date.now();
       delegate(
         {
-          elementSelector: '#a'
+          elementSelector: aElementId
         },
-        aTrigger
+        triggerA.triggerFn
       );
 
       delegate(
         {
-          elementSelector: '#a'
+          elementSelector: aElementId
         },
-        a2Trigger
+        triggerA2.triggerFn
       );
-
-      jasmine.clock().tick(POLL_INTERVAL);
-
-      expect(aTrigger.calls.count()).toEqual(1);
-      expect(a2Trigger.calls.count()).toEqual(1);
     });
 
-    it('handles settings.delay as a string', function () {
-      var trigger = jasmine.createSpy();
+    it('handles settings.delay as a string', function (done) {
+      var triggerA = {
+        triggerFn: null
+      };
+
+      triggerA.triggerFn = function (callData) {
+        assertTriggerCall({
+          callData: callData,
+          element: aElement,
+          target: aElement,
+          delay: 100
+        });
+        done();
+      };
 
       delegate(
         {
-          elementSelector: 'div',
+          // elementSelector: 'div[id="' + aElementId + '"]',
+          elementSelector: aElementId,
           elementProperties: [
             {
               name: 'customProp',
-              value: 'foo'
+              value: customPropValue
             }
           ],
           delay: '100'
         },
-        trigger
+        triggerA.triggerFn
       );
+    });
 
-      jasmine.clock().tick(POLL_INTERVAL);
+    it('triggers multiple rules targeting the same element with same delay', function (done) {
+      var triggerA = {
+        triggerFn: null,
+        count: 0
+      };
+      var triggerA2 = {
+        triggerFn: null,
+        count: 0
+      };
+      var initialTime;
+      var triggerDelay = 1000;
 
-      assertTriggerCall({
-        call: trigger.calls.first(),
-        element: aElement,
-        target: aElement,
-        delay: 100
+      // wait for both trigger functions to have been called
+      Promise.all([
+        new Promise(function (resolve) {
+          // aTrigger = jasmine.createSpy().and.callFake(resolve);
+          triggerA.triggerFn = function () {
+            triggerA.count += 1;
+            resolve();
+          };
+        }),
+        new Promise(function (resolve) {
+          // a2Trigger = jasmine.createSpy().and.callFake(resolve);
+          triggerA2.triggerFn = function () {
+            triggerA2.count += 1;
+            resolve();
+          };
+        })
+      ]).then(function () {
+        var elapsedTime = Date.now() - initialTime;
+        expect(triggerA.count).toBe(1);
+        expect(triggerA2.count).toBe(1);
+        expect(elapsedTime).toBeGreaterThanOrEqual(triggerDelay);
+        expect(elapsedTime).toBeLessThan(triggerDelay + 1000);
+        done();
       });
+
+      initialTime = Date.now();
+      delegate(
+        {
+          elementSelector: aElementId,
+          delay: 1000
+        },
+        triggerA.triggerFn
+      );
+
+      delegate(
+        {
+          elementSelector: aElementId,
+          delay: 1000
+        },
+        triggerA2.triggerFn
+      );
     });
 
-    it('triggers multiple rules targeting the same element with same delay', function () {
-      var aTrigger = jasmine.createSpy();
-      var a2Trigger = jasmine.createSpy();
+    it(
+      'triggers multiple rules targeting the same element with different ' +
+        ' delays',
+      function (done) {
+        var triggerA = {
+          triggerFn: null,
+          count: 0
+        };
+        var triggerA2 = {
+          triggerFn: null,
+          count: 0
+        };
+        var initialTime;
+        var aTriggerDelay = 100;
+        var a2TriggerDelay = 500;
+
+        // wait for both trigger functions to have been called
+        Promise.all([
+          new Promise(function (resolve) {
+            triggerA.triggerFn = function () {
+              var now = Date.now();
+              triggerA.count += 1;
+              expect(now).toBeGreaterThanOrEqual(initialTime + aTriggerDelay);
+              expect(now).toBeLessThanOrEqual(initialTime + a2TriggerDelay);
+              resolve();
+            };
+          }),
+          new Promise(function (resolve) {
+            triggerA2.triggerFn = function () {
+              var now = Date.now();
+              triggerA2.count += 1;
+              expect(now).toBeGreaterThanOrEqual(initialTime + aTriggerDelay);
+              expect(now).toBeGreaterThanOrEqual(initialTime + a2TriggerDelay);
+              resolve();
+            };
+          })
+        ]).then(function () {
+          expect(triggerA.count).toBe(1);
+          expect(triggerA2.count).toBe(1);
+          done();
+        });
+
+        initialTime = Date.now();
+
+        delegate(
+          {
+            elementSelector: aElementId,
+            delay: aTriggerDelay
+          },
+          triggerA.triggerFn
+        );
+
+        delegate(
+          {
+            elementSelector: aElementId,
+            delay: a2TriggerDelay
+          },
+          triggerA2.triggerFn
+        );
+      }
+    );
+
+    it(
+      'triggers multiple rules targeting the same element with different ' +
+        'selectors',
+      function (done) {
+        var triggerA = {
+          triggerFn: null,
+          count: 0
+        };
+        var triggerA2 = {
+          triggerFn: null,
+          count: 0
+        };
+
+        // wait for both trigger functions to have been called
+        Promise.all([
+          new Promise(function (resolve) {
+            triggerA.triggerFn = function () {
+              triggerA.count += 1;
+              resolve();
+            };
+          }),
+          new Promise(function (resolve) {
+            triggerA2.triggerFn = function () {
+              triggerA2.count += 1;
+              resolve();
+            };
+          })
+        ]).then(function () {
+          expect(triggerA.count).toBe(1);
+          expect(triggerA2.count).toBe(1);
+          done();
+        });
+
+        delegate(
+          {
+            elementSelector: aElementId
+          },
+          triggerA.triggerFn
+        );
+
+        delegate(
+          {
+            elementSelector: 'div' + aElementId
+          },
+          triggerA2.triggerFn
+        );
+      }
+    );
+
+    it('triggers rule when elementProperties match', function (done) {
+      var triggerB = {
+        triggerFn: null,
+        count: 0
+      };
+      triggerB.triggerFn = function (callData) {
+        assertTriggerCall({
+          callData: callData,
+          element: bElement,
+          target: bElement
+        });
+        done();
+      };
 
       delegate(
         {
-          elementSelector: '#a',
-          delay: 100000
-        },
-        aTrigger
-      );
-
-      delegate(
-        {
-          elementSelector: '#a',
-          delay: 100000
-        },
-        a2Trigger
-      );
-
-      jasmine.clock().tick(POLL_INTERVAL);
-
-      expect(aTrigger.calls.count()).toEqual(0);
-      expect(a2Trigger.calls.count()).toEqual(0);
-
-      jasmine.clock().tick(100000);
-
-      expect(aTrigger.calls.count()).toEqual(1);
-      expect(a2Trigger.calls.count()).toEqual(1);
-    });
-
-    it('triggers multiple rules targeting the same element with different delays', function () {
-      var aTrigger = jasmine.createSpy();
-      var a2Trigger = jasmine.createSpy();
-
-      delegate(
-        {
-          elementSelector: '#a',
-          delay: 100000
-        },
-        aTrigger
-      );
-
-      delegate(
-        {
-          elementSelector: '#a',
-          delay: 200000
-        },
-        a2Trigger
-      );
-
-      jasmine.clock().tick(POLL_INTERVAL);
-
-      expect(aTrigger.calls.count()).toEqual(0);
-      expect(a2Trigger.calls.count()).toEqual(0);
-
-      jasmine.clock().tick(100000);
-
-      expect(aTrigger.calls.count()).toEqual(1);
-      expect(a2Trigger.calls.count()).toEqual(0);
-
-      jasmine.clock().tick(100000);
-
-      expect(aTrigger.calls.count()).toEqual(1);
-      expect(a2Trigger.calls.count()).toEqual(1);
-    });
-
-    it('triggers multiple rules targeting the same element with different selectors', function () {
-      var aTrigger = jasmine.createSpy();
-      var a2Trigger = jasmine.createSpy();
-
-      delegate(
-        {
-          elementSelector: '#a'
-        },
-        aTrigger
-      );
-
-      delegate(
-        {
-          elementSelector: 'div#a'
-        },
-        a2Trigger
-      );
-
-      jasmine.clock().tick(POLL_INTERVAL);
-
-      expect(aTrigger.calls.count()).toEqual(1);
-      expect(a2Trigger.calls.count()).toEqual(1);
-    });
-
-    it('triggers rule when elementProperties match', function () {
-      var bTrigger = jasmine.createSpy();
-
-      delegate(
-        {
-          elementSelector: '#b',
+          elementSelector: bElementId,
           elementProperties: [
             {
               name: 'innerHTML',
@@ -301,20 +407,34 @@ describe('enters viewport event delegate', function () {
             }
           ]
         },
-        bTrigger
+        triggerB.triggerFn
       );
-
-      jasmine.clock().tick(POLL_INTERVAL);
-
-      expect(bTrigger.calls.count()).toEqual(1);
     });
 
-    it('does not trigger rule when elementProperties do not match', function () {
-      var bTrigger = jasmine.createSpy();
+    it('does not trigger rule when elementProperties do not match', function (done) {
+      var triggerB = {
+        triggerFn: null,
+        count: 0
+      };
+
+      Promise.race([
+        new Promise(function (resolve) {
+          triggerB.triggerFn = function () {
+            triggerB.count += 1;
+            resolve();
+          };
+        }),
+        new Promise(function (resolve) {
+          setTimeout(resolve, 500);
+        })
+      ]).then(function () {
+        expect(triggerB.count).toBe(0);
+        done();
+      });
 
       delegate(
         {
-          elementSelector: '#b',
+          elementSelector: bElementId,
           elementProperties: [
             {
               name: 'innerHTML',
@@ -322,16 +442,23 @@ describe('enters viewport event delegate', function () {
             }
           ]
         },
-        bTrigger
+        triggerB.triggerFn
       );
-
-      jasmine.clock().tick(POLL_INTERVAL);
-
-      expect(bTrigger.calls.count()).toEqual(0);
     });
 
-    it('triggers rule when targeting using elementProperties', function () {
-      var bTrigger = jasmine.createSpy();
+    it('triggers rule when targeting using elementProperties', function (done) {
+      var triggerB = {
+        triggerFn: null
+      };
+
+      triggerB.triggerFn = function (callData) {
+        assertTriggerCall({
+          callData: callData,
+          element: bElement,
+          target: bElement
+        });
+        done();
+      };
 
       delegate(
         {
@@ -339,24 +466,76 @@ describe('enters viewport event delegate', function () {
           elementProperties: [
             {
               name: 'id',
-              value: 'b'
+              value: bElementId.slice(1) // remove the leading # character
             }
           ]
         },
-        bTrigger
+        triggerB.triggerFn
       );
-
-      jasmine.clock().tick(POLL_INTERVAL);
-
-      assertTriggerCall({
-        call: bTrigger.calls.mostRecent(),
-        element: bElement,
-        target: bElement
-      });
     });
 
-    it('triggers rule for each matching element', function () {
-      var trigger = jasmine.createSpy();
+    it('triggers rule for each matching element', function (done) {
+      var trigger = {
+        triggerFn: null,
+        fnCalls: []
+      };
+      trigger.triggerFn = function (callData) {
+        trigger.fnCalls.push(callData);
+      };
+      var elementAddedLater;
+
+      Promise.resolve()
+        .then(function () {
+          return new Promise(function (resolve) {
+            var intervalId = window.setInterval(function () {
+              if (trigger.fnCalls.length === 2) {
+                window.clearInterval(intervalId);
+                resolve();
+              }
+            }, 50);
+          });
+        })
+        .then(function () {
+          trigger.fnCalls = trigger.fnCalls.sort(function (el1, el2) {
+            return el1.id - el2.id;
+          });
+          assertTriggerCall({
+            callData: trigger.fnCalls[0],
+            element: aElement,
+            target: aElement
+          });
+          assertTriggerCall({
+            callData: trigger.fnCalls[1],
+            element: bElement,
+            target: bElement
+          });
+          trigger.fnCalls = [];
+        })
+        .then(function () {
+          elementAddedLater = document.createElement('div');
+          elementAddedLater.id = 'c-element';
+          elementAddedLater.innerHTML = 'c';
+          elementAddedLater.customProp = customPropValue;
+          document.body.appendChild(elementAddedLater);
+
+          return new Promise(function (resolve) {
+            var intervalId = window.setInterval(function () {
+              if (trigger.fnCalls.length === 1) {
+                window.clearInterval(intervalId);
+                assertTriggerCall({
+                  callData: trigger.fnCalls[0],
+                  element: elementAddedLater,
+                  target: elementAddedLater
+                });
+                resolve();
+              }
+            }, 50);
+          });
+        })
+        .then(function () {
+          document.body.removeChild(elementAddedLater);
+          done();
+        });
 
       delegate(
         {
@@ -364,38 +543,12 @@ describe('enters viewport event delegate', function () {
           elementProperties: [
             {
               name: 'customProp',
-              value: 'foo'
+              value: customPropValue
             }
           ]
         },
-        trigger
+        trigger.triggerFn
       );
-
-      jasmine.clock().tick(POLL_INTERVAL);
-
-      assertTriggerCall({
-        call: trigger.calls.first(),
-        element: aElement,
-        target: aElement
-      });
-
-      assertTriggerCall({
-        call: trigger.calls.mostRecent(),
-        element: bElement,
-        target: bElement
-      });
-
-      var elementAddedLater = document.createElement('div');
-      elementAddedLater.customProp = 'foo';
-      document.body.appendChild(elementAddedLater);
-
-      jasmine.clock().tick(POLL_INTERVAL);
-
-      assertTriggerCall({
-        call: trigger.calls.mostRecent(),
-        element: elementAddedLater,
-        target: elementAddedLater
-      });
     });
 
     // The following tests have been commented out because they periodically fail when being run
@@ -557,50 +710,9 @@ describe('enters viewport event delegate', function () {
       spyOn(mockWindow, 'addEventListener');
     });
 
-    describe('with IE 10 browser', function () {
-      it('waits until window load has fired before checking elements', function () {
-        mockWindow.navigator = {
-          appVersion: 'MSIE 10'
-        };
-
-        var delegate = entersViewportInjector({
-          '@adobe/reactor-document': mockDocument,
-          '@adobe/reactor-window': mockWindow
-        });
-
-        var aTrigger = jasmine.createSpy();
-
-        delegate(
-          {
-            elementSelector: '#a'
-          },
-          aTrigger
-        );
-
-        jasmine.clock().tick(DEBOUNCE_DELAY);
-
-        expect(aTrigger).not.toHaveBeenCalled();
-        expect(mockWindow.addEventListener).toHaveBeenCalledWith(
-          'load',
-          jasmine.any(Function)
-        );
-
-        var windowLoadCallback =
-          mockWindow.addEventListener.calls.first().args[1];
-        windowLoadCallback();
-
-        jasmine.clock().tick(DEBOUNCE_DELAY); // Skip past debounce.
-
-        assertTriggerCall({
-          call: aTrigger.calls.mostRecent(),
-          element: aElement,
-          target: aElement
-        });
-      });
-    });
-
     describe('with browser that is not IE 10', function () {
-      it('waits until DOMContentLoaded has fired before checking elements', function () {
+      it('waits until DOMContentLoaded has fired before checking elements', function (done) {
+        expect(document.querySelectorAll(aElementId).length).toBe(1);
         mockWindow.navigator = {
           appVersion: 'something Chrome something'
         };
@@ -614,30 +726,42 @@ describe('enters viewport event delegate', function () {
 
         delegate(
           {
-            elementSelector: '#a'
+            elementSelector: aElementId
           },
           aTrigger
         );
 
-        jasmine.clock().tick(DEBOUNCE_DELAY);
+        new Promise(function (resolve) {
+          window.setTimeout(resolve, 1000);
+        })
+          .then(function () {
+            expect(aTrigger).not.toHaveBeenCalled();
+            expect(mockDocument.addEventListener).toHaveBeenCalledWith(
+              'DOMContentLoaded',
+              jasmine.any(Function)
+            );
 
-        expect(aTrigger).not.toHaveBeenCalled();
-        expect(mockDocument.addEventListener).toHaveBeenCalledWith(
-          'DOMContentLoaded',
-          jasmine.any(Function)
-        );
+            var domContentLoadedCallback =
+              mockDocument.addEventListener.calls.first().args[1];
+            domContentLoadedCallback();
 
-        var domContentLoadedCallback =
-          mockDocument.addEventListener.calls.first().args[1];
-        domContentLoadedCallback();
-
-        jasmine.clock().tick(DEBOUNCE_DELAY); // Skip past debounce.
-
-        assertTriggerCall({
-          call: aTrigger.calls.mostRecent(),
-          element: aElement,
-          target: aElement
-        });
+            return new Promise(function (resolve) {
+              var intervalId = window.setInterval(function () {
+                if (aTrigger.calls.mostRecent()) {
+                  window.clearInterval(intervalId);
+                  resolve(aTrigger.calls.mostRecent().args[0]);
+                }
+              }, 50);
+            });
+          })
+          .then(function (callData) {
+            assertTriggerCall({
+              callData: callData,
+              element: aElement,
+              target: aElement
+            });
+            done();
+          });
       });
     });
   });

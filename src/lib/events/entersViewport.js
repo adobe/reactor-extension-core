@@ -15,20 +15,19 @@
 var document = require('@adobe/reactor-document');
 var window = require('@adobe/reactor-window');
 var WeakMap = require('./helpers/weakMap');
-var debounce = require('./helpers/debounce');
 var enableWeakMapDefaultValue = require('./helpers/enableWeakMapDefaultValue');
 var matchesSelector = require('./helpers/matchesSelector');
 var matchesProperties = require('./helpers/matchesProperties');
 var castToNumberIfString =
   require('../helpers/stringAndNumberUtils').castToNumberIfString;
 
-var POLL_INTERVAL = 3000;
-var DEBOUNCE_DELAY = 200;
+var OBSERVER_PROCESSING_FREQUENCY = 200;
+var OBSERVER_ELEMENT_REFRESH_FREQUENCY = 3000;
+
 var frequencies = {
   FIRST_ENTRY: 'firstEntry',
   EVERY_ENTRY: 'everyEntry'
 };
-var isIE10 = window.navigator.appVersion.indexOf('MSIE 10') !== -1;
 
 var stateByElement = enableWeakMapDefaultValue(new WeakMap(), function () {
   return {
@@ -47,80 +46,8 @@ var stateByElement = enableWeakMapDefaultValue(new WeakMap(), function () {
 });
 
 var listenersBySelector = {};
-
-/**
- * Gets the offset of the element.
- * @param elem
- * @returns {{top: number, left: number}}
- */
-var offset = function (elem) {
-  var box;
-
-  try {
-    box = elem.getBoundingClientRect();
-  } catch (e) {
-    // ignore
-  }
-
-  var docElem = document.documentElement;
-  var body = document.body;
-  var clientTop = docElem.clientTop || body.clientTop || 0;
-  var clientLeft = docElem.clientLeft || body.clientLeft || 0;
-  var scrollTop = window.pageYOffset || docElem.scrollTop || body.scrollTop;
-  var scrollLeft = window.pageXOffset || docElem.scrollLeft || body.scrollLeft;
-  var top = box.top + scrollTop - clientTop;
-  var left = box.left + scrollLeft - clientLeft;
-
-  return {
-    top: top,
-    left: left
-  };
-};
-
-/**
- * Viewport height.
- * @returns {number}
- */
-var getViewportHeight = function () {
-  var height = window.innerHeight; // Safari, Opera
-  var mode = document.compatMode;
-
-  if (mode) {
-    // IE, Gecko
-    height =
-      mode === 'CSS1Compat'
-        ? document.documentElement.clientHeight // Standards
-        : document.body.clientHeight; // Quirks
-  }
-
-  return height;
-};
-
-/**
- * Scroll top.
- * @returns {number}
- */
-var getScrollTop = function () {
-  return document.documentElement.scrollTop
-    ? document.documentElement.scrollTop
-    : document.body.scrollTop;
-};
-
-/**
- * Whether an element is in the viewport.
- * @param element The element to evaluate.
- * @param viewportHeight The viewport height. Passed in for optimization purposes.
- * @param scrollTop The scroll top. Passed in for optimization purposes.
- * @returns {boolean}
- */
-var elementIsInView = function (element, viewportHeight, scrollTop) {
-  var top = offset(element).top;
-  var height = element.offsetHeight;
-  return (
-    document.body.contains(element) &&
-    !(scrollTop > top + height || scrollTop + viewportHeight < top)
-  );
-};
+var observersBySelector = {};
+var observerQueue = [];
 
 /**
  * Handle when a targeted element is inside the viewport.
@@ -153,7 +80,6 @@ var handleElementInsideViewport = function (element) {
 
       var delayComplete = function () {
         var frequency = listener.settings.frequency || frequencies.FIRST_ENTRY;
-
         // When a user configures the event to only fire a rule once, then after the rule
         // has been triggered we store the "listener" in this array so that we know it's
         // been triggered and shouldn't be triggered in the future.
@@ -169,13 +95,13 @@ var handleElementInsideViewport = function (element) {
       };
 
       if (listener.settings.delay) {
-        var timeoutId = setTimeout(function () {
+        var timeoutId = window.setTimeout(function () {
           // One last check to make sure the element is still in view.
-          if (elementIsInView(element, getViewportHeight(), getScrollTop())) {
-            delayComplete();
-          }
+          // if (elementIsInView(element, getViewportHeight(), getScrollTop())) {
+          // console.log('INVOKING DELAY COMPLETE')
+          delayComplete();
+          // }
         }, listener.settings.delay);
-
         elementState.timeoutIds.push(timeoutId);
       } else {
         delayComplete();
@@ -190,7 +116,6 @@ var handleElementInsideViewport = function (element) {
 var handleElementOutsideViewport = function (element) {
   var elementState = stateByElement.get(element);
   elementState.inViewport = false;
-
   if (elementState.timeoutIds.length) {
     elementState.timeoutIds.forEach(clearTimeout);
     elementState.timeoutIds = [];
@@ -198,60 +123,96 @@ var handleElementOutsideViewport = function (element) {
 };
 
 /**
- * Checks to see if a rule's target selector matches an element in the viewport. If that element
- * has not been in the viewport prior, either (a) trigger the rule immediately if the user has not
- * elected to delay for a period of time or (b) start the delay period if the user has elected
- * to delay for a period of time. After an element being in the viewport triggers a rule, it
- * can't trigger the same rule again. If another element matching the same selector comes into
- * the viewport, it may trigger the same rule again.
+ * Creates an intersection observer over any and all HTMLElement objects returned
+ * by the elementSelector.
+ * @param {string} elementSelector - The selector used to gather the elements on page.
+ * @param {HTMLElement[]} elements - The elements gathered by the selector.
  */
-var checkForElementsInViewport = debounce(function () {
-  var selectors = Object.keys(listenersBySelector);
+var observeElements = function (elementSelector, elements) {
+  var observerOptions = {
+    root: null,
+    rootMargin: '0px'
+  };
 
-  if (!selectors.length) {
-    return;
+  var observerCallback = function (observerEntries) {
+    observerEntries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        handleElementInsideViewport(entry.target);
+      } else {
+        handleElementOutsideViewport(entry.target);
+      }
+    });
+  };
+
+  var observer;
+  if (observersBySelector.hasOwnProperty(elementSelector)) {
+    observer = observersBySelector[elementSelector];
+  } else {
+    observer = new IntersectionObserver(observerCallback, observerOptions);
+    observersBySelector[elementSelector] = observer;
+    // NOTE: this doesn't work because between tests it's the same browser
+    // but the elements got trashed in the tests
+    // elements.forEach(function (element) {
+    //   observer.observe(element);
+    // });
   }
-
-  // Find all the elements pertaining to rules using Enters Viewport.
-  var elements = document.querySelectorAll(selectors.join(','));
-
-  // Cached and re-used for optimization.
-  var viewportHeight = getViewportHeight();
-  var scrollTop = getScrollTop();
-
-  for (var i = 0; i < elements.length; i++) {
-    var element = elements[i];
-    if (elementIsInView(element, viewportHeight, scrollTop)) {
-      handleElementInsideViewport(element);
-    } else {
-      handleElementOutsideViewport(element);
-    }
-  }
-}, DEBOUNCE_DELAY);
-
-var initializeContentListeners = function () {
-  checkForElementsInViewport();
-  setInterval(checkForElementsInViewport, POLL_INTERVAL);
-  window.addEventListener('resize', checkForElementsInViewport);
-  window.addEventListener('scroll', checkForElementsInViewport);
+  elements.forEach(function (element) {
+    observer.observe(element);
+  });
 };
 
-// There's a bug in IE 10 where readyState is sometimes set to "interactive" too
-// early (before DOMContentLoaded has fired). To make sure the document is ready,
-// we'll wait until the window has loaded.
-// https://bugs.jquery.com/ticket/12282
-if (isIE10) {
-  if (document.readyState === 'complete') {
-    initializeContentListeners();
-  } else {
-    window.addEventListener('load', initializeContentListeners);
+/**
+ * To be run periodically to see if new listeners are introduced, or
+ * if new elements have entered the page that can be observed by a listener, where
+ * no previous elements ever matched an element selector. If new elements enter
+ * the page for an already registered elementSelector, we ignore them.
+ */
+var initializeObserversInQueue = function () {
+  var observersToProcess = observerQueue;
+  observerQueue = [];
+  observersToProcess.forEach(function (elementSelector) {
+    var elements = document.querySelectorAll(elementSelector);
+    if (elements.length) {
+      observeElements(elementSelector, elements);
+    } else if (!observerQueue.includes(elementSelector)) {
+      // an element may come on the page later, so keep it in the queue
+      observerQueue.push(elementSelector);
+    }
+  });
+};
+
+var refreshObserverElements = function () {
+  Object.keys(observersBySelector).forEach(function (elementSelector) {
+    var elements = document.querySelectorAll(elementSelector);
+    var observer = observersBySelector[elementSelector];
+    elements.forEach(function (element) {
+      observer.observe(element);
+    });
+  });
+};
+
+/**
+ * Processes any new or orphaned listeners that need to see if there are elements
+ * on the page that we can observe.
+ */
+var observerQueueProcessingId;
+var startObserverProcessingQueue = function () {
+  if (!observerQueueProcessingId) {
+    observerQueueProcessingId = window.setInterval(
+      initializeObserversInQueue,
+      OBSERVER_PROCESSING_FREQUENCY
+    );
+    window.setInterval(
+      refreshObserverElements,
+      OBSERVER_ELEMENT_REFRESH_FREQUENCY
+    );
   }
+};
+
+if (document.readyState !== 'loading') {
+  startObserverProcessingQueue();
 } else {
-  if (document.readyState !== 'loading') {
-    initializeContentListeners();
-  } else {
-    document.addEventListener('DOMContentLoaded', initializeContentListeners);
-  }
+  document.addEventListener('DOMContentLoaded', startObserverProcessingQueue);
 }
 
 /**
@@ -273,15 +234,20 @@ if (isIE10) {
  * @param {ruleTrigger} trigger The trigger callback.
  */
 module.exports = function (settings, trigger) {
+  // every listener should always be added to be notified
   var listeners = listenersBySelector[settings.elementSelector];
-
   if (!listeners) {
     listeners = listenersBySelector[settings.elementSelector] = [];
   }
-
   settings.delay = castToNumberIfString(settings.delay);
   listeners.push({
     settings: settings,
     trigger: trigger
   });
+
+  // NOTE: this doesn't work because between tests it's the same browser
+  // but the elements got trashed in the tests
+  // if (!observersBySelector.hasOwnProperty(settings.elementSelector)) {
+  observerQueue.push(settings.elementSelector);
+  // }
 };
