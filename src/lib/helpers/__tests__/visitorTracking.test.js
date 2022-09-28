@@ -32,7 +32,6 @@ var visitorTrackingInjector = require('inject-loader!../visitorTracking');
 
 var getVisitorTracking = function () {
   return visitorTrackingInjector({
-    '@adobe/reactor-cookie': cookie,
     '@adobe/reactor-document': mockDocument,
     '@adobe/reactor-window': mockWindow
   });
