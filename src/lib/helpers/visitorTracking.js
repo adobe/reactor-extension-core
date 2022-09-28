@@ -12,14 +12,11 @@
 
 'use strict';
 
-var cookie = require('@adobe/reactor-cookie');
 var document = require('@adobe/reactor-document');
 var window = require('@adobe/reactor-window');
 var getNamespacedStorage = require('./getNamespacedStorage');
 
-var COOKIE_PREFIX = '_sdsat_';
 var STORAGE_NAMESPACE = 'visitorTracking';
-var MIGRATED_KEY = 'cookiesMigrated';
 
 var visitorTrackingLocalStorage = getNamespacedStorage(
   'localStorage',
@@ -102,30 +99,6 @@ var trackTrafficSource = function () {
   }
 };
 
-// Remove when migration period has ended. We intentionally leave cookies as they are so that if
-// DTM is running on the same domain it can still use the persisted values. Our migration strategy
-// is essentially copying data from cookies and then diverging the storage mechanism between
-// DTM and Launch (DTM uses cookies and Launch uses session and local storage).
-var migrateCookieData = function () {
-  if (!visitorTrackingLocalStorage.getItem(MIGRATED_KEY)) {
-    // We intentionally do not migrate session-based data since it would only affect a user that
-    // came from a page running DTM to a page running Launch and only the first visit.
-    var sessionCount = cookie.get(COOKIE_PREFIX + 'session_count');
-
-    if (sessionCount) {
-      visitorTrackingLocalStorage.setItem('sessionCount', sessionCount);
-    }
-
-    var lifetimePagesViewed = cookie.get(COOKIE_PREFIX + 'lt_pages_viewed');
-
-    if (lifetimePagesViewed) {
-      visitorTrackingLocalStorage.setItem('pagesViewed', lifetimePagesViewed);
-    }
-
-    visitorTrackingLocalStorage.setItem(MIGRATED_KEY, true);
-  }
-};
-
 var trackVisitor = function () {
   var newSession = trackLandingPageAndTime();
   trackSessionCount(newSession);
@@ -134,7 +107,6 @@ var trackVisitor = function () {
   trackTrafficSource();
 };
 
-migrateCookieData();
 trackVisitor();
 
 module.exports = {
