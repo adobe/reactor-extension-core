@@ -1,7 +1,7 @@
 {
   "name": "core",
   "platform": "web",
-  "version": "3.3.0",
+  "version": "3.4.1",
   "displayName": "Core",
   "description": "Provides default event, condition, and data element types available to all Launch properties.",
   "exchangeUrl": "https://www.adobeexchange.com/experiencecloud.details.100223.adobe-launch-core-extension.html",
@@ -82,47 +82,27 @@
       "viewPath": "events/change.html",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
-        "type": "object",
-        "properties": {
-          "elementSelector": {
-            "type": "string",
-            "minLength": 1
-          },
-          "elementProperties": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "minLength": 1
-                },
-                "value": {
-                  "type": "string"
-                },
-                "valueIsRegex": {
-                  "type": "boolean"
-                }
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "elementSelector": {
+                "type": "string",
+                "minLength": 1
               },
-              "additionalProperties": false,
-              "required": ["name", "value"]
-            }
-          },
-          "bubbleFireIfParent": {
-            "type": "boolean"
-          },
-          "bubbleFireIfChildFired": {
-            "type": "boolean"
-          },
-          "bubbleStop": {
-            "type": "boolean"
-          },
-          "value": {
-            "anyOf": [
-              {
-                "type": "string"
+              "elementProperties": {
+                "$ref": "#/$defs/specificElementsProperties"
               },
-              {
+              "bubbleFireIfParent": {
+                "type": "boolean"
+              },
+              "bubbleFireIfChildFired": {
+                "type": "boolean"
+              },
+              "bubbleStop": {
+                "type": "boolean"
+              },
+              "acceptableChangeValues": {
                 "type": "array",
                 "items": {
                   "type": "object",
@@ -139,13 +119,65 @@
                 },
                 "minItems": 1
               }
-            ]
+            },
+            "additionalProperties": false
           },
-          "valueIsRegex": {
-            "type": "boolean"
+          {
+            "type": "object",
+            "properties": {
+              "elementSelector": {
+                "type": "string",
+                "minLength": 1
+              },
+              "elementProperties": {
+                "$ref": "#/$defs/specificElementsProperties"
+              },
+              "bubbleFireIfParent": {
+                "type": "boolean"
+              },
+              "bubbleFireIfChildFired": {
+                "type": "boolean"
+              },
+              "bubbleStop": {
+                "type": "boolean"
+              },
+              "value": {
+                "type": "string"
+              },
+              "valueIsRegex": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false
           }
-        },
-        "additionalProperties": false
+        ],
+        "$defs": {
+          "specificElementsProperties": {
+            "type": "object",
+            "properties": {
+              "elementProperties": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "value": {
+                      "type": "string"
+                    },
+                    "valueIsRegex": {
+                      "type": "boolean"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": ["name", "value"]
+                }
+              }
+            }
+          }
+        }
       }
     },
     {
