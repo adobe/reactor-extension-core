@@ -64,6 +64,7 @@ module.exports = function (settings, trigger) {
     // Therefore, we'll treat an empty array as an analog to legacy value === undefined
     if (!acceptableChangeValues.length) {
       trigger(syntheticEvent);
+      return true;
     }
 
     acceptableChangeValues.forEach(function (nextChangeValue) {
@@ -73,9 +74,8 @@ module.exports = function (settings, trigger) {
 
       if (textMatch(syntheticEvent.target.value, acceptableValue)) {
         trigger(syntheticEvent);
+        return true;
       }
-
-      return true;
     });
 
     return false;
