@@ -97,10 +97,15 @@ export const formConfig = {
     delete settings.value;
     delete settings.valueIsRegex;
     /** end legacy top level keys **/
+    let { cookieValues = [] } = values;
+    cookieValues = cookieValues.filter((cookieValue) =>
+      cookieValue.hasOwnProperty('value')
+    );
 
     return {
       ...settings,
-      ...values
+      ...values,
+      cookieValues
     };
   },
   validate(errors, values) {

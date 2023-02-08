@@ -87,10 +87,15 @@ export const formConfig = {
     delete settings.page;
     delete settings.pageIsRegex;
     /** end legacy top level keys **/
+    let { landingPages = [] } = values;
+    landingPages = landingPages.filter((landingPage) =>
+      landingPage.hasOwnProperty('value')
+    );
 
     return {
       ...settings,
-      ...values
+      ...values,
+      landingPages
     };
   },
   validate(errors, values) {

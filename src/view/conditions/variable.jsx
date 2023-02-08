@@ -111,10 +111,15 @@ export const formConfig = {
     delete settings.value;
     delete settings.valueIsRegex;
     /** end legacy top level keys **/
+    let { variableValues = [] } = values;
+    variableValues = variableValues.filter((variableValue) =>
+      variableValue.hasOwnProperty('value')
+    );
 
     return {
       ...settings,
-      ...values
+      ...values,
+      variableValues
     };
   },
   validate(errors, values) {

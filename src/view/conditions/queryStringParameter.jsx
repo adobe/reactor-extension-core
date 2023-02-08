@@ -95,10 +95,15 @@ export const formConfig = {
     delete settings.value;
     delete settings.valueIsRegex;
     /** end legacy top level keys **/
+    let { queryParams = [] } = values;
+    queryParams = queryParams.filter((queryParam) =>
+      queryParam.hasOwnProperty('value')
+    );
 
     return {
       ...settings,
-      ...values
+      ...values,
+      queryParams
     };
   },
   validate(errors, values) {

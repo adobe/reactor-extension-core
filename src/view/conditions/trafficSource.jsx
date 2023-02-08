@@ -87,10 +87,15 @@ export const formConfig = {
     delete settings.source;
     delete settings.sourceIsRegex;
     /** end legacy top level keys **/
+    let { trafficSources = [] } = values;
+    trafficSources = trafficSources.filter((trafficSource) =>
+      trafficSource.hasOwnProperty('value')
+    );
 
     return {
       ...settings,
-      ...values
+      ...values,
+      trafficSources
     };
   },
   validate(errors, values) {
