@@ -129,10 +129,10 @@
   dependencies:
     querystring "0.2.0"
 
-"@adobe/reactor-sandbox@^12.4.0":
-  version "12.4.0"
-  resolved "https://registry.yarnpkg.com/@adobe/reactor-sandbox/-/reactor-sandbox-12.4.0.tgz#3311e3ed24b26965320f9d4055209affe59f3c76"
-  integrity sha512-XdWpMtLiOZdjHqchdCr3FXibmLvfc8QtXT9eSBU9ZKf7ZmIT0XgR3AxsMWsPNxB/I6J7nDtJLUK4DElbEnQTlQ==
+"@adobe/reactor-sandbox@^12.5.0-beta.0":
+  version "12.5.0-beta.0"
+  resolved "https://registry.yarnpkg.com/@adobe/reactor-sandbox/-/reactor-sandbox-12.5.0-beta.0.tgz#db7baae44a9e89d100d41703bd0aaa78b2710d2f"
+  integrity sha512-oSHAFp5nm7JLJtjFfFVg7UutUEpWoQgeeu8G3HfduIhVZ4XqvuGiHZ0OetgkiVNkDLbKlPLCM9o2yGUQo0M/zA==
   dependencies:
     "@adobe/react-spectrum" "^3.14.1"
     "@adobe/reactor-babel-plugin-replace-tokens-edge" "^1.1.0"
@@ -141,7 +141,7 @@
     "@adobe/reactor-token-scripts-edge" "^1.1.3"
     "@adobe/reactor-turbine" "^27.2.0"
     "@adobe/reactor-turbine-edge" "^2.1.0"
-    "@adobe/reactor-validator" "^2.2.0"
+    "@adobe/reactor-validator" "^2.3.0-beta.0"
     "@babel/core" "^7.15.8"
     "@babel/generator" "^7.15.8"
     "@babel/parser" "^7.15.8"
@@ -154,7 +154,7 @@
     "@rematch/core" "^2.1.1"
     "@spectrum-icons/illustrations" "^3.2.2"
     "@spectrum-icons/workflow" "^3.2.1"
-    ajv "^8.11.0"
+    ajv "^8.12.0"
     ajv-draft-04 "^1.0.0"
     ajv-formats "^2.1.1"
     body-parser "^1.19.0"
@@ -193,10 +193,10 @@
   resolved "https://registry.yarnpkg.com/@adobe/reactor-turbine-edge/-/reactor-turbine-edge-2.2.0.tgz#7bcce555c02c408ccb4237736efc567259dfc91f"
   integrity sha512-bARyjTblSA6GCP9yyCPonnOUwtyDK3c7tzCnhTh34jN3N5wvsO/xewbx6bjDVH53DpKtsC57AuDrJKv+Y4p3IQ==
 
-"@adobe/reactor-turbine-schemas@^10.3.0":
-  version "10.3.0"
-  resolved "https://registry.yarnpkg.com/@adobe/reactor-turbine-schemas/-/reactor-turbine-schemas-10.3.0.tgz#c45341c92b7f3793c3c269085976604d10073a29"
-  integrity sha512-iuaCgQAqL9ZpisBZHYM1fKlezLYFqPSL1MSDrvOgqH5LSuTlQXoDsvrg3blxjAuKXm8+PZBW03iaGn/WMH1ULA==
+"@adobe/reactor-turbine-schemas@^10.5.0-beta.0":
+  version "10.5.0-beta.0"
+  resolved "https://registry.yarnpkg.com/@adobe/reactor-turbine-schemas/-/reactor-turbine-schemas-10.5.0-beta.0.tgz#fa775b357a24460bd8e11cb4adfa08dfe5222abc"
+  integrity sha512-3XSY0F9DdNXy088a57BdjUcqFll7MK8k0WNXfspQYrk2NxiUSLKrwqRYPKVNIhQNJu0XzvQ+unlDW3qi+VjwPg==
 
 "@adobe/reactor-turbine@^27.2.0":
   version "27.2.0"
@@ -212,13 +212,13 @@
     "@adobe/reactor-window" "*"
     is-plain-object "^2.0.4"
 
-"@adobe/reactor-validator@^2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@adobe/reactor-validator/-/reactor-validator-2.2.0.tgz#f6fd7d5d808526acc2dd46af53846c1c2b8bdf68"
-  integrity sha512-JNlCxZm4MfP3bJ8YcZEnTpIpduQ6moaiWOc3RPHrXxvJ3H/GEIfpPj7aVqKbvSo5v9vPlQbW31yGow4jDcbLfA==
+"@adobe/reactor-validator@^2.3.0-beta.0":
+  version "2.3.0-beta.0"
+  resolved "https://registry.yarnpkg.com/@adobe/reactor-validator/-/reactor-validator-2.3.0-beta.0.tgz#76f1b668c7ccb44109c238a8fbd5c67c99b09c3d"
+  integrity sha512-t1KBKQhu02mGyNHW7UMXIDXI5g/gHxlTqChovujhMaLFje9yrWeu4OytOg1YwLTHRv7gSPvVkw//UHZftkUwOQ==
   dependencies:
-    "@adobe/reactor-turbine-schemas" "^10.3.0"
-    ajv "^8.11.0"
+    "@adobe/reactor-turbine-schemas" "^10.5.0-beta.0"
+    ajv "^8.12.0"
     ajv-draft-04 "^1.0.0"
     ajv-formats "^2.1.1"
 
@@ -3721,10 +3721,20 @@ ajv@^6.10.0, ajv@^6.12.4, ajv@^6.12.5:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-ajv@^8.0.0, ajv@^8.11.0:
+ajv@^8.0.0:
   version "8.11.0"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.11.0.tgz#977e91dd96ca669f54a11e23e378e33b884a565f"
   integrity sha512-wGgprdCvMalC0BztXvitD2hC04YffAvtsUn93JbGXYLAtCUO4xd17mCCZQxUOItiBwZvJScWo8NIvQMQ71rdpg==
+  dependencies:
+    fast-deep-equal "^3.1.1"
+    json-schema-traverse "^1.0.0"
+    require-from-string "^2.0.2"
+    uri-js "^4.2.2"
+
+ajv@^8.12.0:
+  version "8.12.0"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.12.0.tgz#d1a0527323e22f53562c567c00991577dfbe19d1"
+  integrity sha512-sRu1kpcO9yLtYxBKvqfTeh9KzZEwO3STyX1HT+4CaDzC6HpTGYhIhPIzj9XuKU7KYDwnaeh5hcOwjy1QuJzBPA==
   dependencies:
     fast-deep-equal "^3.1.1"
     json-schema-traverse "^1.0.0"
