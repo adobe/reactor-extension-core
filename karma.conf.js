@@ -21,11 +21,11 @@ if (process.env.CI) {
     ')';
 
   defaultBrowsers = [
-    // 'SL_EDGE',
+    'SL_EDGE',
     'SL_CHROME',
     // 'SL_FIREFOX',
     // 'SL_ANDROID', Nuking for now
-    // 'SL_SAFARI'
+    'SL_SAFARI'
   ];
   reporters.push('saucelabs');
 } else {
