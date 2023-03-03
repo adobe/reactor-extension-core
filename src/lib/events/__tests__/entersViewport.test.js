@@ -29,7 +29,7 @@ var getDocumentProxy = function () {
       return document.querySelectorAll.apply(document, arguments);
     },
     addEventListener: function () {
-      return document.addEventListener.apply(window, arguments);
+      return document.addEventListener.apply(document, arguments);
     }
   };
 };
@@ -48,19 +48,17 @@ var getWindowProxy = function () {
     },
     setInterval: function () {
       return window.setInterval.apply(window, arguments);
+    },
+    clearInterval: function () {
+      return window.clearInterval.apply(window, arguments);
     }
   };
 };
 
-var OBSERVER_PROCESSING_FREQUENCY = 200;
-var OBSERVER_ELEMENT_REFRESH_FREQUENCY = 400;
-var MOCK_TURBINE_SETTINGS = {
-  propertySettings: {},
-  getExtensionSettings: function () {
-    return {
-      entersViewportObserverFrequency: OBSERVER_PROCESSING_FREQUENCY,
-      entersViewportElementRefreshFrequency: OBSERVER_ELEMENT_REFRESH_FREQUENCY
-    };
+var OBSERVER_ELEMENT_REFRESH_FREQUENCY = 200;
+var mockIntersectionObserverIntervals = {
+  standard: {
+    pageElementsRefresh: OBSERVER_ELEMENT_REFRESH_FREQUENCY
   }
 };
 
@@ -108,7 +106,6 @@ describe('enters viewport event delegate', function () {
   };
 
   beforeEach(function () {
-    mockTurbineVariable(MOCK_TURBINE_SETTINGS);
     createElements();
     window.scrollTo(0, 0);
   });
@@ -125,7 +122,9 @@ describe('enters viewport event delegate', function () {
       mockDocument.readyState = 'complete';
 
       delegate = entersViewportInjector({
-        '@adobe/reactor-document': mockDocument
+        '@adobe/reactor-document': mockDocument,
+        '../helpers/intersectionObserverIntervals.json':
+          mockIntersectionObserverIntervals
       });
     });
 
@@ -135,10 +134,12 @@ describe('enters viewport event delegate', function () {
         'the delegate is invoked',
       function (done) {
         var mockWindow = getWindowProxy();
-        spyOn(mockWindow, 'setInterval');
+        spyOn(mockWindow, 'setInterval').and.callThrough();
 
         var delegate = entersViewportInjector({
-          '@adobe/reactor-window': mockWindow
+          '@adobe/reactor-window': mockWindow,
+          '../helpers/intersectionObserverIntervals.json':
+            mockIntersectionObserverIntervals
         });
 
         var triggerFn = jasmine.createSpy();
@@ -166,13 +167,9 @@ describe('enters viewport event delegate', function () {
         window.setTimeout(function () {
           expect(mockWindow.setInterval).toHaveBeenCalledWith(
             jasmine.any(Function),
-            OBSERVER_PROCESSING_FREQUENCY
-          );
-          expect(mockWindow.setInterval).toHaveBeenCalledWith(
-            jasmine.any(Function),
             OBSERVER_ELEMENT_REFRESH_FREQUENCY
           );
-          expect(mockWindow.setInterval).toHaveBeenCalledTimes(2);
+          expect(mockWindow.setInterval).toHaveBeenCalledTimes(1);
           expect(triggerFn).toHaveBeenCalledTimes(0);
           done();
         }, OBSERVER_ELEMENT_REFRESH_FREQUENCY * 2);
@@ -233,7 +230,6 @@ describe('enters viewport event delegate', function () {
         expect(triggerA.count).toBe(1);
         expect(triggerA2.count).toBe(1);
         // worst case we're on the boundary of timing here
-        expect(elapsedTime).toBeLessThan(OBSERVER_PROCESSING_FREQUENCY * 2);
         expect(elapsedTime).toBeLessThan(
           OBSERVER_ELEMENT_REFRESH_FREQUENCY * 2
         );
@@ -319,7 +315,7 @@ describe('enters viewport event delegate', function () {
         expect(triggerA2.count).toBe(1);
         expect(elapsedTime).toBeGreaterThanOrEqual(triggerDelay);
         expect(elapsedTime).toBeLessThan(
-          triggerDelay + OBSERVER_PROCESSING_FREQUENCY * 2
+          triggerDelay + OBSERVER_ELEMENT_REFRESH_FREQUENCY * 2
         );
         done();
       });
@@ -496,7 +492,7 @@ describe('enters viewport event delegate', function () {
         }),
         new Promise(function (resolve) {
           // wait half a second after the known timeout of the processing frequency
-          setTimeout(resolve, OBSERVER_PROCESSING_FREQUENCY + 500);
+          setTimeout(resolve, OBSERVER_ELEMENT_REFRESH_FREQUENCY + 500);
         })
       ]).then(function () {
         expect(triggerB.count).toBe(0);
@@ -760,6 +756,25 @@ describe('enters viewport event delegate', function () {
       }
     );
 
+    it('ignores empty element selectors', function (done) {
+      var mockDocument = getDocumentProxy();
+      spyOn(mockDocument, 'querySelectorAll').and.callThrough();
+      var delegate = entersViewportInjector({
+        '@adobe/reactor-document': mockDocument,
+        '../helpers/intersectionObserverIntervals.json':
+          mockIntersectionObserverIntervals
+      });
+
+      var triggerFn = jasmine.createSpy();
+      delegate({ elementSelector: undefined }, triggerFn);
+
+      window.setTimeout(function () {
+        expect(mockDocument.querySelectorAll).not.toHaveBeenCalled();
+        expect(triggerFn).not.toHaveBeenCalled();
+        done();
+      }, OBSERVER_ELEMENT_REFRESH_FREQUENCY * 3);
+    });
+
     // The following tests have been commented out because they periodically fail when being run
     // inside SauceLabs and we haven't found a fix for it. If you're working on the enters viewport
     // code locally, it may be beneficial to uncomment the tests while you make changes.
@@ -907,27 +922,27 @@ describe('enters viewport event delegate', function () {
   });
 
   describe('with document.readyState at loading', function () {
-    beforeAll(function () {
-      mockTurbineVariable(MOCK_TURBINE_SETTINGS);
-    });
-
     describe('with browser that is not IE 10', function () {
       it('waits until DOMContentLoaded has fired before checking elements', function (done) {
         expect(document.querySelectorAll(aElementId).length).toBe(1);
 
         var mockDocument = getDocumentProxy();
         mockDocument.readyState = 'loading';
+        // Don't call through. We want to capture and then manually change this.
         spyOn(mockDocument, 'addEventListener');
+        spyOn(mockDocument, 'querySelectorAll').and.callThrough();
 
         var mockWindow = getWindowProxy();
         mockWindow.navigator = {
           appVersion: 'something Chrome something'
         };
-        spyOn(mockWindow, 'addEventListener');
+        spyOn(mockWindow, 'addEventListener').and.callThrough();
 
         var delegate = entersViewportInjector({
           '@adobe/reactor-document': mockDocument,
-          '@adobe/reactor-window': mockWindow
+          '@adobe/reactor-window': mockWindow,
+          '../helpers/intersectionObserverIntervals.json':
+            mockIntersectionObserverIntervals
         });
 
         var aTrigger = jasmine.createSpy();
@@ -941,7 +956,7 @@ describe('enters viewport event delegate', function () {
 
         new Promise(function (resolve) {
           // wait 2 cycles to avoid boundary race conditions
-          window.setTimeout(resolve, OBSERVER_PROCESSING_FREQUENCY * 2);
+          window.setTimeout(resolve, OBSERVER_ELEMENT_REFRESH_FREQUENCY * 2);
         })
           .then(function () {
             expect(aTrigger).not.toHaveBeenCalled();
@@ -969,6 +984,11 @@ describe('enters viewport event delegate', function () {
               element: aElement,
               target: aElement
             });
+
+            expect(mockDocument.querySelectorAll).toHaveBeenCalledTimes(1);
+            expect(mockDocument.querySelectorAll).toHaveBeenCalledWith(
+              aElementId
+            );
             done();
           });
       });

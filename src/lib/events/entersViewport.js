@@ -20,6 +20,7 @@ var matchesSelector = require('./helpers/matchesSelector');
 var matchesProperties = require('./helpers/matchesProperties');
 var castToNumberIfString =
   require('../helpers/stringAndNumberUtils').castToNumberIfString;
+var intersectionObserverIntervals = require('../helpers/intersectionObserverIntervals.json');
 
 var frequencies = {
   FIRST_ENTRY: 'firstEntry',
@@ -44,10 +45,6 @@ var stateByElement = enableWeakMapDefaultValue(new WeakMap(), function () {
 
 // trigger functions by elementSelector
 var listenersByDOMSelector = {};
-// IntersectionObservers by elementSelector
-var observersByDOMSelector = {};
-// elementSelectors that haven't been processed/found matching element on the page yet
-var observerQueue = [];
 
 /**
  * Handle when a targeted element is inside the viewport.
@@ -121,140 +118,59 @@ var handleElementOutsideViewport = function (element) {
   }
 };
 
-/**
- * Ties observation of the elements to the selector used to find the elements.
- *
- * @param {string} elementSelector - The selector used to gather the elements on page.
- * @param {HTMLElement[]} elements - The elements gathered by the selector.
- */
-var observeElements = function (elementSelector, elements) {
-  var observer;
-
-  // pull or create the IntersectionObserver for the elementSelector
-  if (observersByDOMSelector.hasOwnProperty(elementSelector)) {
-    observer = observersByDOMSelector[elementSelector];
-    // TODO what if elements go away for good? edge case to ignore?
-    //  worried that if we disconnect, we could miss a time to fire while
-    //  rebuilding the observer in here
-    // observer.disconnect();
-  } else {
-    var observerOptions = {
-      root: null,
-      rootMargin: '0px'
-    };
-    var observerCallback = function (observerEntries) {
-      observerEntries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          handleElementInsideViewport(entry.target);
-        } else {
-          handleElementOutsideViewport(entry.target);
-        }
-      });
-    };
-    observer = new IntersectionObserver(observerCallback, observerOptions);
-    observersByDOMSelector[elementSelector] = observer;
-  }
-
-  elements.forEach(function (element) {
-    observer.observe(element);
-  });
-};
-
-/**
- * This is a fast queue of DOM element selectors where we pull all available
- * elements and begin observing them.
- *
- * If we don't find any elements, we shove the DOM element back in the queue
- * for the next tick.
- */
-var initializeObserversInQueue = function () {
-  var observersToProcess = observerQueue;
-  observerQueue = [];
-  observersToProcess.forEach(function (elementSelector) {
-    var elements = document.querySelectorAll(elementSelector);
-    if (elements.length) {
-      observeElements(elementSelector, elements);
-    } else if (!observerQueue.includes(elementSelector)) {
-      observerQueue.push(elementSelector);
+var orphanedObservers = [];
+var observerCallback = function (observerEntries) {
+  observerEntries.forEach(function (entry) {
+    if (entry.isIntersecting) {
+      handleElementInsideViewport(entry.target);
+    } else {
+      handleElementOutsideViewport(entry.target);
     }
   });
 };
+var intersectionObserver = new IntersectionObserver(observerCallback, {
+  root: null,
+  rootMargin: '0px'
+});
 
-/**
- * Slower queue that loops through all known Observer DOM selectors, and observes any
- * newly found elements.
- */
-var refreshObserverElements = function () {
-  Object.keys(observersByDOMSelector).forEach(function (elementSelector) {
-    observeElements(
-      elementSelector,
-      document.querySelectorAll(elementSelector)
-    );
-  });
-};
-
-var viewportIntervalIds = [];
-/**
- * @param {Object} extensionModuleSettings
- * @param {Number} extensionModuleSettings.observerProcessingFrequency
- * @param {Number} extensionModuleSettings.observerElementRefreshFrequency
- */
-var safelyBeginProcessing = function (extensionModuleSettings) {
-  // this check stops processing future calls immediately when the listeners are running
-  if (viewportIntervalIds.length) {
+var observeElements = function (querySelector) {
+  if (!querySelector) {
     return;
   }
 
-  var startObserverProcessingQueue = function (extensionModuleSettings) {
-    // this check prevents accidentally calling this multiple times before the DOM is ready
-    // and the check up-top wouldn't stop processing yet. By putting all this logic here,
-    // there doesn't need to be checking anywhere else.
-    if (!viewportIntervalIds.length) {
-      var observerProcessingFrequency = castToNumberIfString(
-        extensionModuleSettings.entersViewportObserverFrequency || 200
-      );
-      viewportIntervalIds.push(
-        window.setInterval(
-          initializeObserversInQueue,
-          observerProcessingFrequency
-        )
-      );
-      var observerElementRefreshFrequency = castToNumberIfString(
-        extensionModuleSettings.entersViewportElementRefreshFrequency || 3000
-      );
-      viewportIntervalIds.push(
-        window.setInterval(
-          refreshObserverElements,
-          observerElementRefreshFrequency
-        )
-      );
-      window.addEventListener(
-        'beforeunload',
-        function () {
-          viewportIntervalIds.forEach(function (intervalId) {
-            window.clearInterval(intervalId);
-          });
-          Object.keys(observersByDOMSelector).forEach(function (
-            elementSelector
-          ) {
-            // stops the observation of elements in the DOM
-            observersByDOMSelector[elementSelector].disconnect();
-          });
-        },
-        false
-      );
-    }
-  };
-
-  if (document.readyState !== 'loading') {
-    startObserverProcessingQueue(extensionModuleSettings);
-  } else {
-    document.addEventListener(
-      'DOMContentLoaded',
-      startObserverProcessingQueue.bind(null, extensionModuleSettings)
-    );
-  }
+  document.querySelectorAll(querySelector).forEach(function (element) {
+    intersectionObserver.observe(element);
+  });
 };
+
+/**
+ * Start timers to handle IntersectionObserver
+ */
+(function start() {
+  var safelyBeginProcessing = function () {
+    // process the orphaned observers from page startup
+    observeElements(orphanedObservers.join(','));
+    orphanedObservers = [];
+
+    var observeIntervalId = window.setInterval(function () {
+      observeElements(Object.keys(listenersByDOMSelector).join(','));
+    }, intersectionObserverIntervals.standard.pageElementsRefresh);
+
+    window.addEventListener(
+      'beforeunload',
+      function cleanupPage() {
+        intersectionObserver.disconnect();
+        window.clearInterval(observeIntervalId);
+      },
+      false
+    );
+  };
+  if (document.readyState !== 'loading') {
+    safelyBeginProcessing();
+  } else {
+    document.addEventListener('DOMContentLoaded', safelyBeginProcessing);
+  }
+})();
 
 /**
  * Enters viewport event. This event occurs when an element has entered the viewport. The rule
@@ -274,17 +190,15 @@ var safelyBeginProcessing = function (extensionModuleSettings) {
  * within the viewport before declaring that the event has occurred.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-var turbineExtensionSettings;
 module.exports = function (settings, trigger) {
-  // first one in, turn on the lights. this pattern allows us to inject the
-  // Interval IDs using extension settings.
-  safelyBeginProcessing(
-    turbineExtensionSettings ||
-      (turbineExtensionSettings = turbine.getExtensionSettings())
-  );
+  if (!settings.elementSelector) {
+    return;
+  }
+
   // every listener should always be added to be notified
   var listeners = listenersByDOMSelector[settings.elementSelector];
-  if (!listeners) {
+  var isNewSelector = Boolean(!listeners);
+  if (isNewSelector) {
     listeners = listenersByDOMSelector[settings.elementSelector] = [];
   }
   settings.delay = castToNumberIfString(settings.delay);
@@ -293,7 +207,13 @@ module.exports = function (settings, trigger) {
     trigger: trigger
   });
 
-  if (!observersByDOMSelector.hasOwnProperty(settings.elementSelector)) {
-    observerQueue.push(settings.elementSelector);
+  // a one-time push to get things going fast
+  if (document.readyState === 'loading') {
+    orphanedObservers.push(settings.elementSelector);
+  } else {
+    // start observing right away elements for selectors we've never known about
+    if (isNewSelector) {
+      observeElements(settings.elementSelector);
+    }
   }
 };
