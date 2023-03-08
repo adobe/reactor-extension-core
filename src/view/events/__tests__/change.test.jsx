@@ -216,7 +216,7 @@ describe('change event view', () => {
   it(
     'results in the showFieldCheckBox being checked when there is an empty ' +
       'string value from settings',
-    function () {
+    () => {
       extensionBridge.init({
         settings: {
           acceptableChangeValues: [{ value: '', valueIsRegex: true }],
@@ -237,7 +237,7 @@ describe('change event view', () => {
   it(
     'checking the showFieldCheckBox results in getting an empty string value ' +
       'in the settings',
-    function () {
+    () => {
       fireEvent.click(pageElements.valueField.getShowFieldCheckBox());
       const { acceptableChangeValues: valueRows } =
         extensionBridge.getSettings();
