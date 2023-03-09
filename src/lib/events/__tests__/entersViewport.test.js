@@ -123,7 +123,7 @@ describe('enters viewport event delegate', function () {
 
       delegate = entersViewportInjector({
         '@adobe/reactor-document': mockDocument,
-        '../helpers/intersectionObserverIntervals.json':
+        '../helpers/intersectionObserverIntervals':
           mockIntersectionObserverIntervals
       });
     });
@@ -138,7 +138,7 @@ describe('enters viewport event delegate', function () {
 
         var delegate = entersViewportInjector({
           '@adobe/reactor-window': mockWindow,
-          '../helpers/intersectionObserverIntervals.json':
+          '../helpers/intersectionObserverIntervals':
             mockIntersectionObserverIntervals
         });
 
@@ -761,7 +761,7 @@ describe('enters viewport event delegate', function () {
       spyOn(mockDocument, 'querySelectorAll').and.callThrough();
       var delegate = entersViewportInjector({
         '@adobe/reactor-document': mockDocument,
-        '../helpers/intersectionObserverIntervals.json':
+        '../helpers/intersectionObserverIntervals':
           mockIntersectionObserverIntervals
       });
 
@@ -941,7 +941,7 @@ describe('enters viewport event delegate', function () {
         var delegate = entersViewportInjector({
           '@adobe/reactor-document': mockDocument,
           '@adobe/reactor-window': mockWindow,
-          '../helpers/intersectionObserverIntervals.json':
+          '../helpers/intersectionObserverIntervals':
             mockIntersectionObserverIntervals
         });
 

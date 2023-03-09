@@ -20,7 +20,7 @@ var matchesSelector = require('./helpers/matchesSelector');
 var matchesProperties = require('./helpers/matchesProperties');
 var castToNumberIfString =
   require('../helpers/stringAndNumberUtils').castToNumberIfString;
-var intersectionObserverIntervals = require('../helpers/intersectionObserverIntervals.json');
+var intersectionObserverIntervals = require('../helpers/intersectionObserverIntervals');
 
 var frequencies = {
   FIRST_ENTRY: 'firstEntry',
