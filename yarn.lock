@@ -129,10 +129,10 @@
   dependencies:
     querystring "0.2.0"
 
-"@adobe/reactor-sandbox@^12.5.0-beta.0":
-  version "12.5.0-beta.0"
-  resolved "https://registry.yarnpkg.com/@adobe/reactor-sandbox/-/reactor-sandbox-12.5.0-beta.0.tgz#db7baae44a9e89d100d41703bd0aaa78b2710d2f"
-  integrity sha512-oSHAFp5nm7JLJtjFfFVg7UutUEpWoQgeeu8G3HfduIhVZ4XqvuGiHZ0OetgkiVNkDLbKlPLCM9o2yGUQo0M/zA==
+"@adobe/reactor-sandbox@^12.5.0":
+  version "12.5.0"
+  resolved "https://registry.yarnpkg.com/@adobe/reactor-sandbox/-/reactor-sandbox-12.5.0.tgz#4c9f2bd583dc08955efbccb12c64684a588f155b"
+  integrity sha512-dKE6RZVdBZHWCLboQmO7lcFdbD4btUg6jOtjZ5qYNVh9Lt31bJdXI6CdeWqZbkcL3uKb0lIDnNvj/oTfu317GQ==
   dependencies:
     "@adobe/react-spectrum" "^3.14.1"
     "@adobe/reactor-babel-plugin-replace-tokens-edge" "^1.1.0"
@@ -141,7 +141,7 @@
     "@adobe/reactor-token-scripts-edge" "^1.1.3"
     "@adobe/reactor-turbine" "^27.2.0"
     "@adobe/reactor-turbine-edge" "^2.1.0"
-    "@adobe/reactor-validator" "^2.3.0-beta.0"
+    "@adobe/reactor-validator" "^2.3.0"
     "@babel/core" "^7.15.8"
     "@babel/generator" "^7.15.8"
     "@babel/parser" "^7.15.8"
@@ -212,10 +212,10 @@
     "@adobe/reactor-window" "*"
     is-plain-object "^2.0.4"
 
-"@adobe/reactor-validator@^2.3.0-beta.0":
-  version "2.3.0-beta.0"
-  resolved "https://registry.yarnpkg.com/@adobe/reactor-validator/-/reactor-validator-2.3.0-beta.0.tgz#76f1b668c7ccb44109c238a8fbd5c67c99b09c3d"
-  integrity sha512-t1KBKQhu02mGyNHW7UMXIDXI5g/gHxlTqChovujhMaLFje9yrWeu4OytOg1YwLTHRv7gSPvVkw//UHZftkUwOQ==
+"@adobe/reactor-validator@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@adobe/reactor-validator/-/reactor-validator-2.3.0.tgz#7f8bfa44e427bab1fdbcebe2c5a5ab8f5bd40cbe"
+  integrity sha512-WkMRsQGgaWs+hf1iHkSMciLsIoldUZEbXFhURjlfZ1ua14DktuDmmJcHmrG3yLLGjAD/svDQV6h3FnABMostQg==
   dependencies:
     "@adobe/reactor-turbine-schemas" "^10.5.0-beta.0"
     ajv "^8.12.0"
