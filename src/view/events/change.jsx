@@ -11,8 +11,8 @@
  ****************************************************************************************/
 
 import React from 'react';
-import { Checkbox } from '@adobe/react-spectrum';
-import { formValueSelector } from 'redux-form';
+import { Checkbox, Flex, TextField, View } from '@adobe/react-spectrum';
+import { FieldArray, formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
 import WrappedField from '../components/wrappedField';
 
@@ -23,9 +23,34 @@ import AdvancedEventOptions, {
   formConfig as advancedEventOptionsFormConfig
 } from './components/advancedEventOptions';
 import mergeFormConfigs from '../utils/mergeFormConfigs';
-import FullWidthField from '../components/fullWidthField';
+import MultipleItemEditor from '../components/multipleItemEditor';
+import RegexToggle from '../components/regexToggle';
 
-const Change = ({ showValueField }) => (
+import './change.styl';
+
+const createItem = () => ({});
+
+const renderValueItem = (field) => (
+  <Flex data-row flex gap="size-100" alignItems="end">
+    <View flex>
+      <WrappedField
+        label="Value"
+        width="100%"
+        name={`${field}.value`}
+        component={TextField}
+        supportDataElement
+      />
+    </View>
+
+    <WrappedField
+      name={`${field}.valueIsRegex`}
+      component={RegexToggle}
+      valueFieldName={`${field}.value`}
+    />
+  </Flex>
+);
+
+const Change = ({ showValueField, isAddDisabled }) => (
   <>
     <ElementFilter elementSpecificityLabel="When the user changes" />
 
@@ -34,14 +59,14 @@ const Change = ({ showValueField }) => (
     </WrappedField>
 
     {showValueField ? (
-      <FullWidthField
-        containerMinWidth="size-6000"
-        label="Value"
-        name="value"
-        supportDataElement
-        regexName="valueIsRegex"
-        regexValueFieldName="value"
-        blankSpace={null}
+      <FieldArray
+        name="acceptableChangeValues"
+        renderItem={renderValueItem}
+        component={MultipleItemEditor}
+        interstitialLabel="OR"
+        createItem={createItem}
+        className="value-changed-to-options"
+        isAddDisabled={isAddDisabled}
       />
     ) : null}
 
@@ -50,9 +75,22 @@ const Change = ({ showValueField }) => (
 );
 
 const valueSelector = formValueSelector('default');
-const stateToProps = (state) => ({
-  showValueField: valueSelector(state, 'showValueField')
-});
+const stateToProps = (state) => {
+  const showValueField = valueSelector(state, 'showValueField');
+  const existsEmptyChangeValue = valueSelector(
+    state,
+    'acceptableChangeValues'
+  ).some((nextChangeValue) => {
+    return !nextChangeValue.value?.length;
+  });
+  return {
+    showValueField,
+    // this prevents the user from adding a ton of empty string comparisons
+    // into the library, since the old behavior wasn't to require a string of
+    // text once the showValueField checkbox is turned on
+    isAddDisabled: !showValueField || existsEmptyChangeValue
+  };
+};
 
 export default connect(stateToProps)(Change);
 
@@ -61,21 +99,54 @@ export const formConfig = mergeFormConfigs(
   advancedEventOptionsFormConfig,
   {
     settingsToFormValues(values, settings) {
+      /** backwards compat changes **/
+      // historically, settings.value was a simple string, and we could only compare
+      // against one value change. This component was changed to support many
+      // values to compare against, but we provide an "upgrade path" here.
+      let { acceptableChangeValues } = settings;
+      if (!Array.isArray(acceptableChangeValues)) {
+        acceptableChangeValues = [];
+        if (typeof settings.value === 'string') {
+          acceptableChangeValues.push({
+            value: settings.value,
+            valueIsRegex: Boolean(settings.valueIsRegex)
+          });
+        } else {
+          acceptableChangeValues.push(createItem());
+        }
+      }
+
+      const showValueField =
+        typeof acceptableChangeValues[0]?.value === 'string';
+      delete values.value;
+      delete values.valueIsRegex;
+      /** end backwards compat changes **/
+
       return {
         ...values,
-        value: settings.value,
-        valueIsRegex: settings.valueIsRegex,
-        showValueField: settings.value !== undefined // empty string is an acceptable value
+        acceptableChangeValues,
+        showValueField
       };
     },
     formValuesToSettings(settings, values) {
       if (values.showValueField) {
+        const acceptableChangeValues = (
+          values.acceptableChangeValues || []
+        ).map((nextChangeValue) => {
+          // ensure there is always at least a string
+          return { ...nextChangeValue, value: nextChangeValue.value || '' };
+        });
+
         settings = {
           ...settings,
-          value: values.value || '',
-          valueIsRegex: values.valueIsRegex
+          acceptableChangeValues
         };
       }
+
+      /** legacy top level keys **/
+      delete settings.value;
+      delete settings.valueIsRegex;
+      /** end legacy top level keys **/
 
       return settings;
     }

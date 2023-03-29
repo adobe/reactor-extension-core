@@ -1,7 +1,7 @@
 {
   "name": "core",
   "platform": "web",
-  "version": "3.3.0",
+  "version": "3.4.1",
   "displayName": "Core",
   "description": "Provides default event, condition, and data element types available to all Launch properties.",
   "exchangeUrl": "https://www.adobeexchange.com/experiencecloud.details.100223.adobe-launch-core-extension.html",
@@ -82,49 +82,102 @@
       "viewPath": "events/change.html",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
-        "type": "object",
-        "properties": {
-          "elementSelector": {
-            "type": "string",
-            "minLength": 1
-          },
-          "elementProperties": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "minLength": 1
-                },
-                "value": {
-                  "type": "string"
-                },
-                "valueIsRegex": {
-                  "type": "boolean"
-                }
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "elementSelector": {
+                "type": "string",
+                "minLength": 1
               },
-              "additionalProperties": false,
-              "required": ["name", "value"]
-            }
+              "elementProperties": {
+                "$ref": "#/$defs/specificElementsProperties"
+              },
+              "bubbleFireIfParent": {
+                "type": "boolean"
+              },
+              "bubbleFireIfChildFired": {
+                "type": "boolean"
+              },
+              "bubbleStop": {
+                "type": "boolean"
+              },
+              "acceptableChangeValues": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "string"
+                    },
+                    "valueIsRegex": {
+                      "type": "boolean"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": ["value"]
+                },
+                "minItems": 1
+              }
+            },
+            "additionalProperties": false
           },
-          "bubbleFireIfParent": {
-            "type": "boolean"
-          },
-          "bubbleFireIfChildFired": {
-            "type": "boolean"
-          },
-          "bubbleStop": {
-            "type": "boolean"
-          },
-          "value": {
-            "type": "string"
-          },
-          "valueIsRegex": {
-            "type": "boolean"
+          {
+            "type": "object",
+            "properties": {
+              "elementSelector": {
+                "type": "string",
+                "minLength": 1
+              },
+              "elementProperties": {
+                "$ref": "#/$defs/specificElementsProperties"
+              },
+              "bubbleFireIfParent": {
+                "type": "boolean"
+              },
+              "bubbleFireIfChildFired": {
+                "type": "boolean"
+              },
+              "bubbleStop": {
+                "type": "boolean"
+              },
+              "value": {
+                "type": "string"
+              },
+              "valueIsRegex": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false
           }
-        },
-        "additionalProperties": false
+        ],
+        "$defs": {
+          "specificElementsProperties": {
+            "type": "object",
+            "properties": {
+              "elementProperties": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "value": {
+                      "type": "string"
+                    },
+                    "valueIsRegex": {
+                      "type": "boolean"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": ["name", "value"]
+                }
+              }
+            }
+          }
+        }
       }
     },
     {
@@ -558,11 +611,105 @@
       }
     },
     {
+      "name": "key-down",
+      "categoryName": "Keyboard",
+      "displayName": "Key Down",
+      "libPath": "src/lib/events/keyDown.js",
+      "viewPath": "events/keyDown.html",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "elementSelector": {
+            "type": "string",
+            "minLength": 1
+          },
+          "elementProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "value": {
+                  "type": "string"
+                },
+                "valueIsRegex": {
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": false,
+              "required": ["name", "value"]
+            }
+          },
+          "bubbleFireIfParent": {
+            "type": "boolean"
+          },
+          "bubbleFireIfChildFired": {
+            "type": "boolean"
+          },
+          "bubbleStop": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
       "name": "key-press",
       "categoryName": "Keyboard",
       "displayName": "Key Press",
       "libPath": "src/lib/events/keyPress.js",
       "viewPath": "events/keyPress.html",
+      "schema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "properties": {
+          "elementSelector": {
+            "type": "string",
+            "minLength": 1
+          },
+          "elementProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "value": {
+                  "type": "string"
+                },
+                "valueIsRegex": {
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": false,
+              "required": ["name", "value"]
+            }
+          },
+          "bubbleFireIfParent": {
+            "type": "boolean"
+          },
+          "bubbleFireIfChildFired": {
+            "type": "boolean"
+          },
+          "bubbleStop": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "key-up",
+      "categoryName": "Keyboard",
+      "displayName": "Key Up",
+      "libPath": "src/lib/events/keyUp.js",
+      "viewPath": "events/keyUp.html",
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
@@ -1120,20 +1267,53 @@
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
-        "properties": {
-          "name": {
-            "pattern": "^[A-Za-z0-9!#$%&'*+\\-.^_|~]+$"
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "pattern": "^[A-Za-z0-9!#$%&'*+\\-.^_|~]+$"
+              },
+              "cookieValues": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "valueIsRegex": {
+                      "type": "boolean"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": ["value"]
+                },
+                "minItems": 1
+              }
+            },
+            "additionalProperties": false,
+            "required": ["name", "cookieValues"]
           },
-          "value": {
-            "type": "string",
-            "minLength": 1
-          },
-          "valueIsRegex": {
-            "type": "boolean"
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "pattern": "^[A-Za-z0-9!#$%&'*+\\-.^_|~]+$"
+              },
+              "value": {
+                "type": "string",
+                "minLength": 1
+              },
+              "valueIsRegex": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false,
+            "required": ["name", "value"]
           }
-        },
-        "additionalProperties": false,
-        "required": ["name", "value"]
+        ]
       }
     },
     {
@@ -1287,17 +1467,47 @@
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
-        "properties": {
-          "page": {
-            "type": "string",
-            "minLength": 1
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "landingPages": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "pageIsRegex": {
+                      "type": "boolean"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": ["value"]
+                },
+                "minItems": 1
+              }
+            },
+            "additionalProperties": false,
+            "required": ["landingPages"]
           },
-          "pageIsRegex": {
-            "type": "boolean"
+          {
+            "type": "object",
+            "properties": {
+              "page": {
+                "type": "string",
+                "minLength": 1
+              },
+              "pageIsRegex": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false,
+            "required": ["page"]
           }
-        },
-        "additionalProperties": false,
-        "required": ["page"]
+        ]
       }
     },
     {
@@ -1643,17 +1853,47 @@
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
-        "properties": {
-          "source": {
-            "type": "string",
-            "minLength": 1
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "trafficSources": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "sourceIsRegex": {
+                      "type": "boolean"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": ["value"]
+                },
+                "minItems": 1
+              }
+            },
+            "additionalProperties": false,
+            "required": ["trafficSources"]
           },
-          "sourceIsRegex": {
-            "type": "boolean"
+          {
+            "type": "object",
+            "properties": {
+              "source": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sourceIsRegex": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false,
+            "required": ["source"]
           }
-        },
-        "additionalProperties": false,
-        "required": ["source"]
+        ]
       }
     },
     {
@@ -1665,21 +1905,55 @@
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "minLength": 1
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "queryParams": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "valueIsRegex": {
+                      "type": "boolean"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": ["value"]
+                },
+                "minItems": 1
+              }
+            },
+            "additionalProperties": false,
+            "required": ["name", "queryParams"]
           },
-          "value": {
-            "type": "string",
-            "minLength": 1
-          },
-          "valueIsRegex": {
-            "type": "boolean"
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "value": {
+                "type": "string",
+                "minLength": 1
+              },
+              "valueIsRegex": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false,
+            "required": ["name", "value"]
           }
-        },
-        "additionalProperties": false,
-        "required": ["name", "value"]
+        ]
       }
     },
     {
@@ -1833,21 +2107,55 @@
       "schema": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "minLength": 1
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "variableValues": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "valueIsRegex": {
+                      "type": "boolean"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": ["value"]
+                },
+                "minItems": 1
+              }
+            },
+            "additionalProperties": false,
+            "required": ["name", "variableValues"]
           },
-          "value": {
-            "type": "string",
-            "minLength": 1
-          },
-          "valueIsRegex": {
-            "type": "boolean"
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "value": {
+                "type": "string",
+                "minLength": 1
+              },
+              "valueIsRegex": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false,
+            "required": ["name", "value"]
           }
-        },
-        "additionalProperties": false,
-        "required": ["name", "value"]
+        ]
       }
     },
     {

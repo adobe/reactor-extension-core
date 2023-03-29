@@ -1,5 +1,5 @@
 /***************************************************************************************
- * Copyright 2019 Adobe. All rights reserved.
+ * Copyright 2022 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License. You may obtain a copy
  * of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -12,12 +12,11 @@
 
 'use strict';
 var bubbly = require('./helpers/createBubbly')();
-var textMatch = require('../helpers/textMatch');
 
-document.addEventListener('change', bubbly.evaluateEvent, true);
+document.addEventListener('keydown', bubbly.evaluateEvent, true);
 
 /**
- * The change event. This event occurs when a change to an element's value is committed by the user.
+ * The keydown event. This event occurs when any key is depressed.
  * @param {Object} settings The event settings object.
  * @param {string} [settings.elementSelector] The CSS selector the element must match in order for
  * the rule to fire.
@@ -27,11 +26,6 @@ document.addEventListener('change', bubbly.evaluateEvent, true);
  * @param {string} settings.elementProperties[].value The property value.
  * @param {boolean} [settings.elementProperties[].valueIsRegex=false] Whether <code>value</code>
  * on the object instance is intended to be a regular expression.
- * @param {Object[]} settings.acceptableChangeValues Acceptable values to observe as a change.
- * @param {string} settings.acceptableChangeValues[].value An acceptable change value for the
- * rule to fire.
- * @param {string} [settings.acceptableChangeValues[].valueIsRegex=false] Is the change value
- * a Regular Expression?
  * @param {boolean} [settings.bubbleFireIfParent=true] Whether the rule should fire if
  * the event originated from a descendant element.
  * @param {boolean} [settings.bubbleFireIfChildFired=true] Whether the rule should fire
@@ -39,45 +33,7 @@ document.addEventListener('change', bubbly.evaluateEvent, true);
  * @param {boolean} [settings.bubbleStop=false] Whether the event should not trigger
  * rules on ancestor elements.
  * @param {ruleTrigger} trigger The trigger callback.
- * DEPRECATED @param {string} [settings.value] What the new value must be for the rule
- * to fire.
- * DEPRECATED @param {boolean} [settings.valueIsRegex=false] Whether <code>settings.value</code> is
- * intended to be a regular expression.
  */
 module.exports = function (settings, trigger) {
-  var acceptableChangeValues = Array.isArray(settings.acceptableChangeValues)
-    ? settings.acceptableChangeValues
-    : [];
-
-  // legacy support
-  if (typeof settings.value === 'string') {
-    acceptableChangeValues.push({
-      value: settings.value,
-      valueIsRegex: Boolean(settings.valueIsRegex)
-    });
-  }
-
-  bubbly.addListener(settings, function (syntheticEvent) {
-    // legacy support was to trigger if  value === undefined. The UI attempts to
-    // force at least one item to exist, even if that item is an object containing
-    // { value: '' }
-    // Therefore, we'll treat an empty array as an analog to legacy value === undefined
-    if (!acceptableChangeValues.length) {
-      trigger(syntheticEvent);
-      return true;
-    }
-
-    acceptableChangeValues.forEach(function (nextChangeValue) {
-      var acceptableValue = nextChangeValue.valueIsRegex
-        ? new RegExp(nextChangeValue.value, 'i')
-        : nextChangeValue.value;
-
-      if (textMatch(syntheticEvent.target.value, acceptableValue)) {
-        trigger(syntheticEvent);
-        return true;
-      }
-    });
-
-    return false;
-  });
+  bubbly.addListener(settings, trigger);
 };
