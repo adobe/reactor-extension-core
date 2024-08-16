@@ -153,28 +153,23 @@
         ],
         "$defs": {
           "specificElementsProperties": {
-            "type": "object",
-            "properties": {
-              "elementProperties": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "type": "string",
-                      "minLength": 1
-                    },
-                    "value": {
-                      "type": "string"
-                    },
-                    "valueIsRegex": {
-                      "type": "boolean"
-                    }
-                  },
-                  "additionalProperties": false,
-                  "required": ["name", "value"]
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "value": {
+                  "type": "string"
+                },
+                "valueIsRegex": {
+                  "type": "boolean"
                 }
-              }
+              },
+              "additionalProperties": false,
+              "required": ["name", "value"]
             }
           }
         }
