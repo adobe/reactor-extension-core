@@ -60,6 +60,8 @@ describe('specificElements', () => {
 
     expect(pageElements.getPropertiesCheckbox().checked).toBeTrue();
     expect(screen.getByTestId('element-properties-editor')).toBeTruthy();
+
+    expect(extensionBridge.validate()).toBe(true);
   });
 
   it('updates view properly when elementProperties not provided', () => {
