@@ -2614,6 +2614,9 @@
               },
               "replacementValue": {
                 "type": "string"
+              },
+              "replaceAll": {
+                "type": "boolean"
               }
             },
             "additionalProperties": false,
