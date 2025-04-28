@@ -4,8 +4,6 @@
 name: ci
 
 on:
-  push:
-    branches: [master]
   pull_request:
     branches: [master]
   workflow_dispatch:
@@ -15,11 +13,14 @@ jobs:
     name: "Unit Test"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/iron'
+          registry-url: https://registry.npmjs.org/
+      - uses: actions/cache@v4
         id: npm-cache
         with:
-          node-version: 14.x
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Setup kernel for react native, increase watchers
