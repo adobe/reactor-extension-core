@@ -96,28 +96,6 @@ const rules = [
 ];
 
 if (argv.coverage) {
-  rules.push({
-    test: /\.jsx?$/,
-    enforce: 'post',
-    include: path.resolve('src/view'),
-    exclude: new RegExp('__tests__'),
-    use: {
-      loader: 'istanbul-instrumenter-loader',
-      options: { esModules: true }
-    }
-  });
-
-  rules.push({
-    test: /\.js$/,
-    enforce: 'pre',
-    include: path.resolve('src/lib'),
-    exclude: new RegExp('__tests__'),
-    use: {
-      loader: 'istanbul-instrumenter-loader',
-      options: { esModules: true }
-    }
-  });
-
   reporters.push('coverage-istanbul');
 }
 
