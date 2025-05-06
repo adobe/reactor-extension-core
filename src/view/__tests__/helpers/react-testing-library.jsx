@@ -32,7 +32,13 @@ window.cancelAnimationFrame = (timeoutId) => {
     clearTimeout(timeoutId);
   }
 };
-window.ResizeObserver = () => ({ observe: () => {}, unobserve: () => {} });
+
+class ResizeObserverMock {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+window.ResizeObserver = ResizeObserverMock;
 
 // this function is nice for pausing the UI to see what's going on in Karma
 export const DEBUG_UTILITIES = {

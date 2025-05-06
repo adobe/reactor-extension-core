@@ -56,6 +56,12 @@ module.exports = (env) => {
   );
 
   plugins.push(
+    new webpack.ProvidePlugin({
+      process: 'process'
+    })
+  );
+
+  plugins.push(
     new webpack.DefinePlugin({
       'process.env.SCALE_MEDIUM': 'true',
       'process.env.SCALE_LARGE': 'false',
@@ -63,13 +69,7 @@ module.exports = (env) => {
       'process.env.THEME_LIGHTEST': 'true',
       'process.env.THEME_DARK': 'false',
       'process.env.THEME_DARKEST': 'false',
-      'process.browser': 'true'
-    })
-  );
-
-  plugins.push(
-    new webpack.ProvidePlugin({
-      process: 'process'
+      'process.browser': JSON.stringify(true)
     })
   );
 
