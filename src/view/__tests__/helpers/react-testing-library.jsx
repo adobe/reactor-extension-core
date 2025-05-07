@@ -33,12 +33,40 @@ window.cancelAnimationFrame = (timeoutId) => {
   }
 };
 
+// Mocks ResizeObserver in headless browser
 class ResizeObserverMock {
-  observe() {}
-  unobserve() {}
-  disconnect() {}
+  constructor(callback) {
+    this.callback = callback;
+
+    // Spy on instance methods
+    this.observe = jasmine.createSpy('observe');
+    this.unobserve = jasmine.createSpy('unobserve');
+    this.disconnect = jasmine.createSpy('disconnect');
+  }
 }
 window.ResizeObserver = ResizeObserverMock;
+
+/*
+ * Solves the following error in unit tests:
+ * "Failed to execute 'releasePointerCapture' on 'Element':No active pointer
+ * with the given id is found".
+ * This error typically means that a releasePointerCapture(pointerId) call was
+ * made on a DOM element, but the browser doesn't think that pointer ID is active
+ * or captured — which often happens in test environments that don't simulate
+ * full pointer events properly.
+ */
+Object.defineProperty(HTMLElement.prototype, 'setPointerCapture', {
+  configurable: true,
+  value() {
+    // noop call
+  }
+});
+Object.defineProperty(HTMLElement.prototype, 'releasePointerCapture', {
+  configurable: true,
+  value() {
+    // noop call
+  }
+});
 
 // this function is nice for pausing the UI to see what's going on in Karma
 export const DEBUG_UTILITIES = {
@@ -124,7 +152,7 @@ export const sharedTestingElements = {
 
 // used for testing validity of spectrum buttons
 export function isButtonValid(el) {
-  return Array.from(el.classList).join().indexOf('--warning') === -1;
+  return el.dataset.variant !== 'negative';
 }
 
 export function clickSpectrumOption(element) {
