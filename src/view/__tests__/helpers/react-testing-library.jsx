@@ -55,18 +55,18 @@ window.ResizeObserver = ResizeObserverMock;
  * or captured — which often happens in test environments that don't simulate
  * full pointer events properly.
  */
-Object.defineProperty(HTMLElement.prototype, 'setPointerCapture', {
-  configurable: true,
-  value() {
-    // noop call
-  }
-});
-Object.defineProperty(HTMLElement.prototype, 'releasePointerCapture', {
-  configurable: true,
-  value() {
-    // noop call
-  }
-});
+// Object.defineProperty(HTMLElement.prototype, 'setPointerCapture', {
+//   configurable: true,
+//   value() {
+//     // noop call
+//   }
+// });
+// Object.defineProperty(HTMLElement.prototype, 'releasePointerCapture', {
+//   configurable: true,
+//   value() {
+//     // noop call
+//   }
+// });
 
 // this function is nice for pausing the UI to see what's going on in Karma
 export const DEBUG_UTILITIES = {
