@@ -17,7 +17,6 @@ const JavaScriptVariable = () => (
   <FullWidthField
     label="JavaScript variable name"
     name="path"
-    placeholder="dataLayer.products.1.price"
     containerMinWidth="size-6000"
     isRequired
   />

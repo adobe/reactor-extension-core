@@ -27,7 +27,6 @@ const ReturnField = ({
   checkboxLabel,
   inputName,
   inputLabel,
-  inputPlaceholder
 }) => {
   return (
     <>
@@ -47,7 +46,6 @@ const ReturnField = ({
         <WrappedField
           label={inputLabel}
           name={inputName}
-          placeholder={inputPlaceholder}
           width="size-3000"
           component={TextField}
           supportDataElement
@@ -67,7 +65,6 @@ const ConditionalValue = ({ returnConditionalValue, returnFallbackValue }) => (
       checkboxLabel="Return conditional value"
       inputLabel="If true, return this value"
       inputName="conditionalValue"
-      inputPlaceholder="Value if true"
     />
 
     <ReturnField
@@ -76,7 +73,6 @@ const ConditionalValue = ({ returnConditionalValue, returnFallbackValue }) => (
       checkboxLabel="Return fallback value"
       inputLabel="Otherwise, return this value"
       inputName="fallbackValue"
-      inputPlaceholder="Value if false"
     />
   </Flex>
 );

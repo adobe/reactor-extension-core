@@ -28,13 +28,13 @@ const pageElements = {
         domNode,
         withinRow: {
           getEventObjectKeyTextBox: () => {
-            return within(domNode).getByPlaceholderText('key', {
-              exact: false // ignore case
+            return within(domNode).getByRole('textbox', {
+              name: /key/i
             });
           },
           getEventObjectValueTextBox: () => {
-            return within(domNode).getByPlaceholderText('value', {
-              exact: false // ignore case
+            return within(domNode).getByRole('textbox', {
+              name: /value/i
             });
           }
         }
