@@ -26,7 +26,7 @@ const ReturnField = ({
   checkboxName,
   checkboxLabel,
   inputName,
-  inputLabel,
+  inputLabel
 }) => {
   return (
     <>
