@@ -55,7 +55,10 @@ const rules = [
           '@babel/react',
           ['@babel/env', { targets: '> 0.25%, not dead' }]
         ],
-        plugins: ['@babel/plugin-proposal-class-properties']
+        plugins: [
+          '@babel/plugin-proposal-class-properties',
+          'babel-plugin-istanbul'
+        ]
       }
     }
   },
@@ -65,7 +68,8 @@ const rules = [
     use: {
       loader: 'babel-loader',
       options: {
-        presets: [['@babel/env', { targets: '> 0.25%, not dead' }]]
+        presets: [['@babel/env', { targets: '> 0.25%, not dead' }]],
+        plugins: ['babel-plugin-istanbul']
       }
     }
   },
