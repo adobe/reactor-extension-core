@@ -155,7 +155,7 @@ __metadata:
   resolution: "@adobe/reactor-extension-core@workspace:."
   dependencies:
     "@adobe/react-spectrum": "npm:^3.41.0"
-    "@adobe/reactor-sandbox": "npm:^13.2.1-beta.1"
+    "@adobe/reactor-sandbox": "npm:^13.2.1"
     "@babel/core": "npm:^7.15.5"
     "@babel/eslint-parser": "npm:^7.17.0"
     "@babel/plugin-proposal-class-properties": "npm:^7.14.5"
@@ -259,9 +259,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@adobe/reactor-sandbox@npm:^13.2.1-beta.1":
-  version: 13.2.1-beta.1
-  resolution: "@adobe/reactor-sandbox@npm:13.2.1-beta.1"
+"@adobe/reactor-sandbox@npm:^13.2.1":
+  version: 13.2.1
+  resolution: "@adobe/reactor-sandbox@npm:13.2.1"
   dependencies:
     "@adobe/react-spectrum": "npm:^3.41.0"
     "@adobe/reactor-babel-plugin-replace-tokens-edge": "npm:^1.2.0"
@@ -282,7 +282,7 @@ __metadata:
     "@ramda/indexby": "npm:^0.26.1"
     "@rematch/core": "npm:^2.2.0"
     "@spectrum-icons/illustrations": "npm:^3.6.18"
-    "@spectrum-icons/workflow": "npm:^4.2.17"
+    "@spectrum-icons/workflow": "npm:^4.2.20"
     ajv: "npm:^8.17.1"
     ajv-draft-04: "npm:^1.0.0"
     ajv-formats: "npm:^2.1.1"
@@ -310,7 +310,7 @@ __metadata:
     semver-diff: "npm:^3.1.1"
   bin:
     reactor-sandbox: src/cli.js
-  checksum: 10c0/08ccff4c50b9a663704d2ed748e3e228145bd843f21dd1c1447f525893163194883e3d619a44ea8f544b2296eb04c45add70a823e24c677d1dabbcbd9100cb72
+  checksum: 10c0/42831d5fc68f83c0d3f385d533b6ae6aef52ec08ed1dc8c6cba3f0a6914d744c6efb93fb9366a7a376fb8be69475ee6013221adec516a1af311ae42ae0439c49
   languageName: node
   linkType: hard
 
@@ -5502,7 +5502,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@spectrum-icons/workflow@npm:^4.2.10, @spectrum-icons/workflow@npm:^4.2.17, @spectrum-icons/workflow@npm:^4.2.20":
+"@spectrum-icons/workflow@npm:^4.2.10, @spectrum-icons/workflow@npm:^4.2.20":
   version: 4.2.20
   resolution: "@spectrum-icons/workflow@npm:4.2.20"
   dependencies:
