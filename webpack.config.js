@@ -56,6 +56,12 @@ module.exports = (env) => {
   );
 
   plugins.push(
+    new webpack.ProvidePlugin({
+      process: 'process'
+    })
+  );
+
+  plugins.push(
     new webpack.DefinePlugin({
       'process.env.SCALE_MEDIUM': 'true',
       'process.env.SCALE_LARGE': 'false',
@@ -144,7 +150,10 @@ module.exports = (env) => {
       alias: {
         '@test-helpers': path.resolve(__dirname, 'src/view/__tests__/helpers')
       },
-      extensions: ['.js', '.jsx']
+      extensions: ['.js', '.jsx'],
+      fallback: {
+        process: require.resolve('process')
+      }
     }
   };
 };

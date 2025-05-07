@@ -6,6 +6,7 @@ const DefinePlugin = require('webpack').DefinePlugin;
 const SourceMapDevToolPlugin = require('webpack').SourceMapDevToolPlugin;
 const path = require('path');
 const packageDescriptor = require('./package.json');
+const webpack = require('webpack');
 
 let defaultBrowsers = ['Chrome'];
 let startConnect = false;
@@ -54,7 +55,10 @@ const rules = [
           '@babel/react',
           ['@babel/env', { targets: '> 0.25%, not dead' }]
         ],
-        plugins: ['@babel/plugin-proposal-class-properties']
+        plugins: [
+          '@babel/plugin-proposal-class-properties',
+          'babel-plugin-istanbul'
+        ]
       }
     }
   },
@@ -64,7 +68,8 @@ const rules = [
     use: {
       loader: 'babel-loader',
       options: {
-        presets: [['@babel/env', { targets: '> 0.25%, not dead' }]]
+        presets: [['@babel/env', { targets: '> 0.25%, not dead' }]],
+        plugins: ['babel-plugin-istanbul']
       }
     }
   },
@@ -96,28 +101,6 @@ const rules = [
 ];
 
 if (argv.coverage) {
-  rules.push({
-    test: /\.jsx?$/,
-    enforce: 'post',
-    include: path.resolve('src/view'),
-    exclude: new RegExp('__tests__'),
-    use: {
-      loader: 'istanbul-instrumenter-loader',
-      options: { esModules: true }
-    }
-  });
-
-  rules.push({
-    test: /\.js$/,
-    enforce: 'pre',
-    include: path.resolve('src/lib'),
-    exclude: new RegExp('__tests__'),
-    use: {
-      loader: 'istanbul-instrumenter-loader',
-      options: { esModules: true }
-    }
-  });
-
   reporters.push('coverage-istanbul');
 }
 
@@ -307,12 +290,18 @@ module.exports = (config) => {
         alias: {
           '@test-helpers': path.resolve(__dirname, 'src/view/__tests__/helpers')
         },
-        extensions: ['.js', '.jsx']
+        extensions: ['.js', '.jsx'],
+        fallback: {
+          process: require.resolve('process')
+        }
       },
       module: {
         rules: rules
       },
       plugins: [
+        new webpack.ProvidePlugin({
+          process: 'process'
+        }),
         new DefinePlugin({
           TEST_BASE_PATH: JSON.stringify(process.cwd() + argv.testBasePath),
           'process.browser': 'true',

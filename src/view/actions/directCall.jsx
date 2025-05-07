@@ -39,7 +39,7 @@ const renderItem = (detailRow) => (
       name={`${detailRow}.key`}
       type="text"
       component={TextField}
-      placeholder="key"
+      label="key"
       isRequired
       data-test-row-key
     />
@@ -49,7 +49,7 @@ const renderItem = (detailRow) => (
       name={`${detailRow}.value`}
       type="text"
       component={TextField}
-      placeholder="value"
+      label="value"
       supportDataElement
       isRequired
       data-test-row-value
@@ -80,7 +80,7 @@ const DirectCall = () => (
       isRequired
     />
 
-    <Flex marginTop="size-200" alignItems="center">
+    <Flex Top="sizemargin-200" alignItems="center">
       <SpectrumLabel>Event Detail (optional)</SpectrumLabel>
       <InfoTip>
         This detail object will be passed on to any Rule listening for the

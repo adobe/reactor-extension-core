@@ -6,3 +6,4 @@ dist
 .sandbox
 .entries
 package-core*
+**/install-state.gz

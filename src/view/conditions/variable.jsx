@@ -57,7 +57,6 @@ const Variable = () => (
       label="Variable name"
       name="name"
       minWidth="size-2400"
-      placeholder="dataLayer.products.1.price"
       isRequired
       blankSpace={{
         width: 'size-2000',
