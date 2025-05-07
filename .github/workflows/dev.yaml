@@ -25,6 +25,8 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Setup kernel for react native, increase watchers
         run: echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+      - name: Linting files
+        run: npm run lint
       - name: Install dependencies
         if: steps.npm-cache.outputs.cache-hit != 'true'
         run: yarn install --immutable
@@ -43,5 +45,3 @@ jobs:
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Linting files
-        run: npm run lint
