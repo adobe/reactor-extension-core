@@ -27,7 +27,7 @@ jobs:
         run: echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
       - name: Install dependencies
         if: steps.npm-cache.outputs.cache-hit != 'true'
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
       - uses: saucelabs/sauce-connect-action@v1
         with:
           username: ${{ secrets.SAUCE_USERNAME }}
