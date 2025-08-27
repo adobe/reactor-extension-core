@@ -9,8 +9,6 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-'use strict';
-
 var conditionalValueDelegate = require('../conditionalValue');
 
 describe('conditional value data element delegate', function () {

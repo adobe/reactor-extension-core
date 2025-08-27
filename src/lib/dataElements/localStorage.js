@@ -10,9 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var window = require('@adobe/reactor-window');
+import window from '@adobe/reactor-window';
 
 /**
  * The local storage data element.
@@ -21,7 +19,7 @@ var window = require('@adobe/reactor-window');
  * retrieved.
  * @returns {string}
  */
-module.exports = function (settings) {
+export default function (settings) {
   // When local storage is disabled on Safari, the mere act of referencing window.localStorage
   // throws an error. For this reason, referencing window.localStorage without being inside
   // a try-catch should be avoided.
@@ -30,4 +28,4 @@ module.exports = function (settings) {
   } catch (e) {
     return null;
   }
-};
+}

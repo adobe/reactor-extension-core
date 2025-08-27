@@ -10,15 +10,15 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+function createLibraryLoadedDelegate(pageLifecycleEvents) {
+  /**
+   * Library loaded event. This event occurs as soon as the runtime library is loaded.
+   * @param {Object} settings The event settings object.
+   * @param {ruleTrigger} trigger The trigger callback.
+   */
+  return function (settings, trigger) {
+    pageLifecycleEvents.registerLibraryLoadedTrigger(trigger);
+  };
+}
 
-var pageLifecycleEvents = require('./helpers/pageLifecycleEvents');
-
-/**
- * Library loaded event. This event occurs as soon as the runtime library is loaded.
- * @param {Object} settings The event settings object.
- * @param {ruleTrigger} trigger The trigger callback.
- */
-module.exports = function (settings, trigger) {
-  pageLifecycleEvents.registerLibraryLoadedTrigger(trigger);
-};
+export default createLibraryLoadedDelegate;

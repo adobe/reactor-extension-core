@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 describe('orientation change event delegate', function () {
   var delegate;
   var orientationChangeCallbacks = [];
@@ -45,11 +43,10 @@ describe('orientation change event delegate', function () {
     });
   };
 
+  const createOrientationChangeDelegate = require('../orientationChange');
+
   beforeAll(function () {
-    var delegateInjector = require('inject-loader!../orientationChange');
-    delegate = delegateInjector({
-      '@adobe/reactor-window': mockWindow
-    });
+    delegate = createOrientationChangeDelegate(mockWindow);
   });
 
   it('triggers rule when orientation changes', function () {

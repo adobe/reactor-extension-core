@@ -9,8 +9,6 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-'use strict';
-
 /**
  * Returns a promise that will be resolved after all outstanding promise chains
  * have been flushed. This assumes (1) that the promise chains to be flushed
@@ -19,16 +17,14 @@ governing permissions and limitations under the License.
  * are no longer than 10 promises long.
  * @returns {Promise}
  */
-module.exports = function () {
-  var promise;
-
-  for (var i = 0; i < 10; i += 1) {
+const flushPromiseChains = function () {
+  let promise;
+  for (let i = 0; i < 10; i += 1) {
     promise = promise
-      ? promise.then(function () {
-          return Promise.resolve();
-        })
+      ? promise.then(() => Promise.resolve())
       : Promise.resolve();
   }
-
   return promise;
 };
+
+export default flushPromiseChains;

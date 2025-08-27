@@ -10,10 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var cookie = require('@adobe/reactor-cookie');
-var textMatch = require('../helpers/textMatch');
+import cookie from '@adobe/reactor-cookie';
+import textMatch from '../helpers/textMatch.js';
 
 /**
  * Cookie condition. Determines if a particular cookie's actual value matches an acceptable value.
@@ -28,7 +26,7 @@ var textMatch = require('../helpers/textMatch');
  * is intended to be a regular expression.
  * @returns {boolean}
  */
-module.exports = function (settings) {
+export default function (settings) {
   // empty strings aren't allowed because a cookieValue is required in the UI.
   var storedCookie = cookie.get(settings.name);
   if (!storedCookie) {
@@ -52,4 +50,4 @@ module.exports = function (settings) {
 
     return textMatch(storedCookie, acceptableValue);
   });
-};
+}

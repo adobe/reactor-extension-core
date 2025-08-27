@@ -1,23 +1,9 @@
-/***************************************************************************************
- * Copyright 2019 Adobe. All rights reserved.
- * This file is licensed to you under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License. You may obtain a copy
- * of the License at http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under
- * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
- * OF ANY KIND, either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- ****************************************************************************************/
+import debounce from './helpers/debounce';
+import once from './helpers/once';
 
-'use strict';
-
-var debounce = require('./helpers/debounce');
-var once = require('./helpers/once');
-
-var history = window.history;
-var lastURI = window.location.href;
-var triggers = [];
+const history = window.history;
+let lastURI = window.location.href;
+const triggers = [];
 
 /**
  * Replaces a method on an object with a proxy method only calls the original method but also
@@ -26,10 +12,10 @@ var triggers = [];
  * @param {String} methodName The name of the method to replace with the proxy method.
  * @param {Function} fn A function that should be called after the original method is called.
  */
-var callThrough = function (object, methodName, fn) {
-  var original = object[methodName];
+const callThrough = (object, methodName, fn) => {
+  const original = object[methodName];
   object[methodName] = function () {
-    var returnValue = original.apply(object, arguments);
+    const returnValue = original.apply(object, arguments);
     fn.apply(null, arguments);
     return returnValue;
   };
@@ -38,10 +24,10 @@ var callThrough = function (object, methodName, fn) {
 /**
  * Calls all the trigger methods if the URI has changed.
  */
-var callTriggersIfURIChanged = debounce(function () {
-  var uri = window.location.href;
+const callTriggersIfURIChanged = debounce(() => {
+  const uri = window.location.href;
   if (lastURI !== uri) {
-    triggers.forEach(function (trigger) {
+    triggers.forEach((trigger) => {
       trigger();
     });
 
@@ -52,7 +38,7 @@ var callTriggersIfURIChanged = debounce(function () {
 /**
  * Starts watching for history changes.
  */
-var watchForHistoryChange = once(function () {
+const watchForHistoryChange = once(() => {
   if (history) {
     if (history.pushState) {
       callThrough(history, 'pushState', callTriggersIfURIChanged);
@@ -73,7 +59,7 @@ var watchForHistoryChange = once(function () {
  * @param {Object} settings The event settings object.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function (settings, trigger) {
+export default function historyChange(settings, trigger) {
   watchForHistoryChange();
   triggers.push(trigger);
-};
+}

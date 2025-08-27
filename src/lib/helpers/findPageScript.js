@@ -10,15 +10,13 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import document from '@adobe/reactor-document';
 
-var document = require('@adobe/reactor-document');
+const byRegexPattern = function (regexScriptSrcPattern) {
+  const scripts = document.querySelectorAll('script');
 
-var byRegexPattern = function (regexScriptSrcPattern) {
-  var scripts = document.querySelectorAll('script');
-
-  for (var i = 0; i < scripts.length; i++) {
-    var script = scripts[i];
+  for (let i = 0; i < scripts.length; i++) {
+    const script = scripts[i];
     // Find the script that loaded our library. Take into account embed scripts migrated
     // from DTM. We'll also consider that they may have added a querystring for cache-busting
     // or whatever.
@@ -28,11 +26,8 @@ var byRegexPattern = function (regexScriptSrcPattern) {
   }
 };
 
-var getTurbine = function () {
+const getTurbine = function () {
   return byRegexPattern(new RegExp(/(launch|satelliteLib)-[^\/]+.js(\?.*)?$/));
 };
 
-module.exports = {
-  getTurbine: getTurbine,
-  byRegexPattern: byRegexPattern
-};
+export { getTurbine, byRegexPattern };

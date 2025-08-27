@@ -9,7 +9,6 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  ****************************************************************************************/
-'use strict';
 
 /**
  * Returns a proxy function that, when call the first time, will call a target function.
@@ -18,8 +17,8 @@
  * @param {Object} [context] The context in which to call the target function.
  * @returns {Function}
  */
-module.exports = function (fn, context) {
-  var result;
+const once = function (fn, context) {
+  let result;
 
   return function () {
     if (fn) {
@@ -30,3 +29,5 @@ module.exports = function (fn, context) {
     return result;
   };
 };
+
+export default once;

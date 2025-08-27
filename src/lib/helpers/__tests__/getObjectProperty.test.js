@@ -10,9 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var getObjectProperty = require('../getObjectProperty');
+import getObjectProperty from '../getObjectProperty.js';
 
 describe('getObjectProperty', function () {
   it('returns an object property value', function () {

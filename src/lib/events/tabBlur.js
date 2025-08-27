@@ -10,40 +10,43 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import visibilityApiFactory from './helpers/visibilityApi';
+import once from './helpers/once';
 
-var document = require('@adobe/reactor-document');
-var visibilityApi = require('./helpers/visibilityApi')();
-var hiddenProperty = visibilityApi.hiddenProperty;
-var visibilityChangeEventType = visibilityApi.visibilityChangeEventType;
-var once = require('./helpers/once');
+function createTabBlurDelegate(document) {
+  const visibilityApi = visibilityApiFactory();
+  const hiddenProperty = visibilityApi.hiddenProperty;
+  const visibilityChangeEventType = visibilityApi.visibilityChangeEventType;
 
-/**
- * All trigger methods registered for this event type.
- * @type {ruleTrigger[]}
- */
-var triggers = [];
+  /**
+   * All trigger methods registered for this event type.
+   * @type {ruleTrigger[]}
+   */
+  const triggers = [];
 
-var watchForTabBlur = once(function () {
-  document.addEventListener(
-    visibilityChangeEventType,
-    function () {
-      if (document[hiddenProperty]) {
-        triggers.forEach(function (trigger) {
-          trigger();
-        });
-      }
-    },
-    true
-  );
-});
+  const watchForTabBlur = once(function () {
+    document.addEventListener(
+      visibilityChangeEventType,
+      function () {
+        if (document[hiddenProperty]) {
+          triggers.forEach(function (trigger) {
+            trigger();
+          });
+        }
+      },
+      true
+    );
+  });
 
-/**
- * Tabblur event. This event occurs when a webpage is not visible or not in focus.
- * @param {Object} settings The event settings object.
- * @param {ruleTrigger} trigger The trigger callback.
- */
-module.exports = function (settings, trigger) {
-  watchForTabBlur();
-  triggers.push(trigger);
-};
+  /**
+   * Tabblur event. This event occurs when a webpage is not visible or not in focus.
+   * @param {Object} settings The event settings object.
+   * @param {ruleTrigger} trigger The trigger callback.
+   */
+  return function (settings, trigger) {
+    watchForTabBlur();
+    triggers.push(trigger);
+  };
+}
+
+export default createTabBlurDelegate;

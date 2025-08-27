@@ -10,9 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var clientInfo = require('./helpers/clientInfo');
+import clientInfo from './helpers/clientInfo';
 
 /**
  * Device type condition. Determines if the actual device type matches at least one acceptable
@@ -21,6 +19,8 @@ var clientInfo = require('./helpers/clientInfo');
  * @param {string[]} settings.deviceTypes An array of device types.
  * @returns {boolean}
  */
-module.exports = function (settings) {
+const deviceTypeCondition = function (settings) {
   return settings.deviceTypes.indexOf(clientInfo.deviceType) !== -1;
 };
+
+export default deviceTypeCondition;

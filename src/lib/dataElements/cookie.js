@@ -10,9 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var cookie = require('@adobe/reactor-cookie');
+import cookie from '@adobe/reactor-cookie';
 
 /**
  * The cookie data element.
@@ -20,6 +18,6 @@ var cookie = require('@adobe/reactor-cookie');
  * @param {string} settings.name The name of the cookie for which a value should be retrieved.
  * @returns {string}
  */
-module.exports = function (settings) {
+export default function getCookie(settings) {
   return cookie.get(settings.name);
-};
+}

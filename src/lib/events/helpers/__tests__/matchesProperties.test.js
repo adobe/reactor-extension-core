@@ -10,10 +10,9 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import matchesProperties from '../matchesProperties.js';
 
 describe('matchesProperties', function () {
-  var matchesProperties = require('../matchesProperties');
   var element;
 
   beforeAll(function () {

@@ -10,9 +10,9 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-var bubbly = require('./helpers/createBubbly')();
+import createBubbly from './helpers/createBubbly';
 
+const bubbly = createBubbly();
 document.addEventListener('pause', bubbly.evaluateEvent, true);
 
 /**
@@ -34,6 +34,8 @@ document.addEventListener('pause', bubbly.evaluateEvent, true);
  * rules on ancestor elements.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function (settings, trigger) {
+const mediaPauseEvent = function (settings, trigger) {
   bubbly.addListener(settings, trigger);
 };
+
+export default mediaPauseEvent;

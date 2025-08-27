@@ -10,9 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var Timer = require('../timer');
+import Timer from '../timer.js';
 
 describe('timer', function () {
   beforeEach(function () {

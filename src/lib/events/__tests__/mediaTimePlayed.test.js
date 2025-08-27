@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 describe('media time played event delegate', function () {
   var delegate;
   var aElement;

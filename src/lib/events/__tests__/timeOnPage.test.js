@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 var visibilityApi = require('../helpers/visibilityApi');
 var visibilityApiInstance = visibilityApi();
 var visibilityChangeListener;
@@ -25,7 +23,7 @@ var mockDocument = {
 };
 
 var Timer = require('../helpers/timer');
-var eventDelegateInjector = require('inject-loader!../timeOnPage');
+const createTimeOnPageDelegate = require('../timeOnPage');
 
 var isIE = function () {
   var myNav = navigator.userAgent.toLowerCase();
@@ -43,10 +41,7 @@ describe('time on page event delegate', function () {
     var baseTime = new Date();
     jasmine.clock().mockDate(baseTime);
 
-    delegate = eventDelegateInjector({
-      './helpers/timer': Timer,
-      '@adobe/reactor-document': mockDocument
-    });
+    delegate = createTimeOnPageDelegate(Timer, mockDocument);
   });
 
   afterEach(function () {

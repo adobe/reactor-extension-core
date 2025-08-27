@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 /**
  * Debounce function. Returns a proxy function that, when called multiple times, will only execute
  * the target function after a certain delay has passed without the proxy function being called
@@ -22,14 +20,16 @@
  * @param {Object} [context] The context in which to call the target function.
  * @returns {Function}
  */
-module.exports = function (fn, delay, context) {
-  var timeoutId = null;
+const debounce = function (fn, delay, context) {
+  let timeoutId = null;
   return function () {
-    var ctx = context || this;
-    var args = arguments;
+    const ctx = context || this;
+    const args = arguments;
     clearTimeout(timeoutId);
     timeoutId = setTimeout(function () {
       fn.apply(ctx, args);
     }, delay);
   };
 };
+
+export default debounce;

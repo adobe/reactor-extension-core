@@ -10,37 +10,32 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-var loadScript = require('@adobe/reactor-load-script');
-var Promise = require('@adobe/reactor-promise');
-var findScriptByRegexPattern =
-  require('../../helpers/findPageScript').byRegexPattern;
+import loadScript from '@adobe/reactor-load-script';
+import Promise from '@adobe/reactor-promise';
+import { byRegexPattern as findScriptByRegexPattern } from '../../helpers/findPageScript';
 
-var codeBySourceUrl = {};
-var scriptStore = {};
+const codeBySourceUrl = {};
+const scriptStore = {};
 
-var loadScriptOnlyOnce = function (url) {
+const loadScriptOnlyOnce = function (url) {
   if (!scriptStore[url]) {
     scriptStore[url] = loadScript(url);
   }
-
   return scriptStore[url];
 };
 
 _satellite.__registerScript = function (scriptGuid, code) {
-  var scriptUrl;
+  let scriptUrl;
   if (document.currentScript) {
-    // use getAttribute in case it's a relative url
     scriptUrl = document.currentScript.getAttribute('src');
   } else {
-    var pattern = new RegExp('.*' + scriptGuid + '.*');
-    // use getAttribute in case it's a relative url
+    const pattern = new RegExp('.*' + scriptGuid + '.*');
     scriptUrl = findScriptByRegexPattern(pattern).getAttribute('src');
   }
   codeBySourceUrl[scriptUrl] = code;
 };
 
-module.exports = function (sourceUrl) {
+const getSourceByUrl = function (sourceUrl) {
   if (codeBySourceUrl[sourceUrl]) {
     return Promise.resolve(codeBySourceUrl[sourceUrl]);
   } else {
@@ -56,3 +51,5 @@ module.exports = function (sourceUrl) {
     });
   }
 };
+
+export default getSourceByUrl;

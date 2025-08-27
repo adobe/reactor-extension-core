@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 /**
  * Date range condition. Determines if we are within a specific date range.
  * @param {Object} settings Condition settings.
@@ -21,16 +19,15 @@
  * stop returning true.
  * @returns {boolean}
  */
-module.exports = function (settings) {
-  var now = new Date();
-
+const dateRangeCondition = function (settings) {
+  const now = new Date();
   if (settings.start && now < new Date(settings.start)) {
     return false;
   }
-
   if (settings.end && now > new Date(settings.end)) {
     return false;
   }
-
   return true;
 };
+
+export default dateRangeCondition;

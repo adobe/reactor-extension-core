@@ -10,32 +10,16 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-var visitorTracking = require('../helpers/visitorTracking');
-var compareNumbers = require('./helpers/compareNumbers');
+import visitorTracking from '../helpers/visitorTracking.js';
+import compareNumbers from './helpers/compareNumbers.js';
 
-/**
- * Enum for duration.
- * @readonly
- * @enum {string}
- */
-var duration = {
+const duration = {
   LIFETIME: 'lifetime',
   SESSION: 'session'
 };
 
-/**
- * Page views condition. Determines if the number of page views matches constraints.
- * @param {Object} settings Condition settings.
- * @param {comparisonOperator} settings.operator The comparison operator to use to
- * compare against count.
- * @param {number} settings.count The number of page views to compare against.
- * @param {duration} settings.duration The duration of time for which to include
- * page views.
- * @returns {boolean}
- */
-module.exports = function (settings) {
-  var methodName =
+export default function (settings) {
+  const methodName =
     settings.duration === duration.LIFETIME
       ? 'getLifetimePageViewCount'
       : 'getSessionPageViewCount';
@@ -44,4 +28,4 @@ module.exports = function (settings) {
     settings.operator,
     settings.count
   );
-};
+}

@@ -9,8 +9,6 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-'use strict';
-
 var decorateHtmlCodeInjector = require('inject-loader!../decorateHtmlCode');
 var flushPromiseChains = require('../../../../__tests__/helpers/flushPromiseChains');
 

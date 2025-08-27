@@ -10,16 +10,14 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 /**
  * Returns whether an element matches a selector.
  * @param {HTMLElement} element The HTML element being tested.
  * @param {string} selector The CSS selector.
  * @returns {boolean}
  */
-module.exports = function (element, selector) {
-  var matches = element.matches || element.msMatchesSelector;
+const matchesSelector = function (element, selector) {
+  const matches = element.matches || element.msMatchesSelector;
 
   if (matches) {
     try {
@@ -34,3 +32,5 @@ module.exports = function (element, selector) {
 
   return false;
 };
+
+export default matchesSelector;

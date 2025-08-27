@@ -10,11 +10,9 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var WeakMap = require('./weakMap');
-var matchesProperties = require('./matchesProperties');
-var matchesSelector = require('./matchesSelector');
+import WeakMap from './weakMap';
+import matchesProperties from './matchesProperties';
+import matchesSelector from './matchesSelector';
 
 // Note to developers of other extensions:
 // This module largely exists to support advanced bubbling options
@@ -26,7 +24,7 @@ var matchesSelector = require('./matchesSelector');
 /**
  * Handles logic related to bubbling options provided for many event types.
  */
-module.exports = function () {
+export default function createBubbly() {
   var listeners = [];
 
   // It's important that a new weak map is created for each instance of bubbly in order to store
@@ -195,4 +193,4 @@ module.exports = function () {
   };
 
   return bubbly;
-};
+}

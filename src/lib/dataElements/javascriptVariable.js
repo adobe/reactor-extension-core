@@ -10,8 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-var getObjectProperty = require('../helpers/getObjectProperty.js');
+import getObjectProperty from '../helpers/getObjectProperty.js';
 
 /**
  * The variable data element.
@@ -19,6 +18,6 @@ var getObjectProperty = require('../helpers/getObjectProperty.js');
  * @param {string} settings.path The global path to the variable holding the data element value.
  * @returns {string}
  */
-module.exports = function (settings) {
+export default function (settings) {
   return getObjectProperty(window, settings.path);
-};
+}

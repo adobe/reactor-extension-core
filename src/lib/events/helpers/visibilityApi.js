@@ -10,17 +10,15 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-module.exports = function () {
-  var properties = {
+const visibilityApiFactory = function () {
+  const properties = {
     hidden: 'visibilitychange',
     mozHidden: 'mozvisibilitychange',
     msHidden: 'msvisibilitychange',
     webkitHidden: 'webkitvisibilitychange'
   };
 
-  for (var key in properties) {
+  for (const key in properties) {
     if (
       properties.hasOwnProperty(key) &&
       typeof document[key] !== 'undefined'
@@ -34,3 +32,5 @@ module.exports = function () {
 
   return {};
 };
+
+export default visibilityApiFactory;

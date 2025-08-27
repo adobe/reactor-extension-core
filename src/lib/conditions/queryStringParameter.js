@@ -10,11 +10,9 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var window = require('@adobe/reactor-window');
-var queryString = require('@adobe/reactor-query-string');
-var textMatch = require('../helpers/textMatch');
+import window from '@adobe/reactor-window';
+import queryString from '@adobe/reactor-query-string';
+import textMatch from '../helpers/textMatch';
 
 /**
  * Query string parameter condition. Determines if a query string parameter exists with a name and
@@ -27,13 +25,13 @@ var textMatch = require('../helpers/textMatch');
  * is intended to be a regular expression.
  * @returns {boolean}
  */
-module.exports = function (settings) {
-  var queryParams = queryString.parse(window.location.search);
+const queryStringParameterCondition = function (settings) {
+  const queryParams = queryString.parse(window.location.search);
   if (!queryParams.hasOwnProperty(settings.name)) {
     return false;
   }
 
-  var queryParamValues;
+  let queryParamValues;
   if (!Array.isArray(settings.queryParams)) {
     // legacy support
     queryParamValues = [
@@ -43,12 +41,14 @@ module.exports = function (settings) {
     queryParamValues = settings.queryParams;
   }
 
-  var queryParamValue = queryParams[settings.name];
+  const queryParamValue = queryParams[settings.name];
   return queryParamValues.some(function (acceptableQueryParamValue) {
-    var acceptableValue = acceptableQueryParamValue.valueIsRegex
+    const acceptableValue = acceptableQueryParamValue.valueIsRegex
       ? new RegExp(acceptableQueryParamValue.value, 'i')
       : acceptableQueryParamValue.value;
 
     return textMatch(queryParamValue, acceptableValue);
   });
 };
+
+export default queryStringParameterCondition;

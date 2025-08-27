@@ -10,10 +10,10 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-var bubbly = require('./helpers/createBubbly')();
+import createBubbly from './helpers/createBubbly';
 
-var typesWatched = [];
+const bubbly = createBubbly();
+const typesWatched = [];
 
 /**
  * The custom event. When an event is seen with the specified type, the rule will be executed.
@@ -35,20 +35,18 @@ var typesWatched = [];
  * rules on ancestor elements.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function (settings, trigger) {
-  var type = settings.type;
-
+const customEvent = function (settings, trigger) {
+  const type = settings.type;
   if (typesWatched.indexOf(type) === -1) {
     typesWatched.push(type);
     window.addEventListener(type, bubbly.evaluateEvent, true);
   }
-
   bubbly.addListener(settings, function (event) {
     if (event.nativeEvent.type === type) {
-      // Copying detail up to the top-level makes it easier for users to consume and
-      // makes it backward-compatible with DTM.
       event.detail = event.nativeEvent.detail;
       trigger(event);
     }
   });
 };
+
+export default customEvent;

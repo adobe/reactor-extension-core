@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 describe('history change event delegate', function () {
   var delegate;
   var origHref = window.location.href;

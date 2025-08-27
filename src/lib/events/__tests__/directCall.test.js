@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 describe('direct call event delegate', function () {
   var delegate = require('../directCall');
 

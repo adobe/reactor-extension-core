@@ -10,10 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var window = require('@adobe/reactor-window');
-var compareNumbers = require('./helpers/compareNumbers');
+import window from '@adobe/reactor-window';
+import compareNumbers from './helpers/compareNumbers.js';
 
 /**
  * Screen resolution condition. Determines if the current screen resolution matches constraints.
@@ -26,7 +24,7 @@ var compareNumbers = require('./helpers/compareNumbers');
  * @param {number} settings.height The window height to compare against.
  * @returns {boolean}
  */
-module.exports = function (settings) {
+export default function (settings) {
   var widthInRange = compareNumbers(
     window.screen.width,
     settings.widthOperator,
@@ -40,4 +38,4 @@ module.exports = function (settings) {
   );
 
   return widthInRange && heightInRange;
-};
+}

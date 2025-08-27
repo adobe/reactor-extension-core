@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 /**
  * The random number data element.
  * @param {Object} settings The data element settings object.
@@ -21,9 +19,9 @@
  * random number.
  * @returns {number}
  */
-module.exports = function (settings) {
-  var min = Math.ceil(settings.min);
-  var max = Math.floor(settings.max);
+export default function (settings) {
+  const min = Math.ceil(settings.min);
+  const max = Math.floor(settings.max);
 
   return min > max ? NaN : Math.floor(Math.random() * (max - min + 1)) + min;
-};
+}

@@ -10,16 +10,13 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import document from '@adobe/reactor-document';
+const matchOperatorsRegex = /[|\\{}()[\]^$+*?.-]/g;
 
-var document = require('@adobe/reactor-document');
-var matchOperatorsRegex = /[|\\{}()[\]^$+*?.-]/g;
-
-var escapeForRegex = function (string) {
+const escapeForRegex = function (string) {
   if (typeof string !== 'string') {
     throw new TypeError('Expected a string');
   }
-
   return string.replace(matchOperatorsRegex, '\\$&');
 };
 
@@ -29,16 +26,13 @@ var escapeForRegex = function (string) {
  * @param {string[]} settings.domains An array of acceptable domains.
  * @returns {boolean}
  */
-module.exports = function (settings) {
-  var domain = document.location.hostname;
-
+const domainCondition = function (settings) {
+  const domain = document.location.hostname;
   return settings.domains.some(function (acceptableDomain) {
-    // If document.location.hostname is example.com and the acceptableDomain is ample.com, the
-    // condition would pass without (^|\.), which is incorrect. We can't only use ^ though because
-    // if document.location.hostname is niner.example.com and the acceptableDomain is example.com,
-    // the condition should pass. See the tests for examples of why this pattern is necessary.
     return domain.match(
       new RegExp('(^|\\.)' + escapeForRegex(acceptableDomain) + '$', 'i')
     );
   });
 };
+
+export default domainCondition;

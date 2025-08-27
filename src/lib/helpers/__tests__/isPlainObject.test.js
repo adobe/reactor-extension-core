@@ -10,9 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var isPlainObject = require('../isPlainObject');
+import isPlainObject from '../isPlainObject.js';
 
 describe('isPlainObject', function () {
   it('returns true for plain objects', function () {
@@ -44,5 +42,11 @@ describe('isPlainObject', function () {
     ].forEach(function (value) {
       expect(isPlainObject(value)).toBeFalse();
     });
+  });
+});
+
+describe('sanity', function () {
+  it('should run a basic test', function () {
+    expect(true).toBeTrue();
   });
 });

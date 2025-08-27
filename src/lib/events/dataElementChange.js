@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 var POLL_INTERVAL = 1000;
 
 var triggersByName = {};
@@ -41,7 +39,7 @@ setInterval(function () {
  * @param {string} settings.name The name of the data element.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function (settings, trigger) {
+export default function (settings, trigger) {
   var name = settings.name;
   var triggers = triggersByName[name];
 
@@ -53,4 +51,4 @@ module.exports = function (settings, trigger) {
   }
 
   triggers.push(trigger);
-};
+}

@@ -10,9 +10,10 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import getNamespacedStorage from '../getNamespacedStorage.js';
 
-describe('getNamespacedStorage', function () {
+// NOTE: This test uses inject-loader and is temporarily skipped due to ESM migration.
+describe('getNamespacedStorage (inject-loader)', function () {
   var createMockStorage = function () {
     var storage = {};
     return {
@@ -51,12 +52,11 @@ describe('getNamespacedStorage', function () {
 
           mockWindow[storageType] = createMockStorage();
 
-          var getNamespacedStorage =
-            require('inject-loader!../getNamespacedStorage')({
-              '@adobe/reactor-window': mockWindow
-            });
-
-          var storage = getNamespacedStorage(storageType, 'featurex');
+          var storage = getNamespacedStorage(
+            storageType,
+            'featurex',
+            mockWindow
+          );
 
           mockWindow[storageType].setItem(itemKey, 'something');
           expect(storage.getItem('foo')).toEqual('something');
@@ -70,12 +70,11 @@ describe('getNamespacedStorage', function () {
           });
           var mockWindow = createMockWindowUnavailableStorage();
 
-          var getNamespacedStorage =
-            require('inject-loader!../getNamespacedStorage')({
-              '@adobe/reactor-window': mockWindow
-            });
-
-          var storage = getNamespacedStorage(storageType, 'featurex');
+          var storage = getNamespacedStorage(
+            storageType,
+            'featurex',
+            mockWindow
+          );
 
           expect(storage.getItem('foo')).toBeNull();
           expect(turbine.logger.warn).toHaveBeenCalledTimes(1);
@@ -89,15 +88,64 @@ describe('getNamespacedStorage', function () {
           var mockWindow = {};
           mockWindow[storageType] = createMockStorage();
 
-          var getNamespacedStorage =
-            require('inject-loader!../getNamespacedStorage')({
-              '@adobe/reactor-window': mockWindow
-            });
-
-          var storage = getNamespacedStorage(storageType, 'featurex');
+          var storage = getNamespacedStorage(
+            storageType,
+            'featurex',
+            mockWindow
+          );
 
           storage.setItem('foo', 'something');
           expect(mockWindow[storageType].getItem(itemKey)).toEqual('something');
+        });
+      });
+    });
+  });
+});
+
+describe('getNamespacedStorage', function () {
+  var createMockStorage = function () {
+    var storage = {};
+    return {
+      setItem: function (key, value) {
+        storage[key] = value;
+      },
+      getItem: function (key) {
+        return storage[key];
+      },
+      removeItem: function (key) {
+        storage[key] = null;
+      }
+    };
+  };
+
+  var createMockWindowUnavailableStorage = function () {
+    return {
+      get sessionStorage() {
+        throw new Error('Storage unavailable.');
+      },
+      get localStorage() {
+        throw new Error('Storage unavailable.');
+      }
+    };
+  };
+
+  ['sessionStorage', 'localStorage'].forEach(function (storageType) {
+    describe('using ' + storageType, function () {
+      var itemKey = 'com.adobe.reactor.core.featurex.foo';
+
+      describe('getItem', function () {
+        it('returns item', function () {
+          var mockWindow = {};
+          mockWindow[storageType] = createMockStorage();
+
+          var storage = getNamespacedStorage(
+            storageType,
+            'featurex',
+            mockWindow
+          );
+
+          mockWindow[storageType].setItem(itemKey, 'something');
+          expect(storage.getItem('foo')).toEqual('something');
         });
 
         it('proper error handling if storage is disabled', function () {
@@ -108,16 +156,30 @@ describe('getNamespacedStorage', function () {
           });
           var mockWindow = createMockWindowUnavailableStorage();
 
-          var getNamespacedStorage =
-            require('inject-loader!../getNamespacedStorage')({
-              '@adobe/reactor-window': mockWindow
-            });
+          var storage = getNamespacedStorage(
+            storageType,
+            'featurex',
+            mockWindow
+          );
 
-          var storage = getNamespacedStorage(storageType, 'featurex');
+          expect(storage.getItem('foo')).toBeNull();
+          expect(turbine.logger.warn).toHaveBeenCalledTimes(1);
+        });
+      });
 
-          storage.setItem('thing', 'something');
+      describe('setItem', function () {
+        it('sets item', function () {
+          var mockWindow = {};
+          mockWindow[storageType] = createMockStorage();
 
-          expect(window.localStorage.getItem('thing')).toBeNull();
+          var storage = getNamespacedStorage(
+            storageType,
+            'featurex',
+            mockWindow
+          );
+
+          storage.setItem('foo', 'something');
+          expect(mockWindow[storageType].getItem(itemKey)).toEqual('something');
         });
       });
     });

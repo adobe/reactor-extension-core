@@ -10,9 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
 var testStandardEvent = require('./helpers/testStandardEvent');
-var delegateInjector = require('inject-loader!../click');
+const createClickDelegate = require('../click');
 
 var getClickEvent = function () {
   var event;
@@ -51,9 +50,7 @@ describe('click event delegate', function () {
   var delegate;
 
   beforeEach(function () {
-    delegate = delegateInjector({
-      '@adobe/reactor-window': mockWindow
-    });
+    delegate = createClickDelegate(mockWindow);
   });
 
   afterEach(function () {

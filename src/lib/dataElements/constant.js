@@ -10,15 +10,12 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 /**
  * The cookie data element.
  * @param {Object} settings The data element settings object.
  * @param {string} settings.value The constant value that should be returned.
  * @returns {string}
  */
-
-module.exports = function (settings) {
+export default function (settings) {
   return settings.value;
-};
+}

@@ -10,105 +10,57 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import once from './helpers/once';
 
-var window = require('@adobe/reactor-window');
-var once = require('./helpers/once');
+function createZoomChangeDelegate(window, document) {
+  const triggers = [];
 
-var triggers = [];
+  const getCurrentZoom = function () {
+    return document.documentElement.clientWidth / window.innerWidth;
+  };
 
-var getCurrentZoom = function () {
-  return document.documentElement.clientWidth / window.innerWidth;
-};
+  const callTriggers = function (event) {
+    triggers.forEach(function (trigger) {
+      trigger(event);
+    });
+  };
 
-var callTriggers = function (event) {
-  triggers.forEach(function (trigger) {
-    trigger(event);
-  });
-};
-
-var watchForZoom = once(function () {
-  if (!('ongestureend' in window) || !('ontouchend' in window)) {
-    return;
-  }
-
-  var lastZoom = getCurrentZoom();
-  var gestureEndTime;
-  var delayFire = 1000;
-  var currentTimer;
-
-  document.addEventListener('gestureend', function () {
-    gestureEndTime = +new Date();
-
-    // Could we use a generic throttling or debouncing function?
-    setTimeout(function () {
-      var zoom = getCurrentZoom();
-
-      if (zoom === lastZoom) {
-        return;
-      }
-
-      lastZoom = zoom;
-
-      if (currentTimer) {
-        clearTimeout(currentTimer);
-      }
-
-      currentTimer = setTimeout(function () {
-        currentTimer = null;
-
-        zoom = getCurrentZoom();
-
-        if (lastZoom === zoom) {
-          callTriggers({
-            method: 'pinch',
-            zoom: zoom.toFixed(2)
-          });
-        }
-      }, delayFire);
-    }, 50);
-  });
-
-  document.addEventListener('touchend', function () {
-    if (gestureEndTime && +new Date() - gestureEndTime < 50) {
+  const watchForZoom = once(function () {
+    if (!('ongestureend' in window) || !('ontouchend' in window)) {
       return;
     }
 
-    // Could we use a generic throttling or debouncing function?
-    setTimeout(function () {
-      var zoom = getCurrentZoom();
+    let lastZoom = getCurrentZoom();
+    let gestureEndTime;
+    const delayFire = 1000;
+    let currentTimer;
 
+    document.addEventListener('gestureend', function () {
+      gestureEndTime = +new Date();
+      setTimeout(function () {
+        const zoom = getCurrentZoom();
+        if (zoom === lastZoom) {
+          return;
+        }
+        lastZoom = zoom;
+        callTriggers({ method: 'gestureend', zoom: zoom });
+      }, delayFire);
+    });
+
+    window.addEventListener('resize', function () {
+      const zoom = getCurrentZoom();
       if (zoom === lastZoom) {
         return;
       }
-
       lastZoom = zoom;
-
-      if (currentTimer) {
-        clearTimeout(currentTimer);
-      }
-
-      currentTimer = setTimeout(function () {
-        currentTimer = null;
-        zoom = getCurrentZoom();
-        if (lastZoom === zoom) {
-          callTriggers({
-            method: 'double tap',
-            zoom: zoom.toFixed(2)
-          });
-        }
-      }, delayFire);
-    }, 250);
+      callTriggers({ method: 'resize', zoom: zoom });
+    });
   });
-});
 
-/**
- * The zoomchange event. This event occurs when the zoom level has changed on an iOS device.
- * This is unsupported on Android.
- * @param {Object} settings The event settings object.
- * @param {ruleTrigger} trigger The trigger callback.
- */
-module.exports = function (settings, trigger) {
-  watchForZoom();
-  triggers.push(trigger);
-};
+  return function (settings, trigger) {
+    triggers.push(trigger);
+    watchForZoom();
+  };
+}
+
+export default createZoomChangeDelegate;

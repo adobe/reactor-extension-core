@@ -10,72 +10,57 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var dataElementDelegate = require('inject-loader!../pageInfo')({
-  '@adobe/reactor-document': {
-    location: {
-      href: 'http://www.adobe.com/creativecloud/photography.html?promoid=NQCJRBTZ&mv=other',
-      hostname: 'www.adobe.com',
-      pathname: '/creativecloud/photography.html',
-      protocol: 'http:'
-    },
-    referrer: 'http://www.google.com/',
-    title:
-      'Adobe Creative Cloud Photography plan | Professional photo editing software'
-  }
-});
+import createPageInfo from '../pageInfo.js';
 
 describe('page info data element delegate', function () {
-  it('returns the URL', function () {
-    var settings = {
-      attribute: 'url'
-    };
+  let dataElementDelegate;
 
+  beforeAll(function () {
+    const mockDocument = {
+      location: {
+        href: 'http://www.adobe.com/creativecloud/photography.html?promoid=NQCJRBTZ&mv=other',
+        hostname: 'www.adobe.com',
+        pathname: '/creativecloud/photography.html',
+        protocol: 'http:'
+      },
+      referrer: 'http://www.google.com/',
+      title:
+        'Adobe Creative Cloud Photography plan | Professional photo editing software'
+    };
+    dataElementDelegate = createPageInfo(mockDocument);
+  });
+
+  it('returns the URL', function () {
+    const settings = { attribute: 'url' };
     expect(dataElementDelegate(settings)).toBe(
       'http://www.adobe.com/creativecloud/photography.html?promoid=NQCJRBTZ&mv=other'
     );
   });
 
   it('returns the hostname', function () {
-    var settings = {
-      attribute: 'hostname'
-    };
-
+    const settings = { attribute: 'hostname' };
     expect(dataElementDelegate(settings)).toBe('www.adobe.com');
   });
 
   it('returns the pathname', function () {
-    var settings = {
-      attribute: 'pathname'
-    };
-
+    const settings = { attribute: 'pathname' };
     expect(dataElementDelegate(settings)).toBe(
       '/creativecloud/photography.html'
     );
   });
 
   it('returns the protocol', function () {
-    var settings = {
-      attribute: 'protocol'
-    };
-
+    const settings = { attribute: 'protocol' };
     expect(dataElementDelegate(settings)).toBe('http:');
   });
 
   it('returns the referrer', function () {
-    var settings = {
-      attribute: 'referrer'
-    };
-
+    const settings = { attribute: 'referrer' };
     expect(dataElementDelegate(settings)).toBe('http://www.google.com/');
   });
 
   it('returns the title', function () {
-    var settings = {
-      attribute: 'title'
-    };
-
+    const settings = { attribute: 'title' };
     expect(dataElementDelegate(settings)).toBe(
       'Adobe Creative Cloud Photography plan | Professional photo editing software'
     );

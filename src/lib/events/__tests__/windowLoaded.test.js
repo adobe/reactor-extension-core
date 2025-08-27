@@ -10,19 +10,16 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import createWindowLoadedDelegate from '../windowLoaded.js';
 
 describe('window loaded event delegate', function () {
   it('sends the trigger to the pageLifecycleEvents helper module', function () {
-    var windowLoadedInjector = require('inject-loader!../windowLoaded');
     var trigger = function () {};
     var pageLifecycleEventsSpy = jasmine.createSpyObj('pageLifecycleEvents', [
       'registerWindowLoadedTrigger'
     ]);
 
-    var delegate = windowLoadedInjector({
-      './helpers/pageLifecycleEvents': pageLifecycleEventsSpy
-    });
+    var delegate = createWindowLoadedDelegate(pageLifecycleEventsSpy);
 
     delegate({}, trigger);
     expect(

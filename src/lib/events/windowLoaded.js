@@ -10,10 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var pageLifecycleEvents = require('./helpers/pageLifecycleEvents');
-
 /**
  * Window loaded event. This event occurs at the end of the document loading process. At this point,
  * all of the objects in the document are loaded in the DOM, and all images, scripts, links,
@@ -21,6 +17,8 @@ var pageLifecycleEvents = require('./helpers/pageLifecycleEvents');
  * @param {Object} settings The event settings object.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function (settings, trigger) {
-  pageLifecycleEvents.registerWindowLoadedTrigger(trigger);
-};
+export default function createWindowLoadedDelegate(pageLifecycleEvents) {
+  return function (settings, trigger) {
+    pageLifecycleEvents.registerWindowLoadedTrigger(trigger);
+  };
+}

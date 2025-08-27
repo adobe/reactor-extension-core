@@ -10,12 +10,11 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-var assign = require('@adobe/reactor-object-assign');
-var mitt = require('../../../../node_modules/mitt/dist/mitt');
+import assign from '@adobe/reactor-object-assign';
+import mitt from '../../../../node_modules/mitt/dist/mitt';
 
-var CHECK_INTERVAL_MS = 1000;
-var onlyUnique = function (value, index, self) {
+const CHECK_INTERVAL_MS = 1000;
+const onlyUnique = function (value, index, self) {
   return self.indexOf(value) === index;
 };
 
@@ -26,7 +25,7 @@ var onlyUnique = function (value, index, self) {
  * it's internal counter.
  * @constructor
  */
-var Timer = function (checkInterval) {
+const Timer = function (checkInterval) {
   assign(this, mitt());
 
   this._total = 0;
@@ -107,4 +106,4 @@ Timer.prototype = {
   }
 };
 
-module.exports = Timer;
+export default Timer;

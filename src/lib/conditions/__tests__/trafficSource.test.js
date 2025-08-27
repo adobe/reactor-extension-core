@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 var mockVisitorTracking = {
   getTrafficSource: function () {
     return 'http://trafficsource.com';

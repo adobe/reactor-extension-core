@@ -10,9 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-var getObjectProperty = require('../helpers/getObjectProperty');
-var textMatch = require('../helpers/textMatch');
+import getObjectProperty from '../helpers/getObjectProperty';
+import textMatch from '../helpers/textMatch';
 
 /**
  * Variable condition. Determines if a particular JS variable's actual value matches
@@ -27,7 +26,7 @@ var textMatch = require('../helpers/textMatch');
  * DEPRECATED @param {boolean=} [settings.valueIsRegex=false] Whether <code>settings.value</code>
  * @returns {boolean}
  */
-module.exports = function (settings) {
+const variableCondition = function (settings) {
   var variableValues;
   if (!Array.isArray(settings.variableValues)) {
     // legacy support
@@ -47,3 +46,5 @@ module.exports = function (settings) {
     return textMatch(testValue, acceptableValue);
   });
 };
+
+export default variableCondition;

@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 /**
  * The custom data element.
  * @param {Object} settings The data element settings object.
@@ -19,6 +17,6 @@
  * @param {string} event The event (if any) that triggered the evaluation of the data element.
  * @returns {string}
  */
-module.exports = function (settings, event) {
+export default function (settings, event) {
   return settings.source(event);
-};
+}

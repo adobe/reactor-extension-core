@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 var dataElementDelegate = require('../customCode');
 
 describe('custom code data element delegate', function () {

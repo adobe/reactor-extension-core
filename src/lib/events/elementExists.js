@@ -10,32 +10,23 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import WeakMap from './helpers/weakMap';
+import matchesProperties from './helpers/matchesProperties';
 
-var POLL_INTERVAL = 3000;
-
-var WeakMap = require('./helpers/weakMap');
-var seenElements = new WeakMap();
-var matchesProperties = require('./helpers/matchesProperties');
-
-var listenersBySelector = {};
+const POLL_INTERVAL = 3000;
+const seenElements = new WeakMap();
+const listenersBySelector = {};
 
 setInterval(function () {
   Object.keys(listenersBySelector).forEach(function (selector) {
-    var listeners = listenersBySelector[selector];
-    var elements = document.querySelectorAll(selector);
-
-    for (var i = 0; i < elements.length; i++) {
-      var element = elements[i];
-
+    const listeners = listenersBySelector[selector];
+    const elements = document.querySelectorAll(selector);
+    for (let i = 0; i < elements.length; i++) {
+      const element = elements[i];
       if (!seenElements.has(element)) {
         seenElements.set(element, true);
-
-        // We want to try to execute the rules in the order they were in the turbine container.
-        // This is why we try to loop from 0 to N. We do k-- in order to not mess up looping
-        // as we splice items from the array.
-        for (var k = 0; k < listeners.length; k++) {
-          var listener = listeners[k];
+        for (let k = 0; k < listeners.length; k++) {
+          const listener = listeners[k];
           if (matchesProperties(element, listener.settings.elementProperties)) {
             listener.trigger({
               element: element,
@@ -46,10 +37,6 @@ setInterval(function () {
           }
         }
       }
-
-      // Listeners are removed from the array as their respective rules are fired.
-      // Once we have no more rules corresponding to the selector there is no need to
-      // continue scanning elements with the selector.
       if (!listeners.length) {
         delete listenersBySelector[selector];
         break;
@@ -72,15 +59,15 @@ setInterval(function () {
  * on the object instance is intended to be a regular expression.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function (settings, trigger) {
-  var listeners = listenersBySelector[settings.elementSelector];
-
+const elementExistsEvent = function (settings, trigger) {
+  let listeners = listenersBySelector[settings.elementSelector];
   if (!listeners) {
     listeners = listenersBySelector[settings.elementSelector] = [];
   }
-
   listeners.push({
     settings: settings,
     trigger: trigger
   });
 };
+
+export default elementExistsEvent;

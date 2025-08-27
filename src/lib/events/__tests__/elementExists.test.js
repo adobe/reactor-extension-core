@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 var POLL_INTERVAL = 3000;
 
 describe('element exists event delegate', function () {

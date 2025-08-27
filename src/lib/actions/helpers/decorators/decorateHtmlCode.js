@@ -10,80 +10,57 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import Promise from '@adobe/reactor-promise';
 
-var Promise = require('@adobe/reactor-promise');
-
-var callbackId = 0;
-var htmlCodePromises = {};
+let callbackId = 0;
+const htmlCodePromises = {};
 
 window._satellite = window._satellite || {};
 
-/**
- * Public function intended to be called by the user.
- * @param {number} callbackId The identifier passed to _satellite._onCustomCodeSuccess().
- */
 window._satellite._onCustomCodeSuccess = function (callbackId) {
-  var promiseHandlers = htmlCodePromises[callbackId];
-  if (!promiseHandlers) {
-    return;
-  }
-
+  const promiseHandlers = htmlCodePromises[callbackId];
+  if (!promiseHandlers) return;
   delete htmlCodePromises[callbackId];
   promiseHandlers.resolve();
 };
 
-/**
- * Public function intended to be called by the user.
- * @param {number} callbackId The identifier passed to _satellite._onCustomCodeSuccess().
- */
 window._satellite._onCustomCodeFailure = function (callbackId) {
-  var promiseHandlers = htmlCodePromises[callbackId];
-  if (!promiseHandlers) {
-    return;
-  }
-
+  const promiseHandlers = htmlCodePromises[callbackId];
+  if (!promiseHandlers) return;
   delete htmlCodePromises[callbackId];
   promiseHandlers.reject();
 };
 
-var reactorCallbackIdShouldBeReplaced = function (source) {
+const reactorCallbackIdShouldBeReplaced = function (source) {
   return source.indexOf('${reactorCallbackId}') !== -1;
 };
 
-var replaceCallbacksIds = function (source, callbackId) {
+const replaceCallbacksIds = function (source, callbackId) {
   return source.replace(/\${reactorCallbackId}/g, callbackId);
 };
 
-var isSourceLoadedFromFile = function (action) {
+const isSourceLoadedFromFile = function (action) {
   return action.settings.isExternal;
 };
 
-module.exports = function (action, source) {
-  // We need to replace tokens only for sources loaded from external files. The sources from
-  // inside the container are automatically taken care by Turbine.
+const decorateHtmlCode = function (action, source) {
   if (isSourceLoadedFromFile(action)) {
     source = turbine.replaceTokens(source, action.event);
   }
-
-  var promise;
-
+  let promise;
   if (reactorCallbackIdShouldBeReplaced(source)) {
     promise = new Promise(function (resolve, reject) {
-      htmlCodePromises[String(callbackId)] = {
-        resolve: resolve,
-        reject: reject
-      };
+      htmlCodePromises[String(callbackId)] = { resolve, reject };
     });
-
     source = replaceCallbacksIds(source, callbackId);
     callbackId += 1;
   } else {
     promise = Promise.resolve();
   }
-
   return {
     code: source,
     promise: promise
   };
 };
+
+export default decorateHtmlCode;

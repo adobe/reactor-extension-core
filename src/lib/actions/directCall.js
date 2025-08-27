@@ -10,10 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var window = require('@adobe/reactor-window');
-
 /**
  * The custom code action. This loads and executes custom JavaScript or HTML provided by the user.
  * @param {Object} settings Action settings.
@@ -22,22 +18,26 @@ var window = require('@adobe/reactor-window');
  * @param {Array} settings.detail.eventObjectEntries A list of {key, value} tuples that will be
  * provided to _satellite.track as additional event detail.
  */
-module.exports = function (settings) {
-  if (settings && settings.identifier) {
-    var _detail = settings.detail;
-    if (
-      _detail &&
-      Array.isArray(_detail.eventObjectEntries) &&
-      _detail.eventObjectEntries.length
-    ) {
-      var detailEvent = {};
-      // iterate over the array and build the object
-      _detail.eventObjectEntries.forEach(function (tuple) {
-        detailEvent[tuple.key] = tuple.value;
-      });
-      window._satellite.track(settings.identifier, detailEvent);
-    } else {
-      window._satellite.track(settings.identifier);
+function createDirectCallActionDelegate(window) {
+  return function (settings) {
+    if (settings && settings.identifier) {
+      var _detail = settings.detail;
+      if (
+        _detail &&
+        Array.isArray(_detail.eventObjectEntries) &&
+        _detail.eventObjectEntries.length
+      ) {
+        var detailEvent = {};
+        // iterate over the array and build the object
+        _detail.eventObjectEntries.forEach(function (tuple) {
+          detailEvent[tuple.key] = tuple.value;
+        });
+        window._satellite.track(settings.identifier, detailEvent);
+      } else {
+        window._satellite.track(settings.identifier);
+      }
     }
-  }
-};
+  };
+}
+
+export default createDirectCallActionDelegate;

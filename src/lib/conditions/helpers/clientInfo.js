@@ -9,9 +9,8 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  ****************************************************************************************/
-'use strict';
 
-var matchUserAgent = function (regexs) {
+const matchUserAgent = function (regexs) {
   return function (userAgent) {
     var keys = Object.keys(regexs);
     for (var i = 0; i < keys.length; i++) {
@@ -25,7 +24,7 @@ var matchUserAgent = function (regexs) {
   };
 };
 
-var browser = matchUserAgent({
+const browser = matchUserAgent({
   Edge: /Edge/,
   'Mobile Safari': /Mobile(\/[0-9A-z]+)? Safari/,
   Chrome: /Chrome/,
@@ -34,7 +33,7 @@ var browser = matchUserAgent({
   Safari: /Safari/
 })(navigator.userAgent);
 
-var os = matchUserAgent({
+const os = matchUserAgent({
   iOS: /iPhone|iPad|iPod/,
   Android: /Android [0-9\.]+;/,
   Linux: / Linux /,
@@ -43,7 +42,7 @@ var os = matchUserAgent({
   MacOS: /Macintosh;/
 })(navigator.userAgent);
 
-var deviceType = matchUserAgent({
+const deviceType = matchUserAgent({
   iPhone: /iPhone/,
   iPad: /iPad/,
   iPod: /iPod/,
@@ -57,8 +56,10 @@ var deviceType = matchUserAgent({
 /**
  * Contains information about the client environment.
  */
-module.exports = {
+const clientInfo = {
   browser: browser,
   os: os,
   deviceType: deviceType
 };
+
+export default clientInfo;

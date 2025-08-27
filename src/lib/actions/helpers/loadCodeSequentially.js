@@ -10,25 +10,23 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import Promise from '@adobe/reactor-promise';
+import getSourceByUrl from './getSourceByUrl';
 
-var Promise = require('@adobe/reactor-promise');
-var getSourceByUrl = require('./getSourceByUrl');
+let previousExecuteCodePromise = Promise.resolve();
 
-var previousExecuteCodePromise = Promise.resolve();
-
-module.exports = function (sourceUrl) {
-  var sequentiallyLoadCodePromise = new Promise(function (resolve) {
-    var loadCodePromise = getSourceByUrl(sourceUrl);
-
-    Promise.all([loadCodePromise, previousExecuteCodePromise]).then(function (
-      values
-    ) {
-      var source = values[0];
-      resolve(source);
-    });
+const loadCodeSequentially = function (sourceUrl) {
+  const sequentiallyLoadCodePromise = new Promise(function (resolve) {
+    const loadCodePromise = getSourceByUrl(sourceUrl);
+    Promise.all([loadCodePromise, previousExecuteCodePromise]).then(
+      function (values) {
+        const source = values[0];
+        resolve(source);
+      }
+    );
   });
-
   previousExecuteCodePromise = sequentiallyLoadCodePromise;
   return sequentiallyLoadCodePromise;
 };
+
+export default loadCodeSequentially;

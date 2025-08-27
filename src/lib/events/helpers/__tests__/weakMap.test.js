@@ -9,7 +9,7 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  ****************************************************************************************/
-'use strict';
+import createWeakMap from '../weakMap.js';
 
 describe('WeakMap', function () {
   it('returns the native WeakMap if it exists', function () {
@@ -18,9 +18,7 @@ describe('WeakMap', function () {
       WeakMap: MockWeakMap
     };
 
-    var WeakMap = require('inject-loader!../weakMap')({
-      '@adobe/reactor-window': mockWindow
-    });
+    var WeakMap = createWeakMap(mockWindow);
 
     expect(WeakMap).toBe(MockWeakMap);
   });
@@ -28,9 +26,7 @@ describe('WeakMap', function () {
   it('returns WeakMap implementation without modifying global scope', function () {
     var mockWindow = {};
 
-    var WeakMap = require('inject-loader!../weakMap')({
-      '@adobe/reactor-window': mockWindow
-    });
+    var WeakMap = createWeakMap(mockWindow);
 
     expect(WeakMap).toEqual(jasmine.any(Function));
     expect(mockWindow.WeakMap).toBeUndefined();
@@ -40,11 +36,7 @@ describe('WeakMap', function () {
   // https://github.com/webcomponents/webcomponentsjs/blob/82964dec42a7f6af70142b1bbf3bc4ca16bf1bcf/tests/WeakMap/tests.html
 
   it('has get, set, delete, and has functions', function () {
-    var WeakMap = require('inject-loader!../weakMap')({
-      // Inject an empty window so we don't end up testing the native WeakMap if it exists
-      // in the target browser.
-      '@adobe/reactor-window': {}
-    });
+    var WeakMap = createWeakMap({});
     expect(WeakMap.prototype.get).toEqual(jasmine.any(Function));
     expect(WeakMap.prototype.set).toEqual(jasmine.any(Function));
     expect(WeakMap.prototype.delete).toEqual(jasmine.any(Function));
@@ -52,11 +44,7 @@ describe('WeakMap', function () {
   });
 
   it('has methods that perform as expected', function () {
-    var WeakMap = require('inject-loader!../weakMap')({
-      // Inject an empty window so we don't end up testing the native WeakMap if it exists
-      // in the target browser.
-      '@adobe/reactor-window': {}
-    });
+    var WeakMap = createWeakMap({});
     var wm = new WeakMap();
 
     var o1 = {};

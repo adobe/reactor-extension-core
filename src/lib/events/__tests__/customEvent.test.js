@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import delegate from '../customEvent.js';
 
 var outerElement;
 var innerElement;
@@ -23,8 +23,6 @@ var triggerCustomEvent = function (element, type, detail) {
 };
 
 describe('custom event event delegate', function () {
-  var delegate = require('../customEvent');
-
   beforeAll(function () {
     outerElement = document.createElement('div');
     outerElement.id = 'outer';

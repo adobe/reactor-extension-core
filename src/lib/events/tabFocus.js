@@ -10,42 +10,43 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var document = require('@adobe/reactor-document');
-var once = require('./helpers/once');
-var visibilityApi = require('./helpers/visibilityApi')();
-var hiddenProperty = visibilityApi.hiddenProperty;
-var visibilityChangeEventType = visibilityApi.visibilityChangeEventType;
+import once from './helpers/once';
+import getVisibilityApi from './helpers/visibilityApi';
 
 /**
  * All trigger methods registered for this event type.
  * @type {ruleTrigger[]}
  */
-var triggers = [];
+const triggers = [];
 
-var watchForTabFocus = once(function () {
-  document.addEventListener(
-    visibilityChangeEventType,
-    function () {
-      if (!document[hiddenProperty]) {
-        triggers.forEach(function (trigger) {
-          trigger();
-        });
-      }
-    },
-    true
-  );
-});
+export default function createTabFocusDelegate(document) {
+  const visibilityApi = getVisibilityApi();
+  const hiddenProperty = visibilityApi.hiddenProperty;
+  const visibilityChangeEventType = visibilityApi.visibilityChangeEventType;
 
-/**
- * Tabfocus event. This event occurs when a webpage is visible or in focus. With tabbed browsing,
- * there is a reasonable chance that any given webpage is in the background and thus not
- * visible to the user.
- * @param {Object} settings The event settings object.
- * @param {ruleTrigger} trigger The trigger callback.
- */
-module.exports = function (settings, trigger) {
-  watchForTabFocus();
-  triggers.push(trigger);
-};
+  const watchForTabFocus = once(() => {
+    document.addEventListener(
+      visibilityChangeEventType,
+      function () {
+        if (!document[hiddenProperty]) {
+          triggers.forEach(function (trigger) {
+            trigger();
+          });
+        }
+      },
+      true
+    );
+  });
+
+  /**
+   * Tabfocus event. This event occurs when a webpage is visible or in focus. With tabbed browsing,
+   * there is a reasonable chance that any given webpage is in the background and thus not
+   * visible to the user.
+   * @param {Object} settings The event settings object.
+   * @param {ruleTrigger} trigger The trigger callback.
+   */
+  return function (settings, trigger) {
+    watchForTabFocus();
+    triggers.push(trigger);
+  };
+}

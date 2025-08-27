@@ -10,10 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var document = require('@adobe/reactor-document');
-var compareNumbers = require('./helpers/compareNumbers');
+import document from '@adobe/reactor-document';
+import compareNumbers from './helpers/compareNumbers';
 
 /**
  * Window size condition. Determines if the current window size matches constraints.
@@ -26,18 +24,18 @@ var compareNumbers = require('./helpers/compareNumbers');
  * to compare against height.
  * @returns {boolean}
  */
-module.exports = function (settings) {
-  var widthInRange = compareNumbers(
+const windowSizeCondition = function (settings) {
+  const widthInRange = compareNumbers(
     document.documentElement.clientWidth,
     settings.widthOperator,
     settings.width
   );
-
-  var heightInRange = compareNumbers(
+  const heightInRange = compareNumbers(
     document.documentElement.clientHeight,
     settings.heightOperator,
     settings.height
   );
-
   return widthInRange && heightInRange;
 };
+
+export default windowSizeCondition;

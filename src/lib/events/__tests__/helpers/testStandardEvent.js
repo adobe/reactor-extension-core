@@ -10,12 +10,9 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import getDelegate from '../getDelegate.js';
 
-var outerElement;
-var innerElement;
-
-var assertTriggerCall = function (options) {
+const assertTriggerCall = function (options) {
   expect(options.call.args[0]).toEqual({
     element: options.element,
     target: options.target,
@@ -23,9 +20,9 @@ var assertTriggerCall = function (options) {
   });
 };
 
-module.exports = function (getDelegate, type) {
+export default function (getDelegate, type) {
   describe('standard event functionality', function () {
-    var delegate;
+    let delegate;
 
     beforeEach(function () {
       delegate = getDelegate();
@@ -38,8 +35,6 @@ module.exports = function (getDelegate, type) {
       innerElement.id = 'inner';
       innerElement.title = 'inner container';
       outerElement.appendChild(innerElement);
-
-      document.body.insertBefore(outerElement, document.body.firstChild);
     });
 
     afterEach(function () {
@@ -168,4 +163,4 @@ module.exports = function (getDelegate, type) {
       expect(trigger.calls.count()).toBe(0);
     });
   });
-};
+}

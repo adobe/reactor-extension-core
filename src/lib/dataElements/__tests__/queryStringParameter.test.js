@@ -10,61 +10,36 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import createQueryStringParameter from '../queryStringParameter.js';
 
 describe('query string parameter data element delegate', function () {
-  var injectDelegate = require('inject-loader!../queryStringParameter');
-  var delegate;
+  let delegate;
 
   beforeAll(function () {
-    delegate = injectDelegate({
-      '@adobe/reactor-window': {
-        location: {
-          search: '?foo=bar'
-        }
-      }
-    });
+    const mockWindow = { location: { search: '?foo=bar' } };
+    const mockQueryString = {
+      parse: (search) => ({ foo: 'bar' })
+    };
+    delegate = createQueryStringParameter(mockWindow, mockQueryString);
   });
 
   it('returns a value when a match is found case-insensitively', function () {
-    var settings = {
-      name: 'foo',
-      caseInsensitive: true
-    };
-
-    var value = delegate(settings);
-
-    expect(value).toBe('bar');
+    const settings = { name: 'foo', caseInsensitive: true };
+    expect(delegate(settings)).toBe('bar');
   });
 
   it('returns a value when a match is found case-sensitively', function () {
-    var settings = {
-      name: 'foo'
-    };
-
-    var value = delegate(settings);
-
-    expect(value).toBe('bar');
+    const settings = { name: 'foo' };
+    expect(delegate(settings)).toBe('bar');
   });
 
   it('returns undefined when a match is not found case-insensitively', function () {
-    var settings = {
-      name: 'unicorn',
-      caseInsensitive: true
-    };
-
-    var value = delegate(settings);
-
-    expect(value).toBe(undefined);
+    const settings = { name: 'unicorn', caseInsensitive: true };
+    expect(delegate(settings)).toBe(undefined);
   });
 
   it('returns undefined when a match is not found case-sensitively', function () {
-    var settings = {
-      name: 'FOO'
-    };
-
-    var value = delegate(settings);
-
-    expect(value).toBe(undefined);
+    const settings = { name: 'FOO' };
+    expect(delegate(settings)).toBe(undefined);
   });
 });

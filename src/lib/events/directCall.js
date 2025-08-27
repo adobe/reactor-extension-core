@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+window._satellite = window._satellite || {};
 
 /**
  * Object where the key is the call name and the value is an array of all rule trigger functions
@@ -18,8 +18,6 @@
  * @type {Object}
  */
 var triggersByIdentifier = {};
-
-window._satellite = window._satellite || {};
 
 /**
  * Public function intended to be called by the user.
@@ -64,7 +62,7 @@ window._satellite.track = function (identifier, detail) {
  * @param {string} settings.identifier The identifier passed to _satellite.track().
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function (settings, trigger) {
+export default function (settings, trigger) {
   var triggers = triggersByIdentifier[settings.identifier];
 
   if (!triggers) {
@@ -72,4 +70,4 @@ module.exports = function (settings, trigger) {
   }
 
   triggers.push(trigger);
-};
+}

@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 /**
  * Custom code condition. This executes condition code provided by the user.
  * @param {Object} settings Condition settings.
@@ -21,7 +19,9 @@
  * @param {Object} event.target The element on which the event occurred.
  * @returns {boolean}
  */
-module.exports = function (settings, event) {
+const customCodeCondition = function (settings, event) {
   // `this` and `target` are provided separately from event for backward-compatibility.
   return settings.source.call(event.element, event, event.target);
 };
+
+export default customCodeCondition;

@@ -10,12 +10,10 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import testStandardEvent from './helpers/testStandardEvent.js';
+import delegate from '../mediaLoadedData.js';
 
 describe('media loaded data event delegate', function () {
-  var testStandardEvent = require('./helpers/testStandardEvent');
-  var delegate = require('../mediaLoadedData');
-
   testStandardEvent(function () {
     return delegate;
   }, 'loadeddata');

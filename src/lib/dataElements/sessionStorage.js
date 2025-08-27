@@ -10,24 +10,12 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var window = require('@adobe/reactor-window');
-
-/**
- * The session storage data element.
- * @param {Object} settings The data element settings object.
- * @param {string} settings.name The name of the session storage item for which a value should be
- * retrieved.
- * @returns {string}
- */
-module.exports = function (settings) {
-  // When session storage is disabled on Safari, the mere act of referencing window.sessionStorage
-  // throws an error. For this reason, referencing window.sessionStorage without being inside
-  // a try-catch should be avoided.
-  try {
-    return window.sessionStorage.getItem(settings.name);
-  } catch (e) {
-    return null;
-  }
-};
+export default function createSessionStorage(window) {
+  return function (settings) {
+    try {
+      return window.sessionStorage.getItem(settings.name);
+    } catch (e) {
+      return null;
+    }
+  };
+}

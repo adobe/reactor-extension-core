@@ -10,8 +10,13 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-var entersViewportInjector = require('inject-loader!../entersViewport');
+import createEntersViewportDelegate from '../entersViewport.js';
+const OBSERVER_ELEMENT_REFRESH_FREQUENCY = 200;
+var mockIntersectionObserverIntervals = {
+  standard: {
+    pageElementsRefresh: OBSERVER_ELEMENT_REFRESH_FREQUENCY
+  }
+};
 
 /**
  * Provides a document object that provides native functionality but
@@ -55,14 +60,17 @@ var getWindowProxy = function () {
   };
 };
 
-var OBSERVER_ELEMENT_REFRESH_FREQUENCY = 200;
-var mockIntersectionObserverIntervals = {
-  standard: {
-    pageElementsRefresh: OBSERVER_ELEMENT_REFRESH_FREQUENCY
-  }
-};
-
 describe('enters viewport event delegate', function () {
+  var mockWindow;
+  var mockDocument;
+  var delegate;
+
+  beforeEach(function () {
+    mockWindow = getWindowProxy();
+    mockDocument = getDocumentProxy();
+    delegate = createEntersViewportDelegate(mockWindow, mockDocument);
+  });
+
   var aElement;
   var aElementId;
   var bElement;

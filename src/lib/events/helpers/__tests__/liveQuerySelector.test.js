@@ -10,25 +10,18 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import liveQuerySelector, { __reset } from '../liveQuerySelector.js';
 
 var POLL_INTERVAL = 3000;
 
 describe('liveQuerySelector', function () {
-  var liveQuerySelector;
-
   beforeAll(function () {
-    // The module may have been previously required by other another module (namely, hover.js)
-    // which prevents us from installing a clock that is effective unless we clear the cache and
-    // require the module again.
-    delete require.cache[require.resolve('../liveQuerySelector')];
-
     jasmine.clock().install();
-    liveQuerySelector = require('../liveQuerySelector');
   });
 
   afterAll(function () {
     jasmine.clock().uninstall();
+    if (__reset) __reset();
   });
 
   it('detects an element added before polling starts', function () {
