@@ -14,11 +14,21 @@ export default (config) => {
     hostname: '0.0.0.0',
     basePath: '',
     frameworks: ['jasmine', 'jasmine-matchers'],
+    // files: [{ pattern: './src/**/*.js', type: 'module' }],
+    // preprocessors: {
+    //   './src/**/*.js': ['rollup']
+    // },
     files: [
-      { pattern: 'src/lib/events/__tests__/customCode.test.js', type: 'module' }
+      {
+        pattern:
+          'src/lib/actions/helpers/decorators/__tests__/decorateHtmlCode.test.js',
+        type: 'module'
+      }
     ],
     preprocessors: {
-      'src/lib/events/__tests__/customCode.test.js': ['rollup']
+      'src/lib/actions/helpers/decorators/__tests__/decorateHtmlCode.test.js': [
+        'rollup'
+      ]
     },
     plugins: [
       karmaCoverage,

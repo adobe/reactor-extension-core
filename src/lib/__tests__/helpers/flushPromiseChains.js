@@ -17,7 +17,7 @@ governing permissions and limitations under the License.
  * are no longer than 10 promises long.
  * @returns {Promise}
  */
-const flushPromiseChains = function () {
+export default function flushPromiseChains() {
   let promise;
   for (let i = 0; i < 10; i += 1) {
     promise = promise
@@ -25,6 +25,4 @@ const flushPromiseChains = function () {
       : Promise.resolve();
   }
   return promise;
-};
-
-export default flushPromiseChains;
+}

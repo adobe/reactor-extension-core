@@ -10,57 +10,65 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import Promise from '@adobe/reactor-promise';
+// Factory for dependency injection
+export function createDecorateHtmlCode({ Promise, turbine, satellite } = {}) {
+  let callbackId = 0;
+  const htmlCodePromises = {};
 
-let callbackId = 0;
-const htmlCodePromises = {};
-
-window._satellite = window._satellite || {};
-
-window._satellite._onCustomCodeSuccess = function (callbackId) {
-  const promiseHandlers = htmlCodePromises[callbackId];
-  if (!promiseHandlers) return;
-  delete htmlCodePromises[callbackId];
-  promiseHandlers.resolve();
-};
-
-window._satellite._onCustomCodeFailure = function (callbackId) {
-  const promiseHandlers = htmlCodePromises[callbackId];
-  if (!promiseHandlers) return;
-  delete htmlCodePromises[callbackId];
-  promiseHandlers.reject();
-};
-
-const reactorCallbackIdShouldBeReplaced = function (source) {
-  return source.indexOf('${reactorCallbackId}') !== -1;
-};
-
-const replaceCallbacksIds = function (source, callbackId) {
-  return source.replace(/\${reactorCallbackId}/g, callbackId);
-};
-
-const isSourceLoadedFromFile = function (action) {
-  return action.settings.isExternal;
-};
-
-const decorateHtmlCode = function (action, source) {
-  if (isSourceLoadedFromFile(action)) {
-    source = turbine.replaceTokens(source, action.event);
-  }
-  let promise;
-  if (reactorCallbackIdShouldBeReplaced(source)) {
-    promise = new Promise(function (resolve, reject) {
-      htmlCodePromises[String(callbackId)] = { resolve, reject };
-    });
-    source = replaceCallbacksIds(source, callbackId);
-    callbackId += 1;
-  } else {
-    promise = Promise.resolve();
-  }
-  return {
-    code: source,
-    promise: promise
+  satellite._onCustomCodeSuccess = function (callbackId) {
+    const promiseHandlers = htmlCodePromises[callbackId];
+    if (!promiseHandlers) {
+      return;
+    }
+    delete htmlCodePromises[callbackId];
+    promiseHandlers.resolve();
   };
-};
 
+  satellite._onCustomCodeFailure = function (callbackId) {
+    const promiseHandlers = htmlCodePromises[callbackId];
+    if (!promiseHandlers) return;
+    delete htmlCodePromises[callbackId];
+    promiseHandlers.reject();
+  };
+
+  const reactorCallbackIdShouldBeReplaced = function (source) {
+    return source.indexOf('${reactorCallbackId}') !== -1;
+  };
+
+  const replaceCallbacksIds = function (source, callbackId) {
+    return source.replace(/\${reactorCallbackId}/g, callbackId);
+  };
+
+  const isSourceLoadedFromFile = function (action) {
+    return action.settings.isExternal;
+  };
+
+  return function decorateHtmlCode(action, source) {
+    if (isSourceLoadedFromFile(action)) {
+      source = turbine.replaceTokens(source, action.event);
+    }
+    let promise;
+    if (reactorCallbackIdShouldBeReplaced(source)) {
+      promise = new Promise(function (resolve, reject) {
+        htmlCodePromises[String(callbackId)] = { resolve, reject };
+      });
+      source = replaceCallbacksIds(source, callbackId);
+      callbackId += 1;
+    } else {
+      promise = Promise.resolve();
+    }
+    return {
+      code: source,
+      promise: promise
+    };
+  };
+}
+
+// Default export for production usage
+import Promise from '@adobe/reactor-promise';
+const decorateHtmlCode = createDecorateHtmlCode({
+  Promise,
+  turbine: window.turbine,
+  satellite: window._satellite
+});
 export default decorateHtmlCode;
