@@ -75,6 +75,7 @@ export default (config) => {
     browserDisconnectTolerance: 3,
     browserNoActivityTimeout: 300000,
     client: {
+      captureConsole: true,
       jasmine: {
         // seed: 55788
       }

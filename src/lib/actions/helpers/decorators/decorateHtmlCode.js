@@ -66,9 +66,20 @@ export function createDecorateHtmlCode({ Promise, turbine, satellite } = {}) {
 
 // Default export for production usage
 import Promise from '@adobe/reactor-promise';
-const decorateHtmlCode = createDecorateHtmlCode({
-  Promise,
-  turbine: window.turbine,
-  satellite: window._satellite
-});
+
+let decorateHtmlCode;
+if (typeof window !== 'undefined' && window.turbine && window._satellite) {
+  decorateHtmlCode = createDecorateHtmlCode({
+    Promise,
+    turbine: window.turbine,
+    satellite: window._satellite
+  });
+} else {
+  // Export a dummy function or throw a clear error if globals are missing
+  decorateHtmlCode = function () {
+    throw new Error(
+      'window.turbine and window._satellite must be defined to use the default export of decorateHtmlCode.'
+    );
+  };
+}
 export default decorateHtmlCode;

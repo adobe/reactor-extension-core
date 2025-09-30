@@ -23,7 +23,6 @@ function createMockTurbine() {
 }
 
 describe('decorate html code', function () {
-  console.log('HELLO WORLD')
   let mockTurbine;
   let decorateHtmlCode;
   let satellite;
@@ -31,18 +30,14 @@ describe('decorate html code', function () {
   beforeEach(function () {
     mockTurbine = createMockTurbine();
     satellite = {};
-    console.log('Promise', Promise);
     decorateHtmlCode = createDecorateHtmlCode({
       Promise,
       turbine: mockTurbine,
       satellite
     });
-
-    window.turbine = mockTurbine;
-    window._satellite = satellite;;
   });
 
-  fit('returns the decorated code on the code key', function () {
+  it('returns the decorated code on the code key', function () {
     const settings = {
       language: 'html',
       source: '<script>console.log("logging")</script>'
@@ -130,8 +125,8 @@ describe('decorate html code', function () {
 
       const p = Promise.resolve();
       const decorateHtmlCodeWithMockPromise = createDecorateHtmlCode({
-        PromiseImpl: { resolve: () => p },
-        turbineImpl: mockTurbine,
+        Promise: { resolve: () => p },
+        turbine: mockTurbine,
         satellite
       });
 
