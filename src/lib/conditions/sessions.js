@@ -10,10 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var visitorTracking = require('../helpers/visitorTracking');
-var compareNumbers = require('./helpers/compareNumbers');
+import visitorTracking from '../helpers/visitorTracking';
+import compareNumbers from './helpers/compareNumbers';
 
 /**
  * Sessions condition. Determines if the number of sessions matches constraints.
@@ -23,10 +21,12 @@ var compareNumbers = require('./helpers/compareNumbers');
  * compare against count.
  * @returns {boolean}
  */
-module.exports = function (settings) {
+const sessionsCondition = function (settings) {
   return compareNumbers(
     visitorTracking.getSessionCount(),
     settings.operator,
     settings.count
   );
 };
+
+export default sessionsCondition;

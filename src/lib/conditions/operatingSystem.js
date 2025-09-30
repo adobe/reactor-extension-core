@@ -10,9 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var clientInfo = require('./helpers/clientInfo');
+import clientInfo from './helpers/clientInfo';
 
 /**
  * Operating system condition. Determines if the actual operating system matches at least one
@@ -22,6 +20,8 @@ var clientInfo = require('./helpers/clientInfo');
  * systems.
  * @returns {boolean}
  */
-module.exports = function (settings) {
+const operatingSystemCondition = function (settings) {
   return settings.operatingSystems.indexOf(clientInfo.os) !== -1;
 };
+
+export default operatingSystemCondition;

@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 var millisByUnit = {
   second: 1000,
   minute: 60000, // 60 seconds

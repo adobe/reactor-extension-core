@@ -10,10 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var document = require('@adobe/reactor-document');
-var textMatch = require('../helpers/textMatch');
+import document from '@adobe/reactor-document';
+import textMatch from '../helpers/textMatch';
 
 /**
  * Path condition. Determines if the actual path matches at least one acceptable path.
@@ -24,12 +22,14 @@ var textMatch = require('../helpers/textMatch');
  * instance is intended to be a regular expression.
  * @returns {boolean}
  */
-module.exports = function (settings) {
-  var path = document.location.pathname;
+const pathCondition = function (settings) {
+  const path = document.location.pathname;
   return settings.paths.some(function (acceptablePath) {
-    var acceptableValue = acceptablePath.valueIsRegex
+    const acceptableValue = acceptablePath.valueIsRegex
       ? new RegExp(acceptablePath.value, 'i')
       : acceptablePath.value;
     return textMatch(path, acceptableValue);
   });
 };
+
+export default pathCondition;

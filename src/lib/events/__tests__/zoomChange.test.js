@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 var assertTriggerCall = function (options) {
   expect(options.call.args[0]).toEqual({
     method: options.method,
@@ -19,21 +17,24 @@ var assertTriggerCall = function (options) {
   });
 };
 
+import createZoomChangeDelegate from '../zoomChange.js';
+
 describe('zoom change event delegate', function () {
   var delegate;
   var mockWindow = {
     ongestureend: null,
     ontouchend: null
   };
+  var mockDocument = {
+    documentElement: { clientWidth: 1000 },
+    addEventListener: function () {}
+  };
 
   beforeAll(function () {
     jasmine.clock().install();
     jasmine.clock().mockDate();
 
-    var delegateInjector = require('inject-loader!../zoomChange');
-    delegate = delegateInjector({
-      '@adobe/reactor-window': mockWindow
-    });
+    delegate = createZoomChangeDelegate(mockWindow, mockDocument);
   });
 
   afterAll(function () {

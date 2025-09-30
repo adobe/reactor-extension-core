@@ -10,30 +10,31 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+function createOrientationChangeDelegate(window) {
+  const triggers = [];
 
-var window = require('@adobe/reactor-window');
-var triggers = [];
+  window.addEventListener('orientationchange', function (event) {
+    if (triggers.length) {
+      const syntheticEvent = {
+        element: window,
+        target: window,
+        nativeEvent: event
+      };
 
-window.addEventListener('orientationchange', function (event) {
-  if (triggers.length) {
-    var syntheticEvent = {
-      element: window,
-      target: window,
-      nativeEvent: event
-    };
+      triggers.forEach(function (trigger) {
+        trigger(syntheticEvent);
+      });
+    }
+  });
 
-    triggers.forEach(function (trigger) {
-      trigger(syntheticEvent);
-    });
-  }
-});
+  /**
+   * The orientationchange event. This event occurs when the orientation of the device has changed.
+   * @param {Object} settings The event settings object.
+   * @param {ruleTrigger} trigger The trigger callback.
+   */
+  return function (settings, trigger) {
+    triggers.push(trigger);
+  };
+}
 
-/**
- * The orientationchange event. This event occurs when the orientation of the device has changed.
- * @param {Object} settings The event settings object.
- * @param {ruleTrigger} trigger The trigger callback.
- */
-module.exports = function (settings, trigger) {
-  triggers.push(trigger);
-};
+export default createOrientationChangeDelegate;

@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 describe('mousedown event delegate', function () {
   var testStandardEvent = require('./helpers/testStandardEvent');
   var delegate = require('../mousedown');

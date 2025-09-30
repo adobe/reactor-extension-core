@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 var dataElementDelegate = require('../javascriptVariable');
 
 describe('javascript variable data element delegate', function () {

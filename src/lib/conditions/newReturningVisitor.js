@@ -10,8 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-var visitorTracking = require('../helpers/visitorTracking');
+import visitorTracking from '../helpers/visitorTracking';
 
 /**
  * New vs. returning visitor condition. Determines if the visitor is a new or returning visitor.
@@ -21,7 +20,9 @@ var visitorTracking = require('../helpers/visitorTracking');
  * visitor.
  * @returns {boolean}
  */
-module.exports = function (settings) {
-  var isNewVisitor = visitorTracking.getIsNewVisitor();
+const newReturningVisitorCondition = function (settings) {
+  const isNewVisitor = visitorTracking.getIsNewVisitor();
   return settings.isNewVisitor ? isNewVisitor : !isNewVisitor;
 };
+
+export default newReturningVisitorCondition;

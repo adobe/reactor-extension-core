@@ -10,11 +10,11 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import once from './once.js';
+import createWeakMap from './weakMap.js';
+
 var POLL_INTERVAL = 3000;
 
-var once = require('./once');
-var WeakMap = require('./weakMap');
 var calledCallbacksByElement = new WeakMap();
 
 // Create a naked object with no prototype so we can safely use it as a map.
@@ -49,15 +49,13 @@ var initializePolling = once(function () {
  * @param {Function} callback A function that will be called once and only once for each element
  * found. The element will be passed to the callback.
  */
-module.exports = function (selector, callback) {
+var liveQuerySelector = function (selector, callback) {
   var callbacks = callbacksBySelector[selector];
 
   if (!callbacks) {
     callbacks = callbacksBySelector[selector] = [];
   }
 
-  // This function will be called for every element found matching the selector but we will only
-  // call the consumer's callback if it has not already been called for the element.
   callbacks.push(function (element) {
     var calledCallbacks = calledCallbacksByElement.get(element);
 
@@ -75,14 +73,12 @@ module.exports = function (selector, callback) {
   initializePolling();
 };
 
-/**
- * @private
- * Clears all listeners. This should only be used in tests.
- */
-module.exports.__reset = function () {
+export default liveQuerySelector;
+
+export function __reset() {
   callbacksBySelector = Object.create(null);
 
   initializePolling = once(function () {
     setInterval(findElements, POLL_INTERVAL);
   });
-};
+}

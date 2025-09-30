@@ -10,34 +10,30 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var mockVisitorTracking = {
-  getLifetimePageViewCount: jasmine.createSpy().and.callFake(function () {
-    return 5;
-  }),
-  getSessionPageViewCount: jasmine.createSpy().and.callFake(function () {
-    return 5;
-  })
-};
-
-var conditionDelegateInjector = require('inject-loader!../pageViews');
-
-var conditionDelegate = conditionDelegateInjector({
-  '../helpers/visitorTracking': mockVisitorTracking
-});
-
-var DURATIONS = ['lifetime', 'session'];
-
-var getSettings = function (count, operator, duration) {
-  return {
-    count: count,
-    operator: operator,
-    duration: duration
-  };
-};
-
 describe('page views condition delegate', function () {
+  var mockVisitorTracking = {
+    getLifetimePageViewCount: jasmine.createSpy().and.callFake(function () {
+      return 5;
+    }),
+    getSessionPageViewCount: jasmine.createSpy().and.callFake(function () {
+      return 5;
+    })
+  };
+  var conditionDelegateInjector = require('inject-loader!../pageViews');
+  var conditionDelegate = conditionDelegateInjector({
+    '../helpers/visitorTracking': mockVisitorTracking
+  });
+
+  var DURATIONS = ['lifetime', 'session'];
+
+  var getSettings = function (count, operator, duration) {
+    return {
+      count: count,
+      operator: operator,
+      duration: duration
+    };
+  };
+
   beforeEach(function () {
     mockVisitorTracking.getLifetimePageViewCount.calls.reset();
     mockVisitorTracking.getSessionPageViewCount.calls.reset();

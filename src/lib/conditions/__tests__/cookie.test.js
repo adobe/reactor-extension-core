@@ -10,7 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
 var cookie = require('js-cookie');
 var conditionDelegate = require('../cookie');
 

@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 var dataElementDelegate = require('../domAttribute');
 
 describe('dom attribute data element delegate', function () {

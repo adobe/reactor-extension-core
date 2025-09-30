@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 var mockVisitorTracking = {
   getMinutesOnSite: function () {
     return 5;

@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 var POLL_INTERVAL = 3000;
 var delegate;
 var dataElementValue;
@@ -79,7 +77,7 @@ describe('data element change event delegate', function () {
       }
     });
 
-    delegate = require('../dataElementChange');
+    delegate = require('../dataElementChange.js');
   });
 
   afterAll(function () {

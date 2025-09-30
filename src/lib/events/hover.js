@@ -10,119 +10,122 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import createBubbly from './helpers/createBubbly';
+import matchesProperties from './helpers/matchesProperties';
+import WeakMap from './helpers/weakMap';
+import { castToNumberIfString } from '../helpers/stringAndNumberUtils';
 
-var bubbly = require('./helpers/createBubbly')();
-var liveQuerySelector = require('./helpers/liveQuerySelector');
-var matchesProperties = require('./helpers/matchesProperties');
-var WeakMap = require('./helpers/weakMap');
-var trackedDelaysByElement = new WeakMap();
-var castToNumberIfString =
-  require('../helpers/stringAndNumberUtils').castToNumberIfString;
+function createHoverDelegate(liveQuerySelector) {
+  const bubbly = createBubbly();
+  const trackedDelaysByElement = new WeakMap();
 
-/**
- * After a mouseenter has occurred, waits a given amount of time before declaring that a hover
- * has occurred.
- * @param {Event} event The mouseenter event.
- * @param {number} delay The amount of delay in milliseconds. If delay = 0, the handler will be
- * called immediately.
- * @param {Function} handler The function that should be called
- */
-var delayHover = function (event, delay, handler) {
-  if (delay === 0) {
-    handler(event);
-    return;
-  }
-
-  var timeoutId;
-  var removeMouseLeaveListener;
-  var handleMouseLeave;
-
-  removeMouseLeaveListener = function () {
-    event.target.removeEventListener('mouseleave', handleMouseLeave);
-  };
-
-  handleMouseLeave = function () {
-    clearTimeout(timeoutId);
-    removeMouseLeaveListener();
-  };
-
-  timeoutId = setTimeout(function () {
-    handler(event);
-    removeMouseLeaveListener();
-  }, delay);
-
-  event.target.addEventListener('mouseleave', handleMouseLeave);
-};
-
-var watchElement = function (element, trackedDelays) {
-  element.addEventListener('mouseenter', function (event) {
-    trackedDelays.forEach(function (trackedDelay) {
-      delayHover(event, trackedDelay, function (event) {
-        bubbly.evaluateEvent(
-          {
-            element: event.target,
-            target: event.target,
-            delay: trackedDelay
-          },
-          true
-        );
-      });
-    });
-  });
-};
-
-/**
- * The hover event. This event occurs when a user has moved the pointer to be on top of an element.
- * @param {Object} settings The event settings object.
- * @param {string} settings.elementSelector The CSS selector the element must match in order for
- * the rule to fire.
- * @param {Object[]} [settings.elementProperties] Property values the element must have in order
- * for the rule to fire.
- * @param {string} settings.elementProperties[].name The property name.
- * @param {string} settings.elementProperties[].value The property value.
- * @param {boolean} [settings.elementProperties[].valueIsRegex=false] Whether <code>value</code>
- * on the object instance is intended to be a regular expression.
- * @param {number|string} [settings.delay] The number of milliseconds the pointer must be on
- * top of the element before declaring that a hover has occurred.
- * @param {boolean} [settings.bubbleFireIfParent=true] Whether the rule should fire
- * if the event originated from a descendant element.
- * @param {boolean} [settings.bubbleFireIfChildFired=true] Whether the rule should
- * fire if the same event has already triggered a rule targeting a descendant element.
- * @param {boolean} [settings.bubbleStop=false] Whether the event should not trigger
- * rules on ancestor elements.
- * @param {ruleTrigger} trigger The trigger callback.
- */
-module.exports = function (settings, trigger) {
-  // if settings.delay can't be parsed, fall back to no delay
-  var delay = castToNumberIfString(settings.delay) || 0;
-
-  bubbly.addListener(settings, function (syntheticEvent) {
-    // Bubbling for this event is dependent upon the delay configured for rules.
-    // An event can "bubble up" to other rules with the same delay but not to rules with
-    // different delays. See the tests for how this plays out.
-    if (syntheticEvent.delay === delay) {
-      trigger(syntheticEvent);
-    } else {
-      return false;
-    }
-  });
-
-  liveQuerySelector(settings.elementSelector, function (element) {
-    if (!matchesProperties(element, settings.elementProperties)) {
+  /**
+   * After a mouseenter has occurred, waits a given amount of time before declaring that a hover
+   * has occurred.
+   * @param {Event} event The mouseenter event.
+   * @param {number} delay The amount of delay in milliseconds. If delay = 0, the handler will be
+   * called immediately.
+   * @param {Function} handler The function that should be called
+   */
+  const delayHover = function (event, delay, handler) {
+    if (delay === 0) {
+      handler(event);
       return;
     }
 
-    var trackedDelays = trackedDelaysByElement.get(element);
+    // eslint-disable-next-line prefer-const
+    let timeoutId;
+    // eslint-disable-next-line prefer-const
+    let handleMouseLeave;
 
-    if (trackedDelays) {
-      if (trackedDelays.indexOf(delay) === -1) {
-        trackedDelays.push(delay);
+    const removeMouseLeaveListener = function () {
+      event.target.removeEventListener('mouseleave', handleMouseLeave);
+    };
+
+    handleMouseLeave = function () {
+      clearTimeout(timeoutId);
+      removeMouseLeaveListener();
+    };
+
+    timeoutId = setTimeout(function () {
+      handler(event);
+      removeMouseLeaveListener();
+    }, delay);
+
+    event.target.addEventListener('mouseleave', handleMouseLeave);
+  };
+
+  const watchElement = function (element, trackedDelays) {
+    element.addEventListener('mouseenter', function (event) {
+      trackedDelays.forEach(function (trackedDelay) {
+        delayHover(event, trackedDelay, function (event) {
+          bubbly.evaluateEvent(
+            {
+              element: event.target,
+              target: event.target,
+              delay: trackedDelay
+            },
+            true
+          );
+        });
+      });
+    });
+  };
+
+  /**
+   * The hover event. This event occurs when a user has moved the pointer to be on top of an element.
+   * @param {Object} settings The event settings object.
+   * @param {string} settings.elementSelector The CSS selector the element must match in order for
+   * the rule to fire.
+   * @param {Object[]} [settings.elementProperties] Property values the element must have in order
+   * for the rule to fire.
+   * @param {string} settings.elementProperties[].name The property name.
+   * @param {string} settings.elementProperties[].value The property value.
+   * @param {boolean} [settings.elementProperties[].valueIsRegex=false] Whether <code>value</code>
+   * on the object instance is intended to be a regular expression.
+   * @param {number|string} [settings.delay] The number of milliseconds the pointer must be on
+   * top of the element before declaring that a hover has occurred.
+   * @param {boolean} [settings.bubbleFireIfParent=true] Whether the rule should fire
+   * if the event originated from a descendant element.
+   * @param {boolean} [settings.bubbleFireIfChildFired=true] Whether the rule should
+   * fire if the same event has already triggered a rule targeting a descendant element.
+   * @param {boolean} [settings.bubbleStop=false] Whether the event should not trigger
+   * rules on ancestor elements.
+   * @param {ruleTrigger} trigger The trigger callback.
+   */
+  return function (settings, trigger) {
+    // if settings.delay can't be parsed, fall back to no delay
+    const delay = castToNumberIfString(settings.delay) || 0;
+
+    bubbly.addListener(settings, function (syntheticEvent) {
+      // Bubbling for this event is dependent upon the delay configured for rules.
+      // An event can "bubble up" to other rules with the same delay but not to rules with
+      // different delays. See the tests for how this plays out.
+      if (syntheticEvent.delay === delay) {
+        trigger(syntheticEvent);
+      } else {
+        return false;
       }
-    } else {
-      trackedDelays = [delay];
-      trackedDelaysByElement.set(element, trackedDelays);
-      watchElement(element, trackedDelays);
-    }
-  });
-};
+    });
+
+    liveQuerySelector(settings.elementSelector, function (element) {
+      if (!matchesProperties(element, settings.elementProperties)) {
+        return;
+      }
+
+      let trackedDelays = trackedDelaysByElement.get(element);
+
+      if (trackedDelays) {
+        if (trackedDelays.indexOf(delay) === -1) {
+          trackedDelays.push(delay);
+        }
+      } else {
+        trackedDelays = [delay];
+        trackedDelaysByElement.set(element, trackedDelays);
+        watchElement(element, trackedDelays);
+      }
+    });
+  };
+}
+
+export default createHoverDelegate;

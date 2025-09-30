@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 var conditionDelegate = require('../sampling');
 
 describe('sampling condition delegate', function () {

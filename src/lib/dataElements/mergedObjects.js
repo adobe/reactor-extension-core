@@ -10,14 +10,12 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import deepMerge from '../helpers/deepMerge';
 
-var deepMerge = require('../helpers/deepMerge');
-
-module.exports = function (settings) {
-  var args = settings.objects.slice();
+export default function (settings) {
+  const args = settings.objects.slice();
   // This object will be the target object that all other objects
   // get merged into.
   args.unshift({});
   return deepMerge.apply(null, args);
-};
+}

@@ -10,15 +10,13 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 /**
  * Performs a string match based on another string or a regex.
  * @param {string} str The string to be evaluate.
  * @param {string|RegExp} pattern The pattern to match against.
  * @returns {boolean} Whether the string matches the pattern.
  */
-module.exports = function (str, pattern) {
+const textMatch = function (str, pattern) {
   if (pattern == null) {
     throw new Error('Illegal Argument: Pattern is not present');
   }
@@ -33,3 +31,5 @@ module.exports = function (str, pattern) {
     return false;
   }
 };
+
+export default textMatch;

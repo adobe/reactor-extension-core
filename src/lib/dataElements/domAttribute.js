@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 /**
  * The dom data element.
  * @param {Object} settings The data element settings object.
@@ -20,11 +18,11 @@
  * element.
  * @returns {string}
  */
-module.exports = function (settings) {
-  var element = document.querySelector(settings.elementSelector);
+export default function (settings) {
+  const element = document.querySelector(settings.elementSelector);
 
   if (element) {
-    var property = settings.elementProperty;
+    const property = settings.elementProperty;
 
     if (property === 'text') {
       return element.innerText || element.textContent;
@@ -34,4 +32,4 @@ module.exports = function (settings) {
       return element.getAttribute ? element.getAttribute(property) : undefined;
     }
   }
-};
+}

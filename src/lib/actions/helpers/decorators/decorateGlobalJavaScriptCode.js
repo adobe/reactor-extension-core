@@ -8,14 +8,42 @@ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTA
 OF ANY KIND, either express or implied. See the License for the specific language
 governing permissions and limitations under the License.
 */
-'use strict';
 
-var Promise = require('@adobe/reactor-promise');
+import Promise from '@adobe/reactor-promise';
+let id = 0;
 
-module.exports = function (_, source) {
-  // The line break after the source is important in case their last line of code is a comment.
+const decorateGlobalJavaScriptCode = function (action, source) {
+  const runScriptFnName = '_runScript' + ++id;
+
+  const promise = new Promise(function (resolve, reject) {
+    _satellite[runScriptFnName] = function (fn) {
+      delete _satellite[runScriptFnName];
+      new Promise(function (_resolve) {
+        _resolve(
+          fn.call(
+            action.event.element,
+            action.event,
+            action.event.target,
+            Promise
+          )
+        );
+      }).then(resolve, reject);
+    };
+  });
+
+  const code =
+    '<scr' +
+    'ipt>_satellite["' +
+    runScriptFnName +
+    '"](function(event, target, Promise) {\n' +
+    source +
+    '\n});</scr' +
+    'ipt>';
+
   return {
-    code: '<scr' + 'ipt>\n' + source + '\n</scr' + 'ipt>',
-    promise: Promise.resolve()
+    code: code,
+    promise: promise
   };
 };
+
+export default decorateGlobalJavaScriptCode;

@@ -10,12 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 // this was JSON, but there are a lot of changes necessary in the reactor API
 // and Library Build Tooling to support JSON natively.
-module.exports = {
-  standard: {
-    pageElementsRefresh: 3000
-  }
+export const standard = {
+  pageElementsRefresh: 3000
 };

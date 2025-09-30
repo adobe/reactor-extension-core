@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 var conditionDelegate = require('../customCode');
 
 describe('custom code condition delegate', function () {

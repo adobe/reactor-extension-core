@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 var conditionDelegate = require('../protocol');
 
 var getSettings = function (protocol) {

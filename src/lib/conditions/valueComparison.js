@@ -10,25 +10,21 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-/*eslint eqeqeq:0*/
-'use strict';
+import {
+  isString,
+  isNumber,
+  castToStringIfNumber,
+  castToNumberIfString
+} from '../helpers/stringAndNumberUtils';
 
-var isString = require('../helpers/stringAndNumberUtils').isString;
-var isNumber = require('../helpers/stringAndNumberUtils').isNumber;
-var castToStringIfNumber =
-  require('../helpers/stringAndNumberUtils').castToStringIfNumber;
-var castToNumberIfString =
-  require('../helpers/stringAndNumberUtils').castToNumberIfString;
-
-var updateCase = function (operand, caseInsensitive) {
+const updateCase = function (operand, caseInsensitive) {
   return caseInsensitive && isString(operand) ? operand.toLowerCase() : operand;
 };
 
-var guardStringCompare = function (compare) {
+const guardStringCompare = function (compare) {
   return function (leftOperand, rightOperand, caseInsensitive) {
     leftOperand = castToStringIfNumber(leftOperand);
     rightOperand = castToStringIfNumber(rightOperand);
-
     return (
       isString(leftOperand) &&
       isString(rightOperand) &&
@@ -37,11 +33,10 @@ var guardStringCompare = function (compare) {
   };
 };
 
-var guardNumberCompare = function (compare) {
+const guardNumberCompare = function (compare) {
   return function (leftOperand, rightOperand) {
     leftOperand = castToNumberIfString(leftOperand);
     rightOperand = castToNumberIfString(rightOperand);
-
     return (
       isNumber(leftOperand) &&
       isNumber(rightOperand) &&
@@ -50,7 +45,7 @@ var guardNumberCompare = function (compare) {
   };
 };
 
-var guardCaseSensitivity = function (compare) {
+const guardCaseSensitivity = function (compare) {
   return function (leftOperand, rightOperand, caseInsensitive) {
     return compare(
       updateCase(leftOperand, caseInsensitive),
@@ -59,9 +54,9 @@ var guardCaseSensitivity = function (compare) {
   };
 };
 
-var conditions = {
+const conditions = {
   equals: guardCaseSensitivity(function (leftOperand, rightOperand) {
-    return leftOperand == rightOperand;
+    return leftOperand === rightOperand;
   }),
   doesNotEqual: function () {
     return !conditions.equals.apply(null, arguments);
@@ -95,17 +90,13 @@ var conditions = {
   doesNotEndWith: function () {
     return !conditions.endsWith.apply(null, arguments);
   },
-  matchesRegex: guardStringCompare(function (
-    leftOperand,
-    rightOperand,
-    caseInsensitive
-  ) {
-    // Doing something like new RegExp(/ab+c/, 'i') throws an error in some browsers (e.g., IE11),
-    // so we don't want to instantiate the regex until we know we're working with a string.
-    return new RegExp(rightOperand, caseInsensitive ? 'i' : '').test(
-      leftOperand
-    );
-  }),
+  matchesRegex: guardStringCompare(
+    function (leftOperand, rightOperand, caseInsensitive) {
+      return new RegExp(rightOperand, caseInsensitive ? 'i' : '').test(
+        leftOperand
+      );
+    }
+  ),
   doesNotMatchRegex: function () {
     return !conditions.matchesRegex.apply(null, arguments);
   },
@@ -135,10 +126,12 @@ var conditions = {
   }
 };
 
-module.exports = function (settings) {
+const valueComparison = function (settings) {
   return conditions[settings.comparison.operator](
     settings.leftOperand,
     settings.rightOperand,
     Boolean(settings.comparison.caseInsensitive)
   );
 };
+
+export default valueComparison;

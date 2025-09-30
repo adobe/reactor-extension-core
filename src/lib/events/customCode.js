@@ -10,14 +10,13 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 /**
  * Custom code event. This executes event code provided by the user. The user's code will call
  * <code>trigger</code> when the rule should fire.
  * @param {Object} settings The event settings object.
+ * @param trigger
  * @param {Function} settings.source The custom script function.
  */
-module.exports = function (settings, trigger) {
+export default function (settings, trigger) {
   settings.source(trigger);
-};
+}

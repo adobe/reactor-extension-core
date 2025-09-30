@@ -10,10 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var textMatch = require('../helpers/textMatch');
-var visitorTracking = require('../helpers/visitorTracking');
+import textMatch from '../helpers/textMatch';
+import visitorTracking from '../helpers/visitorTracking';
 
 /**
  * Traffic source condition. Determines if the actual traffic source matches an acceptable traffic
@@ -29,28 +27,25 @@ var visitorTracking = require('../helpers/visitorTracking');
  * to be a regular expression.
  * @returns {boolean}
  */
-module.exports = function (settings) {
-  // empty strings aren't allowed because a traffic source value is required in the UI.
+const trafficSourceCondition = function (settings) {
   var storedTrafficSource = visitorTracking.getTrafficSource();
   if (!storedTrafficSource) {
     return false;
   }
-
   var trafficSourceValues;
   if (!Array.isArray(settings.trafficSources)) {
-    // legacy support
     trafficSourceValues = [
       { value: settings.source, sourceIsRegex: Boolean(settings.sourceIsRegex) }
     ];
   } else {
     trafficSourceValues = settings.trafficSources;
   }
-
   return trafficSourceValues.some(function (acceptableTrafficSource) {
     var acceptableValue = acceptableTrafficSource.sourceIsRegex
       ? new RegExp(acceptableTrafficSource.value, 'i')
       : acceptableTrafficSource.value;
-
     return textMatch(storedTrafficSource, acceptableValue);
   });
 };
+
+export default trafficSourceCondition;

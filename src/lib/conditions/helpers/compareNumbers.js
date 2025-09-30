@@ -10,14 +10,12 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 /**
  * Enum for comparison operators.
  * @readonly
  * @enum {string}
  */
-var comparisonOperator = {
+export const comparisonOperator = {
   GREATER_THAN: '>',
   LESS_THAN: '<',
   EQUALS: '='
@@ -28,9 +26,9 @@ var comparisonOperator = {
  * @param {number} num1 The first number.
  * @param {comparisonOperator} The comparison operator.
  * @param {number} num2 The second number.
- * @returns {Function}
+ * @returns {boolean}
  */
-var compareNumbers = function (num1, op, num2) {
+const compareNumbers = function (num1, op, num2) {
   switch (op) {
     case comparisonOperator.GREATER_THAN:
       return num1 > num2;
@@ -41,8 +39,4 @@ var compareNumbers = function (num1, op, num2) {
   }
 };
 
-/**
- * Utility for comparing two numbers.
- * @returns {Function}
- */
-module.exports = compareNumbers;
+export default compareNumbers;

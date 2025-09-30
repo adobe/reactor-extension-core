@@ -10,29 +10,21 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var document = require('@adobe/reactor-document');
-
-/**
- * The page info data element.
- * @param {Object} settings The data element settings object.
- * @param {string} settings.attribute The attribute that should be returned.
- * @returns {string}
- */
-module.exports = function (settings) {
-  switch (settings.attribute) {
-    case 'url':
-      return document.location.href;
-    case 'hostname':
-      return document.location.hostname;
-    case 'pathname':
-      return document.location.pathname;
-    case 'protocol':
-      return document.location.protocol;
-    case 'referrer':
-      return document.referrer;
-    case 'title':
-      return document.title;
-  }
-};
+export default function createPageInfo(document) {
+  return function (settings) {
+    switch (settings.attribute) {
+      case 'url':
+        return document.location.href;
+      case 'hostname':
+        return document.location.hostname;
+      case 'pathname':
+        return document.location.pathname;
+      case 'protocol':
+        return document.location.protocol;
+      case 'referrer':
+        return document.referrer;
+      case 'title':
+        return document.title;
+    }
+  };
+}

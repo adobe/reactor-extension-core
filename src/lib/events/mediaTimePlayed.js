@@ -10,42 +10,40 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import createBubbly from './helpers/createBubbly';
+import WeakMap from './helpers/weakMap';
+import { castToNumberIfString } from '../helpers/stringAndNumberUtils';
 
-var bubbly = require('./helpers/createBubbly')();
-var WeakMap = require('./helpers/weakMap');
-var castToNumberIfString =
-  require('../helpers/stringAndNumberUtils').castToNumberIfString;
-var lastTriggeredByElement = new WeakMap();
-
-var relevantMarkers = [];
+const bubbly = createBubbly();
+const lastTriggeredByElement = new WeakMap();
+const relevantMarkers = [];
 
 /**
  * Unit string values.
  * @enum {string}
  */
-var timePlayedUnit = {
+const timePlayedUnit = {
   SECOND: 'second',
   PERCENT: 'percent'
 };
 
-var handleTimeUpdate = function (event) {
-  var target = event.target;
+const handleTimeUpdate = function (event) {
+  const target = event.target;
 
   if (!target.seekable || !target.seekable.length) {
     return;
   }
 
-  var seekable = target.seekable;
-  var startTime = seekable.start(0);
-  var endTime = seekable.end(0);
-  var currentTime = target.currentTime;
-  var playedSeconds = currentTime - startTime;
+  const seekable = target.seekable;
+  const startTime = seekable.start(0);
+  const endTime = seekable.end(0);
+  const currentTime = target.currentTime;
+  const playedSeconds = currentTime - startTime;
 
-  var secondsLastTriggered = lastTriggeredByElement.get(target) || 0;
+  const secondsLastTriggered = lastTriggeredByElement.get(target) || 0;
 
   relevantMarkers.forEach(function (relevantMarker) {
-    var configuredSeconds =
+    const configuredSeconds =
       relevantMarker.unit === timePlayedUnit.SECOND
         ? relevantMarker.amount
         : (endTime - startTime) * (relevantMarker.amount / 100);
@@ -93,14 +91,14 @@ document.addEventListener('timeupdate', handleTimeUpdate, true);
  * rules on ancestor elements.
  * @param {ruleTrigger} trigger The trigger callback.
  */
-module.exports = function (settings, trigger) {
-  var amount = castToNumberIfString(settings.amount);
+export default function (settings, trigger) {
+  const amount = castToNumberIfString(settings.amount);
 
-  var doesMarkerMatch = function (marker) {
+  const doesMarkerMatch = function (marker) {
     return marker.amount === amount && marker.unit === settings.unit;
   };
 
-  var markerRegistered = relevantMarkers.some(doesMarkerMatch);
+  const markerRegistered = relevantMarkers.some(doesMarkerMatch);
 
   if (!markerRegistered) {
     relevantMarkers.push({
@@ -110,7 +108,7 @@ module.exports = function (settings, trigger) {
   }
 
   bubbly.addListener(settings, function (syntheticEvent) {
-    var amount = castToNumberIfString(settings.amount);
+    const amount = castToNumberIfString(settings.amount);
     // Bubbling for this event is dependent upon the amount and unit configured for rules.
     // An event can "bubble up" to other rules with the same amount and unit but not to rules with
     // a different amount or unit. See the tests for how this plays out.
@@ -123,4 +121,4 @@ module.exports = function (settings, trigger) {
       return false;
     }
   });
-};
+}

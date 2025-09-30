@@ -10,11 +10,9 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import conditionDelegate from '../valueComparison.js';
 
-var conditionDelegate = require('../valueComparison');
-
-var truthyValues = [
+const truthyValues = [
   true,
   {},
   [],
@@ -28,7 +26,7 @@ var truthyValues = [
   -Infinity
 ];
 
-var falsyValues = [false, null, undefined, 0, NaN, ''];
+const falsyValues = [false, null, undefined, 0, NaN, ''];
 
 describe('value comparison delegate', function () {
   describe('equals operator', function () {

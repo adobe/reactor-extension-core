@@ -10,11 +10,9 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import delegate from '../customCode.js';
 
 describe('custom code event delegate', function () {
-  var delegate = require('../customCode');
-
   it('triggers rule when custom code calls trigger', function () {
     var trigger = jasmine.createSpy();
     var contextualData = {

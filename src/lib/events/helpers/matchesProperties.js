@@ -10,11 +10,9 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import textMatch from './../../helpers/textMatch';
 
-var textMatch = require('./../../helpers/textMatch');
-
-var getElementProperty = function (element, property) {
+const getElementProperty = function (element, property) {
   if (property === '@text' || property === 'innerText') {
     return element.textContent || element.innerText;
   } else if (property in element) {
@@ -36,11 +34,11 @@ var getElementProperty = function (element, property) {
  * object instance is intended to be a regular expression.
  * @returns {boolean} Whether the element matches the criteria.
  */
-module.exports = function (element, properties) {
+const matchesProperties = function (element, properties) {
   if (properties) {
     return properties.every(function (property) {
-      var actualValue = getElementProperty(element, property.name);
-      var criterionValue = property.valueIsRegex
+      const actualValue = getElementProperty(element, property.name);
+      const criterionValue = property.valueIsRegex
         ? new RegExp(property.value, 'i')
         : property.value;
       return textMatch(actualValue, criterionValue);
@@ -48,3 +46,5 @@ module.exports = function (element, properties) {
   }
   return true;
 };
+
+export default matchesProperties;

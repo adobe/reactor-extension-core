@@ -10,16 +10,14 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var visitorTracking = require('../helpers/visitorTracking');
-var getNamespacedStorage = require('../helpers/getNamespacedStorage');
-var maxFrequencyLocalStorage = getNamespacedStorage(
+import visitorTracking from '../helpers/visitorTracking.js';
+import getNamespacedStorage from '../helpers/getNamespacedStorage.js';
+const maxFrequencyLocalStorage = getNamespacedStorage(
   'localStorage',
   'maxFrequency'
 );
 
-var millisByUnit = {
+const millisByUnit = {
   second: 1000,
   minute: 60000, // 60 seconds
   hour: 3600000, // 60 minutes
@@ -37,7 +35,7 @@ var millisByUnit = {
  * @param {string} settings.unit The unit that defines the maximum frequency.
  * @returns {boolean}
  */
-module.exports = function (settings, event) {
+export default function (settings, event) {
   // Note that our storage key incorporates the rule ID instead of the rule component ID
   // (because a rule component ID isn't available). The storage key ALSO
   // incorporates the value of settings.unit. This means that multiple Max Frequency
@@ -98,4 +96,4 @@ module.exports = function (settings, event) {
   }
 
   return false;
-};
+}

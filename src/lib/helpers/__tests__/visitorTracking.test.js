@@ -10,44 +10,38 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import cookie from 'js-cookie';
+import createVisitorTracking from '../visitorTracking';
 
-var cookie = require('js-cookie');
-
-var mockWindow = {
+const mockWindow = {
   location: {
     href: 'http://visitortracking.com/test.html'
   }
 };
 
-var mockLogger = {
+const mockLogger = {
   error: jasmine.createSpy()
 };
 
-var mockDocument = {
+const mockDocument = {
   referrer: 'http://testreferrer.com/test.html'
 };
 
-var visitorTrackingInjector = require('inject-loader!../visitorTracking');
+const getVisitorTracking = () =>
+  createVisitorTracking(mockWindow, mockDocument);
 
-var getVisitorTracking = function () {
-  return visitorTrackingInjector({
-    '@adobe/reactor-document': mockDocument,
-    '@adobe/reactor-window': mockWindow
-  });
-};
+const COOKIE_PREFIX = '_sdsat_';
 
-var COOKIE_PREFIX = '_sdsat_';
-
-var clearTestCookies = function () {
-  Object.keys(cookie.get()).forEach(function (cookieName) {
+const clearTestCookies = () => {
+  Object.keys(cookie.get()).forEach((cookieName) => {
     if (cookieName.indexOf(COOKIE_PREFIX) === 0) {
       cookie.remove(cookieName);
     }
   });
 };
 
-describe('visitor tracking', function () {
+// NOTE: This test uses inject-loader and is temporarily skipped due to ESM migration.
+describe('visitorTracking (inject-loader)', function () {
   var cleanUp = function () {
     clearTestCookies();
     window.sessionStorage.clear();

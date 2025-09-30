@@ -10,10 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var document = require('@adobe/reactor-document');
-var textMatch = require('../helpers/textMatch');
+import document from '@adobe/reactor-document';
+import textMatch from '../helpers/textMatch';
 
 /**
  * Subdomain condition. Determines if the actual subdomain matches at least one acceptable
@@ -25,12 +23,14 @@ var textMatch = require('../helpers/textMatch');
  * object instance is intended to be a regular expression.
  * @returns {boolean}
  */
-module.exports = function (settings) {
-  var subdomain = document.location.hostname;
+const subdomainCondition = function (settings) {
+  const subdomain = document.location.hostname;
   return settings.subdomains.some(function (acceptableSubdomain) {
-    var acceptableValue = acceptableSubdomain.valueIsRegex
+    const acceptableValue = acceptableSubdomain.valueIsRegex
       ? new RegExp(acceptableSubdomain.value, 'i')
       : acceptableSubdomain.value;
     return textMatch(subdomain, acceptableValue);
   });
 };
+
+export default subdomainCondition;

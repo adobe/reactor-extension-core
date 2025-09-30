@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 describe('local storage data element delegate', function () {
   it('returns the value of a local storage item', function () {
     var mockWindow = {

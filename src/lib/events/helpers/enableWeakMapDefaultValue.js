@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 /**
  * Modifies a weakmap so that when get() is called with a key for which no entry is found,
  * a default value will be stored and then returned for the key.
@@ -19,8 +17,8 @@
  * @param {Function} defaultValueFactory A function that returns the default value that should
  * be used.
  */
-module.exports = function (weakMap, defaultValueFactory) {
-  var originalGet = weakMap.get;
+const enableWeakMapDefaultValue = function (weakMap, defaultValueFactory) {
+  const originalGet = weakMap.get;
 
   weakMap.get = function (key) {
     if (!weakMap.has(key)) {
@@ -32,3 +30,5 @@ module.exports = function (weakMap, defaultValueFactory) {
 
   return weakMap;
 };
+
+export default enableWeakMapDefaultValue;

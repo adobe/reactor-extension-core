@@ -10,17 +10,26 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+const { createLandingPageCondition } = require('../landingPage');
 
-var mockVisitorTracking = {
+const mockVisitorTracking = {
   getLandingPage: function () {
     return 'http://landingpage.com/test.html';
   }
 };
 
-var conditionDelegateInjector = require('inject-loader!../landingPage');
-var conditionDelegate = conditionDelegateInjector({
-  '../helpers/visitorTracking': mockVisitorTracking
+function textMatch(str, pattern) {
+  if (pattern == null)
+    throw new Error('Illegal Argument: Pattern is not present');
+  if (str == null) return false;
+  if (typeof pattern === 'string') return str === pattern;
+  if (pattern instanceof RegExp) return pattern.test(str);
+  return false;
+}
+
+const conditionDelegate = createLandingPageCondition({
+  visitorTracking: mockVisitorTracking,
+  textMatch
 });
 
 describe('landing page condition delegate', function () {

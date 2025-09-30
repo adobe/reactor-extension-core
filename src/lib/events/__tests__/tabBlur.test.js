@@ -10,9 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var eventDelegateInjector = require('inject-loader!../tabBlur');
+const createTabBlurDelegate = require('../tabBlur');
 var visibilityApi = require('../helpers/visibilityApi');
 var visibilityApiInstance = visibilityApi();
 var visibilityChangeListener;
@@ -26,9 +24,7 @@ var mockDocument = {
   }
 };
 
-var delegate = eventDelegateInjector({
-  '@adobe/reactor-document': mockDocument
-});
+var delegate = createTabBlurDelegate(mockDocument);
 
 var isIE = function () {
   var myNav = navigator.userAgent.toLowerCase();

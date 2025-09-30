@@ -10,12 +10,9 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var visitorTracking = require('../helpers/visitorTracking');
-var compareNumbers = require('./helpers/compareNumbers');
-var castToNumberIfString =
-  require('../helpers/stringAndNumberUtils').castToNumberIfString;
+import visitorTracking from '../helpers/visitorTracking';
+import compareNumbers from './helpers/compareNumbers';
+import { castToNumberIfString } from '../helpers/stringAndNumberUtils';
 
 /**
  * Time on site condition. Determines if the user has been on the site for a certain amount
@@ -26,10 +23,12 @@ var castToNumberIfString =
  * compare against minutes.
  * @returns {boolean}
  */
-module.exports = function (settings) {
+const timeOnSiteCondition = function (settings) {
   return compareNumbers(
     visitorTracking.getMinutesOnSite(),
     settings.operator,
     castToNumberIfString(settings.minutes)
   );
 };
+
+export default timeOnSiteCondition;

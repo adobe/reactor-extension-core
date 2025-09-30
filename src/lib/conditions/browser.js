@@ -10,9 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var clientInfo = require('./helpers/clientInfo');
+import clientInfo from './helpers/clientInfo';
 
 /**
  * Browser condition. Determines if the actual browser matches at least one acceptable browser.
@@ -20,6 +18,8 @@ var clientInfo = require('./helpers/clientInfo');
  * @param {string[]} settings.browsers An array of acceptable browsers.
  * @returns {boolean}
  */
-module.exports = function (settings) {
+const browserCondition = function (settings) {
   return settings.browsers.indexOf(clientInfo.browser) !== -1;
 };
+
+export default browserCondition;

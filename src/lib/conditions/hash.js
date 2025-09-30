@@ -10,9 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var textMatch = require('../helpers/textMatch');
+import textMatch from '../helpers/textMatch.js';
 
 /**
  * Hash condition. Determines if the actual hash (URL fragment identifier) matches at least one
@@ -24,7 +22,7 @@ var textMatch = require('../helpers/textMatch');
  * instance is intended to be a regular expression.
  * @returns {boolean}
  */
-module.exports = function (settings) {
+export default function (settings) {
   var hash = document.location.hash;
   return settings.hashes.some(function (acceptableHash) {
     var acceptableValue = acceptableHash.valueIsRegex
@@ -32,4 +30,4 @@ module.exports = function (settings) {
       : acceptableHash.value;
     return textMatch(hash, acceptableValue);
   });
-};
+}

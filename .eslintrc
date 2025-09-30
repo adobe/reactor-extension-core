@@ -5,6 +5,12 @@
     "node": true
   },
   "extends": ["plugin:prettier/recommended"],
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "requireConfigFile": false
+  },
   "rules": {
     "camelcase": [2, { "properties": "always" }],
     "semi": [2, "always"],
@@ -14,7 +20,7 @@
     "quotes": [1, "single", "avoid-escape"],
     "max-len": [
       2,
-      100,
+      120,
       4,
       {
         "ignoreUrls": true,
@@ -44,8 +50,14 @@
   },
   "settings": {
     "import/resolver": {
-      "webpack": {
-        "config": "webpack.config.js"
+      "alias": {
+        "map": [
+          ["@test-helpers", "./src/view/__tests__/helpers"]
+        ],
+        "extensions": [".js", ".jsx", ".mjs"]
+      },
+      "node": {
+        "extensions": [".js", ".jsx", ".mjs"]
       }
     }
   }

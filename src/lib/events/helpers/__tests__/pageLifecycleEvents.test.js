@@ -9,7 +9,8 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  ****************************************************************************************/
-'use strict';
+
+import createPageLifecycleEvents from '../pageLifecycleEvents.js';
 
 describe('pageLifecycleEvents', function () {
   var triggerDOMContentLoaded;
@@ -22,8 +23,6 @@ describe('pageLifecycleEvents', function () {
   var triggers;
   var triggersResults;
   var delegate;
-
-  var pageLifecycleEventsInjector = require('inject-loader!../pageLifecycleEvents');
 
   var triggerTypesToRegisterMethods = {
     libraryLoaded: 'registerLibraryLoadedTrigger',
@@ -84,10 +83,7 @@ describe('pageLifecycleEvents', function () {
     triggersResults = [];
     triggers = generateTriggers();
 
-    delegate = pageLifecycleEventsInjector({
-      '@adobe/reactor-window': mockWindow,
-      '@adobe/reactor-document': mockDocument
-    });
+    delegate = createPageLifecycleEvents(mockWindow, mockDocument);
 
     registerTriggers(delegate, triggers);
   });

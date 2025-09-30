@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 /*eslint max-len:0*/
-'use strict';
+
 describe('createBubbly', function () {
   var createBubbly = require('../createBubbly');
 

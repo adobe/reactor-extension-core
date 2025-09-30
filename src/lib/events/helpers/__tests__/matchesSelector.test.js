@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 describe('matchesSelector', function () {
   var matchesSelector = require('../matchesSelector');
   var mockTurbine = {

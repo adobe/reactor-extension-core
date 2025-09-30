@@ -9,27 +9,28 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  ****************************************************************************************/
-'use strict';
 
-var window = require('@adobe/reactor-window');
-var BASE_NAMESPACE = 'com.adobe.reactor.core';
+import defaultWindow from '@adobe/reactor-window';
 
-module.exports = function (storageType, additionalNamespace) {
-  var STORAGE_TYPE_UNAVAILABLE_ERROR =
-    '"' + storageType + '" is not available on the window object.';
-  var namespace = BASE_NAMESPACE + '.' + additionalNamespace;
+const BASE_NAMESPACE = 'com.adobe.reactor.core';
 
-  // When storage is disabled on Safari, the mere act of referencing window.localStorage
-  // or window.sessionStorage throws an error. For this reason, we wrap in a try-catch.
+export default function getNamespacedStorage(
+  storageType,
+  additionalNamespace,
+  win = defaultWindow
+) {
+  const STORAGE_TYPE_UNAVAILABLE_ERROR = `"${storageType}" is not available on the window object.`;
+  const namespace = `${BASE_NAMESPACE}.${additionalNamespace}`;
+
   return {
     /**
      * Reads a value from storage.
      * @param {string} name The name of the item to be read.
      * @returns {string}
      */
-    getItem: function (name) {
+    getItem(name) {
       try {
-        return window[storageType].getItem(namespace + '.' + name);
+        return win[storageType].getItem(`${namespace}.${name}`);
       } catch (e) {
         turbine.logger.warn(STORAGE_TYPE_UNAVAILABLE_ERROR);
         return null;
@@ -38,17 +39,25 @@ module.exports = function (storageType, additionalNamespace) {
     /**
      * Saves a value to storage.
      * @param {string} name The name of the item to be saved.
-     * @param {string} value The value of the item to be saved.
-     * @returns {boolean} Whether the item was successfully saved to storage.
+     * @param {string} value The value to be saved.
      */
-    setItem: function (name, value) {
+    setItem(name, value) {
       try {
-        window[storageType].setItem(namespace + '.' + name, value);
-        return true;
+        win[storageType].setItem(`${namespace}.${name}`, value);
       } catch (e) {
         turbine.logger.warn(STORAGE_TYPE_UNAVAILABLE_ERROR);
-        return false;
+      }
+    },
+    /**
+     * Removes a value from storage.
+     * @param {string} name The name of the item to be removed.
+     */
+    removeItem(name) {
+      try {
+        win[storageType].removeItem(`${namespace}.${name}`);
+      } catch (e) {
+        turbine.logger.warn(STORAGE_TYPE_UNAVAILABLE_ERROR);
       }
     }
   };
-};
+}

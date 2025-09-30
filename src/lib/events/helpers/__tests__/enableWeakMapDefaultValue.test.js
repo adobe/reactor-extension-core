@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 var enableWeakMapDefaultValue = require('../enableWeakMapDefaultValue');
 var WeakMap = require('../weakMap');
 

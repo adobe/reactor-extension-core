@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 var dataElementDelegate = require('../constant');
 
 describe('constant data element delegate', function () {

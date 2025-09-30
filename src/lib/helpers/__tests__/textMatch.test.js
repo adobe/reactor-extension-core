@@ -10,9 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var matcher = require('../textMatch');
+import matcher from '../textMatch.js';
 
 describe('text-match', function () {
   it('returns true if string is an exact match', function () {

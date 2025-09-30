@@ -9,7 +9,8 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-'use strict';
+import document from '@adobe/reactor-document';
+import window from '@adobe/reactor-window';
 
 /**
  * The visitor attributes data element.
@@ -17,11 +18,7 @@ governing permissions and limitations under the License.
  * @param {string} settings.attribute The attribute that should be returned.
  * @returns {string}
  */
-
-var document = require('@adobe/reactor-document');
-var window = require('@adobe/reactor-window');
-
-module.exports = function (settings) {
+export default function (settings) {
   switch (settings.attribute) {
     case 'windowSize':
       return (
@@ -32,4 +29,4 @@ module.exports = function (settings) {
     case 'screenSize':
       return window.screen.width + 'x' + window.screen.height;
   }
-};
+}

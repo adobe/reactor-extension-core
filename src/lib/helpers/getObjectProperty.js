@@ -10,15 +10,13 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 /**
  * Returns the deep property value of an object.
  * @param obj The object where the property will be searched.
  * @param property The property name to be returned. It can contain dots. (eg. prop.subprop1)
  * @returns {*}
  */
-module.exports = function (obj, property) {
+export default function getObjectProperty(obj, property) {
   var propertyChain = property.split('.');
   var currentValue = obj;
 
@@ -31,4 +29,4 @@ module.exports = function (obj, property) {
   }
 
   return currentValue;
-};
+}

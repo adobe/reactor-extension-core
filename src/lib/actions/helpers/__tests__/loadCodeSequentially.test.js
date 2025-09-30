@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 var sequentiallyLoadCodePromiseInjector = require('inject-loader!../loadCodeSequentially');
 var Promise = require('@adobe/reactor-promise');
 

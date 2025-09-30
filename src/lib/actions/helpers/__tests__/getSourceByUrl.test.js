@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 var getSourceUrlCodeInjector = require('inject-loader!../getSourceByUrl');
 var Promise = require('@adobe/reactor-promise');
 

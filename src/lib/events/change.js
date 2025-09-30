@@ -10,10 +10,10 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-var bubbly = require('./helpers/createBubbly')();
-var textMatch = require('../helpers/textMatch');
+import createBubbly from './helpers/createBubbly';
+import textMatch from '../helpers/textMatch';
 
+const bubbly = createBubbly();
 document.addEventListener('change', bubbly.evaluateEvent, true);
 
 /**
@@ -44,9 +44,9 @@ document.addEventListener('change', bubbly.evaluateEvent, true);
  * DEPRECATED @param {boolean} [settings.valueIsRegex=false] Whether <code>settings.value</code> is
  * intended to be a regular expression.
  */
-module.exports = function (settings, trigger) {
-  var acceptableChangeValues = Array.isArray(settings.acceptableChangeValues)
-    ? settings.acceptableChangeValues
+export default function (settings, trigger) {
+  const acceptableChangeValues = Array.isArray(settings.acceptableChangeValues)
+    ? settings.acceptableChangeValues.slice()
     : [];
 
   // legacy support
@@ -68,7 +68,7 @@ module.exports = function (settings, trigger) {
     }
 
     acceptableChangeValues.forEach(function (nextChangeValue) {
-      var acceptableValue = nextChangeValue.valueIsRegex
+      const acceptableValue = nextChangeValue.valueIsRegex
         ? new RegExp(nextChangeValue.value, 'i')
         : nextChangeValue.value;
 
@@ -80,4 +80,4 @@ module.exports = function (settings, trigger) {
 
     return false;
   });
-};
+}

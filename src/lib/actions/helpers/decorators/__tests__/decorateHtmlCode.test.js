@@ -9,38 +9,41 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-'use strict';
+import { createDecorateHtmlCode } from '../decorateHtmlCode';
+import flushPromiseChains from '../../../../__tests__/helpers/flushPromiseChains.js';
 
-var decorateHtmlCodeInjector = require('inject-loader!../decorateHtmlCode');
-var flushPromiseChains = require('../../../../__tests__/helpers/flushPromiseChains');
+function createMockTurbine() {
+  return {
+    replaceTokens: jasmine.createSpy().and.callFake(function (token) {
+      return token.replace(/%(.+?)%/g, function (token, variableName) {
+        return 'replaced - ' + variableName;
+      });
+    })
+  };
+}
 
 describe('decorate html code', function () {
-  var mockTurbine;
+  let mockTurbine;
+  let decorateHtmlCode;
+  let satellite;
 
   beforeEach(function () {
-    mockTurbine = {
-      replaceTokens: jasmine.createSpy().and.callFake(function (token) {
-        return token.replace(/%(.+?)%/g, function (token, variableName) {
-          return 'replaced - ' + variableName;
-        });
-      })
-    };
-
-    mockTurbineVariable(mockTurbine);
-  });
-
-  afterEach(function () {
-    resetTurbineVariable();
+    mockTurbine = createMockTurbine();
+    satellite = {};
+    decorateHtmlCode = createDecorateHtmlCode({
+      Promise,
+      turbine: mockTurbine,
+      satellite
+    });
   });
 
   it('returns the decorated code on the code key', function () {
-    var settings = {
+    const settings = {
       language: 'html',
       source: '<script>console.log("logging")</script>'
     };
 
-    var decorateHtmlCode = decorateHtmlCodeInjector();
-    var decoratedResult = decorateHtmlCode(
+    const decoratedResult = decorateHtmlCode(
       {
         settings: settings,
         event: {}
@@ -54,14 +57,13 @@ describe('decorate html code', function () {
   });
 
   it('returns the decorated code with replaced callback ids if they exist', function () {
-    var settings = {
+    const settings = {
       language: 'html',
       source:
         '<script>_satellite._onCustomCodeSuccess("${reactorCallbackId}")</script>'
     };
 
-    var decorateHtmlCode = decorateHtmlCodeInjector();
-    var decoratedResult = decorateHtmlCode(
+    const decoratedResult = decorateHtmlCode(
       {
         settings: settings,
         event: {}
@@ -75,13 +77,12 @@ describe('decorate html code', function () {
   });
 
   it('does not replace data element tokens for an embedded html action', function () {
-    var settings = {
+    const settings = {
       language: 'html',
       source: '<div>%productname%</div>'
     };
 
-    var decorateHtmlCode = decorateHtmlCodeInjector();
-    var decoratedResult = decorateHtmlCode(
+    const decoratedResult = decorateHtmlCode(
       {
         settings: settings,
         event: {},
@@ -95,14 +96,13 @@ describe('decorate html code', function () {
   });
 
   it('does replace data element tokens for an html action loaded from a file', function () {
-    var settings = {
+    const settings = {
       language: 'html',
       source: 'url1',
       isExternal: true
     };
 
-    var decorateHtmlCode = decorateHtmlCodeInjector();
-    var decoratedResult = decorateHtmlCode(
+    const decoratedResult = decorateHtmlCode(
       {
         settings: settings,
         event: {},
@@ -118,21 +118,19 @@ describe('decorate html code', function () {
     'returns a resolved promise on the promise key when HTML code ' +
       'does not contain callbacks',
     function () {
-      var settings = {
+      const settings = {
         language: 'html',
         source: '<script>console.log("logging")</script>'
       };
 
-      var p = Promise.resolve();
-      var decorateHtmlCode = decorateHtmlCodeInjector({
-        '@adobe/reactor-promise': {
-          resolve: function () {
-            return p;
-          }
-        }
+      const p = Promise.resolve();
+      const decorateHtmlCodeWithMockPromise = createDecorateHtmlCode({
+        Promise: { resolve: () => p },
+        turbine: mockTurbine,
+        satellite
       });
 
-      var decoratedResult = decorateHtmlCode(
+      const decoratedResult = decorateHtmlCodeWithMockPromise(
         {
           settings: settings
         },
@@ -147,16 +145,14 @@ describe('decorate html code', function () {
     'returns a promise that will be resolved when HTML code contains callbacks' +
       'and _satellite._onCustomCodeSuccess is called',
     function (done) {
-      var settings = {
+      const settings = {
         language: 'html',
         source:
           '<script>_satellite._onCustomCodeSuccess("${reactorCallbackId}")</script>'
       };
 
-      var decorateHtmlCode = decorateHtmlCodeInjector();
-
-      var onPromiseResolved = jasmine.createSpy('onPromiseResolved');
-      var decorateCodePromise = decorateHtmlCode(
+      const onPromiseResolved = jasmine.createSpy('onPromiseResolved');
+      const decorateCodePromise = decorateHtmlCode(
         {
           settings: settings
         },
@@ -167,7 +163,7 @@ describe('decorate html code', function () {
 
       flushPromiseChains().then(function () {
         expect(onPromiseResolved).not.toHaveBeenCalled();
-        window._satellite._onCustomCodeSuccess('0');
+        satellite._onCustomCodeSuccess('0');
       });
     }
   );
@@ -176,15 +172,14 @@ describe('decorate html code', function () {
     'returns a promise that will be rejected when HTML code contains callbacks' +
       'and _satellite._onCustomCodeFailure is called',
     function (done) {
-      var settings = {
+      const settings = {
         language: 'html',
         source:
           '<script>_satellite._onCustomCodeFailure("${reactorCallbackId}")</script>'
       };
 
-      var decorateHtmlCode = decorateHtmlCodeInjector();
-      var onPromiseRejected = jasmine.createSpy('onPromiseRejected');
-      var decorateCodePromise = decorateHtmlCode(
+      const onPromiseRejected = jasmine.createSpy('onPromiseRejected');
+      const decorateCodePromise = decorateHtmlCode(
         {
           settings: settings
         },
@@ -195,7 +190,7 @@ describe('decorate html code', function () {
 
       flushPromiseChains().then(function () {
         expect(onPromiseRejected).not.toHaveBeenCalled();
-        window._satellite._onCustomCodeFailure('0');
+        satellite._onCustomCodeFailure('0');
       });
     }
   );

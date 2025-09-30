@@ -8,18 +8,16 @@ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTA
 OF ANY KIND, either express or implied. See the License for the specific language
 governing permissions and limitations under the License.
 */
-'use strict';
 
-var Promise = require('@adobe/reactor-promise');
-var id = 0;
+import Promise from '@adobe/reactor-promise';
+let id = 0;
 
-module.exports = function (action, source) {
-  var runScriptFnName = '_runScript' + ++id;
+const decorateNonGlobalJavaScriptCode = function (action, source) {
+  const runScriptFnName = '_runScript' + ++id;
 
-  var promise = new Promise(function (resolve, reject) {
+  const promise = new Promise(function (resolve, reject) {
     _satellite[runScriptFnName] = function (fn) {
       delete _satellite[runScriptFnName];
-
       // Use Promise constructor instead of Promise.resolve() so we can
       // catch errors from custom code.
       new Promise(function (_resolve) {
@@ -36,7 +34,7 @@ module.exports = function (action, source) {
   });
 
   // The line break after the source is important in case their last line of code is a comment.
-  var code =
+  const code =
     '<scr' +
     'ipt>_satellite["' +
     runScriptFnName +
@@ -50,3 +48,5 @@ module.exports = function (action, source) {
     promise: promise
   };
 };
+
+export default decorateNonGlobalJavaScriptCode;

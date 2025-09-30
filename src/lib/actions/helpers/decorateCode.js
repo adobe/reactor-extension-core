@@ -9,13 +9,11 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-'use strict';
+import decorateGlobalJavaScriptCode from './decorators/decorateGlobalJavaScriptCode';
+import decorateNonGlobalJavaScriptCode from './decorators/decorateNonGlobalJavaScriptCode';
+import decorateHtmlCode from './decorators/decorateHtmlCode';
 
-var decorateGlobalJavaScriptCode = require('./decorators/decorateGlobalJavaScriptCode');
-var decorateNonGlobalJavaScriptCode = require('./decorators/decorateNonGlobalJavaScriptCode');
-var decorateHtmlCode = require('./decorators/decorateHtmlCode');
-
-var decorators = {
+const decorators = {
   javascript: function (action, source) {
     return action.settings.global
       ? decorateGlobalJavaScriptCode(action, source)
@@ -24,6 +22,8 @@ var decorators = {
   html: decorateHtmlCode
 };
 
-module.exports = function (action, source) {
+const decorateCode = function (action, source) {
   return decorators[action.settings.language](action, source);
 };
+
+export default decorateCode;

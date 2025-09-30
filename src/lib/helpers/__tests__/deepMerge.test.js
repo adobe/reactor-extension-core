@@ -10,9 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var deepMerge = require('../deepMerge');
+import deepMerge from '../deepMerge.js';
 
 describe('deepMerge', function () {
   it('handles non-plain-object sources gracefully', function () {

@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
 /**
  * Protocol condition. Determines if the actual protocol matches at least one acceptable
  * protocol.
@@ -19,8 +17,10 @@
  * @param {string} settings.protocol An acceptable protocol.
  * @returns {boolean}
  */
-module.exports = function (settings) {
+const protocolCondition = function (settings) {
   return (
     document.location.protocol.toLowerCase() === settings.protocol.toLowerCase()
   );
 };
+
+export default protocolCondition;

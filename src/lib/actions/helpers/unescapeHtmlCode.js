@@ -9,14 +9,13 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-'use strict';
+import document from '@adobe/reactor-document';
+const el = document.createElement('div');
 
-var document = require('@adobe/reactor-document');
-var el = document.createElement('div');
-
-module.exports = function (html) {
+const unescapeHtmlCode = function (html) {
   el.innerHTML = html;
-
   // IE and Firefox differ.
   return el.textContent || el.innerText || html;
 };
+
+export default unescapeHtmlCode;

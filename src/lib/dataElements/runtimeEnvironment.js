@@ -9,7 +9,7 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-'use strict';
+import window from '@adobe/reactor-window';
 
 /**
  * The launch environment data element.
@@ -17,10 +17,7 @@ governing permissions and limitations under the License.
  * @param {string} settings.attribute The attribute that should be returned.
  * @returns {string}
  */
-
-var window = require('@adobe/reactor-window');
-
-module.exports = function (settings, event) {
+export default function (settings, event) {
   switch (settings.attribute) {
     case 'buildDate':
       return turbine.buildInfo.buildDate;
@@ -41,4 +38,4 @@ module.exports = function (settings, event) {
     case 'DCRIdentifier':
       return event.identifier;
   }
-};
+}
