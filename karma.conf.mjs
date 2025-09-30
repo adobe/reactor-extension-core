@@ -8,17 +8,29 @@ import karmaRollupPreprocessor from 'karma-rollup-preprocessor';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import rollupIstanbul from 'rollup-plugin-istanbul';
+import replace from '@rollup/plugin-replace';
 
 export default (config) => {
   config.set({
     hostname: '0.0.0.0',
     basePath: '',
     frameworks: ['jasmine', 'jasmine-matchers'],
+    // files: [{ pattern: './src/**/*.js', type: 'module' }],
+    // preprocessors: {
+    //   './src/**/*.js': ['rollup']
+    // },
     files: [
-      { pattern: 'src/lib/events/__tests__/customCode.test.js', type: 'module' }
+      'helpers/setupTests.js',
+      {
+        pattern:
+          'src/lib/actions/helpers/decorators/__tests__/decorateHtmlCode.test.js',
+        type: 'module'
+      }
     ],
     preprocessors: {
-      'src/lib/events/__tests__/customCode.test.js': ['rollup']
+      'src/lib/actions/helpers/decorators/__tests__/decorateHtmlCode.test.js': [
+        'rollup'
+      ]
     },
     plugins: [
       karmaCoverage,
@@ -46,6 +58,10 @@ export default (config) => {
         sourcemap: 'inline'
       },
       plugins: [
+        replace({
+          preventAssignment: true,
+          REACTOR_KARMA_CI_UNIT_TEST_MODE: JSON.stringify(true)
+        }),
         nodeResolve(),
         commonjs(),
         rollupIstanbul({
@@ -65,6 +81,7 @@ export default (config) => {
     browserDisconnectTolerance: 3,
     browserNoActivityTimeout: 300000,
     client: {
+      captureConsole: true,
       jasmine: {
         // seed: 55788
       }

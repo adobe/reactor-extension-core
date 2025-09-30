@@ -29,7 +29,12 @@ const decorateNonGlobalJavaScriptCode = function (action, source) {
             Promise
           )
         );
-      }).then(resolve, reject);
+      })
+        // for this resolve to run, either the fn (the actual custom code
+        // supplied by the user) doesn't thrown an error or return its own
+        // promise OR it eventually resolves and then we can resolve that the
+        // custom code function ran
+        .then(resolve, reject);
     };
   });
 
