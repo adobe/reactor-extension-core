@@ -10,14 +10,11 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-var mockClientInfo = {
+import { injectOperatingSystemCondition } from '../operatingSystem.js';
+
+const mockClientInfo = {
   os: 'Foo'
 };
-
-var conditionDelegateInjector = require('inject-loader!../operatingSystem');
-var conditionDelegate = conditionDelegateInjector({
-  './helpers/clientInfo': mockClientInfo
-});
 
 var getSettings = function (operatingSystems) {
   return {
@@ -26,13 +23,20 @@ var getSettings = function (operatingSystems) {
 };
 
 describe('operating system condition delegate', function () {
+  let conditionDelegate;
+  beforeEach(() => {
+    conditionDelegate = injectOperatingSystemCondition({
+      clientInfo: mockClientInfo
+    });
+  });
+
   it('returns true when the current OS matches one of the selected OSs', function () {
-    var settings = getSettings(['Shoe', 'Goo', 'Foo', 'Moo']);
+    const settings = getSettings(['Shoe', 'Goo', 'Foo', 'Moo']);
     expect(conditionDelegate(settings)).toBe(true);
   });
 
   it('returns false when the current OS does not match any of the selected OSs', function () {
-    var settings = getSettings(['Shoe', 'Goo', 'Boo', 'Moo']);
+    const settings = getSettings(['Shoe', 'Goo', 'Boo', 'Moo']);
     expect(conditionDelegate(settings)).toBe(false);
   });
 });

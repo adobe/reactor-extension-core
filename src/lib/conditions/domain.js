@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import document from '@adobe/reactor-document';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
 const matchOperatorsRegex = /[|\\{}()[\]^$+*?.-]/g;
 
 const escapeForRegex = function (string) {
@@ -20,19 +20,30 @@ const escapeForRegex = function (string) {
   return string.replace(matchOperatorsRegex, '\\$&');
 };
 
-/**
- * Domain condition. Determines if the actual domain matches at least one acceptable domain.
- * @param {Object} settings Condition settings.
- * @param {string[]} settings.domains An array of acceptable domains.
- * @returns {boolean}
- */
-const domainCondition = function (settings) {
-  const domain = document.location.hostname;
-  return settings.domains.some(function (acceptableDomain) {
-    return domain.match(
-      new RegExp('(^|\\.)' + escapeForRegex(acceptableDomain) + '$', 'i')
-    );
-  });
-};
+function injectDomainCondition({ document }) {
+  /**
+   * Domain condition. Determines if the actual domain matches at least one acceptable domain.
+   * @param {Object} settings Condition settings.
+   * @param {string[]} settings.domains An array of acceptable domains.
+   * @returns {boolean}
+   */
+  return function domainCondition(settings) {
+    const domain = document.location.hostname;
+    return settings.domains.some(function (acceptableDomain) {
+      return domain.match(
+        new RegExp('(^|\\.)' + escapeForRegex(acceptableDomain) + '$', 'i')
+      );
+    });
+  };
+}
 
-export default domainCondition;
+const validateInjection = validateInjectedParams(injectDomainCondition);
+
+export default validateInjection({
+  // runs in Turbine context, which provides the core-module "reactor-document".
+  document: require('@adobe/reactor-document')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectDecorateDomainCondition };
+/* END.TESTS_ONLY */

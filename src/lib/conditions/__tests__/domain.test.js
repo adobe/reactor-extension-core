@@ -10,44 +10,44 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-// NOTE: inject-loader is not compatible with ESM. Skipping test and commenting code for migration.
-// describe('domain condition delegate', function () {
-//   var mockDocument = {
-//   location: {
-//     hostname: 'www.example.com'
-//   }
-// };
+import { injectDecorateDomainCondition } from '../domain.js';
 
-//   var conditionDelegateInjector = require('inject-loader!../domain');
-//   var conditionDelegate = conditionDelegateInjector({
-//     '@adobe/reactor-document': mockDocument
-//   });
+describe('domain condition delegate', function () {
+  const mockDocument = {
+    location: {
+      hostname: 'www.example.com'
+    }
+  };
 
-//   var getSettings = function (domains) {
-//     return {
-//       domains: domains
-//     };
-//   };
+  const conditionDelegate = injectDecorateDomainCondition({
+    document: mockDocument
+  });
 
-//   it('returns true when the domain matches', function () {
-//     var settings = getSettings(['adobe.com', 'Example.com']);
-//     expect(conditionDelegate(settings)).toBe(true);
-//   });
+  const getSettings = function (domains) {
+    return {
+      domains: domains
+    };
+  };
 
-//   it('returns false when the domain does not match', function () {
-//     var settings = getSettings(['example..om', 'adobe.com']);
-//     expect(conditionDelegate(settings)).toBe(false);
+  it('returns true when the domain matches', function () {
+    var settings = getSettings(['adobe.com', 'Example.com']);
+    expect(conditionDelegate(settings)).toBe(true);
+  });
 
-//     settings = getSettings(['adobe.com', 'www.example']);
-//     expect(conditionDelegate(settings)).toBe(false);
+  it('returns false when the domain does not match', function () {
+    var settings = getSettings(['example..om', 'adobe.com']);
+    expect(conditionDelegate(settings)).toBe(false);
 
-//     settings = getSettings(['ample.com', 'adobe.com']);
-//     expect(conditionDelegate(settings)).toBe(false);
+    settings = getSettings(['adobe.com', 'www.example']);
+    expect(conditionDelegate(settings)).toBe(false);
 
-//     settings = getSettings(['example.combo', 'adobe.com']);
-//     expect(conditionDelegate(settings)).toBe(false);
+    settings = getSettings(['ample.com', 'adobe.com']);
+    expect(conditionDelegate(settings)).toBe(false);
 
-//     settings = getSettings(['example.co', 'adobe.com']);
-//     expect(conditionDelegate(settings)).toBe(false);
-//   });
-// });
+    settings = getSettings(['example.combo', 'adobe.com']);
+    expect(conditionDelegate(settings)).toBe(false);
+
+    settings = getSettings(['example.co', 'adobe.com']);
+    expect(conditionDelegate(settings)).toBe(false);
+  });
+});

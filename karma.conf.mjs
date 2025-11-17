@@ -21,16 +21,26 @@ export default (config) => {
     // },
     files: [
       'helpers/setupTests.js',
+      // {
+      //   pattern:
+      //     'src/lib/actions/helpers/decorators/__tests__/decorateHtmlCode.test.js',
+      //   type: 'module'
+      // },
+      // {
+      //   pattern: 'src/lib/conditions/__tests__/operatingSystem.test.js',
+      //   type: 'module'
+      // },
       {
-        pattern:
-          'src/lib/actions/helpers/decorators/__tests__/decorateHtmlCode.test.js',
+        pattern: 'src/lib/conditions/__tests__/domain.test.js',
         type: 'module'
       }
     ],
     preprocessors: {
-      'src/lib/actions/helpers/decorators/__tests__/decorateHtmlCode.test.js': [
-        'rollup'
-      ]
+      // 'src/lib/actions/helpers/decorators/__tests__/decorateHtmlCode.test.js': [
+      //   'rollup'
+      // ],
+      // 'src/lib/conditions/__tests__/operatingSystem.test.js': ['rollup'],
+      'src/lib/conditions/__tests__/domain.test.js': ['rollup']
     },
     plugins: [
       karmaCoverage,
