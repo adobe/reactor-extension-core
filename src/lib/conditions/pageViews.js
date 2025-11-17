@@ -10,6 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
 import visitorTracking from '../helpers/visitorTracking.js';
 import compareNumbers from './helpers/compareNumbers.js';
 
@@ -18,14 +19,27 @@ const duration = {
   SESSION: 'session'
 };
 
-export default function (settings) {
-  const methodName =
-    settings.duration === duration.LIFETIME
-      ? 'getLifetimePageViewCount'
-      : 'getSessionPageViewCount';
-  return compareNumbers(
-    visitorTracking[methodName](),
-    settings.operator,
-    settings.count
-  );
+function injectPageViewCondition({ visitorTracking, compareNumbers }) {
+  return function pageViewCondition(settings) {
+    const methodName =
+      settings.duration === duration.LIFETIME
+        ? 'getLifetimePageViewCount'
+        : 'getSessionPageViewCount';
+    return compareNumbers(
+      visitorTracking[methodName](),
+      settings.operator,
+      settings.count
+    );
+  };
 }
+
+const validateInjection = validateInjectedParams(injectPageViewCondition);
+
+export default validateInjection({
+  visitorTracking,
+  compareNumbers
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectPageViewCondition };
+/* END.TESTS_ONLY */
