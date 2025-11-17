@@ -21,7 +21,8 @@
     "test": "karma start karma.conf.mjs",
     "test:watch": "npm test -- --no-single-run --no-coverage",
     "bootstrap": "reactor-sandbox init",
-    "ci-job": "npm test -- --ci && npm run lint && npm run package && ./node_modules/.bin/reactor-sandbox build"
+    "ci-job": "npm test -- --ci && npm run lint && npm run package && ./node_modules/.bin/reactor-sandbox build",
+    "pretest": "node helpers/validate-test-files.js"
   },
   "dependencies": {
     "@adobe/react-spectrum": "^3.41.0",

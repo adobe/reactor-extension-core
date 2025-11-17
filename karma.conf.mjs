@@ -15,6 +15,9 @@ export default (config) => {
     hostname: '0.0.0.0',
     basePath: '',
     frameworks: ['jasmine', 'jasmine-matchers'],
+    failOnEmptyTestSuite: true, // Fail if no tests are found
+    failOnSkippedTests: false,
+    failOnFailingTestSuite: true,
     // files: [{ pattern: './src/**/*.js', type: 'module' }],
     // preprocessors: {
     //   './src/**/*.js': ['rollup']
@@ -33,6 +36,10 @@ export default (config) => {
       {
         pattern: 'src/lib/conditions/__tests__/domain.test.js',
         type: 'module'
+      },
+      {
+        pattern: 'src/lib/conditions/__tests__/pageViews.test.js',
+        type: 'module'
       }
     ],
     preprocessors: {
@@ -40,7 +47,8 @@ export default (config) => {
         'rollup'
       ],
       'src/lib/conditions/__tests__/operatingSystem.test.js': ['rollup'],
-      'src/lib/conditions/__tests__/domain.test.js': ['rollup']
+      'src/lib/conditions/__tests__/domain.test.js': ['rollup'],
+      'src/lib/conditions/__tests__/pageViews.test.js': ['rollup']
     },
     plugins: [
       karmaCoverage,
@@ -66,12 +74,23 @@ export default (config) => {
         format: 'iife',
         sourcemap: 'inline'
       },
+      onwarn: (warning, warn) => {
+        // Fail loudly on unresolved imports or missing files
+        if (warning.code === 'UNRESOLVED_IMPORT' || warning.code === 'MISSING_EXPORT') {
+          throw new Error(warning.message);
+        }
+        // Log other warnings
+        warn(warning);
+      },
       plugins: [
         replace({
           preventAssignment: true,
           REACTOR_KARMA_CI_UNIT_TEST_MODE: JSON.stringify(true)
         }),
-        nodeResolve(),
+        nodeResolve({
+          // Make node resolve throw on unresolved modules
+          modulesOnly: false
+        }),
         commonjs(),
         rollupIstanbul({
           exclude: ['**/*.test.js', '**/__tests__/**']
