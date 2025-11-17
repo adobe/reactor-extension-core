@@ -9,18 +9,20 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-var decorateNonGlobalJavaScriptCodeInjector = require('inject-loader!../decorateNonGlobalJavaScriptCode');
+const {
+  injectDecorateNonGlobalJavascriptCode
+} = require('../decorateNonGlobalJavaScriptCode');
 
 describe('decorate non global javascript code', function () {
   it('decorates javascript action and returns it on the code key', function () {
-    var settings = {
+    const settings = {
       language: 'javascript',
       source: 'console.log("logging")'
     };
 
-    var decorateNonGlobalJavaScriptCode =
-      decorateNonGlobalJavaScriptCodeInjector();
-    var decoratedResult = decorateNonGlobalJavaScriptCode(
+    const decorateNonGlobalJavaScriptCode =
+      injectDecorateNonGlobalJavascriptCode({ Promise });
+    const decoratedResult = decorateNonGlobalJavaScriptCode(
       {
         settings: settings,
         event: {}
@@ -39,24 +41,24 @@ describe('decorate non global javascript code', function () {
     'sends the event, target and our Promise to the random generated method ' +
       'for a javascript action',
     function () {
-      var event = {
+      const event = {
         element: {},
         target: {}
       };
 
-      var settings = {
+      const settings = {
         language: 'javascript',
         source: 'console.log("logging")'
       };
-      var spy = jasmine.createSpy('fn');
+      const spy = jasmine.createSpy('fn');
 
-      var mockPromise = function (fn) {
+      const mockPromise = function (fn) {
         return new Promise(fn);
       };
 
-      var decorateNonGlobalJavaScriptCode =
-        decorateNonGlobalJavaScriptCodeInjector({
-          '@adobe/reactor-promise': mockPromise
+      const decorateNonGlobalJavaScriptCode =
+        injectDecorateNonGlobalJavascriptCode({
+          Promise: mockPromise
         });
 
       decorateNonGlobalJavaScriptCode(
@@ -79,13 +81,13 @@ describe('decorate non global javascript code', function () {
   );
 
   it('clears the random generated method for a javascript action after its execution', function () {
-    var settings = {
+    const settings = {
       language: 'javascript',
       source: 'console.log("logging")'
     };
 
-    var decorateNonGlobalJavaScriptCode =
-      decorateNonGlobalJavaScriptCodeInjector();
+    const decorateNonGlobalJavaScriptCode =
+      injectDecorateNonGlobalJavascriptCode({ Promise });
     decorateNonGlobalJavaScriptCode(
       {
         settings: settings,
@@ -101,7 +103,7 @@ describe('decorate non global javascript code', function () {
   });
 
   it('handles javascript code that returns promises that resolve', function (done) {
-    var settings = {
+    const settings = {
       language: 'javascript',
       // This code here is present only for example purposes. The code is not written to the page,
       // so it cannot be tested. The code that is tested is inside the callback that is sent to
@@ -109,8 +111,8 @@ describe('decorate non global javascript code', function () {
       source: 'return new Promise(function() {...})'
     };
 
-    var decorateNonGlobalJavaScriptCode =
-      decorateNonGlobalJavaScriptCodeInjector();
+    const decorateNonGlobalJavaScriptCode =
+      injectDecorateNonGlobalJavascriptCode({ Promise });
 
     decorateNonGlobalJavaScriptCode(
       {
@@ -131,7 +133,7 @@ describe('decorate non global javascript code', function () {
   });
 
   it('handles javascript code that returns promises that reject', function (done) {
-    var settings = {
+    const settings = {
       language: 'javascript',
       // This code here is present only for example purposes. The code is not written to the page,
       // so it cannot be tested. The code that is tested is inside the callback that is sent to
@@ -139,8 +141,8 @@ describe('decorate non global javascript code', function () {
       source: 'return new Promise(function() {...})'
     };
 
-    var decorateNonGlobalJavaScriptCode =
-      decorateNonGlobalJavaScriptCodeInjector();
+    const decorateNonGlobalJavaScriptCode =
+      injectDecorateNonGlobalJavascriptCode({ Promise });
 
     decorateNonGlobalJavaScriptCode(
       {
@@ -161,7 +163,7 @@ describe('decorate non global javascript code', function () {
   });
 
   it('handles javascript code that throws error', function (done) {
-    var settings = {
+    const settings = {
       language: 'javascript',
       // This code here is present only for example purposes. The code is not written to the page,
       // so it cannot be tested. The code that is tested is inside the callback that is sent to
@@ -169,8 +171,8 @@ describe('decorate non global javascript code', function () {
       source: 'return new Promise(function() {...})'
     };
 
-    var decorateNonGlobalJavaScriptCode =
-      decorateNonGlobalJavaScriptCodeInjector();
+    const decorateNonGlobalJavaScriptCode =
+      injectDecorateNonGlobalJavascriptCode({ Promise });
 
     decorateNonGlobalJavaScriptCode(
       {
@@ -189,20 +191,20 @@ describe('decorate non global javascript code', function () {
   });
 
   it('returns a promise on the promise key', function () {
-    var settings = {
+    const settings = {
       language: 'javascript',
       source: 'console.log("logging")'
     };
 
-    var p = Promise.resolve();
-    var decorateNonGlobalJavaScriptCode =
-      decorateNonGlobalJavaScriptCodeInjector({
-        '@adobe/reactor-promise': function () {
+    const p = Promise.resolve();
+    const decorateNonGlobalJavaScriptCode =
+      injectDecorateNonGlobalJavascriptCode({
+        Promise: function () {
           return p;
         }
       });
 
-    var decoratedResult = decorateNonGlobalJavaScriptCode(
+    const decoratedResult = decorateNonGlobalJavaScriptCode(
       {
         settings: settings
       },
