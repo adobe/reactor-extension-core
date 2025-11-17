@@ -7,12 +7,16 @@ import replace from '@rollup/plugin-replace';
 import html from '@rollup/plugin-html';
 import styles from 'rollup-plugin-styles';
 import fs from 'fs';
-import extension from './extension.json' assert { type: 'json' };
+import extension from './extension.json' with { type: 'json' };
 import camelCase from 'camelcase';
 import capitalize from 'capitalize';
 import createEntryFile from './createEntryFile.js';
 import copy from 'rollup-plugin-copy';
 import json from '@rollup/plugin-json';
+import stripCode from 'rollup-plugin-strip-code';
+
+// The stripCode will strip all code wrapped in START.TESTS_ONLY/END.TESTS_ONLY
+// comments when process.env.NODE_ENV = production (like in package.json build).
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -99,6 +103,7 @@ const sharedPlugins = [
   }),
   replace({
     preventAssignment: true,
+    REACTOR_KARMA_CI_UNIT_TEST_MODE: JSON.stringify(false),
     'process.env.SCALE_MEDIUM': 'true',
     'process.env.SCALE_LARGE': 'false',
     'process.env.THEME_LIGHT': 'false',
@@ -107,6 +112,12 @@ const sharedPlugins = [
     'process.env.THEME_DARKEST': 'false',
     'process.browser': 'true'
   }),
+  ...('production' === process.env.NODE_ENV
+    ? [stripCode({
+      start_comment: 'START.TESTS_ONLY',
+      end_comment: 'END.TESTS_ONLY'
+    })]
+    : []),
   copy({
     targets: [
       { src: 'resources/**/*', dest: 'dist/resources' }

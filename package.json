@@ -13,7 +13,7 @@
     "url": "git@github.com:adobe/reactor-extension-core.git"
   },
   "scripts": {
-    "build": "rm -rf dist && rollup -c",
+    "build": "NODE_ENV=production rm -rf dist && rollup -c",
     "build:watch": "rollup -c -w",
     "sandbox": "concurrently -k -n rollup,sandbox -c \"bgBlue,bgMagenta\" \"npm run build:watch\" \"reactor-sandbox\"",
     "package": "npm run build && npx @adobe/reactor-packager@next",
@@ -87,6 +87,7 @@
     "rollup": "^4.52.2",
     "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-istanbul": "^5.0.0",
+    "rollup-plugin-strip-code": "^0.2.8",
     "rollup-plugin-styles": "^4.0.0",
     "simulate": "0.0.6",
     "stylus": "^0.55.0",
