@@ -92,59 +92,75 @@ describe('visitor tracking', function () {
     );
   });
 
-  // it('tracks the landing time', function () {
-  //   // jasmine.clock().install();
-  //   //
-  //   const landingDate = new Date();
-  //   // jasmine.clock().mockDate(landingDate);
-  //
-  //   let visitorTracking = trackVisit();
-  //   expect(
-  //     window.sessionStorage.getItem(
-  //       'com.adobe.reactor.core.visitorTracking.landingTime'
-  //     )
-  //   ).toBe(landingDate.getTime().toString());
-  //   expect(visitorTracking.getLandingTime()).toBe(landingDate.getTime());
-  //
-  //   // Simulate moving to a new page. The landing time should remain the same.
-  //   mockWindow.location.href = 'http://visitortracking.com/somethingelse.html';
-  //
-  //   jasmine.clock().tick(100000);
-  //
-  //   visitorTracking = trackVisit();
-  //   expect(
-  //     window.sessionStorage.getItem(
-  //       'com.adobe.reactor.core.visitorTracking.landingTime'
-  //     )
-  //   ).toBe(landingDate.getTime().toString());
-  //   expect(visitorTracking.getLandingTime()).toBe(landingDate.getTime());
-  //
-  //   jasmine.clock().uninstall();
-  // });
-  //
-  // it('tracks minutes on site', function () {
-  //   jasmine.clock().install();
-  //   jasmine.clock().mockDate(new Date(1000));
-  //
-  //   let visitorTracking = trackVisit();
-  //   expect(
-  //     window.sessionStorage.getItem(
-  //       'com.adobe.reactor.core.visitorTracking.landingTime'
-  //     )
-  //   ).toBe('1000');
-  //   expect(visitorTracking.getMinutesOnSite()).toBe(0);
-  //
-  //   jasmine.clock().tick(2.7 * 60 * 1000);
-  //
-  //   visitorTracking = trackVisit();
-  //   expect(
-  //     window.sessionStorage.getItem(
-  //       'com.adobe.reactor.core.visitorTracking.landingTime'
-  //     )
-  //   ).toBe('1000');
-  //   expect(visitorTracking.getMinutesOnSite()).toBe(2);
-  //   jasmine.clock().uninstall();
-  // });
+  it('tracks the landing time', function () {
+    jasmine.clock().install();
+
+    const landingDate = new Date();
+    jasmine.clock().mockDate(landingDate);
+
+    let trackedVisit = injectVisitorTracking({
+      window,
+      document: createMockDocument(),
+      getNamespacedStorage: injectedNameSpacedStorage
+    });
+    expect(
+      window.sessionStorage.getItem(
+        'com.adobe.reactor.core.visitorTracking.landingTime'
+      )
+    ).toBe(landingDate.getTime().toString());
+    expect(trackedVisit.getLandingTime()).toBe(landingDate.getTime());
+
+    // Simulate moving to a new page. The landing time should remain the same.
+    changeWindowLocation('/pages2/something-else.html');
+
+    jasmine.clock().tick(100000);
+
+    trackedVisit = trackedVisit = injectVisitorTracking({
+      window,
+      document: createMockDocument(),
+      getNamespacedStorage: injectedNameSpacedStorage
+    });
+    expect(
+      window.sessionStorage.getItem(
+        'com.adobe.reactor.core.visitorTracking.landingTime'
+      )
+    ).toBe(landingDate.getTime().toString());
+    expect(trackedVisit.getLandingTime()).toBe(landingDate.getTime());
+
+    jasmine.clock().uninstall();
+  });
+
+  it('tracks minutes on site', function () {
+    jasmine.clock().install();
+    jasmine.clock().mockDate(new Date(1000));
+
+    let trackedVisit = injectVisitorTracking({
+      window,
+      document: createMockDocument(),
+      getNamespacedStorage: injectedNameSpacedStorage
+    });
+    expect(
+      window.sessionStorage.getItem(
+        'com.adobe.reactor.core.visitorTracking.landingTime'
+      )
+    ).toBe('1000');
+    expect(trackedVisit.getMinutesOnSite()).toBe(0);
+
+    jasmine.clock().tick(2.7 * 60 * 1000);
+
+    trackedVisit = injectVisitorTracking({
+      window,
+      document: createMockDocument(),
+      getNamespacedStorage: injectedNameSpacedStorage
+    });
+    expect(
+      window.sessionStorage.getItem(
+        'com.adobe.reactor.core.visitorTracking.landingTime'
+      )
+    ).toBe('1000');
+    expect(trackedVisit.getMinutesOnSite()).toBe(2);
+    jasmine.clock().uninstall();
+  });
 
   it('tracks the number of sessions', function () {
     changeWindowLocation(defaultLocationHref);
