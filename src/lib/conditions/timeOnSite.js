@@ -13,22 +13,39 @@
 import visitorTracking from '../helpers/visitorTracking';
 import compareNumbers from './helpers/compareNumbers';
 import { castToNumberIfString } from '../helpers/stringAndNumberUtils';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
 
-/**
- * Time on site condition. Determines if the user has been on the site for a certain amount
- * of time.
- * @param {Object} settings Condition settings.
- * @param {number} settings.minutes The number of minutes to compare against.
- * @param {comparisonOperator} settings.operator The comparison operator to use to
- * compare against minutes.
- * @returns {boolean}
- */
-const timeOnSiteCondition = function (settings) {
-  return compareNumbers(
-    visitorTracking.getMinutesOnSite(),
-    settings.operator,
-    castToNumberIfString(settings.minutes)
-  );
-};
+function injectTimeOnSiteCondition({
+  visitorTracking,
+  compareNumbers,
+  castToNumberIfString
+}) {
+  /**
+   * Time on site condition. Determines if the user has been on the site for a certain amount
+   * of time.
+   * @param {Object} settings Condition settings.
+   * @param {number} settings.minutes The number of minutes to compare against.
+   * @param {comparisonOperator} settings.operator The comparison operator to use to
+   * compare against minutes.
+   * @returns {boolean}
+   */
+  return function timeOnSiteCondition(settings) {
+    return compareNumbers(
+      visitorTracking.getMinutesOnSite(),
+      settings.operator,
+      castToNumberIfString(settings.minutes)
+    );
+  };
+}
 
-export default timeOnSiteCondition;
+const validateInjection = validateInjectedParams(injectTimeOnSiteCondition);
+
+export default validateInjection({
+  visitorTracking,
+  compareNumbers,
+  castToNumberIfString
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectTimeOnSiteCondition };
+/* END.TESTS_ONLY */
