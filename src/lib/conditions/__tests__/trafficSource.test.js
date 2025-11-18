@@ -10,15 +10,18 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
+import { injectTrafficSource } from '../trafficSource.js';
+import textMatch from '../../helpers/textMatch.js';
+
 var mockVisitorTracking = {
   getTrafficSource: function () {
     return 'http://trafficsource.com';
   }
 };
 
-var conditionDelegateInjector = require('inject-loader!../trafficSource');
-var conditionDelegate = conditionDelegateInjector({
-  '../helpers/visitorTracking': mockVisitorTracking
+var conditionDelegate = injectTrafficSource({
+  visitorTracking: mockVisitorTracking,
+  textMatch
 });
 
 describe('traffic source condition delegate', function () {

@@ -12,40 +12,55 @@
 
 import textMatch from '../helpers/textMatch';
 import visitorTracking from '../helpers/visitorTracking';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
 
-/**
- * Traffic source condition. Determines if the actual traffic source matches an acceptable traffic
- * source.
- * @param {Object} settings Condition settings.
- * @param {Object[]} settings.trafficSources Acceptable traffic values to match.
- * @param {string} settings.trafficSources[].value An acceptable traffic source value.
- * @param {string} [settings.trafficSources[].sourceIsRegex=false] Is the traffic source
- * value a Regular Expression?
- * DEPRECATED @param {string} settings.source An acceptable traffic source.
- * DEPRECATED @param {boolean} [settings.sourceIsRegex=false] Whether
- * <code>settings.source</code> is intended
- * to be a regular expression.
- * @returns {boolean}
- */
-const trafficSourceCondition = function (settings) {
-  var storedTrafficSource = visitorTracking.getTrafficSource();
-  if (!storedTrafficSource) {
-    return false;
-  }
-  var trafficSourceValues;
-  if (!Array.isArray(settings.trafficSources)) {
-    trafficSourceValues = [
-      { value: settings.source, sourceIsRegex: Boolean(settings.sourceIsRegex) }
-    ];
-  } else {
-    trafficSourceValues = settings.trafficSources;
-  }
-  return trafficSourceValues.some(function (acceptableTrafficSource) {
-    var acceptableValue = acceptableTrafficSource.sourceIsRegex
-      ? new RegExp(acceptableTrafficSource.value, 'i')
-      : acceptableTrafficSource.value;
-    return textMatch(storedTrafficSource, acceptableValue);
-  });
-};
+function injectTrafficSource({ textMatch, visitorTracking }) {
+  /**
+   * Traffic source condition. Determines if the actual traffic source matches an acceptable traffic
+   * source.
+   * @param {Object} settings Condition settings.
+   * @param {Object[]} settings.trafficSources Acceptable traffic values to match.
+   * @param {string} settings.trafficSources[].value An acceptable traffic source value.
+   * @param {string} [settings.trafficSources[].sourceIsRegex=false] Is the traffic source
+   * value a Regular Expression?
+   * DEPRECATED @param {string} settings.source An acceptable traffic source.
+   * DEPRECATED @param {boolean} [settings.sourceIsRegex=false] Whether
+   * <code>settings.source</code> is intended
+   * to be a regular expression.
+   * @returns {boolean}
+   */
+  return function trafficSourceCondition(settings) {
+    const storedTrafficSource = visitorTracking.getTrafficSource();
+    if (!storedTrafficSource) {
+      return false;
+    }
+    let trafficSourceValues;
+    if (!Array.isArray(settings.trafficSources)) {
+      trafficSourceValues = [
+        {
+          value: settings.source,
+          sourceIsRegex: Boolean(settings.sourceIsRegex)
+        }
+      ];
+    } else {
+      trafficSourceValues = settings.trafficSources;
+    }
+    return trafficSourceValues.some(function (acceptableTrafficSource) {
+      const acceptableValue = acceptableTrafficSource.sourceIsRegex
+        ? new RegExp(acceptableTrafficSource.value, 'i')
+        : acceptableTrafficSource.value;
+      return textMatch(storedTrafficSource, acceptableValue);
+    });
+  };
+}
 
-export default trafficSourceCondition;
+const validateInjection = validateInjectedParams(injectTrafficSource);
+
+export default validateInjection({
+  textMatch,
+  visitorTracking
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectTrafficSource };
+/* END.TESTS_ONLY */
