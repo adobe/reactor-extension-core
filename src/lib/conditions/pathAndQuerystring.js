@@ -35,9 +35,7 @@ function injectPathAndQuerystring({ document, textMatch }) {
   };
 }
 
-const validateInjection = validateInjectedParams(
-  injectPathAndQuerystring
-);
+const validateInjection = validateInjectedParams(injectPathAndQuerystring);
 
 export default validateInjection({
   // runs in Turbine context, which provides these core-module packages.
