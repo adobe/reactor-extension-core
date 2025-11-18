@@ -11,16 +11,29 @@
  ****************************************************************************************/
 
 import clientInfo from './helpers/clientInfo';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
 
-/**
- * Device type condition. Determines if the actual device type matches at least one acceptable
- * device type.
- * @param {Object} settings Condition settings.
- * @param {string[]} settings.deviceTypes An array of device types.
- * @returns {boolean}
- */
-const deviceTypeCondition = function (settings) {
-  return settings.deviceTypes.indexOf(clientInfo.deviceType) !== -1;
-};
+function injectDeviceType({ clientInfo }) {
+  /**
+   * Device type condition. Determines if the actual device type matches at least one acceptable
+   * device type.
+   * @param {Object} settings Condition settings.
+   * @param {string[]} settings.deviceTypes An array of device types.
+   * @returns {boolean}
+   */
+  return function deviceTypeCondition(settings) {
+    return settings.deviceTypes.indexOf(clientInfo.deviceType) !== -1;
+  };
+}
 
-export default deviceTypeCondition;
+const validateInjection = validateInjectedParams(
+  injectDeviceType
+);
+
+export default validateInjection({
+  clientInfo
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectDeviceType };
+/* END.TESTS_ONLY */
