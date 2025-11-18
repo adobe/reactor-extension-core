@@ -39,12 +39,10 @@ function injectScreenResolution({ window, compareNumbers }) {
     );
 
     return widthInRange && heightInRange;
-  }
+  };
 }
 
-const validateInjection = validateInjectedParams(
-  injectScreenResolution
-);
+const validateInjection = validateInjectedParams(injectScreenResolution);
 
 export default validateInjection({
   // runs in Turbine context, which provides these core-module packages.
