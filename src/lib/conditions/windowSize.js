@@ -10,32 +10,45 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import document from '@adobe/reactor-document';
 import compareNumbers from './helpers/compareNumbers';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
 
-/**
- * Window size condition. Determines if the current window size matches constraints.
- * @param {Object} settings Condition settings.
- * @param {number} settings.width The window width to compare against.
- * @param {comparisonOperator} settings.widthOperator The comparison operator to use
- * to compare against width.
- * @param {number} settings.height The window height to compare against.
- * @param {comparisonOperator} settings.heightOperator The comparison operator to use
- * to compare against height.
- * @returns {boolean}
- */
-const windowSizeCondition = function (settings) {
-  const widthInRange = compareNumbers(
-    document.documentElement.clientWidth,
-    settings.widthOperator,
-    settings.width
-  );
-  const heightInRange = compareNumbers(
-    document.documentElement.clientHeight,
-    settings.heightOperator,
-    settings.height
-  );
-  return widthInRange && heightInRange;
-};
+function injectWindowSize({ document }) {
+  /**
+   * Window size condition. Determines if the current window size matches constraints.
+   * @param {Object} settings Condition settings.
+   * @param {number} settings.width The window width to compare against.
+   * @param {comparisonOperator} settings.widthOperator The comparison operator to use
+   * to compare against width.
+   * @param {number} settings.height The window height to compare against.
+   * @param {comparisonOperator} settings.heightOperator The comparison operator to use
+   * to compare against height.
+   * @returns {boolean}
+   */
+  return function windowSizeCondition(settings) {
+    const widthInRange = compareNumbers(
+      document.documentElement.clientWidth,
+      settings.widthOperator,
+      settings.width
+    );
+    const heightInRange = compareNumbers(
+      document.documentElement.clientHeight,
+      settings.heightOperator,
+      settings.height
+    );
+    return widthInRange && heightInRange;
+  };
+}
 
-export default windowSizeCondition;
+const validateInjection = validateInjectedParams(
+  injectWindowSize
+);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  document: require('@adobe/reactor-document')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectWindowSize };
+/* END.TESTS_ONLY */

@@ -10,6 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
+import { injectWindowSize } from '../windowSize.js';
+
 var mockDocument = {
   documentElement: {
     clientWidth: 1366,
@@ -17,9 +19,8 @@ var mockDocument = {
   }
 };
 
-var conditionDelegateInjector = require('inject-loader!../windowSize');
-var conditionDelegate = conditionDelegateInjector({
-  '@adobe/reactor-document': mockDocument
+var conditionDelegate = injectWindowSize({
+  document: mockDocument
 });
 
 var getSettings = function (width, widthOperator, height, heightOperator) {
