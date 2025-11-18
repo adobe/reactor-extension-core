@@ -10,121 +10,142 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import getNamespacedStorage from './getNamespacedStorage';
+import getNamespacedStorage from './getNamespacedStorage.js';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
 
-function createVisitorTracking(window, document) {
-  const STORAGE_NAMESPACE = 'visitorTracking';
+function injectVisitorTracking({ window, document, getNamespacedStorage }) {
+  // these allow the user to introspect about the tracking that happened when
+  // this function invokes on module load.
+  let getters;
+  // Track right away
+  (function visitorTracking() {
+    const STORAGE_NAMESPACE = 'visitorTracking';
 
-  const visitorTrackingLocalStorage = getNamespacedStorage(
-    'localStorage',
-    STORAGE_NAMESPACE
-  );
-  const visitorTrackingSessionStorage = getNamespacedStorage(
-    'sessionStorage',
-    STORAGE_NAMESPACE
-  );
+    const visitorTrackingLocalStorage = getNamespacedStorage(
+      'localStorage',
+      STORAGE_NAMESPACE
+    );
+    const visitorTrackingSessionStorage = getNamespacedStorage(
+      'sessionStorage',
+      STORAGE_NAMESPACE
+    );
 
-  // returns whether this is a new visitor session
-  var trackLandingPageAndTime = function () {
-    var existingLandingPage =
-      visitorTrackingSessionStorage.getItem('landingPage');
+    // returns whether this is a new visitor session
+    const trackLandingPageAndTime = function () {
+      const existingLandingPage =
+        visitorTrackingSessionStorage.getItem('landingPage');
 
-    if (!existingLandingPage) {
+      if (!existingLandingPage) {
+        visitorTrackingSessionStorage.setItem(
+          'landingPage',
+          window.location.href
+        );
+        visitorTrackingSessionStorage.setItem(
+          'landingTime',
+          new Date().getTime()
+        );
+      }
+
+      return !existingLandingPage;
+    };
+
+    const getLandingPage = function () {
+      return visitorTrackingSessionStorage.getItem('landingPage');
+    };
+
+    const getLandingTime = function () {
+      return Number(visitorTrackingSessionStorage.getItem('landingTime'));
+    };
+
+    const getSessionCount = function () {
+      return Number(visitorTrackingLocalStorage.getItem('sessionCount'));
+    };
+
+    const getLifetimePageViewCount = function () {
+      return Number(visitorTrackingLocalStorage.getItem('pagesViewed'));
+    };
+
+    const getMinutesOnSite = function () {
+      const now = new Date().getTime();
+      return Math.floor((now - getLandingTime()) / 1000 / 60);
+    };
+
+    const getTrafficSource = function () {
+      return visitorTrackingSessionStorage.getItem('trafficSource');
+    };
+
+    const getSessionPageViewCount = function () {
+      return Number(visitorTrackingSessionStorage.getItem('pagesViewed'));
+    };
+
+    const getIsNewVisitor = function () {
+      return getSessionCount() === 1;
+    };
+
+    const trackSessionCount = function (newSession) {
+      if (newSession) {
+        visitorTrackingLocalStorage.setItem(
+          'sessionCount',
+          getSessionCount() + 1
+        );
+      }
+    };
+
+    const trackSessionPageViewCount = function () {
       visitorTrackingSessionStorage.setItem(
-        'landingPage',
-        window.location.href
+        'pagesViewed',
+        getSessionPageViewCount() + 1
       );
-      visitorTrackingSessionStorage.setItem(
-        'landingTime',
-        new Date().getTime()
-      );
-    }
+    };
 
-    return !existingLandingPage;
-  };
-
-  var getLandingPage = function () {
-    return visitorTrackingSessionStorage.getItem('landingPage');
-  };
-
-  var getLandingTime = function () {
-    return Number(visitorTrackingSessionStorage.getItem('landingTime'));
-  };
-
-  var getSessionCount = function () {
-    return Number(visitorTrackingLocalStorage.getItem('sessionCount'));
-  };
-
-  var getLifetimePageViewCount = function () {
-    return Number(visitorTrackingLocalStorage.getItem('pagesViewed'));
-  };
-
-  var getMinutesOnSite = function () {
-    var now = new Date().getTime();
-    return Math.floor((now - getLandingTime()) / 1000 / 60);
-  };
-
-  var getTrafficSource = function () {
-    return visitorTrackingSessionStorage.getItem('trafficSource');
-  };
-
-  var getSessionPageViewCount = function () {
-    return Number(visitorTrackingSessionStorage.getItem('pagesViewed'));
-  };
-
-  var getIsNewVisitor = function () {
-    return getSessionCount() === 1;
-  };
-
-  var trackSessionCount = function (newSession) {
-    if (newSession) {
+    const trackLifetimePageViewCount = function () {
       visitorTrackingLocalStorage.setItem(
-        'sessionCount',
-        getSessionCount() + 1
+        'pagesViewed',
+        getLifetimePageViewCount() + 1
       );
-    }
-  };
+    };
 
-  var trackSessionPageViewCount = function () {
-    visitorTrackingSessionStorage.setItem(
-      'pagesViewed',
-      getSessionPageViewCount() + 1
-    );
-  };
+    const trackTrafficSource = function () {
+      if (!visitorTrackingSessionStorage.getItem('trafficSource')) {
+        visitorTrackingSessionStorage.setItem(
+          'trafficSource',
+          document.referrer
+        );
+      }
+    };
 
-  var trackLifetimePageViewCount = function () {
-    visitorTrackingLocalStorage.setItem(
-      'pagesViewed',
-      getLifetimePageViewCount() + 1
-    );
-  };
+    (function trackVisitor() {
+      const newSession = trackLandingPageAndTime();
+      trackSessionCount(newSession);
+      trackLifetimePageViewCount();
+      trackSessionPageViewCount();
+      trackTrafficSource();
+    })();
 
-  var trackTrafficSource = function () {
-    if (!visitorTrackingSessionStorage.getItem('trafficSource')) {
-      visitorTrackingSessionStorage.setItem('trafficSource', document.referrer);
-    }
-  };
+    getters = {
+      getLandingPage,
+      getLandingTime,
+      getMinutesOnSite,
+      getSessionCount,
+      getLifetimePageViewCount,
+      getSessionPageViewCount,
+      getTrafficSource,
+      getIsNewVisitor
+    };
+  })();
 
-  var trackVisitor = function () {
-    var newSession = trackLandingPageAndTime();
-    trackSessionCount(newSession);
-    trackLifetimePageViewCount();
-    trackSessionPageViewCount();
-    trackTrafficSource();
-  };
-
-  trackVisitor();
-
-  return {
-    getLandingPage: getLandingPage,
-    getLandingTime: getLandingTime,
-    getMinutesOnSite: getMinutesOnSite,
-    getSessionCount: getSessionCount,
-    getLifetimePageViewCount: getLifetimePageViewCount,
-    getSessionPageViewCount: getSessionPageViewCount,
-    getTrafficSource: getTrafficSource,
-    getIsNewVisitor: getIsNewVisitor
-  };
+  return getters;
 }
 
-export default createVisitorTracking;
+const validateInjection = validateInjectedParams(injectVisitorTracking);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  window: require('@adobe/reactor-window'),
+  document: require('@adobe/reactor-document'),
+  getNamespacedStorage
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectVisitorTracking };
+/* END.TESTS_ONLY */
