@@ -9,14 +9,15 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-var deviceAttributesDelegateInjector = require('inject-loader!../deviceAttributes');
+import { injectDeviceAttributes } from '../deviceAttributes.js';
 
 describe('visitor attributes data element delegate', function () {
   it('returns the window size', function () {
-    var deviceAttributesDelegate = deviceAttributesDelegateInjector({
-      '@adobe/reactor-window': {
+    var deviceAttributesDelegate = injectDeviceAttributes({
+      window: {
         screen: { width: 100, height: 200 }
-      }
+      },
+      document
     });
 
     expect(deviceAttributesDelegate({ attribute: 'screenSize' })).toBe(
@@ -25,8 +26,9 @@ describe('visitor attributes data element delegate', function () {
   });
 
   it('returns the window size', function () {
-    var deviceAttributesDelegate = deviceAttributesDelegateInjector({
-      '@adobe/reactor-document': {
+    var deviceAttributesDelegate = injectDeviceAttributes({
+      window,
+      document: {
         documentElement: { clientWidth: 150, clientHeight: 250 }
       }
     });
