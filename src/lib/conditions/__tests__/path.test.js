@@ -10,21 +10,24 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-var mockDocument = {
+import { injectPath } from '../path.js';
+import textMatch from '../../helpers/textMatch.js'
+
+const mockDocument = {
   location: {
     pathname: '/foo/bar.html',
     search: '?mmm=bacon'
   }
 };
 
-var conditionDelegateInjector = require('inject-loader!../path');
-var conditionDelegate = conditionDelegateInjector({
-  '@adobe/reactor-document': mockDocument
+const conditionDelegate = injectPath({
+  document: mockDocument,
+  textMatch
 });
 
 describe('path condition delegate', function () {
   it('returns true when the path matches an acceptable string', function () {
-    var settings = {
+    const settings = {
       paths: [
         {
           value: 'snowcones.html'
@@ -38,7 +41,7 @@ describe('path condition delegate', function () {
   });
 
   it('returns false when the path does not match an acceptable string', function () {
-    var settings = {
+    const settings = {
       paths: [
         {
           value: 'snowcones.html'
@@ -52,7 +55,7 @@ describe('path condition delegate', function () {
   });
 
   it('returns true when the path matches an acceptable regex', function () {
-    var settings = {
+    const settings = {
       paths: [
         {
           value: 'snowcones.html'
@@ -67,7 +70,7 @@ describe('path condition delegate', function () {
   });
 
   it('returns false when the path does not match an acceptable regex', function () {
-    var settings = {
+    const settings = {
       paths: [
         {
           value: 'snowcones.html'

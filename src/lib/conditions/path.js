@@ -10,26 +10,38 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import document from '@adobe/reactor-document';
 import textMatch from '../helpers/textMatch';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
 
-/**
- * Path condition. Determines if the actual path matches at least one acceptable path.
- * @param {Object} settings Condition settings.
- * @param {Object[]} settings.paths Acceptable paths.
- * @param {string} settings.paths[].value An acceptable path value.
- * @param {boolean} [settings.paths[].valueIsRegex=false] Whether <code>value</code> on the object
- * instance is intended to be a regular expression.
- * @returns {boolean}
- */
-const pathCondition = function (settings) {
-  const path = document.location.pathname;
-  return settings.paths.some(function (acceptablePath) {
-    const acceptableValue = acceptablePath.valueIsRegex
-      ? new RegExp(acceptablePath.value, 'i')
-      : acceptablePath.value;
-    return textMatch(path, acceptableValue);
-  });
-};
+function injectPath({ document, textMatch }) {
+  /**
+   * Path condition. Determines if the actual path matches at least one acceptable path.
+   * @param {Object} settings Condition settings.
+   * @param {Object[]} settings.paths Acceptable paths.
+   * @param {string} settings.paths[].value An acceptable path value.
+   * @param {boolean} [settings.paths[].valueIsRegex=false] Whether <code>value</code> on the object
+   * instance is intended to be a regular expression.
+   * @returns {boolean}
+   */
+  return function pathCondition(settings) {
+    const path = document.location.pathname;
+    return settings.paths.some(function (acceptablePath) {
+      const acceptableValue = acceptablePath.valueIsRegex
+        ? new RegExp(acceptablePath.value, 'i')
+        : acceptablePath.value;
+      return textMatch(path, acceptableValue);
+    });
+  };
+}
 
-export default pathCondition;
+const validateInjection = validateInjectedParams(injectPath);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  document: require('@adobe/reactor-document'),
+  textMatch
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectPath };
+/* END.TESTS_ONLY */
