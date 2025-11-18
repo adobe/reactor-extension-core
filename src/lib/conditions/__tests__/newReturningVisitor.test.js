@@ -10,15 +10,15 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-var mockVisitorTracking = {};
+import { injectNewReturningVisitor } from '../newReturningVisitor.js';
 
-var conditionDelegateInjector = require('inject-loader!../newReturningVisitor');
+const mockVisitorTracking = {};
 
-var conditionDelegate = conditionDelegateInjector({
-  '../helpers/visitorTracking': mockVisitorTracking
+const conditionDelegate = injectNewReturningVisitor({
+  visitorTracking: mockVisitorTracking
 });
 
-var getSettings = function (isNewVisitor) {
+const getSettings = function (isNewVisitor) {
   return {
     isNewVisitor: isNewVisitor
   };
@@ -30,7 +30,7 @@ describe('new vs. returning condition delegate', function () {
       return true;
     };
 
-    var settings = getSettings(true);
+    const settings = getSettings(true);
     expect(conditionDelegate(settings)).toBe(true);
   });
 
@@ -39,7 +39,7 @@ describe('new vs. returning condition delegate', function () {
       return false;
     };
 
-    var settings = getSettings(false);
+    const settings = getSettings(false);
     expect(conditionDelegate(settings)).toBe(true);
   });
 
@@ -48,7 +48,7 @@ describe('new vs. returning condition delegate', function () {
       return true;
     };
 
-    var settings = getSettings(false);
+    const settings = getSettings(false);
     expect(conditionDelegate(settings)).toBe(false);
   });
 
@@ -57,7 +57,7 @@ describe('new vs. returning condition delegate', function () {
       return false;
     };
 
-    var settings = getSettings(true);
+    const settings = getSettings(true);
     expect(conditionDelegate(settings)).toBe(false);
   });
 });

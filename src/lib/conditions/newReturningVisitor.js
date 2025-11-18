@@ -11,18 +11,31 @@
  ****************************************************************************************/
 
 import visitorTracking from '../helpers/visitorTracking';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
 
-/**
- * New vs. returning visitor condition. Determines if the visitor is a new or returning visitor.
- * @param {Object} settings Condition settings.
- * @param {boolean} settings.isNewVisitor When true, the condition returns true if the
- * visitor is a new visitor. When false, the condition returns true if the visitor is a returning
- * visitor.
- * @returns {boolean}
- */
-const newReturningVisitorCondition = function (settings) {
-  const isNewVisitor = visitorTracking.getIsNewVisitor();
-  return settings.isNewVisitor ? isNewVisitor : !isNewVisitor;
-};
+function injectNewReturningVisitor({ visitorTracking }) {
+  /**
+   * New vs. returning visitor condition. Determines if the visitor is a new or returning visitor.
+   * @param {Object} settings Condition settings.
+   * @param {boolean} settings.isNewVisitor When true, the condition returns true if the
+   * visitor is a new visitor. When false, the condition returns true if the visitor is a returning
+   * visitor.
+   * @returns {boolean}
+   */
+  return function newReturningVisitorCondition(settings) {
+    const isNewVisitor = visitorTracking.getIsNewVisitor();
+    return settings.isNewVisitor ? isNewVisitor : !isNewVisitor;
+  };
+}
 
-export default newReturningVisitorCondition;
+const validateInjection = validateInjectedParams(
+  injectNewReturningVisitor
+);
+
+export default validateInjection({
+  visitorTracking
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectNewReturningVisitor };
+/* END.TESTS_ONLY */
