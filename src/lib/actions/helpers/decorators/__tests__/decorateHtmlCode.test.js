@@ -38,13 +38,11 @@ describe('decorate html code', function () {
   });
 
   it('returns the decorated code on the code key', function () {
-    console.log('in the test');
     const settings = {
       language: 'html',
       source: '<script>console.log("logging")</script>'
     };
 
-    console.log(typeof decorateHtmlCode);
     const decoratedResult = decorateHtmlCode(
       {
         settings: settings,

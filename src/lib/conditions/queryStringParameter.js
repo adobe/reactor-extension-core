@@ -10,45 +10,63 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import window from '@adobe/reactor-window';
-import queryString from '@adobe/reactor-query-string';
 import textMatch from '../helpers/textMatch';
 
-/**
- * Query string parameter condition. Determines if a query string parameter exists with a name and
- * value that matches the acceptable name and value.
- * @param {Object} settings Condition settings.
- * @param {string} settings.name The name of the query string parameter.
- * @param {string} settings.queryParams Acceptable query string parameters to match.
- * @param {string} settings.queryParams[].value An acceptable query string parameter value.
- * @param {boolean} [settings.queryParams[].valueIsRegex=false] Whether <code>settings.value</code>
- * is intended to be a regular expression.
- * @returns {boolean}
- */
-const queryStringParameterCondition = function (settings) {
-  const queryParams = queryString.parse(window.location.search);
-  if (!queryParams.hasOwnProperty(settings.name)) {
-    return false;
-  }
+import validateInjectedParams from '../../helpers/validate-injected-params';
 
-  let queryParamValues;
-  if (!Array.isArray(settings.queryParams)) {
-    // legacy support
-    queryParamValues = [
-      { value: settings.value, valueIsRegex: Boolean(settings.valueIsRegex) }
-    ];
-  } else {
-    queryParamValues = settings.queryParams;
-  }
+function injectQueryStringParameterCondition({
+  window,
+  queryString,
+  textMatch
+}) {
+  /**
+   * Query string parameter condition. Determines if a query string parameter exists with a name and
+   * value that matches the acceptable name and value.
+   * @param {Object} settings Condition settings.
+   * @param {string} settings.name The name of the query string parameter.
+   * @param {string} settings.queryParams Acceptable query string parameters to match.
+   * @param {string} settings.queryParams[].value An acceptable query string parameter value.
+   * @param {boolean} [settings.queryParams[].valueIsRegex=false] Whether <code>settings.value</code>
+   * is intended to be a regular expression.
+   * @returns {boolean}
+   */
+  return function queryStringParameterCondition(settings) {
+    const queryParams = queryString.parse(window.location.search);
+    if (!queryParams.hasOwnProperty(settings.name)) {
+      return false;
+    }
 
-  const queryParamValue = queryParams[settings.name];
-  return queryParamValues.some(function (acceptableQueryParamValue) {
-    const acceptableValue = acceptableQueryParamValue.valueIsRegex
-      ? new RegExp(acceptableQueryParamValue.value, 'i')
-      : acceptableQueryParamValue.value;
+    let queryParamValues;
+    if (!Array.isArray(settings.queryParams)) {
+      // legacy support
+      queryParamValues = [
+        { value: settings.value, valueIsRegex: Boolean(settings.valueIsRegex) }
+      ];
+    } else {
+      queryParamValues = settings.queryParams;
+    }
 
-    return textMatch(queryParamValue, acceptableValue);
-  });
-};
+    const queryParamValue = queryParams[settings.name];
+    return queryParamValues.some(function (acceptableQueryParamValue) {
+      const acceptableValue = acceptableQueryParamValue.valueIsRegex
+        ? new RegExp(acceptableQueryParamValue.value, 'i')
+        : acceptableQueryParamValue.value;
 
-export default queryStringParameterCondition;
+      return textMatch(queryParamValue, acceptableValue);
+    });
+  };
+}
+
+const validateInjection = validateInjectedParams(
+  injectQueryStringParameterCondition
+);
+
+export default validateInjection({
+  window: require('@adobe/reactor-window'),
+  queryString: require('@adobe/reactor-query-string'),
+  textMatch
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectQueryStringParameterCondition };
+/* END.TESTS_ONLY */
