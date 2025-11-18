@@ -9,41 +9,27 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-import Promise from '@adobe/reactor-promise';
-let id = 0;
+import validateInjectedParams from '../../../../helpers/validate-injected-params.js';
 
-const decorateGlobalJavaScriptCode = function (action, source) {
-  const runScriptFnName = '_runScript' + ++id;
-
-  const promise = new Promise(function (resolve, reject) {
-    _satellite[runScriptFnName] = function (fn) {
-      delete _satellite[runScriptFnName];
-      new Promise(function (_resolve) {
-        _resolve(
-          fn.call(
-            action.event.element,
-            action.event,
-            action.event.target,
-            Promise
-          )
-        );
-      }).then(resolve, reject);
+function injectDecorateGlobalJavaScriptCode({ Promise }) {
+  return function decorateGlobalJavaScriptCode(_, source) {
+    // The line break after the source is important in case their last line of code is a comment.
+    return {
+      code: '<scr' + 'ipt>\n' + source + '\n</scr' + 'ipt>',
+      promise: Promise.resolve()
     };
-  });
-
-  const code =
-    '<scr' +
-    'ipt>_satellite["' +
-    runScriptFnName +
-    '"](function(event, target, Promise) {\n' +
-    source +
-    '\n});</scr' +
-    'ipt>';
-
-  return {
-    code: code,
-    promise: promise
   };
-};
+}
 
-export default decorateGlobalJavaScriptCode;
+const validateInjection = validateInjectedParams(
+  injectDecorateGlobalJavaScriptCode
+);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  Promise: require('@adobe/reactor-promise')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectDecorateGlobalJavaScriptCode };
+/* END.TESTS_ONLY */
