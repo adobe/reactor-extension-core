@@ -62,6 +62,7 @@ const validateInjection = validateInjectedParams(
 );
 
 export default validateInjection({
+  // runs in Turbine context, which provides the core-module "reactor-window" and "reactor-query-string".
   window: require('@adobe/reactor-window'),
   queryString: require('@adobe/reactor-query-string'),
   textMatch

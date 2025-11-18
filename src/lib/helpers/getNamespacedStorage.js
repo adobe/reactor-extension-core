@@ -10,54 +10,57 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import defaultWindow from '@adobe/reactor-window';
-
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
 const BASE_NAMESPACE = 'com.adobe.reactor.core';
 
-export default function getNamespacedStorage(
-  storageType,
-  additionalNamespace,
-  win = defaultWindow
-) {
-  const STORAGE_TYPE_UNAVAILABLE_ERROR = `"${storageType}" is not available on the window object.`;
-  const namespace = `${BASE_NAMESPACE}.${additionalNamespace}`;
+function injectGetNamespacedStorage({ window }) {
+  return function getNamespacedStorage(storageType, additionalNamespace) {
+    var STORAGE_TYPE_UNAVAILABLE_ERROR =
+      '"' + storageType + '" is not available on the window object.';
+    var namespace = BASE_NAMESPACE + '.' + additionalNamespace;
 
-  return {
-    /**
-     * Reads a value from storage.
-     * @param {string} name The name of the item to be read.
-     * @returns {string}
-     */
-    getItem(name) {
-      try {
-        return win[storageType].getItem(`${namespace}.${name}`);
-      } catch (e) {
-        turbine.logger.warn(STORAGE_TYPE_UNAVAILABLE_ERROR);
-        return null;
+    // When storage is disabled on Safari, the mere act of referencing window.localStorage
+    // or window.sessionStorage throws an error. For this reason, we wrap in a try-catch.
+    return {
+      /**
+       * Reads a value from storage.
+       * @param {string} name The name of the item to be read.
+       * @returns {string}
+       */
+      getItem: function (name) {
+        try {
+          return window[storageType].getItem(namespace + '.' + name);
+        } catch (e) {
+          turbine.logger.warn(STORAGE_TYPE_UNAVAILABLE_ERROR);
+          return null;
+        }
+      },
+      /**
+       * Saves a value to storage.
+       * @param {string} name The name of the item to be saved.
+       * @param {string} value The value of the item to be saved.
+       * @returns {boolean} Whether the item was successfully saved to storage.
+       */
+      setItem: function (name, value) {
+        try {
+          window[storageType].setItem(namespace + '.' + name, value);
+          return true;
+        } catch (e) {
+          turbine.logger.warn(STORAGE_TYPE_UNAVAILABLE_ERROR);
+          return false;
+        }
       }
-    },
-    /**
-     * Saves a value to storage.
-     * @param {string} name The name of the item to be saved.
-     * @param {string} value The value to be saved.
-     */
-    setItem(name, value) {
-      try {
-        win[storageType].setItem(`${namespace}.${name}`, value);
-      } catch (e) {
-        turbine.logger.warn(STORAGE_TYPE_UNAVAILABLE_ERROR);
-      }
-    },
-    /**
-     * Removes a value from storage.
-     * @param {string} name The name of the item to be removed.
-     */
-    removeItem(name) {
-      try {
-        win[storageType].removeItem(`${namespace}.${name}`);
-      } catch (e) {
-        turbine.logger.warn(STORAGE_TYPE_UNAVAILABLE_ERROR);
-      }
-    }
+    };
   };
 }
+
+const validateInjection = validateInjectedParams(injectGetNamespacedStorage);
+
+export default validateInjection({
+  // runs in Turbine context, which provides the core-module "reactor-promise".
+  window: require('@adobe/reactor-window')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectGetNamespacedStorage };
+/* END.TESTS_ONLY */

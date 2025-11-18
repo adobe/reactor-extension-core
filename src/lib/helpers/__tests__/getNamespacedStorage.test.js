@@ -10,101 +10,11 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import getNamespacedStorage from '../getNamespacedStorage.js';
-
-// NOTE: This test uses inject-loader and is temporarily skipped due to ESM migration.
-describe('getNamespacedStorage (inject-loader)', function () {
-  var createMockStorage = function () {
-    var storage = {};
-    return {
-      setItem: function (key, value) {
-        storage[key] = value;
-      },
-      getItem: function (key) {
-        return storage[key];
-      },
-      removeItem: function (key) {
-        storage[key] = null;
-      }
-    };
-  };
-
-  var createMockWindowUnavailableStorage = function () {
-    return {
-      get sessionStorage() {
-        throw new Error('Storage unavailable.');
-      },
-      get localStorage() {
-        throw new Error('Storage unavailable.');
-      }
-    };
-  };
-
-  ['sessionStorage', 'localStorage'].forEach(function (storageType) {
-    describe('using ' + storageType, function () {
-      var itemKey = 'com.adobe.reactor.core.featurex.foo';
-
-      describe('getItem', function () {
-        it('returns item', function () {
-          // Mocking window because Safari throws an error when setting a storage item in
-          // Private Browser Mode.
-          var mockWindow = {};
-
-          mockWindow[storageType] = createMockStorage();
-
-          var storage = getNamespacedStorage(
-            storageType,
-            'featurex',
-            mockWindow
-          );
-
-          mockWindow[storageType].setItem(itemKey, 'something');
-          expect(storage.getItem('foo')).toEqual('something');
-        });
-
-        it('proper error handling if storage is disabled', function () {
-          mockTurbineVariable({
-            logger: {
-              warn: jasmine.createSpy()
-            }
-          });
-          var mockWindow = createMockWindowUnavailableStorage();
-
-          var storage = getNamespacedStorage(
-            storageType,
-            'featurex',
-            mockWindow
-          );
-
-          expect(storage.getItem('foo')).toBeNull();
-          expect(turbine.logger.warn).toHaveBeenCalledTimes(1);
-        });
-      });
-
-      describe('setItem', function () {
-        it('sets item', function () {
-          // Mocking window because Safari throws an error when setting a storage item in
-          // Private Browser Mode.
-          var mockWindow = {};
-          mockWindow[storageType] = createMockStorage();
-
-          var storage = getNamespacedStorage(
-            storageType,
-            'featurex',
-            mockWindow
-          );
-
-          storage.setItem('foo', 'something');
-          expect(mockWindow[storageType].getItem(itemKey)).toEqual('something');
-        });
-      });
-    });
-  });
-});
+import { injectGetNamespacedStorage } from '../getNamespacedStorage.js';
 
 describe('getNamespacedStorage', function () {
-  var createMockStorage = function () {
-    var storage = {};
+  function createMockStorage() {
+    const storage = {};
     return {
       setItem: function (key, value) {
         storage[key] = value;
@@ -116,9 +26,9 @@ describe('getNamespacedStorage', function () {
         storage[key] = null;
       }
     };
-  };
+  }
 
-  var createMockWindowUnavailableStorage = function () {
+  const createMockWindowUnavailableStorage = function () {
     return {
       get sessionStorage() {
         throw new Error('Storage unavailable.');
@@ -131,18 +41,21 @@ describe('getNamespacedStorage', function () {
 
   ['sessionStorage', 'localStorage'].forEach(function (storageType) {
     describe('using ' + storageType, function () {
-      var itemKey = 'com.adobe.reactor.core.featurex.foo';
+      const itemKey = 'com.adobe.reactor.core.featurex.foo';
 
       describe('getItem', function () {
         it('returns item', function () {
-          var mockWindow = {};
+          // Mocking window because Safari throws an error when setting a storage item in
+          // Private Browser Mode.
+          const mockWindow = {};
+
           mockWindow[storageType] = createMockStorage();
 
-          var storage = getNamespacedStorage(
-            storageType,
-            'featurex',
-            mockWindow
-          );
+          const getNamespacedStorage = injectGetNamespacedStorage({
+            window: mockWindow
+          });
+
+          const storage = getNamespacedStorage(storageType, 'featurex');
 
           mockWindow[storageType].setItem(itemKey, 'something');
           expect(storage.getItem('foo')).toEqual('something');
@@ -154,13 +67,13 @@ describe('getNamespacedStorage', function () {
               warn: jasmine.createSpy()
             }
           });
-          var mockWindow = createMockWindowUnavailableStorage();
+          const mockWindow = createMockWindowUnavailableStorage();
 
-          var storage = getNamespacedStorage(
-            storageType,
-            'featurex',
-            mockWindow
-          );
+          const getNamespacedStorage = injectGetNamespacedStorage({
+            window: mockWindow
+          });
+
+          const storage = getNamespacedStorage(storageType, 'featurex');
 
           expect(storage.getItem('foo')).toBeNull();
           expect(turbine.logger.warn).toHaveBeenCalledTimes(1);
@@ -169,17 +82,38 @@ describe('getNamespacedStorage', function () {
 
       describe('setItem', function () {
         it('sets item', function () {
-          var mockWindow = {};
+          // Mocking window because Safari throws an error when setting a storage item in
+          // Private Browser Mode.
+          const mockWindow = {};
           mockWindow[storageType] = createMockStorage();
 
-          var storage = getNamespacedStorage(
-            storageType,
-            'featurex',
-            mockWindow
-          );
+          const getNamespacedStorage = injectGetNamespacedStorage({
+            window: mockWindow
+          });
+
+          const storage = getNamespacedStorage(storageType, 'featurex');
 
           storage.setItem('foo', 'something');
           expect(mockWindow[storageType].getItem(itemKey)).toEqual('something');
+        });
+
+        it('proper error handling if storage is disabled', function () {
+          mockTurbineVariable({
+            logger: {
+              warn: jasmine.createSpy()
+            }
+          });
+          const mockWindow = createMockWindowUnavailableStorage();
+
+          const getNamespacedStorage = injectGetNamespacedStorage({
+            window: mockWindow
+          });
+
+          const storage = getNamespacedStorage(storageType, 'featurex');
+
+          storage.setItem('thing', 'something');
+
+          expect(window.localStorage.getItem('thing')).toBeNull();
         });
       });
     });

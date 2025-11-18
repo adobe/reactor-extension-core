@@ -1,0 +1,47 @@
+/**
+ * A real library looks like this:
+ *
+ * "script": function(module, exports, require, turbine) {
+ *    var something = require('./some-module.js')
+ *    module.exports = function(settings) {
+ *      turbine.logger.log('hello');
+ *    }
+ * }
+ *
+ * In this context, module, require, and turbine were "free" variables wrapped
+ * around the delegate code. We can't easily do that for our tests, so we'll
+ * place "require" and "turbine" on globalThis for jasmine (not on window).
+ *
+ * We don't need to do anything for module.exports because the bundler in this
+ * project handles those for us. and the globalThis require and turbine are
+ * only necessary when running the tests, not when building the code bundles.
+ */
+
+// Mocked globals for the "production code exports".
+// In production, Turbine wraps delegates like: function(module, exports, require, turbine)
+// so these need to be accessible as free variables, not window properties.
+// Define them right away to ensure they're definitely defined before anything happens.
+window._satellite = jasmine.createSpy('_satellite');
+globalThis.turbine = jasmine.createSpy('turbine');
+globalThis.require = jasmine.createSpy('require'); // mock Turbine's public "require" function
+
+// cleanup any changes to the "clean" global mocks before each test runs
+beforeEach(() => {
+  window._satellite.calls.reset();
+  globalThis.require.calls.reset();
+  globalThis.turbine = jasmine.createSpy('turbine');
+});
+
+/**
+ * mockTurbineVariable is how we can easily decide on a per-test basis what we
+ * want to define what things are available on the turbine "free" variable. The
+ * reason this isn't part of an injector is because if you were going to inject
+ * turbine, then you'd have to inject module.exports, which doesn't make sense.
+ *
+ * require, turbine, and module.exports are all special in the sense that we're
+ * pretending they're all a part of an official runtime variable.
+ * @param {object} turbineDefinition
+ */
+globalThis.mockTurbineVariable = function (turbineDefinition) {
+  globalThis.turbine = turbineDefinition;
+};
