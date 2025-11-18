@@ -10,7 +10,9 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-var mockVisitorTracking = {
+import { injectVisitorBehavior } from '../visitorBehavior.js';
+
+const mockVisitorTracking = {
   getLandingPage: function () {
     return 'http://landingpage.com/test.html';
   },
@@ -34,13 +36,13 @@ var mockVisitorTracking = {
   }
 };
 
-var dataElementDelegate = require('inject-loader!../visitorBehavior')({
-  '../helpers/visitorTracking': mockVisitorTracking
+const dataElementDelegate = injectVisitorBehavior({
+  visitorTracking: mockVisitorTracking
 });
 
 describe('visitor behavior data element delegate', function () {
   it('returns landing page', function () {
-    var settings = {
+    const settings = {
       attribute: 'landingPage'
     };
 
@@ -50,7 +52,7 @@ describe('visitor behavior data element delegate', function () {
   });
 
   it('returns traffic source', function () {
-    var settings = {
+    const settings = {
       attribute: 'trafficSource'
     };
 
@@ -58,7 +60,7 @@ describe('visitor behavior data element delegate', function () {
   });
 
   it('returns minutes on site', function () {
-    var settings = {
+    const settings = {
       attribute: 'minutesOnSite'
     };
 
@@ -66,7 +68,7 @@ describe('visitor behavior data element delegate', function () {
   });
 
   it('returns session count', function () {
-    var settings = {
+    const settings = {
       attribute: 'sessionCount'
     };
 
@@ -74,7 +76,7 @@ describe('visitor behavior data element delegate', function () {
   });
 
   it('returns session page view count', function () {
-    var settings = {
+    const settings = {
       attribute: 'sessionPageViewCount'
     };
 
@@ -82,7 +84,7 @@ describe('visitor behavior data element delegate', function () {
   });
 
   it('returns lifetime page view count', function () {
-    var settings = {
+    const settings = {
       attribute: 'lifetimePageViewCount'
     };
 
@@ -90,7 +92,7 @@ describe('visitor behavior data element delegate', function () {
   });
 
   it('returns whether visitor is new', function () {
-    var settings = {
+    const settings = {
       attribute: 'isNewVisitor'
     };
 

@@ -11,28 +11,41 @@
  ****************************************************************************************/
 
 import visitorTracking from '../helpers/visitorTracking';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
 
-/**
- * The page info data element.
- * @param {Object} settings The data element settings object.
- * @param {string} settings.attribute The attribute that should be returned.
- * @returns {string}
- */
-export default function (settings) {
-  switch (settings.attribute) {
-    case 'landingPage':
-      return visitorTracking.getLandingPage();
-    case 'trafficSource':
-      return visitorTracking.getTrafficSource();
-    case 'minutesOnSite':
-      return visitorTracking.getMinutesOnSite();
-    case 'sessionCount':
-      return visitorTracking.getSessionCount();
-    case 'sessionPageViewCount':
-      return visitorTracking.getSessionPageViewCount();
-    case 'lifetimePageViewCount':
-      return visitorTracking.getLifetimePageViewCount();
-    case 'isNewVisitor':
-      return visitorTracking.getIsNewVisitor();
-  }
+function injectVisitorBehavior({ visitorTracking }) {
+  /**
+   * The page info data element.
+   * @param {Object} settings The data element settings object.
+   * @param {string} settings.attribute The attribute that should be returned.
+   * @returns {string}
+   */
+  return function visitorBehavior(settings) {
+    switch (settings.attribute) {
+      case 'landingPage':
+        return visitorTracking.getLandingPage();
+      case 'trafficSource':
+        return visitorTracking.getTrafficSource();
+      case 'minutesOnSite':
+        return visitorTracking.getMinutesOnSite();
+      case 'sessionCount':
+        return visitorTracking.getSessionCount();
+      case 'sessionPageViewCount':
+        return visitorTracking.getSessionPageViewCount();
+      case 'lifetimePageViewCount':
+        return visitorTracking.getLifetimePageViewCount();
+      case 'isNewVisitor':
+        return visitorTracking.getIsNewVisitor();
+    }
+  };
 }
+
+const validateInjection = validateInjectedParams(injectVisitorBehavior);
+
+export default validateInjection({
+  visitorTracking
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectVisitorBehavior };
+/* END.TESTS_ONLY */
