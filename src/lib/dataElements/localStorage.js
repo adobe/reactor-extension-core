@@ -10,22 +10,35 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import window from '@adobe/reactor-window';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
 
-/**
- * The local storage data element.
- * @param {Object} settings The data element settings object.
- * @param {string} settings.name The name of the local storage item for which a value should be
- * retrieved.
- * @returns {string}
- */
-export default function (settings) {
-  // When local storage is disabled on Safari, the mere act of referencing window.localStorage
-  // throws an error. For this reason, referencing window.localStorage without being inside
-  // a try-catch should be avoided.
-  try {
-    return window.localStorage.getItem(settings.name);
-  } catch (e) {
-    return null;
-  }
+function injectLocalStorage({ window }) {
+  /**
+   * The local storage data element.
+   * @param {Object} settings The data element settings object.
+   * @param {string} settings.name The name of the local storage item for which a value should be
+   * retrieved.
+   * @returns {string}
+   */
+  return function localStorage(settings) {
+    // When local storage is disabled on Safari, the mere act of referencing window.localStorage
+    // throws an error. For this reason, referencing window.localStorage without being inside
+    // a try-catch should be avoided.
+    try {
+      return window.localStorage.getItem(settings.name);
+    } catch (e) {
+      return null;
+    }
+  };
 }
+
+const validateInjection = validateInjectedParams(injectLocalStorage);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  window: require('@adobe/reactor-window')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectLocalStorage };
+/* END.TESTS_ONLY */

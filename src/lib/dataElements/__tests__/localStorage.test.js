@@ -10,19 +10,21 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
+import { injectLocalStorage } from '../localStorage.js';
+
 describe('local storage data element delegate', function () {
   it('returns the value of a local storage item', function () {
-    var mockWindow = {
+    const mockWindow = {
       localStorage: {
         getItem: jasmine.createSpy().and.returnValue('bar')
       }
     };
 
-    var dataElementDelegate = require('inject-loader!../localStorage')({
-      '@adobe/reactor-window': mockWindow
+    const dataElementDelegate = injectLocalStorage({
+      window: mockWindow
     });
 
-    var settings = {
+    const settings = {
       name: 'foo'
     };
 
@@ -31,17 +33,17 @@ describe('local storage data element delegate', function () {
   });
 
   it('returns null if local storage item is not set', function () {
-    var mockWindow = {
+    const mockWindow = {
       localStorage: {
         getItem: jasmine.createSpy().and.returnValue(null)
       }
     };
 
-    var dataElementDelegate = require('inject-loader!../localStorage')({
-      '@adobe/reactor-window': mockWindow
+    const dataElementDelegate = injectLocalStorage({
+      window: mockWindow
     });
 
-    var settings = {
+    const settings = {
       name: 'foo'
     };
 
@@ -53,11 +55,11 @@ describe('local storage data element delegate', function () {
     'returns null if error is thrown (like when local storage is disabled ' +
       'in safari)',
     function () {
-      var dataElementDelegate = require('inject-loader!../localStorage')({
-        '@adobe/reactor-window': {}
+      const dataElementDelegate = injectLocalStorage({
+        window: {}
       });
 
-      var settings = {
+      const settings = {
         name: 'foo'
       };
 
