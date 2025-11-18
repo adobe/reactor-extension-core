@@ -26,9 +26,7 @@ function injectDeviceType({ clientInfo }) {
   };
 }
 
-const validateInjection = validateInjectedParams(
-  injectDeviceType
-);
+const validateInjection = validateInjectedParams(injectDeviceType);
 
 export default validateInjection({
   clientInfo

@@ -28,9 +28,7 @@ function injectNewReturningVisitor({ visitorTracking }) {
   };
 }
 
-const validateInjection = validateInjectedParams(
-  injectNewReturningVisitor
-);
+const validateInjection = validateInjectedParams(injectNewReturningVisitor);
 
 export default validateInjection({
   visitorTracking

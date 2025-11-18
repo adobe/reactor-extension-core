@@ -28,7 +28,7 @@ describe('decorate code', function () {
       decorateNonGlobalJavaScriptCode: decorateNonGlobalJavaScriptCodeSpy,
       decorateGlobalJavaScriptCode: decorateGlobalJavaScriptCodeSpy,
       decorateHtmlCode: decorateHtmlCodeSpy
-    })
+    });
   });
 
   it('decorates javascript action', function () {

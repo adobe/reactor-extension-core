@@ -35,9 +35,7 @@ function injectSubdomainCondition({ document, textMatch }) {
   };
 }
 
-const validateInjection = validateInjectedParams(
-  injectSubdomainCondition
-);
+const validateInjection = validateInjectedParams(injectSubdomainCondition);
 
 export default validateInjection({
   // runs in Turbine context, which provides these core-module packages.
