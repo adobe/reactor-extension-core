@@ -40,6 +40,20 @@ globalThis.require = function publicRequire(path) {
     return { _satellite: {} };
   }
 
+  // sometimes and import of a source file for a test will trigger an import of
+  // an underlying dependency whose default export relies on certain things being
+  // available with its real methods. Promise surfaced this problem, define others
+  // just in case.
+  if (path === '@adobe/reactor-promise') {
+    return Promise;
+  }
+  if (path === '@adobe/reactor-window') {
+    return window;
+  }
+  if (path === '@adobe/reactor-document') {
+    return document;
+  }
+
   return jasmine.createSpy(path);
 };
 // --- mock Turbine's public "require" function ---

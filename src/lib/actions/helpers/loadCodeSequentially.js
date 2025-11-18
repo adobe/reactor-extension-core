@@ -10,23 +10,35 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import Promise from '@adobe/reactor-promise';
 import getSourceByUrl from './getSourceByUrl';
+import validateInjectedParams from '../../../helpers/validate-injected-params.js';
 
-let previousExecuteCodePromise = Promise.resolve();
+function injectLoadCodeSequentially({ Promise, getSourceByUrl }) {
+  let previousExecuteCodePromise = Promise.resolve();
 
-const loadCodeSequentially = function (sourceUrl) {
-  const sequentiallyLoadCodePromise = new Promise(function (resolve) {
-    const loadCodePromise = getSourceByUrl(sourceUrl);
-    Promise.all([loadCodePromise, previousExecuteCodePromise]).then(
-      function (values) {
-        const source = values[0];
-        resolve(source);
-      }
-    );
-  });
-  previousExecuteCodePromise = sequentiallyLoadCodePromise;
-  return sequentiallyLoadCodePromise;
-};
+  return function loadCodeSequentially(sourceUrl) {
+    const sequentiallyLoadCodePromise = new Promise(function (resolve) {
+      const loadCodePromise = getSourceByUrl(sourceUrl);
+      Promise.all([loadCodePromise, previousExecuteCodePromise]).then(
+        function (values) {
+          const source = values[0];
+          resolve(source);
+        }
+      );
+    });
+    previousExecuteCodePromise = sequentiallyLoadCodePromise;
+    return sequentiallyLoadCodePromise;
+  };
+}
 
-export default loadCodeSequentially;
+const validateInjection = validateInjectedParams(injectLoadCodeSequentially);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  Promise: require('@adobe/reactor-promise'),
+  getSourceByUrl
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectLoadCodeSequentially };
+/* END.TESTS_ONLY */
