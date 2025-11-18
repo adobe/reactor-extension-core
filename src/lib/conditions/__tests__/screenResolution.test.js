@@ -10,19 +10,22 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-var mockWindow = {
+import { injectScreenResolution } from '../screenResolution.js';
+import compareNumbers from '../helpers/compareNumbers.js';
+
+const mockWindow = {
   screen: {
     width: 1366,
     height: 768
   }
 };
 
-var conditionDelegateInjector = require('inject-loader!../screenResolution');
-var conditionDelegate = conditionDelegateInjector({
-  '@adobe/reactor-window': mockWindow
+const conditionDelegate = injectScreenResolution({
+  window: mockWindow,
+  compareNumbers
 });
 
-var getSettings = function (width, widthOperator, height, heightOperator) {
+const getSettings = function (width, widthOperator, height, heightOperator) {
   return {
     width: width,
     widthOperator: widthOperator,
@@ -33,32 +36,32 @@ var getSettings = function (width, widthOperator, height, heightOperator) {
 
 describe('screen resolution condition delegate', function () {
   it('returns true when dimension is above "greater than" constraint', function () {
-    var settings = getSettings(1365, '>', 768, '=');
+    const settings = getSettings(1365, '>', 768, '=');
     expect(conditionDelegate(settings)).toBe(true);
   });
 
   it('returns false when dimension is below "greater than" constraint', function () {
-    var settings = getSettings(1366, '>', 768, '=');
+    const settings = getSettings(1366, '>', 768, '=');
     expect(conditionDelegate(settings)).toBe(false);
   });
 
   it('returns true when dimension is below "less than" constraint', function () {
-    var settings = getSettings(1366, '=', 769, '<');
+    const settings = getSettings(1366, '=', 769, '<');
     expect(conditionDelegate(settings)).toBe(true);
   });
 
   it('returns false when dimension is above "less than" constraint', function () {
-    var settings = getSettings(1366, '=', 768, '<');
+    const settings = getSettings(1366, '=', 768, '<');
     expect(conditionDelegate(settings)).toBe(false);
   });
 
   it('returns true when dimension matches "equals" constraint', function () {
-    var settings = getSettings(1366, '=', 768, '=');
+    const settings = getSettings(1366, '=', 768, '=');
     expect(conditionDelegate(settings)).toBe(true);
   });
 
   it('returns false when dimension does not match "equals" constraint', function () {
-    var settings = getSettings(1366, '=', 767, '=');
+    const settings = getSettings(1366, '=', 767, '=');
     expect(conditionDelegate(settings)).toBe(false);
   });
 });

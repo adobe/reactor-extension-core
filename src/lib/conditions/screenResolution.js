@@ -10,32 +10,48 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import window from '@adobe/reactor-window';
 import compareNumbers from './helpers/compareNumbers.js';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
 
-/**
- * Screen resolution condition. Determines if the current screen resolution matches constraints.
- * @param {Object} settings Condition settings.
- * @param {comparisonOperator} settings.widthOperator The comparison operator to use
- * to compare against width.
- * @param {number} settings.width The window width to compare against.
- * @param {comparisonOperator} settings.heightOperator The comparison operator to use
- * to compare against height.
- * @param {number} settings.height The window height to compare against.
- * @returns {boolean}
- */
-export default function (settings) {
-  var widthInRange = compareNumbers(
-    window.screen.width,
-    settings.widthOperator,
-    settings.width
-  );
+function injectScreenResolution({ window, compareNumbers }) {
+  /**
+   * Screen resolution condition. Determines if the current screen resolution matches constraints.
+   * @param {Object} settings Condition settings.
+   * @param {comparisonOperator} settings.widthOperator The comparison operator to use
+   * to compare against width.
+   * @param {number} settings.width The window width to compare against.
+   * @param {comparisonOperator} settings.heightOperator The comparison operator to use
+   * to compare against height.
+   * @param {number} settings.height The window height to compare against.
+   * @returns {boolean}
+   */
+  return function screenResolution(settings) {
+    var widthInRange = compareNumbers(
+      window.screen.width,
+      settings.widthOperator,
+      settings.width
+    );
 
-  var heightInRange = compareNumbers(
-    window.screen.height,
-    settings.heightOperator,
-    settings.height
-  );
+    var heightInRange = compareNumbers(
+      window.screen.height,
+      settings.heightOperator,
+      settings.height
+    );
 
-  return widthInRange && heightInRange;
+    return widthInRange && heightInRange;
+  }
 }
+
+const validateInjection = validateInjectedParams(
+  injectScreenResolution
+);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  window: require('@adobe/reactor-window'),
+  compareNumbers
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectScreenResolution };
+/* END.TESTS_ONLY */
