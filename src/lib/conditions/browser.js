@@ -11,15 +11,26 @@
  ****************************************************************************************/
 
 import clientInfo from './helpers/clientInfo';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
 
-/**
- * Browser condition. Determines if the actual browser matches at least one acceptable browser.
- * @param {Object} settings Condition settings.
- * @param {string[]} settings.browsers An array of acceptable browsers.
- * @returns {boolean}
- */
-const browserCondition = function (settings) {
-  return settings.browsers.indexOf(clientInfo.browser) !== -1;
-};
+function injectBrowser({ clientInfo }) {
+  /**
+   * Browser condition. Determines if the actual browser matches at least one acceptable browser.
+   * @param {Object} settings Condition settings.
+   * @param {string[]} settings.browsers An array of acceptable browsers.
+   * @returns {boolean}
+   */
+  return function browserCondition(settings) {
+    return settings.browsers.indexOf(clientInfo.browser) !== -1;
+  };
+}
 
-export default browserCondition;
+const validateInjection = validateInjectedParams(injectBrowser);
+
+export default validateInjection({
+  clientInfo
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectBrowser };
+/* END.TESTS_ONLY */

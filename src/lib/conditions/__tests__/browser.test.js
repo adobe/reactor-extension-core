@@ -10,16 +10,17 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-var mockClientInfo = {
+import { injectBrowser } from '../browser.js';
+
+const mockClientInfo = {
   browser: 'Foo'
 };
 
-var conditionDelegateInjector = require('inject-loader!../browser');
-var conditionDelegate = conditionDelegateInjector({
-  './helpers/clientInfo': mockClientInfo
+const conditionDelegate = injectBrowser({
+  clientInfo: mockClientInfo
 });
 
-var getSettings = function (browsers) {
+const getSettings = function (browsers) {
   return {
     browsers: browsers
   };
@@ -27,7 +28,7 @@ var getSettings = function (browsers) {
 
 describe('browser condition delegate', function () {
   it('returns true when the current browser matches one of the selected browsers', function () {
-    var settings = getSettings(['Shoe', 'Goo', 'Foo', 'Moo']);
+    const settings = getSettings(['Shoe', 'Goo', 'Foo', 'Moo']);
     expect(conditionDelegate(settings)).toBe(true);
   });
 
@@ -35,7 +36,7 @@ describe('browser condition delegate', function () {
     'returns false when the current browser does not match any of the ' +
       'selected browsers',
     function () {
-      var settings = getSettings(['Shoe', 'Goo', 'Boo', 'Moo']);
+      const settings = getSettings(['Shoe', 'Goo', 'Boo', 'Moo']);
       expect(conditionDelegate(settings)).toBe(false);
     }
   );
