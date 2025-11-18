@@ -10,46 +10,58 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import loadScript from '@adobe/reactor-load-script';
-import Promise from '@adobe/reactor-promise';
 import { byRegexPattern as findScriptByRegexPattern } from '../../helpers/findPageScript';
+import validateInjectedParams from '../../../helpers/validate-injected-params.js';
 
-const codeBySourceUrl = {};
-const scriptStore = {};
+function injectGetSourceByUrl({ window, loadScript, Promise }) {
+  const codeBySourceUrl = {};
+  const scriptStore = {};
 
-const loadScriptOnlyOnce = function (url) {
-  if (!scriptStore[url]) {
-    scriptStore[url] = loadScript(url);
-  }
-  return scriptStore[url];
-};
+  const loadScriptOnlyOnce = function (url) {
+    if (!scriptStore[url]) {
+      scriptStore[url] = loadScript(url);
+    }
+    return scriptStore[url];
+  };
 
-_satellite.__registerScript = function (scriptGuid, code) {
-  let scriptUrl;
-  if (document.currentScript) {
-    scriptUrl = document.currentScript.getAttribute('src');
-  } else {
-    const pattern = new RegExp('.*' + scriptGuid + '.*');
-    scriptUrl = findScriptByRegexPattern(pattern).getAttribute('src');
-  }
-  codeBySourceUrl[scriptUrl] = code;
-};
+  window._satellite.__registerScript = function (scriptGuid, code) {
+    let scriptUrl;
+    if (document.currentScript) {
+      scriptUrl = document.currentScript.getAttribute('src');
+    } else {
+      const pattern = new RegExp('.*' + scriptGuid + '.*');
+      scriptUrl = findScriptByRegexPattern(pattern).getAttribute('src');
+    }
+    codeBySourceUrl[scriptUrl] = code;
+  };
 
-const getSourceByUrl = function (sourceUrl) {
-  if (codeBySourceUrl[sourceUrl]) {
-    return Promise.resolve(codeBySourceUrl[sourceUrl]);
-  } else {
-    return new Promise(function (resolve) {
-      loadScriptOnlyOnce(sourceUrl).then(
-        function () {
-          resolve(codeBySourceUrl[sourceUrl]);
-        },
-        function () {
-          resolve();
-        }
-      );
-    });
-  }
-};
+  return function getSourceByUrl(sourceUrl) {
+    if (codeBySourceUrl[sourceUrl]) {
+      return Promise.resolve(codeBySourceUrl[sourceUrl]);
+    } else {
+      return new Promise(function (resolve) {
+        loadScriptOnlyOnce(sourceUrl).then(
+          function () {
+            resolve(codeBySourceUrl[sourceUrl]);
+          },
+          function () {
+            resolve();
+          }
+        );
+      });
+    }
+  };
+}
 
-export default getSourceByUrl;
+const validateInjection = validateInjectedParams(injectGetSourceByUrl);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  window: require('@adobe/reactor-window'),
+  Promise: require('@adobe/reactor-promise'),
+  loadScript: require('@adobe/reactor-load-script')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectGetSourceByUrl };
+/* END.TESTS_ONLY */

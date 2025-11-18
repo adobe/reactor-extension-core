@@ -10,24 +10,23 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-var getSourceUrlCodeInjector = require('inject-loader!../getSourceByUrl');
-var Promise = require('@adobe/reactor-promise');
+import { injectGetSourceByUrl } from '../getSourceByUrl';
 
 describe('get source by url', function () {
-  var loadScriptSpy;
-  var getSourceUrlCode;
-  var headScriptRefs = [];
-  var domain = 'https://assets.adobedtm.com';
-  var filePath = '/extensions/actions.js';
-  var relativeFile = '/relative/relative-action.js';
-  var fullFileUrl = domain + filePath;
+  let loadScriptSpy;
+  let getSourceUrlCode;
+  const headScriptRefs = [];
+  const domain = 'https://assets.adobedtm.com';
+  const filePath = '/extensions/actions.js';
+  const relativeFile = '/relative/relative-action.js';
+  const fullFileUrl = domain + filePath;
 
   beforeAll(function () {
-    var fullPathRef = document.createElement('script');
+    const fullPathRef = document.createElement('script');
     fullPathRef.src = fullFileUrl;
     document.head.appendChild(fullPathRef);
     headScriptRefs.push(fullPathRef);
-    var relativePathRef = document.createElement('script');
+    const relativePathRef = document.createElement('script');
     relativePathRef.src = relativeFile;
     document.head.appendChild(relativePathRef);
     headScriptRefs.push(relativePathRef);
@@ -40,7 +39,7 @@ describe('get source by url', function () {
   });
 
   describe(', Modern Browser Scenarios', function () {
-    var currentScriptSpy;
+    let currentScriptSpy;
 
     describe(', registerScript called with a full path', function () {
       describe(', getSourceByUrl called with a full path,', function () {
@@ -64,8 +63,10 @@ describe('get source by url', function () {
               return Promise.resolve();
             });
 
-          getSourceUrlCode = getSourceUrlCodeInjector({
-            '@adobe/reactor-load-script': loadScriptSpy
+          getSourceUrlCode = injectGetSourceByUrl({
+            loadScript: loadScriptSpy,
+            window,
+            Promise
           });
         });
 
@@ -86,14 +87,16 @@ describe('get source by url', function () {
         });
 
         it('returns undefined when the script cannot be loaded', function (done) {
-          var loadScriptSpy = jasmine
+          const loadScriptSpy = jasmine
             .createSpy('load-script')
             .and.callFake(function () {
               return Promise.reject();
             });
 
-          var getSourceUrlCode = getSourceUrlCodeInjector({
-            '@adobe/reactor-load-script': loadScriptSpy
+          const getSourceUrlCode = injectGetSourceByUrl({
+            loadScript: loadScriptSpy,
+            window,
+            Promise
           });
 
           getSourceUrlCode(fullFileUrl).then(function (code) {
@@ -127,8 +130,10 @@ describe('get source by url', function () {
               return Promise.resolve();
             });
 
-          getSourceUrlCode = getSourceUrlCodeInjector({
-            '@adobe/reactor-load-script': loadScriptSpy
+          getSourceUrlCode = injectGetSourceByUrl({
+            loadScript: loadScriptSpy,
+            window,
+            Promise
           });
         });
 
@@ -149,14 +154,16 @@ describe('get source by url', function () {
         });
 
         it('returns undefined when the script cannot be loaded', function (done) {
-          var loadScriptSpy = jasmine
+          const loadScriptSpy = jasmine
             .createSpy('load-script')
             .and.callFake(function () {
               return Promise.reject();
             });
 
-          var getSourceUrlCode = getSourceUrlCodeInjector({
-            '@adobe/reactor-load-script': loadScriptSpy
+          const getSourceUrlCode = injectGetSourceByUrl({
+            loadScript: loadScriptSpy,
+            window,
+            Promise
           });
 
           getSourceUrlCode(fullFileUrl).then(function (code) {
@@ -188,8 +195,10 @@ describe('get source by url', function () {
               return Promise.resolve();
             });
 
-          getSourceUrlCode = getSourceUrlCodeInjector({
-            '@adobe/reactor-load-script': loadScriptSpy
+          getSourceUrlCode = injectGetSourceByUrl({
+            loadScript: loadScriptSpy,
+            window,
+            Promise
           });
         });
 
@@ -210,14 +219,16 @@ describe('get source by url', function () {
         });
 
         it('returns undefined when the script cannot be loaded', function (done) {
-          var loadScriptSpy = jasmine
+          const loadScriptSpy = jasmine
             .createSpy('load-script')
             .and.callFake(function () {
               return Promise.reject();
             });
 
-          var getSourceUrlCode = getSourceUrlCodeInjector({
-            '@adobe/reactor-load-script': loadScriptSpy
+          const getSourceUrlCode = injectGetSourceByUrl({
+            loadScript: loadScriptSpy,
+            window,
+            Promise
           });
 
           getSourceUrlCode(fullFileUrl).then(function (code) {
@@ -242,8 +253,10 @@ describe('get source by url', function () {
               return Promise.resolve();
             });
 
-          getSourceUrlCode = getSourceUrlCodeInjector({
-            '@adobe/reactor-load-script': loadScriptSpy
+          getSourceUrlCode = injectGetSourceByUrl({
+            loadScript: loadScriptSpy,
+            window,
+            Promise
           });
         });
 
@@ -262,14 +275,16 @@ describe('get source by url', function () {
         });
 
         it('returns undefined when the script cannot be loaded', function (done) {
-          var loadScriptSpy = jasmine
+          const loadScriptSpy = jasmine
             .createSpy('load-script')
             .and.callFake(function () {
               return Promise.reject();
             });
 
-          var getSourceUrlCode = getSourceUrlCodeInjector({
-            '@adobe/reactor-load-script': loadScriptSpy
+          const getSourceUrlCode = injectGetSourceByUrl({
+            loadScript: loadScriptSpy,
+            window,
+            Promise
           });
 
           getSourceUrlCode(fullFileUrl).then(function (code) {
@@ -291,8 +306,10 @@ describe('get source by url', function () {
               return Promise.resolve();
             });
 
-          getSourceUrlCode = getSourceUrlCodeInjector({
-            '@adobe/reactor-load-script': loadScriptSpy
+          getSourceUrlCode = injectGetSourceByUrl({
+            loadScript: loadScriptSpy,
+            window,
+            Promise
           });
         });
 
@@ -311,14 +328,16 @@ describe('get source by url', function () {
         });
 
         it('returns undefined when the script cannot be loaded', function (done) {
-          var loadScriptSpy = jasmine
+          const loadScriptSpy = jasmine
             .createSpy('load-script')
             .and.callFake(function () {
               return Promise.reject();
             });
 
-          var getSourceUrlCode = getSourceUrlCodeInjector({
-            '@adobe/reactor-load-script': loadScriptSpy
+          const getSourceUrlCode = injectGetSourceByUrl({
+            loadScript: loadScriptSpy,
+            window,
+            Promise
           });
 
           getSourceUrlCode(fullFileUrl).then(function (code) {
@@ -338,8 +357,10 @@ describe('get source by url', function () {
               return Promise.resolve();
             });
 
-          getSourceUrlCode = getSourceUrlCodeInjector({
-            '@adobe/reactor-load-script': loadScriptSpy
+          getSourceUrlCode = injectGetSourceByUrl({
+            loadScript: loadScriptSpy,
+            window,
+            Promise
           });
         });
 
@@ -358,14 +379,16 @@ describe('get source by url', function () {
         });
 
         it('returns undefined when the script cannot be loaded', function (done) {
-          var loadScriptSpy = jasmine
+          const loadScriptSpy = jasmine
             .createSpy('load-script')
             .and.callFake(function () {
               return Promise.reject();
             });
 
-          var getSourceUrlCode = getSourceUrlCodeInjector({
-            '@adobe/reactor-load-script': loadScriptSpy
+          const getSourceUrlCode = injectGetSourceByUrl({
+            loadScript: loadScriptSpy,
+            window,
+            Promise
           });
 
           getSourceUrlCode(fullFileUrl).then(function (code) {

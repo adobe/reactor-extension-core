@@ -23,12 +23,30 @@
 // Define them right away to ensure they're definitely defined before anything happens.
 window._satellite = jasmine.createSpy('_satellite');
 globalThis.turbine = jasmine.createSpy('turbine');
-globalThis.require = jasmine.createSpy('require'); // mock Turbine's public "require" function
+// --- mock Turbine's public "require" function ---
+globalThis.require = function publicRequire(path) {
+  if (path === '@adobe/reactor-window') {
+    // this _satellite is different than our definition above for window._satellite.
+    // this _satellite is what's required to be there for a production default export
+    // function.
+    //
+    // Example:
+    // export default validateInjection({
+    //   window: require('@adobe/reactor-window'),
+    // });
+    //
+    // window._satellite above is for jasmine test runner and for the source code
+    // in a jasmine context to have access to window._satellite by default.
+    return { _satellite: {} };
+  }
+
+  return jasmine.createSpy(path);
+};
+// --- mock Turbine's public "require" function ---
 
 // cleanup any changes to the "clean" global mocks before each test runs
 beforeEach(() => {
   window._satellite.calls.reset();
-  globalThis.require.calls.reset();
   globalThis.turbine = jasmine.createSpy('turbine');
 });
 
