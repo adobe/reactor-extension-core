@@ -24,6 +24,14 @@ function setupGlobals() {
   // Define them right away to ensure they're definitely defined before anything happens.
   window._satellite = jasmine.createSpy('_satellite');
   globalThis.turbine = jasmine.createSpy('turbine');
+  globalThis.turbine = {
+    logger: {
+      warn: jasmine.createSpy('warn'),
+      error: jasmine.createSpy('error'),
+      info: jasmine.createSpy('info'),
+      debug: jasmine.createSpy('debug')
+    }
+  }
   // --- mock Turbine's public "require" function ---
   globalThis.require = function publicRequire(path) {
     if (path === '@adobe/reactor-window') {
@@ -38,8 +46,10 @@ function setupGlobals() {
       //
       // window._satellite above is for jasmine test runner and for the source code
       // in a jasmine context to have access to window._satellite by default.
-      window._satellite = {};
-      return window;
+      return {
+        location: { href: jasmine.createSpy('href') },
+        _satellite: {}
+      }
     }
     // sometimes and import of a source file for a test will trigger an import of
     // an underlying dependency whose default export relies on certain things being
@@ -51,6 +61,7 @@ function setupGlobals() {
       return document;
     }
 
+    // we don't really care what it was, just mock it.
     return jasmine.createSpy(path);
   };
   // --- mock Turbine's public "require" function ---

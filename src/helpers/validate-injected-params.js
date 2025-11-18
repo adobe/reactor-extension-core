@@ -27,7 +27,8 @@ export default function validateInjectedParams(fn) {
         }
       });
 
-      fn(proxy);
+      // Call once and capture the result. this way side-effects only happen once.
+      const result = fn(proxy);
 
       if (missing.length > 0) {
         throw new Error(
@@ -35,8 +36,8 @@ export default function validateInjectedParams(fn) {
         );
       }
 
-      // All required keys accessed successfully — call with original args
-      return fn(args);
+      // Return the result from the original call
+      return result;
     };
     /* END.TESTS_ONLY */
   } else {
@@ -46,3 +47,4 @@ export default function validateInjectedParams(fn) {
     return fn;
   }
 }
+
