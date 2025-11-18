@@ -12,18 +12,35 @@ governing permissions and limitations under the License.
 import decorateGlobalJavaScriptCode from './decorators/decorateGlobalJavaScriptCode';
 import decorateNonGlobalJavaScriptCode from './decorators/decorateNonGlobalJavaScriptCode';
 import decorateHtmlCode from './decorators/decorateHtmlCode';
+import validateInjectedParams from '../../../helpers/validate-injected-params.js';
 
-const decorators = {
-  javascript: function (action, source) {
-    return action.settings.global
-      ? decorateGlobalJavaScriptCode(action, source)
-      : decorateNonGlobalJavaScriptCode(action, source);
-  },
-  html: decorateHtmlCode
-};
+function injectDecorateCode({
+  decorateGlobalJavaScriptCode,
+  decorateNonGlobalJavaScriptCode,
+  decorateHtmlCode
+}) {
+  const decorators = {
+    javascript: function (action, source) {
+      return action.settings.global
+        ? decorateGlobalJavaScriptCode(action, source)
+        : decorateNonGlobalJavaScriptCode(action, source);
+    },
+    html: decorateHtmlCode
+  };
 
-const decorateCode = function (action, source) {
-  return decorators[action.settings.language](action, source);
-};
+  return function decorateCode(action, source) {
+    return decorators[action.settings.language](action, source);
+  };
+}
 
-export default decorateCode;
+const validateInjection = validateInjectedParams(injectDecorateCode);
+
+export default validateInjection({
+  decorateGlobalJavaScriptCode,
+  decorateNonGlobalJavaScriptCode,
+  decorateHtmlCode
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectDecorateCode };
+/* END.TESTS_ONLY */
