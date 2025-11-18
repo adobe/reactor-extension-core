@@ -11,11 +11,24 @@
  ****************************************************************************************/
 
 import deepMerge from '../helpers/deepMerge';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
 
-export default function (settings) {
-  const args = settings.objects.slice();
-  // This object will be the target object that all other objects
-  // get merged into.
-  args.unshift({});
-  return deepMerge.apply(null, args);
+function injectMergedObjects({ deepMerge }) {
+  return function mergedObjects(settings) {
+    const args = settings.objects.slice();
+    // This object will be the target object that all other objects
+    // get merged into.
+    args.unshift({});
+    return deepMerge.apply(null, args);
+  };
 }
+
+const validateInjection = validateInjectedParams(injectMergedObjects);
+
+export default validateInjection({
+  deepMerge
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectMergedObjects };
+/* END.TESTS_ONLY */
