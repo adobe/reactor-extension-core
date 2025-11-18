@@ -10,27 +10,41 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import document from '@adobe/reactor-document';
 import textMatch from '../helpers/textMatch';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
 
-/**
- * Subdomain condition. Determines if the actual subdomain matches at least one acceptable
- * subdomain.
- * @param {Object} settings Condition settings.
- * @param {Object[]} settings.subdomains Acceptable subdomains.
- * @param {string} settings.subdomains[].value An acceptable subdomain value.
- * @param {boolean} [settings.subdomains[].valueIsRegex=false] Whether <code>value</code> on the
- * object instance is intended to be a regular expression.
- * @returns {boolean}
- */
-const subdomainCondition = function (settings) {
-  const subdomain = document.location.hostname;
-  return settings.subdomains.some(function (acceptableSubdomain) {
-    const acceptableValue = acceptableSubdomain.valueIsRegex
-      ? new RegExp(acceptableSubdomain.value, 'i')
-      : acceptableSubdomain.value;
-    return textMatch(subdomain, acceptableValue);
-  });
-};
+function injectSubdomainCondition({ document, textMatch }) {
+  /**
+   * Subdomain condition. Determines if the actual subdomain matches at least one acceptable
+   * subdomain.
+   * @param {Object} settings Condition settings.
+   * @param {Object[]} settings.subdomains Acceptable subdomains.
+   * @param {string} settings.subdomains[].value An acceptable subdomain value.
+   * @param {boolean} [settings.subdomains[].valueIsRegex=false] Whether <code>value</code> on the
+   * object instance is intended to be a regular expression.
+   * @returns {boolean}
+   */
+  return function subdomainCondition(settings) {
+    const subdomain = document.location.hostname;
+    return settings.subdomains.some(function (acceptableSubdomain) {
+      const acceptableValue = acceptableSubdomain.valueIsRegex
+        ? new RegExp(acceptableSubdomain.value, 'i')
+        : acceptableSubdomain.value;
+      return textMatch(subdomain, acceptableValue);
+    });
+  };
+}
 
-export default subdomainCondition;
+const validateInjection = validateInjectedParams(
+  injectSubdomainCondition
+);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  document: require('@adobe/reactor-document'),
+  textMatch
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectSubdomainCondition };
+/* END.TESTS_ONLY */

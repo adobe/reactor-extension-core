@@ -10,15 +10,18 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
+import { injectSubdomainCondition } from '../subdomain.js';
+import textMatch from '../../helpers/textMatch.js';
+
 var mockDocument = {
   location: {
     hostname: 'foo.adobe.com'
   }
 };
 
-var conditionDelegateInjector = require('inject-loader!../subdomain');
-var conditionDelegate = conditionDelegateInjector({
-  '@adobe/reactor-document': mockDocument
+var conditionDelegate = injectSubdomainCondition({
+  document: mockDocument,
+  textMatch
 });
 
 describe('subdomain condition delegate', function () {
