@@ -10,22 +10,11 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
+import matchesSelector from '../matchesSelector.js';
+
 describe('matchesSelector', function () {
-  var matchesSelector = require('../matchesSelector');
-  var mockTurbine = {
-    logger: jasmine.createSpyObj('logger', ['warn'])
-  };
-
-  beforeEach(function () {
-    mockTurbineVariable(mockTurbine);
-  });
-
-  afterEach(function () {
-    resetTurbineVariable();
-  });
-
   it('returns true if the selector matches', function () {
-    var div = document.createElement('div');
+    const div = document.createElement('div');
     div.className = 'foo';
 
     // IE9 requires the element to be added to the document.
@@ -35,7 +24,7 @@ describe('matchesSelector', function () {
   });
 
   it('returns false if the selector does not match', function () {
-    var div = document.createElement('div');
+    const div = document.createElement('div');
     div.className = 'goo';
     // IE9 requires the element to be added to the document.
     document.body.appendChild(div);
@@ -53,6 +42,6 @@ describe('matchesSelector', function () {
 
   it('logs a warning when selector matching fails', function () {
     matchesSelector(document.body, 'somewrong#!@$%selector');
-    expect(mockTurbine.logger.warn).toHaveBeenCalled();
+    expect(turbine.logger.warn).toHaveBeenCalled();
   });
 });

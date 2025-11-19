@@ -116,7 +116,7 @@ function injectCustomCodeAction({
    * @param {Object} event.target The element on which the event occurred.
    * <code>javascript</code> or <code>html</code>.
    */
-  module.exports = function (settings, event) {
+  return function customCode(settings, event) {
     // ensure the nonce is up-to-date when the function is used
     cspNonce = turbine.getExtensionSettings().cspNonce;
 

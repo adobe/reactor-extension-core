@@ -10,17 +10,17 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-var POLL_INTERVAL = 1000;
+const POLL_INTERVAL = 1000;
 
-var triggersByName = {};
-var cachedStringifiedValueByName = {};
+const triggersByName = {};
+const cachedStringifiedValueByName = {};
 
 setInterval(function () {
   Object.keys(triggersByName).forEach(function (name) {
-    var stringifiedValue = JSON.stringify(turbine.getDataElementValue(name));
+    const stringifiedValue = JSON.stringify(turbine.getDataElementValue(name));
 
     if (stringifiedValue !== cachedStringifiedValueByName[name]) {
-      var syntheticEvent = {
+      const syntheticEvent = {
         dataElementName: name
       };
 
@@ -37,11 +37,11 @@ setInterval(function () {
  * Data element change event. This event occurs whenever the given data element's value has changed.
  * @param {Object} settings The event settings object.
  * @param {string} settings.name The name of the data element.
- * @param {ruleTrigger} trigger The trigger callback.
+ * @param {function} trigger The [rule]trigger callback.
  */
 export default function (settings, trigger) {
-  var name = settings.name;
-  var triggers = triggersByName[name];
+  const name = settings.name;
+  let triggers = triggersByName[name];
 
   if (!triggers) {
     triggers = triggersByName[name] = [];

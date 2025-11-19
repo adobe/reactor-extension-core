@@ -17,7 +17,10 @@ export default (config) => {
     failOnEmptyTestSuite: true, // Fail if no tests are found
     failOnSkippedTests: false,
     failOnFailingTestSuite: true,
-    files: [{ pattern: './src/**/*.js', type: 'module' }],
+    files: [
+      { pattern: './helpers/mockDelegateWrapper.js', watched: false },
+      { pattern: './src/**/*.js', type: 'module' }
+    ],
     preprocessors: {
       './src/**/*.js': ['rollup']
     },
