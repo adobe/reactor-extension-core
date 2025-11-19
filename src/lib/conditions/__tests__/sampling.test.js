@@ -10,7 +10,12 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-var conditionDelegate = require('../sampling');
+import { injectSampling } from '../sampling';
+import { injectGetNamespacedStorage } from '../../helpers/getNamespacedStorage.js';
+const injectedNamespacedStorage = injectGetNamespacedStorage({ window });
+const conditionDelegate = injectSampling({
+  getNamespacedStorage: injectedNamespacedStorage
+});
 
 describe('sampling condition delegate', function () {
   it('returns false when rate is 0', function () {
@@ -22,7 +27,7 @@ describe('sampling condition delegate', function () {
   });
 
   describe('cohort persistence', function () {
-    var cleanUp = function () {
+    const cleanUp = function () {
       window.localStorage.clear();
     };
 
@@ -77,7 +82,7 @@ describe('sampling condition delegate', function () {
           includedInCohort ? 'true' : 'false'
         );
 
-        for (var i = 0; i < 10; i++) {
+        for (let i = 0; i < 10; i++) {
           expect(
             conditionDelegate(
               {

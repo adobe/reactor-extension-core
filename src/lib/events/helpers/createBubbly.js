@@ -13,6 +13,7 @@
 import WeakMap from './weakMap';
 import matchesProperties from './matchesProperties';
 import matchesSelector from './matchesSelector';
+import validateInjectedParams from '../../../helpers/validate-injected-params.js';
 
 // Note to developers of other extensions:
 // This module largely exists to support advanced bubbling options
@@ -21,176 +22,192 @@ import matchesSelector from './matchesSelector';
 // As such, please only copy this code if you know why you're doing so
 // and feel you have a justifiable reason.
 
-/**
- * Handles logic related to bubbling options provided for many event types.
- */
-export default function createBubbly() {
-  var listeners = [];
+function injectBubbly({ WeakMap, matchesSelector, matchesProperties }) {
+  /**
+   * Handles logic related to bubbling options provided for many event types.
+   */
+  return function createBubbly() {
+    let listeners = [];
 
-  // It's important that a new weak map is created for each instance of bubbly in order to store
-  // whether this particular bubbly instance has processed the event. More than one instance of
-  // bubbly may process an event. No instance of bubbly should process an event more than once.
-  var processedEvents = new WeakMap();
+    // It's important that a new weak map is created for each instance of bubbly in order to store
+    // whether this particular bubbly instance has processed the event. More than one instance of
+    // bubbly may process an event. No instance of bubbly should process an event more than once.
+    const processedEvents = new WeakMap();
 
-  var bubbly = {
-    /**
-     * Register a config object that should be evaluated for an event to determine if a rule
-     * should be executed. If it should be executed, the callback function will be called.
-     * @param {Object} settings The event config object.
-     * @param {string} [settings.elementSelector] The CSS selector the element must match in order
-     * for the rule to fire.
-     * @param {Object[]} [settings.elementProperties] Property values the element must have in order
-     * for the rule to fire.
-     * @param {string} settings.elementProperties[].name The property name.
-     * @param {string} settings.elementProperties[].value The property value.
-     * @param {number} [settings.anchorDelay] - When present and a link is clicked, actual
-     * navigation will be postponed for a period of time equal with its value. This is typically
-     * used to allow time for scripts within the rule to execute, beacons to be sent to
-     * servers, etc.
-     * @param {boolean} [settings.elementProperties[].valueIsRegex=false] Whether <code>value</code>
-     * on the object instance is intended to be a regular expression.
-     * @param {boolean} [settings.bubbleFireIfParent=true] Whether the rule should fire if the
-     * event originated from a descendant element.
-     * @param {boolean} [settings.bubbleFireIfChildFired=true] Whether the rule should fire if the
-     * same event has already triggered a rule targeting a descendant element.
-     * @param {boolean} [settings.bubbleStop=false] Whether the event should not trigger rules on
-     * ancestor elements.
-     * @param {Function} callback The function to be called when a matching event is seen. If the
-     * callback does not end up triggering a rule, the callback should explicitly return false.
-     */
-    addListener: function (settings, callback) {
-      listeners.push({
-        settings: settings,
-        callback: callback
-      });
-    },
-    /**
-     * Evaluate an event to determine if any rule targeting elements in the event target's DOM
-     * hierarchy should be executed. Note that event.type is not inspected. This assumes that
-     * all registered listeners care about this particular event type.
-     * @param {Event} event The event that has occurred.
-     * @param {HTMLElement} event.target The HTML element where the event originated.
-     * @param {boolean} [eventIsSynthetic] Whether the event passed in is synthetic (instead of
-     * native).
-     */
-    evaluateEvent: function (event, eventIsSynthetic) {
-      if (!listeners.length) {
-        return;
-      }
+    const bubbly = {
+      /**
+       * Register a config object that should be evaluated for an event to determine if a rule
+       * should be executed. If it should be executed, the callback function will be called.
+       * @param {Object} settings The event config object.
+       * @param {string} [settings.elementSelector] The CSS selector the element must match in order
+       * for the rule to fire.
+       * @param {Object[]} [settings.elementProperties] Property values the element must have in order
+       * for the rule to fire.
+       * @param {string} settings.elementProperties[].name The property name.
+       * @param {string} settings.elementProperties[].value The property value.
+       * @param {number} [settings.anchorDelay] - When present and a link is clicked, actual
+       * navigation will be postponed for a period of time equal with its value. This is typically
+       * used to allow time for scripts within the rule to execute, beacons to be sent to
+       * servers, etc.
+       * @param {boolean} [settings.elementProperties[].valueIsRegex=false] Whether <code>value</code>
+       * on the object instance is intended to be a regular expression.
+       * @param {boolean} [settings.bubbleFireIfParent=true] Whether the rule should fire if the
+       * event originated from a descendant element.
+       * @param {boolean} [settings.bubbleFireIfChildFired=true] Whether the rule should fire if the
+       * same event has already triggered a rule targeting a descendant element.
+       * @param {boolean} [settings.bubbleStop=false] Whether the event should not trigger rules on
+       * ancestor elements.
+       * @param {Function} callback The function to be called when a matching event is seen. If the
+       * callback does not end up triggering a rule, the callback should explicitly return false.
+       */
+      addListener: function (settings, callback) {
+        listeners.push({
+          settings: settings,
+          callback: callback
+        });
+      },
+      /**
+       * Evaluate an event to determine if any rule targeting elements in the event target's DOM
+       * hierarchy should be executed. Note that event.type is not inspected. This assumes that
+       * all registered listeners care about this particular event type.
+       * @param {Event} event The event that has occurred.
+       * @param {HTMLElement} event.target The HTML element where the event originated.
+       * @param {boolean} [eventIsSynthetic] Whether the event passed in is synthetic (instead of
+       * native).
+       */
+      evaluateEvent: function (event, eventIsSynthetic) {
+        if (!listeners.length) {
+          return;
+        }
 
-      // When an event is handled it is evaluated a single time but checks out which rules are
-      // targeting elements starting at the target node and looking all the way up the element
-      // hierarchy. This should only happen once regardless of how many listeners exist for the
-      // event.
-      if (processedEvents.has(event)) {
-        return;
-      }
+        // When an event is handled it is evaluated a single time but checks out which rules are
+        // targeting elements starting at the target node and looking all the way up the element
+        // hierarchy. This should only happen once regardless of how many listeners exist for the
+        // event.
+        if (processedEvents.has(event)) {
+          return;
+        }
 
-      var node = event.target;
-      var childHasTriggeredRule = false;
+        let node = event.target;
+        let childHasTriggeredRule = false;
 
-      // Loop through from the event target up through the hierarchy evaluating each node
-      // to see if it matches any rules.
-      while (node) {
-        var preventEvaluationOnAncestors = false;
+        // Loop through from the event target up through the hierarchy evaluating each node
+        // to see if it matches any rules.
+        while (node) {
+          let preventEvaluationOnAncestors = false;
 
-        var nodeTriggeredRule = false;
+          let nodeTriggeredRule = false;
 
-        // Just because this could be processed a lot, we'll use a for loop instead of forEach.
-        for (var i = 0; i < listeners.length; i++) {
-          var listener = listeners[i];
-          var elementSelector = listener.settings.elementSelector;
-          var elementProperties = listener.settings.elementProperties;
+          // Just because this could be processed a lot, we'll use a for loop instead of forEach.
+          for (let i = 0; i < listeners.length; i++) {
+            const listener = listeners[i];
+            const elementSelector = listener.settings.elementSelector;
+            const elementProperties = listener.settings.elementProperties;
 
-          // bubbleFireIfChildFired should be considered true by default
-          if (
-            listener.settings.bubbleFireIfChildFired === false &&
-            childHasTriggeredRule
-          ) {
-            continue;
-          }
+            // bubbleFireIfChildFired should be considered true by default
+            if (
+              listener.settings.bubbleFireIfChildFired === false &&
+              childHasTriggeredRule
+            ) {
+              continue;
+            }
 
-          // bubbleFireIfParent should be considered true by default
-          if (
-            node !== event.target &&
-            listener.settings.bubbleFireIfParent === false
-          ) {
-            continue;
-          }
+            // bubbleFireIfParent should be considered true by default
+            if (
+              node !== event.target &&
+              listener.settings.bubbleFireIfParent === false
+            ) {
+              continue;
+            }
 
-          // If the user didn't specify elementSelector or elementProperties then they want the
-          // rule to run whenever the event occurs on any element. They don't intend for the
-          // rule to run for every node in the element hierarchy though.
-          if (
-            node !== event.target &&
-            !elementSelector &&
-            (!elementProperties || !Object.keys(elementProperties).length)
-          ) {
-            continue;
-          }
+            // If the user didn't specify elementSelector or elementProperties then they want the
+            // rule to run whenever the event occurs on any element. They don't intend for the
+            // rule to run for every node in the element hierarchy though.
+            if (
+              node !== event.target &&
+              !elementSelector &&
+              (!elementProperties || !Object.keys(elementProperties).length)
+            ) {
+              continue;
+            }
 
-          if (elementSelector && !matchesSelector(node, elementSelector)) {
-            continue;
-          }
+            if (elementSelector && !matchesSelector(node, elementSelector)) {
+              continue;
+            }
 
-          if (
-            elementProperties &&
-            !matchesProperties(node, elementProperties)
-          ) {
-            continue;
-          }
+            if (
+              elementProperties &&
+              !matchesProperties(node, elementProperties)
+            ) {
+              continue;
+            }
 
-          var syntheticEventForCallback = {};
+            const syntheticEventForCallback = {};
 
-          // We'll attach relevant data depending on whether the passed in event is synthetic
-          // or native.
-          if (eventIsSynthetic) {
-            Object.keys(event).forEach(function (key) {
-              syntheticEventForCallback[key] = event[key];
-            });
-          } else {
-            syntheticEventForCallback.nativeEvent = event;
-          }
+            // We'll attach relevant data depending on whether the passed in event is synthetic
+            // or native.
+            if (eventIsSynthetic) {
+              Object.keys(event).forEach(function (key) {
+                syntheticEventForCallback[key] = event[key];
+              });
+            } else {
+              syntheticEventForCallback.nativeEvent = event;
+            }
 
-          syntheticEventForCallback.element = node;
-          syntheticEventForCallback.target = event.target;
+            syntheticEventForCallback.element = node;
+            syntheticEventForCallback.target = event.target;
 
-          var callbackResponse = listener.callback(syntheticEventForCallback);
+            const callbackResponse = listener.callback(
+              syntheticEventForCallback
+            );
 
-          // The callback should return false if it didn't end up triggering a rule.
-          var ruleTriggered = callbackResponse !== false;
+            // The callback should return false if it didn't end up triggering a rule.
+            const ruleTriggered = callbackResponse !== false;
 
-          if (ruleTriggered) {
-            nodeTriggeredRule = true;
+            if (ruleTriggered) {
+              nodeTriggeredRule = true;
 
-            if (listener.settings.bubbleStop) {
-              preventEvaluationOnAncestors = true;
+              if (listener.settings.bubbleStop) {
+                preventEvaluationOnAncestors = true;
+              }
             }
           }
+
+          if (preventEvaluationOnAncestors) {
+            break;
+          }
+
+          if (nodeTriggeredRule) {
+            childHasTriggeredRule = true;
+          }
+
+          node = node.parentNode;
         }
 
-        if (preventEvaluationOnAncestors) {
-          break;
-        }
-
-        if (nodeTriggeredRule) {
-          childHasTriggeredRule = true;
-        }
-
-        node = node.parentNode;
+        processedEvents.set(event, true);
       }
+    };
 
-      processedEvents.set(event, true);
-    }
+    /**
+     * @private
+     * Clears all listeners. This should only be used in tests.
+     */
+    bubbly.__reset = function () {
+      listeners = [];
+    };
+
+    return bubbly;
   };
-
-  /**
-   * @private
-   * Clears all listeners. This should only be used in tests.
-   */
-  bubbly.__reset = function () {
-    listeners = [];
-  };
-
-  return bubbly;
 }
+
+const validateInjection = validateInjectedParams(injectBubbly);
+
+export default validateInjection({
+  WeakMap,
+  matchesSelector,
+  matchesProperties
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectBubbly };
+/* END.TESTS_ONLY */

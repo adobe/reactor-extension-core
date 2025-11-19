@@ -76,7 +76,6 @@ describe('data element change event delegate', function () {
   beforeEach(() => {
     mockTurbineVariable({
       getDataElementValue: function () {
-        console.log('returning', dataElementValue);
         return dataElementValue;
       }
     });
