@@ -47,7 +47,6 @@ describe('element exists event delegate', function () {
 
   beforeAll(function () {
     jasmine.clock().install();
-    delegate = require('../elementExists');
   });
 
   afterAll(function () {
