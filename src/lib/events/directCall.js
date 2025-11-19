@@ -10,64 +10,79 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-window._satellite = window._satellite || {};
+import validateInjectedParams from '../../helpers/validate-injected-params';
 
-/**
- * Object where the key is the call name and the value is an array of all rule trigger functions
- * for that call name.
- * @type {Object}
- */
-var triggersByIdentifier = {};
+function injectDirectCall({ window }) {
+  /**
+   * Object where the key is the call name and the value is an array of all rule trigger functions
+   * for that call name.
+   * @type {Object}
+   */
+  const triggersByIdentifier = {};
 
-/**
- * Public function intended to be called by the user.
- * @param {string} identifier The identifier passed to _satellite.track().
- * @param {*} [detail] Any detail that should be passed along to conditions and actions.
- */
-window._satellite.track = function (identifier, detail) {
-  identifier = identifier.trim();
-  var triggers = triggersByIdentifier[identifier];
-  if (triggers) {
-    var syntheticEvent = {
-      identifier: identifier,
-      detail: detail
-    };
+  window._satellite = window._satellite || {};
 
-    triggers.forEach(function (trigger) {
-      trigger(syntheticEvent);
-    });
+  /**
+   * Public function intended to be called by the user.
+   * @param {string} identifier The identifier passed to _satellite.track().
+   * @param {*} [detail] Any detail that should be passed along to conditions and actions.
+   */
+  window._satellite.track = function (identifier, detail) {
+    identifier = identifier.trim();
+    const triggers = triggersByIdentifier[identifier];
+    if (triggers) {
+      const syntheticEvent = {
+        identifier: identifier,
+        detail: detail
+      };
 
-    var logMessage =
-      'Rules using the direct call event type with identifier "' +
-      identifier +
-      '" have been triggered' +
-      (detail ? ' with additional detail:' : '.');
-    var logArgs = [logMessage];
+      triggers.forEach(function (trigger) {
+        trigger(syntheticEvent);
+      });
 
-    if (detail) {
-      logArgs.push(detail);
+      const logMessage =
+        'Rules using the direct call event type with identifier "' +
+        identifier +
+        '" have been triggered' +
+        (detail ? ' with additional detail:' : '.');
+      const logArgs = [logMessage];
+
+      if (detail) {
+        logArgs.push(detail);
+      }
+
+      turbine.logger.log.apply(turbine.logger, logArgs);
+    } else {
+      turbine.logger.log(
+        '"' + identifier + '" does not match any direct call identifiers.'
+      );
+    }
+  };
+
+  /**
+   * Direct call event. This event occurs as soon as the user calls _satellite.track().
+   * @param {Object} settings The event settings object.
+   * @param {string} settings.identifier The identifier passed to _satellite.track().
+   * @param {function} trigger The [rule]trigger callback.
+   */
+  return function directCall(settings, trigger) {
+    let triggers = triggersByIdentifier[settings.identifier];
+
+    if (!triggers) {
+      triggers = triggersByIdentifier[settings.identifier] = [];
     }
 
-    turbine.logger.log.apply(turbine.logger, logArgs);
-  } else {
-    turbine.logger.log(
-      '"' + identifier + '" does not match any direct call identifiers.'
-    );
-  }
-};
-
-/**
- * Direct call event. This event occurs as soon as the user calls _satellite.track().
- * @param {Object} settings The event settings object.
- * @param {string} settings.identifier The identifier passed to _satellite.track().
- * @param {ruleTrigger} trigger The trigger callback.
- */
-export default function (settings, trigger) {
-  var triggers = triggersByIdentifier[settings.identifier];
-
-  if (!triggers) {
-    triggers = triggersByIdentifier[settings.identifier] = [];
-  }
-
-  triggers.push(trigger);
+    triggers.push(trigger);
+  };
 }
+
+const validateInjection = validateInjectedParams(injectDirectCall);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  window: require('@adobe/reactor-window')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectDirectCall };
+/* END.TESTS_ONLY */

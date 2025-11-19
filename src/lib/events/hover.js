@@ -11,12 +11,14 @@
  ****************************************************************************************/
 
 import createBubbly from './helpers/createBubbly';
+const bubbly = createBubbly();
+import liveQuerySelector from './helpers/liveQuerySelector';
 import matchesProperties from './helpers/matchesProperties';
 import WeakMap from './helpers/weakMap';
 import { castToNumberIfString } from '../helpers/stringAndNumberUtils';
+import validateInjectedParams from '../../helpers/validate-injected-params';
 
-function createHoverDelegate(liveQuerySelector) {
-  const bubbly = createBubbly();
+function injectHover({ liveQuerySelector }) {
   const trackedDelaysByElement = new WeakMap();
 
   /**
@@ -33,21 +35,16 @@ function createHoverDelegate(liveQuerySelector) {
       return;
     }
 
-    // eslint-disable-next-line prefer-const
-    let timeoutId;
-    // eslint-disable-next-line prefer-const
-    let handleMouseLeave;
-
     const removeMouseLeaveListener = function () {
       event.target.removeEventListener('mouseleave', handleMouseLeave);
     };
 
-    handleMouseLeave = function () {
+    const handleMouseLeave = function () {
       clearTimeout(timeoutId);
       removeMouseLeaveListener();
     };
 
-    timeoutId = setTimeout(function () {
+    const timeoutId = setTimeout(function () {
       handler(event);
       removeMouseLeaveListener();
     }, delay);
@@ -91,9 +88,9 @@ function createHoverDelegate(liveQuerySelector) {
    * fire if the same event has already triggered a rule targeting a descendant element.
    * @param {boolean} [settings.bubbleStop=false] Whether the event should not trigger
    * rules on ancestor elements.
-   * @param {ruleTrigger} trigger The trigger callback.
+   * @param {function} trigger The [rule]trigger callback.
    */
-  return function (settings, trigger) {
+  return function hover(settings, trigger) {
     // if settings.delay can't be parsed, fall back to no delay
     const delay = castToNumberIfString(settings.delay) || 0;
 
@@ -128,4 +125,12 @@ function createHoverDelegate(liveQuerySelector) {
   };
 }
 
-export default createHoverDelegate;
+const validateInjection = validateInjectedParams(injectHover);
+
+export default validateInjection({
+  liveQuerySelector
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectHover };
+/* END.TESTS_ONLY */

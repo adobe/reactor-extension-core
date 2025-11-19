@@ -10,9 +10,10 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import delegate from '../dataElementChange.js';
+import { injectDataElementChange } from '../dataElementChange';
 
 const POLL_INTERVAL = 3000;
+let delegate;
 let dataElementValue;
 
 // Since we use a single delegate module instance which caches data element values, we use a unique
@@ -36,7 +37,7 @@ const testValueChange = function (
   getUpdatedValue,
   shouldTriggerRule
 ) {
-  const trigger = jasmine.createSpy('trigger');
+  const trigger = jasmine.createSpy();
   dataElementValue = initialValue;
 
   const name = getUniqueDataElementName();
@@ -71,14 +72,14 @@ const testValueChange = function (
 describe('data element change event delegate', function () {
   beforeAll(function () {
     jasmine.clock().install();
-  });
 
-  beforeEach(() => {
     mockTurbineVariable({
       getDataElementValue: function () {
         return dataElementValue;
       }
     });
+
+    delegate = injectDataElementChange({ window });
   });
 
   afterAll(function () {

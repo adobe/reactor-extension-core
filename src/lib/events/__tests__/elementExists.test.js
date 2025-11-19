@@ -10,14 +10,16 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-var POLL_INTERVAL = 3000;
+import WeakMap from '../helpers/weakMap';
+import { injectElementExists } from '../elementExists';
+const POLL_INTERVAL = 3000;
 
 describe('element exists event delegate', function () {
-  var delegate;
-  var aElement;
-  var bElement;
+  const delegate = injectElementExists({ window, document, WeakMap });
+  let aElement;
+  let bElement;
 
-  var createElements = function () {
+  const createElements = function () {
     aElement = document.createElement('div');
     aElement.id = 'a';
     aElement.innerHTML = 'a';
@@ -29,14 +31,14 @@ describe('element exists event delegate', function () {
     aElement.appendChild(bElement);
   };
 
-  var removeElements = function () {
+  const removeElements = function () {
     if (aElement) {
       document.body.removeChild(aElement);
     }
     aElement = bElement = null;
   };
 
-  var assertTriggerCall = function (options) {
+  const assertTriggerCall = function (options) {
     expect(options.call.args[0]).toEqual({
       element: options.element,
       target: options.element
@@ -61,7 +63,7 @@ describe('element exists event delegate', function () {
   });
 
   it('calls trigger with event and related element', function () {
-    var aTrigger = jasmine.createSpy();
+    const aTrigger = jasmine.createSpy();
 
     delegate(
       {
@@ -80,8 +82,8 @@ describe('element exists event delegate', function () {
   });
 
   it('triggers multiple rules targeting the same element', function () {
-    var aTrigger = jasmine.createSpy();
-    var a2Trigger = jasmine.createSpy();
+    const aTrigger = jasmine.createSpy();
+    const a2Trigger = jasmine.createSpy();
 
     delegate(
       {
@@ -104,11 +106,11 @@ describe('element exists event delegate', function () {
   });
 
   it('triggers multiple rules targeting the same element in the defined order', function () {
-    var result = null;
-    var aTrigger = jasmine.createSpy().and.callFake(function () {
+    let result = null;
+    const aTrigger = jasmine.createSpy().and.callFake(function () {
       result = 'aTrigger';
     });
-    var a2Trigger = jasmine.createSpy().and.callFake(function () {
+    const a2Trigger = jasmine.createSpy().and.callFake(function () {
       result = 'a2Trigger';
     });
 
@@ -132,7 +134,7 @@ describe('element exists event delegate', function () {
   });
 
   it('triggers a rule if elementProperties match', function () {
-    var trigger = jasmine.createSpy();
+    const trigger = jasmine.createSpy();
 
     delegate(
       {
@@ -153,7 +155,7 @@ describe('element exists event delegate', function () {
   });
 
   it('does not trigger a rule if elementProperties do not match', function () {
-    var trigger = jasmine.createSpy();
+    const trigger = jasmine.createSpy();
 
     delegate(
       {
@@ -174,8 +176,8 @@ describe('element exists event delegate', function () {
   });
 
   it('continues evaluating elements until elementProperties is satisfied (DTM-6681)', function () {
-    var selectorOnlyTrigger = jasmine.createSpy();
-    var selectorAndPropsTrigger = jasmine.createSpy();
+    const selectorOnlyTrigger = jasmine.createSpy();
+    const selectorAndPropsTrigger = jasmine.createSpy();
 
     delegate(
       {
@@ -202,7 +204,7 @@ describe('element exists event delegate', function () {
     expect(selectorOnlyTrigger.calls.count()).toBe(1);
     expect(selectorAndPropsTrigger.calls.count()).toBe(0);
 
-    var addedLaterElement = document.createElement('div');
+    const addedLaterElement = document.createElement('div');
     addedLaterElement.innerHTML = 'added later';
     document.body.appendChild(addedLaterElement);
 

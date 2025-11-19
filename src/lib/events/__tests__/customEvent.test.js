@@ -10,13 +10,14 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import delegate from '../customEvent.js';
+import { injectCustomEvent } from '../customEvent';
+const delegate = injectCustomEvent({ window });
 
-var outerElement;
-var innerElement;
+let outerElement;
+let innerElement;
 
-var triggerCustomEvent = function (element, type, detail) {
-  var event = document.createEvent('CustomEvent');
+const triggerCustomEvent = function (element, type, detail) {
+  const event = document.createEvent('CustomEvent');
   event.initCustomEvent(type, true, true, detail);
   element.dispatchEvent(event);
   return event;
@@ -39,9 +40,9 @@ describe('custom event event delegate', function () {
   });
 
   it('triggers rule when event is dispatched from element', function () {
-    var CUSTOM_EVENT_TYPE = 'foo';
+    const CUSTOM_EVENT_TYPE = 'foo';
 
-    var trigger = jasmine.createSpy();
+    const trigger = jasmine.createSpy();
 
     delegate(
       {
@@ -55,7 +56,7 @@ describe('custom event event delegate', function () {
     triggerCustomEvent(innerElement, CUSTOM_EVENT_TYPE, { foo: 'bar' });
 
     expect(trigger.calls.count()).toBe(1);
-    var call = trigger.calls.mostRecent();
+    const call = trigger.calls.mostRecent();
     expect(call.args[0]).toEqual({
       element: outerElement,
       target: innerElement,
@@ -65,9 +66,9 @@ describe('custom event event delegate', function () {
   });
 
   it('triggers rule when event is dispatched from window', function () {
-    var CUSTOM_EVENT_TYPE = 'foo';
+    const CUSTOM_EVENT_TYPE = 'foo';
 
-    var trigger = jasmine.createSpy();
+    const trigger = jasmine.createSpy();
 
     delegate(
       {
@@ -79,7 +80,7 @@ describe('custom event event delegate', function () {
     triggerCustomEvent(window, CUSTOM_EVENT_TYPE, { foo: 'bar' });
 
     expect(trigger.calls.count()).toBe(1);
-    var call = trigger.calls.mostRecent();
+    const call = trigger.calls.mostRecent();
     expect(call.args[0]).toEqual({
       element: window,
       target: window,
@@ -89,9 +90,9 @@ describe('custom event event delegate', function () {
   });
 
   it('triggers rule when event is dispatched from document', function () {
-    var CUSTOM_EVENT_TYPE = 'foo';
+    const CUSTOM_EVENT_TYPE = 'foo';
 
-    var trigger = jasmine.createSpy();
+    const trigger = jasmine.createSpy();
 
     delegate(
       {
@@ -103,7 +104,7 @@ describe('custom event event delegate', function () {
     triggerCustomEvent(document, CUSTOM_EVENT_TYPE, { foo: 'bar' });
 
     expect(trigger.calls.count()).toBe(1);
-    var call = trigger.calls.mostRecent();
+    const call = trigger.calls.mostRecent();
     expect(call.args[0]).toEqual({
       element: document,
       target: document,
@@ -113,10 +114,10 @@ describe('custom event event delegate', function () {
   });
 
   it('only triggers rule pertaining to event type', function () {
-    var CUSTOM_EVENT_TYPE_A = 'foo';
-    var CUSTOM_EVENT_TYPE_B = 'bar';
+    const CUSTOM_EVENT_TYPE_A = 'foo';
+    const CUSTOM_EVENT_TYPE_B = 'bar';
 
-    var triggerA = jasmine.createSpy();
+    const triggerA = jasmine.createSpy();
 
     delegate(
       {
@@ -127,7 +128,7 @@ describe('custom event event delegate', function () {
       triggerA
     );
 
-    var triggerB = jasmine.createSpy();
+    const triggerB = jasmine.createSpy();
 
     delegate(
       {
@@ -145,9 +146,9 @@ describe('custom event event delegate', function () {
   });
 
   it('only triggers each rule once when multiple rules watching for same event type', function () {
-    var CUSTOM_EVENT_TYPE = 'foo';
+    const CUSTOM_EVENT_TYPE = 'foo';
 
-    var triggerA = jasmine.createSpy();
+    const triggerA = jasmine.createSpy();
 
     delegate(
       {
@@ -158,7 +159,7 @@ describe('custom event event delegate', function () {
       triggerA
     );
 
-    var triggerB = jasmine.createSpy();
+    const triggerB = jasmine.createSpy();
 
     delegate(
       {

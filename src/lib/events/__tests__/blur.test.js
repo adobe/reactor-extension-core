@@ -10,8 +10,9 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import testStandardEvent from './helpers/testStandardEvent.js';
-import delegate from '../blur.js';
+import testStandardEvent from './helpers/testStandardEvent';
+import { injectBlur } from '../blur';
+const delegate = injectBlur({ document });
 
 describe('blur event delegate', function () {
   testStandardEvent(function () {

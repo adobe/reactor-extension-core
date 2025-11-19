@@ -12,7 +12,7 @@
 
 import once from './helpers/once';
 import debounce from './helpers/debounce';
-import validateInjectedParams from '../../helpers/validate-injected-params.js';
+import validateInjectedParams from '../../helpers/validate-injected-params';
 
 function injectHistoryChange({ window, debounce }) {
   const triggers = [];

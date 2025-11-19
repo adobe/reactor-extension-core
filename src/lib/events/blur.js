@@ -10,30 +10,44 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
+import validateInjectedParams from '../../helpers/validate-injected-params';
 import createBubbly from './helpers/createBubbly.js';
 const bubbly = createBubbly();
 
-document.addEventListener('blur', bubbly.evaluateEvent, true);
+function injectBlur({ document }) {
+  document.addEventListener('blur', bubbly.evaluateEvent, true);
 
-/**
- * The blur event. This event occurs when an element has lost focus.
- * @param {Object} settings The event settings object.
- * @param {string} [settings.elementSelector] The CSS selector the element must match in order for
- * the rule to fire.
- * @param {Object[]} [settings.elementProperties] Property values the element must have in order
- * for the rule to fire.
- * @param {string} settings.elementProperties[].name The property name.
- * @param {string} settings.elementProperties[].value The property value.
- * @param {boolean} [settings.elementProperties[].valueIsRegex=false] Whether <code>value</code>
- * on the object instance is intended to be a regular expression.
- * @param {boolean} [settings.bubbleFireIfParent=true] Whether the rule should fire if
- * the event originated from a descendant element.
- * @param {boolean} [settings.bubbleFireIfChildFired=true] Whether the rule should fire
- * if the same event has already triggered a rule targeting a descendant element.
- * @param {boolean} [settings.bubbleStop=false] Whether the event should not trigger
- * rules on ancestor elements.
- * @param {ruleTrigger} trigger The trigger callback.
- */
-export default function (settings, trigger) {
-  bubbly.addListener(settings, trigger);
+  /**
+   * The blur event. This event occurs when an element has lost focus.
+   * @param {Object} settings The event settings object.
+   * @param {string} [settings.elementSelector] The CSS selector the element must match in order for
+   * the rule to fire.
+   * @param {Object[]} [settings.elementProperties] Property values the element must have in order
+   * for the rule to fire.
+   * @param {string} settings.elementProperties[].name The property name.
+   * @param {string} settings.elementProperties[].value The property value.
+   * @param {boolean} [settings.elementProperties[].valueIsRegex=false] Whether <code>value</code>
+   * on the object instance is intended to be a regular expression.
+   * @param {boolean} [settings.bubbleFireIfParent=true] Whether the rule should fire if
+   * the event originated from a descendant element.
+   * @param {boolean} [settings.bubbleFireIfChildFired=true] Whether the rule should fire
+   * if the same event has already triggered a rule targeting a descendant element.
+   * @param {boolean} [settings.bubbleStop=false] Whether the event should not trigger
+   * rules on ancestor elements.
+   * @param {function} trigger The [rule]trigger callback.
+   */
+  return function blur(settings, trigger) {
+    bubbly.addListener(settings, trigger);
+  };
 }
+
+const validateInjection = validateInjectedParams(injectBlur);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  document: require('@adobe/reactor-document')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectBlur };
+/* END.TESTS_ONLY */

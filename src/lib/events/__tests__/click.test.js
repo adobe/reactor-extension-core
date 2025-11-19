@@ -10,11 +10,11 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-var testStandardEvent = require('./helpers/testStandardEvent');
-const createClickDelegate = require('../click');
+import testStandardEvent from './helpers/testStandardEvent';
+import { injectClick } from '../click';
 
-var getClickEvent = function () {
-  var event;
+const getClickEvent = function () {
+  let event;
 
   if (
     navigator.userAgent.indexOf('MSIE') !== -1 ||
@@ -46,15 +46,11 @@ var getClickEvent = function () {
 };
 
 describe('click event delegate', function () {
-  var mockWindow = {};
-  var delegate;
+  const mockWindow = {};
+  let delegate;
 
   beforeEach(function () {
-    delegate = createClickDelegate(mockWindow);
-  });
-
-  afterEach(function () {
-    resetTurbineVariable();
+    delegate = injectClick({ window: mockWindow, document });
   });
 
   testStandardEvent(function () {

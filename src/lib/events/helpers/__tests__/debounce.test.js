@@ -10,11 +10,11 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-describe('debounce', function () {
-  var debounce;
+import { injectDebounce } from '../debounce';
+const debounce = injectDebounce({ window });
 
+describe('debounce', function () {
   beforeAll(function () {
-    debounce = require('../debounce');
     jasmine.clock().install();
   });
 
@@ -23,8 +23,8 @@ describe('debounce', function () {
   });
 
   it('calls the target function once after delay', function () {
-    var targetFn = jasmine.createSpy();
-    var debouncedFn = debounce(targetFn, 100);
+    const targetFn = jasmine.createSpy();
+    const debouncedFn = debounce(targetFn, 100);
 
     debouncedFn();
 
@@ -44,8 +44,8 @@ describe('debounce', function () {
   });
 
   it('calls the target function using the provided context', function () {
-    var targetFn = jasmine.createSpy();
-    var context = {};
+    const targetFn = jasmine.createSpy();
+    const context = {};
 
     debounce(targetFn, 100, context)();
 
@@ -55,7 +55,7 @@ describe('debounce', function () {
   });
 
   it('calls the target function using the provided arguments', function () {
-    var targetFn = jasmine.createSpy();
+    const targetFn = jasmine.createSpy();
 
     debounce(targetFn, 100)('arg1', 'arg2');
 

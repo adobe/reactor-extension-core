@@ -10,7 +10,9 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import liveQuerySelector, { __reset } from '../liveQuerySelector.js';
+import { injectLiveQuerySelector } from '../liveQuerySelector';
+import WeakMap from '../weakMap';
+const { liveQuerySelector, __reset } = injectLiveQuerySelector({ WeakMap });
 
 const POLL_INTERVAL = 3000;
 
@@ -21,7 +23,9 @@ describe('liveQuerySelector', function () {
 
   afterAll(function () {
     jasmine.clock().uninstall();
-    if (__reset) __reset();
+    if (__reset) {
+      __reset();
+    }
   });
 
   it('detects an element added before polling starts', function () {

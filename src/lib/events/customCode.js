@@ -17,6 +17,6 @@
  * @param trigger
  * @param {Function} settings.source The custom script function.
  */
-export default function (settings, trigger) {
+export default function customCode(settings, trigger) {
   settings.source(trigger);
 }

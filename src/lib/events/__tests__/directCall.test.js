@@ -10,11 +10,13 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-describe('direct call event delegate', function () {
-  var delegate = require('../directCall');
+import { injectDirectCall } from '../directCall';
 
-  var trigger = jasmine.createSpy();
-  var log = jasmine.createSpy();
+describe('direct call event delegate', function () {
+  const delegate = injectDirectCall({ window });
+
+  let trigger = jasmine.createSpy();
+  const log = jasmine.createSpy();
 
   beforeAll(function () {
     trigger = jasmine.createSpy();
@@ -31,19 +33,15 @@ describe('direct call event delegate', function () {
     });
   });
 
-  afterAll(function () {
-    resetTurbineVariable();
-  });
-
   beforeEach(function () {
     trigger.calls.reset();
     log.calls.reset();
   });
 
   it('triggers rule with matching identifier and detail passed', function () {
-    var detail = { a: 'b' };
+    const detail = { a: 'b' };
 
-    _satellite.track('foo', detail);
+    window._satellite.track('foo', detail);
 
     expect(trigger.calls.count()).toBe(1);
     expect(trigger.calls.mostRecent().args[0]).toEqual({
@@ -59,7 +57,7 @@ describe('direct call event delegate', function () {
   });
 
   it('triggers rule with matching identifier and no detail passed', function () {
-    _satellite.track('foo');
+    window._satellite.track('foo');
 
     expect(trigger.calls.count()).toBe(1);
     expect(trigger.calls.mostRecent().args[0]).toEqual({
@@ -73,7 +71,7 @@ describe('direct call event delegate', function () {
   });
 
   it('logs a message when no rules found with matching identifier', function () {
-    _satellite.track('baz');
+    window._satellite.track('baz');
 
     expect(turbine.logger.log).toHaveBeenCalledWith(
       '"baz" does not match any direct call identifiers.'

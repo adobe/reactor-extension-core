@@ -11,14 +11,14 @@
  ****************************************************************************************/
 
 import createBubbly from './helpers/createBubbly';
-import WeakMap from './helpers/weakMap';
+import WeakMap from './helpers/WeakMap';
 import { castToNumberIfString } from '../helpers/stringAndNumberUtils';
 
-function createClickDelegate(window) {
-  const bubbly = createBubbly();
-  const evaluatedEvents = new WeakMap();
-  const MIDDLE_MOUSE_BUTTON = 2;
+const bubbly = createBubbly();
+const evaluatedEvents = new WeakMap();
+const MIDDLE_MOUSE_BUTTON = 2;
 
+function injectClick({ window, document }) {
   /**
    * Determines whether an element is a link that would navigate the user's current window to a
    * different URL.
@@ -47,12 +47,14 @@ function createClickDelegate(window) {
             target === window.name)
         ) {
           return node;
+        } else {
+          // Found hyperlink conditions in which we don't want to delay navigation
+          return undefined;
         }
       }
 
       node = node.parentNode;
     }
-    return undefined;
   };
 
   document.addEventListener('click', bubbly.evaluateEvent, true);
@@ -79,7 +81,7 @@ function createClickDelegate(window) {
    * rules on ancestor elements.
    * @param {function} trigger - The trigger callback.
    */
-  return function (settings, trigger) {
+  return function click(settings, trigger) {
     bubbly.addListener(settings, function (syntheticEvent) {
       const nativeEvent = syntheticEvent.nativeEvent;
 
@@ -114,5 +116,15 @@ function createClickDelegate(window) {
   };
 }
 
-export default createClickDelegate;
-export const __reset = createBubbly().__reset;
+const validateInjection = validateInjectedParams(injectClick);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  window: require('@adobe/reactor-window'),
+  document: require('@adobe/reactor-document')
+});
+export const __reset = bubbly.__reset;
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectClick };
+/* END.TESTS_ONLY */

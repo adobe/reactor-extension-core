@@ -10,16 +10,18 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import createDomReadyDelegate from '../domReady.js';
+import { injectDomReady } from '../domReady';
 
 describe('dom ready event delegate', function () {
   it('sends the trigger to the pageLifecycleEvents helper module', function () {
-    var trigger = function () {};
-    var pageLifecycleEventsSpy = jasmine.createSpyObj('pageLifecycleEvents', [
+    const trigger = function () {};
+    const pageLifecycleEventsSpy = jasmine.createSpyObj('pageLifecycleEvents', [
       'registerDomReadyTrigger'
     ]);
 
-    var delegate = createDomReadyDelegate(pageLifecycleEventsSpy);
+    const delegate = injectDomReady({
+      pageLifecycleEvents: pageLifecycleEventsSpy
+    });
 
     delegate({}, trigger);
     expect(pageLifecycleEventsSpy.registerDomReadyTrigger).toHaveBeenCalledWith(

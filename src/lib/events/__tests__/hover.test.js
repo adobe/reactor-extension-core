@@ -10,9 +10,10 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
+import { injectHover } from '../hover';
+import liveQuerySelector from '../helpers/liveQuerySelector';
+
 const POLL_INTERVAL = 3000;
-import liveQuerySelector from '../helpers/liveQuerySelector.js';
-import createHoverDelegate from '../hover.js';
 
 describe('hover event delegate', function () {
   let delegate;
@@ -48,7 +49,7 @@ describe('hover event delegate', function () {
 
   beforeEach(function () {
     jasmine.clock().install();
-    delegate = createHoverDelegate(liveQuerySelector);
+    delegate = injectHover({ liveQuerySelector });
     createElements();
   });
 

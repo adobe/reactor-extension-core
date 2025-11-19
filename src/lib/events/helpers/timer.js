@@ -13,7 +13,7 @@
 import mitt from 'mitt';
 import validateInjectedParams from '../../../helpers/validate-injected-params.js';
 
-function injectTimer({ assign }) {
+function injectTimer({ assign: objectAssign }) {
   const CHECK_INTERVAL_MS = 1000;
   const onlyUnique = function (value, index, self) {
     return self.indexOf(value) === index;
@@ -27,7 +27,7 @@ function injectTimer({ assign }) {
    * @constructor
    */
   function Timer(checkInterval) {
-    assign(this, mitt());
+    objectAssign(this, mitt());
 
     this._total = 0;
     this._checkInterval = checkInterval || CHECK_INTERVAL_MS;

@@ -10,16 +10,27 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-/**
- * DOM ready event. This event occurs as soon as HTML document has been completely loaded and
- * parsed, without waiting for stylesheets, images, and subframes to finish loading.
- * @param {Object} settings The event settings object.
- * @param {ruleTrigger} trigger The trigger callback.
- */
-function createDomReadyDelegate(pageLifecycleEvents) {
-  return function (settings, trigger) {
+import validateInjectedParams from '../../helpers/validate-injected-params';
+import pageLifecycleEvents from './helpers/pageLifecycleEvents';
+
+function injectDomReady({ pageLifecycleEvents }) {
+  /**
+   * DOM ready event. This event occurs as soon as HTML document has been completely loaded and
+   * parsed, without waiting for stylesheets, images, and subframes to finish loading.
+   * @param {Object} settings The event settings object.
+   * @param {function} trigger The trigger callback.
+   */
+  return function domReady(settings, trigger) {
     pageLifecycleEvents.registerDomReadyTrigger(trigger);
   };
 }
 
-export default createDomReadyDelegate;
+const validateInjection = validateInjectedParams(injectDomReady);
+
+export default validateInjection({
+  pageLifecycleEvents
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectDomReady };
+/* END.TESTS_ONLY */

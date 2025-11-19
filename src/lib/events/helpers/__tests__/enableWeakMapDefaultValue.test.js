@@ -10,25 +10,26 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-var enableWeakMapDefaultValue = require('../enableWeakMapDefaultValue');
-var WeakMap = require('../weakMap');
+import enableWeakMapDefaultValue from '../enableWeakMapDefaultValue';
+import { injectWeakMap } from '../weakMap';
+const WeakMap = injectWeakMap({ window });
 
 describe('enableWeakMapDefaultValue', function () {
   it('stores and returns the provided default value', function () {
-    var map = new WeakMap();
+    const map = new WeakMap();
     enableWeakMapDefaultValue(map, function () {
       return [];
     });
 
-    var key = {};
+    const key = {};
 
-    var value1 = map.get(key);
+    const value1 = map.get(key);
 
     expect(value1).toEqual([]);
 
     value1.push('foo');
 
-    var value2 = map.get(key);
+    const value2 = map.get(key);
 
     expect(value2).toBe(value1);
     expect(value2).toEqual(['foo']);

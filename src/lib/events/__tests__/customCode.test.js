@@ -14,8 +14,8 @@ import delegate from '../customCode.js';
 
 describe('custom code event delegate', function () {
   it('triggers rule when custom code calls trigger', function () {
-    var trigger = jasmine.createSpy();
-    var contextualData = {
+    const trigger = jasmine.createSpy();
+    const contextualData = {
       foo: 'bar'
     };
 
