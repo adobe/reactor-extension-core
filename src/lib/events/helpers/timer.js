@@ -96,7 +96,7 @@ function injectTimer({ assign }) {
     _checkMarkersCompleted: function () {
       const timePassed = this.getTime();
 
-      for (const i = 0; i < this._markers.length; i++) {
+      for (let i = 0; i < this._markers.length; i++) {
         const marker = this._markers[i];
         if (timePassed >= marker) {
           this.emit('markerPassed', marker);
