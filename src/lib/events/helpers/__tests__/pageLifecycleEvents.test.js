@@ -10,29 +10,29 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import createPageLifecycleEvents from '../pageLifecycleEvents.js';
+import { injectPageLifecycleEvents } from '../pageLifecycleEvents.js';
 
 describe('pageLifecycleEvents', function () {
-  var triggerDOMContentLoaded;
-  var triggerWindowLoad;
-  var triggerSetTimeout;
+  let triggerDOMContentLoaded;
+  let triggerWindowLoad;
+  let triggerSetTimeout;
 
-  var mockWindow;
-  var mockDocument;
+  let mockWindow;
+  let mockDocument;
 
-  var triggers;
-  var triggersResults;
-  var delegate;
+  let triggers;
+  let triggersResults;
+  let delegate;
 
-  var triggerTypesToRegisterMethods = {
+  const triggerTypesToRegisterMethods = {
     libraryLoaded: 'registerLibraryLoadedTrigger',
     pageBottom: 'registerPageBottomTrigger',
     domReady: 'registerDomReadyTrigger',
     windowLoaded: 'registerWindowLoadedTrigger'
   };
 
-  var generateTriggers = function () {
-    var triggers = {};
+  const generateTriggers = function () {
+    const triggers = {};
     Object.keys(triggerTypesToRegisterMethods).forEach(function (type) {
       triggers[type] = jasmine.createSpy(type).and.callFake(function () {
         triggersResults.push(type);
@@ -42,13 +42,13 @@ describe('pageLifecycleEvents', function () {
     return triggers;
   };
 
-  var registerTriggers = function (delegate, triggers) {
+  const registerTriggers = function (delegate, triggers) {
     Object.keys(triggers).forEach(function (key) {
       delegate[triggerTypesToRegisterMethods[key]](triggers[key]);
     });
   };
 
-  var checkTriggersFired = function (triggers, lifecycles) {
+  const checkTriggersFired = function (triggers, lifecycles) {
     Object.keys(triggers).forEach(function (key) {
       if (lifecycles.indexOf(key) !== -1) {
         expect(triggers[key]).toHaveBeenCalled();
@@ -83,13 +83,12 @@ describe('pageLifecycleEvents', function () {
     triggersResults = [];
     triggers = generateTriggers();
 
-    delegate = createPageLifecycleEvents(mockWindow, mockDocument);
+    delegate = injectPageLifecycleEvents({
+      window: mockWindow,
+      document: mockDocument
+    });
 
     registerTriggers(delegate, triggers);
-  });
-
-  afterAll(function () {
-    resetTurbineVariable();
   });
 
   it('runs only library loaded triggers when library finishes loading', function () {
@@ -143,7 +142,7 @@ describe('pageLifecycleEvents', function () {
   });
 
   it('sends synthetic events to the dom ready triggers', function () {
-    var fakeEvent = {};
+    const fakeEvent = {};
     triggerDOMContentLoaded(fakeEvent);
 
     expect(triggers.domReady.calls.mostRecent().args[0]).toEqual({
@@ -154,7 +153,7 @@ describe('pageLifecycleEvents', function () {
   });
 
   it('sends synthetic events to the window loaded triggers', function () {
-    var fakeEvent = {};
+    const fakeEvent = {};
     triggerWindowLoad(fakeEvent);
 
     expect(triggers.windowLoaded.calls.mostRecent().args[0]).toEqual({
@@ -171,9 +170,9 @@ describe('pageLifecycleEvents', function () {
 
   it('auto detects correctly dom ready lifecycle event', function () {
     mockDocument.readyState = 'interactive';
-    var delegate = pageLifecycleEventsInjector({
-      '@adobe/reactor-window': mockWindow,
-      '@adobe/reactor-document': mockDocument
+    const delegate = injectPageLifecycleEvents({
+      window: mockWindow,
+      document: mockDocument
     });
     registerTriggers(delegate, triggers);
 
@@ -183,9 +182,9 @@ describe('pageLifecycleEvents', function () {
 
   it('auto detects correctly window loaded lifecycle event', function () {
     mockDocument.readyState = 'complete';
-    var delegate = pageLifecycleEventsInjector({
-      '@adobe/reactor-window': mockWindow,
-      '@adobe/reactor-document': mockDocument
+    const delegate = injectPageLifecycleEvents({
+      window: mockWindow,
+      document: mockDocument
     });
     registerTriggers(delegate, triggers);
 
@@ -202,9 +201,9 @@ describe('pageLifecycleEvents', function () {
     mockDocument.readyState = 'interactive';
     mockWindow.navigator.appVersion = 'MSIE 10';
 
-    var delegate = pageLifecycleEventsInjector({
-      '@adobe/reactor-window': mockWindow,
-      '@adobe/reactor-document': mockDocument
+    const delegate = injectPageLifecycleEvents({
+      window: mockWindow,
+      document: mockDocument
     });
     registerTriggers(delegate, triggers);
 

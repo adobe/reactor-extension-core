@@ -17,7 +17,7 @@
  * @param {Object} [context] The context in which to call the target function.
  * @returns {Function}
  */
-const once = function (fn, context) {
+export default function once(fn, context) {
   let result;
 
   return function () {
@@ -28,6 +28,4 @@ const once = function (fn, context) {
 
     return result;
   };
-};
-
-export default once;
+}

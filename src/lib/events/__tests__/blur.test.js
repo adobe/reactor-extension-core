@@ -10,10 +10,10 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-describe('blur event delegate', function () {
-  var testStandardEvent = require('./helpers/testStandardEvent');
-  var delegate = require('../blur');
+import testStandardEvent from './helpers/testStandardEvent.js';
+import delegate from '../blur.js';
 
+describe('blur event delegate', function () {
   testStandardEvent(function () {
     return delegate;
   }, 'blur');

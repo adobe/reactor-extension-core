@@ -10,16 +10,16 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-var POLL_INTERVAL = 3000;
-var liveQuerySelector = require('../helpers/liveQuerySelector');
-const createHoverDelegate = require('../hover');
+const POLL_INTERVAL = 3000;
+import liveQuerySelector from '../helpers/liveQuerySelector.js';
+import createHoverDelegate from '../hover.js';
 
 describe('hover event delegate', function () {
-  var delegate;
-  var aElement;
-  var bElement;
+  let delegate;
+  let aElement;
+  let bElement;
 
-  var createElements = function () {
+  const createElements = function () {
     aElement = document.createElement('div');
     aElement.id = 'a';
     aElement.innerHTML = 'a';
@@ -31,14 +31,14 @@ describe('hover event delegate', function () {
     aElement.appendChild(bElement);
   };
 
-  var removeElements = function () {
+  const removeElements = function () {
     if (aElement) {
       document.body.removeChild(aElement);
     }
     aElement = bElement = null;
   };
 
-  var assertTriggerCall = function (options) {
+  const assertTriggerCall = function (options) {
     expect(options.call.args[0]).toEqual({
       element: options.element,
       target: options.target,
@@ -67,7 +67,7 @@ describe('hover event delegate', function () {
     'can properly parse settings.delay when it is a string ' +
       '(from data element value)',
     function () {
-      var trigger = jasmine.createSpy();
+      const trigger = jasmine.createSpy();
 
       delegate(
         {
@@ -98,8 +98,8 @@ describe('hover event delegate', function () {
   );
 
   it('triggers multiple rules with no delay targeting nested elements', function () {
-    var aTrigger = jasmine.createSpy();
-    var bTrigger = jasmine.createSpy();
+    const aTrigger = jasmine.createSpy();
+    const bTrigger = jasmine.createSpy();
 
     delegate(
       {
@@ -157,8 +157,8 @@ describe('hover event delegate', function () {
   });
 
   it('triggers multiple rules with no delay targeting the same element', function () {
-    var aTrigger = jasmine.createSpy();
-    var a2Trigger = jasmine.createSpy();
+    const aTrigger = jasmine.createSpy();
+    const a2Trigger = jasmine.createSpy();
 
     delegate(
       {
@@ -204,8 +204,8 @@ describe('hover event delegate', function () {
   });
 
   it('triggers multiple rules with the same delay targeting nested elements', function () {
-    var aTrigger = jasmine.createSpy();
-    var bTrigger = jasmine.createSpy();
+    const aTrigger = jasmine.createSpy();
+    const bTrigger = jasmine.createSpy();
 
     delegate(
       {
@@ -276,8 +276,8 @@ describe('hover event delegate', function () {
   });
 
   it('triggers multiple rules with different delays targeting nested elements', function () {
-    var aTrigger = jasmine.createSpy();
-    var bTrigger = jasmine.createSpy();
+    const aTrigger = jasmine.createSpy();
+    const bTrigger = jasmine.createSpy();
 
     delegate(
       {
@@ -345,8 +345,8 @@ describe('hover event delegate', function () {
   });
 
   it('triggers multiple rules with the same delay targeting the same element', function () {
-    var aTrigger = jasmine.createSpy();
-    var a2Trigger = jasmine.createSpy();
+    const aTrigger = jasmine.createSpy();
+    const a2Trigger = jasmine.createSpy();
 
     delegate(
       {
@@ -405,8 +405,8 @@ describe('hover event delegate', function () {
   });
 
   it('triggers multiple rules with different delays targeting the same element', function () {
-    var aTrigger = jasmine.createSpy();
-    var a2Trigger = jasmine.createSpy();
+    const aTrigger = jasmine.createSpy();
+    const a2Trigger = jasmine.createSpy();
 
     delegate(
       {
@@ -469,7 +469,7 @@ describe('hover event delegate', function () {
   });
 
   it('triggers a rule when the element matches elementProperties', function () {
-    var bTrigger = jasmine.createSpy();
+    const bTrigger = jasmine.createSpy();
 
     delegate(
       {
@@ -492,7 +492,7 @@ describe('hover event delegate', function () {
   });
 
   it('does not trigger rule when the element does not match elementProperties', function () {
-    var bTrigger = jasmine.createSpy();
+    const bTrigger = jasmine.createSpy();
 
     delegate(
       {

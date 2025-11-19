@@ -1,6 +1,7 @@
-import stringAndNumberUtils from '../helpers/stringAndNumberUtils';
-const isString = stringAndNumberUtils.isString;
-const castToStringIfNumber = stringAndNumberUtils.castToStringIfNumber;
+import {
+  isString,
+  castToStringIfNumber
+} from '../helpers/stringAndNumberUtils';
 
 /**
  * The javascript tools data element.
@@ -9,7 +10,8 @@ const castToStringIfNumber = stringAndNumberUtils.castToStringIfNumber;
  * @returns {string}
  */
 export default function javascriptTools(settings) {
-  var value = settings.sourceValue;
+  let value = settings.sourceValue;
+  let re;
 
   switch (settings.operator) {
     case 'simpleReplace':
@@ -19,7 +21,7 @@ export default function javascriptTools(settings) {
         return value;
       }
 
-      var method = settings.replaceAll === true ? 'replaceAll' : 'replace';
+      const method = settings.replaceAll === true ? 'replaceAll' : 'replace';
       return value[method](settings.searchValue, settings.replacementValue);
 
     case 'regexReplace':
@@ -29,7 +31,7 @@ export default function javascriptTools(settings) {
         return value;
       }
 
-      var re = new RegExp(
+      re = new RegExp(
         settings.regexInput,
         (settings.caseInsensitive === true ? 'i' : '') +
           (settings.replaceAll === true ? 'g' : '')
@@ -56,10 +58,7 @@ export default function javascriptTools(settings) {
         return value;
       }
 
-      var re = new RegExp(
-        settings.regexInput,
-        settings.caseInsensitive ? 'i' : ''
-      );
+      re = new RegExp(settings.regexInput, settings.caseInsensitive ? 'i' : '');
 
       return value.match(re)[0];
 

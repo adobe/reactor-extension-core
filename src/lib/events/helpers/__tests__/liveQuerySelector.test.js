@@ -12,7 +12,7 @@
 
 import liveQuerySelector, { __reset } from '../liveQuerySelector.js';
 
-var POLL_INTERVAL = 3000;
+const POLL_INTERVAL = 3000;
 
 describe('liveQuerySelector', function () {
   beforeAll(function () {
@@ -25,11 +25,11 @@ describe('liveQuerySelector', function () {
   });
 
   it('detects an element added before polling starts', function () {
-    var div = document.createElement('div');
+    const div = document.createElement('div');
     div.className = 'foo';
     document.body.appendChild(div);
 
-    var callback = jasmine.createSpy();
+    const callback = jasmine.createSpy();
     liveQuerySelector('.foo', callback);
 
     jasmine.clock().tick(POLL_INTERVAL);
@@ -44,11 +44,11 @@ describe('liveQuerySelector', function () {
     liveQuerySelector('a', function () {});
     jasmine.clock().tick(5000);
 
-    var div = document.createElement('div');
+    const div = document.createElement('div');
     div.className = 'foo';
     document.body.appendChild(div);
 
-    var callback = jasmine.createSpy();
+    const callback = jasmine.createSpy();
     liveQuerySelector('.foo', callback);
 
     jasmine.clock().tick(POLL_INTERVAL);
@@ -59,15 +59,15 @@ describe('liveQuerySelector', function () {
   });
 
   it('calls a callback twice when two elements exist that match the selector', function () {
-    var div = document.createElement('div');
+    const div = document.createElement('div');
     div.className = 'foo';
     document.body.appendChild(div);
 
-    var a = document.createElement('a');
+    const a = document.createElement('a');
     a.className = 'foo';
     div.appendChild(a);
 
-    var callback = jasmine.createSpy();
+    const callback = jasmine.createSpy();
     liveQuerySelector('.foo', callback);
 
     jasmine.clock().tick(POLL_INTERVAL);
@@ -78,14 +78,14 @@ describe('liveQuerySelector', function () {
   });
 
   it('calls two callbacks targeting the same element', function () {
-    var div = document.createElement('div');
+    const div = document.createElement('div');
     div.className = 'foo';
     document.body.appendChild(div);
 
-    var callback1 = jasmine.createSpy();
+    const callback1 = jasmine.createSpy();
     liveQuerySelector('.foo', callback1);
 
-    var callback2 = jasmine.createSpy();
+    const callback2 = jasmine.createSpy();
     liveQuerySelector('.foo', callback2);
 
     jasmine.clock().tick(POLL_INTERVAL);
@@ -97,11 +97,11 @@ describe('liveQuerySelector', function () {
   });
 
   it('does not call the same callback again if the element is re-added', function () {
-    var div = document.createElement('div');
+    const div = document.createElement('div');
     div.className = 'foo';
     document.body.appendChild(div);
 
-    var callback = jasmine.createSpy();
+    const callback = jasmine.createSpy();
     liveQuerySelector('.foo', callback);
 
     jasmine.clock().tick(POLL_INTERVAL);

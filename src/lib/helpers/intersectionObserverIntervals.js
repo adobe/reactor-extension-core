@@ -12,6 +12,8 @@
 
 // this was JSON, but there are a lot of changes necessary in the reactor API
 // and Library Build Tooling to support JSON natively.
-export const standard = {
-  pageElementsRefresh: 3000
+export default {
+  standard: {
+    pageElementsRefresh: 3000
+  }
 };

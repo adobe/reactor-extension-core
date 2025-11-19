@@ -12,15 +12,9 @@
 import once from '../once.js';
 
 describe('once', function () {
-  var once;
-
-  beforeAll(function () {
-    once = require('../once');
-  });
-
   it('calls the target function at most a single time', function () {
-    var targetFn = jasmine.createSpy();
-    var oncified = once(targetFn);
+    const targetFn = jasmine.createSpy();
+    const oncified = once(targetFn);
 
     oncified();
 
@@ -32,9 +26,9 @@ describe('once', function () {
   });
 
   it('calls the target function with the provided context', function () {
-    var targetFn = jasmine.createSpy();
-    var context = {};
-    var oncified = once(targetFn, context);
+    const targetFn = jasmine.createSpy();
+    const context = {};
+    const oncified = once(targetFn, context);
 
     oncified();
 
@@ -42,8 +36,8 @@ describe('once', function () {
   });
 
   it('calls the target function with the provided arguments', function () {
-    var targetFn = jasmine.createSpy();
-    var oncified = once(targetFn);
+    const targetFn = jasmine.createSpy();
+    const oncified = once(targetFn);
 
     oncified('a', 'b');
 

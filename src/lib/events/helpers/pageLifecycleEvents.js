@@ -10,15 +10,21 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-function createPageLifecycleEvents(window, document) {
-  var isIE10 = window.navigator.appVersion.indexOf('MSIE 10') !== -1;
-  var WINDOW_LOADED = 'WINDOW_LOADED';
-  var DOM_READY = 'DOM_READY';
-  var PAGE_BOTTOM = 'PAGE_BOTTOM';
+// We need to be able to fire the rules in a specific order, no matter if the library is loaded
+// sync or async. The rules are fired in the following order:
+// Library loaded rules -> Page bottom rules -> Dom Ready rules -> Window load rules.
 
-  var lifecycleEventsOrder = [PAGE_BOTTOM, DOM_READY, WINDOW_LOADED];
+import validateInjectedParams from '../../../helpers/validate-injected-params.js';
 
-  var createSyntheticEvent = function (element, nativeEvent) {
+function injectPageLifecycleEvents({ window, document }) {
+  const isIE10 = window.navigator.appVersion.indexOf('MSIE 10') !== -1;
+  const WINDOW_LOADED = 'WINDOW_LOADED';
+  const DOM_READY = 'DOM_READY';
+  const PAGE_BOTTOM = 'PAGE_BOTTOM';
+
+  const lifecycleEventsOrder = [PAGE_BOTTOM, DOM_READY, WINDOW_LOADED];
+
+  const createSyntheticEvent = function (element, nativeEvent) {
     return {
       element: element,
       target: element,
@@ -26,12 +32,12 @@ function createPageLifecycleEvents(window, document) {
     };
   };
 
-  var registry = {};
+  const registry = {};
   lifecycleEventsOrder.forEach(function (event) {
     registry[event] = [];
   });
 
-  var processRegistry = function (lifecycleEvent, nativeEvent) {
+  const processRegistry = function (lifecycleEvent, nativeEvent) {
     lifecycleEventsOrder
       .slice(0, getLifecycleEventIndex(lifecycleEvent) + 1)
       .forEach(function (lifecycleEvent) {
@@ -39,7 +45,7 @@ function createPageLifecycleEvents(window, document) {
       });
   };
 
-  var detectLifecycleEvent = function () {
+  const detectLifecycleEvent = function () {
     if (document.readyState === 'complete') {
       return WINDOW_LOADED;
     } else if (document.readyState === 'interactive') {
@@ -47,20 +53,20 @@ function createPageLifecycleEvents(window, document) {
     }
   };
 
-  var getLifecycleEventIndex = function (event) {
+  const getLifecycleEventIndex = function (event) {
     return lifecycleEventsOrder.indexOf(event);
   };
 
-  var processTriggers = function (nativeEvent, lifecycleEvent) {
+  const processTriggers = function (nativeEvent, lifecycleEvent) {
     registry[lifecycleEvent].forEach(function (triggerData) {
       processTrigger(nativeEvent, triggerData);
     });
     registry[lifecycleEvent] = [];
   };
 
-  var processTrigger = function (nativeEvent, triggerData) {
-    var trigger = triggerData.trigger;
-    var syntheticEventFn = triggerData.syntheticEventFn;
+  const processTrigger = function (nativeEvent, triggerData) {
+    const trigger = triggerData.trigger;
+    const syntheticEventFn = triggerData.syntheticEventFn;
 
     trigger(syntheticEventFn ? syntheticEventFn(nativeEvent) : null);
   };
@@ -79,8 +85,16 @@ function createPageLifecycleEvents(window, document) {
     true
   );
 
+  // Depending on the way the Launch library was loaded, none of the registered listeners that
+  // execute `processRegistry` may fire . We need to execute the `processRegistry` method at
+  // least once. If this timeout fires before any of the registered listeners, we auto-detect the
+  // current lifecycle event and fire all the registered triggers in order. We don't care if the
+  // `processRegistry` is called multiple times for the same lifecycle event. We fire the registered
+  // triggers for a lifecycle event only once. We used a `setTimeout` here to make sure all the rules
+  // using Library Loaded are registered and executed synchronously and before rules using any of the
+  // other lifecycle event types.
   window.setTimeout(function () {
-    var lifecycleEvent = detectLifecycleEvent();
+    const lifecycleEvent = detectLifecycleEvent();
     if (lifecycleEvent) {
       processRegistry(lifecycleEvent);
     }
@@ -110,4 +124,14 @@ function createPageLifecycleEvents(window, document) {
   };
 }
 
-export default createPageLifecycleEvents;
+const validateInjection = validateInjectedParams(injectPageLifecycleEvents);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  window: require('@adobe/reactor-window'),
+  document: require('@adobe/reactor-document')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectPageLifecycleEvents };
+/* END.TESTS_ONLY */

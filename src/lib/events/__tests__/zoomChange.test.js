@@ -10,22 +10,22 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-var assertTriggerCall = function (options) {
+import { injectZoomChange } from '../zoomChange.js';
+
+const assertTriggerCall = function (options) {
   expect(options.call.args[0]).toEqual({
     method: options.method,
     zoom: options.zoom
   });
 };
 
-import createZoomChangeDelegate from '../zoomChange.js';
-
 describe('zoom change event delegate', function () {
-  var delegate;
-  var mockWindow = {
+  let delegate;
+  const mockWindow = {
     ongestureend: null,
     ontouchend: null
   };
-  var mockDocument = {
+  const mockDocument = {
     documentElement: { clientWidth: 1000 },
     addEventListener: function () {}
   };
@@ -34,7 +34,10 @@ describe('zoom change event delegate', function () {
     jasmine.clock().install();
     jasmine.clock().mockDate();
 
-    delegate = createZoomChangeDelegate(mockWindow, mockDocument);
+    delegate = injectZoomChange({
+      window: mockWindow,
+      document: mockDocument
+    });
   });
 
   afterAll(function () {
@@ -42,7 +45,7 @@ describe('zoom change event delegate', function () {
   });
 
   it('triggers rule when zoom changes', function () {
-    var trigger = jasmine.createSpy();
+    const trigger = jasmine.createSpy();
 
     mockWindow.innerWidth = document.documentElement.clientWidth;
 

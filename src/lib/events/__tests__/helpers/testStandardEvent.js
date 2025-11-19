@@ -10,7 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import getDelegate from '../getDelegate.js';
+let outerElement;
+let innerElement;
 
 const assertTriggerCall = function (options) {
   expect(options.call.args[0]).toEqual({
@@ -20,7 +21,7 @@ const assertTriggerCall = function (options) {
   });
 };
 
-export default function (getDelegate, type) {
+export default function testStandardEvent(getDelegate, type) {
   describe('standard event functionality', function () {
     let delegate;
 
@@ -35,13 +36,15 @@ export default function (getDelegate, type) {
       innerElement.id = 'inner';
       innerElement.title = 'inner container';
       outerElement.appendChild(innerElement);
+
+      document.body.insertBefore(outerElement, document.body.firstChild);
     });
 
     afterEach(function () {
       document.body.removeChild(outerElement);
     });
 
-    var simulateEvent = function () {
+    const simulateEvent = function () {
       // We're overloading our usage of Simulate here. The second arg is a character which only
       // applies for simulating keyboard events but doesn't really do anything in the case of
       // mouse events.
@@ -49,7 +52,7 @@ export default function (getDelegate, type) {
     };
 
     it('triggers rule when event occurs with no element refinements', function () {
-      var trigger = jasmine.createSpy();
+      const trigger = jasmine.createSpy();
 
       delegate(
         {
@@ -72,7 +75,7 @@ export default function (getDelegate, type) {
     });
 
     it('triggers rule when elementSelector matches', function () {
-      var trigger = jasmine.createSpy();
+      const trigger = jasmine.createSpy();
 
       delegate(
         {
@@ -96,7 +99,7 @@ export default function (getDelegate, type) {
     });
 
     it('does not trigger rule when elementSelector does not match', function () {
-      var trigger = jasmine.createSpy();
+      const trigger = jasmine.createSpy();
 
       delegate(
         {
@@ -113,7 +116,7 @@ export default function (getDelegate, type) {
     });
 
     it('triggers rule when elementProperties matches', function () {
-      var trigger = jasmine.createSpy();
+      const trigger = jasmine.createSpy();
 
       delegate(
         {
@@ -142,7 +145,7 @@ export default function (getDelegate, type) {
     });
 
     it('does not trigger rule when elementProperties does not match', function () {
-      var trigger = jasmine.createSpy();
+      const trigger = jasmine.createSpy();
 
       delegate(
         {

@@ -11,8 +11,9 @@
  ****************************************************************************************/
 
 import once from './helpers/once';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
 
-function createZoomChangeDelegate(window, document) {
+function injectZoomChange({ window, document }) {
   const triggers = [];
 
   const getCurrentZoom = function () {
@@ -37,30 +38,89 @@ function createZoomChangeDelegate(window, document) {
 
     document.addEventListener('gestureend', function () {
       gestureEndTime = +new Date();
+
+      // Could we use a generic throttling or debouncing function?
       setTimeout(function () {
-        const zoom = getCurrentZoom();
+        let zoom = getCurrentZoom();
+
         if (zoom === lastZoom) {
           return;
         }
+
         lastZoom = zoom;
-        callTriggers({ method: 'gestureend', zoom: zoom });
-      }, delayFire);
+
+        if (currentTimer) {
+          clearTimeout(currentTimer);
+        }
+
+        currentTimer = setTimeout(function () {
+          currentTimer = null;
+
+          zoom = getCurrentZoom();
+
+          if (lastZoom === zoom) {
+            callTriggers({
+              method: 'pinch',
+              zoom: zoom.toFixed(2)
+            });
+          }
+        }, delayFire);
+      }, 50);
     });
 
-    window.addEventListener('resize', function () {
-      const zoom = getCurrentZoom();
-      if (zoom === lastZoom) {
+    document.addEventListener('touchend', function () {
+      if (gestureEndTime && +new Date() - gestureEndTime < 50) {
         return;
       }
-      lastZoom = zoom;
-      callTriggers({ method: 'resize', zoom: zoom });
+
+      // Could we use a generic throttling or debouncing function?
+      setTimeout(function () {
+        let zoom = getCurrentZoom();
+
+        if (zoom === lastZoom) {
+          return;
+        }
+
+        lastZoom = zoom;
+
+        if (currentTimer) {
+          clearTimeout(currentTimer);
+        }
+
+        currentTimer = setTimeout(function () {
+          currentTimer = null;
+          zoom = getCurrentZoom();
+          if (lastZoom === zoom) {
+            callTriggers({
+              method: 'double tap',
+              zoom: zoom.toFixed(2)
+            });
+          }
+        }, delayFire);
+      }, 250);
     });
   });
 
-  return function (settings, trigger) {
-    triggers.push(trigger);
+  /**
+   * The zoomchange event. This event occurs when the zoom level has changed on an iOS device.
+   * This is unsupported on Android.
+   * @param {Object} settings The event settings object.
+   * @param {ruleTrigger} trigger The trigger callback.
+   */
+  return function zoomChange(settings, trigger) {
     watchForZoom();
+    triggers.push(trigger);
   };
 }
 
-export default createZoomChangeDelegate;
+const validateInjection = validateInjectedParams(injectZoomChange);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  window: require('@adobe/reactor-window'),
+  document: require('@adobe/reactor-document')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectZoomChange };
+/* END.TESTS_ONLY */
