@@ -16,7 +16,7 @@
  * @param {string} selector The CSS selector.
  * @returns {boolean}
  */
-const matchesSelector = function (element, selector) {
+export default function matchesSelector(element, selector) {
   const matches = element.matches || element.msMatchesSelector;
 
   if (matches) {
@@ -31,6 +31,4 @@ const matchesSelector = function (element, selector) {
   }
 
   return false;
-};
-
-export default matchesSelector;
+}

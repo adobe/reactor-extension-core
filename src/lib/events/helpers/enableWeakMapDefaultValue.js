@@ -17,7 +17,10 @@
  * @param {Function} defaultValueFactory A function that returns the default value that should
  * be used.
  */
-const enableWeakMapDefaultValue = function (weakMap, defaultValueFactory) {
+export default function enableWeakMapDefaultValue(
+  weakMap,
+  defaultValueFactory
+) {
   const originalGet = weakMap.get;
 
   weakMap.get = function (key) {
@@ -29,6 +32,4 @@ const enableWeakMapDefaultValue = function (weakMap, defaultValueFactory) {
   };
 
   return weakMap;
-};
-
-export default enableWeakMapDefaultValue;
+}

@@ -16,13 +16,18 @@ import matchesSelector from './helpers/matchesSelector';
 import matchesProperties from './helpers/matchesProperties';
 import { castToNumberIfString } from '../helpers/stringAndNumberUtils';
 import intersectionObserverIntervals from '../helpers/intersectionObserverIntervals';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
 
-function createEntersViewportDelegate(window, document) {
-  const frequencies = {
-    FIRST_ENTRY: 'firstEntry',
-    EVERY_ENTRY: 'everyEntry'
-  };
+const frequencies = {
+  FIRST_ENTRY: 'firstEntry',
+  EVERY_ENTRY: 'everyEntry'
+};
 
+function injectEntersViewport({
+  window,
+  document,
+  intersectionObserverIntervals
+}) {
   const stateByElement = enableWeakMapDefaultValue(new WeakMap(), function () {
     return {
       // When a user configures the event to fire the rule after an element has been inside
@@ -185,9 +190,9 @@ function createEntersViewportDelegate(window, document) {
    * on the object instance is intended to be a regular expression.
    * @param {number|string} [settings.delay] The number of milliseconds the element must be
    * within the viewport before declaring that the event has occurred.
-   * @param {ruleTrigger} trigger The trigger callback.
+   * @param {function} trigger The [rule]trigger callback.
    */
-  return function (settings, trigger) {
+  return function entersViewport(settings, trigger) {
     if (!settings.elementSelector) {
       return;
     }
@@ -216,4 +221,15 @@ function createEntersViewportDelegate(window, document) {
   };
 }
 
-export default createEntersViewportDelegate;
+const validateInjection = validateInjectedParams(injectEntersViewport);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  window: require('@adobe/reactor-window'),
+  document: require('@adobe/reactor-document'),
+  intersectionObserverIntervals
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectEntersViewport };
+/* END.TESTS_ONLY */

@@ -34,7 +34,7 @@ const getElementProperty = function (element, property) {
  * object instance is intended to be a regular expression.
  * @returns {boolean} Whether the element matches the criteria.
  */
-const matchesProperties = function (element, properties) {
+export default function matchesProperties(element, properties) {
   if (properties) {
     return properties.every(function (property) {
       const actualValue = getElementProperty(element, property.name);
@@ -45,6 +45,4 @@ const matchesProperties = function (element, properties) {
     });
   }
   return true;
-};
-
-export default matchesProperties;
+}
