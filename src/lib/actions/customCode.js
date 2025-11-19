@@ -10,22 +10,28 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-export function createCustomCode({
+import postscribe from 'postscribe';
+import decorateCode from './helpers/decorateCode.js';
+import loadCodeSequentially from './helpers/loadCodeSequentially';
+import unescapeHTMLEntities from './helpers/unescapeHtmlCode';
+import { getTurbine as getTurbineScript } from '../helpers/findPageScript.js';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
+
+function injectCustomCodeAction({
   document,
   Promise,
+  postscribe,
   decorateCode,
   loadCodeSequentially,
-  postscribe,
-  unescapeHTMLEntities,
-  getTurbine
+  getTurbineScript
 }) {
-  var cspNonce;
+  let cspNonce;
 
-  var postscribeWrite = (function () {
-    var write = function (source) {
+  const postscribeWrite = (function () {
+    const write = function (source) {
       postscribe(document.body, source, {
         beforeWriteToken: function (token) {
-          var tagName = token.tagName && token.tagName.toLowerCase();
+          const tagName = token.tagName && token.tagName.toLowerCase();
 
           if (cspNonce && tagName === 'script') {
             token.attrs.nonce = cspNonce;
@@ -52,7 +58,7 @@ export function createCustomCode({
       });
     };
 
-    var queue = [];
+    const queue = [];
 
     // If the Launch library is loaded asynchronously, it may finish loading before document.body
     // is available. This means the custom code action may be running before document.body is
@@ -62,7 +68,7 @@ export function createCustomCode({
     // Adding display elements like an img tag to document.head is against HTML spec, though it
     // does seem like an image request is still made. We opted instead to ensure we comply with
     // HTML spec and wait until we see that document.body is available before writing.
-    var flushQueue = function () {
+    const flushQueue = function () {
       if (document.body) {
         while (queue.length) {
           write(queue.shift());
@@ -79,12 +85,12 @@ export function createCustomCode({
     };
   })();
 
-  var libraryWasLoadedAsynchronously = (function () {
+  const libraryWasLoadedAsynchronously = (function () {
     // document.currentScript is not supported by IE
     if (document.currentScript) {
       return document.currentScript.async;
     } else {
-      var script = getTurbine();
+      const script = getTurbineScript();
       if (script) {
         return script.async;
       }
@@ -110,18 +116,18 @@ export function createCustomCode({
    * @param {Object} event.target The element on which the event occurred.
    * <code>javascript</code> or <code>html</code>.
    */
-  function customCode(settings, event) {
+  module.exports = function (settings, event) {
     // ensure the nonce is up-to-date when the function is used
     cspNonce = turbine.getExtensionSettings().cspNonce;
 
-    var decoratedResult;
+    let decoratedResult;
 
-    var action = {
+    const action = {
       settings: settings,
       event: event
     };
 
-    var source = action.settings.source;
+    const source = action.settings.source;
     if (!source) {
       return;
     }
@@ -164,6 +170,14 @@ export function createCustomCode({
         !libraryWasLoadedAsynchronously &&
         document.readyState === 'loading'
       ) {
+        // Document object in XML files is different from the ones in HTML files. Documents served
+        // with the `application/xhtml+xml` MIME type don't have the `document.write` method.
+        // More info:
+        // https://www.w3.org/MarkUp/2004/xhtml-faq#docwrite
+        // https://developer.mozilla.org/en-US/docs/Archive/Web/Writing_JavaScript_for_HTML
+        // Also, when rule component sequencing is enabled, there is an issue in Edge Legacy
+        // where the whole page gets erased: https://jira.corp.adobe.com/browse/DTM-13527.
+        // We decided to not use document.write at all when rule component sequencing is enabled.
         if (
           document.write &&
           turbine.propertySettings.ruleComponentSequencingEnabled === false
@@ -178,12 +192,21 @@ export function createCustomCode({
 
       return decoratedResult.promise;
     }
-  }
-
-  // Export the main API as needed
-  return {
-    customCode,
-    postscribeWrite
-    // ...other exports...
   };
 }
+
+const validateInjection = validateInjectedParams(injectCustomCodeAction);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  document: require('@adobe/reactor-document'),
+  Promise: require('@adobe/reactor-promise'),
+  postscribe,
+  decorateCode,
+  loadCodeSequentially,
+  getTurbineScript
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectCustomCodeAction };
+/* END.TESTS_ONLY */

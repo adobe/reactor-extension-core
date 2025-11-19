@@ -10,24 +10,40 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import document from '@adobe/reactor-document';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
 
-const byRegexPattern = function (regexScriptSrcPattern) {
-  const scripts = document.querySelectorAll('script');
+function injectFindPageScript({ document }) {
+  const byRegexPattern = function (regexScriptSrcPattern) {
+    const scripts = document.querySelectorAll('script');
 
-  for (let i = 0; i < scripts.length; i++) {
-    const script = scripts[i];
-    // Find the script that loaded our library. Take into account embed scripts migrated
-    // from DTM. We'll also consider that they may have added a querystring for cache-busting
-    // or whatever.
-    if (regexScriptSrcPattern.test(script.src)) {
-      return script;
+    for (let i = 0; i < scripts.length; i++) {
+      const script = scripts[i];
+      // Find the script that loaded our library. Take into account embed scripts migrated
+      // from DTM. We'll also consider that they may have added a querystring for cache-busting
+      // or whatever.
+      if (regexScriptSrcPattern.test(script.src)) {
+        return script;
+      }
     }
-  }
-};
+  };
 
-const getTurbine = function () {
-  return byRegexPattern(new RegExp(/(launch|satelliteLib)-[^\/]+.js(\?.*)?$/));
-};
+  const getTurbine = function () {
+    return byRegexPattern(
+      new RegExp(/(launch|satelliteLib)-[^\/]+.js(\?.*)?$/)
+    );
+  };
 
+  return { getTurbine, byRegexPattern };
+}
+
+const validateInjection = validateInjectedParams(injectFindPageScript);
+
+const { getTurbine, byRegexPattern } = validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  document: require('@adobe/reactor-document')
+});
 export { getTurbine, byRegexPattern };
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectFindPageScript };
+/* END.TESTS_ONLY */

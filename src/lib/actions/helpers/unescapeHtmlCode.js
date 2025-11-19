@@ -12,10 +12,8 @@ governing permissions and limitations under the License.
 import document from '@adobe/reactor-document';
 const el = document.createElement('div');
 
-const unescapeHtmlCode = function (html) {
+export default function unescapeHtmlCode(html) {
   el.innerHTML = html;
   // IE and Firefox differ.
   return el.textContent || el.innerText || html;
-};
-
-export default unescapeHtmlCode;
+}
