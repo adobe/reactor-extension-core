@@ -11,11 +11,12 @@
  ****************************************************************************************/
 
 import once from './helpers/once';
-import visibilityApiFactory from './helpers/visibilityApi';
+import visibilityApi from './helpers/visibilityApi';
 import { castToNumberIfString } from '../helpers/stringAndNumberUtils';
+import Timer from './helpers/timer';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
 
-function createTimeOnPageDelegate(Timer, document) {
-  const visibilityApi = visibilityApiFactory();
+function injectTimeOnPage({ document, Timer }) {
   const hiddenProperty = visibilityApi.hiddenProperty;
   const visibilityChangeEventType = visibilityApi.visibilityChangeEventType;
   const triggers = {};
@@ -24,6 +25,7 @@ function createTimeOnPageDelegate(Timer, document) {
     const syntheticEvent = {
       timeOnPage: timeOnPageMilliseconds / 1000
     };
+
     triggers[timeOnPageMilliseconds].forEach(function (trigger) {
       trigger(syntheticEvent);
     });
@@ -32,6 +34,7 @@ function createTimeOnPageDelegate(Timer, document) {
   const setupTimer = once(function () {
     const timer = new Timer();
     timer.on('markerPassed', onMarkerPassed);
+
     document.addEventListener(
       visibilityChangeEventType,
       function () {
@@ -43,17 +46,44 @@ function createTimeOnPageDelegate(Timer, document) {
       },
       true
     );
+
+    timer.start();
+    return timer;
   });
 
-  return function (settings, trigger) {
+  /**
+   * Time on page event. The event is triggered by a timer. The timer receives a list of markers
+   * that will be used to trigger a callback method. The callback is called whenever the counted time
+   * passes the provided markers. The timer will be paused whenever the user will switch to another
+   * tab and it will be resumed when the user returns back to the tab.
+   * @param {Object} settings The event settings object.
+   * @param {number|string} settings.timeOnPage The number of seconds the user must be on the page
+   * before the rule is triggered.
+   * @param {function} trigger The [rule]trigger callback.
+   */
+  return function timeOnPage(settings, trigger) {
+    const timer = setupTimer();
     const timeOnPageMilliseconds =
       castToNumberIfString(settings.timeOnPage) * 1000;
+
+    timer.addMarker(timeOnPageMilliseconds);
+
     if (!triggers[timeOnPageMilliseconds]) {
       triggers[timeOnPageMilliseconds] = [];
     }
+
     triggers[timeOnPageMilliseconds].push(trigger);
-    setupTimer();
   };
 }
 
-export default createTimeOnPageDelegate;
+const validateInjection = validateInjectedParams(injectTimeOnPage);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  document: require('@adobe/reactor-document'),
+  Timer
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectTimeOnPage };
+/* END.TESTS_ONLY */

@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-const visibilityApiFactory = function () {
+export default function visibilityApi() {
   const properties = {
     hidden: 'visibilitychange',
     mozHidden: 'mozvisibilitychange',
@@ -32,5 +32,3 @@ const visibilityApiFactory = function () {
 
   return {};
 };
-
-export default visibilityApiFactory;

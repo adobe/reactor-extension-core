@@ -10,6 +10,11 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
+import { injectTimeOnPage } from '../timeOnPage.js';
+import { injectTimer } from '../helpers/timer.js';
+
+const injectNewTimer = () => injectTimer({ assign: Object.assign });
+
 var visibilityApi = require('../helpers/visibilityApi');
 var visibilityApiInstance = visibilityApi();
 var visibilityChangeListener;
@@ -23,7 +28,6 @@ var mockDocument = {
 };
 
 var Timer = require('../helpers/timer');
-const createTimeOnPageDelegate = require('../timeOnPage');
 
 var isIE = function () {
   var myNav = navigator.userAgent.toLowerCase();
@@ -41,7 +45,10 @@ describe('time on page event delegate', function () {
     var baseTime = new Date();
     jasmine.clock().mockDate(baseTime);
 
-    delegate = createTimeOnPageDelegate(Timer, mockDocument);
+    delegate = injectTimeOnPage({
+      document,
+      Timer: injectNewTimer()
+    });
   });
 
   afterEach(function () {
