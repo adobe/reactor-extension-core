@@ -55,6 +55,8 @@ function injectWeakMap({ window }) {
       }
     };
   }
+
+  return WeakMap;
 }
 
 const validateInjection = validateInjectedParams(injectWeakMap);

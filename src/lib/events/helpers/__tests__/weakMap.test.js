@@ -9,6 +9,7 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  ****************************************************************************************/
+
 import { injectWeakMap } from '../weakMap';
 
 describe('WeakMap', function () {
@@ -18,7 +19,9 @@ describe('WeakMap', function () {
       WeakMap: MockWeakMap
     };
 
-    const WeakMap = injectWeakMap(mockWindow);
+    const WeakMap = injectWeakMap({
+      window: mockWindow
+    });
 
     expect(WeakMap).toBe(MockWeakMap);
   });
@@ -26,7 +29,9 @@ describe('WeakMap', function () {
   it('returns WeakMap implementation without modifying global scope', function () {
     const mockWindow = {};
 
-    const WeakMap = injectWeakMap(mockWindow);
+    const WeakMap = injectWeakMap({
+      window: mockWindow
+    });
 
     expect(WeakMap).toEqual(jasmine.any(Function));
     expect(mockWindow.WeakMap).toBeUndefined();
@@ -36,7 +41,11 @@ describe('WeakMap', function () {
   // https://github.com/webcomponents/webcomponentsjs/blob/82964dec42a7f6af70142b1bbf3bc4ca16bf1bcf/tests/WeakMap/tests.html
 
   it('has get, set, delete, and has functions', function () {
-    const WeakMap = injectWeakMap({ window });
+    const WeakMap = injectWeakMap({
+      // Inject an empty window so we don't end up testing the native WeakMap if it exists
+      // in the target browser.
+      window: {}
+    });
     expect(WeakMap.prototype.get).toEqual(jasmine.any(Function));
     expect(WeakMap.prototype.set).toEqual(jasmine.any(Function));
     expect(WeakMap.prototype.delete).toEqual(jasmine.any(Function));
@@ -44,7 +53,11 @@ describe('WeakMap', function () {
   });
 
   it('has methods that perform as expected', function () {
-    const WeakMap = injectWeakMap({ window });
+    const WeakMap = injectWeakMap({
+      // Inject an empty window so we don't end up testing the native WeakMap if it exists
+      // in the target browser.
+      window: {}
+    });
     const wm = new WeakMap();
 
     const o1 = {};

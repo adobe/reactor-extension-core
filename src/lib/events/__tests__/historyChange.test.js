@@ -10,16 +10,22 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-describe('history change event delegate', function () {
-  var delegate;
-  var origHref = window.location.href;
+import { injectHistoryChange } from '../historyChange';
+import { injectDebounce } from '../helpers/debounce.js';
 
-  var assertTriggerCall = function (call) {
+describe('history change event delegate', function () {
+  let delegate;
+  const origHref = window.location.href;
+
+  const assertTriggerCall = function (call) {
     expect(call.args.length).toBe(0);
   };
 
   beforeAll(function () {
-    delegate = require('../historyChange');
+    delegate = injectHistoryChange({
+      window,
+      debounce: injectDebounce({ window })
+    });
   });
 
   afterAll(function () {
@@ -33,7 +39,7 @@ describe('history change event delegate', function () {
   });
 
   it('triggers rule on the hash change event', function (done) {
-    var trigger = jasmine.createSpy();
+    const trigger = jasmine.createSpy();
     delegate({}, trigger);
 
     window.location.hash = 'hashchange-' + Math.floor(Math.random() * 100);
@@ -50,7 +56,7 @@ describe('history change event delegate', function () {
 
   if (window.history.pushState) {
     it('triggers rule when pushState is called and on the popstate event', function (done) {
-      var trigger = jasmine.createSpy();
+      const trigger = jasmine.createSpy();
       delegate({}, trigger);
 
       window.history.pushState({ some: 'state' }, null, 'pushStateTest.html');
@@ -77,7 +83,7 @@ describe('history change event delegate', function () {
 
   if (window.history.replaceState) {
     it('triggers rule when replaceState is called', function (done) {
-      var trigger = jasmine.createSpy();
+      const trigger = jasmine.createSpy();
       delegate({}, trigger);
 
       window.history.replaceState(
