@@ -9,7 +9,7 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-import javascriptToolsDelegate from '../javascriptTools'
+import javascriptToolsDelegate from '../javascriptTools';
 
 describe('javascript tools data element delegate', function () {
   describe('when the operator is simpleReplace', function () {

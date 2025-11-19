@@ -1,5 +1,4 @@
 /* eslint-env es6 */
-import path from 'path';
 import karmaCoverage from 'karma-coverage';
 import karmaJasmine from 'karma-jasmine';
 import karmaJasmineMatchers from 'karma-jasmine-matchers';

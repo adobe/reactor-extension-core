@@ -105,7 +105,7 @@ function injectZoomChange({ window, document }) {
    * The zoomchange event. This event occurs when the zoom level has changed on an iOS device.
    * This is unsupported on Android.
    * @param {Object} settings The event settings object.
-   * @param {ruleTrigger} trigger The trigger callback.
+   * @param {function} trigger The [rule]trigger callback.
    */
   return function zoomChange(settings, trigger) {
     watchForZoom();
