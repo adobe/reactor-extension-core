@@ -92,7 +92,7 @@ describe('value comparison delegate', function () {
     });
 
     it('returns true on object match', function () {
-      var obj = {};
+      const obj = {};
       expect(
         conditionDelegate({
           leftOperand: obj,
@@ -192,7 +192,7 @@ describe('value comparison delegate', function () {
     });
 
     it('returns false on object match', function () {
-      var obj = {};
+      const obj = {};
       expect(
         conditionDelegate({
           leftOperand: obj,
@@ -292,7 +292,7 @@ describe('value comparison delegate', function () {
     });
 
     it('returns false on object match', function () {
-      var obj = {};
+      const obj = {};
       expect(
         conditionDelegate({
           leftOperand: obj,
@@ -392,7 +392,7 @@ describe('value comparison delegate', function () {
     });
 
     it('returns true on object match', function () {
-      var obj = {};
+      const obj = {};
       expect(
         conditionDelegate({
           leftOperand: obj,
@@ -492,7 +492,7 @@ describe('value comparison delegate', function () {
     });
 
     it('returns false on object match', function () {
-      var obj = {};
+      const obj = {};
       expect(
         conditionDelegate({
           leftOperand: obj,
@@ -592,7 +592,7 @@ describe('value comparison delegate', function () {
     });
 
     it('returns true on object match', function () {
-      var obj = {};
+      const obj = {};
       expect(
         conditionDelegate({
           leftOperand: obj,
@@ -692,7 +692,7 @@ describe('value comparison delegate', function () {
     });
 
     it('returns false on object comparison', function () {
-      var obj = {};
+      const obj = {};
       expect(
         conditionDelegate({
           leftOperand: obj,
@@ -792,7 +792,7 @@ describe('value comparison delegate', function () {
     });
 
     it('returns true on object comparison', function () {
-      var obj = {};
+      const obj = {};
       expect(
         conditionDelegate({
           leftOperand: obj,
@@ -893,7 +893,7 @@ describe('value comparison delegate', function () {
     });
 
     it('returns false on object comparison', function () {
-      var obj = {};
+      const obj = {};
       expect(
         conditionDelegate({
           leftOperand: obj,
@@ -994,7 +994,7 @@ describe('value comparison delegate', function () {
     });
 
     it('returns true on object comparison', function () {
-      var obj = {};
+      const obj = {};
       expect(
         conditionDelegate({
           leftOperand: obj,
@@ -1069,7 +1069,7 @@ describe('value comparison delegate', function () {
     });
 
     it('returns false on object comparison', function () {
-      var obj = {};
+      const obj = {};
       expect(
         conditionDelegate({
           leftOperand: obj,
@@ -1156,7 +1156,7 @@ describe('value comparison delegate', function () {
     });
 
     it('returns false on object comparison', function () {
-      var obj = {};
+      const obj = {};
       expect(
         conditionDelegate({
           leftOperand: obj,
@@ -1231,7 +1231,7 @@ describe('value comparison delegate', function () {
     });
 
     it('returns false on object comparison', function () {
-      var obj = {};
+      const obj = {};
       expect(
         conditionDelegate({
           leftOperand: obj,
@@ -1318,7 +1318,7 @@ describe('value comparison delegate', function () {
     });
 
     it('returns false on object comparison', function () {
-      var obj = {};
+      const obj = {};
       expect(
         conditionDelegate({
           leftOperand: obj,

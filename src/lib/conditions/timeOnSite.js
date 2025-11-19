@@ -13,7 +13,7 @@
 import visitorTracking from '../helpers/visitorTracking';
 import compareNumbers from './helpers/compareNumbers';
 import { castToNumberIfString } from '../helpers/stringAndNumberUtils';
-import validateInjectedParams from '../../helpers/validate-injected-params.js';
+import validateInjectedParams from '../../helpers/validate-injected-params';
 
 function injectTimeOnSiteCondition({
   visitorTracking,

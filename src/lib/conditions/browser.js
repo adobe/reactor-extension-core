@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 import clientInfo from './helpers/clientInfo';
-import validateInjectedParams from '../../helpers/validate-injected-params.js';
+import validateInjectedParams from '../../helpers/validate-injected-params';
 
 function injectBrowser({ clientInfo }) {
   /**

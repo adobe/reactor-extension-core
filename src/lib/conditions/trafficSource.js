@@ -12,7 +12,7 @@
 
 import textMatch from '../helpers/textMatch';
 import visitorTracking from '../helpers/visitorTracking';
-import validateInjectedParams from '../../helpers/validate-injected-params.js';
+import validateInjectedParams from '../../helpers/validate-injected-params';
 
 function injectTrafficSource({ textMatch, visitorTracking }) {
   /**

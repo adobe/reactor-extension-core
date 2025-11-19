@@ -126,12 +126,10 @@ const conditions = {
   }
 };
 
-const valueComparison = function (settings) {
+export default function valueComparison(settings) {
   return conditions[settings.comparison.operator](
     settings.leftOperand,
     settings.rightOperand,
     Boolean(settings.comparison.caseInsensitive)
   );
-};
-
-export default valueComparison;
+}

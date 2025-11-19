@@ -10,8 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { injectScreenResolution } from '../screenResolution.js';
-import compareNumbers from '../helpers/compareNumbers.js';
+import { injectScreenResolution } from '../screenResolution';
+import compareNumbers from '../helpers/compareNumbers';
 
 const mockWindow = {
   screen: {

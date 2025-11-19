@@ -10,8 +10,9 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-var cookie = require('js-cookie');
-var conditionDelegate = require('../cookie');
+import { injectCookie } from '../cookie.js';
+import cookie from 'js-cookie';
+const conditionDelegate = injectCookie({ cookie });
 
 describe('cookie condition delegate', function () {
   beforeAll(function () {

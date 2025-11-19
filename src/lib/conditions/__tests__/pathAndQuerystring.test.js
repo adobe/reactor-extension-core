@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { injectPathAndQuerystring } from '../pathAndQuerystring.js';
+import { injectPathAndQuerystring } from '../pathAndQuerystring';
 import textMatch from '../../helpers/textMatch.js';
 
 const mockDocument = {

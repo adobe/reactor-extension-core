@@ -10,17 +10,17 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-var conditionDelegate = require('../customCode');
+import conditionDelegate from '../customCode';
 
 describe('custom code condition delegate', function () {
   it('should run a user-defined function', function () {
-    var settings = {
+    const settings = {
       source: function () {
         return true;
       }
     };
 
-    var event = {
+    const event = {
       element: {},
       target: {}
     };

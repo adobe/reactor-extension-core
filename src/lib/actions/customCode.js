@@ -13,9 +13,9 @@
 import postscribe from 'postscribe';
 import decorateCode from './helpers/decorateCode.js';
 import loadCodeSequentially from './helpers/loadCodeSequentially';
-import unescapeHTMLEntities from './helpers/unescapeHtmlCode';
-import { getTurbine as getTurbineScript } from '../helpers/findPageScript.js';
-import validateInjectedParams from '../../helpers/validate-injected-params.js';
+import unescapeHTMLEntities from './helpers/unescapeHtmlEntities';
+import { getTurbine as getTurbineScript } from '../helpers/findPageScript';
+import validateInjectedParams from '../../helpers/validate-injected-params';
 
 function injectCustomCodeAction({
   document,

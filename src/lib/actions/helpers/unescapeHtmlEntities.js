@@ -9,27 +9,25 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-import validateInjectedParams from '../../../../helpers/validate-injected-params';
+import validateInjectedParams from '../../../helpers/validate-injected-params';
 
-function injectDecorateGlobalJavaScriptCode({ Promise }) {
-  return function decorateGlobalJavaScriptCode(_, source) {
-    // The line break after the source is important in case their last line of code is a comment.
-    return {
-      code: '<scr' + 'ipt>\n' + source + '\n</scr' + 'ipt>',
-      promise: Promise.resolve()
-    };
+function injectUnescapeHtmlCode({ document }) {
+  const el = document.createElement('div');
+
+  return function unescapeHtmlCode(html) {
+    el.innerHTML = html;
+    // IE and Firefox differ.
+    return el.textContent || el.innerText || html;
   };
 }
 
-const validateInjection = validateInjectedParams(
-  injectDecorateGlobalJavaScriptCode
-);
+const validateInjection = validateInjectedParams(injectUnescapeHtmlCode);
 
 export default validateInjection({
   // runs in Turbine context, which provides these core-module packages.
-  Promise: require('@adobe/reactor-promise')
+  document: require('@adobe/reactor-document')
 });
 
 /* START.TESTS_ONLY */
-export { validateInjection as injectDecorateGlobalJavaScriptCode };
+export { validateInjection as injectUnescapeHtmlEntities };
 /* END.TESTS_ONLY */

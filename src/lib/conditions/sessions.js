@@ -12,7 +12,7 @@
 
 import visitorTracking from '../helpers/visitorTracking';
 import compareNumbers from './helpers/compareNumbers';
-import validateInjectedParams from '../../helpers/validate-injected-params.js';
+import validateInjectedParams from '../../helpers/validate-injected-params';
 
 function injectSessions({ visitorTracking, compareNumbers }) {
   /**
@@ -32,9 +32,7 @@ function injectSessions({ visitorTracking, compareNumbers }) {
   };
 }
 
-const validateInjection = validateInjectedParams(
-  injectSessions
-);
+const validateInjection = validateInjectedParams(injectSessions);
 
 export default validateInjection({
   visitorTracking,

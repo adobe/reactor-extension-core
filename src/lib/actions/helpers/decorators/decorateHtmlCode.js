@@ -10,14 +10,14 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import validateInjectedParams from '../../../../helpers/validate-injected-params.js';
+import validateInjectedParams from '../../../../helpers/validate-injected-params';
 
 // Factory for dependency injection
-function injectDecorateHtmlCode({ Promise, turbine, satellite } = {}) {
+function injectDecorateHtmlCode({ Promise, window }) {
   let callbackId = 0;
   const htmlCodePromises = {};
 
-  satellite._onCustomCodeSuccess = function (callbackId) {
+  window._satellite._onCustomCodeSuccess = function (callbackId) {
     const promiseHandlers = htmlCodePromises[callbackId];
     if (!promiseHandlers) {
       return;
@@ -26,9 +26,11 @@ function injectDecorateHtmlCode({ Promise, turbine, satellite } = {}) {
     promiseHandlers.resolve();
   };
 
-  satellite._onCustomCodeFailure = function (callbackId) {
+  window._satellite._onCustomCodeFailure = function (callbackId) {
     const promiseHandlers = htmlCodePromises[callbackId];
-    if (!promiseHandlers) return;
+    if (!promiseHandlers) {
+      return;
+    }
     delete htmlCodePromises[callbackId];
     promiseHandlers.reject();
   };
@@ -69,9 +71,8 @@ function injectDecorateHtmlCode({ Promise, turbine, satellite } = {}) {
 const validateInjection = validateInjectedParams(injectDecorateHtmlCode);
 
 export default validateInjection({
-  turbine: window.turbine,
-  satellite: window._satellite,
-  // runs in Turbine context, which provides the core-module "reactor-promise".
+  // runs in Turbine context, which provides these core-module packages.
+  window: require('@adobe/reactor-window'),
   Promise: require('@adobe/reactor-promise')
 });
 

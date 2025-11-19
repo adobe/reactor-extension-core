@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 import { byRegexPattern as findScriptByRegexPattern } from '../../helpers/findPageScript';
-import validateInjectedParams from '../../../helpers/validate-injected-params.js';
+import validateInjectedParams from '../../../helpers/validate-injected-params';
 
 function injectGetSourceByUrl({ window, loadScript, Promise }) {
   const codeBySourceUrl = {};

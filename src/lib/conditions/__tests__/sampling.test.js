@@ -11,10 +11,9 @@
  ****************************************************************************************/
 
 import { injectSampling } from '../sampling';
-import { injectGetNamespacedStorage } from '../../helpers/getNamespacedStorage.js';
-const injectedNamespacedStorage = injectGetNamespacedStorage({ window });
+import getNamespacedStorage from '../../helpers/getNamespacedStorage.js';
 const conditionDelegate = injectSampling({
-  getNamespacedStorage: injectedNamespacedStorage
+  getNamespacedStorage
 });
 
 describe('sampling condition delegate', function () {

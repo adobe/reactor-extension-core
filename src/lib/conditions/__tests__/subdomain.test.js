@@ -10,23 +10,23 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { injectSubdomainCondition } from '../subdomain.js';
-import textMatch from '../../helpers/textMatch.js';
+import { injectSubdomainCondition } from '../subdomain';
+import textMatch from '../../helpers/textMatch';
 
-var mockDocument = {
+const mockDocument = {
   location: {
     hostname: 'foo.adobe.com'
   }
 };
 
-var conditionDelegate = injectSubdomainCondition({
+const conditionDelegate = injectSubdomainCondition({
   document: mockDocument,
   textMatch
 });
 
 describe('subdomain condition delegate', function () {
   it('returns true when the subdomain matches an acceptable string', function () {
-    var settings = {
+    const settings = {
       subdomains: [
         {
           value: 'basketball.espn.com'
@@ -40,7 +40,7 @@ describe('subdomain condition delegate', function () {
   });
 
   it('returns false when the subdomain does not match an acceptable string', function () {
-    var settings = {
+    const settings = {
       subdomains: [
         {
           value: 'basketball.espn.com'
@@ -54,7 +54,7 @@ describe('subdomain condition delegate', function () {
   });
 
   it('returns true when the subdomain matches an acceptable regex', function () {
-    var settings = {
+    const settings = {
       subdomains: [
         {
           value: 'basketball.espn.com'
@@ -69,7 +69,7 @@ describe('subdomain condition delegate', function () {
   });
 
   it('returns false when the subdomain does not match an acceptable regex', function () {
-    var settings = {
+    const settings = {
       subdomains: [
         {
           value: 'basketball.espn.com'

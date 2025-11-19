@@ -10,7 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { injectWindowSize } from '../windowSize.js';
+import { injectWindowSize } from '../windowSize';
+import compareNumbers from '../helpers/compareNumbers';
 
 const mockDocument = {
   documentElement: {
@@ -20,7 +21,8 @@ const mockDocument = {
 };
 
 const conditionDelegate = injectWindowSize({
-  document: mockDocument
+  document: mockDocument,
+  compareNumbers
 });
 
 const getSettings = function (width, widthOperator, height, heightOperator) {

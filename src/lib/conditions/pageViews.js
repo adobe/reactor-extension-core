@@ -10,9 +10,9 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import validateInjectedParams from '../../helpers/validate-injected-params.js';
-import visitorTracking from '../helpers/visitorTracking.js';
-import compareNumbers from './helpers/compareNumbers.js';
+import visitorTracking from '../helpers/visitorTracking';
+import compareNumbers from './helpers/compareNumbers';
+import validateInjectedParams from '../../helpers/validate-injected-params';
 
 const duration = {
   LIFETIME: 'lifetime',

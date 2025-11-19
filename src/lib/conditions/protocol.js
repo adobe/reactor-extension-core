@@ -10,17 +10,31 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-/**
- * Protocol condition. Determines if the actual protocol matches at least one acceptable
- * protocol.
- * @param {Object} settings Condition settings.
- * @param {string} settings.protocol An acceptable protocol.
- * @returns {boolean}
- */
-const protocolCondition = function (settings) {
-  return (
-    document.location.protocol.toLowerCase() === settings.protocol.toLowerCase()
-  );
-};
+import validateInjectedParams from '../../helpers/validate-injected-params';
 
-export default protocolCondition;
+function injectProtocol({ document }) {
+  /**
+   * Protocol condition. Determines if the actual protocol matches at least one acceptable
+   * protocol.
+   * @param {Object} settings Condition settings.
+   * @param {string} settings.protocol An acceptable protocol.
+   * @returns {boolean}
+   */
+  return function protocolCondition(settings) {
+    return (
+      document.location.protocol.toLowerCase() ===
+      settings.protocol.toLowerCase()
+    );
+  };
+}
+
+const validateInjection = validateInjectedParams(injectProtocol);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  document: require('@adobe/reactor-document')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectProtocol };
+/* END.TESTS_ONLY */

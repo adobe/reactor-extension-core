@@ -19,7 +19,7 @@
  * stop returning true.
  * @returns {boolean}
  */
-const dateRangeCondition = function (settings) {
+export default function dateRangeCondition(settings) {
   const now = new Date();
   if (settings.start && now < new Date(settings.start)) {
     return false;
@@ -28,6 +28,4 @@ const dateRangeCondition = function (settings) {
     return false;
   }
   return true;
-};
-
-export default dateRangeCondition;
+}

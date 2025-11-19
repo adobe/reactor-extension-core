@@ -12,16 +12,30 @@
 
 import visitorTracking from '../helpers/visitorTracking';
 import textMatch from '../helpers/textMatch';
+import validateInjectedParams from '../../helpers/validate-injected-params';
 
-function createLandingPageCondition({ visitorTracking, textMatch }) {
-  return function (settings) {
+function injectLandingPage({ visitorTracking, textMatch }) {
+  /**
+   * Landing page condition. Determines if the actual landing page matches an acceptable landing page.
+   * @param {Object} settings Condition settings.
+   * @param {Object[]} settings.landingPages Acceptable landing page values to match.
+   * @param {string} settings.landingPages[].value An acceptable landing page value.
+   * @param {string} [settings.landingPages[].pageIsRegex=false] Is the landing page
+   * value a Regular Expression?
+   * DEPRECATED @param {string=} settings.page An acceptable landing page.
+   * DEPRECATED @param {boolean=} [settings.pageIsRegex=false] Whether
+   * <code>settings.page</code> is intended to
+   * be a regular expression.
+   * @returns {boolean}
+   */
+  return function landingPage(settings) {
     // empty strings aren't allowed because a landing page value is required in the UI.
-    var storedLandingPage = visitorTracking.getLandingPage();
+    const storedLandingPage = visitorTracking.getLandingPage();
     if (!storedLandingPage) {
       return false;
     }
 
-    var landingPageValues;
+    let landingPageValues;
     if (!Array.isArray(settings.landingPages)) {
       // legacy support
       landingPageValues = [
@@ -35,18 +49,22 @@ function createLandingPageCondition({ visitorTracking, textMatch }) {
     }
 
     return landingPageValues.some(function (acceptablePageValue) {
-      var acceptableValue = acceptablePageValue.pageIsRegex
+      const acceptableValue = acceptablePageValue.pageIsRegex
         ? new RegExp(acceptablePageValue.value, 'i')
         : acceptablePageValue.value;
+
       return textMatch(storedLandingPage, acceptableValue);
     });
   };
 }
 
-const defaultLandingPageCondition = createLandingPageCondition({
+const validateInjection = validateInjectedParams(injectLandingPage);
+
+export default validateInjection({
   visitorTracking,
   textMatch
 });
 
-export default defaultLandingPageCondition;
-export { createLandingPageCondition };
+/* START.TESTS_ONLY */
+export { validateInjection as injectLandingPage };
+/* END.TESTS_ONLY */

@@ -19,9 +19,7 @@
  * @param {Object} event.target The element on which the event occurred.
  * @returns {boolean}
  */
-const customCodeCondition = function (settings, event) {
+export default function customCodeCondition(settings, event) {
   // `this` and `target` are provided separately from event for backward-compatibility.
   return settings.source.call(event.element, event, event.target);
-};
-
-export default customCodeCondition;
+}

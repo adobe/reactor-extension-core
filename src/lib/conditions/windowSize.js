@@ -11,9 +11,9 @@
  ****************************************************************************************/
 
 import compareNumbers from './helpers/compareNumbers';
-import validateInjectedParams from '../../helpers/validate-injected-params.js';
+import validateInjectedParams from '../../helpers/validate-injected-params';
 
-function injectWindowSize({ document }) {
+function injectWindowSize({ document, compareNumbers }) {
   /**
    * Window size condition. Determines if the current window size matches constraints.
    * @param {Object} settings Condition settings.
@@ -40,13 +40,12 @@ function injectWindowSize({ document }) {
   };
 }
 
-const validateInjection = validateInjectedParams(
-  injectWindowSize
-);
+const validateInjection = validateInjectedParams(injectWindowSize);
 
 export default validateInjection({
   // runs in Turbine context, which provides these core-module packages.
-  document: require('@adobe/reactor-document')
+  document: require('@adobe/reactor-document'),
+  compareNumbers
 });
 
 /* START.TESTS_ONLY */

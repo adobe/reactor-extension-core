@@ -10,19 +10,19 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-const createDirectCallActionDelegate = require('../directCall');
+import { injectDirectCall } from '../directCall';
 
 describe('direct call action delegate', function () {
-  var mockWindow = {};
-  var delegate;
+  const mockWindow = {};
+  let delegate;
 
   beforeEach(function () {
     mockWindow._satellite = jasmine.createSpyObj('_satellite', ['track']);
-    delegate = createDirectCallActionDelegate(mockWindow);
+    delegate = injectDirectCall({ window: mockWindow });
   });
 
   it('triggers the specified direct-call Event Type without a detail', function () {
-    var settings = {
+    const settings = {
       identifier: 'foo'
     };
 
@@ -34,7 +34,7 @@ describe('direct call action delegate', function () {
   });
 
   it('triggers the specified direct-call Event Type with a user-defined detail', function () {
-    var settings = {
+    const settings = {
       identifier: 'foo',
       detail: {
         eventObjectEntries: [
@@ -44,7 +44,7 @@ describe('direct call action delegate', function () {
       }
     };
 
-    var event = {
+    const event = {
       element: {},
       target: {}
     };

@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 import getSourceByUrl from './getSourceByUrl';
-import validateInjectedParams from '../../../helpers/validate-injected-params.js';
+import validateInjectedParams from '../../../helpers/validate-injected-params';
 
 function injectLoadCodeSequentially({ Promise, getSourceByUrl }) {
   let previousExecuteCodePromise = Promise.resolve();

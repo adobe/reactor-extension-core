@@ -24,11 +24,11 @@ export const comparisonOperator = {
 /**
  * Compares two numbers using a comparison operator enumeration value.
  * @param {number} num1 The first number.
- * @param {comparisonOperator} The comparison operator.
+ * @param {string} op The comparison operator.
  * @param {number} num2 The second number.
  * @returns {boolean}
  */
-const compareNumbers = function (num1, op, num2) {
+export default function compareNumbers(num1, op, num2) {
   switch (op) {
     case comparisonOperator.GREATER_THAN:
       return num1 > num2;
@@ -37,6 +37,4 @@ const compareNumbers = function (num1, op, num2) {
     case comparisonOperator.EQUALS:
       return num1 === num2;
   }
-};
-
-export default compareNumbers;
+}

@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 import textMatch from '../helpers/textMatch';
-import validateInjectedParams from '../../helpers/validate-injected-params.js';
+import validateInjectedParams from '../../helpers/validate-injected-params';
 
 function injectSubdomainCondition({ document, textMatch }) {
   /**

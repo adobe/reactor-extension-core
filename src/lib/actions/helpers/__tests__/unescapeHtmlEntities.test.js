@@ -9,11 +9,15 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-import document from '@adobe/reactor-document';
-const el = document.createElement('div');
+import { injectUnescapeHtmlEntities } from '../unescapeHtmlEntities';
+const unescapeHtmlEntities = injectUnescapeHtmlEntities({ document });
 
-export default function unescapeHtmlCode(html) {
-  el.innerHTML = html;
-  // IE and Firefox differ.
-  return el.textContent || el.innerText || html;
-}
+describe('unescape html code', function () {
+  it('decodes html entities', function () {
+    expect(
+      unescapeHtmlEntities(
+        'https://www.google.com/?id=DC&amp;l=gtmData&gt;Layer'
+      )
+    ).toBe('https://www.google.com/?id=DC&l=gtmData>Layer');
+  });
+});

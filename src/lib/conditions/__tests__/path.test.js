@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 import { injectPath } from '../path.js';
-import textMatch from '../../helpers/textMatch.js'
+import textMatch from '../../helpers/textMatch';
 
 const mockDocument = {
   location: {

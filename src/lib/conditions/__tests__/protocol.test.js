@@ -10,22 +10,23 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-var conditionDelegate = require('../protocol');
+import { injectProtocol } from '../protocol';
+const conditionDelegate = injectProtocol({ document });
 
-var getSettings = function (protocol) {
+const getSettings = function (protocol) {
   return {
-    protocol: protocol
+    protocol
   };
 };
 
 describe('protocol condition delegate', function () {
   it('returns true when the browser protocol matches', function () {
-    var settings = getSettings('http:');
+    const settings = getSettings('http:');
     expect(conditionDelegate(settings)).toBe(true);
   });
 
   it('returns false when the browser protocol does not match', function () {
-    var settings = getSettings('javascript:');
+    const settings = getSettings('javascript:');
     expect(conditionDelegate(settings)).toBe(false);
   });
 });

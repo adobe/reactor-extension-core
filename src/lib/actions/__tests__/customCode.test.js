@@ -10,8 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { injectCustomCodeAction } from '../customCode.js';
-import { injectFindPageScript } from '../../helpers/findPageScript.js';
+import { injectCustomCodeAction } from '../customCode';
+import { injectFindPageScript } from '../../helpers/findPageScript';
 
 const LAUNCH_LIB_EXAMPLE_SRC =
   'assets.adobedtm.com/launch-ENad46b63a40c84a86a0de29087f7ecb24-development.min.js';

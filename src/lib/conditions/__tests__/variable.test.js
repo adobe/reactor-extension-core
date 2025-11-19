@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-var conditionDelegate = require('../variable');
+import conditionDelegate from '../variable';
 
 describe('variable condition delegate', function () {
   beforeAll(function () {
@@ -32,33 +32,33 @@ describe('variable condition delegate', function () {
 
   describe('legacy behavior', function () {
     it('returns true when the variable matches the string value', function () {
-      var settings = { name: 'a.b.1.c', value: 'bar' };
+      const settings = { name: 'a.b.1.c', value: 'bar' };
       expect(conditionDelegate(settings)).toBe(true);
     });
 
     it('returns false when the variable does not match the string value', function () {
-      var settings = { name: 'a.b.1.c', value: 'cake' };
+      const settings = { name: 'a.b.1.c', value: 'cake' };
       expect(conditionDelegate(settings)).toBe(false);
     });
 
     it('returns true when the variable matches the regex value', function () {
-      var settings = { name: 'a.b.1.c', value: 'B.r', valueIsRegex: true };
+      const settings = { name: 'a.b.1.c', value: 'B.r', valueIsRegex: true };
       expect(conditionDelegate(settings)).toBe(true);
     });
 
     it('returns false when the variable does not match the regex value', function () {
-      var settings = { name: 'a.b.1.c', value: 'g.o', valueIsRegex: true };
+      const settings = { name: 'a.b.1.c', value: 'g.o', valueIsRegex: true };
       expect(conditionDelegate(settings)).toBe(false);
     });
 
     it('finds value when name is prefixed with window', function () {
-      var settings = { name: 'window.a.b.1.c', value: 'bar' };
+      const settings = { name: 'window.a.b.1.c', value: 'bar' };
       expect(conditionDelegate(settings)).toBe(true);
     });
   });
 
   it('returns false if the variable "value" list is empty', function () {
-    var settings = { name: 'a.b.1.c', variableValues: [] };
+    const settings = { name: 'a.b.1.c', variableValues: [] };
     expect(conditionDelegate(settings)).toBe(false);
   });
 
@@ -66,7 +66,7 @@ describe('variable condition delegate', function () {
     describe('as strings', function () {
       describe('returns false when', function () {
         it('the list is of size 1', function () {
-          var settings = {
+          const settings = {
             name: 'a.b.1.c',
             variableValues: [{ value: 'bizbaz' }]
           };
@@ -74,7 +74,7 @@ describe('variable condition delegate', function () {
         });
 
         it('the list has many items', function () {
-          var settings = {
+          const settings = {
             name: 'a.b.1.c',
             variableValues: [
               { value: 'bizzy' },
@@ -88,7 +88,7 @@ describe('variable condition delegate', function () {
 
       describe('returns true when', function () {
         it('the list is of size 1', function () {
-          var settings = {
+          const settings = {
             name: 'a.b.1.c',
             variableValues: [{ value: 'bar' }]
           };
@@ -96,7 +96,7 @@ describe('variable condition delegate', function () {
         });
 
         it('the match is at the front of a many item list', function () {
-          var settings = {
+          const settings = {
             name: 'a.b.1.c',
             variableValues: [
               { value: 'bar' },
@@ -108,7 +108,7 @@ describe('variable condition delegate', function () {
         });
 
         it('the match is in the middle of a many item list', function () {
-          var settings = {
+          const settings = {
             name: 'a.b.1.c',
             variableValues: [
               { value: 'bizzy' },
@@ -120,7 +120,7 @@ describe('variable condition delegate', function () {
         });
 
         it('the match is at the end of a many item list', function () {
-          var settings = {
+          const settings = {
             name: 'a.b.1.c',
             variableValues: [
               { value: 'bizzy' },
@@ -132,7 +132,7 @@ describe('variable condition delegate', function () {
         });
 
         it('finds value when name is prefixed with window', function () {
-          var settings = {
+          const settings = {
             name: 'window.a.b.1.c',
             variableValues: [{ value: 'bar' }]
           };
@@ -144,7 +144,7 @@ describe('variable condition delegate', function () {
     describe('as RegularExpressions', function () {
       describe('returns false when', function () {
         it('the list is of size 1', function () {
-          var settings = {
+          const settings = {
             name: 'a.b.1.c',
             variableValues: [{ value: 'g.o', valueIsRegex: true }]
           };
@@ -152,7 +152,7 @@ describe('variable condition delegate', function () {
         });
 
         it('the list has many items', function () {
-          var settings = {
+          const settings = {
             name: 'a.b.1.c',
             variableValues: [
               { value: 'a.b', valueIsRegex: true },
@@ -166,7 +166,7 @@ describe('variable condition delegate', function () {
 
       describe('returns true when', function () {
         it('the list is of size 1', function () {
-          var settings = {
+          const settings = {
             name: 'a.b.1.c',
             variableValues: [{ value: 'B.r', valueIsRegex: true }]
           };
@@ -174,7 +174,7 @@ describe('variable condition delegate', function () {
         });
 
         it('the match is at the front of a many item list', function () {
-          var settings = {
+          const settings = {
             name: 'a.b.1.c',
             variableValues: [
               { value: 'B.r', valueIsRegex: true },
@@ -186,7 +186,7 @@ describe('variable condition delegate', function () {
         });
 
         it('the match is in the middle of a many item list', function () {
-          var settings = {
+          const settings = {
             name: 'a.b.1.c',
             variableValues: [
               { value: 'bizzy', valueIsRegex: false },
@@ -198,7 +198,7 @@ describe('variable condition delegate', function () {
         });
 
         it('the match is at the end of a many item list', function () {
-          var settings = {
+          const settings = {
             name: 'a.b.1.c',
             variableValues: [
               { value: 'bizzy', valueIsRegex: false },
@@ -210,7 +210,7 @@ describe('variable condition delegate', function () {
         });
 
         it('finds value when name is prefixed with window', function () {
-          var settings = {
+          const settings = {
             name: 'window.a.b.1.c',
             variableValues: [{ value: 'B.r', valueIsRegex: true }]
           };

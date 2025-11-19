@@ -10,9 +10,9 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import visitorTracking from '../helpers/visitorTracking.js';
-import getNamespacedStorage from '../helpers/getNamespacedStorage.js';
-import validateInjectedParams from '../../helpers/validate-injected-params.js';
+import visitorTracking from '../helpers/visitorTracking';
+import getNamespacedStorage from '../helpers/getNamespacedStorage';
+import validateInjectedParams from '../../helpers/validate-injected-params';
 
 function injectMaxFrequency({ visitorTracking, getNamespacedStorage }) {
   const maxFrequencyLocalStorage = getNamespacedStorage(

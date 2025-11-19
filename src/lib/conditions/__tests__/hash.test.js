@@ -10,7 +10,12 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-var conditionDelegate = require('../hash');
+import textMatch from '../../helpers/textMatch';
+import { injectHash } from '../hash';
+const conditionDelegate = injectHash({
+  document,
+  textMatch
+});
 
 describe('hash condition delegate', function () {
   beforeAll(function () {

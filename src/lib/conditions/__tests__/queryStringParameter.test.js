@@ -11,7 +11,8 @@
  ****************************************************************************************/
 
 import { injectQueryStringParameterCondition } from '../queryStringParameter';
-import textMatch from '../../helpers/textMatch.js';
+import textMatch from '../../helpers/textMatch';
+
 const conditionDelegate = injectQueryStringParameterCondition({
   window: {
     location: {

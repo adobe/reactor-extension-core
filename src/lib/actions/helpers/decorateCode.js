@@ -12,7 +12,7 @@ governing permissions and limitations under the License.
 import decorateGlobalJavaScriptCode from './decorators/decorateGlobalJavaScriptCode';
 import decorateNonGlobalJavaScriptCode from './decorators/decorateNonGlobalJavaScriptCode';
 import decorateHtmlCode from './decorators/decorateHtmlCode';
-import validateInjectedParams from '../../../helpers/validate-injected-params.js';
+import validateInjectedParams from '../../../helpers/validate-injected-params';
 
 function injectDecorateCode({
   decorateGlobalJavaScriptCode,

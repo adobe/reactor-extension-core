@@ -17,7 +17,7 @@ import textMatch from '../helpers/textMatch';
  * Variable condition. Determines if a particular JS variable's actual value matches
  * an acceptable value.
  * @param {Object} settings Condition settings.
- * @param {number} settings.name The name of the JS variable (e.g., event.target.id).
+ * @param {string} settings.name The name of the JS variable (e.g., event.target.id).
  * @param {Object[]} settings.variableValues Acceptable JS variable values to match.
  * @param {string} settings.variableValues[].value An acceptable JS variable value.
  * @param {string} [settings.variableValues[].valueIsRegex=false] Is the JS variable
@@ -26,8 +26,8 @@ import textMatch from '../helpers/textMatch';
  * DEPRECATED @param {boolean=} [settings.valueIsRegex=false] Whether <code>settings.value</code>
  * @returns {boolean}
  */
-const variableCondition = function (settings) {
-  var variableValues;
+export default function variableCondition(settings) {
+  let variableValues;
   if (!Array.isArray(settings.variableValues)) {
     // legacy support
     variableValues = [
@@ -37,14 +37,12 @@ const variableCondition = function (settings) {
     variableValues = settings.variableValues;
   }
 
-  var testValue = getObjectProperty(window, settings.name);
+  const testValue = getObjectProperty(window, settings.name);
   return variableValues.some(function (acceptableVariableValue) {
-    var acceptableValue = acceptableVariableValue.valueIsRegex
+    const acceptableValue = acceptableVariableValue.valueIsRegex
       ? new RegExp(acceptableVariableValue.value, 'i')
       : acceptableVariableValue.value;
 
     return textMatch(testValue, acceptableValue);
   });
-};
-
-export default variableCondition;
+}

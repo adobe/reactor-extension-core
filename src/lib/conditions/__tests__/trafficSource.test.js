@@ -13,13 +13,13 @@
 import { injectTrafficSource } from '../trafficSource.js';
 import textMatch from '../../helpers/textMatch.js';
 
-var mockVisitorTracking = {
+const mockVisitorTracking = {
   getTrafficSource: function () {
     return 'http://trafficsource.com';
   }
 };
 
-var conditionDelegate = injectTrafficSource({
+const conditionDelegate = injectTrafficSource({
   visitorTracking: mockVisitorTracking,
   textMatch
 });
@@ -27,7 +27,7 @@ var conditionDelegate = injectTrafficSource({
 describe('traffic source condition delegate', function () {
   describe('legacy behavior', function () {
     it('returns true when the traffic source matches a string', function () {
-      var settings = {
+      const settings = {
         source: 'http://trafficsource.com',
         sourceIsRegex: false
       };
@@ -35,7 +35,7 @@ describe('traffic source condition delegate', function () {
     });
 
     it('returns false when the traffic source does not match a string', function () {
-      var settings = {
+      const settings = {
         source: 'http://foo.com',
         sourceIsRegex: false
       };
@@ -43,7 +43,7 @@ describe('traffic source condition delegate', function () {
     });
 
     it('returns true when the traffic source matches a regex', function () {
-      var settings = {
+      const settings = {
         source: 'Traffic.ource',
         sourceIsRegex: true
       };
@@ -51,7 +51,7 @@ describe('traffic source condition delegate', function () {
     });
 
     it('returns false when the traffic source does not match a regex', function () {
-      var settings = {
+      const settings = {
         source: 'my\\.yahoo\\.com',
         sourceIsRegex: true
       };
@@ -60,22 +60,22 @@ describe('traffic source condition delegate', function () {
   });
 
   it('it returns false if the landing page value list is empty', function () {
-    var settings = {
+    const settings = {
       trafficSources: []
     };
     expect(conditionDelegate(settings)).toBe(false);
   });
 
-  describe('lists of varying size', function () {
+  describe('lists of constying size', function () {
     describe('as strings', function () {
       describe('returns false when', function () {
         it('the list is of size 1', function () {
-          var settings = { trafficSources: [{ value: 'http://foo.com' }] };
+          const settings = { trafficSources: [{ value: 'http://foo.com' }] };
           expect(conditionDelegate(settings)).toBe(false);
         });
 
         it('the list has many items', function () {
-          var settings = {
+          const settings = {
             trafficSources: [
               { value: 'bizzy' },
               { value: 'bazzy' },
@@ -88,14 +88,14 @@ describe('traffic source condition delegate', function () {
 
       describe('returns true when', function () {
         it('the list is of size 1', function () {
-          var settings = {
+          const settings = {
             trafficSources: [{ value: 'http://trafficsource.com' }]
           };
           expect(conditionDelegate(settings)).toBe(true);
         });
 
         it('the match is at the front of a many item list', function () {
-          var settings = {
+          const settings = {
             trafficSources: [
               { value: 'http://trafficsource.com' },
               { value: 'bazzy' },
@@ -106,7 +106,7 @@ describe('traffic source condition delegate', function () {
         });
 
         it('the match is in the middle of a many item list', function () {
-          var settings = {
+          const settings = {
             trafficSources: [
               { value: 'bizzy' },
               { value: 'http://trafficsource.com' },
@@ -117,7 +117,7 @@ describe('traffic source condition delegate', function () {
         });
 
         it('the match is at the end of a many item list', function () {
-          var settings = {
+          const settings = {
             trafficSources: [
               { value: 'bizzy' },
               { value: 'bazzy' },
@@ -132,14 +132,14 @@ describe('traffic source condition delegate', function () {
     describe('as RegularExpressions', function () {
       describe('returns false when', function () {
         it('the list is of size 1', function () {
-          var settings = {
+          const settings = {
             trafficSources: [{ value: 'g.o', sourceIsRegex: true }]
           };
           expect(conditionDelegate(settings)).toBe(false);
         });
 
         it('the list has many items', function () {
-          var settings = {
+          const settings = {
             trafficSources: [
               { value: 'a.b', sourceIsRegex: true },
               { value: 'c.d', sourceIsRegex: true },
@@ -152,14 +152,14 @@ describe('traffic source condition delegate', function () {
 
       describe('returns true when', function () {
         it('the list is of size 1', function () {
-          var settings = {
+          const settings = {
             trafficSources: [{ value: 'Traffic.ource', sourceIsRegex: true }]
           };
           expect(conditionDelegate(settings)).toBe(true);
         });
 
         it('the match is at the front of a many item list', function () {
-          var settings = {
+          const settings = {
             trafficSources: [
               { value: 'Traffic.ource', sourceIsRegex: true },
               { value: 'bazzy', sourceIsRegex: false },
@@ -170,7 +170,7 @@ describe('traffic source condition delegate', function () {
         });
 
         it('the match is in the middle of a many item list', function () {
-          var settings = {
+          const settings = {
             trafficSources: [
               { value: 'bizzy', sourceIsRegex: false },
               { value: 'Traffic.ource', sourceIsRegex: true },
@@ -181,7 +181,7 @@ describe('traffic source condition delegate', function () {
         });
 
         it('the match is at the end of a many item list', function () {
-          var settings = {
+          const settings = {
             trafficSources: [
               { value: 'bizzy', sourceIsRegex: false },
               { value: 'bazzy', sourceIsRegex: true },

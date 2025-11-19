@@ -11,7 +11,6 @@
  ****************************************************************************************/
 
 import textMatch from '../helpers/textMatch';
-
 import validateInjectedParams from '../../helpers/validate-injected-params';
 
 function injectQueryStringParameterCondition({

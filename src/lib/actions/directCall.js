@@ -10,24 +10,26 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-/**
- * The custom code action. This loads and executes custom JavaScript or HTML provided by the user.
- * @param {Object} settings Action settings.
- * @param {string} settings.identifier The identifier of the "Direct Call" Event Type that should
- * be called.
- * @param {Array} settings.detail.eventObjectEntries A list of {key, value} tuples that will be
- * provided to _satellite.track as additional event detail.
- */
-function createDirectCallActionDelegate(window) {
-  return function (settings) {
+import validateInjectedParams from '../../helpers/validate-injected-params';
+
+function injectDirectCall({ window }) {
+  /**
+   * The custom code action. Tjhis loads and executes custom JavaScript or HTML provided by the user.
+   * @param {Object} settings Action settings.
+   * @param {string} settings.identifier The identifier of the "Direct Call" Event Type that should
+   * be called.
+   * @param {Array} settings.detail.eventObjectEntries A list of {key, value} tuples that will be
+   * provided to _satellite.track as additional event detail.
+   */
+  return function directCall(settings) {
     if (settings && settings.identifier) {
-      var _detail = settings.detail;
+      const _detail = settings.detail;
       if (
         _detail &&
         Array.isArray(_detail.eventObjectEntries) &&
         _detail.eventObjectEntries.length
       ) {
-        var detailEvent = {};
+        const detailEvent = {};
         // iterate over the array and build the object
         _detail.eventObjectEntries.forEach(function (tuple) {
           detailEvent[tuple.key] = tuple.value;
@@ -40,4 +42,13 @@ function createDirectCallActionDelegate(window) {
   };
 }
 
-export default createDirectCallActionDelegate;
+const validateInjection = validateInjectedParams(injectDirectCall);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  window: require('@adobe/reactor-window')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectDirectCall };
+/* END.TESTS_ONLY */

@@ -17,13 +17,16 @@
  * only necessary when running the tests, not when building the code bundles.
  */
 
+/* START.TESTS_ONLY */
+// these definitions are more involved than a simple "provide the window" or "provide the document"
+import loadScript from '@adobe/reactor-load-script';
+import queryString from '@adobe/reactor-query-string';
+import cookie from '@adobe/reactor-cookie';
+// these definitions are more involved than a simple "provide the window" or "provide the document"
+
 function setupGlobals() {
-  // Mocked globals for the "production code exports".
-  // In production, Turbine wraps delegates like: function(module, exports, require, turbine)
-  // so these need to be accessible as free variables, not window properties.
-  // Define them right away to ensure they're definitely defined before anything happens.
-  window._satellite = jasmine.createSpy('_satellite');
-  globalThis.turbine = jasmine.createSpy('turbine');
+  // this window._satellite is decorating karma's window object to get it ready for tests
+  window._satellite = {};
   globalThis.turbine = {
     logger: {
       warn: jasmine.createSpy('warn'),
@@ -31,9 +34,11 @@ function setupGlobals() {
       info: jasmine.createSpy('info'),
       debug: jasmine.createSpy('debug')
     }
-  }
+  };
   // --- mock Turbine's public "require" function ---
   globalThis.require = function publicRequire(path) {
+    // not using @adobe/reactor window because all that does is provide the
+    // window, and we should place a _satellite object on it.
     if (path === '@adobe/reactor-window') {
       // this _satellite is different from our definition above for window._satellite.
       // this _satellite is what's required to be there for a production default export
@@ -49,7 +54,7 @@ function setupGlobals() {
       return {
         location: { href: jasmine.createSpy('href') },
         _satellite: {}
-      }
+      };
     }
     // sometimes and import of a source file for a test will trigger an import of
     // an underlying dependency whose default export relies on certain things being
@@ -59,6 +64,15 @@ function setupGlobals() {
     }
     if (path === '@adobe/reactor-document') {
       return document;
+    }
+    if (path === '@adobe/reactor-object-assign') {
+      return Object.assign;
+    }
+    if (path === '@adobe/reactor-load-script') {
+      return loadScript;
+    }
+    if (path === '@adobe/reactor-query-string') {
+      return queryString;
     }
 
     // we don't really care what it was, just mock it.
@@ -86,3 +100,4 @@ beforeEach(() => {
 globalThis.mockTurbineVariable = function (turbineDefinition) {
   globalThis.turbine = turbineDefinition;
 };
+/* END.TESTS_ONLY */

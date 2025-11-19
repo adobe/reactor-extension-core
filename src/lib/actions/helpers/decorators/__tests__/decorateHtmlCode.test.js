@@ -10,29 +10,21 @@ governing permissions and limitations under the License.
 */
 
 import { injectDecorateHtmlCode } from '../decorateHtmlCode';
-import flushPromiseChains from '../../../../__tests__/helpers/flushPromiseChains.js';
-
-function createMockTurbine() {
-  return {
-    replaceTokens: jasmine.createSpy().and.callFake(function (token) {
-      return token.replace(/%(.+?)%/g, function (token, variableName) {
-        return 'replaced - ' + variableName;
-      });
-    })
-  };
-}
+import flushPromiseChains from '../../../../__tests__/helpers/flushPromiseChains';
 
 describe('decorate html code', function () {
-  let mockTurbine;
   let decorateHtmlCode;
-  let satellite;
-
   beforeEach(function () {
-    mockTurbine = createMockTurbine();
-    satellite = {};
+    mockTurbineVariable({
+      replaceTokens: jasmine.createSpy().and.callFake(function (token) {
+        return token.replace(/%(.+?)%/g, function (token, variableName) {
+          return 'replaced - ' + variableName;
+        });
+      })
+    });
+
     decorateHtmlCode = injectDecorateHtmlCode({
-      turbine: mockTurbine,
-      satellite,
+      window,
       Promise
     });
   });
@@ -125,9 +117,8 @@ describe('decorate html code', function () {
 
       const p = Promise.resolve();
       const decorateHtmlCodeWithMockPromise = injectDecorateHtmlCode({
-        Promise: { resolve: () => p },
-        turbine: mockTurbine,
-        satellite
+        window,
+        Promise: { resolve: () => p }
       });
 
       const decoratedResult = decorateHtmlCodeWithMockPromise(
@@ -163,7 +154,7 @@ describe('decorate html code', function () {
 
       flushPromiseChains().then(function () {
         expect(onPromiseResolved).not.toHaveBeenCalled();
-        satellite._onCustomCodeSuccess('0');
+        window._satellite._onCustomCodeSuccess('0');
       });
     }
   );
@@ -190,7 +181,7 @@ describe('decorate html code', function () {
 
       flushPromiseChains().then(function () {
         expect(onPromiseRejected).not.toHaveBeenCalled();
-        satellite._onCustomCodeFailure('0');
+        window._satellite._onCustomCodeFailure('0');
       });
     }
   );
