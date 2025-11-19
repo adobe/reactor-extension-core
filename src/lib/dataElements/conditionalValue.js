@@ -11,10 +11,8 @@ governing permissions and limitations under the License.
 
 import valueComparison from '../conditions/valueComparison';
 
-const conditionalValue = function (settings) {
+export default function conditionalValue(settings) {
   return valueComparison(settings)
     ? settings.conditionalValue
     : settings.fallbackValue;
-};
-
-export default conditionalValue;
+}

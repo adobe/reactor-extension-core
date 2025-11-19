@@ -10,14 +10,28 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import getObjectProperty from '../helpers/getObjectProperty.js';
+import getObjectProperty from '../helpers/getObjectProperty';
+import validateInjectedParams from '../../helpers/validate-injected-params';
 
-/**
- * The variable data element.
- * @param {Object} settings The data element settings object.
- * @param {string} settings.path The global path to the variable holding the data element value.
- * @returns {string}
- */
-export default function (settings) {
-  return getObjectProperty(window, settings.path);
+function injectJavascriptVariable({ window }) {
+  /**
+   * The variable data element.
+   * @param {Object} settings The data element settings object.
+   * @param {string} settings.path The global path to the variable holding the data element value.
+   * @returns {string}
+   */
+  return function javascriptVariable(settings) {
+    return getObjectProperty(window, settings.path);
+  };
 }
+
+const validateInjection = validateInjectedParams(injectJavascriptVariable);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  window: require('@adobe/reactor-window')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectJavascriptVariable };
+/* END.TESTS_ONLY */

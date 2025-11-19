@@ -16,6 +16,6 @@
  * @param {string} settings.value The constant value that should be returned.
  * @returns {string}
  */
-export default function (settings) {
+export default function constant(settings) {
   return settings.value;
 }

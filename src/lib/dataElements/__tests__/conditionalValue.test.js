@@ -9,11 +9,11 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-var conditionalValueDelegate = require('../conditionalValue');
+import conditionalValueDelegate from '../conditionalValue';
 
 describe('conditional value data element delegate', function () {
   it('returns the conditional value when value comparison returns true', function () {
-    var settings = {
+    const settings = {
       leftOperand: 1,
       comparison: {
         operator: 'equals'
@@ -30,7 +30,7 @@ describe('conditional value data element delegate', function () {
     'returns undefined when value comparison returns true and there is no' +
       ' conditionalValue',
     function () {
-      var settings = {
+      const settings = {
         leftOperand: 1,
         comparison: {
           operator: 'equals'
@@ -44,7 +44,7 @@ describe('conditional value data element delegate', function () {
   );
 
   it('returns the falback value when value comparison returns false', function () {
-    var settings = {
+    const settings = {
       leftOperand: 1,
       comparison: {
         operator: 'equals'
@@ -61,7 +61,7 @@ describe('conditional value data element delegate', function () {
     'returns undefined when value comparison returns false and there is no' +
       ' fallbackValue',
     function () {
-      var settings = {
+      const settings = {
         leftOperand: 1,
         comparison: {
           operator: 'equals'

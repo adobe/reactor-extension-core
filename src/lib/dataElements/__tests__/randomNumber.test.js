@@ -10,22 +10,22 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-var dataElementDelegate = require('../randomNumber');
+import dataElementDelegate from '../randomNumber';
 
 describe('random number data element delegate', function () {
   it('returns a random number between the min and the max', function () {
-    var settings = {
+    const settings = {
       min: 10,
       max: 20
     };
 
-    var result = dataElementDelegate(settings);
+    const result = dataElementDelegate(settings);
     expect(result).toBeGreaterThanOrEqual(10);
     expect(result).toBeLessThanOrEqual(20);
   });
 
   it('returns NaN if min is greater than max', function () {
-    var settings = {
+    const settings = {
       min: 20,
       max: 10
     };

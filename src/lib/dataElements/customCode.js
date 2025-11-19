@@ -13,10 +13,10 @@
 /**
  * The custom data element.
  * @param {Object} settings The data element settings object.
- * @param {string} settings.source The function that should be called which will return a value.
- * @param {string} event The event (if any) that triggered the evaluation of the data element.
+ * @param {function} settings.source The function that should be called which will return a value.
+ * @param {object} [event] The event (if any) that triggered the evaluation of the data element.
  * @returns {string}
  */
-export default function (settings, event) {
+export default function customCode(settings, event) {
   return settings.source(event);
 }

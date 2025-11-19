@@ -24,7 +24,7 @@ const clone = function (value) {
   return value;
 };
 
-function deepMerge(target) {
+export default function deepMerge(target) {
   const sources = Array.prototype.slice.call(arguments, 1);
   return sources.reduce(function (merged, source) {
     if (source == null) {
@@ -55,5 +55,3 @@ function deepMerge(target) {
     return merged;
   }, target);
 }
-
-export default deepMerge;

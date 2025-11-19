@@ -10,11 +10,11 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-var dataElementDelegate = require('../customCode');
+import dataElementDelegate from '../customCode';
 
 describe('custom code data element delegate', function () {
   it('returns the return value of a user-defined script', function () {
-    var settings = {
+    const settings = {
       source: function () {
         return 'foo';
       }
@@ -24,12 +24,12 @@ describe('custom code data element delegate', function () {
   });
 
   it('receives the event parameter if provided', function () {
-    var settings = {
+    const settings = {
       source: function (event) {
         return event.foo;
       }
     };
-    var event = {
+    const event = {
       foo: 'bar'
     };
 

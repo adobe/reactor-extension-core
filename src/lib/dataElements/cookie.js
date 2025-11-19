@@ -10,14 +10,27 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import cookie from '@adobe/reactor-cookie';
+import validateInjectedParams from '../../helpers/validate-injected-params';
 
-/**
- * The cookie data element.
- * @param {Object} settings The data element settings object.
- * @param {string} settings.name The name of the cookie for which a value should be retrieved.
- * @returns {string}
- */
-export default function getCookie(settings) {
-  return cookie.get(settings.name);
+function injectCookie({ cookie }) {
+  /**
+   * The cookie data element.
+   * @param {Object} settings The data element settings object.
+   * @param {string} settings.name The name of the cookie for which a value should be retrieved.
+   * @returns {string}
+   */
+  return function getCookie(settings) {
+    return cookie.get(settings.name);
+  };
 }
+
+const validateInjection = validateInjectedParams(injectCookie);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  cookie: require('@adobe/reactor-cookie')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectCookie };
+/* END.TESTS_ONLY */

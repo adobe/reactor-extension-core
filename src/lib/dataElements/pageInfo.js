@@ -10,8 +10,16 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-export default function createPageInfo(document) {
-  return function (settings) {
+import validateInjectedParams from '../../helpers/validate-injected-params';
+
+function injectPageInfo({ document }) {
+  /**
+   * The page info data element.
+   * @param {Object} settings The data element settings object.
+   * @param {string} settings.attribute The attribute that should be returned.
+   * @returns {string}
+   */
+  return function pageInfo(settings) {
     switch (settings.attribute) {
       case 'url':
         return document.location.href;
@@ -28,3 +36,14 @@ export default function createPageInfo(document) {
     }
   };
 }
+
+const validateInjection = validateInjectedParams(injectPageInfo);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  document: require('@adobe/reactor-document')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectPageInfo };
+/* END.TESTS_ONLY */

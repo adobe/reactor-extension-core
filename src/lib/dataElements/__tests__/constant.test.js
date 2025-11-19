@@ -10,11 +10,11 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-var dataElementDelegate = require('../constant');
+import dataElementDelegate from '../constant';
 
 describe('constant data element delegate', function () {
   it('returns the value set', function () {
-    var settings = {
+    const settings = {
       value: 'foo'
     };
 

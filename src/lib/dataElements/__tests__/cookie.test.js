@@ -10,8 +10,9 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-var cookie = require('js-cookie');
-var dataElementDelegate = require('../cookie');
+import cookie from 'js-cookie';
+import { injectCookie } from '../cookie';
+const dataElementDelegate = injectCookie({ cookie });
 
 describe('cookie data element delegate', function () {
   beforeAll(function () {
@@ -23,7 +24,7 @@ describe('cookie data element delegate', function () {
   });
 
   it('returns the value of a cookie', function () {
-    var settings = {
+    const settings = {
       name: 'foo'
     };
 
@@ -31,7 +32,7 @@ describe('cookie data element delegate', function () {
   });
 
   it('returns undefined if the cookie is not set', function () {
-    var settings = {
+    const settings = {
       name: 'unicorn'
     };
 

@@ -10,26 +10,43 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-/**
- * The dom data element.
- * @param {Object} settings The data element settings object.
- * @param {string} settings.elementSelector The CSS selector for a DOM element.
- * @param {string} settings.elementProperty The name of the property or attribute of the DOM
- * element.
- * @returns {string}
- */
-export default function (settings) {
-  const element = document.querySelector(settings.elementSelector);
+import validateInjectedParams from '../../helpers/validate-injected-params';
 
-  if (element) {
-    const property = settings.elementProperty;
+function injectDomAttribute({ document }) {
+  /**
+   * The dom data element.
+   * @param {Object} settings The data element settings object.
+   * @param {string} settings.elementSelector The CSS selector for a DOM element.
+   * @param {string} settings.elementProperty The name of the property or attribute of the DOM
+   * element.
+   * @returns {string}
+   */
+  return function domAttribute(settings) {
+    const element = document.querySelector(settings.elementSelector);
 
-    if (property === 'text') {
-      return element.innerText || element.textContent;
-    } else if (property in element) {
-      return element[property];
-    } else {
-      return element.getAttribute ? element.getAttribute(property) : undefined;
+    if (element) {
+      const property = settings.elementProperty;
+
+      if (property === 'text') {
+        return element.innerText || element.textContent;
+      } else if (property in element) {
+        return element[property];
+      } else {
+        return element.getAttribute
+          ? element.getAttribute(property)
+          : undefined;
+      }
     }
-  }
+  };
 }
+
+const validateInjection = validateInjectedParams(injectDomAttribute);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  document: require('@adobe/reactor-document')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectDomAttribute };
+/* END.TESTS_ONLY */

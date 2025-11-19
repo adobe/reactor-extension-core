@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import createSessionStorage from '../sessionStorage.js';
+import { injectSessionStorage } from '../sessionStorage';
 
 describe('session storage data element delegate', function () {
   it('returns the value of a session storage item', function () {
@@ -19,8 +19,15 @@ describe('session storage data element delegate', function () {
         getItem: jasmine.createSpy().and.returnValue('bar')
       }
     };
-    const dataElementDelegate = createSessionStorage(mockWindow);
-    const settings = { name: 'foo' };
+
+    const dataElementDelegate = injectSessionStorage({
+      window: mockWindow
+    });
+
+    const settings = {
+      name: 'foo'
+    };
+
     expect(dataElementDelegate(settings)).toBe('bar');
     expect(mockWindow.sessionStorage.getItem).toHaveBeenCalledWith('foo');
   });
@@ -31,16 +38,32 @@ describe('session storage data element delegate', function () {
         getItem: jasmine.createSpy().and.returnValue(null)
       }
     };
-    const dataElementDelegate = createSessionStorage(mockWindow);
-    const settings = { name: 'foo' };
+
+    const dataElementDelegate = injectSessionStorage({
+      window: mockWindow
+    });
+
+    const settings = {
+      name: 'foo'
+    };
+
     expect(dataElementDelegate(settings)).toBe(null);
     expect(mockWindow.sessionStorage.getItem).toHaveBeenCalledWith('foo');
   });
 
-  it('returns null if error is thrown (like when session storage is disabled in safari)', function () {
-    const mockWindow = {};
-    const dataElementDelegate = createSessionStorage(mockWindow);
-    const settings = { name: 'foo' };
-    expect(dataElementDelegate(settings)).toBe(null);
-  });
+  it(
+    'returns null if error is thrown (like when session storage is ' +
+      'disabled in safari)',
+    function () {
+      const dataElementDelegate = injectSessionStorage({
+        window: {}
+      });
+
+      const settings = {
+        name: 'foo'
+      };
+
+      expect(dataElementDelegate(settings)).toBe(null);
+    }
+  );
 });

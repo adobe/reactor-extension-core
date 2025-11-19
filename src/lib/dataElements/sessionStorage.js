@@ -10,8 +10,20 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-export default function createSessionStorage(window) {
-  return function (settings) {
+import validateInjectedParams from '../../helpers/validate-injected-params';
+
+function injectSessionStorage({ window }) {
+  /**
+   * The session storage data element.
+   * @param {Object} settings The data element settings object.
+   * @param {string} settings.name The name of the session storage item for which a value should be
+   * retrieved.
+   * @returns {string}
+   */
+  return function sessionStorage(settings) {
+    // When session storage is disabled on Safari, the mere act of referencing window.sessionStorage
+    // throws an error. For this reason, referencing window.sessionStorage without being inside
+    // a try-catch should be avoided.
     try {
       return window.sessionStorage.getItem(settings.name);
     } catch (e) {
@@ -19,3 +31,14 @@ export default function createSessionStorage(window) {
     }
   };
 }
+
+const validateInjection = validateInjectedParams(injectSessionStorage);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  window: require('@adobe/reactor-window')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectSessionStorage };
+/* END.TESTS_ONLY */

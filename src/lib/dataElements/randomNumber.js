@@ -19,7 +19,7 @@
  * random number.
  * @returns {number}
  */
-export default function (settings) {
+export default function randomNumber(settings) {
   const min = Math.ceil(settings.min);
   const max = Math.floor(settings.max);
 
