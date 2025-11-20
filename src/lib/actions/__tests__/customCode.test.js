@@ -72,6 +72,11 @@ fdescribe('custom code action delegate', function () {
   let postscribeSpy;
   let customCode;
 
+  beforeAll(() => {
+    postscribeSpy = jasmine.createSpy('postscribe');
+    documentWriteSpy = jasmine.createSpy('documentWrite');
+  });
+
   beforeEach(function () {
     mockTurbineVariable({
       propertySettings: {},
@@ -80,8 +85,8 @@ fdescribe('custom code action delegate', function () {
       }
     });
 
-    postscribeSpy = jasmine.createSpy('postscribe');
-    documentWriteSpy = jasmine.createSpy('documentWrite');
+    postscribeSpy.calls.reset();
+    documentWriteSpy.calls.reset();
   });
 
   [true, false].forEach(function (isIE) {
@@ -244,7 +249,7 @@ fdescribe('custom code action delegate', function () {
           let postscribeTag;
           let extensionSettings;
 
-          beforeAll(function () {
+          beforeEach(function () {
             postscribeTag = {
               tagName: 'script',
               attrs: {}
