@@ -21,11 +21,6 @@ export default (config) => {
     failOnFailingTestSuite: true,
     files: [
       {
-        pattern: './helpers/setupTestEnv.js',
-        watched: false,
-        type: 'module'
-      },
-      {
         pattern: './helpers/mockDelegateWrapper.js',
         watched: false,
         type: 'module'

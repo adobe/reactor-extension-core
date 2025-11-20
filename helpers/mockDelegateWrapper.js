@@ -18,6 +18,11 @@
  */
 
 /* START.TESTS_ONLY */
+// make process available globally because we bundle karma as modules now.
+import process from 'process';
+globalThis.process = process;
+process.env.NODE_ENV = 'test';
+
 // these definitions are more involved than a simple "provide the window" or "provide the document"
 import loadScript from '@adobe/reactor-load-script';
 import queryString from '@adobe/reactor-query-string';
