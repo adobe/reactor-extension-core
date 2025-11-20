@@ -10,16 +10,18 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-const createLibraryLoadedDelegate = require('../libraryLoaded');
+import { injectLibraryLoaded } from '../libraryLoaded.js';
 
 describe('library loaded event delegate', function () {
   it('sends the trigger to the pageLifecycleEvents helper module', function () {
-    var trigger = function () {};
-    var pageLifecycleEventsSpy = jasmine.createSpyObj('pageLifecycleEvents', [
+    const trigger = function () {};
+    const pageLifecycleEventsSpy = jasmine.createSpyObj('pageLifecycleEvents', [
       'registerLibraryLoadedTrigger'
     ]);
 
-    var delegate = createLibraryLoadedDelegate(pageLifecycleEventsSpy);
+    const delegate = injectLibraryLoaded({
+      pageLifecycleEvents: pageLifecycleEventsSpy
+    });
 
     delegate({}, trigger);
     expect(

@@ -11,7 +11,8 @@
  ****************************************************************************************/
 
 import testStandardEvent from './helpers/testStandardEvent.js';
-import delegate from '../submit.js';
+import { injectSubmit } from '../submit';
+const delegate = injectSubmit({ document });
 
 describe('submit event delegate', function () {
   testStandardEvent(function () {

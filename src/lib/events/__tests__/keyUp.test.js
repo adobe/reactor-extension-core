@@ -10,10 +10,10 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
+import testStandardEvent from './helpers/testStandardEvent';
+import { injectKeyUp } from '../keyUp';
+const delegate = injectKeyUp({ document });
 describe('key press event delegate', function () {
-  var testStandardEvent = require('./helpers/testStandardEvent');
-  var delegate = require('../keyUp');
-
   testStandardEvent(function () {
     return delegate;
   }, 'keyup');

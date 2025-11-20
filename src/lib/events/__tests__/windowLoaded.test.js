@@ -10,16 +10,18 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import createWindowLoadedDelegate from '../windowLoaded.js';
+import { injectWindowLoaded } from '../windowLoaded';
 
 describe('window loaded event delegate', function () {
   it('sends the trigger to the pageLifecycleEvents helper module', function () {
-    var trigger = function () {};
-    var pageLifecycleEventsSpy = jasmine.createSpyObj('pageLifecycleEvents', [
+    const trigger = function () {};
+    const pageLifecycleEventsSpy = jasmine.createSpyObj('pageLifecycleEvents', [
       'registerWindowLoadedTrigger'
     ]);
 
-    var delegate = createWindowLoadedDelegate(pageLifecycleEventsSpy);
+    const delegate = injectWindowLoaded({
+      pageLifecycleEvents: pageLifecycleEventsSpy
+    });
 
     delegate({}, trigger);
     expect(

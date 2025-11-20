@@ -11,14 +11,13 @@
  ****************************************************************************************/
 
 import once from './helpers/once';
-import visibilityApi from './helpers/visibilityApi';
+import runVisibilityApi from './helpers/visibilityApi';
 import { castToNumberIfString } from '../helpers/stringAndNumberUtils';
 import Timer from './helpers/timer';
 import validateInjectedParams from '../../helpers/validate-injected-params.js';
 
 function injectTimeOnPage({ document, Timer }) {
-  const hiddenProperty = visibilityApi.hiddenProperty;
-  const visibilityChangeEventType = visibilityApi.visibilityChangeEventType;
+  const { hiddenProperty, visibilityChangeEventType } = runVisibilityApi();
   const triggers = {};
 
   const onMarkerPassed = function (timeOnPageMilliseconds) {

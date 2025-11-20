@@ -10,10 +10,11 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-describe('media stalled event delegate', function () {
-  var testStandardEvent = require('./helpers/testStandardEvent');
-  var delegate = require('../mediaStalled');
+import testStandardEvent from './helpers/testStandardEvent';
+import { injectMediaStalled } from '../mediaStalled';
+const delegate = injectMediaStalled({ document });
 
+describe('media stalled event delegate', function () {
   testStandardEvent(function () {
     return delegate;
   }, 'stalled');

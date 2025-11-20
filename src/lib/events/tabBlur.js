@@ -10,21 +10,19 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import visibilityApiFactory from './helpers/visibilityApi';
+import validateInjectedParams from '../../helpers/validate-injected-params';
+import runVisibilityApi from './helpers/visibilityApi.js';
+const { hiddenProperty, visibilityChangeEventType } = runVisibilityApi();
 import once from './helpers/once';
 
-function createTabBlurDelegate(document) {
-  const visibilityApi = visibilityApiFactory();
-  const hiddenProperty = visibilityApi.hiddenProperty;
-  const visibilityChangeEventType = visibilityApi.visibilityChangeEventType;
-
+function injectTabBlur({ document }) {
   /**
    * All trigger methods registered for this event type.
    * @type {ruleTrigger[]}
    */
-  const triggers = [];
+  var triggers = [];
 
-  const watchForTabBlur = once(function () {
+  var watchForTabBlur = once(function () {
     document.addEventListener(
       visibilityChangeEventType,
       function () {
@@ -41,12 +39,21 @@ function createTabBlurDelegate(document) {
   /**
    * Tabblur event. This event occurs when a webpage is not visible or not in focus.
    * @param {Object} settings The event settings object.
-   * @param {ruleTrigger} trigger The trigger callback.
+   * @param {function} trigger The [rule]trigger callback.
    */
-  return function (settings, trigger) {
+  return function tabBlur(settings, trigger) {
     watchForTabBlur();
     triggers.push(trigger);
   };
 }
 
-export default createTabBlurDelegate;
+const validateInjection = validateInjectedParams(injectTabBlur);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  document: require('@adobe/reactor-document')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectTabBlur };
+/* END.TESTS_ONLY */

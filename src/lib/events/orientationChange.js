@@ -10,7 +10,9 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-function createOrientationChangeDelegate(window) {
+import validateInjectedParams from '../../helpers/validate-injected-params';
+
+function injectOrientationChange({ window }) {
   const triggers = [];
 
   window.addEventListener('orientationchange', function (event) {
@@ -30,11 +32,20 @@ function createOrientationChangeDelegate(window) {
   /**
    * The orientationchange event. This event occurs when the orientation of the device has changed.
    * @param {Object} settings The event settings object.
-   * @param {ruleTrigger} trigger The trigger callback.
+   * @param {function} trigger The [rule]trigger callback.
    */
-  return function (settings, trigger) {
+  return function orientationChange(settings, trigger) {
     triggers.push(trigger);
   };
 }
 
-export default createOrientationChangeDelegate;
+const validateInjection = validateInjectedParams(injectOrientationChange);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  window: require('@adobe/reactor-window')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectOrientationChange };
+/* END.TESTS_ONLY */

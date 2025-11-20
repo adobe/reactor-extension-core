@@ -10,12 +10,14 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-describe('media time played event delegate', function () {
-  var delegate;
-  var aElement;
-  var bElement;
+import { injectMediaTimePlayed } from '../mediaTimePlayed';
 
-  var createElements = function () {
+describe('media time played event delegate', function () {
+  const delegate = injectMediaTimePlayed({ document });
+  let aElement;
+  let bElement;
+
+  const createElements = function () {
     aElement = document.createElement('div');
     aElement.id = 'a';
     aElement.innerHTML = 'a';
@@ -27,14 +29,14 @@ describe('media time played event delegate', function () {
     aElement.appendChild(bElement);
   };
 
-  var removeElements = function () {
+  const removeElements = function () {
     if (aElement) {
       document.body.removeChild(aElement);
     }
     aElement = bElement = null;
   };
 
-  var assertTriggerCall = function (options) {
+  const assertTriggerCall = function (options) {
     expect(options.call.args[0]).toEqual({
       element: options.element,
       target: options.target,
@@ -45,7 +47,6 @@ describe('media time played event delegate', function () {
 
   beforeAll(function () {
     jasmine.clock().install();
-    delegate = require('../mediaTimePlayed');
   });
 
   afterAll(function () {
@@ -64,8 +65,8 @@ describe('media time played event delegate', function () {
     'triggers multiple rules with the same amount using second unit targeting the ' +
       'same element',
     function () {
-      var aTrigger = jasmine.createSpy();
-      var a2Trigger = jasmine.createSpy();
+      const aTrigger = jasmine.createSpy();
+      const a2Trigger = jasmine.createSpy();
 
       delegate(
         {
@@ -94,7 +95,7 @@ describe('media time played event delegate', function () {
       expect(aTrigger.calls.count()).toEqual(0);
       expect(a2Trigger.calls.count()).toEqual(0);
 
-      var seekable = {
+      aElement.seekable = {
         start: function () {
           return 30;
         },
@@ -103,8 +104,6 @@ describe('media time played event delegate', function () {
         },
         length: 1
       };
-
-      aElement.seekable = seekable;
       aElement.currentTime = 34;
 
       Simulate.timeupdate(aElement);
@@ -141,8 +140,8 @@ describe('media time played event delegate', function () {
     'triggers multiple rules with the same amount using second unit targeting ' +
       'nested elements',
     function () {
-      var aTrigger = jasmine.createSpy();
-      var bTrigger = jasmine.createSpy();
+      const aTrigger = jasmine.createSpy();
+      const bTrigger = jasmine.createSpy();
 
       delegate(
         {
@@ -171,7 +170,7 @@ describe('media time played event delegate', function () {
       expect(aTrigger.calls.count()).toEqual(0);
       expect(bTrigger.calls.count()).toEqual(0);
 
-      var seekable = {
+      bElement.seekable = {
         start: function () {
           return 30;
         },
@@ -180,8 +179,6 @@ describe('media time played event delegate', function () {
         },
         length: 1
       };
-
-      bElement.seekable = seekable;
       bElement.currentTime = 34;
 
       Simulate.timeupdate(bElement);
@@ -218,8 +215,8 @@ describe('media time played event delegate', function () {
     'triggers multiple rules with the same amount using second unit targeting ' +
       'nested elements (as strings)',
     function () {
-      var aTrigger = jasmine.createSpy();
-      var bTrigger = jasmine.createSpy();
+      const aTrigger = jasmine.createSpy();
+      const bTrigger = jasmine.createSpy();
 
       delegate(
         {
@@ -248,7 +245,7 @@ describe('media time played event delegate', function () {
       expect(aTrigger.calls.count()).toEqual(0);
       expect(bTrigger.calls.count()).toEqual(0);
 
-      var seekable = {
+      bElement.seekable = {
         start: function () {
           return 30;
         },
@@ -257,8 +254,6 @@ describe('media time played event delegate', function () {
         },
         length: 1
       };
-
-      bElement.seekable = seekable;
       bElement.currentTime = 34;
 
       Simulate.timeupdate(bElement);
@@ -295,8 +290,8 @@ describe('media time played event delegate', function () {
     'triggers multiple rules with the different amounts using second unit targeting nested ' +
       'elements',
     function () {
-      var aTrigger = jasmine.createSpy();
-      var bTrigger = jasmine.createSpy();
+      const aTrigger = jasmine.createSpy();
+      const bTrigger = jasmine.createSpy();
 
       delegate(
         {
@@ -325,7 +320,7 @@ describe('media time played event delegate', function () {
       expect(aTrigger.calls.count()).toEqual(0);
       expect(bTrigger.calls.count()).toEqual(0);
 
-      var seekable = {
+      bElement.seekable = {
         start: function () {
           return 30;
         },
@@ -334,8 +329,6 @@ describe('media time played event delegate', function () {
         },
         length: 1
       };
-
-      bElement.seekable = seekable;
       bElement.currentTime = 34;
 
       Simulate.timeupdate(bElement);
@@ -379,8 +372,8 @@ describe('media time played event delegate', function () {
     'triggers multiple rules with the different amounts using second unit targeting the same ' +
       'element',
     function () {
-      var aTrigger = jasmine.createSpy();
-      var a2Trigger = jasmine.createSpy();
+      const aTrigger = jasmine.createSpy();
+      const a2Trigger = jasmine.createSpy();
 
       delegate(
         {
@@ -409,7 +402,7 @@ describe('media time played event delegate', function () {
       expect(aTrigger.calls.count()).toEqual(0);
       expect(a2Trigger.calls.count()).toEqual(0);
 
-      var seekable = {
+      aElement.seekable = {
         start: function () {
           return 30;
         },
@@ -418,8 +411,6 @@ describe('media time played event delegate', function () {
         },
         length: 1
       };
-
-      aElement.seekable = seekable;
       aElement.currentTime = 34;
 
       Simulate.timeupdate(aElement);
@@ -463,8 +454,8 @@ describe('media time played event delegate', function () {
     'triggers multiple rules with the different amounts using percent unit targeting nested ' +
       'elements',
     function () {
-      var aTrigger = jasmine.createSpy();
-      var bTrigger = jasmine.createSpy();
+      const aTrigger = jasmine.createSpy();
+      const bTrigger = jasmine.createSpy();
 
       delegate(
         {
@@ -493,7 +484,7 @@ describe('media time played event delegate', function () {
       expect(aTrigger.calls.count()).toEqual(0);
       expect(bTrigger.calls.count()).toEqual(0);
 
-      var seekable = {
+      bElement.seekable = {
         start: function () {
           return 30;
         },
@@ -502,8 +493,6 @@ describe('media time played event delegate', function () {
         },
         length: 1
       };
-
-      bElement.seekable = seekable;
       bElement.currentTime = 31; // 1%, 1s complete.
 
       Simulate.timeupdate(bElement);
@@ -547,8 +536,8 @@ describe('media time played event delegate', function () {
     'triggers multiple rules with the same amount using different units targeting the same ' +
       'element',
     function () {
-      var aTrigger = jasmine.createSpy();
-      var a2Trigger = jasmine.createSpy();
+      const aTrigger = jasmine.createSpy();
+      const a2Trigger = jasmine.createSpy();
 
       delegate(
         {
@@ -577,7 +566,7 @@ describe('media time played event delegate', function () {
       expect(aTrigger.calls.count()).toEqual(0);
       expect(a2Trigger.calls.count()).toEqual(0);
 
-      var seekable = {
+      aElement.seekable = {
         start: function () {
           return 30;
         },
@@ -586,8 +575,6 @@ describe('media time played event delegate', function () {
         },
         length: 1
       };
-
-      aElement.seekable = seekable;
 
       aElement.currentTime = 33; // 4%, 3s complete.
       Simulate.timeupdate(aElement);

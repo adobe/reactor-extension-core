@@ -10,21 +10,19 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
+import validateInjectedParams from '../../helpers/validate-injected-params';
 import once from './helpers/once';
-import getVisibilityApi from './helpers/visibilityApi';
+import runVisibilityApi from './helpers/visibilityApi';
+const { hiddenProperty, visibilityChangeEventType } = runVisibilityApi();
 
-/**
- * All trigger methods registered for this event type.
- * @type {ruleTrigger[]}
- */
-const triggers = [];
+function injectTabFocus({ document }) {
+  /**
+   * All trigger methods registered for this event type.
+   * @type {ruleTrigger[]}
+   */
+  const triggers = [];
 
-export default function createTabFocusDelegate(document) {
-  const visibilityApi = getVisibilityApi();
-  const hiddenProperty = visibilityApi.hiddenProperty;
-  const visibilityChangeEventType = visibilityApi.visibilityChangeEventType;
-
-  const watchForTabFocus = once(() => {
+  const watchForTabFocus = once(function () {
     document.addEventListener(
       visibilityChangeEventType,
       function () {
@@ -43,10 +41,21 @@ export default function createTabFocusDelegate(document) {
    * there is a reasonable chance that any given webpage is in the background and thus not
    * visible to the user.
    * @param {Object} settings The event settings object.
-   * @param {ruleTrigger} trigger The trigger callback.
+   * @param {function} trigger The [rule]trigger callback.
    */
-  return function (settings, trigger) {
+  return function tabFocus(settings, trigger) {
     watchForTabFocus();
     triggers.push(trigger);
   };
 }
+
+const validateInjection = validateInjectedParams(injectTabFocus);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  document: require('@adobe/reactor-document')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectTabFocus };
+/* END.TESTS_ONLY */

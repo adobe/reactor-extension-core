@@ -10,15 +10,26 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-function createLibraryLoadedDelegate(pageLifecycleEvents) {
+import validateInjectedParams from '../../helpers/validate-injected-params';
+import pageLifecycleEvents from './helpers/pageLifecycleEvents.js';
+
+function injectLibraryLoaded({ pageLifecycleEvents }) {
   /**
    * Library loaded event. This event occurs as soon as the runtime library is loaded.
    * @param {Object} settings The event settings object.
-   * @param {ruleTrigger} trigger The trigger callback.
+   * @param {function} trigger The [rule]trigger callback.
    */
-  return function (settings, trigger) {
+  return function libraryLoaded(settings, trigger) {
     pageLifecycleEvents.registerLibraryLoadedTrigger(trigger);
   };
 }
 
-export default createLibraryLoadedDelegate;
+const validateInjection = validateInjectedParams(injectLibraryLoaded);
+
+export default validateInjection({
+  pageLifecycleEvents
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectLibraryLoaded };
+/* END.TESTS_ONLY */

@@ -10,24 +10,26 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-const createTabFocusDelegate = require('../tabFocus');
-var visibilityApi = require('../helpers/visibilityApi');
-var visibilityApiInstance = visibilityApi();
-var visibilityChangeListener;
+import runVisibilityApi from '../helpers/visibilityApi';
+const { visibilityChangeEventType, hiddenProperty } = runVisibilityApi();
+import { injectTabFocus } from '../tabFocus';
+let visibilityChangeListener;
 
-var mockDocument = {
+const mockDocument = {
   location: 'somelocation',
   addEventListener: function (event, listener) {
-    if (event && event === visibilityApiInstance.visibilityChangeEventType) {
+    if (event && event === visibilityChangeEventType) {
       visibilityChangeListener = listener;
     }
   }
 };
 
-var delegate = createTabFocusDelegate(mockDocument);
+const delegate = injectTabFocus({
+  document: mockDocument
+});
 
-var isIE = function () {
-  var myNav = navigator.userAgent.toLowerCase();
+const isIE = function () {
+  const myNav = navigator.userAgent.toLowerCase();
   return myNav.indexOf('msie') !== -1
     ? parseInt(myNav.split('msie')[1])
     : false;
@@ -36,17 +38,17 @@ var isIE = function () {
 describe('tab focus event delegate', function () {
   if (!isIE() || isIE() > 9) {
     it('triggers rule when the tabfocus event occurs', function () {
-      var trigger = jasmine.createSpy();
+      const trigger = jasmine.createSpy();
 
       delegate({}, trigger);
 
       expect(trigger.calls.count()).toBe(0);
 
-      mockDocument[visibilityApiInstance.hiddenProperty] = false;
+      mockDocument[hiddenProperty] = false;
       visibilityChangeListener.call(location);
 
       expect(trigger.calls.count()).toBe(1);
-      var call = trigger.calls.mostRecent();
+      const call = trigger.calls.mostRecent();
       expect(call.args.length).toBe(0);
     });
   }

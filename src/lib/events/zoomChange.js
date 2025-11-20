@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 import once from './helpers/once';
-import validateInjectedParams from '../../helpers/validate-injected-params.js';
+import validateInjectedParams from '../../helpers/validate-injected-params';
 
 function injectZoomChange({ window, document }) {
   const triggers = [];
@@ -40,7 +40,7 @@ function injectZoomChange({ window, document }) {
       gestureEndTime = +new Date();
 
       // Could we use a generic throttling or debouncing function?
-      setTimeout(function () {
+      window.setTimeout(function () {
         let zoom = getCurrentZoom();
 
         if (zoom === lastZoom) {
@@ -50,10 +50,10 @@ function injectZoomChange({ window, document }) {
         lastZoom = zoom;
 
         if (currentTimer) {
-          clearTimeout(currentTimer);
+          window.clearTimeout(currentTimer);
         }
 
-        currentTimer = setTimeout(function () {
+        currentTimer = window.setTimeout(function () {
           currentTimer = null;
 
           zoom = getCurrentZoom();
@@ -74,7 +74,7 @@ function injectZoomChange({ window, document }) {
       }
 
       // Could we use a generic throttling or debouncing function?
-      setTimeout(function () {
+      window.setTimeout(function () {
         let zoom = getCurrentZoom();
 
         if (zoom === lastZoom) {
@@ -84,10 +84,10 @@ function injectZoomChange({ window, document }) {
         lastZoom = zoom;
 
         if (currentTimer) {
-          clearTimeout(currentTimer);
+          window.clearTimeout(currentTimer);
         }
 
-        currentTimer = setTimeout(function () {
+        currentTimer = window.setTimeout(function () {
           currentTimer = null;
           zoom = getCurrentZoom();
           if (lastZoom === zoom) {

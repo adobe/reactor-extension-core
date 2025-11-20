@@ -10,24 +10,27 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-const createTabBlurDelegate = require('../tabBlur');
-var visibilityApi = require('../helpers/visibilityApi');
-var visibilityApiInstance = visibilityApi();
-var visibilityChangeListener;
+import { injectTabBlur } from '../tabBlur';
+import runVisibilityApi from '../helpers/visibilityApi';
+const { hiddenProperty, visibilityChangeEventType } = runVisibilityApi();
 
-var mockDocument = {
+let visibilityChangeListener;
+
+const mockDocument = {
   location: 'somelocation',
   addEventListener: function (event, listener) {
-    if (event && event === visibilityApiInstance.visibilityChangeEventType) {
+    if (event && event === visibilityChangeEventType) {
       visibilityChangeListener = listener;
     }
   }
 };
 
-var delegate = createTabBlurDelegate(mockDocument);
+const delegate = injectTabBlur({
+  document: mockDocument
+});
 
-var isIE = function () {
-  var myNav = navigator.userAgent.toLowerCase();
+const isIE = function () {
+  const myNav = navigator.userAgent.toLowerCase();
   return myNav.indexOf('msie') !== -1
     ? parseInt(myNav.split('msie')[1])
     : false;
@@ -36,13 +39,13 @@ var isIE = function () {
 describe('tab blur event delegate', function () {
   if (!isIE() || isIE() > 9) {
     it('triggers rule when the tabblur event occurs', function () {
-      var trigger = jasmine.createSpy();
+      const trigger = jasmine.createSpy();
 
       delegate({}, trigger);
 
       expect(trigger.calls.count()).toBe(0);
 
-      mockDocument[visibilityApiInstance.hiddenProperty] = true;
+      mockDocument[hiddenProperty] = true;
       visibilityChangeListener.call(location);
 
       expect(trigger.calls.count()).toBe(1);

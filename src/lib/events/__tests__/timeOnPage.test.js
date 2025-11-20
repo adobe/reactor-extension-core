@@ -12,37 +12,36 @@
 
 import { injectTimeOnPage } from '../timeOnPage.js';
 import { injectTimer } from '../helpers/timer.js';
-
+import runVisibilityApi from '../helpers/visibilityApi';
+const { visibilityChangeEventType, hiddenProperty } = runVisibilityApi();
 const injectNewTimer = () => injectTimer({ assign: Object.assign });
 
-var visibilityApi = require('../helpers/visibilityApi');
-var visibilityApiInstance = visibilityApi();
-var visibilityChangeListener;
+let visibilityChangeListener;
 
-var mockDocument = {
+const mockDocument = {
   addEventListener: function (event, listener) {
-    if (event && event === visibilityApiInstance.visibilityChangeEventType) {
+    if (event && event === visibilityChangeEventType) {
       visibilityChangeListener = listener;
     }
   }
 };
 
-var Timer = require('../helpers/timer');
+const Timer = require('../helpers/timer');
 
-var isIE = function () {
-  var myNav = navigator.userAgent.toLowerCase();
+const isIE = function () {
+  const myNav = navigator.userAgent.toLowerCase();
   return myNav.indexOf('msie') !== -1
     ? parseInt(myNav.split('msie')[1])
     : false;
 };
 
 describe('time on page event delegate', function () {
-  var delegate;
+  let delegate;
 
   beforeEach(function () {
     jasmine.clock().install();
 
-    var baseTime = new Date();
+    const baseTime = new Date();
     jasmine.clock().mockDate(baseTime);
 
     delegate = injectTimeOnPage({
@@ -56,24 +55,24 @@ describe('time on page event delegate', function () {
   });
 
   it('triggers rule', function () {
-    var trigger = jasmine.createSpy('timeOnPageTrigger');
+    const trigger = jasmine.createSpy('timeOnPageTrigger');
 
     delegate({ timeOnPage: 2 }, trigger);
     jasmine.clock().tick(2000);
 
-    var call = trigger.calls.mostRecent();
+    const call = trigger.calls.mostRecent();
     expect(call.args[0]).toEqual({
       timeOnPage: 2
     });
   });
 
   it('triggers rule when timeOnPage is a string', function () {
-    var trigger = jasmine.createSpy('timeOnPageTrigger');
+    const trigger = jasmine.createSpy('timeOnPageTrigger');
 
     delegate({ timeOnPage: '2' }, trigger);
     jasmine.clock().tick(2000);
 
-    var call = trigger.calls.mostRecent();
+    const call = trigger.calls.mostRecent();
     expect(call.args[0]).toEqual({
       timeOnPage: 2
     });
@@ -85,7 +84,7 @@ describe('time on page event delegate', function () {
 
       delegate({});
 
-      mockDocument[visibilityApiInstance.hiddenProperty] = true;
+      mockDocument[hiddenProperty] = true;
       visibilityChangeListener.call(location);
 
       expect(Timer.prototype.pause).toHaveBeenCalled();
@@ -96,7 +95,7 @@ describe('time on page event delegate', function () {
 
       delegate({});
 
-      mockDocument[visibilityApiInstance.hiddenProperty] = false;
+      mockDocument[hiddenProperty] = false;
       visibilityChangeListener.call(location);
 
       expect(Timer.prototype.resume).toHaveBeenCalled();

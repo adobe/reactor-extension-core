@@ -10,13 +10,15 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
+import { injectOrientationChange } from '../orientationChange';
+
 describe('orientation change event delegate', function () {
-  var delegate;
-  var orientationChangeCallbacks = [];
+  let delegate;
+  const orientationChangeCallbacks = [];
 
   // We can't use the real window object to mock orientation changes because some browsers won't
   // let us set the orientation property.
-  var mockWindow = {
+  const mockWindow = {
     addEventListener: function (type, callback) {
       if (type === 'orientationchange') {
         orientationChangeCallbacks.push(callback);
@@ -24,7 +26,7 @@ describe('orientation change event delegate', function () {
     }
   };
 
-  var triggerOrientationChange = function () {
+  const triggerOrientationChange = function () {
     // Act as though window triggered an orientationchange event.
     orientationChangeCallbacks.forEach(function (callback) {
       callback({
@@ -35,7 +37,7 @@ describe('orientation change event delegate', function () {
     });
   };
 
-  var assertTriggerCall = function (options) {
+  const assertTriggerCall = function (options) {
     expect(options.call.args[0]).toEqual({
       element: mockWindow,
       target: mockWindow,
@@ -43,14 +45,14 @@ describe('orientation change event delegate', function () {
     });
   };
 
-  const createOrientationChangeDelegate = require('../orientationChange');
-
   beforeAll(function () {
-    delegate = createOrientationChangeDelegate(mockWindow);
+    delegate = injectOrientationChange({
+      window: mockWindow
+    });
   });
 
   it('triggers rule when orientation changes', function () {
-    var trigger = jasmine.createSpy();
+    const trigger = jasmine.createSpy();
 
     delegate({}, trigger);
 
