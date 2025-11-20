@@ -10,8 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import validateInjectedParams from '../../helpers/validate-injected-params';
-import pageLifecycleEvents from './helpers/pageLifecycleEvents';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
+import pageLifecycleEvents from './helpers/pageLifecycleEvents.js';
 
 function injectDomReady({ pageLifecycleEvents }) {
   /**

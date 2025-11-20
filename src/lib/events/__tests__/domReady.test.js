@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { injectDomReady } from '../domReady';
+import { injectDomReady } from '../domReady.js';
 
 describe('dom ready event delegate', function () {
   it('sends the trigger to the pageLifecycleEvents helper module', function () {

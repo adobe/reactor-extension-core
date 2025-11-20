@@ -10,8 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import WeakMap from '../helpers/weakMap';
-import { injectElementExists } from '../elementExists';
+import WeakMap from '../helpers/weakMap.js';
+import { injectElementExists } from '../elementExists.js';
 const POLL_INTERVAL = 3000;
 
 describe('element exists event delegate', function () {

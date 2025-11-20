@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { injectOrientationChange } from '../orientationChange';
+import { injectOrientationChange } from '../orientationChange.js';
 
 describe('orientation change event delegate', function () {
   let delegate;

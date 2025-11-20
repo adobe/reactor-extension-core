@@ -10,10 +10,10 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import validateInjectedParams from '../../helpers/validate-injected-params';
-import createBubbly from './helpers/createBubbly';
-import WeakMap from './helpers/WeakMap';
-import { castToNumberIfString } from '../helpers/stringAndNumberUtils';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
+import createBubbly from './helpers/createBubbly.js';
+import WeakMap from '../helpers/WeakMap.js';
+import { castToNumberIfString } from '../helpers/stringAndNumberUtils.js';
 
 const bubbly = createBubbly();
 const evaluatedEvents = new WeakMap();

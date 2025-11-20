@@ -10,8 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import testStandardEvent from './helpers/testStandardEvent';
-import { injectMediaLoadedData } from '../mediaLoadedData';
+import testStandardEvent from './helpers/testStandardEvent.js';
+import { injectMediaLoadedData } from '../mediaLoadedData.js';
 const delegate = injectMediaLoadedData({ document });
 
 describe('media loaded data event delegate', function () {

@@ -10,8 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import once from './helpers/once';
-import validateInjectedParams from '../../helpers/validate-injected-params';
+import once from './helpers/once.js';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
 
 function injectZoomChange({ window, document }) {
   const triggers = [];

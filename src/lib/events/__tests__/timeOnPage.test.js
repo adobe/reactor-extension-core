@@ -12,7 +12,7 @@
 
 import { injectTimeOnPage } from '../timeOnPage.js';
 import { injectTimer } from '../helpers/timer.js';
-import runVisibilityApi from '../helpers/visibilityApi';
+import runVisibilityApi from '../helpers/visibilityApi.js';
 const { visibilityChangeEventType, hiddenProperty } = runVisibilityApi();
 const injectNewTimer = () => injectTimer({ assign: Object.assign });
 

@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { injectWindowLoaded } from '../windowLoaded';
+import { injectWindowLoaded } from '../windowLoaded.js';
 
 describe('window loaded event delegate', function () {
   it('sends the trigger to the pageLifecycleEvents helper module', function () {

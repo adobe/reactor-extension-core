@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { injectDirectCall } from '../directCall';
+import { injectDirectCall } from '../directCall.js';
 
 describe('direct call event delegate', function () {
   const delegate = injectDirectCall({ window });

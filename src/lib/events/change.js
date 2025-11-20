@@ -10,9 +10,9 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import validateInjectedParams from '../../helpers/validate-injected-params';
-import textMatch from '../helpers/textMatch';
-import createBubbly from './helpers/createBubbly';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
+import textMatch from '../helpers/textMatch.js';
+import createBubbly from './helpers/createBubbly.js';
 const bubbly = createBubbly();
 
 function injectChange({ document }) {

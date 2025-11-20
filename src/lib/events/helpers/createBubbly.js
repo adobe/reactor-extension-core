@@ -10,10 +10,10 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import WeakMap from './weakMap';
-import matchesProperties from './matchesProperties';
-import matchesSelector from './matchesSelector';
-import validateInjectedParams from '../../../helpers/validate-injected-params';
+import WeakMap from './weakMap.js';
+import matchesProperties from './matchesProperties.js';
+import matchesSelector from './matchesSelector.js';
+import validateInjectedParams from '../../../helpers/validate-injected-params.js';
 
 // Note to developers of other extensions:
 // This module largely exists to support advanced bubbling options

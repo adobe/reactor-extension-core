@@ -10,9 +10,9 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import once from './once';
+import once from './once.js';
 import WeakMap from './weakMap.js';
-import validateInjectedParams from '../../../helpers/validate-injected-params';
+import validateInjectedParams from '../../../helpers/validate-injected-params.js';
 
 function injectLiveQuerySelector({ WeakMap }) {
   const POLL_INTERVAL = 3000;

@@ -10,11 +10,11 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import validateInjectedParams from '../../helpers/validate-injected-params';
-import createBubbly from './helpers/createBubbly';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
+import createBubbly from './helpers/createBubbly.js';
 const bubbly = createBubbly();
-import WeakMap from './helpers/weakMap';
-import { castToNumberIfString } from '../helpers/stringAndNumberUtils';
+import WeakMap from './helpers/weakMap.js';
+import { castToNumberIfString } from '../helpers/stringAndNumberUtils.js';
 
 function injectMediaTimePlayed({ document }) {
   const lastTriggeredByElement = new WeakMap();

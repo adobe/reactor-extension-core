@@ -10,10 +10,10 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import validateInjectedParams from '../../helpers/validate-injected-params';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
 import runVisibilityApi from './helpers/visibilityApi.js';
 const { hiddenProperty, visibilityChangeEventType } = runVisibilityApi();
-import once from './helpers/once';
+import once from './helpers/once.js';
 
 function injectTabBlur({ document }) {
   /**

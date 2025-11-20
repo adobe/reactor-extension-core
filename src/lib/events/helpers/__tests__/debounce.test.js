@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { injectDebounce } from '../debounce';
+import { injectDebounce } from '../debounce.js';
 const debounce = injectDebounce({ window });
 
 describe('debounce', function () {

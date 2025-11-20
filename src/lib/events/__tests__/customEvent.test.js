@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { injectCustomEvent } from '../customEvent';
+import { injectCustomEvent } from '../customEvent.js';
 const delegate = injectCustomEvent({ window });
 
 let outerElement;

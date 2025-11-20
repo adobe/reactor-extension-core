@@ -11,8 +11,8 @@
  ****************************************************************************************/
 
 import Simulate from 'simulate';
-import { injectHover } from '../hover';
-import liveQuerySelector, { __reset as resetLiveQuerySelector } from '../helpers/liveQuerySelector';
+import { injectHover } from '../hover.js';
+import liveQuerySelector, { __reset as resetLiveQuerySelector } from '../helpers/liveQuerySelector.js';
 
 const POLL_INTERVAL = 3000;
 

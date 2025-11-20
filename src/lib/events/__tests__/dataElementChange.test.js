@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { injectDataElementChange } from '../dataElementChange';
+import { injectDataElementChange } from '../dataElementChange.js';
 
 const POLL_INTERVAL = 3000;
 let delegate;

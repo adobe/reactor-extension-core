@@ -10,8 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { injectLiveQuerySelector } from '../liveQuerySelector';
-import WeakMap from '../weakMap';
+import { injectLiveQuerySelector } from '../liveQuerySelector.js';
+import WeakMap from '../weakMap.js';
 const { liveQuerySelector, __reset } = injectLiveQuerySelector({ WeakMap });
 
 const POLL_INTERVAL = 3000;

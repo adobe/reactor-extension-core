@@ -10,8 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import testStandardEvent from './helpers/testStandardEvent';
-import { injectClick, __reset } from '../click';
+import testStandardEvent from './helpers/testStandardEvent.js';
+import { injectClick, __reset } from '../click.js';
 
 const getClickEvent = function () {
   let event;

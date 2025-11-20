@@ -10,10 +10,10 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import once from './helpers/once';
-import runVisibilityApi from './helpers/visibilityApi';
-import { castToNumberIfString } from '../helpers/stringAndNumberUtils';
-import Timer from './helpers/timer';
+import once from './helpers/once.js';
+import runVisibilityApi from './helpers/visibilityApi.js';
+import { castToNumberIfString } from '../helpers/stringAndNumberUtils.js';
+import Timer from './helpers/timer.js';
 import validateInjectedParams from '../../helpers/validate-injected-params.js';
 
 function injectTimeOnPage({ document, Timer }) {

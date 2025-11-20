@@ -10,9 +10,9 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import validateInjectedParams from '../../helpers/validate-injected-params';
-import once from './helpers/once';
-import runVisibilityApi from './helpers/visibilityApi';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
+import once from './helpers/once.js';
+import runVisibilityApi from './helpers/visibilityApi.js';
 const { hiddenProperty, visibilityChangeEventType } = runVisibilityApi();
 
 function injectTabFocus({ document }) {

@@ -10,13 +10,13 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import createBubbly from './helpers/createBubbly';
+import createBubbly from './helpers/createBubbly.js';
 const bubbly = createBubbly();
-import liveQuerySelector from './helpers/liveQuerySelector';
-import matchesProperties from './helpers/matchesProperties';
-import WeakMap from './helpers/weakMap';
-import { castToNumberIfString } from '../helpers/stringAndNumberUtils';
-import validateInjectedParams from '../../helpers/validate-injected-params';
+import liveQuerySelector from './helpers/liveQuerySelector.js';
+import matchesProperties from './helpers/matchesProperties.js';
+import WeakMap from './helpers/weakMap.js';
+import { castToNumberIfString } from '../helpers/stringAndNumberUtils.js';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
 
 function injectHover({ liveQuerySelector }) {
   const trackedDelaysByElement = new WeakMap();

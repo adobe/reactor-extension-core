@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import textMatch from './../../helpers/textMatch';
+import textMatch from './../../helpers/textMatch.js';
 
 const getElementProperty = function (element, property) {
   if (property === '@text' || property === 'innerText') {

@@ -11,8 +11,8 @@
  ****************************************************************************************/
 
 import Simulate from 'simulate';
-import testStandardEvent from './helpers/testStandardEvent';
-import { injectChange } from '../change';
+import testStandardEvent from './helpers/testStandardEvent.js';
+import { injectChange } from '../change.js';
 const delegate = injectChange({ document });
 
 describe('change event delegate', function () {

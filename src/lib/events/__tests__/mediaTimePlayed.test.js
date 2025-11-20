@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 import Simulate from 'simulate';
-import { injectMediaTimePlayed } from '../mediaTimePlayed';
+import { injectMediaTimePlayed } from '../mediaTimePlayed.js';
 
 describe('media time played event delegate', function () {
   const delegate = injectMediaTimePlayed({ document });

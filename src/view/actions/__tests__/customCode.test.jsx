@@ -14,10 +14,10 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import {
   isButtonValid,
   sharedTestingElements
-} from '@test-helpers/react-testing-library';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import CustomCode, { formConfig } from '../customCode';
-import bootstrap from '../../bootstrap';
+} from '@test-helpers/react-testing-library.jsx';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import CustomCode, { formConfig } from '../customCode.jsx';
+import bootstrap from '../../bootstrap.jsx';
 
 // react-testing-library element selectors
 const pageElements = {

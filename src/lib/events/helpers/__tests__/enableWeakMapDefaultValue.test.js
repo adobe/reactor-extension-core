@@ -10,8 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import enableWeakMapDefaultValue from '../enableWeakMapDefaultValue';
-import { injectWeakMap } from '../weakMap';
+import enableWeakMapDefaultValue from '../enableWeakMapDefaultValue.js';
+import { injectWeakMap } from '../weakMap.js';
 const WeakMap = injectWeakMap({ window });
 
 describe('enableWeakMapDefaultValue', function () {

@@ -10,8 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import testStandardEvent from './helpers/testStandardEvent';
-import { injectMouseDown } from '../mousedown';
+import testStandardEvent from './helpers/testStandardEvent.js';
+import { injectMouseDown } from '../mousedown.js';
 const delegate = injectMouseDown({ document });
 
 describe('mousedown event delegate', function () {

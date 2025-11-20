@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { injectHistoryChange } from '../historyChange';
+import { injectHistoryChange } from '../historyChange.js';
 import { injectDebounce } from '../helpers/debounce.js';
 
 describe('history change event delegate', function () {

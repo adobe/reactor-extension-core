@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { injectPageBottom } from '../pageBottom';
+import { injectPageBottom } from '../pageBottom.js';
 
 describe('page bottom event delegate', function () {
   it('sends the trigger to the pageLifecycleEvents helper module', function () {

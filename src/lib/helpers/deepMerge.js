@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import isPlainObject from '../helpers/isPlainObject';
+import isPlainObject from '../helpers/isPlainObject.js';
 
 const clone = function (value) {
   if (isPlainObject(value)) {

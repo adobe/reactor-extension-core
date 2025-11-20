@@ -15,92 +15,88 @@ import copy from 'rollup-plugin-copy';
 import json from '@rollup/plugin-json';
 import stripCode from 'rollup-plugin-strip-code';
 
-// The stripCode will strip all code wrapped in START.TESTS_ONLY/END.TESTS_ONLY
-// comments when process.env.NODE_ENV = production (like in package.json build).
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// -----------------------------
+// Generate entry points
+// -----------------------------
 function getEntries() {
   const entries = {};
-  ['event', 'condition', 'action', 'dataElement', 'configuration'].forEach(
-    (type) => {
-      const typePluralized = type + 's';
-      const delegates =
-        type === 'configuration'
-          ? [extension['configuration']]
-          : extension[typePluralized];
-      delegates.forEach((itemDescriptor) => {
-        let itemNameCapitalized;
-        let chunkName;
-        if (itemDescriptor && itemDescriptor.viewPath) {
-          if (type === 'configuration') {
-            itemNameCapitalized = 'Configuration';
-            chunkName = 'configuration/configuration';
-          } else {
-            const itemName = itemDescriptor.name;
-            const itemNameCamelized = camelCase(itemName);
-            itemNameCapitalized = capitalize(itemNameCamelized);
-            chunkName = `${typePluralized}/${itemNameCamelized}`;
-          }
-          const entryPath = `./.entries/${chunkName}.js`;
-          createEntryFile(entryPath, itemNameCapitalized, chunkName);
-          entries[chunkName] = entryPath;
-        }
-      });
-    }
-  );
+  ['event', 'condition', 'action', 'dataElement', 'configuration'].forEach(type => {
+    const typePluralized = type + 's';
+    const delegates = type === 'configuration' ? [extension['configuration']] : extension[typePluralized];
+
+    delegates.forEach(itemDescriptor => {
+      if (!itemDescriptor || !itemDescriptor.viewPath) return;
+
+      let chunkName, itemNameCapitalized;
+      if (type === 'configuration') {
+        itemNameCapitalized = 'Configuration';
+        chunkName = 'configuration/configuration';
+      } else {
+        const itemNameCamel = camelCase(itemDescriptor.name);
+        itemNameCapitalized = capitalize(itemNameCamel);
+        chunkName = `${typePluralized}/${itemNameCamel}`;
+      }
+
+      const entryPath = `./.entries/${chunkName}.js`;
+      createEntryFile(entryPath, itemNameCapitalized, chunkName);
+      entries[chunkName] = entryPath;
+    });
+  });
   return entries;
 }
 
 const entries = getEntries();
 
+// -----------------------------
+// HTML template for Rollup HTML plugin
+// -----------------------------
 function htmlTemplate({ attributes, files, meta, publicPath, title }) {
   let template = fs.readFileSync('src/view/template.html', 'utf8');
-  // Inject CDN scripts for externals
+
   const cdnScripts = [
     '<script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>',
-    '<script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>',
-    // Add CDN links for react-spectrum if available, otherwise use local or custom CDN
-    // Example:
-    // '<script src="https://unpkg.com/@adobe/react-spectrum/dist/react-spectrum.min.js"></script>',
-    // '<script src="https://unpkg.com/@react/collection-view/dist/collection-view.min.js"></script>',
-    // '<script src="https://unpkg.com/@react/react-spectrum/dist/react-spectrum.min.js"></script>'
+    '<script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>'
   ].join('\n');
-  // Inject JS and CSS files
+
   const scripts = (files.js || [])
     .map(({ fileName }) => `<script src="${publicPath}${fileName}"></script>`)
     .join('\n');
+
   const stylesheets = (files.css || [])
     .map(({ fileName }) => `<link rel="stylesheet" href="${publicPath}${fileName}" />`)
     .join('\n');
+
   template = template.replace(/<title>.*<\/title>/, `<title>${title}</title>`);
-  // Inject CDN scripts and stylesheets before </head>
   template = template.replace('</head>', `${cdnScripts}\n${stylesheets}\n</head>`);
-  // Inject scripts before </body>
   template = template.replace('</body>', `${scripts}\n</body>`);
+
   return template;
 }
 
+// -----------------------------
+// Shared plugins
+// -----------------------------
 const sharedPlugins = [
   nodeResolve({ extensions: ['.js', '.jsx', '.json'] }),
   json(),
   commonjs(),
-  styles({
-    mode: ['extract', null],
-    include: ['**/*.css', '**/*.styl'],
-    url: false
-  }),
+  styles({ mode: ['extract', null], include: ['**/*.css', '**/*.styl'], url: false }),
+
+  // -----------------------------
+  // Babel is applied here to transform JSX and modern JS
+  // -----------------------------
   babel({
     babelHelpers: 'bundled',
     exclude: 'node_modules/**',
     presets: [
-      ['@babel/preset-env', {
-        targets: '> 1%, last 2 versions, not dead'
-      }],
+      ['@babel/preset-env', { targets: '> 1%, last 2 versions, not dead' }],
       '@babel/preset-react'
     ]
   }),
+
   replace({
     preventAssignment: true,
     REACTOR_KARMA_CI_UNIT_TEST_MODE: JSON.stringify(false),
@@ -112,20 +108,17 @@ const sharedPlugins = [
     'process.env.THEME_DARKEST': 'false',
     'process.browser': 'true'
   }),
-  ...('production' === process.env.NODE_ENV
-    ? [stripCode({
-      start_comment: 'START.TESTS_ONLY',
-      end_comment: 'END.TESTS_ONLY'
-    })]
+
+  ...(process.env.NODE_ENV === 'production'
+    ? [stripCode({ start_comment: 'START.TESTS_ONLY', end_comment: 'END.TESTS_ONLY' })]
     : []),
-  copy({
-    targets: [
-      { src: 'resources/**/*', dest: 'dist/resources' }
-    ],
-    hook: 'writeBundle'
-  })
+
+  copy({ targets: [{ src: 'resources/**/*', dest: 'dist/resources' }], hook: 'writeBundle' })
 ];
 
+// -----------------------------
+// Externals for UMD/IIFE builds
+// -----------------------------
 const externals = [
   'react',
   'react-dom',
@@ -134,7 +127,10 @@ const externals = [
   '@react/react-spectrum'
 ];
 
-export default Object.keys(entries).map((name) => ({
+// -----------------------------
+// Export Rollup config
+// -----------------------------
+export default Object.keys(entries).map(name => ({
   input: entries[name],
   output: {
     file: path.resolve('dist', `${name}.js`),
@@ -152,11 +148,7 @@ export default Object.keys(entries).map((name) => ({
   external: externals,
   plugins: [
     ...sharedPlugins,
-    html({
-      fileName: `${name}.html`,
-      title: name,
-      template: htmlTemplate
-    })
+    html({ fileName: `${name}.html`, title: name, template: htmlTemplate })
   ],
   onwarn(warning, warn) {
     if (warning.code === 'ERROR') throw new Error(warning.message);

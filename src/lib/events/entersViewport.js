@@ -10,12 +10,12 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import WeakMap from './helpers/weakMap';
-import enableWeakMapDefaultValue from './helpers/enableWeakMapDefaultValue';
-import matchesSelector from './helpers/matchesSelector';
-import matchesProperties from './helpers/matchesProperties';
-import { castToNumberIfString } from '../helpers/stringAndNumberUtils';
-import intersectionObserverIntervals from '../helpers/intersectionObserverIntervals';
+import WeakMap from './helpers/weakMap.js';
+import enableWeakMapDefaultValue from './helpers/enableWeakMapDefaultValue.js';
+import matchesSelector from './helpers/matchesSelector.js';
+import matchesProperties from './helpers/matchesProperties.js';
+import { castToNumberIfString } from '../helpers/stringAndNumberUtils.js';
+import intersectionObserverIntervals from '../helpers/intersectionObserverIntervals.js';
 import validateInjectedParams from '../../helpers/validate-injected-params.js';
 
 const frequencies = {

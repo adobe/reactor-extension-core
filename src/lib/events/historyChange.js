@@ -10,9 +10,9 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import once from './helpers/once';
-import debounce from './helpers/debounce';
-import validateInjectedParams from '../../helpers/validate-injected-params';
+import once from './helpers/once.js';
+import debounce from './helpers/debounce.js';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
 
 function injectHistoryChange({ window, debounce }) {
   const triggers = [];

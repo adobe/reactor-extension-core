@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { injectWeakMap } from '../weakMap';
+import { injectWeakMap } from '../weakMap.js';
 
 describe('WeakMap', function () {
   it('returns the native WeakMap if it exists', function () {

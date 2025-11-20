@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import runVisibilityApi from '../helpers/visibilityApi';
+import runVisibilityApi from '../helpers/visibilityApi.js';
 const { visibilityChangeEventType, hiddenProperty } = runVisibilityApi();
 import { injectTabFocus } from '../tabFocus';
 let visibilityChangeListener;

@@ -10,8 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import testStandardEvent from './helpers/testStandardEvent';
-import { injectMediaPlay } from '../mediaPlay';
+import testStandardEvent from './helpers/testStandardEvent.js';
+import { injectMediaPlay } from '../mediaPlay.js';
 const delegate = injectMediaPlay({ document });
 
 describe('media play event delegate', function () {

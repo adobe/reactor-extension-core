@@ -10,8 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { injectTabBlur } from '../tabBlur';
-import runVisibilityApi from '../helpers/visibilityApi';
+import { injectTabBlur } from '../tabBlur.js';
+import runVisibilityApi from '../helpers/visibilityApi.js';
 const { hiddenProperty, visibilityChangeEventType } = runVisibilityApi();
 
 let visibilityChangeListener;

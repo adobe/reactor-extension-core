@@ -10,9 +10,9 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import validateInjectedParams from '../../helpers/validate-injected-params';
-import WeakMap from './helpers/weakMap';
-import matchesProperties from './helpers/matchesProperties';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
+import WeakMap from './helpers/weakMap.js';
+import matchesProperties from './helpers/matchesProperties.js';
 
 function injectElementExists({ window, document, WeakMap }) {
   const POLL_INTERVAL = 3000;

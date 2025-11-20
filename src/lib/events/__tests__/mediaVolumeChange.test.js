@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import testStandardEvent from './helpers/testStandardEvent';
+import testStandardEvent from './helpers/testStandardEvent.js';
 import { injectMediaVolumeChange } from '../mediaVolumeChange.js';
 const delegate = injectMediaVolumeChange({ document });
 describe('media volume change event delegate', function () {
