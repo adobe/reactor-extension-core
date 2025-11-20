@@ -8,6 +8,7 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import rollupIstanbul from 'rollup-plugin-istanbul';
 import replace from '@rollup/plugin-replace';
+import injectGlobals from './helpers/rollup-plugin-inject-globals.js';
 
 export default (config) => {
   config.set({
@@ -18,10 +19,15 @@ export default (config) => {
     failOnSkippedTests: false,
     failOnFailingTestSuite: true,
     files: [
-      { pattern: './helpers/mockDelegateWrapper.js', watched: false },
+      {
+        pattern: './helpers/mockDelegateWrapper.js',
+        watched: false,
+        type: 'module'
+      },
       { pattern: './src/**/*.js', type: 'module' }
     ],
     preprocessors: {
+      './helpers/mockDelegateWrapper.js': ['rollup'],
       './src/**/*.js': ['rollup']
     },
     plugins: [
@@ -67,9 +73,11 @@ export default (config) => {
         warn(warning);
       },
       plugins: [
+        injectGlobals(),
         replace({
           preventAssignment: true,
-          REACTOR_KARMA_CI_UNIT_TEST_MODE: JSON.stringify(true)
+          REACTOR_KARMA_CI_UNIT_TEST_MODE: JSON.stringify(true),
+          'process.env.NODE_ENV': JSON.stringify('test')
         }),
         nodeResolve({
           // Make node resolve throw on unresolved modules

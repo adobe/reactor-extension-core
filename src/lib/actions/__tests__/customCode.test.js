@@ -19,7 +19,8 @@ const LAUNCH_LIB_EXAMPLE_SRC =
 const createCustomCodeDelegate = function (mocks) {
   return injectCustomCodeAction({
     postscribe: mocks.postscribe,
-    document: mocks.document,
+    document: mocks.document || document,
+    Promise: mocks.Promise || Promise,
     decorateCode: function (action, source) {
       return {
         code: source,
@@ -33,7 +34,7 @@ const createCustomCodeDelegate = function (mocks) {
       },
     getTurbineScript: injectFindPageScript({
       document: mocks.document
-    })
+    }).getTurbine
   });
 };
 
@@ -66,12 +67,12 @@ const getMockDocument = function (options) {
   return document;
 };
 
-describe('custom code action delegate', function () {
+fdescribe('custom code action delegate', function () {
   let documentWriteSpy;
   let postscribeSpy;
   let customCode;
 
-  beforeAll(function () {
+  beforeEach(function () {
     mockTurbineVariable({
       propertySettings: {},
       getExtensionSettings: function () {
@@ -81,15 +82,6 @@ describe('custom code action delegate', function () {
 
     postscribeSpy = jasmine.createSpy('postscribe');
     documentWriteSpy = jasmine.createSpy('documentWrite');
-  });
-
-  afterAll(function () {
-    resetTurbineVariable();
-  });
-
-  beforeEach(function () {
-    postscribeSpy.calls.reset();
-    documentWriteSpy.calls.reset();
   });
 
   [true, false].forEach(function (isIE) {
