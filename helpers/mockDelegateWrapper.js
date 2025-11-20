@@ -45,31 +45,8 @@ function setupGlobals() {
     // not using @adobe/reactor window because all that does is provide the
     // window, and we should place a _satellite object on it.
     if (path === '@adobe/reactor-window') {
-      // this _satellite is different from our definition above for window._satellite.
-      // this _satellite is what's required to be there for a production default export
-      // function.
-      //
-      // Example:
-      // export default validateInjection({
-      //   window: require('@adobe/reactor-window'),
-      // });
-      //
-      // window._satellite above is for jasmine test runner and for the source code
-      // in a jasmine context to have access to window._satellite by default.
-      return {
-        location: { href: jasmine.createSpy('href') },
-        _satellite: {},
-        navigator: {
-          userAgent: window.navigator.userAgent,
-          appVersion: window.navigator.appVersion
-        },
-        setInterval: window.setInterval.bind(window),
-        clearInterval: window.clearInterval.bind(window),
-        setTimeout: window.setTimeout.bind(window),
-        clearTimeout: window.clearTimeout.bind(window),
-        addEventListener: window.addEventListener.bind(window),
-        removeEventListener: window.removeEventListener.bind(window)
-      };
+      // has _satellite = {} from above
+      return window;
     }
     // sometimes and import of a source file for a test will trigger an import of
     // an underlying dependency whose default export relies on certain things being
