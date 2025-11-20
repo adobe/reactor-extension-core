@@ -34,7 +34,7 @@ describe('text-match', function () {
   });
 
   it('Throws an Illegal Argument error message if the pattern is not defined', function () {
-    var errorThrower = function () {
+    const errorThrower = function () {
       matcher('This is My House');
     };
     expect(errorThrower).toThrowError(

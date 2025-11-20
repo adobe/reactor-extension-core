@@ -15,9 +15,9 @@ const BASE_NAMESPACE = 'com.adobe.reactor.core';
 
 function injectGetNamespacedStorage({ window }) {
   return function getNamespacedStorage(storageType, additionalNamespace) {
-    var STORAGE_TYPE_UNAVAILABLE_ERROR =
+    const STORAGE_TYPE_UNAVAILABLE_ERROR =
       '"' + storageType + '" is not available on the window object.';
-    var namespace = BASE_NAMESPACE + '.' + additionalNamespace;
+    const namespace = BASE_NAMESPACE + '.' + additionalNamespace;
 
     // When storage is disabled on Safari, the mere act of referencing window.localStorage
     // or window.sessionStorage throws an error. For this reason, we wrap in a try-catch.

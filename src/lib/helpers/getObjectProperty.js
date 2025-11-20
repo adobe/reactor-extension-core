@@ -17,10 +17,10 @@
  * @returns {*}
  */
 export default function getObjectProperty(obj, property) {
-  var propertyChain = property.split('.');
-  var currentValue = obj;
+  const propertyChain = property.split('.');
+  let currentValue = obj;
 
-  for (var i = 0, len = propertyChain.length; i < len; i++) {
+  for (let i = 0, len = propertyChain.length; i < len; i++) {
     if (currentValue == null) {
       return undefined;
     }

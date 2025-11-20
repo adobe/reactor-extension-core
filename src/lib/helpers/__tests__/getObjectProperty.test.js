@@ -14,7 +14,7 @@ import getObjectProperty from '../getObjectProperty.js';
 
 describe('getObjectProperty', function () {
   it('returns an object property value', function () {
-    var obj = {
+    const obj = {
       my: {
         path: 'bar'
       }
