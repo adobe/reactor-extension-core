@@ -9,6 +9,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import rollupIstanbul from 'rollup-plugin-istanbul';
 import replace from '@rollup/plugin-replace';
 import injectGlobals from './helpers/rollup-plugin-inject-globals.js';
+import detailedErrorReporter from './helpers/karma-detailed-error-reporter.js';
 
 export default (config) => {
   config.set({
@@ -20,6 +21,11 @@ export default (config) => {
     failOnFailingTestSuite: true,
     files: [
       {
+        pattern: './helpers/setupTestEnv.js',
+        watched: false,
+        type: 'module'
+      },
+      {
         pattern: './helpers/mockDelegateWrapper.js',
         watched: false,
         type: 'module'
@@ -27,6 +33,7 @@ export default (config) => {
       { pattern: './src/**/*.js', type: 'module' }
     ],
     preprocessors: {
+      './helpers/setupTestEnv.js': ['rollup'],
       './helpers/mockDelegateWrapper.js': ['rollup'],
       './src/**/*.js': ['rollup']
     },
@@ -37,9 +44,10 @@ export default (config) => {
       karmaChromeLauncher,
       karmaRollupPreprocessor,
       nodeResolve,
-      commonjs
+      commonjs,
+      detailedErrorReporter
     ],
-    reporters: ['dots', 'coverage'],
+    reporters: ['dots', 'coverage', 'detailed-error'],
     coverageReporter: {
       dir: 'coverage',
       reporters: [
@@ -52,7 +60,8 @@ export default (config) => {
     rollupPreprocessor: {
       output: {
         format: 'iife',
-        sourcemap: 'inline'
+        sourcemap: 'inline',
+        name: 'TestBundle' // Add a name to help identify issues
       },
       onwarn: (warning, warn) => {
         // Fail loudly on unresolved imports or missing files
@@ -60,6 +69,11 @@ export default (config) => {
           warning.code === 'UNRESOLVED_IMPORT' ||
           warning.code === 'MISSING_EXPORT'
         ) {
+          console.error('\n=== ROLLUP WARNING ===');
+          console.error('Code:', warning.code);
+          console.error('Message:', warning.message);
+          console.error('File:', warning.id);
+          console.error('=====================\n');
           throw new Error(warning.message);
         }
         // Suppress IIFE export warnings for test bundles (tests don't export anything meaningful)
@@ -69,21 +83,41 @@ export default (config) => {
         if (warning.code === 'MIXED_EXPORTS') {
           return;
         }
+        // Log other warnings with more detail
+        if (warning.code === 'PARSE_ERROR') {
+          console.error('\n=== ROLLUP PARSE ERROR ===');
+          console.error('Message:', warning.message);
+          console.error('File:', warning.id);
+          console.error('Location:', warning.loc);
+          console.error('Frame:', warning.frame);
+          console.error('=========================\n');
+        }
         // Log other warnings
+        console.warn('Rollup warning:', warning.code, warning.message);
         warn(warning);
       },
       plugins: [
         injectGlobals(),
-        replace({
-          preventAssignment: true,
-          REACTOR_KARMA_CI_UNIT_TEST_MODE: JSON.stringify(true),
-          'process.env.NODE_ENV': JSON.stringify('test')
-        }),
         nodeResolve({
           // Make node resolve throw on unresolved modules
-          modulesOnly: false
+          modulesOnly: false,
+          browser: true,
+          preferBuiltins: false
         }),
-        commonjs(),
+        commonjs({
+          include: /node_modules/
+        }),
+        replace({
+          preventAssignment: true,
+          'REACTOR_KARMA_CI_UNIT_TEST_MODE': JSON.stringify(true),
+          'process.env.SCALE_MEDIUM': 'true',
+          'process.env.SCALE_LARGE': 'false',
+          'process.env.THEME_LIGHT': 'false',
+          'process.env.THEME_LIGHTEST': 'true',
+          'process.env.THEME_DARK': 'false',
+          'process.env.THEME_DARKEST': 'false',
+          'process.browser': 'true'
+        }),
         rollupIstanbul({
           exclude: ['**/*.test.js', '**/__tests__/**']
         })

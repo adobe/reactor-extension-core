@@ -53,7 +53,17 @@ function setupGlobals() {
       // in a jasmine context to have access to window._satellite by default.
       return {
         location: { href: jasmine.createSpy('href') },
-        _satellite: {}
+        _satellite: {},
+        navigator: {
+          userAgent: window.navigator.userAgent,
+          appVersion: window.navigator.appVersion
+        },
+        setInterval: window.setInterval.bind(window),
+        clearInterval: window.clearInterval.bind(window),
+        setTimeout: window.setTimeout.bind(window),
+        clearTimeout: window.clearTimeout.bind(window),
+        addEventListener: window.addEventListener.bind(window),
+        removeEventListener: window.removeEventListener.bind(window)
       };
     }
     // sometimes and import of a source file for a test will trigger an import of

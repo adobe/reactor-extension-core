@@ -6,27 +6,37 @@ export default function injectGlobals() {
   return {
     name: 'inject-globals',
     transform(code, id) {
-      // Skip processing node_modules
-      if (id.includes('node_modules')) {
+      // Skip processing node_modules and test files
+      if (id.includes('node_modules') || id.includes('.test.js') || id.includes('__tests__')) {
         return null;
       }
 
-      // Replace bare `turbine` identifier with globalThis.turbine
-      // But be careful not to replace it in strings or comments
       let transformedCode = code;
 
-      // Replace turbine references (but not in import/export statements or strings)
+      // Replace turbine.something with globalThis.turbine.something
+      // This handles direct property access
       transformedCode = transformedCode.replace(
-        /\bturbine\b(?!['"`;])/g,
-        'globalThis.turbine'
+        /\bturbine\./g,
+        'globalThis.turbine.'
       );
 
-      // Replace require() calls with globalThis.require()
-      // Match require('...') or require("...")
+      // Replace standalone turbine that's NOT part of another identifier
+      // Use word boundaries but be more careful with the regex
       transformedCode = transformedCode.replace(
-        /\brequire\s*\(/g,
-        'globalThis.require('
+        /(^|[^\w.])turbine\b/g,
+        '$1globalThis.turbine'
       );
+
+      // Replace require( with globalThis.require(
+      // Use word boundaries but be more careful
+      transformedCode = transformedCode.replace(
+        /(^|[^\w.])require\s*\(/g,
+        '$1globalThis.require('
+      );
+
+      // Note: We can't validate syntax here because the code still contains
+      // ES6 import/export statements that haven't been bundled yet.
+      // Rollup will catch any syntax errors during bundling.
 
       return {
         code: transformedCode,

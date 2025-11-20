@@ -10,6 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
+import validateInjectedParams from '../../helpers/validate-injected-params';
 import createBubbly from './helpers/createBubbly';
 import WeakMap from './helpers/WeakMap';
 import { castToNumberIfString } from '../helpers/stringAndNumberUtils';
