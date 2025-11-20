@@ -26,8 +26,6 @@ const mockDocument = {
   }
 };
 
-const Timer = require('../helpers/timer');
-
 const isIE = function () {
   const myNav = navigator.userAgent.toLowerCase();
   return myNav.indexOf('msie') !== -1
