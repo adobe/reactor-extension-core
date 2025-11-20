@@ -10,6 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
+import Simulate from 'simulate';
 import { injectZoomChange } from '../zoomChange.js';
 
 const assertTriggerCall = function (options) {

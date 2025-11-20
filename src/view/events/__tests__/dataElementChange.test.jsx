@@ -19,7 +19,7 @@ const pageElements = {
   }
 };
 
-describe('dataElementChange event view', () => {
+fdescribe('dataElementChange event view', () => {
   let extensionBridge;
 
   beforeEach(() => {

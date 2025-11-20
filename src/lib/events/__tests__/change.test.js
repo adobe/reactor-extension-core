@@ -10,6 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
+import Simulate from 'simulate';
 import testStandardEvent from './helpers/testStandardEvent';
 import { injectChange } from '../change';
 const delegate = injectChange({ document });

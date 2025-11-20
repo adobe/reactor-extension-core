@@ -10,6 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
+import Simulate from 'simulate';
 import { injectMediaTimePlayed } from '../mediaTimePlayed';
 
 describe('media time played event delegate', function () {

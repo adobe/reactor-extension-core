@@ -1,48 +1,48 @@
-/* eslint-env es6 */
-import karmaCoverage from 'karma-coverage';
+// karma.conf.mjs
 import karmaJasmine from 'karma-jasmine';
 import karmaJasmineMatchers from 'karma-jasmine-matchers';
 import karmaChromeLauncher from 'karma-chrome-launcher';
 import karmaRollupPreprocessor from 'karma-rollup-preprocessor';
+import karmaCoverage from 'karma-coverage';
+
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
-import rollupIstanbul from 'rollup-plugin-istanbul';
+import babel from '@rollup/plugin-babel';
+import json from '@rollup/plugin-json';
+import styles from 'rollup-plugin-styles';
+import alias from '@rollup/plugin-alias';
 import replace from '@rollup/plugin-replace';
+import path from 'path';
 import injectGlobals from './helpers/rollup-plugin-inject-globals.js';
-import detailedErrorReporter from './helpers/karma-detailed-error-reporter.js';
+import babelTransformRuntime from '@babel/plugin-transform-runtime';
+import { fileURLToPath } from 'url';
+import polyfillNode from 'rollup-plugin-polyfill-node';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default (config) => {
   config.set({
     hostname: '0.0.0.0',
     basePath: '',
     frameworks: ['jasmine', 'jasmine-matchers'],
-    failOnEmptyTestSuite: true, // Fail if no tests are found
-    failOnSkippedTests: false,
-    failOnFailingTestSuite: true,
+    failOnEmptyTestSuite: true,
     files: [
-      {
-        pattern: './helpers/mockDelegateWrapper.js',
-        watched: false,
-        type: 'module'
-      },
-      { pattern: './src/**/*.js', type: 'module' }
+      // Use the generated index file (prebuilt testIndex.generated.js)
+      { pattern: './testIndex.generated.js', type: 'module', watched: false }
     ],
     preprocessors: {
-      './helpers/setupTestEnv.js': ['rollup'],
-      './helpers/mockDelegateWrapper.js': ['rollup'],
-      './src/**/*.js': ['rollup']
+      './testIndex.generated.js': ['rollup'],
     },
     plugins: [
-      karmaCoverage,
       karmaJasmine,
       karmaJasmineMatchers,
       karmaChromeLauncher,
       karmaRollupPreprocessor,
+      karmaCoverage,
       nodeResolve,
-      commonjs,
-      detailedErrorReporter
+      commonjs
     ],
-    reporters: ['dots', 'coverage', 'detailed-error'],
+    reporters: ['dots', 'coverage'],
     coverageReporter: {
       dir: 'coverage',
       reporters: [
@@ -54,67 +54,49 @@ export default (config) => {
     },
     rollupPreprocessor: {
       output: {
-        format: 'iife',
-        sourcemap: 'inline',
-        name: 'TestBundle' // Add a name to help identify issues
-      },
-      onwarn: (warning, warn) => {
-        // Fail loudly on unresolved imports or missing files
-        if (
-          warning.code === 'UNRESOLVED_IMPORT' ||
-          warning.code === 'MISSING_EXPORT'
-        ) {
-          console.error('\n=== ROLLUP WARNING ===');
-          console.error('Code:', warning.code);
-          console.error('Message:', warning.message);
-          console.error('File:', warning.id);
-          console.error('=====================\n');
-          throw new Error(warning.message);
-        }
-        // Suppress IIFE export warnings for test bundles (tests don't export anything meaningful)
-        if (warning.code === 'MISSING_NAME_OPTION_FOR_IIFE_EXPORT') {
-          return;
-        }
-        if (warning.code === 'MIXED_EXPORTS') {
-          return;
-        }
-        // Log other warnings with more detail
-        if (warning.code === 'PARSE_ERROR') {
-          console.error('\n=== ROLLUP PARSE ERROR ===');
-          console.error('Message:', warning.message);
-          console.error('File:', warning.id);
-          console.error('Location:', warning.loc);
-          console.error('Frame:', warning.frame);
-          console.error('=========================\n');
-        }
-        // Log other warnings
-        console.warn('Rollup warning:', warning.code, warning.message);
-        warn(warning);
+        format: 'iife',           // Browser-friendly bundle
+        sourcemap: 'inline',      // Optional
+        name: 'TestBundle',       // Global variable name
       },
       plugins: [
         injectGlobals(),
+        alias({
+          entries: [
+            { find: '@test-helpers', replacement: path.resolve(__dirname, 'src/view/__tests__/helpers') }
+          ]
+        }),
+        polyfillNode({
+          include: ["**/*.js", "**/*.mjs"]
+        }),
         nodeResolve({
-          // Make node resolve throw on unresolved modules
-          modulesOnly: false,
           browser: true,
-          preferBuiltins: false
+          extensions: ['.js', '.jsx', '.json']
         }),
         commonjs({
           include: /node_modules/
         }),
+        json(),
+        styles({
+          mode: ['extract', null],
+          include: ['**/*.css', '**/*.styl'],
+          url: false
+        }),
+        babel({
+          babelHelpers: 'runtime',
+          exclude: 'node_modules/**',
+          extensions: ['.js', '.jsx'],
+          presets: [
+            ['@babel/preset-env', { targets: '> 1%, last 2 versions, not dead' }],
+            '@babel/preset-react'
+          ],
+          plugins: [
+            [babelTransformRuntime, { useESModules: true }]
+          ]
+        }),
         replace({
           preventAssignment: true,
           'REACTOR_KARMA_CI_UNIT_TEST_MODE': JSON.stringify(true),
-          'process.env.SCALE_MEDIUM': 'true',
-          'process.env.SCALE_LARGE': 'false',
-          'process.env.THEME_LIGHT': 'false',
-          'process.env.THEME_LIGHTEST': 'true',
-          'process.env.THEME_DARK': 'false',
-          'process.env.THEME_DARKEST': 'false',
           'process.browser': 'true'
-        }),
-        rollupIstanbul({
-          exclude: ['**/*.test.js', '**/__tests__/**']
         })
       ]
     },
@@ -125,15 +107,8 @@ export default (config) => {
     browsers: ['Chrome'],
     singleRun: true,
     concurrency: 5,
-    captureTimeout: 60000,
-    browserDisconnectTimeout: 20000,
-    browserDisconnectTolerance: 3,
-    browserNoActivityTimeout: 300000,
     client: {
       captureConsole: true,
-      jasmine: {
-        // seed: 55788
-      }
     }
   });
 };

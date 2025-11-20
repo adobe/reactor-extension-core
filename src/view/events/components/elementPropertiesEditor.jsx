@@ -59,7 +59,7 @@ const ElementPropertiesRenderer = ({ fields }) => (
         <ActionButton
           isQuiet
           aria-label="Remove row"
-          onPress={fields.remove.bind(this, index)}
+          onPress={() => fields.remove(index)}
         >
           <Delete />
         </ActionButton>

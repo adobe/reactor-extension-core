@@ -70,7 +70,7 @@ function injectTimer({ assign: objectAssign }) {
 
     _setIntervalUpdater: function () {
       this._intervalId = window.setInterval(
-        this._calculateTimePassed.bind(this),
+        () => this._calculateTimePassed(),
         this._checkInterval
       );
     },

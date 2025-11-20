@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 import testStandardEvent from './helpers/testStandardEvent';
-import { injectClick } from '../click';
+import { injectClick, __reset } from '../click';
 
 const getClickEvent = function () {
   let event;
@@ -99,7 +99,7 @@ describe('click event delegate', function () {
 
       // Without resetting between tests, the delegate would continue watching for and taking
       // action on click events from prior tests.
-      delegate.__reset();
+      __reset();
 
       jasmine.clock().uninstall();
       document.removeEventListener('click', clickHandler);

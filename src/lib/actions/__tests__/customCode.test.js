@@ -67,7 +67,7 @@ const getMockDocument = function (options) {
   return document;
 };
 
-fdescribe('custom code action delegate', function () {
+describe('custom code action delegate', function () {
   let documentWriteSpy;
   let postscribeSpy;
   let customCode;

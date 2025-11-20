@@ -31,7 +31,7 @@ export default ({
       <Flex data-type="row" alignItems="end">
         {renderItem(field)}
         {fields.length > 1 ? (
-          <ActionButton isQuiet onPress={fields.remove.bind(this, index)}>
+          <ActionButton isQuiet onPress={() => fields.remove(index)}>
             <Delete />
           </ActionButton>
         ) : null}

@@ -10,8 +10,9 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
+import Simulate from 'simulate';
 import { injectHover } from '../hover';
-import liveQuerySelector from '../helpers/liveQuerySelector';
+import liveQuerySelector, { __reset as resetLiveQuerySelector } from '../helpers/liveQuerySelector';
 
 const POLL_INTERVAL = 3000;
 
@@ -61,7 +62,7 @@ describe('hover event delegate', function () {
     jasmine.clock().uninstall();
 
     // We need to reset the liveQuerySelector, otherwise it will affect the next test that is run.
-    liveQuerySelector.__reset();
+    resetLiveQuerySelector();
   });
 
   it(
