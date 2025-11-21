@@ -80,18 +80,6 @@ globalThis.jasmine = {
   // jasmine.any() → expect.any()
   any: (constructor) => expect.any(constructor),
   
-  // jasmine.anything() → expect.anything()
-  anything: () => expect.anything(),
-  
-  // jasmine.objectContaining() → expect.objectContaining()
-  objectContaining: (obj) => expect.objectContaining(obj),
-  
-  // jasmine.arrayContaining() → expect.arrayContaining()
-  arrayContaining: (arr) => expect.arrayContaining(arr),
-  
-  // jasmine.stringMatching() → expect.stringMatching()
-  stringMatching: (str) => expect.stringMatching(str),
-  
   // jasmine.clock() → vi fake timers
   clock: () => ({
     install: () => vi.useFakeTimers(),
