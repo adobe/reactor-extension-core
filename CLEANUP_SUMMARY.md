@@ -109,10 +109,6 @@ npm test
 
 ## 🎯 Next Steps (Optional)
 
-### Consider Removing (if not needed for E2E)
-- `@playwright/test` - Only keep if you plan to add E2E browser tests
-- `playwright.config.js` - Delete if removing playwright
-
 ### Files to Keep
 - `helpers/mockDelegateWrapper.js` - Used by Vitest for test globals
 - `helpers/validate-test-files.js` - File validation helper
