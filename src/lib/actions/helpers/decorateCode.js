@@ -9,10 +9,10 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-import decorateGlobalJavaScriptCode from './decorators/decorateGlobalJavaScriptCode';
-import decorateNonGlobalJavaScriptCode from './decorators/decorateNonGlobalJavaScriptCode';
-import decorateHtmlCode from './decorators/decorateHtmlCode';
-import validateInjectedParams from '../../../helpers/validate-injected-params';
+import decorateGlobalJavaScriptCode from './decorators/decorateGlobalJavaScriptCode.js'
+import decorateNonGlobalJavaScriptCode from './decorators/decorateNonGlobalJavaScriptCode.js'
+import decorateHtmlCode from './decorators/decorateHtmlCode.js'
+import validateInjectedParams from '../../../helpers/validate-injected-params.js'
 
 function injectDecorateCode({
   decorateGlobalJavaScriptCode,

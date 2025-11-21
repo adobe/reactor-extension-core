@@ -12,10 +12,10 @@
 
 import { fireEvent, render, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { changePickerValue } from '@test-helpers/react-testing-library';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import WindowSize, { formConfig } from '../windowSize';
-import bootstrap from '../../bootstrap';
+import { changePickerValue } from '@test-helpers/react-testing-library.jsx';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import WindowSize, { formConfig } from '../windowSize.jsx'
+import bootstrap from '../../bootstrap.jsx'
 
 // react-testing-library element selectors
 const pageElements = {

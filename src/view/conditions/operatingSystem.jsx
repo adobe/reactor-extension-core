@@ -12,8 +12,8 @@
 
 import React from 'react';
 import { Flex, CheckboxGroup, Checkbox } from '@adobe/react-spectrum';
-import WrappedField from '../components/wrappedField';
-import WarningContainer from '../components/warningContainer';
+import WrappedField from '../components/wrappedField.jsx'
+import WarningContainer from '../components/warningContainer.jsx'
 
 const operatingSystemOptions = [
   'Windows',

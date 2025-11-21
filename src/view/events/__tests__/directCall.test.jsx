@@ -12,9 +12,9 @@
 
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import DirectCall, { formConfig } from '../directCall';
-import bootstrap from '../../bootstrap';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import DirectCall, { formConfig } from '../directCall.jsx'
+import bootstrap from '../../bootstrap.jsx'
 
 // react-testing-library element selectors
 const pageElements = {

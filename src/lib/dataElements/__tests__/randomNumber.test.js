@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import dataElementDelegate from '../randomNumber';
+import dataElementDelegate from '../randomNumber.js'
 
 describe('random number data element delegate', function () {
   it('returns a random number between the min and the max', function () {

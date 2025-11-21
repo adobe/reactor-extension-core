@@ -14,10 +14,10 @@ import { fireEvent, render } from '@testing-library/react';
 import {
   sharedTestingElements,
   isButtonValid
-} from '@test-helpers/react-testing-library';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import CustomCode, { formConfig } from '../customCode';
-import bootstrap from '../../bootstrap';
+} from '@test-helpers/react-testing-library.jsx';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import CustomCode, { formConfig } from '../customCode.jsx'
+import bootstrap from '../../bootstrap.jsx'
 
 describe('custom code data element view', () => {
   let extensionBridge;

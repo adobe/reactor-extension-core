@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { injectLoadCodeSequentially } from '../loadCodeSequentially';
+import { injectLoadCodeSequentially } from '../loadCodeSequentially.js'
 
 const sequentiallyLoadCodePromise = injectLoadCodeSequentially({
   getSourceByUrl: function (sourceUrl) {

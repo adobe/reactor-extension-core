@@ -10,8 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import compareNumbers from './helpers/compareNumbers';
-import validateInjectedParams from '../../helpers/validate-injected-params';
+import compareNumbers from './helpers/compareNumbers.js'
+import validateInjectedParams from '../../helpers/validate-injected-params.js'
 
 function injectWindowSize({ document, compareNumbers }) {
   /**

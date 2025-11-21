@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import validateInjectedParams from '../../../../helpers/validate-injected-params';
+import validateInjectedParams from '../../../../helpers/validate-injected-params.js'
 
 // Factory for dependency injection
 function injectDecorateHtmlCode({ Promise, window }) {

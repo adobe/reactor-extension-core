@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { injectSampling } from '../sampling';
+import { injectSampling } from '../sampling.js'
 import getNamespacedStorage from '../../helpers/getNamespacedStorage.js';
 const conditionDelegate = injectSampling({
   getNamespacedStorage

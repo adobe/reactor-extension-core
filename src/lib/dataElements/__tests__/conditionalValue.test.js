@@ -9,7 +9,7 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-import conditionalValueDelegate from '../conditionalValue';
+import conditionalValueDelegate from '../conditionalValue.js'
 
 describe('conditional value data element delegate', function () {
   it('returns the conditional value when value comparison returns true', function () {

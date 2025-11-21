@@ -12,10 +12,10 @@
 
 import { fireEvent, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { sharedTestingElements } from '@test-helpers/react-testing-library';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import ElementSelector, { formConfig } from '../elementSelector';
-import bootstrap from '../../../bootstrap';
+import { sharedTestingElements } from '@test-helpers/react-testing-library.jsx';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import ElementSelector, { formConfig } from '../elementSelector.jsx'
+import bootstrap from '../../../bootstrap.jsx'
 
 describe('elementSelector', () => {
   let extensionBridge;

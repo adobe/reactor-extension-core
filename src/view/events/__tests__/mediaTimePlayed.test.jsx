@@ -15,10 +15,10 @@ import userEvent from '@testing-library/user-event';
 import {
   clickSpectrumOption,
   sharedTestingElements
-} from '@test-helpers/react-testing-library';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import MediaTimePlayed, { formConfig } from '../mediaTimePlayed';
-import bootstrap from '../../bootstrap';
+} from '@test-helpers/react-testing-library.jsx';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import MediaTimePlayed, { formConfig } from '../mediaTimePlayed.jsx'
+import bootstrap from '../../bootstrap.jsx'
 
 // react-testing-library element selectors
 const pageElements = {

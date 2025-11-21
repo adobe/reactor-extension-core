@@ -13,12 +13,12 @@ import { fireEvent, render, screen, within } from '@testing-library/react';
 import {
   fillInTextBox,
   changePickerValue
-} from '@test-helpers/react-testing-library';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import JavascriptTools, { formConfig } from '../javascriptTools';
-import bootstrap from '../../bootstrap';
-import operators from '../utils/javascriptTools/operators';
-import metaByOperator from '../utils/javascriptTools/metaByOperator';
+} from '@test-helpers/react-testing-library.jsx';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import JavascriptTools, { formConfig } from '../javascriptTools.jsx'
+import bootstrap from '../../bootstrap.jsx'
+import operators from '../utils/javascriptTools/operators.js'
+import metaByOperator from '../utils/javascriptTools/metaByOperator.jsx'
 
 const pageElements = {
   getSourceValueTextBox: () =>

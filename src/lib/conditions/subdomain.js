@@ -10,8 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import textMatch from '../helpers/textMatch';
-import validateInjectedParams from '../../helpers/validate-injected-params';
+import textMatch from '../helpers/textMatch.js'
+import validateInjectedParams from '../../helpers/validate-injected-params.js'
 
 function injectSubdomainCondition({ document, textMatch }) {
   /**

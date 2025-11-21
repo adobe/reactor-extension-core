@@ -10,8 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { byRegexPattern as findScriptByRegexPattern } from '../../helpers/findPageScript';
-import validateInjectedParams from '../../../helpers/validate-injected-params';
+import { byRegexPattern as findScriptByRegexPattern } from '../../helpers/findPageScript.js'
+import validateInjectedParams from '../../../helpers/validate-injected-params.js'
 
 function injectGetSourceByUrl({ window, loadScript, Promise }) {
   const codeBySourceUrl = {};

@@ -10,10 +10,10 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import visitorTracking from '../helpers/visitorTracking';
-import compareNumbers from './helpers/compareNumbers';
-import { castToNumberIfString } from '../helpers/stringAndNumberUtils';
-import validateInjectedParams from '../../helpers/validate-injected-params';
+import visitorTracking from '../helpers/visitorTracking.js'
+import compareNumbers from './helpers/compareNumbers.js'
+import { castToNumberIfString } from '../helpers/stringAndNumberUtils.js'
+import validateInjectedParams from '../../helpers/validate-injected-params.js'
 
 function injectTimeOnSiteCondition({
   visitorTracking,

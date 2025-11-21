@@ -12,7 +12,7 @@
 
 import React from 'react';
 import { fireEvent, render as rtlRender, screen } from '@testing-library/react';
-import DisclosureButton from '../disclosureButton';
+import DisclosureButton from '../disclosureButton.jsx'
 
 const render = (props) => rtlRender(<DisclosureButton {...props} />);
 

@@ -10,8 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import getObjectProperty from '../helpers/getObjectProperty';
-import validateInjectedParams from '../../helpers/validate-injected-params';
+import getObjectProperty from '../helpers/getObjectProperty.js'
+import validateInjectedParams from '../../helpers/validate-injected-params.js'
 
 function injectJavascriptVariable({ window }) {
   /**

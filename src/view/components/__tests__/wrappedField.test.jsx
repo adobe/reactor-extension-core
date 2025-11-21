@@ -19,11 +19,11 @@ import {
   within
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import { elementIsPosition } from '@test-helpers/react-testing-library';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import { elementIsPosition } from '@test-helpers/react-testing-library.jsx';
 import { TextField, Checkbox } from '@adobe/react-spectrum';
-import WrappedField from '../wrappedField';
-import bootstrap from '../../bootstrap';
+import WrappedField from '../wrappedField.jsx'
+import bootstrap from '../../bootstrap.jsx'
 
 const ConnectedWrappedField = ({
   className,

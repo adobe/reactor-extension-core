@@ -11,9 +11,9 @@
  ****************************************************************************************/
 
 import { fireEvent, render, screen } from '@testing-library/react';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import Domain, { formConfig } from '../domain';
-import bootstrap from '../../bootstrap';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import Domain, { formConfig } from '../domain.jsx'
+import bootstrap from '../../bootstrap.jsx'
 
 // react-testing-library element selectors
 const pageElements = {

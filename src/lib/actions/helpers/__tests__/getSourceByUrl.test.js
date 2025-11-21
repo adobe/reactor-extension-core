@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { injectGetSourceByUrl } from '../getSourceByUrl';
+import { injectGetSourceByUrl } from '../getSourceByUrl.js'
 
 describe('get source by url', function () {
   let loadScriptSpy;

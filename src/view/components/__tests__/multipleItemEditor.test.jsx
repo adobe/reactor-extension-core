@@ -13,7 +13,7 @@
 import React from 'react';
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import { TextField } from '@adobe/react-spectrum';
-import MultipleItemEditor from '../multipleItemEditor';
+import MultipleItemEditor from '../multipleItemEditor.jsx'
 
 // react-testing-library element selectors
 const pageElements = {

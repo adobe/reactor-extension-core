@@ -16,10 +16,10 @@ import userEvent from '@testing-library/user-event';
 import {
   simulate,
   changePickerValue
-} from '@test-helpers/react-testing-library';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import MaxFrequency, { formConfig } from '../maxFrequency';
-import bootstrap from '../../bootstrap';
+} from '@test-helpers/react-testing-library.jsx';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import MaxFrequency, { formConfig } from '../maxFrequency.jsx'
+import bootstrap from '../../bootstrap.jsx'
 
 // react-testing-library element selectors
 const pageElements = {

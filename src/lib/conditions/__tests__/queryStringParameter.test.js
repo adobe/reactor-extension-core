@@ -10,8 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { injectQueryStringParameterCondition } from '../queryStringParameter';
-import textMatch from '../../helpers/textMatch';
+import { injectQueryStringParameterCondition } from '../queryStringParameter.js'
+import textMatch from '../../helpers/textMatch.js'
 
 const conditionDelegate = injectQueryStringParameterCondition({
   window: {

@@ -12,8 +12,8 @@
 
 import React from 'react';
 import { Flex, Checkbox } from '@adobe/react-spectrum';
-import WrappedField from '../components/wrappedField';
-import FullWidthField from '../components/fullWidthField';
+import WrappedField from '../components/wrappedField.jsx'
+import FullWidthField from '../components/fullWidthField.jsx'
 
 const QueryStringParameter = () => (
   <Flex direction="column" gap="size-100">

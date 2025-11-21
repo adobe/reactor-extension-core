@@ -10,10 +10,10 @@ governing permissions and limitations under the License.
 */
 
 import { render, screen, within, fireEvent } from '@testing-library/react';
-import { clickSpectrumOption } from '@test-helpers/react-testing-library';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import DeviceAttributes, { formConfig } from '../deviceAttributes';
-import bootstrap from '../../bootstrap';
+import { clickSpectrumOption } from '@test-helpers/react-testing-library.jsx';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import DeviceAttributes, { formConfig } from '../deviceAttributes.jsx'
+import bootstrap from '../../bootstrap.jsx'
 
 // react-testing-library element selectors
 const pageElements = {

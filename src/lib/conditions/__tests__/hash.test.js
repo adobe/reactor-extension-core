@@ -10,8 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import textMatch from '../../helpers/textMatch';
-import { injectHash } from '../hash';
+import textMatch from '../../helpers/textMatch.js'
+import { injectHash } from '../hash.js'
 const conditionDelegate = injectHash({
   document,
   textMatch

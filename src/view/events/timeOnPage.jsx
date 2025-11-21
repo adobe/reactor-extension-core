@@ -12,9 +12,9 @@
 
 import React from 'react';
 import { TextField, Flex } from '@adobe/react-spectrum';
-import WrappedField from '../components/wrappedField';
-import NoWrapText from '../components/noWrapText';
-import { isNumberLikeInRange, isDataElementToken } from '../utils/validators';
+import WrappedField from '../components/wrappedField.jsx'
+import NoWrapText from '../components/noWrapText.jsx'
+import { isNumberLikeInRange, isDataElementToken } from '../utils/validators.js'
 
 const TimeOnPage = () => (
   <Flex alignItems="end" gap="size-100" minWidth="size-6000">

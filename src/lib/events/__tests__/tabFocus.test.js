@@ -12,7 +12,7 @@
 
 import runVisibilityApi from '../helpers/visibilityApi.js';
 const { visibilityChangeEventType, hiddenProperty } = runVisibilityApi();
-import { injectTabFocus } from '../tabFocus';
+import { injectTabFocus } from '../tabFocus.js'
 let visibilityChangeListener;
 
 const mockDocument = {

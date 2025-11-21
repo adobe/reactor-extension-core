@@ -14,7 +14,7 @@ import React from 'react';
 import { Checkbox, Flex, TextField, View } from '@adobe/react-spectrum';
 import { FieldArray, formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
-import WrappedField from '../components/wrappedField';
+import WrappedField from '../components/wrappedField.jsx'
 
 import ElementFilter, {
   formConfig as elementFilterFormConfig
@@ -22,9 +22,9 @@ import ElementFilter, {
 import AdvancedEventOptions, {
   formConfig as advancedEventOptionsFormConfig
 } from './components/advancedEventOptions';
-import mergeFormConfigs from '../utils/mergeFormConfigs';
-import MultipleItemEditor from '../components/multipleItemEditor';
-import RegexToggle from '../components/regexToggle';
+import mergeFormConfigs from '../utils/mergeFormConfigs.js'
+import MultipleItemEditor from '../components/multipleItemEditor.jsx'
+import RegexToggle from '../components/regexToggle.jsx'
 
 import './change.styl';
 

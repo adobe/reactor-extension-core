@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 import testStandardEvent from './helpers/testStandardEvent.js';
-import { injectBlur } from '../blur';
+import { injectBlur } from '../blur.js'
 const delegate = injectBlur({ document });
 
 describe('blur event delegate', function () {

@@ -14,9 +14,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Radio, RadioGroup, Flex, Checkbox } from '@adobe/react-spectrum';
 import { formValueSelector } from 'redux-form';
-import InfoTip from '../components/infoTip';
-import EditorButton from '../components/editorButton';
-import WrappedField from '../components/wrappedField';
+import InfoTip from '../components/infoTip.jsx'
+import EditorButton from '../components/editorButton.jsx'
+import WrappedField from '../components/wrappedField.jsx'
 
 const LANGUAGES = {
   JAVASCRIPT: 'javascript',

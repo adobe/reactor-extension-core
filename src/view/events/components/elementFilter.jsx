@@ -14,11 +14,11 @@ import React from 'react';
 import { RadioGroup, Radio, Flex } from '@adobe/react-spectrum';
 import { formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
-import WrappedField from '../../components/wrappedField';
+import WrappedField from '../../components/wrappedField.jsx'
 import SpecificElements, {
   formConfig as specificElementsFormConfig
 } from './specificElements';
-import mergeFormConfigs from '../../utils/mergeFormConfigs';
+import mergeFormConfigs from '../../utils/mergeFormConfigs.js'
 
 const ElementFilter = ({ ...props }) => {
   const { elementSpecificity, elementSpecificityLabel } = props;

@@ -12,9 +12,9 @@
 
 import React from 'react';
 import { Picker, Flex, Item } from '@adobe/react-spectrum';
-import { isNumberLike } from '../utils/validators';
-import comparisonOperatorOptions from './comparisonOperatorOptions';
-import FullWidthField from '../components/fullWidthField';
+import { isNumberLike } from '../utils/validators.js'
+import comparisonOperatorOptions from './comparisonOperatorOptions.js'
+import FullWidthField from '../components/fullWidthField.jsx'
 
 const Sessions = () => (
   <Flex direction="column" gap="size-100" minWidth="size-6000">

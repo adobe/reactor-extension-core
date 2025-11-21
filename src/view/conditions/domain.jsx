@@ -13,7 +13,7 @@
 import React from 'react';
 import { CheckboxGroup, Checkbox } from '@adobe/react-spectrum';
 import { connect } from 'react-redux';
-import WrappedField from '../components/wrappedField';
+import WrappedField from '../components/wrappedField.jsx'
 
 const Domain = ({ domainOptions }) => (
   <WrappedField label="Domains" name="domains" component={CheckboxGroup}>

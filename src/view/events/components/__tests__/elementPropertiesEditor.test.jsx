@@ -12,11 +12,11 @@
 
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
 import ElementPropertiesEditor, {
   formConfig
 } from '../elementPropertiesEditor';
-import bootstrap from '../../../bootstrap';
+import bootstrap from '../../../bootstrap.jsx'
 
 // react-testing-library element selectors
 const pageElements = {

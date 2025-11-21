@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 import textMatch from '../helpers/textMatch.js';
-import validateInjectedParams from '../../helpers/validate-injected-params';
+import validateInjectedParams from '../../helpers/validate-injected-params.js'
 
 function injectCookie({ cookie: cookieImpl }) {
   /**

@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import conditionDelegate from '../customCode';
+import conditionDelegate from '../customCode.js'
 
 describe('custom code condition delegate', function () {
   it('should run a user-defined function', function () {

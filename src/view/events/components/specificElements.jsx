@@ -14,15 +14,15 @@ import React from 'react';
 import { Checkbox, View } from '@adobe/react-spectrum';
 import { formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
-import WrappedField from '../../components/wrappedField';
+import WrappedField from '../../components/wrappedField.jsx'
 import ElementSelector, {
   formConfig as elementSelectorFormConfig
 } from './elementSelector';
 import ElementPropertiesEditor, {
   formConfig as elementPropertiesEditorFormConfig
 } from './elementPropertiesEditor';
-import HelpText from '../../components/helpText';
-import mergeFormConfigs from '../../utils/mergeFormConfigs';
+import HelpText from '../../components/helpText.jsx'
+import mergeFormConfigs from '../../utils/mergeFormConfigs.js'
 
 const SpecificElements = ({ ...props }) => {
   const { showElementPropertiesFilter, fields } = props;

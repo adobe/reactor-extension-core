@@ -12,8 +12,8 @@
 
 import React from 'react';
 import { TextField, Flex, View } from '@adobe/react-spectrum';
-import InfoTip from '../components/infoTip';
-import WrappedField from '../components/wrappedField';
+import InfoTip from '../components/infoTip.jsx'
+import WrappedField from '../components/wrappedField.jsx'
 
 const DirectCall = () => (
   <Flex alignItems="end" gap="size-100" minWidth="size-6000">

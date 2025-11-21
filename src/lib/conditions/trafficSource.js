@@ -10,9 +10,9 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import textMatch from '../helpers/textMatch';
-import visitorTracking from '../helpers/visitorTracking';
-import validateInjectedParams from '../../helpers/validate-injected-params';
+import textMatch from '../helpers/textMatch.js'
+import visitorTracking from '../helpers/visitorTracking.js'
+import validateInjectedParams from '../../helpers/validate-injected-params.js'
 
 function injectTrafficSource({ textMatch, visitorTracking }) {
   /**

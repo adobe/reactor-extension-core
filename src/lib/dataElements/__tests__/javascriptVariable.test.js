@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { injectJavascriptVariable } from '../javascriptVariable';
+import { injectJavascriptVariable } from '../javascriptVariable.js'
 const dataElementDelegate = injectJavascriptVariable({ window });
 
 describe('javascript variable data element delegate', function () {

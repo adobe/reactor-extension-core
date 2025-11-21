@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { injectProtocol } from '../protocol';
+import { injectProtocol } from '../protocol.js'
 const conditionDelegate = injectProtocol({ document });
 
 const getSettings = function (protocol) {

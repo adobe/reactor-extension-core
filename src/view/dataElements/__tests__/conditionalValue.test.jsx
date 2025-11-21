@@ -10,10 +10,10 @@ governing permissions and limitations under the License.
 */
 
 import { fireEvent, render, screen } from '@testing-library/react';
-import { fillInTextBox } from '@test-helpers/react-testing-library';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import ConditionalValue, { formConfig } from '../conditionalValue';
-import bootstrap from '../../bootstrap';
+import { fillInTextBox } from '@test-helpers/react-testing-library.jsx';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import ConditionalValue, { formConfig } from '../conditionalValue.jsx'
+import bootstrap from '../../bootstrap.jsx'
 
 // react-testing-library element selectors
 const pageElements = {

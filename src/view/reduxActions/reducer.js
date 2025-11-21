@@ -12,7 +12,7 @@
 
 import reduceReducers from 'reduce-reducers';
 import { reducer as formReducer } from 'redux-form';
-import bridgeAdapterActions from './bridgeAdapterActions';
+import bridgeAdapterActions from './bridgeAdapterActions.js'
 
 export default reduceReducers(
   bridgeAdapterActions,

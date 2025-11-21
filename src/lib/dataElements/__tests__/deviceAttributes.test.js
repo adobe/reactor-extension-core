@@ -9,7 +9,7 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-import { injectDeviceAttributes } from '../deviceAttributes';
+import { injectDeviceAttributes } from '../deviceAttributes.js'
 
 describe('visitor attributes data element delegate', function () {
   it('returns the window size', function () {

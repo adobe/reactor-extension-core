@@ -10,8 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { injectSubdomainCondition } from '../subdomain';
-import textMatch from '../../helpers/textMatch';
+import { injectSubdomainCondition } from '../subdomain.js'
+import textMatch from '../../helpers/textMatch.js'
 
 const mockDocument = {
   location: {

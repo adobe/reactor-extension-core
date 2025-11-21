@@ -14,10 +14,10 @@ import React from 'react';
 import { TextField, Picker, Item, Flex } from '@adobe/react-spectrum';
 import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
-import WrappedField from '../components/wrappedField';
-import NoWrapText from '../components/noWrapText';
+import WrappedField from '../components/wrappedField.jsx'
+import NoWrapText from '../components/noWrapText.jsx'
 
-import { isNumberLikeInRange } from '../utils/validators';
+import { isNumberLikeInRange } from '../utils/validators.js'
 
 const VISITOR = 'visitor';
 const PAGE_VIEW = 'pageView';

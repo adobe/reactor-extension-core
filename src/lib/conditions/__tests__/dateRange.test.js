@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import conditionDelegate from '../dateRange';
+import conditionDelegate from '../dateRange.js'
 
 describe('date range condition delegate', function () {
   it('returns true when date is after start date', function () {

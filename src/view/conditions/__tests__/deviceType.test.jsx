@@ -11,10 +11,10 @@
  ****************************************************************************************/
 
 import { fireEvent, render, screen } from '@testing-library/react';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import DeviceType, { formConfig } from '../deviceType';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import DeviceType, { formConfig } from '../deviceType.jsx'
 
-import bootstrap from '../../bootstrap';
+import bootstrap from '../../bootstrap.jsx'
 
 const selectedDeviceTypes = ['Desktop', 'Android'];
 

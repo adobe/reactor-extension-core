@@ -15,10 +15,10 @@ import userEvent from '@testing-library/user-event';
 import {
   simulate,
   sharedTestingElements
-} from '@test-helpers/react-testing-library';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import Click, { formConfig } from '../click';
-import bootstrap from '../../bootstrap';
+} from '@test-helpers/react-testing-library.jsx';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import Click, { formConfig } from '../click.jsx'
+import bootstrap from '../../bootstrap.jsx'
 
 // react-testing-library element selectors
 const pageElements = {

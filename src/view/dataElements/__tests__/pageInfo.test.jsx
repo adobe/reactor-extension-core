@@ -11,10 +11,10 @@
  ****************************************************************************************/
 
 import { render, screen, within, fireEvent } from '@testing-library/react';
-import { clickSpectrumOption } from '@test-helpers/react-testing-library';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import PageInfo, { formConfig } from '../pageInfo';
-import bootstrap from '../../bootstrap';
+import { clickSpectrumOption } from '@test-helpers/react-testing-library.jsx';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import PageInfo, { formConfig } from '../pageInfo.jsx'
+import bootstrap from '../../bootstrap.jsx'
 
 // react-testing-library element selectors
 const pageElements = {

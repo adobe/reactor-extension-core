@@ -15,10 +15,10 @@ import userEvent from '@testing-library/user-event';
 import {
   clickSpectrumOption,
   changePickerValue
-} from '@test-helpers/react-testing-library';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import ValueComparison, { formConfig } from '../valueComparison';
-import bootstrap from '../../bootstrap';
+} from '@test-helpers/react-testing-library.jsx';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import ValueComparison, { formConfig } from '../valueComparison.jsx'
+import bootstrap from '../../bootstrap.jsx'
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 1540000;
 

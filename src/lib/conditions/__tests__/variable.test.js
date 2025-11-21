@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import conditionDelegate from '../variable';
+import conditionDelegate from '../variable.js'
 
 describe('variable condition delegate', function () {
   beforeAll(function () {

@@ -10,8 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import visitorTracking from '../helpers/visitorTracking';
-import validateInjectedParams from '../../helpers/validate-injected-params';
+import visitorTracking from '../helpers/visitorTracking.js'
+import validateInjectedParams from '../../helpers/validate-injected-params.js'
 
 function injectNewReturningVisitor({ visitorTracking }) {
   /**

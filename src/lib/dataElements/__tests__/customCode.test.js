@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import dataElementDelegate from '../customCode';
+import dataElementDelegate from '../customCode.js'
 
 describe('custom code data element delegate', function () {
   it('returns the return value of a user-defined script', function () {

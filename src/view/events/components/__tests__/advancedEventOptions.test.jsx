@@ -11,10 +11,10 @@
  ****************************************************************************************/
 
 import { fireEvent, render } from '@testing-library/react';
-import { sharedTestingElements } from '@test-helpers/react-testing-library';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import AdvancedEventOptions, { formConfig } from '../advancedEventOptions';
-import bootstrap from '../../../bootstrap';
+import { sharedTestingElements } from '@test-helpers/react-testing-library.jsx';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import AdvancedEventOptions, { formConfig } from '../advancedEventOptions.jsx'
+import bootstrap from '../../../bootstrap.jsx'
 
 describe('advancedEventOptions', () => {
   let extensionBridge;

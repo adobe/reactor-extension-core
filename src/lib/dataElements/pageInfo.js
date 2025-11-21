@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import validateInjectedParams from '../../helpers/validate-injected-params';
+import validateInjectedParams from '../../helpers/validate-injected-params.js'
 
 function injectPageInfo({ document }) {
   /**

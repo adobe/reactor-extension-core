@@ -12,8 +12,8 @@
 
 import React from 'react';
 import { Flex } from '@adobe/react-spectrum';
-import WarningContainer from '../components/warningContainer';
-import FullWidthField from '../components/fullWidthField';
+import WarningContainer from '../components/warningContainer.jsx'
+import FullWidthField from '../components/fullWidthField.jsx'
 
 const DataElementChange = () => (
   <Flex direction="column" gap="size-100" minWidth="size-6000">

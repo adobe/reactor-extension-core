@@ -10,8 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import clientInfo from './helpers/clientInfo';
-import validateInjectedParams from '../../helpers/validate-injected-params';
+import clientInfo from './helpers/clientInfo.js'
+import validateInjectedParams from '../../helpers/validate-injected-params.js'
 
 function injectOperatingSystemCondition({ clientInfo }) {
   /**

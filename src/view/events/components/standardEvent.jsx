@@ -17,7 +17,7 @@ import ElementFilter, {
 import AdvancedEventOptions, {
   formConfig as advancedEventOptionsFormConfig
 } from './advancedEventOptions';
-import mergeFormConfigs from '../../utils/mergeFormConfigs';
+import mergeFormConfigs from '../../utils/mergeFormConfigs.js'
 
 const StandardEvent = ({ elementSpecificityLabel }) => (
   <>

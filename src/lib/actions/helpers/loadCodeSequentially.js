@@ -10,8 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import getSourceByUrl from './getSourceByUrl';
-import validateInjectedParams from '../../../helpers/validate-injected-params';
+import getSourceByUrl from './getSourceByUrl.js'
+import validateInjectedParams from '../../../helpers/validate-injected-params.js'
 
 function injectLoadCodeSequentially({ Promise, getSourceByUrl }) {
   let previousExecuteCodePromise = Promise.resolve();

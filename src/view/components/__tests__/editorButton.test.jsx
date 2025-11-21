@@ -12,9 +12,9 @@
 
 import React from 'react';
 import { fireEvent, render as rtlRender, screen } from '@testing-library/react';
-import { isButtonValid } from '@test-helpers/react-testing-library';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import EditorButton from '../editorButton';
+import { isButtonValid } from '@test-helpers/react-testing-library.jsx';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import EditorButton from '../editorButton.jsx'
 
 const render = (props) => rtlRender(<EditorButton {...props} />);
 

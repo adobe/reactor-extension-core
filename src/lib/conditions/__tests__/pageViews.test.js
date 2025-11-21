@@ -10,8 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { injectPageViewCondition } from '../pageViews';
-import compareNumbers from '../helpers/compareNumbers';
+import { injectPageViewCondition } from '../pageViews.js'
+import compareNumbers from '../helpers/compareNumbers.js'
 
 describe('page views condition delegate', function () {
   const mockVisitorTracking = {

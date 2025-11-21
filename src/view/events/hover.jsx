@@ -21,7 +21,7 @@ import AdvancedEventOptions, {
 import SpecificElements, {
   formConfig as specificElementsFormConfig
 } from './components/specificElements';
-import mergeFormConfigs from '../utils/mergeFormConfigs';
+import mergeFormConfigs from '../utils/mergeFormConfigs.js'
 
 const Hover = () => (
   <Flex gap="size-100" direction="column">

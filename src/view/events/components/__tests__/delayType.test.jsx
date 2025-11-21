@@ -12,9 +12,9 @@
 
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import DelayType, { formConfig } from '../delayType';
-import bootstrap from '../../../bootstrap';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import DelayType, { formConfig } from '../delayType.jsx'
+import bootstrap from '../../../bootstrap.jsx'
 
 // react-testing-library element selectors
 const pageElements = {

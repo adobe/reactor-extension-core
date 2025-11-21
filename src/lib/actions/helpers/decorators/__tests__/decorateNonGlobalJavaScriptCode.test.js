@@ -9,7 +9,7 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-import { injectDecorateNonGlobalJavascriptCode } from '../decorateNonGlobalJavaScriptCode';
+import { injectDecorateNonGlobalJavascriptCode } from '../decorateNonGlobalJavaScriptCode.js'
 
 describe('decorate non global javascript code', function () {
   it('decorates javascript action and returns it on the code key', function () {

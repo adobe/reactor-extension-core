@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import deepMerge from '../helpers/deepMerge';
+import deepMerge from '../helpers/deepMerge.js'
 import validateInjectedParams from '../../helpers/validate-injected-params.js';
 
 function injectMergedObjects({ deepMerge }) {

@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 import cookie from 'js-cookie';
-import { injectCookie } from '../cookie';
+import { injectCookie } from '../cookie.js'
 const dataElementDelegate = injectCookie({ cookie });
 
 describe('cookie data element delegate', function () {

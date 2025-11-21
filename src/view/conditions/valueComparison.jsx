@@ -26,11 +26,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { TextField, Checkbox, Picker, Item, Flex } from '@adobe/react-spectrum';
 import { formValueSelector } from 'redux-form';
-import RegexTestButton from '../components/regexTestButton';
-import WrappedField from '../components/wrappedField';
-import HelpText from '../components/helpText';
-import NoWrapText from '../components/noWrapText';
-import { isDataElementToken, isNumberLike } from '../utils/validators';
+import RegexTestButton from '../components/regexTestButton.jsx'
+import WrappedField from '../components/wrappedField.jsx'
+import HelpText from '../components/helpText.jsx'
+import NoWrapText from '../components/noWrapText.jsx'
+import { isDataElementToken, isNumberLike } from '../utils/validators.js'
 
 const operators = {
   EQUALS: 'equals',

@@ -22,8 +22,8 @@ import {
 import Delete from '@spectrum-icons/workflow/Delete';
 import Add from '@spectrum-icons/workflow/Add';
 import { FieldArray } from 'redux-form';
-import WrappedField from '../../components/wrappedField';
-import RegexToggle from '../../components/regexToggle';
+import WrappedField from '../../components/wrappedField.jsx'
+import RegexToggle from '../../components/regexToggle.jsx'
 
 const ElementPropertiesRenderer = ({ fields }) => (
   <Flex

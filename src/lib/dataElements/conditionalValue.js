@@ -9,7 +9,7 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-import valueComparison from '../conditions/valueComparison';
+import valueComparison from '../conditions/valueComparison.js'
 
 export default function conditionalValue(settings) {
   return valueComparison(settings)

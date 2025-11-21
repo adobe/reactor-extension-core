@@ -12,10 +12,10 @@
 
 import postscribe from 'postscribe';
 import decorateCode from './helpers/decorateCode.js';
-import loadCodeSequentially from './helpers/loadCodeSequentially';
-import unescapeHTMLEntities from './helpers/unescapeHtmlEntities';
-import { getTurbine as getTurbineScript } from '../helpers/findPageScript';
-import validateInjectedParams from '../../helpers/validate-injected-params';
+import loadCodeSequentially from './helpers/loadCodeSequentially.js'
+import unescapeHTMLEntities from './helpers/unescapeHtmlEntities.js'
+import { getTurbine as getTurbineScript } from '../helpers/findPageScript.js'
+import validateInjectedParams from '../../helpers/validate-injected-params.js'
 
 function injectCustomCodeAction({
   document,

@@ -13,10 +13,10 @@
 import React from 'react';
 import { Flex, TextField, View } from '@adobe/react-spectrum';
 import { FieldArray } from 'redux-form';
-import WrappedField from '../components/wrappedField';
-import NoWrapText from '../components/noWrapText';
-import RegexToggle from '../components/regexToggle';
-import MultipleItemEditor from '../components/multipleItemEditor';
+import WrappedField from '../components/wrappedField.jsx'
+import NoWrapText from '../components/noWrapText.jsx'
+import RegexToggle from '../components/regexToggle.jsx'
+import MultipleItemEditor from '../components/multipleItemEditor.jsx'
 
 const createItem = () => ({});
 

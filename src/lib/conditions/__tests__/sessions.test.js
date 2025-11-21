@@ -10,8 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { injectSessions } from '../sessions';
-import compareNumbers from '../helpers/compareNumbers';
+import { injectSessions } from '../sessions.js'
+import compareNumbers from '../helpers/compareNumbers.js'
 
 const mockVisitorTracking = {
   getSessionCount: function () {

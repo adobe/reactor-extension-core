@@ -9,8 +9,8 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-import { injectDecorateHtmlCode } from '../decorateHtmlCode';
-import flushPromiseChains from '../../../../__tests__/helpers/flushPromiseChains';
+import { injectDecorateHtmlCode } from '../decorateHtmlCode.js'
+import flushPromiseChains from '../../../../__tests__/helpers/flushPromiseChains.js'
 
 describe('decorate html code', function () {
   let decorateHtmlCode;

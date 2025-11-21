@@ -12,7 +12,7 @@
 
 import React from 'react';
 import { RadioGroup, Radio } from '@adobe/react-spectrum';
-import WrappedField from '../components/wrappedField';
+import WrappedField from '../components/wrappedField.jsx'
 
 const Protocol = () => (
   <WrappedField name="protocol" label="Protocol" component={RadioGroup}>

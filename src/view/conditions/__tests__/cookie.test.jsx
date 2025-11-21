@@ -11,10 +11,10 @@
  ****************************************************************************************/
 
 import { fireEvent, render, screen, within } from '@testing-library/react';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
 import userEvent from '@testing-library/user-event';
-import Cookie, { formConfig } from '../cookie';
-import bootstrap from '../../bootstrap';
+import Cookie, { formConfig } from '../cookie.jsx'
+import bootstrap from '../../bootstrap.jsx'
 
 // react-testing-library element selectors
 const pageElements = {

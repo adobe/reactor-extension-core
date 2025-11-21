@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { injectPageInfo } from '../pageInfo';
+import { injectPageInfo } from '../pageInfo.js'
 
 const dataElementDelegate = injectPageInfo({
   document: {

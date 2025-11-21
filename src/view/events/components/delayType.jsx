@@ -20,7 +20,7 @@ import {
 } from '@adobe/react-spectrum';
 import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
-import WrappedField from '../../components/wrappedField';
+import WrappedField from '../../components/wrappedField.jsx'
 
 import {
   isNumberLikeInRange,

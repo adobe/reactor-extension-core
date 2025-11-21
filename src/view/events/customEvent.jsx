@@ -13,8 +13,8 @@
 import React from 'react';
 import { Flex, TextField, View, Link } from '@adobe/react-spectrum';
 
-import WrappedField from '../components/wrappedField';
-import InfoTip from '../components/infoTip';
+import WrappedField from '../components/wrappedField.jsx'
+import InfoTip from '../components/infoTip.jsx'
 
 import AdvancedEventOptions, {
   formConfig as advancedEventOptionsFormConfig
@@ -22,7 +22,7 @@ import AdvancedEventOptions, {
 import ElementFilter, {
   formConfig as elementFilterFormConfig
 } from './components/elementFilter';
-import mergeFormConfigs from '../utils/mergeFormConfigs';
+import mergeFormConfigs from '../utils/mergeFormConfigs.js'
 
 const CustomEvent = () => (
   <Flex gap="size-100" direction="column">

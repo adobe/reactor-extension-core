@@ -14,16 +14,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
 import { Checkbox, TextField, View } from '@adobe/react-spectrum';
-import WrappedField from '../components/wrappedField';
+import WrappedField from '../components/wrappedField.jsx'
 import ElementFilter, {
   formConfig as elementFilterFormConfig
 } from './components/elementFilter';
 import AdvancedEventOptions, {
   formConfig as advancedEventOptionsFormConfig
 } from './components/advancedEventOptions';
-import mergeFormConfigs from '../utils/mergeFormConfigs';
-import { isDataElementToken, isNumberLikeInRange } from '../utils/validators';
-import HelpText from '../components/helpText';
+import mergeFormConfigs from '../utils/mergeFormConfigs.js'
+import { isDataElementToken, isNumberLikeInRange } from '../utils/validators.js'
+import HelpText from '../components/helpText.jsx'
 
 const Click = ({ delayLinkActivation }) => (
   <>

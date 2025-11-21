@@ -10,8 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import getObjectProperty from '../helpers/getObjectProperty';
-import textMatch from '../helpers/textMatch';
+import getObjectProperty from '../helpers/getObjectProperty.js'
+import textMatch from '../helpers/textMatch.js'
 
 /**
  * Variable condition. Determines if a particular JS variable's actual value matches

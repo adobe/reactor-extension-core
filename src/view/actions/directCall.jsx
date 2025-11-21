@@ -13,11 +13,11 @@
 import React from 'react';
 import { TextField, Flex } from '@adobe/react-spectrum';
 import { FieldArray } from 'redux-form';
-import FullWidthField from '../components/fullWidthField';
-import WrappedField from '../components/wrappedField';
-import SpectrumLabel from '../components/spectrumLabel';
-import InfoTip from '../components/infoTip';
-import MultipleItemEditor from '../components/multipleItemEditor';
+import FullWidthField from '../components/fullWidthField.jsx'
+import WrappedField from '../components/wrappedField.jsx'
+import SpectrumLabel from '../components/spectrumLabel.jsx'
+import InfoTip from '../components/infoTip.jsx'
+import MultipleItemEditor from '../components/multipleItemEditor.jsx'
 import './directCall.styl';
 
 const OPENING_CURLY = 0x007b;

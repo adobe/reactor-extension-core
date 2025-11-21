@@ -10,9 +10,9 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import visitorTracking from '../helpers/visitorTracking';
-import textMatch from '../helpers/textMatch';
-import validateInjectedParams from '../../helpers/validate-injected-params';
+import visitorTracking from '../helpers/visitorTracking.js'
+import textMatch from '../helpers/textMatch.js'
+import validateInjectedParams from '../../helpers/validate-injected-params.js'
 
 function injectLandingPage({ visitorTracking, textMatch }) {
   /**

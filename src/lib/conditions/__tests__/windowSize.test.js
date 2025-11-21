@@ -10,8 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { injectWindowSize } from '../windowSize';
-import compareNumbers from '../helpers/compareNumbers';
+import { injectWindowSize } from '../windowSize.js'
+import compareNumbers from '../helpers/compareNumbers.js'
 
 const mockDocument = {
   documentElement: {

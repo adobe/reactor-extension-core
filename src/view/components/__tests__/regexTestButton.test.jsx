@@ -12,8 +12,8 @@
 
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import RegexTestButton from '../regexTestButton';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import RegexTestButton from '../regexTestButton.jsx'
 
 // react-testing-library element selectors
 const pageElements = {

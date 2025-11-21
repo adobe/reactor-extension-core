@@ -10,13 +10,13 @@ governing permissions and limitations under the License.
 */
 
 import React from 'react';
-import operators from './operators';
-import RegexMatch from '../../components/javascriptTools/regexMatch';
-import RegexReplace from '../../components/javascriptTools/regexReplace';
-import ValueSeparator from '../../components/javascriptTools/valueSeparator';
-import SimpleReplace from '../../components/javascriptTools/simpleReplace';
-import SearchValue from '../../components/javascriptTools/searchValue';
-import StartEndPosition from '../../components/javascriptTools/startEndPosition';
+import operators from './operators.js'
+import RegexMatch from '../../components/javascriptTools/regexMatch.jsx'
+import RegexReplace from '../../components/javascriptTools/regexReplace.jsx'
+import ValueSeparator from '../../components/javascriptTools/valueSeparator.jsx'
+import SimpleReplace from '../../components/javascriptTools/simpleReplace.jsx'
+import SearchValue from '../../components/javascriptTools/searchValue.jsx'
+import StartEndPosition from '../../components/javascriptTools/startEndPosition.jsx'
 
 export default {
   [operators.SIMPLE_REPLACE]: {

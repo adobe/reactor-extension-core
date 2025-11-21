@@ -11,7 +11,7 @@ governing permissions and limitations under the License.
 
 import React from 'react';
 import { Picker, Item } from '@adobe/react-spectrum';
-import FullWidthField from '../components/fullWidthField';
+import FullWidthField from '../components/fullWidthField.jsx'
 
 const options = [
   {

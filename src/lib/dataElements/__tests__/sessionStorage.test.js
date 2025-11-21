@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { injectSessionStorage } from '../sessionStorage';
+import { injectSessionStorage } from '../sessionStorage.js'
 
 describe('session storage data element delegate', function () {
   it('returns the value of a session storage item', function () {

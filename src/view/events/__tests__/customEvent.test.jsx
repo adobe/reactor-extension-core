@@ -12,10 +12,10 @@
 
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { sharedTestingElements } from '@test-helpers/react-testing-library';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import CustomEvent, { formConfig } from '../customEvent';
-import bootstrap from '../../bootstrap';
+import { sharedTestingElements } from '@test-helpers/react-testing-library.jsx';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import CustomEvent, { formConfig } from '../customEvent.jsx'
+import bootstrap from '../../bootstrap.jsx'
 
 // react-testing-library element selectors
 const pageElements = {

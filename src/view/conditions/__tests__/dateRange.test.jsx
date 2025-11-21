@@ -16,10 +16,10 @@ import userEvent from '@testing-library/user-event';
 import {
   simulate,
   clickSpectrumOption
-} from '@test-helpers/react-testing-library';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import DateRange, { formConfig } from '../dateRange';
-import bootstrap from '../../bootstrap';
+} from '@test-helpers/react-testing-library.jsx';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import DateRange, { formConfig } from '../dateRange.jsx'
+import bootstrap from '../../bootstrap.jsx'
 
 // react-testing-library element selectors
 const pageElements = {

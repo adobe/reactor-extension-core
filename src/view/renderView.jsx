@@ -12,7 +12,7 @@
 
 import ReactDOM from 'react-dom';
 
-import bootstrap from './bootstrap';
+import bootstrap from './bootstrap.jsx'
 
 import './global.styl';
 

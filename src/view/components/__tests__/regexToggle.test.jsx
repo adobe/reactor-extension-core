@@ -12,10 +12,10 @@
 
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import WrappedField from '../wrappedField';
-import RegexToggle from '../regexToggle';
-import bootstrap from '../../bootstrap';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import WrappedField from '../wrappedField.jsx'
+import RegexToggle from '../regexToggle.jsx'
+import bootstrap from '../../bootstrap.jsx'
 
 // react-testing-library element selectors
 const pageElements = {

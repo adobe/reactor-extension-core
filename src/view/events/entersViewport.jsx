@@ -18,8 +18,8 @@ import SpecificElements, {
 import DelayType, {
   formConfig as delayTypeFormConfig
 } from './components/delayType';
-import mergeFormConfigs from '../utils/mergeFormConfigs';
-import WrappedField from '../components/wrappedField';
+import mergeFormConfigs from '../utils/mergeFormConfigs.js'
+import WrappedField from '../components/wrappedField.jsx'
 
 const EntersViewport = () => (
   <Flex gap="size-100" direction="column">
