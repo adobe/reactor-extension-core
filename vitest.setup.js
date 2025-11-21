@@ -78,11 +78,21 @@ import process from 'process';
 globalThis.process = process;
 process.env.NODE_ENV = 'test';
 
+// Initialize window._satellite IMMEDIATELY before any imports
+// This must happen at setup file load time, not in beforeEach()
+// because source files try to set properties on _satellite at import time
+if (typeof window !== 'undefined') {
+  window._satellite = {};
+}
+
 // Initialize turbine mock
 function setupGlobals() {
-  // Reset window._satellite
+  // Reset window._satellite (keep the object, just clear properties)
   if (typeof window !== 'undefined') {
-    window._satellite = {};
+    // Don't replace the object, just clear it
+    Object.keys(window._satellite).forEach(key => {
+      delete window._satellite[key];
+    });
   }
 
   // Setup turbine
@@ -128,7 +138,7 @@ function setupGlobals() {
   };
 }
 
-// Setup before each test
+// Setup before each test to reset state
 beforeEach(() => {
   setupGlobals();
 });
