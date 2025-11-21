@@ -195,26 +195,28 @@ describe('custom code action delegate', function () {
             });
           });
 
-          it('flushes queue when body becomes available before timeout is complete', function () {
+          it('flushes queue when body becomes available before timeout is complete', () => {
             customCode({
               source: 'inside container',
               language: 'javascript'
             });
-
+          
             expect(postscribeSpy).not.toHaveBeenCalled();
             expect(documentWriteSpy).not.toHaveBeenCalled();
-
+          
             mockDocument.body = {};
-
+          
             customCode({
               source: 'inside container2',
               language: 'javascript'
             });
-
-            expect(postscribeSpy.calls.argsFor(0)[1]).toBe('inside container');
-            expect(postscribeSpy.calls.argsFor(1)[1]).toBe('inside container2');
+          
+            // Vitest/Jest style: spy.mock.calls[index][argIndex]
+            expect(postscribeSpy.mock.calls[0][1]).toBe('inside container');
+            expect(postscribeSpy.mock.calls[1][1]).toBe('inside container2');
             expect(documentWriteSpy).not.toHaveBeenCalled();
           });
+          
         });
 
         describe('and document.readyState is loading', function () {
