@@ -76,15 +76,15 @@ describe('get source by url', function () {
           expect(currentScriptSpy).toHaveBeenCalled();
         });
 
-        it('returns a promise that once fulfilled returns the code', function (done) {
+        it('returns a promise that once fulfilled returns the code', async function() {
           getSourceUrlCode(fullFileUrl).then(function (code) {
             expect(code).toBe('script code');
             expect(currentScriptSpy).toHaveBeenCalled();
-            done();
+            
           });
         });
 
-        it('returns undefined when the script cannot be loaded', function (done) {
+        it('returns undefined when the script cannot be loaded', async function() {
           const loadScriptSpy = vi.fn().mockImplementation(function () {
               return Promise.reject();
             });
@@ -98,7 +98,7 @@ describe('get source by url', function () {
           getSourceUrlCode(fullFileUrl).then(function (code) {
             expect(code).toBeUndefined();
             expect(currentScriptSpy).not.toHaveBeenCalled();
-            done();
+            
           });
         });
       });
@@ -139,15 +139,15 @@ describe('get source by url', function () {
           expect(currentScriptSpy).toHaveBeenCalled();
         });
 
-        it('returns a promise that once fulfilled returns the code', function (done) {
+        it('returns a promise that once fulfilled returns the code', async function() {
           getSourceUrlCode(relativeFile).then(function (code) {
             expect(code).toBe('script code');
             expect(currentScriptSpy).toHaveBeenCalled();
-            done();
+            
           });
         });
 
-        it('returns undefined when the script cannot be loaded', function (done) {
+        it('returns undefined when the script cannot be loaded', async function() {
           const loadScriptSpy = vi.fn().mockImplementation(function () {
               return Promise.reject();
             });
@@ -161,7 +161,7 @@ describe('get source by url', function () {
           getSourceUrlCode(fullFileUrl).then(function (code) {
             expect(code).toBeUndefined();
             expect(currentScriptSpy).not.toHaveBeenCalled();
-            done();
+            
           });
         });
       });
@@ -200,15 +200,15 @@ describe('get source by url', function () {
           expect(currentScriptSpy).toHaveBeenCalled();
         });
 
-        it('returns a promise that once fulfilled returns the code', function (done) {
+        it('returns a promise that once fulfilled returns the code', async function() {
           getSourceUrlCode(fullFileUrl).then(function (code) {
             expect(code).toBe('script code');
             expect(currentScriptSpy).toHaveBeenCalled();
-            done();
+            
           });
         });
 
-        it('returns undefined when the script cannot be loaded', function (done) {
+        it('returns undefined when the script cannot be loaded', async function() {
           const loadScriptSpy = vi.fn().mockImplementation(function () {
               return Promise.reject();
             });
@@ -222,7 +222,7 @@ describe('get source by url', function () {
           getSourceUrlCode(fullFileUrl).then(function (code) {
             expect(code).toBeUndefined();
             expect(currentScriptSpy).not.toHaveBeenCalled();
-            done();
+            
           });
         });
       });
@@ -253,14 +253,14 @@ describe('get source by url', function () {
           expect(loadScriptSpy).toHaveBeenCalledTimes(1);
         });
 
-        it('returns a promise that once fulfilled returns the code', function (done) {
+        it('returns a promise that once fulfilled returns the code', async function() {
           getSourceUrlCode(fullFileUrl).then(function (code) {
             expect(code).toBe('script code');
-            done();
+            
           });
         });
 
-        it('returns undefined when the script cannot be loaded', function (done) {
+        it('returns undefined when the script cannot be loaded', async function() {
           const loadScriptSpy = vi.fn().mockImplementation(function () {
               return Promise.reject();
             });
@@ -273,7 +273,7 @@ describe('get source by url', function () {
 
           getSourceUrlCode(fullFileUrl).then(function (code) {
             expect(code).toBeUndefined();
-            done();
+            
           });
         });
       });
@@ -302,14 +302,14 @@ describe('get source by url', function () {
           expect(loadScriptSpy).toHaveBeenCalledTimes(1);
         });
 
-        it('returns a promise that once fulfilled returns the code', function (done) {
+        it('returns a promise that once fulfilled returns the code', async function() {
           getSourceUrlCode(relativeFile).then(function (code) {
             expect(code).toBe('script code');
-            done();
+            
           });
         });
 
-        it('returns undefined when the script cannot be loaded', function (done) {
+        it('returns undefined when the script cannot be loaded', async function() {
           const loadScriptSpy = vi.fn().mockImplementation(function () {
               return Promise.reject();
             });
@@ -322,7 +322,7 @@ describe('get source by url', function () {
 
           getSourceUrlCode(fullFileUrl).then(function (code) {
             expect(code).toBeUndefined();
-            done();
+            
           });
         });
       });
@@ -349,14 +349,14 @@ describe('get source by url', function () {
           expect(loadScriptSpy).toHaveBeenCalledTimes(1);
         });
 
-        it('returns a promise that once fulfilled returns the code', function (done) {
+        it('returns a promise that once fulfilled returns the code', async function() {
           getSourceUrlCode(fullFileUrl).then(function (code) {
             expect(code).toBe('script code');
-            done();
+            
           });
         });
 
-        it('returns undefined when the script cannot be loaded', function (done) {
+        it('returns undefined when the script cannot be loaded', async function() {
           const loadScriptSpy = vi.fn().mockImplementation(function () {
               return Promise.reject();
             });
@@ -369,7 +369,7 @@ describe('get source by url', function () {
 
           getSourceUrlCode(fullFileUrl).then(function (code) {
             expect(code).toBeUndefined();
-            done();
+            
           });
         });
       });

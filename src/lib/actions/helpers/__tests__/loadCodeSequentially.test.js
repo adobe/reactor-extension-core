@@ -28,7 +28,7 @@ const sequentiallyLoadCodePromise = injectLoadCodeSequentially({
 });
 
 describe('load code sequentially', function () {
-  it('does the correct loaded order', function (done) {
+  it('does the correct loaded order', async function() {
     const loadedCode = [];
 
     const action1 = sequentiallyLoadCodePromise('url1').then(function (code) {
@@ -41,7 +41,7 @@ describe('load code sequentially', function () {
 
     Promise.all([action2, action1]).then(function () {
       expect(loadedCode).toEqual(['url1 source code', 'url2 source code']);
-      done();
+      
     });
   });
 });

@@ -39,7 +39,7 @@ describe('history change event delegate', function () {
     }
   });
 
-  it('triggers rule on the hash change event', function (done) {
+  it('triggers rule on the hash change event', async function() {
     const trigger = vi.fn();
     delegate({}, trigger);
 
@@ -51,12 +51,12 @@ describe('history change event delegate', function () {
     }).then(function () {
       expect(trigger.mock.calls.length).toBe(1);
       assertTriggerCall(trigger.mock.lastCall);
-      done();
+      
     });
   });
 
   if (window.history.pushState) {
-    it('triggers rule when pushState is called and on the popstate event', function (done) {
+    it('triggers rule when pushState is called and on the popstate event', async function() {
       const trigger = vi.fn();
       delegate({}, trigger);
 
@@ -76,14 +76,14 @@ describe('history change event delegate', function () {
         }).then(function () {
           expect(trigger.mock.calls.length).toBe(2);
           assertTriggerCall(trigger.mock.lastCall);
-          done();
+          
         });
       });
     });
   }
 
   if (window.history.replaceState) {
-    it('triggers rule when replaceState is called', function (done) {
+    it('triggers rule when replaceState is called', async function() {
       const trigger = vi.fn();
       delegate({}, trigger);
 
@@ -98,7 +98,7 @@ describe('history change event delegate', function () {
       }).then(function () {
         expect(trigger.mock.calls.length).toBe(1);
         assertTriggerCall(trigger.mock.lastCall);
-        done();
+        
       });
     });
   }

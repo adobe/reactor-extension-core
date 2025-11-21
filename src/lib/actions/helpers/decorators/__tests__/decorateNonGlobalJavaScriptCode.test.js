@@ -101,7 +101,7 @@ describe('decorate non global javascript code', function () {
     expect(_satellite['_runScript1']).not.toBeDefined();
   });
 
-  it('handles javascript code that returns promises that resolve', function (done) {
+  it('handles javascript code that returns promises that resolve', async function() {
     const settings = {
       language: 'javascript',
       // This code here is present only for example purposes. The code is not written to the page,
@@ -121,7 +121,7 @@ describe('decorate non global javascript code', function () {
       settings.source
     ).promise.then(function (r) {
       expect(r).toBe('resolved from inside the promise');
-      done();
+      
     });
 
     _satellite['_runScript1'](function (event, target, Promise) {
@@ -131,7 +131,7 @@ describe('decorate non global javascript code', function () {
     });
   });
 
-  it('handles javascript code that returns promises that reject', function (done) {
+  it('handles javascript code that returns promises that reject', async function() {
     const settings = {
       language: 'javascript',
       // This code here is present only for example purposes. The code is not written to the page,
@@ -151,7 +151,7 @@ describe('decorate non global javascript code', function () {
       settings.source
     ).promise.catch(function (r) {
       expect(r).toBe('rejected from inside the promise');
-      done();
+      
     });
 
     _satellite['_runScript1'](function (event, target, Promise) {
@@ -161,7 +161,7 @@ describe('decorate non global javascript code', function () {
     });
   });
 
-  it('handles javascript code that throws error', function (done) {
+  it('handles javascript code that throws error', async function() {
     const settings = {
       language: 'javascript',
       // This code here is present only for example purposes. The code is not written to the page,
@@ -181,7 +181,7 @@ describe('decorate non global javascript code', function () {
       settings.source
     ).promise.catch(function (e) {
       expect(e.message).toBe('error from inside code');
-      done();
+      
     });
 
     _satellite['_runScript1'](function () {

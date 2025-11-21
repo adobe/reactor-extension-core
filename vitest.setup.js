@@ -9,6 +9,28 @@ import Simulate from 'simulate';
 // Make Simulate available globally for tests that need it
 globalThis.Simulate = Simulate;
 
+// Fix for React Spectrum Provider expecting specific DOM structure
+// The Provider component tries to inject Typekit styles but fails in JSDOM
+// Add missing DOM elements that React Spectrum expects
+if (typeof document !== 'undefined') {
+  // Ensure document.head exists and has parentNode
+  if (!document.head) {
+    const head = document.createElement('head');
+    if (document.documentElement) {
+      document.documentElement.insertBefore(head, document.body);
+    }
+  }
+  
+  // Ensure document.documentElement exists
+  if (!document.documentElement) {
+    const html = document.createElement('html');
+    while (document.firstChild) {
+      html.appendChild(document.firstChild);
+    }
+    document.appendChild(html);
+  }
+}
+
 // Set up turbine and require mocks (from mockDelegateWrapper.js logic)
 import process from 'process';
 globalThis.process = process;

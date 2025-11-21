@@ -119,7 +119,7 @@ describe('custom code action delegate', function () {
             expect(documentWriteSpy).not.toHaveBeenCalled();
           });
 
-          it('writes the code defined inside an external file', function (done) {
+          it('writes the code defined inside an external file', async function() {
             customCode({
               isExternal: true,
               source: 'http://someurl.com/source.js',
@@ -129,7 +129,7 @@ describe('custom code action delegate', function () {
                 'inside external file'
               );
               expect(documentWriteSpy).not.toHaveBeenCalled();
-              done();
+              
             });
           });
         });
@@ -175,7 +175,7 @@ describe('custom code action delegate', function () {
             expect(documentWriteSpy).not.toHaveBeenCalled();
           });
 
-          it('writes the code defined inside an external file', function (done) {
+          it('writes the code defined inside an external file', async function() {
             customCode({
               isExternal: true,
               source: 'http://someurl.com/source.js',
@@ -191,7 +191,7 @@ describe('custom code action delegate', function () {
                 'inside external file'
               );
               expect(documentWriteSpy).not.toHaveBeenCalled();
-              done();
+              
             });
           });
 
@@ -337,7 +337,7 @@ describe('custom code action delegate', function () {
             expect(documentWriteSpy).toHaveBeenCalledWith('inside container');
           });
 
-          it('writes the code defined inside an external file', function (done) {
+          it('writes the code defined inside an external file', async function() {
             customCode({
               isExternal: true,
               source: 'http://someurl.com/source.js',
@@ -347,14 +347,14 @@ describe('custom code action delegate', function () {
                 'inside external file'
               );
               expect(documentWriteSpy).not.toHaveBeenCalled();
-              done();
+              
             });
           });
 
           it(
             'writes the code defined inside the main library using postscribe ' +
               'when sequencing is enabled',
-            function (done) {
+            async function () {
               mockTurbineVariable({
                 propertySettings: {
                   ruleComponentSequencingEnabled: true
@@ -372,7 +372,7 @@ describe('custom code action delegate', function () {
                   'inside container'
                 );
                 expect(documentWriteSpy).not.toHaveBeenCalled();
-                done();
+                
               });
             }
           );
@@ -404,7 +404,7 @@ describe('custom code action delegate', function () {
             expect(documentWriteSpy).not.toHaveBeenCalled();
           });
 
-          it('writes the code defined inside an external file', function (done) {
+          it('writes the code defined inside an external file', async function() {
             customCode({
               isExternal: true,
               source: 'http://someurl.com/source.js',
@@ -414,7 +414,7 @@ describe('custom code action delegate', function () {
                 'inside external file'
               );
               expect(documentWriteSpy).not.toHaveBeenCalled();
-              done();
+              
             });
           });
         });
@@ -452,7 +452,7 @@ describe('custom code action delegate', function () {
             expect(documentWriteSpy).not.toHaveBeenCalled();
           });
 
-          it('writes the code defined inside an external file', function (done) {
+          it('writes the code defined inside an external file', async function() {
             customCode({
               isExternal: true,
               source: 'http://someurl.com/source.js',
@@ -462,7 +462,7 @@ describe('custom code action delegate', function () {
                 'inside external file'
               );
               expect(documentWriteSpy).not.toHaveBeenCalled();
-              done();
+              
             });
           });
         });
@@ -585,7 +585,7 @@ describe('custom code action delegate', function () {
       });
     });
 
-    it('for the code defined inside an external file', function (done) {
+    it('for the code defined inside an external file', async function() {
       customCode({
         isExternal: true,
         source: 'http://someurl.com/source.js',
@@ -593,24 +593,24 @@ describe('custom code action delegate', function () {
       }).then(function (result) {
         expect(result).toBe('promise result from inside the decorators');
 
-        done();
+        
       });
     });
 
-    it('for the code defined inside the main library', function (done) {
+    it('for the code defined inside the main library', async function() {
       customCode({
         source: 'inside container',
         language: 'javascript'
       }).then(function (result) {
         expect(result).toBe('promise result from inside the decorators');
 
-        done();
+        
       });
     });
   });
 
   describe('returns a resolved promise', function () {
-    it('for empty code defined inside an external file', function (done) {
+    it('for empty code defined inside an external file', async function() {
       customCode = createCustomCodeDelegate({
         postscribe: postscribeSpy,
         document: getMockDocument({}),
@@ -626,7 +626,7 @@ describe('custom code action delegate', function () {
       }).then(function (result) {
         expect(result).toBeUndefined();
 
-        done();
+        
       });
     });
   });

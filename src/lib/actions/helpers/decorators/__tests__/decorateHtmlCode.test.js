@@ -136,7 +136,7 @@ describe('decorate html code', function () {
   it(
     'returns a promise that will be resolved when HTML code contains callbacks' +
       'and _satellite._onCustomCodeSuccess is called',
-    function (done) {
+    async function () {
       const settings = {
         language: 'html',
         source:
@@ -151,19 +151,20 @@ describe('decorate html code', function () {
         settings.source
       ).promise;
 
-      decorateCodePromise.then(onPromiseResolved).then(done);
+      const promise = decorateCodePromise.then(onPromiseResolved);
 
-      flushPromiseChains().then(function () {
-        expect(onPromiseResolved).not.toHaveBeenCalled();
-        window._satellite._onCustomCodeSuccess('0');
-      });
+      await flushPromiseChains();
+      expect(onPromiseResolved).not.toHaveBeenCalled();
+      window._satellite._onCustomCodeSuccess('0');
+      
+      await promise;
     }
   );
 
   it(
     'returns a promise that will be rejected when HTML code contains callbacks' +
       'and _satellite._onCustomCodeFailure is called',
-    function (done) {
+    async function () {
       const settings = {
         language: 'html',
         source:
@@ -178,12 +179,13 @@ describe('decorate html code', function () {
         settings.source
       ).promise;
 
-      decorateCodePromise.catch(onPromiseRejected).then(done);
+      const promise = decorateCodePromise.catch(onPromiseRejected);
 
-      flushPromiseChains().then(function () {
-        expect(onPromiseRejected).not.toHaveBeenCalled();
-        window._satellite._onCustomCodeFailure('0');
-      });
+      await flushPromiseChains();
+      expect(onPromiseRejected).not.toHaveBeenCalled();
+      window._satellite._onCustomCodeFailure('0');
+      
+      await promise;
     }
   );
 });

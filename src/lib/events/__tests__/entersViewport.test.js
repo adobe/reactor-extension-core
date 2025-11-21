@@ -132,7 +132,7 @@ describe('enters viewport event delegate', function () {
       'only calls setInterval the expected number of times for observation ' +
         'watchers no matter how many times' +
         'the delegate is invoked',
-      function (done) {
+      async function () {
         const mockWindow = getWindowProxy();
         vi.spyOn(mockWindow, 'setInterval');
 
@@ -171,12 +171,12 @@ describe('enters viewport event delegate', function () {
           );
           expect(mockWindow.setInterval).toHaveBeenCalledTimes(1);
           expect(triggerFn).toHaveBeenCalledTimes(0);
-          done();
+          
         }, OBSERVER_ELEMENT_REFRESH_FREQUENCY * 2);
       }
     );
 
-    it('calls trigger with event and related element', function (done) {
+    it('calls trigger with event and related element', async function() {
       // when the trigger function is called, assert the result it was called with
       const triggerA = {
         triggerFn: null
@@ -188,7 +188,7 @@ describe('enters viewport event delegate', function () {
           element: aElement,
           target: aElement
         });
-        done();
+        
       };
 
       delegate(
@@ -199,7 +199,7 @@ describe('enters viewport event delegate', function () {
       );
     });
 
-    it('triggers multiple rules targeting the same element with no delay', function (done) {
+    it('triggers multiple rules targeting the same element with no delay', async function() {
       const triggerA = {
         triggerFn: null,
         count: 0
@@ -233,7 +233,7 @@ describe('enters viewport event delegate', function () {
         expect(elapsedTime).toBeLessThan(
           OBSERVER_ELEMENT_REFRESH_FREQUENCY * 2
         );
-        done();
+        
       });
 
       initialTime = Date.now();
@@ -252,7 +252,7 @@ describe('enters viewport event delegate', function () {
       );
     });
 
-    it('handles settings.delay as a string', function (done) {
+    it('handles settings.delay as a string', async function() {
       const triggerA = {
         triggerFn: null
       };
@@ -264,7 +264,7 @@ describe('enters viewport event delegate', function () {
           target: aElement,
           delay: 100
         });
-        done();
+        
       };
 
       delegate(
@@ -283,7 +283,7 @@ describe('enters viewport event delegate', function () {
       );
     });
 
-    it('triggers multiple rules targeting the same element with same delay', function (done) {
+    it('triggers multiple rules targeting the same element with same delay', async function() {
       const triggerA = {
         triggerFn: null,
         count: 0
@@ -317,7 +317,7 @@ describe('enters viewport event delegate', function () {
         expect(elapsedTime).toBeLessThan(
           triggerDelay + OBSERVER_ELEMENT_REFRESH_FREQUENCY * 2
         );
-        done();
+        
       });
 
       initialTime = Date.now();
@@ -341,7 +341,7 @@ describe('enters viewport event delegate', function () {
     it(
       'triggers multiple rules targeting the same element with different ' +
         ' delays',
-      function (done) {
+      async function () {
         const triggerA = {
           triggerFn: null,
           count: 0
@@ -377,7 +377,7 @@ describe('enters viewport event delegate', function () {
         ]).then(function () {
           expect(triggerA.count).toBe(1);
           expect(triggerA2.count).toBe(1);
-          done();
+          
         });
 
         initialTime = Date.now();
@@ -403,7 +403,7 @@ describe('enters viewport event delegate', function () {
     it(
       'triggers multiple rules targeting the same element with different ' +
         'selectors',
-      function (done) {
+      async function () {
         const triggerA = {
           triggerFn: null,
           count: 0
@@ -430,7 +430,7 @@ describe('enters viewport event delegate', function () {
         ]).then(function () {
           expect(triggerA.count).toBe(1);
           expect(triggerA2.count).toBe(1);
-          done();
+          
         });
 
         delegate(
@@ -449,7 +449,7 @@ describe('enters viewport event delegate', function () {
       }
     );
 
-    it('triggers rule when elementProperties match', function (done) {
+    it('triggers rule when elementProperties match', async function() {
       const triggerB = {
         triggerFn: null,
         count: 0
@@ -460,7 +460,7 @@ describe('enters viewport event delegate', function () {
           element: bElement,
           target: bElement
         });
-        done();
+        
       };
 
       delegate(
@@ -477,7 +477,7 @@ describe('enters viewport event delegate', function () {
       );
     });
 
-    it('does not trigger rule when elementProperties do not match', function (done) {
+    it('does not trigger rule when elementProperties do not match', async function() {
       const triggerB = {
         triggerFn: null,
         count: 0
@@ -496,7 +496,7 @@ describe('enters viewport event delegate', function () {
         })
       ]).then(function () {
         expect(triggerB.count).toBe(0);
-        done();
+        
       });
 
       delegate(
@@ -513,7 +513,7 @@ describe('enters viewport event delegate', function () {
       );
     });
 
-    it('triggers rule when targeting using elementProperties', function (done) {
+    it('triggers rule when targeting using elementProperties', async function() {
       const triggerB = {
         triggerFn: null
       };
@@ -524,7 +524,7 @@ describe('enters viewport event delegate', function () {
           element: bElement,
           target: bElement
         });
-        done();
+        
       };
 
       delegate(
@@ -541,7 +541,7 @@ describe('enters viewport event delegate', function () {
       );
     });
 
-    it('triggers rule for each matching element', function (done) {
+    it('triggers rule for each matching element', async function() {
       const trigger = {
         triggerFn: null,
         fnCalls: []
@@ -601,7 +601,7 @@ describe('enters viewport event delegate', function () {
         })
         .then(function () {
           document.body.removeChild(elementAddedLater);
-          done();
+          
         });
 
       delegate(
@@ -621,7 +621,7 @@ describe('enters viewport event delegate', function () {
     it(
       'an element matching a previous selector can enter the DOM ' +
         'and be observed',
-      function (done) {
+      async function () {
         const trigger = {
           triggerFn: null,
           count: 0,
@@ -684,7 +684,7 @@ describe('enters viewport event delegate', function () {
           .then(function () {
             document.body.removeChild(firstElement);
             document.body.removeChild(secondElement);
-            done();
+            
           });
 
         delegate(
@@ -699,7 +699,7 @@ describe('enters viewport event delegate', function () {
     it(
       'A call to observe an element that does not exist yet can bind later and ' +
         'trigger a call',
-      function (done) {
+      async function () {
         const lateElement = document.createElement('div');
         lateElement.id = 'element-added-late' + Date.now(); // make it unique
         lateElement.innerHTML = 'added late element';
@@ -750,12 +750,12 @@ describe('enters viewport event delegate', function () {
               target: lateElement
             });
             document.body.removeChild(lateElement);
-            done();
+            
           });
       }
     );
 
-    it('ignores empty element selectors', function (done) {
+    it('ignores empty element selectors', async function() {
       const mockDocument = getDocumentProxy();
       vi.spyOn(mockDocument, 'querySelectorAll');
       const delegate = injectEntersViewport({
@@ -770,7 +770,7 @@ describe('enters viewport event delegate', function () {
       window.setTimeout(function () {
         expect(mockDocument.querySelectorAll).not.toHaveBeenCalled();
         expect(triggerFn).not.toHaveBeenCalled();
-        done();
+        
       }, OBSERVER_ELEMENT_REFRESH_FREQUENCY * 3);
     });
 
@@ -922,7 +922,7 @@ describe('enters viewport event delegate', function () {
 
   describe('with document.readyState at loading', function () {
     describe('with browser that is not IE 10', function () {
-      it('waits until DOMContentLoaded has fired before checking elements', function (done) {
+      it('waits until DOMContentLoaded has fired before checking elements', async function() {
         expect(document.querySelectorAll(aElementId).length).toBe(1);
 
         const mockDocument = getDocumentProxy();
@@ -987,7 +987,7 @@ describe('enters viewport event delegate', function () {
             expect(mockDocument.querySelectorAll).toHaveBeenCalledWith(
               aElementId
             );
-            done();
+            
           });
       });
     });

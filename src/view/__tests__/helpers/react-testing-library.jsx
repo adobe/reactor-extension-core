@@ -17,6 +17,17 @@ import {
   waitForElementToBeRemoved
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { vi } from 'vitest';
+
+// Fix for React Spectrum Provider's configureTypekit in JSDOM
+// The old @react/react-spectrum Provider tries to access document.head.parentNode
+// which doesn't exist properly in JSDOM
+// Mock the problem by ensuring window.Typekit exists (it checks for this)
+if (typeof window !== 'undefined') {
+  window.Typekit = window.Typekit || {
+    load: vi.fn()
+  };
+}
 
 const animationFrameRequests = {};
 window.requestAnimationFrame = (ckb) => {
