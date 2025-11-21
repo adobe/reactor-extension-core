@@ -73,7 +73,7 @@ describe('decorate non global javascript code', function () {
       expect(spy.mock.lastCall).toEqual({
         object: event.element,
         args: [event, event.target, mockPromise],
-        invocationOrder: jasmine.any(Number),
+        invocationOrder: expect.any(Number),
         returnValue: undefined
       });
     }

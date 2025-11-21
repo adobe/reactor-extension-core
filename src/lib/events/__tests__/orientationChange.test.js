@@ -42,7 +42,7 @@ describe('orientation change event delegate', function () {
     expect(options.call[0]).toEqual({
       element: mockWindow,
       target: mockWindow,
-      nativeEvent: jasmine.any(Object)
+      nativeEvent: expect.any(Object)
     });
   };
 

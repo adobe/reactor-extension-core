@@ -166,7 +166,7 @@ describe('enters viewport event delegate', function () {
         // waiting 2 cycles to do our check to avoid boundary race conditions
         window.setTimeout(function () {
           expect(mockWindow.setInterval).toHaveBeenCalledWith(
-            jasmine.any(Function),
+            expect.any(Function),
             OBSERVER_ELEMENT_REFRESH_FREQUENCY
           );
           expect(mockWindow.setInterval).toHaveBeenCalledTimes(1);
@@ -960,7 +960,7 @@ describe('enters viewport event delegate', function () {
             expect(aTrigger).not.toHaveBeenCalled();
             expect(mockDocument.addEventListener).toHaveBeenCalledWith(
               'DOMContentLoaded',
-              jasmine.any(Function)
+              expect.any(Function)
             );
 
             const domContentLoadedCallback =

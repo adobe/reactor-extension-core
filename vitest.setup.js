@@ -15,9 +15,6 @@ import Simulate from 'simulate';
  * Minimal shims for patterns not yet migrated
  */
 globalThis.jasmine = {
-  // jasmine.any() → expect.any()
-  any: (constructor) => expect.any(constructor),
-  
   // jasmine.clock() → vi fake timers
   clock: () => ({
     install: () => vi.useFakeTimers(),

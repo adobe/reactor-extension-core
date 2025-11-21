@@ -33,7 +33,7 @@ describe('WeakMap', function () {
       window: mockWindow
     });
 
-    expect(WeakMap).toEqual(jasmine.any(Function));
+    expect(WeakMap).toEqual(expect.any(Function));
     expect(mockWindow.WeakMap).toBeUndefined();
   });
 
@@ -46,10 +46,10 @@ describe('WeakMap', function () {
       // in the target browser.
       window: {}
     });
-    expect(WeakMap.prototype.get).toEqual(jasmine.any(Function));
-    expect(WeakMap.prototype.set).toEqual(jasmine.any(Function));
-    expect(WeakMap.prototype.delete).toEqual(jasmine.any(Function));
-    expect(WeakMap.prototype.has).toEqual(jasmine.any(Function));
+    expect(WeakMap.prototype.get).toEqual(expect.any(Function));
+    expect(WeakMap.prototype.set).toEqual(expect.any(Function));
+    expect(WeakMap.prototype.delete).toEqual(expect.any(Function));
+    expect(WeakMap.prototype.has).toEqual(expect.any(Function));
   });
 
   it('has methods that perform as expected', function () {

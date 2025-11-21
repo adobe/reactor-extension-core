@@ -61,7 +61,7 @@ describe('custom event event delegate', function () {
     expect(call[0]).toEqual({
       element: outerElement,
       target: innerElement,
-      nativeEvent: jasmine.any(Object),
+      nativeEvent: expect.any(Object),
       detail: { foo: 'bar' }
     });
   });
@@ -85,7 +85,7 @@ describe('custom event event delegate', function () {
     expect(call[0]).toEqual({
       element: window,
       target: window,
-      nativeEvent: jasmine.any(Object),
+      nativeEvent: expect.any(Object),
       detail: { foo: 'bar' }
     });
   });
@@ -109,7 +109,7 @@ describe('custom event event delegate', function () {
     expect(call[0]).toEqual({
       element: document,
       target: document,
-      nativeEvent: jasmine.any(Object),
+      nativeEvent: expect.any(Object),
       detail: { foo: 'bar' }
     });
   });

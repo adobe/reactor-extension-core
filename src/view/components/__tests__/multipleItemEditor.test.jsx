@@ -104,7 +104,7 @@ describe('multiple item editor', () => {
     expect(rows.length).toBe(2);
 
     fireEvent.click(rows[1].withinRow.getRemoveButton());
-    const someMouseEvent = jasmine.any(Object);
+    const someMouseEvent = expect.any(Object);
     expect(props.fields.remove).toHaveBeenCalledWith(1, someMouseEvent);
   });
 });

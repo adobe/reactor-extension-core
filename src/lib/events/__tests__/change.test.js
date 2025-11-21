@@ -21,7 +21,7 @@ describe('change event delegate', function () {
     expect(options.call[0]).toEqual({
       element: options.element,
       target: options.target,
-      nativeEvent: jasmine.any(Object)
+      nativeEvent: expect.any(Object)
     });
   };
 
