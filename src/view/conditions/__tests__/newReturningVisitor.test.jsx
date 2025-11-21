@@ -37,7 +37,7 @@ describe('new/returning visitor condition view', () => {
   });
 
   it('sets new visitor radio as checked by default', () => {
-    expect(pageElements.getNewVisitorRadio().checked).toBeTrue();
+    expect(pageElements.getNewVisitorRadio().checked).toBe(true);
   });
 
   it('sets form values from settings', () => {
@@ -47,7 +47,7 @@ describe('new/returning visitor condition view', () => {
       }
     });
 
-    expect(pageElements.getReturningVisitorRadio().checked).toBeTrue();
+    expect(pageElements.getReturningVisitorRadio().checked).toBe(true);
   });
 
   it('sets settings from form values', () => {

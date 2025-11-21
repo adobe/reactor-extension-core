@@ -197,7 +197,7 @@ describe('wrapped field', () => {
     // ensure an error first
     fireEvent.focus(getProductTextField());
     fireEvent.blur(getProductTextField());
-    expect(getProductTextField().hasAttribute('aria-invalid')).toBeTrue();
+    expect(getProductTextField().hasAttribute('aria-invalid')).toBe(true);
 
     userEvent.type(getProductTextField(), 'some words');
 

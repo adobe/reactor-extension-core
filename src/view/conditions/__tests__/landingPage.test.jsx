@@ -146,10 +146,10 @@ describe('landing page condition view', () => {
     const [firstRow, secondRow] = rows;
     expect(
       firstRow.withinRow.getPageValueTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(
       secondRow.withinRow.getPageValueTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     expect(extensionBridge.validate()).toBe(false);
   });

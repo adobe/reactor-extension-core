@@ -49,13 +49,13 @@ describe('elementFilter', () => {
     expect(
       sharedTestingElements.elementsMatching.getCssSelectorTextBox().value
     ).toBe('.foo');
-    expect(pageElements.radioGroup.getSpecificElements().checked).toBeTrue();
+    expect(pageElements.radioGroup.getSpecificElements().checked).toBe(true);
   });
 
   it('updates view properly when elementSelector is not provided', () => {
     extensionBridge.init({ settings: {} });
 
-    expect(pageElements.radioGroup.getAnyElement().checked).toBeTrue();
+    expect(pageElements.radioGroup.getAnyElement().checked).toBe(true);
     expect(
       sharedTestingElements.elementsMatching.queryForCssSelectorTextBox()
     ).toBeNull();
@@ -95,7 +95,7 @@ describe('elementFilter', () => {
       sharedTestingElements.elementsMatching
         .getCssSelectorTextBox()
         .hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
   });
 
   it('excludes specificElements errors if any element radio is selected', () => {

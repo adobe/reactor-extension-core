@@ -71,10 +71,10 @@ describe('hash condition view', () => {
     const [firstRow, secondRow] = rows;
 
     expect(firstRow.withinRow.getHashTextBox().value).toBe('foo');
-    expect(firstRow.withinRow.getRegexToggleSwitch().checked).toBeFalse();
+    expect(firstRow.withinRow.getRegexToggleSwitch().checked).toBe(false);
 
     expect(secondRow.withinRow.getHashTextBox().value).toBe('bar');
-    expect(secondRow.withinRow.getRegexToggleSwitch().checked).toBeTrue();
+    expect(secondRow.withinRow.getRegexToggleSwitch().checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -100,6 +100,6 @@ describe('hash condition view', () => {
         .getRows()[0]
         .withinRow.getHashTextBox()
         .hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
   });
 });

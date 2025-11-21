@@ -45,7 +45,7 @@ describe('editor button', () => {
       validationState: 'invalid'
     });
 
-    expect(isButtonValid(pageElements.getButton())).toBeFalse();
+    expect(isButtonValid(pageElements.getButton())).toBe(false);
   });
 
   it('supports code editing workflow', () => {

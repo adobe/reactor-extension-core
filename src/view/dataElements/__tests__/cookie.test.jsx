@@ -58,7 +58,7 @@ describe('cookie data element view', () => {
     fireEvent.blur(pageElements.getCookieTextBox());
     expect(
       pageElements.getCookieTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 });

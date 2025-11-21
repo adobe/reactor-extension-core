@@ -5,17 +5,38 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+// Plugin to mock CSS imports in tests
+const mockCssPlugin = () => ({
+  name: 'mock-css',
+  transform(code, id) {
+    if (/\.(css|styl|scss|sass|less)$/.test(id)) {
+      return {
+        code: 'export default {}',
+        map: null,
+      };
+    }
+  },
+});
+
 export default defineConfig({
   plugins: [
     react({
       jsxRuntime: 'classic', // React 17 classic mode
     }),
+    mockCssPlugin(), // Mock CSS imports in tests
   ],
   
   test: {
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./vitest.setup.js'],
+    allowOnly: true, // Allow .only() in tests during development
+    
+    // Enable CSS processing
+    css: true,
+    
+    // Use pool 'vmThreads' which has better CSS support
+    pool: 'vmThreads',
     
     // Coverage configuration
     coverage: {
@@ -34,14 +55,6 @@ export default defineConfig({
     
     // Test matching
     include: ['src/**/__tests__/**/*.test.{js,jsx}'],
-    
-    // Parallelization
-    pool: 'threads',
-    poolOptions: {
-      threads: {
-        singleThread: false,
-      },
-    },
   },
   
   resolve: {
@@ -49,6 +62,28 @@ export default defineConfig({
       '@test-helpers': path.resolve(__dirname, 'src/view/__tests__/helpers'),
     },
     extensions: ['.js', '.jsx', '.json'],
+  },
+  
+  server: {
+    deps: {
+      inline: [
+        /@react-spectrum/,
+        /@spectrum-icons/,
+        /@adobe\/react-spectrum/,
+      ],
+      web: {
+        transformCss: true,
+      },
+    },
+  },
+  
+  // Optimize deps to handle CSS
+  optimizeDeps: {
+    include: [
+      '@react-spectrum/provider',
+      '@react-spectrum/theme-dark',
+      '@react-spectrum/theme-light',
+    ],
   },
   
   define: {

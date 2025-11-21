@@ -88,9 +88,9 @@ describe('change event view', () => {
       const rows = pageElements.valueField.getRows();
       expect(rows.length).toBe(1);
       const [firstRow] = rows;
-      expect(pageElements.valueField.getShowFieldCheckBox().checked).toBeTrue();
+      expect(pageElements.valueField.getShowFieldCheckBox().checked).toBe(true);
       expect(firstRow.withinRow.getValueTextBox().value).toBe('abc');
-      expect(firstRow.withinRow.getRegexToggleSwitch().checked).toBeTrue();
+      expect(firstRow.withinRow.getRegexToggleSwitch().checked).toBe(true);
 
       expect(
         sharedTestingElements.elementsMatching.getCssSelectorTextBox().value
@@ -101,7 +101,7 @@ describe('change event view', () => {
       );
       expect(
         sharedTestingElements.advancedSettings.getBubbleStopCheckBox().checked
-      ).toBeTrue();
+      ).toBe(true);
     });
 
     it('sets settings from form values', async () => {
@@ -173,7 +173,7 @@ describe('change event view', () => {
 
     expect(
       firstRow.withinRow.getValueTextBox().hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
 
     const { acceptableChangeValues: valueRows } = extensionBridge.getSettings();
     const [{ value }] = valueRows;
@@ -181,13 +181,13 @@ describe('change event view', () => {
   });
 
   it('handles multiple rows', () => {
-    expect(pageElements.valueField.getShowFieldCheckBox().checked).toBeFalse();
+    expect(pageElements.valueField.getShowFieldCheckBox().checked).toBe(false);
     fireEvent.click(pageElements.valueField.getShowFieldCheckBox());
 
     expect(pageElements.valueField.getRows().length).toBe(1);
     expect(
       pageElements.valueField.getAddRowButton().hasAttribute('disabled')
-    ).toBeTrue();
+    ).toBe(true);
 
     let rows = pageElements.valueField.getRows();
     userEvent.type(rows[0].withinRow.getValueTextBox(), 'first');
@@ -197,20 +197,20 @@ describe('change event view', () => {
     expect(rows.length).toBe(2);
     expect(
       pageElements.valueField.getAddRowButton().hasAttribute('disabled')
-    ).toBeTrue();
+    ).toBe(true);
     userEvent.type(rows[1].withinRow.getValueTextBox(), 'second');
     fireEvent.click(rows[1].withinRow.getRegexToggleSwitch());
     expect(
       pageElements.valueField.getAddRowButton().hasAttribute('disabled')
-    ).toBeFalse();
+    ).toBe(false);
 
     const { acceptableChangeValues: valueRows } = extensionBridge.getSettings();
     const [firstRow, secondRow] = valueRows;
 
     expect(firstRow.value).toBe('first');
-    expect(Boolean(firstRow.valueIsRegex)).toBeFalse();
+    expect(Boolean(firstRow.valueIsRegex)).toBe(false);
     expect(secondRow.value).toBe('second');
-    expect(Boolean(secondRow.valueIsRegex)).toBeTrue();
+    expect(Boolean(secondRow.valueIsRegex)).toBe(true);
   });
 
   it(
@@ -230,7 +230,7 @@ describe('change event view', () => {
       expect(
         pageElements.valueField.getRows()[0].withinRow.getRegexToggleSwitch()
           .checked
-      ).toBeTrue();
+      ).toBe(true);
     }
   );
 

@@ -38,7 +38,7 @@ describe('custom code event view', () => {
 
     expect(
       isButtonValid(sharedTestingElements.customCodeEditor.getTriggerButton())
-    ).toBeFalse();
+    ).toBe(false);
   });
 
   it('allows user to provide custom code', () => {

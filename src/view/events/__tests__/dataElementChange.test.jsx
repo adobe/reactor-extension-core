@@ -19,7 +19,7 @@ const pageElements = {
   }
 };
 
-describe.only('dataElementChange event view', () => {
+describe('dataElementChange event view', () => {
   let extensionBridge;
 
   beforeEach(() => {
@@ -41,10 +41,10 @@ describe.only('dataElementChange event view', () => {
     );
     fireEvent.blur(pageElements.getDataElementNameTextBox());
 
-    expect(extensionBridge.validate()).toBeTrue();
+    expect(extensionBridge.validate()).toBe(true);
     expect(
       pageElements.getDataElementNameTextBox().hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
     expect(extensionBridge.getSettings().name).toBe('Data Element Name');
   });
 
@@ -60,7 +60,7 @@ describe.only('dataElementChange event view', () => {
     );
     expect(
       pageElements.getDataElementNameTextBox().hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
   });
 
   it('supports opening the data element modal', () => {
@@ -77,8 +77,8 @@ describe.only('dataElementChange event view', () => {
     fireEvent.blur(pageElements.getDataElementNameTextBox());
     expect(
       pageElements.getDataElementNameTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
-    expect(extensionBridge.validate()).toBeFalse();
+    ).toBe(true);
+    expect(extensionBridge.validate()).toBe(false);
   });
 
   it('shows the warnig mesage', () => {

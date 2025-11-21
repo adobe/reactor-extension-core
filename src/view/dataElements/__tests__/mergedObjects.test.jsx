@@ -86,7 +86,7 @@ describe('merged objects data element view', () => {
 
     expect(
       row.withinRow.getObjectTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 
@@ -97,7 +97,7 @@ describe('merged objects data element view', () => {
 
     expect(
       row.withinRow.getObjectTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 });

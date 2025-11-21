@@ -44,14 +44,14 @@ describe('advancedEventOptions', () => {
     expect(
       sharedTestingElements.advancedSettings.getBubbleFireIfParentCheckbox()
         .checked
-    ).toBeTrue();
+    ).toBe(true);
     expect(
       sharedTestingElements.advancedSettings.getBubbleFireIfChildFiredCheckbox()
         .checked
-    ).toBeTrue();
+    ).toBe(true);
     expect(
       sharedTestingElements.advancedSettings.getBubbleStopCheckBox().checked
-    ).toBeTrue();
+    ).toBe(true);
   });
 
   it('has bubbleFireIfParent set to true by default', () => {
@@ -63,7 +63,7 @@ describe('advancedEventOptions', () => {
     expect(
       sharedTestingElements.advancedSettings.getBubbleFireIfParentCheckbox()
         .checked
-    ).toBeTrue();
+    ).toBe(true);
   });
 
   it('has bubbleFireIfChildFired set to true by default', () => {
@@ -75,7 +75,7 @@ describe('advancedEventOptions', () => {
     expect(
       sharedTestingElements.advancedSettings.getBubbleFireIfChildFiredCheckbox()
         .checked
-    ).toBeTrue();
+    ).toBe(true);
   });
 
   it('by default, the checkboxes are in the expected their expected states', () => {
@@ -84,14 +84,14 @@ describe('advancedEventOptions', () => {
     expect(
       sharedTestingElements.advancedSettings.getBubbleFireIfParentCheckbox()
         .checked
-    ).toBeTrue();
+    ).toBe(true);
     expect(
       sharedTestingElements.advancedSettings.getBubbleFireIfChildFiredCheckbox()
         .checked
-    ).toBeTrue();
+    ).toBe(true);
     expect(
       sharedTestingElements.advancedSettings.getBubbleStopCheckBox().checked
-    ).toBeFalse();
+    ).toBe(false);
   });
 
   it('sets settings from form values', async () => {
@@ -104,16 +104,16 @@ describe('advancedEventOptions', () => {
     expect(
       sharedTestingElements.advancedSettings.getBubbleFireIfParentCheckbox()
         .checked
-    ).toBeFalse();
-    expect(extensionBridge.getSettings().bubbleFireIfParent).toBeFalse();
+    ).toBe(false);
+    expect(extensionBridge.getSettings().bubbleFireIfParent).toBe(false);
     fireEvent.click(
       sharedTestingElements.advancedSettings.getBubbleFireIfParentCheckbox()
     );
     expect(
       sharedTestingElements.advancedSettings.getBubbleFireIfParentCheckbox()
         .checked
-    ).toBeTrue();
-    expect(extensionBridge.getSettings().bubbleFireIfParent).toBeTrue();
+    ).toBe(true);
+    expect(extensionBridge.getSettings().bubbleFireIfParent).toBe(true);
 
     // this checkbox defaults on. checking our form really works.
     fireEvent.click(
@@ -122,16 +122,16 @@ describe('advancedEventOptions', () => {
     expect(
       sharedTestingElements.advancedSettings.getBubbleFireIfChildFiredCheckbox()
         .checked
-    ).toBeFalse();
-    expect(extensionBridge.getSettings().bubbleFireIfChildFired).toBeFalse();
+    ).toBe(false);
+    expect(extensionBridge.getSettings().bubbleFireIfChildFired).toBe(false);
     fireEvent.click(
       sharedTestingElements.advancedSettings.getBubbleFireIfChildFiredCheckbox()
     );
     expect(
       sharedTestingElements.advancedSettings.getBubbleFireIfChildFiredCheckbox()
         .checked
-    ).toBeTrue();
-    expect(extensionBridge.getSettings().bubbleFireIfChildFired).toBeTrue();
+    ).toBe(true);
+    expect(extensionBridge.getSettings().bubbleFireIfChildFired).toBe(true);
 
     // this checkbox defaults off. checking our form really works.
     fireEvent.click(
@@ -139,14 +139,14 @@ describe('advancedEventOptions', () => {
     );
     expect(
       sharedTestingElements.advancedSettings.getBubbleStopCheckBox().checked
-    ).toBeTrue();
-    expect(extensionBridge.getSettings().bubbleStop).toBeTrue();
+    ).toBe(true);
+    expect(extensionBridge.getSettings().bubbleStop).toBe(true);
     fireEvent.click(
       sharedTestingElements.advancedSettings.getBubbleStopCheckBox()
     );
     expect(
       sharedTestingElements.advancedSettings.getBubbleStopCheckBox().checked
-    ).toBeFalse();
-    expect(extensionBridge.getSettings().bubbleStop).toBeFalse();
+    ).toBe(false);
+    expect(extensionBridge.getSettings().bubbleStop).toBe(false);
   });
 });

@@ -43,8 +43,8 @@ describe('operating system condition view', () => {
       }
     });
 
-    expect(pageElements.getWindowsCheckbox().checked).toBeTrue();
-    expect(pageElements.getUnixCheckbox().checked).toBeTrue();
+    expect(pageElements.getWindowsCheckbox().checked).toBe(true);
+    expect(pageElements.getUnixCheckbox().checked).toBe(true);
   });
 
   it('sets settings from form values', () => {

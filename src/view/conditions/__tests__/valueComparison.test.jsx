@@ -90,7 +90,7 @@ describe('value comparison condition view', () => {
             within(pageElements.getOperatorDropdownTrigger()).getByText(text)
           ).toBeTruthy();
           expect(pageElements.getRightOperandTextBox().value).toBe('0');
-          expect(pageElements.getCaseInsensitiveCheckBox().checked).toBeTrue();
+          expect(pageElements.getCaseInsensitiveCheckBox().checked).toBe(true);
         });
 
         it('sets settings from form values', async () => {
@@ -128,7 +128,7 @@ describe('value comparison condition view', () => {
           fireEvent.blur(pageElements.getLeftOperandTextBox());
           expect(
             pageElements.getLeftOperandTextBox().hasAttribute('aria-invalid')
-          ).toBeTrue();
+          ).toBe(true);
 
           expect(extensionBridge.validate()).toBe(false);
 
@@ -136,7 +136,7 @@ describe('value comparison condition view', () => {
           // see if a value equals an empty string.
           expect(
             pageElements.getRightOperandTextBox().hasAttribute('aria-invalid')
-          ).toBeFalse();
+          ).toBe(false);
         });
       });
     });
@@ -183,7 +183,7 @@ describe('value comparison condition view', () => {
             within(pageElements.getOperatorDropdownTrigger()).getByText(text)
           ).toBeTruthy();
           expect(pageElements.getRightOperandTextBox().value).toBe('bar');
-          expect(pageElements.getCaseInsensitiveCheckBox().checked).toBeTrue();
+          expect(pageElements.getCaseInsensitiveCheckBox().checked).toBe(true);
         });
 
         it('sets form values from settings (data element version)', () => {
@@ -203,7 +203,7 @@ describe('value comparison condition view', () => {
             within(pageElements.getOperatorDropdownTrigger()).getByText(text)
           ).toBeTruthy();
           expect(pageElements.getRightOperandTextBox().value).toBe('%bar%');
-          expect(pageElements.getCaseInsensitiveCheckBox().checked).toBeTrue();
+          expect(pageElements.getCaseInsensitiveCheckBox().checked).toBe(true);
         });
 
         it('sets settings from form values (non-data element version)', async () => {
@@ -261,10 +261,10 @@ describe('value comparison condition view', () => {
 
           expect(
             pageElements.getLeftOperandTextBox().hasAttribute('aria-invalid')
-          ).toBeTrue();
+          ).toBe(true);
           expect(
             pageElements.getRightOperandTextBox().hasAttribute('aria-invalid')
-          ).toBeTrue();
+          ).toBe(true);
         });
       });
     });
@@ -372,10 +372,10 @@ describe('value comparison condition view', () => {
 
             expect(
               pageElements.getLeftOperandTextBox().hasAttribute('aria-invalid')
-            ).toBeTrue();
+            ).toBe(true);
             expect(
               pageElements.getRightOperandTextBox().hasAttribute('aria-invalid')
-            ).toBeTrue();
+            ).toBe(true);
           });
         });
       });
@@ -442,7 +442,7 @@ describe('value comparison condition view', () => {
             expect(extensionBridge.validate()).toBe(false);
             expect(
               pageElements.getLeftOperandTextBox().hasAttribute('aria-invalid')
-            ).toBeTrue();
+            ).toBe(true);
           });
         });
       });

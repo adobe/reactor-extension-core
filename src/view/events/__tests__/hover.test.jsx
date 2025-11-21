@@ -52,10 +52,10 @@ describe('hover event view', () => {
 
     expect(
       pageElements.delayHover.radioGroup.getImmediately().checked
-    ).toBeTrue();
+    ).toBe(true);
     expect(
       pageElements.delayHover.radioGroup.getAfterDelay().checked
-    ).toBeFalse();
+    ).toBe(false);
 
     fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
     expect(
@@ -83,7 +83,7 @@ describe('hover event view', () => {
 
     expect(
       pageElements.delayHover.radioGroup.getAfterDelay().checked
-    ).toBeTrue();
+    ).toBe(true);
     expect(pageElements.delayHover.getDelayTextBox().value).toBe('100');
 
     fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
@@ -107,7 +107,7 @@ describe('hover event view', () => {
 
     expect(
       pageElements.delayHover.radioGroup.getAfterDelay().checked
-    ).toBeTrue();
+    ).toBe(true);
     expect(pageElements.delayHover.getDelayTextBox().value).toBe(
       '%Data Element 1%'
     );

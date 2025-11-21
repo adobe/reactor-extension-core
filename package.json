@@ -19,6 +19,7 @@
     "package": "npm run build && npx @adobe/reactor-packager@next",
     "lint": "eslint 'src/**'",
     "test": "vitest run",
+    "test:only": "vitest run --allowOnly --reporter=verbose",
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",

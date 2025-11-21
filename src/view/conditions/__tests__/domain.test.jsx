@@ -57,8 +57,8 @@ describe('domain condition view', () => {
       }
     });
 
-    expect(pageElements.getAdobeDomainCheckbox().checked).toBeTrue();
-    expect(pageElements.getExampleDomainCheckbox().checked).toBeFalse();
+    expect(pageElements.getAdobeDomainCheckbox().checked).toBe(true);
+    expect(pageElements.getExampleDomainCheckbox().checked).toBe(false);
   });
 
   it('sets settings from form values', () => {

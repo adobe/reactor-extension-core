@@ -21,7 +21,7 @@ describe('isPlainObject', function () {
       {},
       Object.create(null)
     ].forEach(function (value) {
-      expect(isPlainObject(value)).toBeTrue();
+      expect(isPlainObject(value)).toBe(true);
     });
   });
 
@@ -40,13 +40,13 @@ describe('isPlainObject', function () {
       null,
       new Date()
     ].forEach(function (value) {
-      expect(isPlainObject(value)).toBeFalse();
+      expect(isPlainObject(value)).toBe(false);
     });
   });
 });
 
 describe('sanity', function () {
   it('should run a basic test', function () {
-    expect(true).toBeTrue();
+    expect(true).toBe(true);
   });
 });

@@ -146,10 +146,10 @@ describe('traffic source condition view', () => {
     const [firstRow, secondRow] = rows;
     expect(
       firstRow.withinRow.getTrafficSourceTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(
       secondRow.withinRow.getTrafficSourceTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     expect(extensionBridge.validate()).toBe(false);
   });

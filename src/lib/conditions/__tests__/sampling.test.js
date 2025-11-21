@@ -18,11 +18,11 @@ const conditionDelegate = injectSampling({
 
 describe('sampling condition delegate', function () {
   it('returns false when rate is 0', function () {
-    expect(conditionDelegate({ rate: 0 })).toBeFalse();
+    expect(conditionDelegate({ rate: 0 })).toBe(false);
   });
 
   it('returns true when rate is 1', function () {
-    expect(conditionDelegate({ rate: 1 })).toBeTrue();
+    expect(conditionDelegate({ rate: 1 })).toBe(true);
   });
 
   describe('cohort persistence', function () {

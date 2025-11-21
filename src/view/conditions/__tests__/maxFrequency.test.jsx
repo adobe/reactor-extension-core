@@ -95,7 +95,7 @@ describe('max frequency condition view', () => {
 
     expect(
       pageElements.getCountTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
 
     fireEvent.focus(pageElements.getCountTextBox());
@@ -104,7 +104,7 @@ describe('max frequency condition view', () => {
 
     expect(
       pageElements.getCountTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 

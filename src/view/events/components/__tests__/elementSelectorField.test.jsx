@@ -65,6 +65,6 @@ describe('elementSelector', () => {
       sharedTestingElements.elementsMatching
         .getCssSelectorTextBox()
         .hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
   });
 });

@@ -83,7 +83,7 @@ describe('regex toggle', () => {
       }
     });
 
-    expect(pageElements.getRegexToggleSwitch().checked).toBeTrue();
+    expect(pageElements.getRegexToggleSwitch().checked).toBe(true);
   });
 
   it('calls onChange from ValueIsRegex field when switch is toggled', () => {
@@ -122,7 +122,7 @@ describe('regex toggle', () => {
       }
     });
 
-    expect(pageElements.getRegexToggleSwitch().checked).toBeTrue();
+    expect(pageElements.getRegexToggleSwitch().checked).toBe(true);
     expect(pageElements.getRegexTestButton()).toBeTruthy();
   });
 
@@ -131,7 +131,7 @@ describe('regex toggle', () => {
       settings: {}
     });
 
-    expect(pageElements.getRegexToggleSwitch().checked).toBeFalse();
+    expect(pageElements.getRegexToggleSwitch().checked).toBe(false);
     expect(pageElements.queryForRegexTestButton()).toBeNull();
   });
 });

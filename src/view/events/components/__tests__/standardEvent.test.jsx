@@ -46,7 +46,7 @@ describe('standard event view', () => {
     fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
     expect(
       sharedTestingElements.advancedSettings.getBubbleStopCheckBox().checked
-    ).toBeTrue();
+    ).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -79,7 +79,7 @@ describe('standard event view', () => {
       sharedTestingElements.elementsMatching
         .getCssSelectorTextBox()
         .hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 });

@@ -80,7 +80,7 @@ describe('time on site condition view', () => {
 
     expect(
       pageElements.getMinutesTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 
@@ -91,7 +91,7 @@ describe('time on site condition view', () => {
 
     expect(
       pageElements.getMinutesTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 
@@ -102,7 +102,7 @@ describe('time on site condition view', () => {
 
     expect(
       pageElements.getMinutesTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
   });
 
   it('The timeOnSite input supports opening the data element modal', () => {
@@ -121,7 +121,7 @@ describe('time on site condition view', () => {
 
     expect(
       pageElements.getMinutesTextBox().hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
 
     expect(
       expect(extensionBridge.getSettings().minutes).toBe('%Data Element 1%')

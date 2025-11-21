@@ -154,7 +154,7 @@ describe('cookie condition view', () => {
     fireEvent.blur(pageElements.getCookieNameTextBox());
     expect(
       pageElements.getCookieNameTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     const rows = pageElements.getCookieValueRows();
     rows.forEach((row) => {
@@ -165,10 +165,10 @@ describe('cookie condition view', () => {
     const [firstRow, secondRow] = rows;
     expect(
       firstRow.withinRow.getCookieValueTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(
       secondRow.withinRow.getCookieValueTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     expect(extensionBridge.validate()).toBe(false);
   });

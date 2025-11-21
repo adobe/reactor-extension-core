@@ -59,7 +59,7 @@ describe('session storage data element view', () => {
 
     expect(
       pageElements.getNameTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 });

@@ -59,7 +59,7 @@ describe('constant data element view', () => {
 
     expect(
       pageElements.getValueTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 });

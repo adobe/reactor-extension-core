@@ -111,10 +111,10 @@ describe('screen resolution condition view', () => {
 
     expect(
       pageElements.getWidthTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(
       pageElements.getHeightTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
   });
 
   it('sets errors if values are not numbers', () => {
@@ -125,9 +125,9 @@ describe('screen resolution condition view', () => {
 
     expect(
       pageElements.getWidthTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(
       pageElements.getHeightTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
   });
 });

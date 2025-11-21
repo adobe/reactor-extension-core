@@ -118,21 +118,21 @@ describe('window size condition view', () => {
 
     expect(
       widthRow.withinRow.getValueTextBox().hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
     fireEvent.focus(widthRow.withinRow.getValueTextBox());
     fireEvent.blur(widthRow.withinRow.getValueTextBox());
     expect(
       widthRow.withinRow.getValueTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     expect(
       heightRow.withinRow.getValueTextBox().hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
     fireEvent.focus(heightRow.withinRow.getValueTextBox());
     fireEvent.blur(heightRow.withinRow.getValueTextBox());
     expect(
       heightRow.withinRow.getValueTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     expect(extensionBridge.validate()).toBe(false);
   });
@@ -144,13 +144,13 @@ describe('window size condition view', () => {
     fireEvent.blur(widthRow.withinRow.getValueTextBox());
     expect(
       widthRow.withinRow.getValueTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     userEvent.type(heightRow.withinRow.getValueTextBox(), '12.abc');
     fireEvent.blur(heightRow.withinRow.getValueTextBox());
     expect(
       heightRow.withinRow.getValueTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     expect(extensionBridge.validate()).toBe(false);
   });

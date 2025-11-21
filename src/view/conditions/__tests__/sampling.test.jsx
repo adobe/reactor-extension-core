@@ -50,7 +50,7 @@ describe('sampling condition view', () => {
     });
 
     expect(pageElements.getRateTextBox().value).toBe('25');
-    expect(pageElements.getPersistCohortCheckbox().checked).toBeTrue();
+    expect(pageElements.getPersistCohortCheckbox().checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -66,7 +66,7 @@ describe('sampling condition view', () => {
 
   it('sets the default form values', () => {
     expect(pageElements.getRateTextBox().value).toBe('50');
-    expect(pageElements.getPersistCohortCheckbox().checked).toBeFalse();
+    expect(pageElements.getPersistCohortCheckbox().checked).toBe(false);
 
     expect(extensionBridge.getSettings()).toEqual({
       rate: 0.5
@@ -79,7 +79,7 @@ describe('sampling condition view', () => {
     fireEvent.blur(pageElements.getRateTextBox());
     expect(
       pageElements.getRateTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 
@@ -91,7 +91,7 @@ describe('sampling condition view', () => {
 
     expect(
       pageElements.getRateTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 
@@ -103,7 +103,7 @@ describe('sampling condition view', () => {
 
     expect(
       pageElements.getRateTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 
@@ -115,7 +115,7 @@ describe('sampling condition view', () => {
 
     expect(
       pageElements.getRateTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 
@@ -127,7 +127,7 @@ describe('sampling condition view', () => {
 
     expect(
       pageElements.getRateTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 

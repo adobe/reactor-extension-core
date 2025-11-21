@@ -94,7 +94,7 @@ describe('page views condition view', () => {
     fireEvent.blur(pageElements.getCountTextBox());
     expect(
       pageElements.getCountTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     expect(extensionBridge.validate()).toBe(false);
   });
@@ -105,7 +105,7 @@ describe('page views condition view', () => {
 
     expect(
       pageElements.getCountTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 });

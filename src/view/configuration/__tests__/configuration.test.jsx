@@ -53,10 +53,10 @@ describe('extension configuration view', () => {
   it('does not support non-data element values', () => {
     userEvent.type(pageElements.getCSPNonceTextBox(), 'abc123');
 
-    expect(extensionBridge.validate()).toBeFalse();
+    expect(extensionBridge.validate()).toBe(false);
     expect(
       pageElements.getCSPNonceTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
   });
 
   it('supports a data element', () => {
@@ -93,7 +93,7 @@ describe('extension configuration view', () => {
     expect(extensionBridge.validate()).toBe(false);
     expect(
       pageElements.getCSPNonceTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
   });
 
   it('sets errors if cspNonce contains two data elements', () => {
@@ -106,7 +106,7 @@ describe('extension configuration view', () => {
     expect(extensionBridge.validate()).toBe(false);
     expect(
       pageElements.getCSPNonceTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
   });
 
   it('removes cspNonce from the settings object if the value is falsy', () => {

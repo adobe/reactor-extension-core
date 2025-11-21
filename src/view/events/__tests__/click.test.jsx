@@ -65,12 +65,12 @@ describe('click event view', () => {
       sharedTestingElements.elementsMatching.radioGroup
         .getSpecificElements()
         .hasAttribute('checked')
-    ).toBeTrue();
+    ).toBe(true);
     expect(
       sharedTestingElements.elementsMatching.radioGroup
         .getAnyElement()
         .hasAttribute('checked')
-    ).toBeFalse();
+    ).toBe(false);
 
     fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
     expect(
@@ -118,7 +118,7 @@ describe('click event view', () => {
       sharedTestingElements.elementsMatching
         .getCssSelectorTextBox()
         .hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
 
     fireEvent.click(pageElements.linkDelay.getCheckBox());
     fireEvent.focus(pageElements.linkDelay.getTextBox());
@@ -127,7 +127,7 @@ describe('click event view', () => {
     fireEvent.blur(pageElements.linkDelay.getTextBox());
     expect(
       pageElements.linkDelay.getTextBox().hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
 
     fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
     fireEvent.click(
@@ -154,7 +154,7 @@ describe('click event view', () => {
       sharedTestingElements.elementsMatching
         .getCssSelectorTextBox()
         .hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     fireEvent.click(pageElements.linkDelay.getCheckBox());
     fireEvent.focus(pageElements.linkDelay.getTextBox());
@@ -163,7 +163,7 @@ describe('click event view', () => {
 
     expect(
       pageElements.linkDelay.getTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
   });
 
   it('sets default linkDelay to 100', () => {
@@ -185,7 +185,7 @@ describe('click event view', () => {
 
     expect(
       pageElements.linkDelay.getTextBox().hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
 
     fireEvent.focus(pageElements.linkDelay.getTextBox());
     simulate.clear(pageElements.linkDelay.getTextBox());
@@ -194,7 +194,7 @@ describe('click event view', () => {
 
     expect(
       pageElements.linkDelay.getTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
   });
 
   it('The linkDelay input supports opening the data element modal', () => {
@@ -217,7 +217,7 @@ describe('click event view', () => {
 
     expect(
       pageElements.linkDelay.getTextBox().hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
 
     expect(extensionBridge.getSettings().anchorDelay).toBe('%Data Element 1%');
   });

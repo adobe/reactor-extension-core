@@ -115,7 +115,7 @@ describe('javascript tools view', () => {
 
       expect(
         pageElements.getSearchValueTextBox().hasAttribute('aria-invalid')
-      ).toBeTrue();
+      ).toBe(true);
       expect(extensionBridge.validate()).toBe(false);
     });
   });
@@ -184,7 +184,7 @@ describe('javascript tools view', () => {
 
       expect(
         pageElements.getRegexExpressionTextBox().hasAttribute('aria-invalid')
-      ).toBeTrue();
+      ).toBe(true);
       expect(extensionBridge.validate()).toBe(false);
     });
   });
@@ -247,7 +247,7 @@ describe('javascript tools view', () => {
 
         expect(
           pageElements.getStartPositionTextBox().hasAttribute('aria-invalid')
-        ).toBeTrue();
+        ).toBe(true);
         expect(extensionBridge.validate()).toBe(false);
       });
 
@@ -264,10 +264,10 @@ describe('javascript tools view', () => {
         expect(extensionBridge.validate()).toBe(false);
         expect(
           pageElements.getStartPositionTextBox().hasAttribute('aria-invalid')
-        ).toBeTrue();
+        ).toBe(true);
         expect(
           pageElements.getEndPositionTextBox().hasAttribute('aria-invalid')
-        ).toBeTrue();
+        ).toBe(true);
       });
     });
   });
@@ -328,7 +328,7 @@ describe('javascript tools view', () => {
 
       expect(
         pageElements.getRegexExpressionTextBox().hasAttribute('aria-invalid')
-      ).toBeTrue();
+      ).toBe(true);
       expect(extensionBridge.validate()).toBe(false);
     });
   });
@@ -388,7 +388,7 @@ describe('javascript tools view', () => {
         expect(extensionBridge.validate()).toBe(false);
         expect(
           pageElements.getSearchValueTextBox().hasAttribute('aria-invalid')
-        ).toBeTrue();
+        ).toBe(true);
       });
     });
   });
@@ -448,7 +448,7 @@ describe('javascript tools view', () => {
         expect(extensionBridge.validate()).toBe(false);
         expect(
           pageElements.getDelimiterTextBox().hasAttribute('aria-invalid')
-        ).toBeTrue();
+        ).toBe(true);
       });
     });
   });
@@ -459,7 +459,7 @@ describe('javascript tools view', () => {
 
     expect(
       pageElements.getSourceValueTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 });

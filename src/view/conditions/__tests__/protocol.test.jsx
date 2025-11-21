@@ -38,7 +38,7 @@ describe('protocol condition view', () => {
   });
 
   it('sets http radio as checked by default', () => {
-    expect(pageElements.radioGroup.getHttp().checked).toBeTrue();
+    expect(pageElements.radioGroup.getHttp().checked).toBe(true);
   });
 
   it('sets form values from settings', () => {
@@ -48,7 +48,7 @@ describe('protocol condition view', () => {
       }
     });
 
-    expect(pageElements.radioGroup.getHttps().checked).toBeTrue();
+    expect(pageElements.radioGroup.getHttps().checked).toBe(true);
   });
 
   it('sets settings from form values', () => {

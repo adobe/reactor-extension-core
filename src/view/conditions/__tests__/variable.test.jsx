@@ -154,7 +154,7 @@ describe('variable condition view', () => {
     fireEvent.blur(pageElements.getNameTextBox());
     expect(
       pageElements.getNameTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     const rows = pageElements.getVariableValueRows();
     rows.forEach((row) => {
@@ -165,10 +165,10 @@ describe('variable condition view', () => {
     const [firstRow, secondRow] = rows;
     expect(
       firstRow.withinRow.getVariableValueTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(
       secondRow.withinRow.getVariableValueTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     expect(extensionBridge.validate()).toBe(false);
   });

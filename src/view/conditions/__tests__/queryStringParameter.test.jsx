@@ -131,7 +131,7 @@ describe('query string parameter condition view', () => {
     fireEvent.blur(pageElements.getParameterNameTextBox());
     expect(
       pageElements.getParameterNameTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     const rows = pageElements.getQueryStringValueRows();
     rows.forEach((row) => {
@@ -144,12 +144,12 @@ describe('query string parameter condition view', () => {
       firstRow.withinRow
         .getQueryParamValueTextBox()
         .hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(
       secondRow.withinRow
         .getQueryParamValueTextBox()
         .hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     expect(extensionBridge.validate()).toBe(false);
   });

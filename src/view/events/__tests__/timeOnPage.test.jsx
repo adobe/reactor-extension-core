@@ -56,7 +56,7 @@ describe('time on page event view', () => {
     fireEvent.blur(pageElements.timeOnPage.getTextBox());
     expect(
       pageElements.timeOnPage.getTextBox().hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
 
     expect(extensionBridge.getSettings()).toEqual({
       timeOnPage: 55
@@ -68,7 +68,7 @@ describe('time on page event view', () => {
     fireEvent.blur(pageElements.timeOnPage.getTextBox());
     expect(
       pageElements.timeOnPage.getTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
   });
 
   it('sets error if timeOnPage value is not a number', () => {
@@ -77,7 +77,7 @@ describe('time on page event view', () => {
     fireEvent.blur(pageElements.timeOnPage.getTextBox());
     expect(
       pageElements.timeOnPage.getTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     expect(extensionBridge.validate()).toBe(false);
   });
@@ -85,7 +85,7 @@ describe('time on page event view', () => {
   it('sets validation error when the number < 1', () => {
     expect(
       pageElements.timeOnPage.getTextBox().hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
 
     fireEvent.focus(pageElements.timeOnPage.getTextBox());
     userEvent.type(pageElements.timeOnPage.getTextBox(), '0');
@@ -93,7 +93,7 @@ describe('time on page event view', () => {
 
     expect(
       pageElements.timeOnPage.getTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
   });
 
   it('The timeOnPage input supports opening the data element modal', () => {
@@ -112,7 +112,7 @@ describe('time on page event view', () => {
 
     expect(
       pageElements.timeOnPage.getTextBox().hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
 
     expect(extensionBridge.getSettings().timeOnPage).toBe('%Data Element 1%');
   });

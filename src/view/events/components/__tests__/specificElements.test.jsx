@@ -58,7 +58,7 @@ describe('specificElements', () => {
       }
     });
 
-    expect(pageElements.getPropertiesCheckbox().checked).toBeTrue();
+    expect(pageElements.getPropertiesCheckbox().checked).toBe(true);
     expect(screen.getByTestId('element-properties-editor')).toBeTruthy();
 
     expect(extensionBridge.validate()).toBe(true);
@@ -72,7 +72,7 @@ describe('specificElements', () => {
     });
 
     expect(pageElements.getElementSelectorTextBox().value).toBe('.foo');
-    expect(pageElements.getPropertiesCheckbox().checked).toBeFalse();
+    expect(pageElements.getPropertiesCheckbox().checked).toBe(false);
     expect(screen.queryByTestId('element-properties-editor')).toBeFalsy();
   });
 
@@ -99,7 +99,7 @@ describe('specificElements', () => {
     fireEvent.blur(pageElements.getElementSelectorTextBox());
     expect(
       pageElements.getElementSelectorTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     expect(extensionBridge.validate()).toBe(false);
   });

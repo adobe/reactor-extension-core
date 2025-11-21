@@ -78,10 +78,10 @@ describe('path condition view', () => {
 
     const [firstRow, secondRow] = rows;
     expect(firstRow.withinRow.getPathTextBox().value).toBe('foo');
-    expect(firstRow.withinRow.regex.getToggleSwitch().checked).toBeFalse();
+    expect(firstRow.withinRow.regex.getToggleSwitch().checked).toBe(false);
 
     expect(secondRow.withinRow.getPathTextBox().value).toBe('bar');
-    expect(secondRow.withinRow.regex.getToggleSwitch().checked).toBeTrue();
+    expect(secondRow.withinRow.regex.getToggleSwitch().checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -107,7 +107,7 @@ describe('path condition view', () => {
     fireEvent.blur(firstRow.withinRow.getPathTextBox());
     expect(
       firstRow.withinRow.getPathTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     expect(extensionBridge.validate()).toBe(false);
   });

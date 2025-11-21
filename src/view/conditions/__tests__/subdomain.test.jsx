@@ -113,14 +113,14 @@ describe('subdomain condition view', () => {
     const [row] = pageElements.getRegexRows();
     expect(
       row.withinRow.getSubDomainTextBox().hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
 
     fireEvent.focus(row.withinRow.getSubDomainTextBox());
     fireEvent.blur(row.withinRow.getSubDomainTextBox());
 
     expect(
       row.withinRow.getSubDomainTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 

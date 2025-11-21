@@ -71,10 +71,10 @@ describe('path and query string condition view', () => {
     const [firstRow, secondRow] = rows;
 
     expect(firstRow.withinRow.getPathTextBox().value).toBe('foo');
-    expect(firstRow.withinRow.getRegexToggleSwitch().checked).toBeFalse();
+    expect(firstRow.withinRow.getRegexToggleSwitch().checked).toBe(false);
 
     expect(secondRow.withinRow.getPathTextBox().value).toBe('bar');
-    expect(secondRow.withinRow.getRegexToggleSwitch().checked).toBeTrue();
+    expect(secondRow.withinRow.getRegexToggleSwitch().checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -101,7 +101,7 @@ describe('path and query string condition view', () => {
 
     expect(
       row.withinRow.getPathTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 });

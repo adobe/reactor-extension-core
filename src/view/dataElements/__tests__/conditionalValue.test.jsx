@@ -50,7 +50,7 @@ describe('conditional value data element view', () => {
   });
 
   it('has the return conditional value checkbox checked by default', () => {
-    expect(pageElements.getReturnConditionalValueCheckbox().checked).toBeTrue();
+    expect(pageElements.getReturnConditionalValueCheckbox().checked).toBe(true);
   });
 
   it('sets form values from settings', () => {
@@ -66,9 +66,9 @@ describe('conditional value data element view', () => {
       }
     });
 
-    expect(pageElements.getReturnConditionalValueCheckbox().checked).toBeTrue();
+    expect(pageElements.getReturnConditionalValueCheckbox().checked).toBe(true);
     expect(pageElements.getConditionalValueTextBox().value).toBe('a');
-    expect(pageElements.getReturnFallbackValueCheckbox().checked).toBeTrue();
+    expect(pageElements.getReturnFallbackValueCheckbox().checked).toBe(true);
     expect(pageElements.getFallbackValueTextBox().value).toBe('b');
   });
 

@@ -61,7 +61,7 @@ describe('javascript variable data element view', () => {
 
     expect(
       pageElements.getPathTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 });

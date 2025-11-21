@@ -53,8 +53,8 @@ describe('device type condition view', () => {
       }
     });
 
-    expect(pageElements.getDesktopCheckBox().checked).toBeTrue();
-    expect(pageElements.getAndroidCheckBox().checked).toBeTrue();
+    expect(pageElements.getDesktopCheckBox().checked).toBe(true);
+    expect(pageElements.getAndroidCheckBox().checked).toBe(true);
   });
 
   it('sets settings from form values', () => {

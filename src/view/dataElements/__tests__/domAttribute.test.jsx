@@ -95,7 +95,7 @@ describe('DOM attribute data element view', () => {
 
     expect(
       pageElements.getElementSelectorTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 

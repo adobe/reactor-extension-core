@@ -61,7 +61,7 @@ describe('direct call event view', () => {
 
     expect(
       pageElements.getIdentifierTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 });

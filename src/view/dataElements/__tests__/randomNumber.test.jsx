@@ -87,10 +87,10 @@ describe('random number data element view', () => {
 
     expect(
       pageElements.getMinTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(
       pageElements.getMaxTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
   });
 
   it('sets errors if values are not integers', () => {
@@ -102,10 +102,10 @@ describe('random number data element view', () => {
 
     expect(
       pageElements.getMinTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(
       pageElements.getMaxTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
   });
 
   it('sets errors if min is greater than max', () => {
@@ -119,9 +119,9 @@ describe('random number data element view', () => {
 
     expect(
       pageElements.getMinTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(
       pageElements.getMaxTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
   });
 });

@@ -120,13 +120,13 @@ describe('time played event view', () => {
       sharedTestingElements.elementsMatching
         .getCssSelectorTextBox()
         .hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     fireEvent.focus(pageElements.triggerWhen.getTextBox());
     fireEvent.blur(pageElements.triggerWhen.getTextBox());
     expect(
       pageElements.triggerWhen.getTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     expect(extensionBridge.validate()).toBe(false);
   });
@@ -147,7 +147,7 @@ describe('time played event view', () => {
 
     expect(
       pageElements.triggerWhen.getTextBox().hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
 
     expect(extensionBridge.getSettings().amount).toBe('%Data Element 1%');
   });

@@ -96,12 +96,12 @@ describe('custom code action view', () => {
   it('sets errors if required values are not provided', () => {
     expect(
       isButtonValid(sharedTestingElements.customCodeEditor.getTriggerButton())
-    ).toBeTrue();
+    ).toBe(true);
 
     expect(extensionBridge.validate()).toBe(false);
     expect(
       isButtonValid(sharedTestingElements.customCodeEditor.getTriggerButton())
-    ).toBeFalse();
+    ).toBe(false);
   });
 
   it('allows user to provide custom code', async () => {
