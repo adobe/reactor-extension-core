@@ -11,9 +11,9 @@
  ****************************************************************************************/
 
 import { fireEvent, render, screen } from '@testing-library/react';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import OperatingSystem, { formConfig } from '../operatingSystem';
-import bootstrap from '../../bootstrap';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import OperatingSystem, { formConfig } from '../operatingSystem.jsx'
+import bootstrap from '../../bootstrap.jsx'
 
 // react-testing-library element selectors
 const pageElements = {
@@ -43,8 +43,8 @@ describe('operating system condition view', () => {
       }
     });
 
-    expect(pageElements.getWindowsCheckbox().checked).toBeTrue();
-    expect(pageElements.getUnixCheckbox().checked).toBeTrue();
+    expect(pageElements.getWindowsCheckbox().checked).toBe(true);
+    expect(pageElements.getUnixCheckbox().checked).toBe(true);
   });
 
   it('sets settings from form values', () => {

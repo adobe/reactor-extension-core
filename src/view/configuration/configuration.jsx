@@ -13,9 +13,9 @@
 import React from 'react';
 import { TextField, Flex, View } from '@adobe/react-spectrum';
 
-import WrappedField from '../components/wrappedField';
-import InfoTip from '../components/infoTip';
-import { isDataElementToken } from '../utils/validators';
+import WrappedField from '../components/wrappedField.jsx'
+import InfoTip from '../components/infoTip.jsx'
+import { isDataElementToken } from '../utils/validators.js'
 
 export default () => (
   <Flex alignItems="end">

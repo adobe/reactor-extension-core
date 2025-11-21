@@ -9,12 +9,10 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-'use strict';
+import valueComparison from '../conditions/valueComparison.js'
 
-var valueComparison = require('../conditions/valueComparison');
-
-module.exports = function (settings) {
+export default function conditionalValue(settings) {
   return valueComparison(settings)
     ? settings.conditionalValue
     : settings.fallbackValue;
-};
+}

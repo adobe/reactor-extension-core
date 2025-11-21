@@ -10,13 +10,11 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var deepMerge = require('../deepMerge');
+import deepMerge from '../deepMerge.js';
 
 describe('deepMerge', function () {
   it('handles non-plain-object sources gracefully', function () {
-    var result = deepMerge(
+    const result = deepMerge(
       {},
       ['a', 'b', 'c'],
       'de',
@@ -45,12 +43,18 @@ describe('deepMerge', function () {
   });
 
   it('deeply merges while cloning all objects and arrays', function () {
-    var targetObj = { existing: 'value' };
-    var firstObj = { a: { b: 123 } };
-    var secondObj = { a: { b: 456 }, c: { d: true } };
-    var thirdObj = { c: { e: false }, f: [{ g: 'h' }, { i: 'j' }] };
-    var fourthObj = { f: [{ i: 'j' }, { k: 'l' }, ['m', 'n']] };
-    var result = deepMerge(targetObj, firstObj, secondObj, thirdObj, fourthObj);
+    const targetObj = { existing: 'value' };
+    const firstObj = { a: { b: 123 } };
+    const secondObj = { a: { b: 456 }, c: { d: true } };
+    const thirdObj = { c: { e: false }, f: [{ g: 'h' }, { i: 'j' }] };
+    const fourthObj = { f: [{ i: 'j' }, { k: 'l' }, ['m', 'n']] };
+    const result = deepMerge(
+      targetObj,
+      firstObj,
+      secondObj,
+      thirdObj,
+      fourthObj
+    );
 
     expect(result).toEqual({
       existing: 'value',
@@ -79,7 +83,7 @@ describe('deepMerge', function () {
   });
 
   it('does not merge undefined property values unless dest value does not exist', function () {
-    var result = deepMerge(
+    const result = deepMerge(
       {},
       {
         a: 'b'
@@ -91,7 +95,7 @@ describe('deepMerge', function () {
   });
 
   it('merges null property values', function () {
-    var result = deepMerge(
+    const result = deepMerge(
       {},
       {
         a: 'b'
@@ -103,7 +107,7 @@ describe('deepMerge', function () {
   });
 
   it('merges undefined and null array values', function () {
-    var result = deepMerge(
+    const result = deepMerge(
       {},
       {
         a: ['b']
@@ -115,18 +119,18 @@ describe('deepMerge', function () {
   });
 
   it('merges objects built using Object.create', function () {
-    var firstObject = Object.create({
+    const firstObject = Object.create({
       a: 'b'
     });
     firstObject.c = 'd';
 
-    var secondObject = Object.create(Object.prototype);
+    const secondObject = Object.create(Object.prototype);
     secondObject.e = 'f';
 
-    var thirdObject = Object.create(null);
+    const thirdObject = Object.create(null);
     thirdObject.g = 'h';
 
-    var result = deepMerge({}, firstObject, secondObject, thirdObject);
+    const result = deepMerge({}, firstObject, secondObject, thirdObject);
 
     expect(result).toEqual({
       c: 'd',
@@ -144,7 +148,7 @@ describe('deepMerge', function () {
       this.def = {};
     }
 
-    var firstObj = {
+    const firstObj = {
       a: new Date(0),
       b: /abc/,
       c: Foo,
@@ -155,7 +159,7 @@ describe('deepMerge', function () {
       h: 'a',
       i: true
     };
-    var secondObj = {
+    const secondObj = {
       a: new Date(1),
       b: /def/,
       c: Bar,
@@ -166,7 +170,7 @@ describe('deepMerge', function () {
       h: 'b',
       i: false
     };
-    var result = deepMerge({}, firstObj, secondObj);
+    const result = deepMerge({}, firstObj, secondObj);
 
     expect(result.a).toBe(secondObj.a);
     expect(result.b).toBe(secondObj.b);

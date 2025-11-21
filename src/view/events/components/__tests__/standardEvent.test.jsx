@@ -12,10 +12,10 @@
 
 import { fireEvent, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { sharedTestingElements } from '@test-helpers/react-testing-library';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import StandardEvent, { formConfig } from '../standardEvent';
-import bootstrap from '../../../bootstrap';
+import { sharedTestingElements } from '@test-helpers/react-testing-library.jsx';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import StandardEvent, { formConfig } from '../standardEvent.jsx'
+import bootstrap from '../../../bootstrap.jsx'
 
 describe('standard event view', () => {
   let extensionBridge;
@@ -46,7 +46,7 @@ describe('standard event view', () => {
     fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
     expect(
       sharedTestingElements.advancedSettings.getBubbleStopCheckBox().checked
-    ).toBeTrue();
+    ).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -79,7 +79,7 @@ describe('standard event view', () => {
       sharedTestingElements.elementsMatching
         .getCssSelectorTextBox()
         .hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 });

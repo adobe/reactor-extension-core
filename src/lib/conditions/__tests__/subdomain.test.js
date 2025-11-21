@@ -10,22 +10,23 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import { injectSubdomainCondition } from '../subdomain.js'
+import textMatch from '../../helpers/textMatch.js'
 
-var mockDocument = {
+const mockDocument = {
   location: {
     hostname: 'foo.adobe.com'
   }
 };
 
-var conditionDelegateInjector = require('inject-loader!../subdomain');
-var conditionDelegate = conditionDelegateInjector({
-  '@adobe/reactor-document': mockDocument
+const conditionDelegate = injectSubdomainCondition({
+  document: mockDocument,
+  textMatch
 });
 
 describe('subdomain condition delegate', function () {
   it('returns true when the subdomain matches an acceptable string', function () {
-    var settings = {
+    const settings = {
       subdomains: [
         {
           value: 'basketball.espn.com'
@@ -39,7 +40,7 @@ describe('subdomain condition delegate', function () {
   });
 
   it('returns false when the subdomain does not match an acceptable string', function () {
-    var settings = {
+    const settings = {
       subdomains: [
         {
           value: 'basketball.espn.com'
@@ -53,7 +54,7 @@ describe('subdomain condition delegate', function () {
   });
 
   it('returns true when the subdomain matches an acceptable regex', function () {
-    var settings = {
+    const settings = {
       subdomains: [
         {
           value: 'basketball.espn.com'
@@ -68,7 +69,7 @@ describe('subdomain condition delegate', function () {
   });
 
   it('returns false when the subdomain does not match an acceptable regex', function () {
-    var settings = {
+    const settings = {
       subdomains: [
         {
           value: 'basketball.espn.com'

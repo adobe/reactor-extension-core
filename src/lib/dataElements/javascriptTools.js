@@ -1,19 +1,7 @@
-/*
-Copyright 2021 Adobe. All rights reserved.
-This file is licensed to you under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License. You may obtain a copy
-of the License at http://www.apache.org/licenses/LICENSE-2.0
-Unless required by applicable law or agreed to in writing, software distributed under
-the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
-OF ANY KIND, either express or implied. See the License for the specific language
-governing permissions and limitations under the License.
-*/
-
-'use strict';
-
-var stringAndNumberUtils = require('../helpers/stringAndNumberUtils');
-var isString = stringAndNumberUtils.isString;
-var castToStringIfNumber = stringAndNumberUtils.castToStringIfNumber;
+import {
+  isString,
+  castToStringIfNumber
+} from '../helpers/stringAndNumberUtils';
 
 /**
  * The javascript tools data element.
@@ -21,8 +9,9 @@ var castToStringIfNumber = stringAndNumberUtils.castToStringIfNumber;
  * @param {string} settings.operator The attribute that contains the desired operation.
  * @returns {string}
  */
-module.exports = function (settings) {
-  var value = settings.sourceValue;
+export default function javascriptTools(settings) {
+  let value = settings.sourceValue;
+  let re;
 
   switch (settings.operator) {
     case 'simpleReplace':
@@ -32,7 +21,7 @@ module.exports = function (settings) {
         return value;
       }
 
-      var method = settings.replaceAll === true ? 'replaceAll' : 'replace';
+      const method = settings.replaceAll === true ? 'replaceAll' : 'replace';
       return value[method](settings.searchValue, settings.replacementValue);
 
     case 'regexReplace':
@@ -42,7 +31,7 @@ module.exports = function (settings) {
         return value;
       }
 
-      var re = new RegExp(
+      re = new RegExp(
         settings.regexInput,
         (settings.caseInsensitive === true ? 'i' : '') +
           (settings.replaceAll === true ? 'g' : '')
@@ -69,10 +58,7 @@ module.exports = function (settings) {
         return value;
       }
 
-      var re = new RegExp(
-        settings.regexInput,
-        settings.caseInsensitive ? 'i' : ''
-      );
+      re = new RegExp(settings.regexInput, settings.caseInsensitive ? 'i' : '');
 
       return value.match(re)[0];
 
@@ -132,4 +118,4 @@ module.exports = function (settings) {
       }
       return value.shift();
   }
-};
+}

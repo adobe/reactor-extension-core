@@ -10,21 +10,22 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import { injectSessionStorage } from '../sessionStorage.js'
+import { vi } from 'vitest';
 
 describe('session storage data element delegate', function () {
   it('returns the value of a session storage item', function () {
-    var mockWindow = {
+    const mockWindow = {
       sessionStorage: {
-        getItem: jasmine.createSpy().and.returnValue('bar')
+        getItem: vi.fn().and.returnValue('bar')
       }
     };
 
-    var dataElementDelegate = require('inject-loader!../sessionStorage')({
-      '@adobe/reactor-window': mockWindow
+    const dataElementDelegate = injectSessionStorage({
+      window: mockWindow
     });
 
-    var settings = {
+    const settings = {
       name: 'foo'
     };
 
@@ -33,17 +34,17 @@ describe('session storage data element delegate', function () {
   });
 
   it('returns null if session storage item is not set', function () {
-    var mockWindow = {
+    const mockWindow = {
       sessionStorage: {
-        getItem: jasmine.createSpy().and.returnValue(null)
+        getItem: vi.fn().and.returnValue(null)
       }
     };
 
-    var dataElementDelegate = require('inject-loader!../sessionStorage')({
-      '@adobe/reactor-window': mockWindow
+    const dataElementDelegate = injectSessionStorage({
+      window: mockWindow
     });
 
-    var settings = {
+    const settings = {
       name: 'foo'
     };
 
@@ -55,11 +56,11 @@ describe('session storage data element delegate', function () {
     'returns null if error is thrown (like when session storage is ' +
       'disabled in safari)',
     function () {
-      var dataElementDelegate = require('inject-loader!../sessionStorage')({
-        '@adobe/reactor-window': {}
+      const dataElementDelegate = injectSessionStorage({
+        window: {}
       });
 
-      var settings = {
+      const settings = {
         name: 'foo'
       };
 

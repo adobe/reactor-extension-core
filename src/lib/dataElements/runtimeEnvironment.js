@@ -9,36 +9,46 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-'use strict';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
 
-/**
- * The launch environment data element.
- * @param {Object} settings The data element settings object.
- * @param {string} settings.attribute The attribute that should be returned.
- * @returns {string}
- */
+function injectRuntimeEnvironment({ window }) {
+  /**
+   * The launch environment data element.
+   * @param {Object} settings The data element settings object.
+   * @param {string} settings.attribute The attribute that should be returned.
+   * @returns {string}
+   */
+  return function runtimeEnvironment(settings, event) {
+    switch (settings.attribute) {
+      case 'buildDate':
+        return turbine.buildInfo.buildDate;
+      case 'environmentStage':
+        return window._satellite.environment.stage;
+      case 'propertyName':
+        return window._satellite.property.name;
+      case 'propertyId':
+        return window._satellite.property.id;
+      case 'ruleName':
+        return event.$rule.name;
+      case 'ruleId':
+        return event.$rule.id;
+      case 'eventType':
+        return event.$type;
+      case 'eventDetail':
+        return event.detail;
+      case 'DCRIdentifier':
+        return event.identifier;
+    }
+  };
+}
 
-var window = require('@adobe/reactor-window');
+const validateInjection = validateInjectedParams(injectRuntimeEnvironment);
 
-module.exports = function (settings, event) {
-  switch (settings.attribute) {
-    case 'buildDate':
-      return turbine.buildInfo.buildDate;
-    case 'environmentStage':
-      return window._satellite.environment.stage;
-    case 'propertyName':
-      return window._satellite.property.name;
-    case 'propertyId':
-      return window._satellite.property.id;
-    case 'ruleName':
-      return event.$rule.name;
-    case 'ruleId':
-      return event.$rule.id;
-    case 'eventType':
-      return event.$type;
-    case 'eventDetail':
-      return event.detail;
-    case 'DCRIdentifier':
-      return event.identifier;
-  }
-};
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  window: require('@adobe/reactor-window')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectRuntimeEnvironment };
+/* END.TESTS_ONLY */

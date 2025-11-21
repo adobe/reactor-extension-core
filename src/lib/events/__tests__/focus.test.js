@@ -10,11 +10,11 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import testStandardEvent from './helpers/testStandardEvent.js';
+import { injectFocus } from '../focus.js';
 
 describe('focus event delegate', function () {
-  var testStandardEvent = require('./helpers/testStandardEvent');
-  var delegate = require('../focus');
+  const delegate = injectFocus({ document });
 
   testStandardEvent(function () {
     return delegate;

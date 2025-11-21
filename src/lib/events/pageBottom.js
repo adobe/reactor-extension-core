@@ -10,16 +10,27 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
+import pageLifecycleEvents from './helpers/pageLifecycleEvents.js';
 
-var pageLifecycleEvents = require('./helpers/pageLifecycleEvents');
+function injectPageBottom({ pageLifecycleEvents }) {
+  /**
+   * Page bottom event. This event occurs as soon as the user calls _satellite.pageBottom() (which is
+   * supposed to be at the bottom of the page).
+   * @param {Object} settings The event settings object.
+   * @param {function} trigger The [rule]trigger callback.
+   */
+  return function pageBottom(settings, trigger) {
+    pageLifecycleEvents.registerPageBottomTrigger(trigger);
+  };
+}
 
-/**
- * Page bottom event. This event occurs as soon as the user calls _satellite.pageBottom() (which is
- * supposed to be at the bottom of the page).
- * @param {Object} settings The event settings object.
- * @param {ruleTrigger} trigger The trigger callback.
- */
-module.exports = function (settings, trigger) {
-  pageLifecycleEvents.registerPageBottomTrigger(trigger);
-};
+const validateInjection = validateInjectedParams(injectPageBottom);
+
+export default validateInjection({
+  pageLifecycleEvents
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectPageBottom };
+/* END.TESTS_ONLY */

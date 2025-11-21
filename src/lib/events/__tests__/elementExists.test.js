@@ -10,16 +10,17 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var POLL_INTERVAL = 3000;
+import WeakMap from '../helpers/weakMap.js';
+import { injectElementExists } from '../elementExists.js';
+import { vi } from 'vitest';
+const POLL_INTERVAL = 3000;
 
 describe('element exists event delegate', function () {
-  var delegate;
-  var aElement;
-  var bElement;
+  const delegate = injectElementExists({ window, document, WeakMap });
+  let aElement;
+  let bElement;
 
-  var createElements = function () {
+  const createElements = function () {
     aElement = document.createElement('div');
     aElement.id = 'a';
     aElement.innerHTML = 'a';
@@ -31,27 +32,26 @@ describe('element exists event delegate', function () {
     aElement.appendChild(bElement);
   };
 
-  var removeElements = function () {
+  const removeElements = function () {
     if (aElement) {
       document.body.removeChild(aElement);
     }
     aElement = bElement = null;
   };
 
-  var assertTriggerCall = function (options) {
-    expect(options.call.args[0]).toEqual({
+  const assertTriggerCall = function (options) {
+    expect(options.call[0]).toEqual({
       element: options.element,
       target: options.element
     });
   };
 
   beforeAll(function () {
-    jasmine.clock().install();
-    delegate = require('../elementExists');
+    vi.useFakeTimers();
   });
 
   afterAll(function () {
-    jasmine.clock().uninstall();
+    vi.useRealTimers();
   });
 
   beforeEach(function () {
@@ -63,7 +63,7 @@ describe('element exists event delegate', function () {
   });
 
   it('calls trigger with event and related element', function () {
-    var aTrigger = jasmine.createSpy();
+    const aTrigger = vi.fn();
 
     delegate(
       {
@@ -72,18 +72,18 @@ describe('element exists event delegate', function () {
       aTrigger
     );
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     assertTriggerCall({
-      call: aTrigger.calls.mostRecent(),
+      call: aTrigger.mock.lastCall,
       element: aElement,
       target: aElement
     });
   });
 
   it('triggers multiple rules targeting the same element', function () {
-    var aTrigger = jasmine.createSpy();
-    var a2Trigger = jasmine.createSpy();
+    const aTrigger = vi.fn();
+    const a2Trigger = vi.fn();
 
     delegate(
       {
@@ -99,18 +99,18 @@ describe('element exists event delegate', function () {
       a2Trigger
     );
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
-    expect(aTrigger.calls.count()).toEqual(1);
-    expect(a2Trigger.calls.count()).toEqual(1);
+    expect(aTrigger.mock.calls.length).toEqual(1);
+    expect(a2Trigger.mock.calls.length).toEqual(1);
   });
 
   it('triggers multiple rules targeting the same element in the defined order', function () {
-    var result = null;
-    var aTrigger = jasmine.createSpy().and.callFake(function () {
+    let result = null;
+    const aTrigger = vi.fn().and.callFake(function () {
       result = 'aTrigger';
     });
-    var a2Trigger = jasmine.createSpy().and.callFake(function () {
+    const a2Trigger = vi.fn().and.callFake(function () {
       result = 'a2Trigger';
     });
 
@@ -128,13 +128,13 @@ describe('element exists event delegate', function () {
       a2Trigger
     );
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     expect(result).toEqual('a2Trigger');
   });
 
   it('triggers a rule if elementProperties match', function () {
-    var trigger = jasmine.createSpy();
+    const trigger = vi.fn();
 
     delegate(
       {
@@ -149,13 +149,13 @@ describe('element exists event delegate', function () {
       trigger
     );
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
-    expect(trigger.calls.count()).toEqual(1);
+    expect(trigger.mock.calls.length).toEqual(1);
   });
 
   it('does not trigger a rule if elementProperties do not match', function () {
-    var trigger = jasmine.createSpy();
+    const trigger = vi.fn();
 
     delegate(
       {
@@ -170,14 +170,14 @@ describe('element exists event delegate', function () {
       trigger
     );
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
-    expect(trigger.calls.count()).toEqual(0);
+    expect(trigger.mock.calls.length).toEqual(0);
   });
 
   it('continues evaluating elements until elementProperties is satisfied (DTM-6681)', function () {
-    var selectorOnlyTrigger = jasmine.createSpy();
-    var selectorAndPropsTrigger = jasmine.createSpy();
+    const selectorOnlyTrigger = vi.fn();
+    const selectorAndPropsTrigger = vi.fn();
 
     delegate(
       {
@@ -199,19 +199,19 @@ describe('element exists event delegate', function () {
       selectorAndPropsTrigger
     );
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
-    expect(selectorOnlyTrigger.calls.count()).toBe(1);
-    expect(selectorAndPropsTrigger.calls.count()).toBe(0);
+    expect(selectorOnlyTrigger.mock.calls.length).toBe(1);
+    expect(selectorAndPropsTrigger.mock.calls.length).toBe(0);
 
-    var addedLaterElement = document.createElement('div');
+    const addedLaterElement = document.createElement('div');
     addedLaterElement.innerHTML = 'added later';
     document.body.appendChild(addedLaterElement);
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
-    expect(selectorOnlyTrigger.calls.count()).toBe(1);
-    expect(selectorAndPropsTrigger.calls.count()).toBe(1);
+    expect(selectorOnlyTrigger.mock.calls.length).toBe(1);
+    expect(selectorAndPropsTrigger.mock.calls.length).toBe(1);
 
     document.body.removeChild(addedLaterElement);
   });

@@ -10,49 +10,61 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import visitorTracking from '../helpers/visitorTracking.js'
+import textMatch from '../helpers/textMatch.js'
+import validateInjectedParams from '../../helpers/validate-injected-params.js'
 
-var visitorTracking = require('../helpers/visitorTracking');
-var textMatch = require('../helpers/textMatch');
+function injectLandingPage({ visitorTracking, textMatch }) {
+  /**
+   * Landing page condition. Determines if the actual landing page matches an acceptable landing page.
+   * @param {Object} settings Condition settings.
+   * @param {Object[]} settings.landingPages Acceptable landing page values to match.
+   * @param {string} settings.landingPages[].value An acceptable landing page value.
+   * @param {string} [settings.landingPages[].pageIsRegex=false] Is the landing page
+   * value a Regular Expression?
+   * DEPRECATED @param {string=} settings.page An acceptable landing page.
+   * DEPRECATED @param {boolean=} [settings.pageIsRegex=false] Whether
+   * <code>settings.page</code> is intended to
+   * be a regular expression.
+   * @returns {boolean}
+   */
+  return function landingPage(settings) {
+    // empty strings aren't allowed because a landing page value is required in the UI.
+    const storedLandingPage = visitorTracking.getLandingPage();
+    if (!storedLandingPage) {
+      return false;
+    }
 
-/**
- * Landing page condition. Determines if the actual landing page matches an acceptable landing page.
- * @param {Object} settings Condition settings.
- * @param {Object[]} settings.landingPages Acceptable landing page values to match.
- * @param {string} settings.landingPages[].value An acceptable landing page value.
- * @param {string} [settings.landingPages[].pageIsRegex=false] Is the landing page
- * value a Regular Expression?
- * DEPRECATED @param {string=} settings.page An acceptable landing page.
- * DEPRECATED @param {boolean=} [settings.pageIsRegex=false] Whether
- * <code>settings.page</code> is intended to
- * be a regular expression.
- * @returns {boolean}
- */
-module.exports = function (settings) {
-  // empty strings aren't allowed because a landing page value is required in the UI.
-  var storedLandingPage = visitorTracking.getLandingPage();
-  if (!storedLandingPage) {
-    return false;
-  }
+    let landingPageValues;
+    if (!Array.isArray(settings.landingPages)) {
+      // legacy support
+      landingPageValues = [
+        {
+          value: settings.page,
+          pageIsRegex: Boolean(settings.pageIsRegex)
+        }
+      ];
+    } else {
+      landingPageValues = settings.landingPages;
+    }
 
-  var landingPageValues;
-  if (!Array.isArray(settings.landingPages)) {
-    // legacy support
-    landingPageValues = [
-      {
-        value: settings.page,
-        pageIsRegex: Boolean(settings.pageIsRegex)
-      }
-    ];
-  } else {
-    landingPageValues = settings.landingPages;
-  }
+    return landingPageValues.some(function (acceptablePageValue) {
+      const acceptableValue = acceptablePageValue.pageIsRegex
+        ? new RegExp(acceptablePageValue.value, 'i')
+        : acceptablePageValue.value;
 
-  return landingPageValues.some(function (acceptablePageValue) {
-    var acceptableValue = acceptablePageValue.pageIsRegex
-      ? new RegExp(acceptablePageValue.value, 'i')
-      : acceptablePageValue.value;
+      return textMatch(storedLandingPage, acceptableValue);
+    });
+  };
+}
 
-    return textMatch(storedLandingPage, acceptableValue);
-  });
-};
+const validateInjection = validateInjectedParams(injectLandingPage);
+
+export default validateInjection({
+  visitorTracking,
+  textMatch
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectLandingPage };
+/* END.TESTS_ONLY */

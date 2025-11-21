@@ -10,80 +10,72 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import validateInjectedParams from '../../../../helpers/validate-injected-params.js'
 
-var Promise = require('@adobe/reactor-promise');
+// Factory for dependency injection
+function injectDecorateHtmlCode({ Promise, window }) {
+  let callbackId = 0;
+  const htmlCodePromises = {};
 
-var callbackId = 0;
-var htmlCodePromises = {};
-
-window._satellite = window._satellite || {};
-
-/**
- * Public function intended to be called by the user.
- * @param {number} callbackId The identifier passed to _satellite._onCustomCodeSuccess().
- */
-window._satellite._onCustomCodeSuccess = function (callbackId) {
-  var promiseHandlers = htmlCodePromises[callbackId];
-  if (!promiseHandlers) {
-    return;
-  }
-
-  delete htmlCodePromises[callbackId];
-  promiseHandlers.resolve();
-};
-
-/**
- * Public function intended to be called by the user.
- * @param {number} callbackId The identifier passed to _satellite._onCustomCodeSuccess().
- */
-window._satellite._onCustomCodeFailure = function (callbackId) {
-  var promiseHandlers = htmlCodePromises[callbackId];
-  if (!promiseHandlers) {
-    return;
-  }
-
-  delete htmlCodePromises[callbackId];
-  promiseHandlers.reject();
-};
-
-var reactorCallbackIdShouldBeReplaced = function (source) {
-  return source.indexOf('${reactorCallbackId}') !== -1;
-};
-
-var replaceCallbacksIds = function (source, callbackId) {
-  return source.replace(/\${reactorCallbackId}/g, callbackId);
-};
-
-var isSourceLoadedFromFile = function (action) {
-  return action.settings.isExternal;
-};
-
-module.exports = function (action, source) {
-  // We need to replace tokens only for sources loaded from external files. The sources from
-  // inside the container are automatically taken care by Turbine.
-  if (isSourceLoadedFromFile(action)) {
-    source = turbine.replaceTokens(source, action.event);
-  }
-
-  var promise;
-
-  if (reactorCallbackIdShouldBeReplaced(source)) {
-    promise = new Promise(function (resolve, reject) {
-      htmlCodePromises[String(callbackId)] = {
-        resolve: resolve,
-        reject: reject
-      };
-    });
-
-    source = replaceCallbacksIds(source, callbackId);
-    callbackId += 1;
-  } else {
-    promise = Promise.resolve();
-  }
-
-  return {
-    code: source,
-    promise: promise
+  window._satellite._onCustomCodeSuccess = function (callbackId) {
+    const promiseHandlers = htmlCodePromises[callbackId];
+    if (!promiseHandlers) {
+      return;
+    }
+    delete htmlCodePromises[callbackId];
+    promiseHandlers.resolve();
   };
-};
+
+  window._satellite._onCustomCodeFailure = function (callbackId) {
+    const promiseHandlers = htmlCodePromises[callbackId];
+    if (!promiseHandlers) {
+      return;
+    }
+    delete htmlCodePromises[callbackId];
+    promiseHandlers.reject();
+  };
+
+  const reactorCallbackIdShouldBeReplaced = function (source) {
+    return source.indexOf('${reactorCallbackId}') !== -1;
+  };
+
+  const replaceCallbacksIds = function (source, callbackId) {
+    return source.replace(/\${reactorCallbackId}/g, callbackId);
+  };
+
+  const isSourceLoadedFromFile = function (action) {
+    return action.settings.isExternal;
+  };
+
+  return function decorateHtmlCode(action, source) {
+    if (isSourceLoadedFromFile(action)) {
+      source = turbine.replaceTokens(source, action.event);
+    }
+    let promise;
+    if (reactorCallbackIdShouldBeReplaced(source)) {
+      promise = new Promise(function (resolve, reject) {
+        htmlCodePromises[String(callbackId)] = { resolve, reject };
+      });
+      source = replaceCallbacksIds(source, callbackId);
+      callbackId += 1;
+    } else {
+      promise = Promise.resolve();
+    }
+    return {
+      code: source,
+      promise: promise
+    };
+  };
+}
+
+const validateInjection = validateInjectedParams(injectDecorateHtmlCode);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  window: require('@adobe/reactor-window'),
+  Promise: require('@adobe/reactor-promise')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectDecorateHtmlCode };
+/* END.TESTS_ONLY */

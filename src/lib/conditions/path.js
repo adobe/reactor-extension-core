@@ -10,26 +10,38 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import textMatch from '../helpers/textMatch.js'
+import validateInjectedParams from '../../helpers/validate-injected-params.js'
 
-var document = require('@adobe/reactor-document');
-var textMatch = require('../helpers/textMatch');
+function injectPath({ document, textMatch }) {
+  /**
+   * Path condition. Determines if the actual path matches at least one acceptable path.
+   * @param {Object} settings Condition settings.
+   * @param {Object[]} settings.paths Acceptable paths.
+   * @param {string} settings.paths[].value An acceptable path value.
+   * @param {boolean} [settings.paths[].valueIsRegex=false] Whether <code>value</code> on the object
+   * instance is intended to be a regular expression.
+   * @returns {boolean}
+   */
+  return function pathCondition(settings) {
+    const path = document.location.pathname;
+    return settings.paths.some(function (acceptablePath) {
+      const acceptableValue = acceptablePath.valueIsRegex
+        ? new RegExp(acceptablePath.value, 'i')
+        : acceptablePath.value;
+      return textMatch(path, acceptableValue);
+    });
+  };
+}
 
-/**
- * Path condition. Determines if the actual path matches at least one acceptable path.
- * @param {Object} settings Condition settings.
- * @param {Object[]} settings.paths Acceptable paths.
- * @param {string} settings.paths[].value An acceptable path value.
- * @param {boolean} [settings.paths[].valueIsRegex=false] Whether <code>value</code> on the object
- * instance is intended to be a regular expression.
- * @returns {boolean}
- */
-module.exports = function (settings) {
-  var path = document.location.pathname;
-  return settings.paths.some(function (acceptablePath) {
-    var acceptableValue = acceptablePath.valueIsRegex
-      ? new RegExp(acceptablePath.value, 'i')
-      : acceptablePath.value;
-    return textMatch(path, acceptableValue);
-  });
-};
+const validateInjection = validateInjectedParams(injectPath);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  document: require('@adobe/reactor-document'),
+  textMatch
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectPath };
+/* END.TESTS_ONLY */

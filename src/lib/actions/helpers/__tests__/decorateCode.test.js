@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 /*
 Copyright 2020 Adobe. All rights reserved.
 This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -9,24 +10,29 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-'use strict';
-
-var decorateCodeInjector = require('inject-loader!../decorateCode');
+import { injectDecorateCode } from '../decorateCode.js';
 
 describe('decorate code', function () {
+  let decorateNonGlobalJavaScriptCodeSpy;
+  let decorateGlobalJavaScriptCodeSpy;
+  let decorateHtmlCodeSpy;
+  let decorateCode;
+  beforeEach(() => {
+    decorateNonGlobalJavaScriptCodeSpy = vi.fn();
+    decorateGlobalJavaScriptCodeSpy = vi.fn();
+    decorateHtmlCodeSpy = vi.fn();
+    decorateCode = injectDecorateCode({
+      decorateNonGlobalJavaScriptCode: decorateNonGlobalJavaScriptCodeSpy,
+      decorateGlobalJavaScriptCode: decorateGlobalJavaScriptCodeSpy,
+      decorateHtmlCode: decorateHtmlCodeSpy
+    });
+  });
+
   it('decorates javascript action', function () {
-    var settings = {
+    const settings = {
       language: 'javascript',
       source: 'console.log("logging")'
     };
-
-    var decorateNonGlobalJavaScriptCodeSpy = jasmine.createSpy(
-      'decorateNonGlobalJavaScriptCode'
-    );
-    var decorateCode = decorateCodeInjector({
-      './decorators/decorateNonGlobalJavaScriptCode':
-        decorateNonGlobalJavaScriptCodeSpy
-    });
 
     decorateCode(
       {
@@ -47,19 +53,11 @@ describe('decorate code', function () {
   });
 
   it('decorates global javascript action', function () {
-    var settings = {
+    const settings = {
       language: 'javascript',
       global: true,
       source: 'console.log("logging")'
     };
-
-    var decorateGlobalJavaScriptCodeSpy = jasmine.createSpy(
-      'decorateGlobalJavaScriptCode'
-    );
-    var decorateCode = decorateCodeInjector({
-      './decorators/decorateGlobalJavaScriptCode':
-        decorateGlobalJavaScriptCodeSpy
-    });
 
     decorateCode(
       {
@@ -81,16 +79,11 @@ describe('decorate code', function () {
   });
 
   it('decorates html action', function () {
-    var settings = {
+    const settings = {
       language: 'html',
       global: true,
       source: '<script>console.log("logging")</script>'
     };
-
-    var decorateHtmlCodeSpy = jasmine.createSpy('decorateHtmlCode');
-    var decorateCode = decorateCodeInjector({
-      './decorators/decorateHtmlCode': decorateHtmlCodeSpy
-    });
 
     decorateCode(
       {

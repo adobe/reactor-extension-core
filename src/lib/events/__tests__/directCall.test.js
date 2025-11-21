@@ -10,16 +10,17 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import { injectDirectCall } from '../directCall.js';
+import { vi } from 'vitest';
 
 describe('direct call event delegate', function () {
-  var delegate = require('../directCall');
+  const delegate = injectDirectCall({ window });
 
-  var trigger = jasmine.createSpy();
-  var log = jasmine.createSpy();
+  let trigger = vi.fn();
+  const log = vi.fn();
 
   beforeAll(function () {
-    trigger = jasmine.createSpy();
+    trigger = vi.fn();
     delegate(
       {
         identifier: 'foo'
@@ -33,22 +34,18 @@ describe('direct call event delegate', function () {
     });
   });
 
-  afterAll(function () {
-    resetTurbineVariable();
-  });
-
   beforeEach(function () {
-    trigger.calls.reset();
-    log.calls.reset();
+    trigger.mockClear();
+    log.mockClear();
   });
 
   it('triggers rule with matching identifier and detail passed', function () {
-    var detail = { a: 'b' };
+    const detail = { a: 'b' };
 
-    _satellite.track('foo', detail);
+    window._satellite.track('foo', detail);
 
-    expect(trigger.calls.count()).toBe(1);
-    expect(trigger.calls.mostRecent().args[0]).toEqual({
+    expect(trigger.mock.calls.length).toBe(1);
+    expect(trigger.mock.lastCall[0]).toEqual({
       identifier: 'foo',
       detail: detail
     });
@@ -61,10 +58,10 @@ describe('direct call event delegate', function () {
   });
 
   it('triggers rule with matching identifier and no detail passed', function () {
-    _satellite.track('foo');
+    window._satellite.track('foo');
 
-    expect(trigger.calls.count()).toBe(1);
-    expect(trigger.calls.mostRecent().args[0]).toEqual({
+    expect(trigger.mock.calls.length).toBe(1);
+    expect(trigger.mock.lastCall[0]).toEqual({
       identifier: 'foo',
       detail: undefined
     });
@@ -75,7 +72,7 @@ describe('direct call event delegate', function () {
   });
 
   it('logs a message when no rules found with matching identifier', function () {
-    _satellite.track('baz');
+    window._satellite.track('baz');
 
     expect(turbine.logger.log).toHaveBeenCalledWith(
       '"baz" does not match any direct call identifiers.'

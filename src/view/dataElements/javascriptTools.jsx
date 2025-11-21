@@ -13,17 +13,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { TextField, Picker, Item, Flex } from '@adobe/react-spectrum';
 import { formValueSelector } from 'redux-form';
-import WrappedField from '../components/wrappedField';
-import NoWrapText from '../components/noWrapText';
-import { isDataElementToken } from '../utils/validators';
-import operators from './utils/javascriptTools/operators';
-import metaByOperator from './utils/javascriptTools/metaByOperator';
-import { formConfig as simpleReplaceFormConfig } from './components/javascriptTools/simpleReplace';
-import { formConfig as regexReplaceFormConfig } from './components/javascriptTools/regexReplace';
-import { formConfig as startEndPositionFormConfig } from './components/javascriptTools/startEndPosition';
-import { formConfig as valuesSeparatorFormConfig } from './components/javascriptTools/valueSeparator';
-import { formConfig as searchValueFormConfig } from './components/javascriptTools/searchValue';
-import mergeFormConfigs from '../utils/mergeFormConfigs';
+import WrappedField from '../components/wrappedField.jsx'
+import NoWrapText from '../components/noWrapText.jsx'
+import { isDataElementToken } from '../utils/validators.js'
+import operators from './utils/javascriptTools/operators.js'
+import metaByOperator from './utils/javascriptTools/metaByOperator.jsx'
+import { formConfig as simpleReplaceFormConfig } from './components/javascriptTools/simpleReplace.jsx'
+import { formConfig as regexReplaceFormConfig } from './components/javascriptTools/regexReplace.jsx'
+import { formConfig as startEndPositionFormConfig } from './components/javascriptTools/startEndPosition.jsx'
+import { formConfig as valuesSeparatorFormConfig } from './components/javascriptTools/valueSeparator.jsx'
+import { formConfig as searchValueFormConfig } from './components/javascriptTools/searchValue.jsx'
+import mergeFormConfigs from '../utils/mergeFormConfigs.js'
 
 const operatorOptions = Object.keys(metaByOperator).map((operator) => ({
   id: operator,

@@ -10,17 +10,18 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import Simulate from 'simulate';
+import testStandardEvent from './helpers/testStandardEvent.js';
+import { injectChange } from '../change.js';
+import { vi } from 'vitest';
+const delegate = injectChange({ document });
 
 describe('change event delegate', function () {
-  var testStandardEvent = require('./helpers/testStandardEvent');
-  var delegate = require('../change');
-
-  var assertTriggerCall = function (options) {
-    expect(options.call.args[0]).toEqual({
+  const assertTriggerCall = function (options) {
+    expect(options.call[0]).toEqual({
       element: options.element,
       target: options.target,
-      nativeEvent: jasmine.any(Object)
+      nativeEvent: expect.any(Object)
     });
   };
 
@@ -31,8 +32,8 @@ describe('change event delegate', function () {
   });
 
   describe('with value defined', function () {
-    var outerElement;
-    var innerElement;
+    let outerElement;
+    let innerElement;
 
     beforeAll(function () {
       outerElement = document.createElement('div');
@@ -52,7 +53,7 @@ describe('change event delegate', function () {
 
     describe('legacy behavior', function () {
       it('triggers rule when a string value matches', function () {
-        var trigger = jasmine.createSpy();
+        const trigger = vi.fn();
 
         delegate(
           {
@@ -67,17 +68,17 @@ describe('change event delegate', function () {
         innerElement.value = 'foo';
         Simulate.change(innerElement);
 
-        expect(trigger.calls.count()).toBe(1);
+        expect(trigger.mock.calls.length).toBe(1);
 
         assertTriggerCall({
-          call: trigger.calls.mostRecent(),
+          call: trigger.mock.lastCall,
           target: innerElement,
           element: outerElement
         });
       });
 
       it('does not trigger rule when a string value does not match', function () {
-        var trigger = jasmine.createSpy();
+        const trigger = vi.fn();
 
         delegate(
           {
@@ -92,11 +93,11 @@ describe('change event delegate', function () {
         innerElement.value = 'bar';
         Simulate.change(innerElement);
 
-        expect(trigger.calls.count()).toBe(0);
+        expect(trigger.mock.calls.length).toBe(0);
       });
 
       it('triggers rule when a regex value matches', function () {
-        var trigger = jasmine.createSpy();
+        const trigger = vi.fn();
 
         delegate(
           {
@@ -112,17 +113,17 @@ describe('change event delegate', function () {
         innerElement.value = 'foo';
         Simulate.change(innerElement);
 
-        expect(trigger.calls.count()).toBe(1);
+        expect(trigger.mock.calls.length).toBe(1);
 
         assertTriggerCall({
-          call: trigger.calls.mostRecent(),
+          call: trigger.mock.lastCall,
           target: innerElement,
           element: outerElement
         });
       });
 
       it('does not trigger rule when a string value does not match', function () {
-        var trigger = jasmine.createSpy();
+        const trigger = vi.fn();
 
         delegate(
           {
@@ -138,11 +139,11 @@ describe('change event delegate', function () {
         innerElement.value = 'bar';
         Simulate.change(innerElement);
 
-        expect(trigger.calls.count()).toBe(0);
+        expect(trigger.mock.calls.length).toBe(0);
       });
 
       it('triggers rule when empty string matches', function () {
-        var trigger = jasmine.createSpy();
+        const trigger = vi.fn();
 
         delegate(
           {
@@ -157,10 +158,10 @@ describe('change event delegate', function () {
         innerElement.value = '';
         Simulate.change(innerElement);
 
-        expect(trigger.calls.count()).toBe(1);
+        expect(trigger.mock.calls.length).toBe(1);
 
         assertTriggerCall({
-          call: trigger.calls.mostRecent(),
+          call: trigger.mock.lastCall,
           target: innerElement,
           element: outerElement
         });
@@ -171,7 +172,7 @@ describe('change event delegate', function () {
       'triggers the rule when acceptableChangeValues is an empty list ' +
         '(no specific qualifier)',
       function () {
-        var trigger = jasmine.createSpy();
+        const trigger = vi.fn();
 
         delegate(
           {
@@ -186,7 +187,7 @@ describe('change event delegate', function () {
         innerElement.value = 'bar';
         Simulate.change(innerElement);
 
-        expect(trigger.calls.count()).toBe(1);
+        expect(trigger.mock.calls.length).toBe(1);
       }
     );
 
@@ -194,7 +195,7 @@ describe('change event delegate', function () {
       'triggers the rule when acceptableChangeValues is missing ' +
         '(legacy value === undefined)',
       function () {
-        var trigger = jasmine.createSpy();
+        const trigger = vi.fn();
 
         delegate(
           {
@@ -209,12 +210,12 @@ describe('change event delegate', function () {
         innerElement.value = 'bar';
         Simulate.change(innerElement);
 
-        expect(trigger.calls.count()).toBe(1);
+        expect(trigger.mock.calls.length).toBe(1);
       }
     );
 
     it('does not trigger rule when there is no match', function () {
-      var trigger = jasmine.createSpy();
+      const trigger = vi.fn();
 
       delegate(
         {
@@ -233,13 +234,13 @@ describe('change event delegate', function () {
       innerElement.value = 'bar';
       Simulate.change(innerElement);
 
-      expect(trigger.calls.count()).toBe(0);
+      expect(trigger.mock.calls.length).toBe(0);
     });
 
     describe('it triggers the rule when', function () {
       describe('an acceptable value is a string', function () {
         it('at the beginning', function () {
-          var trigger = jasmine.createSpy();
+          const trigger = vi.fn();
 
           delegate(
             {
@@ -258,17 +259,17 @@ describe('change event delegate', function () {
           innerElement.value = 'foo';
           Simulate.change(innerElement);
 
-          expect(trigger.calls.count()).toBe(1);
+          expect(trigger.mock.calls.length).toBe(1);
 
           assertTriggerCall({
-            call: trigger.calls.mostRecent(),
+            call: trigger.mock.lastCall,
             target: innerElement,
             element: outerElement
           });
         });
 
         it('in the middle', function () {
-          var trigger = jasmine.createSpy();
+          const trigger = vi.fn();
 
           delegate(
             {
@@ -287,17 +288,17 @@ describe('change event delegate', function () {
           innerElement.value = 'foo';
           Simulate.change(innerElement);
 
-          expect(trigger.calls.count()).toBe(1);
+          expect(trigger.mock.calls.length).toBe(1);
 
           assertTriggerCall({
-            call: trigger.calls.mostRecent(),
+            call: trigger.mock.lastCall,
             target: innerElement,
             element: outerElement
           });
         });
 
         it('at the end', function () {
-          var trigger = jasmine.createSpy();
+          const trigger = vi.fn();
 
           delegate(
             {
@@ -316,17 +317,17 @@ describe('change event delegate', function () {
           innerElement.value = 'foo';
           Simulate.change(innerElement);
 
-          expect(trigger.calls.count()).toBe(1);
+          expect(trigger.mock.calls.length).toBe(1);
 
           assertTriggerCall({
-            call: trigger.calls.mostRecent(),
+            call: trigger.mock.lastCall,
             target: innerElement,
             element: outerElement
           });
         });
 
         it('the string is empty', function () {
-          var trigger = jasmine.createSpy();
+          const trigger = vi.fn();
 
           delegate(
             {
@@ -341,10 +342,10 @@ describe('change event delegate', function () {
           innerElement.value = '';
           Simulate.change(innerElement);
 
-          expect(trigger.calls.count()).toBe(1);
+          expect(trigger.mock.calls.length).toBe(1);
 
           assertTriggerCall({
-            call: trigger.calls.mostRecent(),
+            call: trigger.mock.lastCall,
             target: innerElement,
             element: outerElement
           });
@@ -353,7 +354,7 @@ describe('change event delegate', function () {
 
       describe('an acceptable value is a regex', function () {
         it('at the beginning', function () {
-          var trigger = jasmine.createSpy();
+          const trigger = vi.fn();
 
           delegate(
             {
@@ -372,17 +373,17 @@ describe('change event delegate', function () {
           innerElement.value = 'foo';
           Simulate.change(innerElement);
 
-          expect(trigger.calls.count()).toBe(1);
+          expect(trigger.mock.calls.length).toBe(1);
 
           assertTriggerCall({
-            call: trigger.calls.mostRecent(),
+            call: trigger.mock.lastCall,
             target: innerElement,
             element: outerElement
           });
         });
 
         it('in the middle', function () {
-          var trigger = jasmine.createSpy();
+          const trigger = vi.fn();
 
           delegate(
             {
@@ -401,17 +402,17 @@ describe('change event delegate', function () {
           innerElement.value = 'foo';
           Simulate.change(innerElement);
 
-          expect(trigger.calls.count()).toBe(1);
+          expect(trigger.mock.calls.length).toBe(1);
 
           assertTriggerCall({
-            call: trigger.calls.mostRecent(),
+            call: trigger.mock.lastCall,
             target: innerElement,
             element: outerElement
           });
         });
 
         it('at the end', function () {
-          var trigger = jasmine.createSpy();
+          const trigger = vi.fn();
 
           delegate(
             {
@@ -430,10 +431,10 @@ describe('change event delegate', function () {
           innerElement.value = 'foo';
           Simulate.change(innerElement);
 
-          expect(trigger.calls.count()).toBe(1);
+          expect(trigger.mock.calls.length).toBe(1);
 
           assertTriggerCall({
-            call: trigger.calls.mostRecent(),
+            call: trigger.mock.lastCall,
             target: innerElement,
             element: outerElement
           });

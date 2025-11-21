@@ -16,10 +16,10 @@ import { formValueSelector } from 'redux-form';
 import ValueComparison, {
   formConfig as valueComparisonFormConfig
 } from '../conditions/valueComparison';
-import WrappedField from '../components/wrappedField';
-import InfoTip from '../components/infoTip';
-import mergeFormConfigs from '../utils/mergeFormConfigs';
-import { isNumberLike } from '../utils/validators';
+import WrappedField from '../components/wrappedField.jsx'
+import InfoTip from '../components/infoTip.jsx'
+import mergeFormConfigs from '../utils/mergeFormConfigs.js'
+import { isNumberLike } from '../utils/validators.js'
 
 const ReturnField = ({
   shouldReturnValue,

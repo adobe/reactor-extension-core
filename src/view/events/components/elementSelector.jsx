@@ -12,9 +12,9 @@
 
 import React from 'react';
 import { TextField, Flex, View } from '@adobe/react-spectrum';
-import WrappedField from '../../components/wrappedField';
-import SelectorLearnMoreLink from '../../components/selectorLearnMoreLink';
-import NoWrapText from '../../components/noWrapText';
+import WrappedField from '../../components/wrappedField.jsx'
+import SelectorLearnMoreLink from '../../components/selectorLearnMoreLink.jsx'
+import NoWrapText from '../../components/noWrapText.jsx'
 
 export default () => (
   <Flex alignItems="end" gap="size-100" minWidth="size-6000">

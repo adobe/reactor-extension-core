@@ -10,15 +10,26 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
+import pageLifecycleEvents from './helpers/pageLifecycleEvents.js';
 
-var pageLifecycleEvents = require('./helpers/pageLifecycleEvents');
+function injectLibraryLoaded({ pageLifecycleEvents }) {
+  /**
+   * Library loaded event. This event occurs as soon as the runtime library is loaded.
+   * @param {Object} settings The event settings object.
+   * @param {function} trigger The [rule]trigger callback.
+   */
+  return function libraryLoaded(settings, trigger) {
+    pageLifecycleEvents.registerLibraryLoadedTrigger(trigger);
+  };
+}
 
-/**
- * Library loaded event. This event occurs as soon as the runtime library is loaded.
- * @param {Object} settings The event settings object.
- * @param {ruleTrigger} trigger The trigger callback.
- */
-module.exports = function (settings, trigger) {
-  pageLifecycleEvents.registerLibraryLoadedTrigger(trigger);
-};
+const validateInjection = validateInjectedParams(injectLibraryLoaded);
+
+export default validateInjection({
+  pageLifecycleEvents
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectLibraryLoaded };
+/* END.TESTS_ONLY */

@@ -10,26 +10,42 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import visitorTracking from '../helpers/visitorTracking.js'
+import compareNumbers from './helpers/compareNumbers.js'
+import { castToNumberIfString } from '../helpers/stringAndNumberUtils.js'
+import validateInjectedParams from '../../helpers/validate-injected-params.js'
 
-var visitorTracking = require('../helpers/visitorTracking');
-var compareNumbers = require('./helpers/compareNumbers');
-var castToNumberIfString =
-  require('../helpers/stringAndNumberUtils').castToNumberIfString;
+function injectTimeOnSiteCondition({
+  visitorTracking,
+  compareNumbers,
+  castToNumberIfString
+}) {
+  /**
+   * Time on site condition. Determines if the user has been on the site for a certain amount
+   * of time.
+   * @param {Object} settings Condition settings.
+   * @param {number} settings.minutes The number of minutes to compare against.
+   * @param {comparisonOperator} settings.operator The comparison operator to use to
+   * compare against minutes.
+   * @returns {boolean}
+   */
+  return function timeOnSiteCondition(settings) {
+    return compareNumbers(
+      visitorTracking.getMinutesOnSite(),
+      settings.operator,
+      castToNumberIfString(settings.minutes)
+    );
+  };
+}
 
-/**
- * Time on site condition. Determines if the user has been on the site for a certain amount
- * of time.
- * @param {Object} settings Condition settings.
- * @param {number} settings.minutes The number of minutes to compare against.
- * @param {comparisonOperator} settings.operator The comparison operator to use to
- * compare against minutes.
- * @returns {boolean}
- */
-module.exports = function (settings) {
-  return compareNumbers(
-    visitorTracking.getMinutesOnSite(),
-    settings.operator,
-    castToNumberIfString(settings.minutes)
-  );
-};
+const validateInjection = validateInjectedParams(injectTimeOnSiteCondition);
+
+export default validateInjection({
+  visitorTracking,
+  compareNumbers,
+  castToNumberIfString
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectTimeOnSiteCondition };
+/* END.TESTS_ONLY */

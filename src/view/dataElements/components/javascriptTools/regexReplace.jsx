@@ -14,8 +14,8 @@ import React from 'react';
 import ReplacementValue, {
   formConfig as replacementValueFormConfig
 } from './replacementValue';
-import RegexMatch, { formConfig as regexMatchFormConfig } from './regexMatch';
-import mergeFormConfigs from '../../../utils/mergeFormConfigs';
+import RegexMatch, { formConfig as regexMatchFormConfig } from './regexMatch.jsx'
+import mergeFormConfigs from '../../../utils/mergeFormConfigs.js'
 
 export default ({ caseInsensitive }) => {
   return (

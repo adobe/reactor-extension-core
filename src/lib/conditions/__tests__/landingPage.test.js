@@ -10,23 +10,22 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import { injectLandingPage } from '../landingPage.js';
+import textMatch from '../../helpers/textMatch.js';
 
-var mockVisitorTracking = {
-  getLandingPage: function () {
-    return 'http://landingpage.com/test.html';
-  }
-};
-
-var conditionDelegateInjector = require('inject-loader!../landingPage');
-var conditionDelegate = conditionDelegateInjector({
-  '../helpers/visitorTracking': mockVisitorTracking
+const conditionDelegate = injectLandingPage({
+  visitorTracking: {
+    getLandingPage: function () {
+      return 'http://landingpage.com/test.html';
+    }
+  },
+  textMatch
 });
 
 describe('landing page condition delegate', function () {
   describe('legacy behavior', function () {
     it('returns true when the landing page matches a string', function () {
-      var settings = {
+      const settings = {
         page: 'http://landingpage.com/test.html',
         pageIsRegex: false
       };
@@ -34,7 +33,7 @@ describe('landing page condition delegate', function () {
     });
 
     it('returns false when the landing page does not match a string', function () {
-      var settings = {
+      const settings = {
         page: 'http://foo.com/bar.html',
         pageIsRegex: false
       };
@@ -42,7 +41,7 @@ describe('landing page condition delegate', function () {
     });
 
     it('returns true when the landing page matches a regex', function () {
-      var settings = {
+      const settings = {
         page: 'Landingpage\\.com\\/t.st',
         pageIsRegex: true
       };
@@ -50,7 +49,7 @@ describe('landing page condition delegate', function () {
     });
 
     it('returns false when the landing page does not match a regex', function () {
-      var settings = {
+      const settings = {
         page: 'f.o',
         pageIsRegex: true
       };
@@ -59,7 +58,7 @@ describe('landing page condition delegate', function () {
   });
 
   it('it returns false if the landing page value list is empty', function () {
-    var settings = {
+    const settings = {
       landingPages: []
     };
     expect(conditionDelegate(settings)).toBe(false);
@@ -69,14 +68,14 @@ describe('landing page condition delegate', function () {
     describe('as strings', function () {
       describe('returns false when', function () {
         it('the list is of size 1', function () {
-          var settings = {
+          const settings = {
             landingPages: [{ value: 'http://foo.com/bar.html' }]
           };
           expect(conditionDelegate(settings)).toBe(false);
         });
 
         it('the list has many items', function () {
-          var settings = {
+          const settings = {
             landingPages: [
               { value: 'bizzy' },
               { value: 'bazzy' },
@@ -89,14 +88,14 @@ describe('landing page condition delegate', function () {
 
       describe('returns true when', function () {
         it('the list is of size 1', function () {
-          var settings = {
+          const settings = {
             landingPages: [{ value: 'http://landingpage.com/test.html' }]
           };
           expect(conditionDelegate(settings)).toBe(true);
         });
 
         it('the match is at the front of a many item list', function () {
-          var settings = {
+          const settings = {
             landingPages: [
               { value: 'http://landingpage.com/test.html' },
               { value: 'bazzy' },
@@ -107,7 +106,7 @@ describe('landing page condition delegate', function () {
         });
 
         it('the match is in the middle of a many item list', function () {
-          var settings = {
+          const settings = {
             landingPages: [
               { value: 'bizzy' },
               { value: 'http://landingpage.com/test.html' },
@@ -118,7 +117,7 @@ describe('landing page condition delegate', function () {
         });
 
         it('the match is at the end of a many item list', function () {
-          var settings = {
+          const settings = {
             landingPages: [
               { value: 'bizzy' },
               { value: 'bazzy' },
@@ -133,14 +132,14 @@ describe('landing page condition delegate', function () {
     describe('as RegularExpressions', function () {
       describe('returns false when', function () {
         it('the list is of size 1', function () {
-          var settings = {
+          const settings = {
             landingPages: [{ value: 'g.o', pageIsRegex: true }]
           };
           expect(conditionDelegate(settings)).toBe(false);
         });
 
         it('the list has many items', function () {
-          var settings = {
+          const settings = {
             landingPages: [
               { value: 'a.b', pageIsRegex: true },
               { value: 'c.d', pageIsRegex: true },
@@ -153,7 +152,7 @@ describe('landing page condition delegate', function () {
 
       describe('returns true when', function () {
         it('the list is of size 1', function () {
-          var settings = {
+          const settings = {
             landingPages: [
               { value: 'Landingpage\\.com\\/t.st', pageIsRegex: true }
             ]
@@ -162,7 +161,7 @@ describe('landing page condition delegate', function () {
         });
 
         it('the match is at the front of a many item list', function () {
-          var settings = {
+          const settings = {
             landingPages: [
               { value: 'Landingpage\\.com\\/t.st', pageIsRegex: true },
               { value: 'bazzy', pageIsRegex: false },
@@ -173,7 +172,7 @@ describe('landing page condition delegate', function () {
         });
 
         it('the match is in the middle of a many item list', function () {
-          var settings = {
+          const settings = {
             landingPages: [
               { value: 'bizzy', pageIsRegex: false },
               { value: 'Landingpage\\.com\\/t.st', pageIsRegex: true },
@@ -184,7 +183,7 @@ describe('landing page condition delegate', function () {
         });
 
         it('the match is at the end of a many item list', function () {
-          var settings = {
+          const settings = {
             landingPages: [
               { value: 'bizzy', pageIsRegex: false },
               { value: 'bazzy', pageIsRegex: true },

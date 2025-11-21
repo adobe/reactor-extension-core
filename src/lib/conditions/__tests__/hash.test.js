@@ -10,9 +10,12 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var conditionDelegate = require('../hash');
+import textMatch from '../../helpers/textMatch.js'
+import { injectHash } from '../hash.js'
+const conditionDelegate = injectHash({
+  document,
+  textMatch
+});
 
 describe('hash condition delegate', function () {
   beforeAll(function () {

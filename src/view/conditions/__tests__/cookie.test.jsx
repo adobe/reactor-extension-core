@@ -11,10 +11,11 @@
  ****************************************************************************************/
 
 import { fireEvent, render, screen, within } from '@testing-library/react';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
 import userEvent from '@testing-library/user-event';
-import Cookie, { formConfig } from '../cookie';
-import bootstrap from '../../bootstrap';
+import Cookie, { formConfig } from '../cookie.jsx'
+import bootstrap from '../../bootstrap.jsx'
+import { vi } from 'vitest';
 
 // react-testing-library element selectors
 const pageElements = {
@@ -154,7 +155,7 @@ describe('cookie condition view', () => {
     fireEvent.blur(pageElements.getCookieNameTextBox());
     expect(
       pageElements.getCookieNameTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     const rows = pageElements.getCookieValueRows();
     rows.forEach((row) => {
@@ -165,16 +166,16 @@ describe('cookie condition view', () => {
     const [firstRow, secondRow] = rows;
     expect(
       firstRow.withinRow.getCookieValueTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(
       secondRow.withinRow.getCookieValueTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     expect(extensionBridge.validate()).toBe(false);
   });
 
   it('the regex test button gives an example regex', () => {
-    spyOn(extensionBridge, 'openRegexTester').and.callFake(() => ({
+    vi.spyOn(extensionBridge, 'openRegexTester').mockImplementation(() => ({
       then(resolve) {
         resolve('Edited Regex 1234');
       }

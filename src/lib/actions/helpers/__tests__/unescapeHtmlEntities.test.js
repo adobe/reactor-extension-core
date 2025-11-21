@@ -9,14 +9,15 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-'use strict';
-
-var unescapeHtmlCode = require('../unescapeHtmlCode');
+import { injectUnescapeHtmlEntities } from '../unescapeHtmlEntities.js'
+const unescapeHtmlEntities = injectUnescapeHtmlEntities({ document });
 
 describe('unescape html code', function () {
   it('decodes html entities', function () {
     expect(
-      unescapeHtmlCode('https://www.google.com/?id=DC&amp;l=gtmData&gt;Layer')
+      unescapeHtmlEntities(
+        'https://www.google.com/?id=DC&amp;l=gtmData&gt;Layer'
+      )
     ).toBe('https://www.google.com/?id=DC&l=gtmData>Layer');
   });
 });

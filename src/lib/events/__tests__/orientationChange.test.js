@@ -10,15 +10,16 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import { injectOrientationChange } from '../orientationChange.js';
+import { vi } from 'vitest';
 
 describe('orientation change event delegate', function () {
-  var delegate;
-  var orientationChangeCallbacks = [];
+  let delegate;
+  const orientationChangeCallbacks = [];
 
   // We can't use the real window object to mock orientation changes because some browsers won't
   // let us set the orientation property.
-  var mockWindow = {
+  const mockWindow = {
     addEventListener: function (type, callback) {
       if (type === 'orientationchange') {
         orientationChangeCallbacks.push(callback);
@@ -26,7 +27,7 @@ describe('orientation change event delegate', function () {
     }
   };
 
-  var triggerOrientationChange = function () {
+  const triggerOrientationChange = function () {
     // Act as though window triggered an orientationchange event.
     orientationChangeCallbacks.forEach(function (callback) {
       callback({
@@ -37,34 +38,33 @@ describe('orientation change event delegate', function () {
     });
   };
 
-  var assertTriggerCall = function (options) {
-    expect(options.call.args[0]).toEqual({
+  const assertTriggerCall = function (options) {
+    expect(options.call[0]).toEqual({
       element: mockWindow,
       target: mockWindow,
-      nativeEvent: jasmine.any(Object)
+      nativeEvent: expect.any(Object)
     });
   };
 
   beforeAll(function () {
-    var delegateInjector = require('inject-loader!../orientationChange');
-    delegate = delegateInjector({
-      '@adobe/reactor-window': mockWindow
+    delegate = injectOrientationChange({
+      window: mockWindow
     });
   });
 
   it('triggers rule when orientation changes', function () {
-    var trigger = jasmine.createSpy();
+    const trigger = vi.fn();
 
     delegate({}, trigger);
 
-    expect(trigger.calls.count()).toEqual(0);
+    expect(trigger.mock.calls.length).toEqual(0);
 
     triggerOrientationChange();
 
-    expect(trigger.calls.count()).toEqual(1);
+    expect(trigger.mock.calls.length).toEqual(1);
 
     assertTriggerCall({
-      call: trigger.calls.mostRecent()
+      call: trigger.mock.lastCall
     });
   });
 });

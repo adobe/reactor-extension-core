@@ -12,10 +12,10 @@
 
 import { fireEvent, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { sharedTestingElements } from '@test-helpers/react-testing-library';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import ElementExists, { formConfig } from '../elementExists';
-import bootstrap from '../../bootstrap';
+import { sharedTestingElements } from '@test-helpers/react-testing-library.jsx';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import ElementExists, { formConfig } from '../elementExists.jsx'
+import bootstrap from '../../bootstrap.jsx'
 
 describe('element exists event view', () => {
   let extensionBridge;
@@ -65,7 +65,7 @@ describe('element exists event view', () => {
       sharedTestingElements.elementsMatching
         .getCssSelectorTextBox()
         .hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 });

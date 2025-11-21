@@ -11,10 +11,10 @@
  ****************************************************************************************/
 
 import { fireEvent, render, screen } from '@testing-library/react';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import DeviceType, { formConfig } from '../deviceType';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import DeviceType, { formConfig } from '../deviceType.jsx'
 
-import bootstrap from '../../bootstrap';
+import bootstrap from '../../bootstrap.jsx'
 
 const selectedDeviceTypes = ['Desktop', 'Android'];
 
@@ -53,8 +53,8 @@ describe('device type condition view', () => {
       }
     });
 
-    expect(pageElements.getDesktopCheckBox().checked).toBeTrue();
-    expect(pageElements.getAndroidCheckBox().checked).toBeTrue();
+    expect(pageElements.getDesktopCheckBox().checked).toBe(true);
+    expect(pageElements.getAndroidCheckBox().checked).toBe(true);
   });
 
   it('sets settings from form values', () => {

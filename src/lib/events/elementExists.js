@@ -10,77 +10,82 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
+import WeakMap from './helpers/weakMap.js';
+import matchesProperties from './helpers/matchesProperties.js';
 
-var POLL_INTERVAL = 3000;
+function injectElementExists({ window, document, WeakMap }) {
+  const POLL_INTERVAL = 3000;
+  const seenElements = new WeakMap();
+  const listenersBySelector = {};
 
-var WeakMap = require('./helpers/weakMap');
-var seenElements = new WeakMap();
-var matchesProperties = require('./helpers/matchesProperties');
-
-var listenersBySelector = {};
-
-setInterval(function () {
-  Object.keys(listenersBySelector).forEach(function (selector) {
-    var listeners = listenersBySelector[selector];
-    var elements = document.querySelectorAll(selector);
-
-    for (var i = 0; i < elements.length; i++) {
-      var element = elements[i];
-
-      if (!seenElements.has(element)) {
-        seenElements.set(element, true);
-
-        // We want to try to execute the rules in the order they were in the turbine container.
-        // This is why we try to loop from 0 to N. We do k-- in order to not mess up looping
-        // as we splice items from the array.
-        for (var k = 0; k < listeners.length; k++) {
-          var listener = listeners[k];
-          if (matchesProperties(element, listener.settings.elementProperties)) {
-            listener.trigger({
-              element: element,
-              target: element
-            });
-            listeners.splice(k, 1);
-            k--;
+  window.setInterval(function () {
+    Object.keys(listenersBySelector).forEach(function (selector) {
+      const listeners = listenersBySelector[selector];
+      const elements = document.querySelectorAll(selector);
+      for (let i = 0; i < elements.length; i++) {
+        const element = elements[i];
+        if (!seenElements.has(element)) {
+          seenElements.set(element, true);
+          for (let k = 0; k < listeners.length; k++) {
+            const listener = listeners[k];
+            if (
+              matchesProperties(element, listener.settings.elementProperties)
+            ) {
+              listener.trigger({
+                element: element,
+                target: element
+              });
+              listeners.splice(k, 1);
+              k--;
+            }
           }
         }
+        if (!listeners.length) {
+          delete listenersBySelector[selector];
+          break;
+        }
       }
+    });
+  }, POLL_INTERVAL);
 
-      // Listeners are removed from the array as their respective rules are fired.
-      // Once we have no more rules corresponding to the selector there is no need to
-      // continue scanning elements with the selector.
-      if (!listeners.length) {
-        delete listenersBySelector[selector];
-        break;
-      }
+  /**
+   * Element exists event. This event occurs when an element has been added to the DOM. The rule
+   * should run no more than once.
+   * @param {Object} settings The event settings object.
+   * @param {string} settings.elementSelector The CSS selector the element must match in order for
+   * the rule to fire.
+   * @param {Object[]} [settings.elementProperties] Property values the element must have in order
+   * for the rule to fire.
+   * @param {string} settings.elementProperties[].name The property name.
+   * @param {string} settings.elementProperties[].value The property value.
+   * @param {boolean} [settings.elementProperties[].valueIsRegex=false] Whether <code>value</code>
+   * on the object instance is intended to be a regular expression.
+   * @param {function} trigger The [rule]trigger callback.
+   */
+  return function elementExistsEvent(settings, trigger) {
+    let listeners = listenersBySelector[settings.elementSelector];
+    if (!listeners) {
+      listeners = listenersBySelector[settings.elementSelector] = [];
     }
-  });
-}, POLL_INTERVAL);
+    listeners.push({
+      settings: settings,
+      trigger: trigger
+    });
+  };
+}
 
-/**
- * Element exists event. This event occurs when an element has been added to the DOM. The rule
- * should run no more than once.
- * @param {Object} settings The event settings object.
- * @param {string} settings.elementSelector The CSS selector the element must match in order for
- * the rule to fire.
- * @param {Object[]} [settings.elementProperties] Property values the element must have in order
- * for the rule to fire.
- * @param {string} settings.elementProperties[].name The property name.
- * @param {string} settings.elementProperties[].value The property value.
- * @param {boolean} [settings.elementProperties[].valueIsRegex=false] Whether <code>value</code>
- * on the object instance is intended to be a regular expression.
- * @param {ruleTrigger} trigger The trigger callback.
- */
-module.exports = function (settings, trigger) {
-  var listeners = listenersBySelector[settings.elementSelector];
+const validateInjection = validateInjectedParams(
+  injectElementExists
+);
 
-  if (!listeners) {
-    listeners = listenersBySelector[settings.elementSelector] = [];
-  }
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  window: require('@adobe/reactor-window'),
+  document: require('@adobe/reactor-document'),
+  WeakMap
+});
 
-  listeners.push({
-    settings: settings,
-    trigger: trigger
-  });
-};
+/* START.TESTS_ONLY */
+export { validateInjection as injectElementExists };
+/* END.TESTS_ONLY */

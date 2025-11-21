@@ -8,45 +8,63 @@ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTA
 OF ANY KIND, either express or implied. See the License for the specific language
 governing permissions and limitations under the License.
 */
-'use strict';
 
-var Promise = require('@adobe/reactor-promise');
-var id = 0;
+import validateInjectedParams from '../../../../helpers/validate-injected-params.js'
 
-module.exports = function (action, source) {
-  var runScriptFnName = '_runScript' + ++id;
+function injectDecorateNonGlobalJavascriptCode({ Promise }) {
+  let id = 0;
+  return function decorateNonGlobalJavaScriptCode(action, source) {
+    const runScriptFnName = '_runScript' + ++id;
 
-  var promise = new Promise(function (resolve, reject) {
-    _satellite[runScriptFnName] = function (fn) {
-      delete _satellite[runScriptFnName];
+    const promise = new Promise(function (resolve, reject) {
+      _satellite[runScriptFnName] = function (fn) {
+        delete _satellite[runScriptFnName];
+        // Use Promise constructor instead of Promise.resolve() so we can
+        // catch errors from custom code.
+        new Promise(function (_resolve) {
+          _resolve(
+            fn.call(
+              action.event.element,
+              action.event,
+              action.event.target,
+              Promise
+            )
+          );
+        })
+          // for this resolve to run, either the fn (the actual custom code
+          // supplied by the user) doesn't thrown an error or return its own
+          // promise OR it eventually resolves and then we can resolve that the
+          // custom code function ran
+          .then(resolve, reject);
+      };
+    });
 
-      // Use Promise constructor instead of Promise.resolve() so we can
-      // catch errors from custom code.
-      new Promise(function (_resolve) {
-        _resolve(
-          fn.call(
-            action.event.element,
-            action.event,
-            action.event.target,
-            Promise
-          )
-        );
-      }).then(resolve, reject);
+    // The line break after the source is important in case their last line of code is a comment.
+    const code =
+      '<scr' +
+      'ipt>_satellite["' +
+      runScriptFnName +
+      '"](function(event, target, Promise) {\n' +
+      source +
+      '\n});</scr' +
+      'ipt>';
+
+    return {
+      code: code,
+      promise: promise
     };
-  });
-
-  // The line break after the source is important in case their last line of code is a comment.
-  var code =
-    '<scr' +
-    'ipt>_satellite["' +
-    runScriptFnName +
-    '"](function(event, target, Promise) {\n' +
-    source +
-    '\n});</scr' +
-    'ipt>';
-
-  return {
-    code: code,
-    promise: promise
   };
-};
+}
+
+const validateInjection = validateInjectedParams(
+  injectDecorateNonGlobalJavascriptCode
+);
+
+export default validateInjection({
+  // runs in Turbine context, which provides the core-module "reactor-promise".
+  Promise: require('@adobe/reactor-promise')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectDecorateNonGlobalJavascriptCode };
+/* END.TESTS_ONLY */

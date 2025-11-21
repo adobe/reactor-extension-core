@@ -12,8 +12,8 @@
 
 import React from 'react';
 import { TextField, Flex, Text } from '@adobe/react-spectrum';
-import WrappedField from '../components/wrappedField';
-import { isInteger } from '../utils/validators';
+import WrappedField from '../components/wrappedField.jsx'
+import { isInteger } from '../utils/validators.js'
 
 const RandomNumber = () => (
   <Flex gap="size-100" alignItems="end" wrap minWidth="size-3000">

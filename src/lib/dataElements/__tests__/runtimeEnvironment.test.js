@@ -9,14 +9,12 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-'use strict';
-
-var runtimeEnvironmentDelegateInjector = require('inject-loader!../runtimeEnvironment');
+import { injectRuntimeEnvironment } from '../runtimeEnvironment.js';
 
 describe('runtime environment data element delegate', function () {
   describe('from the event parameter', function () {
-    var event;
-    var runtimeEnvironmentDelegate = runtimeEnvironmentDelegateInjector();
+    let event;
+    const runtimeEnvironmentDelegate = injectRuntimeEnvironment({ window });
 
     beforeEach(function () {
       event = {
@@ -59,16 +57,12 @@ describe('runtime environment data element delegate', function () {
   });
 
   describe('from the turbine build info parameter', function () {
-    var runtimeEnvironmentDelegate = runtimeEnvironmentDelegateInjector();
+    const runtimeEnvironmentDelegate = injectRuntimeEnvironment({ window });
 
-    beforeAll(function () {
+    beforeEach(function () {
       mockTurbineVariable({
         buildInfo: { buildDate: 'build date' }
       });
-    });
-
-    afterAll(function () {
-      resetTurbineVariable();
     });
 
     it('returns the build date', function () {
@@ -79,10 +73,10 @@ describe('runtime environment data element delegate', function () {
   });
 
   describe('from the satellite parameter', function () {
-    var runtimeEnvironmentDelegate;
-    beforeAll(function () {
-      runtimeEnvironmentDelegate = runtimeEnvironmentDelegateInjector({
-        '@adobe/reactor-window': {
+    let runtimeEnvironmentDelegate;
+    beforeEach(function () {
+      runtimeEnvironmentDelegate = injectRuntimeEnvironment({
+        window: {
           _satellite: {
             property: { name: 'property name', id: 'PR123' },
             environment: { stage: 'stage' }

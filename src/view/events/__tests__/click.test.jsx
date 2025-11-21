@@ -15,10 +15,11 @@ import userEvent from '@testing-library/user-event';
 import {
   simulate,
   sharedTestingElements
-} from '@test-helpers/react-testing-library';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import Click, { formConfig } from '../click';
-import bootstrap from '../../bootstrap';
+} from '@test-helpers/react-testing-library.jsx';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import Click, { formConfig } from '../click.jsx'
+import bootstrap from '../../bootstrap.jsx'
+import { vi } from 'vitest';
 
 // react-testing-library element selectors
 const pageElements = {
@@ -65,12 +66,12 @@ describe('click event view', () => {
       sharedTestingElements.elementsMatching.radioGroup
         .getSpecificElements()
         .hasAttribute('checked')
-    ).toBeTrue();
+    ).toBe(true);
     expect(
       sharedTestingElements.elementsMatching.radioGroup
         .getAnyElement()
         .hasAttribute('checked')
-    ).toBeFalse();
+    ).toBe(false);
 
     fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
     expect(
@@ -118,7 +119,7 @@ describe('click event view', () => {
       sharedTestingElements.elementsMatching
         .getCssSelectorTextBox()
         .hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
 
     fireEvent.click(pageElements.linkDelay.getCheckBox());
     fireEvent.focus(pageElements.linkDelay.getTextBox());
@@ -127,7 +128,7 @@ describe('click event view', () => {
     fireEvent.blur(pageElements.linkDelay.getTextBox());
     expect(
       pageElements.linkDelay.getTextBox().hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
 
     fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
     fireEvent.click(
@@ -154,7 +155,7 @@ describe('click event view', () => {
       sharedTestingElements.elementsMatching
         .getCssSelectorTextBox()
         .hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     fireEvent.click(pageElements.linkDelay.getCheckBox());
     fireEvent.focus(pageElements.linkDelay.getTextBox());
@@ -163,7 +164,7 @@ describe('click event view', () => {
 
     expect(
       pageElements.linkDelay.getTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
   });
 
   it('sets default linkDelay to 100', () => {
@@ -185,7 +186,7 @@ describe('click event view', () => {
 
     expect(
       pageElements.linkDelay.getTextBox().hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
 
     fireEvent.focus(pageElements.linkDelay.getTextBox());
     simulate.clear(pageElements.linkDelay.getTextBox());
@@ -194,11 +195,11 @@ describe('click event view', () => {
 
     expect(
       pageElements.linkDelay.getTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
   });
 
   it('The linkDelay input supports opening the data element modal', () => {
-    spyOn(extensionBridge, 'openDataElementSelector').and.callFake(() => {
+    vi.spyOn(extensionBridge, 'openDataElementSelector').mockImplementation(() => {
       return Promise.resolve();
     });
 
@@ -217,7 +218,7 @@ describe('click event view', () => {
 
     expect(
       pageElements.linkDelay.getTextBox().hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
 
     expect(extensionBridge.getSettings().anchorDelay).toBe('%Data Element 1%');
   });

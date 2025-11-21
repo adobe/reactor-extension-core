@@ -1,8 +1,9 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import DataElementChange, { formConfig } from '../dataElementChange';
-import bootstrap from '../../bootstrap';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import DataElementChange, { formConfig } from '../dataElementChange.jsx'
+import bootstrap from '../../bootstrap.jsx'
+import { vi } from 'vitest';
 
 // react-testing-library element selectors
 const pageElements = {
@@ -41,10 +42,10 @@ describe('dataElementChange event view', () => {
     );
     fireEvent.blur(pageElements.getDataElementNameTextBox());
 
-    expect(extensionBridge.validate()).toBeTrue();
+    expect(extensionBridge.validate()).toBe(true);
     expect(
       pageElements.getDataElementNameTextBox().hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
     expect(extensionBridge.getSettings().name).toBe('Data Element Name');
   });
 
@@ -60,11 +61,11 @@ describe('dataElementChange event view', () => {
     );
     expect(
       pageElements.getDataElementNameTextBox().hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
   });
 
   it('supports opening the data element modal', () => {
-    spyOn(extensionBridge, 'openDataElementSelector').and.callFake(() => {
+    vi.spyOn(extensionBridge, 'openDataElementSelector').mockImplementation(() => {
       return Promise.resolve();
     });
 
@@ -77,8 +78,8 @@ describe('dataElementChange event view', () => {
     fireEvent.blur(pageElements.getDataElementNameTextBox());
     expect(
       pageElements.getDataElementNameTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
-    expect(extensionBridge.validate()).toBeFalse();
+    ).toBe(true);
+    expect(extensionBridge.validate()).toBe(false);
   });
 
   it('shows the warnig mesage', () => {

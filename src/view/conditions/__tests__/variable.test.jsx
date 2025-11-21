@@ -12,9 +12,10 @@
 
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import Variable, { formConfig } from '../variable';
-import bootstrap from '../../bootstrap';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import Variable, { formConfig } from '../variable.jsx'
+import bootstrap from '../../bootstrap.jsx'
+import { vi } from 'vitest';
 
 // react-testing-library element selectors
 const pageElements = {
@@ -154,7 +155,7 @@ describe('variable condition view', () => {
     fireEvent.blur(pageElements.getNameTextBox());
     expect(
       pageElements.getNameTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     const rows = pageElements.getVariableValueRows();
     rows.forEach((row) => {
@@ -165,16 +166,16 @@ describe('variable condition view', () => {
     const [firstRow, secondRow] = rows;
     expect(
       firstRow.withinRow.getVariableValueTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(
       secondRow.withinRow.getVariableValueTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     expect(extensionBridge.validate()).toBe(false);
   });
 
   it('the regex test button gives an example regex', () => {
-    spyOn(extensionBridge, 'openRegexTester').and.callFake(() => ({
+    vi.spyOn(extensionBridge, 'openRegexTester').mockImplementation(() => ({
       then(resolve) {
         resolve('Edited Regex 1234');
       }

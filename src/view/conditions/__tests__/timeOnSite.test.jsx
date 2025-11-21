@@ -12,10 +12,11 @@
 
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { changePickerValue } from '@test-helpers/react-testing-library';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import TimeOnSite, { formConfig } from '../timeOnSite';
-import bootstrap from '../../bootstrap';
+import { changePickerValue } from '@test-helpers/react-testing-library.jsx';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import TimeOnSite, { formConfig } from '../timeOnSite.jsx'
+import bootstrap from '../../bootstrap.jsx'
+import { vi } from 'vitest';
 
 // react-testing-library element selectors
 const pageElements = {
@@ -80,7 +81,7 @@ describe('time on site condition view', () => {
 
     expect(
       pageElements.getMinutesTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 
@@ -91,7 +92,7 @@ describe('time on site condition view', () => {
 
     expect(
       pageElements.getMinutesTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 
@@ -102,11 +103,11 @@ describe('time on site condition view', () => {
 
     expect(
       pageElements.getMinutesTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
   });
 
   it('The timeOnSite input supports opening the data element modal', () => {
-    spyOn(extensionBridge, 'openDataElementSelector').and.callFake(() => {
+    vi.spyOn(extensionBridge, 'openDataElementSelector').mockImplementation(() => {
       return Promise.resolve();
     });
 
@@ -121,7 +122,7 @@ describe('time on site condition view', () => {
 
     expect(
       pageElements.getMinutesTextBox().hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
 
     expect(
       expect(extensionBridge.getSettings().minutes).toBe('%Data Element 1%')

@@ -10,31 +10,42 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import validateInjectedParams from '../../helpers/validate-injected-params.js'
 
-var window = require('@adobe/reactor-window');
-var queryString = require('@adobe/reactor-query-string');
+function injectQueryStringParameter({ window, queryString }) {
+  /**
+   * The query string parameter data element.
+   * @param {Object} settings The data element settings object.
+   * @param {string} settings.name The query string parameter name.
+   * @param {string} [settings.caseInsensitive] Whether casing should be ignored.
+   * @returns {string}
+   */
+  return function queryStringParameter(settings) {
+    const queryParams = queryString.parse(window.location.search);
 
-/**
- * The query string parameter data element.
- * @param {Object} settings The data element settings object.
- * @param {string} settings.name The query string parameter name.
- * @param {string} [settings.caseInsensitive] Whether casing should be ignored.
- * @returns {string}
- */
-module.exports = function (settings) {
-  var queryParams = queryString.parse(window.location.search);
-
-  if (settings.caseInsensitive) {
-    var lowerCaseName = settings.name.toLowerCase();
-    var keys = Object.keys(queryParams);
-    for (var i = 0; i < keys.length; i++) {
-      var key = keys[i];
-      if (key.toLowerCase() === lowerCaseName) {
-        return queryParams[key];
+    if (settings.caseInsensitive) {
+      const lowerCaseName = settings.name.toLowerCase();
+      const keys = Object.keys(queryParams);
+      for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+        if (key.toLowerCase() === lowerCaseName) {
+          return queryParams[key];
+        }
       }
+    } else {
+      return queryParams[settings.name];
     }
-  } else {
-    return queryParams[settings.name];
-  }
-};
+  };
+}
+
+const validateInjection = validateInjectedParams(injectQueryStringParameter);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  window: require('@adobe/reactor-window'),
+  queryString: require('@adobe/reactor-query-string')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectQueryStringParameter };
+/* END.TESTS_ONLY */

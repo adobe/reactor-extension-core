@@ -10,28 +10,43 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import validateInjectedParams from '../../helpers/validate-injected-params.js'
 
-/**
- * The dom data element.
- * @param {Object} settings The data element settings object.
- * @param {string} settings.elementSelector The CSS selector for a DOM element.
- * @param {string} settings.elementProperty The name of the property or attribute of the DOM
- * element.
- * @returns {string}
- */
-module.exports = function (settings) {
-  var element = document.querySelector(settings.elementSelector);
+function injectDomAttribute({ document }) {
+  /**
+   * The dom data element.
+   * @param {Object} settings The data element settings object.
+   * @param {string} settings.elementSelector The CSS selector for a DOM element.
+   * @param {string} settings.elementProperty The name of the property or attribute of the DOM
+   * element.
+   * @returns {string}
+   */
+  return function domAttribute(settings) {
+    const element = document.querySelector(settings.elementSelector);
 
-  if (element) {
-    var property = settings.elementProperty;
+    if (element) {
+      const property = settings.elementProperty;
 
-    if (property === 'text') {
-      return element.innerText || element.textContent;
-    } else if (property in element) {
-      return element[property];
-    } else {
-      return element.getAttribute ? element.getAttribute(property) : undefined;
+      if (property === 'text') {
+        return element.innerText || element.textContent;
+      } else if (property in element) {
+        return element[property];
+      } else {
+        return element.getAttribute
+          ? element.getAttribute(property)
+          : undefined;
+      }
     }
-  }
-};
+  };
+}
+
+const validateInjection = validateInjectedParams(injectDomAttribute);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  document: require('@adobe/reactor-document')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectDomAttribute };
+/* END.TESTS_ONLY */

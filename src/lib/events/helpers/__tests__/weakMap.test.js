@@ -9,30 +9,31 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  ****************************************************************************************/
-'use strict';
+
+import { injectWeakMap } from '../weakMap.js';
 
 describe('WeakMap', function () {
   it('returns the native WeakMap if it exists', function () {
-    var MockWeakMap = function () {};
-    var mockWindow = {
+    const MockWeakMap = function () {};
+    const mockWindow = {
       WeakMap: MockWeakMap
     };
 
-    var WeakMap = require('inject-loader!../weakMap')({
-      '@adobe/reactor-window': mockWindow
+    const WeakMap = injectWeakMap({
+      window: mockWindow
     });
 
     expect(WeakMap).toBe(MockWeakMap);
   });
 
   it('returns WeakMap implementation without modifying global scope', function () {
-    var mockWindow = {};
+    const mockWindow = {};
 
-    var WeakMap = require('inject-loader!../weakMap')({
-      '@adobe/reactor-window': mockWindow
+    const WeakMap = injectWeakMap({
+      window: mockWindow
     });
 
-    expect(WeakMap).toEqual(jasmine.any(Function));
+    expect(WeakMap).toEqual(expect.any(Function));
     expect(mockWindow.WeakMap).toBeUndefined();
   });
 
@@ -40,28 +41,28 @@ describe('WeakMap', function () {
   // https://github.com/webcomponents/webcomponentsjs/blob/82964dec42a7f6af70142b1bbf3bc4ca16bf1bcf/tests/WeakMap/tests.html
 
   it('has get, set, delete, and has functions', function () {
-    var WeakMap = require('inject-loader!../weakMap')({
+    const WeakMap = injectWeakMap({
       // Inject an empty window so we don't end up testing the native WeakMap if it exists
       // in the target browser.
-      '@adobe/reactor-window': {}
+      window: {}
     });
-    expect(WeakMap.prototype.get).toEqual(jasmine.any(Function));
-    expect(WeakMap.prototype.set).toEqual(jasmine.any(Function));
-    expect(WeakMap.prototype.delete).toEqual(jasmine.any(Function));
-    expect(WeakMap.prototype.has).toEqual(jasmine.any(Function));
+    expect(WeakMap.prototype.get).toEqual(expect.any(Function));
+    expect(WeakMap.prototype.set).toEqual(expect.any(Function));
+    expect(WeakMap.prototype.delete).toEqual(expect.any(Function));
+    expect(WeakMap.prototype.has).toEqual(expect.any(Function));
   });
 
   it('has methods that perform as expected', function () {
-    var WeakMap = require('inject-loader!../weakMap')({
+    const WeakMap = injectWeakMap({
       // Inject an empty window so we don't end up testing the native WeakMap if it exists
       // in the target browser.
-      '@adobe/reactor-window': {}
+      window: {}
     });
-    var wm = new WeakMap();
+    const wm = new WeakMap();
 
-    var o1 = {};
-    var o2 = function () {};
-    var o3 = window;
+    const o1 = {};
+    const o2 = function () {};
+    const o3 = window;
 
     // IE 11 WeakMap does not chain
     if (wm.name || !/Trident/.test(navigator.userAgent)) {

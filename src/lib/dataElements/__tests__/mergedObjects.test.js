@@ -10,24 +10,25 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import { injectMergedObjects } from '../mergedObjects.js';
+import { vi } from 'vitest';
 
 describe('merged objects data element delegate', function () {
-  var deepMerge;
-  var mergedObjects;
+  let deepMergeMock;
+  let mergedObjects;
 
   beforeEach(function () {
-    deepMerge = jasmine.createSpy().and.returnValue({
+    deepMergeMock = vi.fn().and.returnValue({
       a: 'b',
       c: 'd'
     });
-    mergedObjects = require('inject-loader!../mergedObjects')({
-      '../helpers/deepMerge': deepMerge
+    mergedObjects = injectMergedObjects({
+      deepMerge: deepMergeMock
     });
   });
 
   it('calls deepMerge with objects and returns result', function () {
-    var result = mergedObjects({
+    const result = mergedObjects({
       objects: [
         {
           a: 'b'
@@ -37,7 +38,7 @@ describe('merged objects data element delegate', function () {
         }
       ]
     });
-    expect(deepMerge).toHaveBeenCalledWith(
+    expect(deepMergeMock).toHaveBeenCalledWith(
       {},
       {
         a: 'b'

@@ -10,15 +10,16 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
+import Simulate from 'simulate';
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
   simulate,
   changePickerValue
-} from '@test-helpers/react-testing-library';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import MaxFrequency, { formConfig } from '../maxFrequency';
-import bootstrap from '../../bootstrap';
+} from '@test-helpers/react-testing-library.jsx';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import MaxFrequency, { formConfig } from '../maxFrequency.jsx'
+import bootstrap from '../../bootstrap.jsx'
 
 // react-testing-library element selectors
 const pageElements = {
@@ -94,7 +95,7 @@ describe('max frequency condition view', () => {
 
     expect(
       pageElements.getCountTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
 
     fireEvent.focus(pageElements.getCountTextBox());
@@ -103,7 +104,7 @@ describe('max frequency condition view', () => {
 
     expect(
       pageElements.getCountTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 

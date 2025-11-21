@@ -9,59 +9,59 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  ****************************************************************************************/
-'use strict';
+
+import { injectDebounce } from '../debounce.js';
+import { vi } from 'vitest';
+const debounce = injectDebounce({ window });
 
 describe('debounce', function () {
-  var debounce;
-
   beforeAll(function () {
-    debounce = require('../debounce');
-    jasmine.clock().install();
+    vi.useFakeTimers();
   });
 
   afterAll(function () {
-    jasmine.clock().uninstall();
+    vi.useRealTimers();
   });
 
   it('calls the target function once after delay', function () {
-    var targetFn = jasmine.createSpy();
-    var debouncedFn = debounce(targetFn, 100);
+    const targetFn = vi.fn();
+    const debouncedFn = debounce(targetFn, 100);
 
     debouncedFn();
 
-    expect(targetFn.calls.count()).toBe(0);
+    expect(targetFn.mock.calls.length).toBe(0);
 
-    jasmine.clock().tick(60);
+    vi.advanceTimersByTime(60);
 
     debouncedFn();
 
-    jasmine.clock().tick(60);
+    vi.advanceTimersByTime(60);
 
-    expect(targetFn.calls.count()).toBe(0);
+    expect(targetFn.mock.calls.length).toBe(0);
 
-    jasmine.clock().tick(40);
+    vi.advanceTimersByTime(40);
 
-    expect(targetFn.calls.count()).toBe(1);
+    expect(targetFn.mock.calls.length).toBe(1);
   });
 
   it('calls the target function using the provided context', function () {
-    var targetFn = jasmine.createSpy();
-    var context = {};
+    const targetFn = vi.fn();
+    const context = {};
 
     debounce(targetFn, 100, context)();
 
-    jasmine.clock().tick(100);
+    vi.advanceTimersByTime(100);
 
-    expect(targetFn.calls.first().object).toBe(context);
+    expect(targetFn.mock.calls[0].object).toBe(context);
   });
 
   it('calls the target function using the provided arguments', function () {
-    var targetFn = jasmine.createSpy();
+    const targetFn = vi.fn();
 
     debounce(targetFn, 100)('arg1', 'arg2');
 
-    jasmine.clock().tick(100);
+    vi.advanceTimersByTime(100);
 
-    expect(targetFn.calls.first().args).toEqual(['arg1', 'arg2']);
+    expect(targetFn.mock.calls[0].args).toEqual(['arg1', 'arg2']);
   });
 });

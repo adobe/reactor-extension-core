@@ -11,7 +11,7 @@
  ****************************************************************************************/
 
 import React from 'react';
-import FullWidthField from '../components/fullWidthField';
+import FullWidthField from '../components/fullWidthField.jsx'
 
 const LocalStorage = () => (
   <FullWidthField

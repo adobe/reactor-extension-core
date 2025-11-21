@@ -10,83 +10,84 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var mockVisitorTracking = {
-  getLifetimePageViewCount: jasmine.createSpy().and.callFake(function () {
-    return 5;
-  }),
-  getSessionPageViewCount: jasmine.createSpy().and.callFake(function () {
-    return 5;
-  })
-};
-
-var conditionDelegateInjector = require('inject-loader!../pageViews');
-
-var conditionDelegate = conditionDelegateInjector({
-  '../helpers/visitorTracking': mockVisitorTracking
-});
-
-var DURATIONS = ['lifetime', 'session'];
-
-var getSettings = function (count, operator, duration) {
-  return {
-    count: count,
-    operator: operator,
-    duration: duration
-  };
-};
+import { injectPageViewCondition } from '../pageViews.js'
+import compareNumbers from '../helpers/compareNumbers.js'
+import { vi } from 'vitest';
 
 describe('page views condition delegate', function () {
+  const mockVisitorTracking = {
+    getLifetimePageViewCount: vi.fn().and.callFake(function () {
+      return 5;
+    }),
+    getSessionPageViewCount: vi.fn().and.callFake(function () {
+      return 5;
+    })
+  };
+
+  const conditionDelegate = injectPageViewCondition({
+    visitorTracking: mockVisitorTracking,
+    compareNumbers
+  });
+
+  const DURATIONS = ['lifetime', 'session'];
+
+  const getSettings = function (count, operator, duration) {
+    return {
+      count: count,
+      operator: operator,
+      duration: duration
+    };
+  };
+
   beforeEach(function () {
-    mockVisitorTracking.getLifetimePageViewCount.calls.reset();
-    mockVisitorTracking.getSessionPageViewCount.calls.reset();
+    mockVisitorTracking.getLifetimePageViewCount.mockClear();
+    mockVisitorTracking.getSessionPageViewCount.mockClear();
   });
 
   DURATIONS.forEach(function (duration) {
     describe('with "' + duration + '" duration', function () {
       // Make sure we're calling the correct method with respect to duration.
-      var assertCorrectMethodCall = function () {
-        var lifetimeCallCount =
-          mockVisitorTracking.getLifetimePageViewCount.calls.count();
-        var sessionCallCount =
-          mockVisitorTracking.getSessionPageViewCount.calls.count();
+      const assertCorrectMethodCall = function () {
+        const lifetimeCallCount =
+          mockVisitorTracking.getLifetimePageViewCount.mock.calls.length;
+        const sessionCallCount =
+          mockVisitorTracking.getSessionPageViewCount.mock.calls.length;
         expect(lifetimeCallCount).toBe(duration === 'lifetime' ? 1 : 0);
         expect(sessionCallCount).toBe(duration === 'session' ? 1 : 0);
       };
 
       it('returns true when number of page views is above "greater than" constraint', function () {
-        var settings = getSettings(4, '>', duration);
+        const settings = getSettings(4, '>', duration);
         expect(conditionDelegate(settings)).toBe(true);
         assertCorrectMethodCall();
       });
 
       it('returns false when number of page views is below "greater than" constraint', function () {
-        var settings = getSettings(6, '>', duration);
+        const settings = getSettings(6, '>', duration);
         expect(conditionDelegate(settings)).toBe(false);
         assertCorrectMethodCall();
       });
 
       it('returns true when number of page views is below "less than" constraint', function () {
-        var settings = getSettings(6, '<', duration);
+        const settings = getSettings(6, '<', duration);
         expect(conditionDelegate(settings)).toBe(true);
         assertCorrectMethodCall();
       });
 
       it('returns false when number of page views is above "less than" constraint', function () {
-        var settings = getSettings(4, '<', duration);
+        const settings = getSettings(4, '<', duration);
         expect(conditionDelegate(settings)).toBe(false);
         assertCorrectMethodCall();
       });
 
       it('returns true when number of page views matches "equals" constraint', function () {
-        var settings = getSettings(5, '=', duration);
+        const settings = getSettings(5, '=', duration);
         expect(conditionDelegate(settings)).toBe(true);
         assertCorrectMethodCall();
       });
 
       it('returns false when number of page views does not match "equals" constraint', function () {
-        var settings = getSettings(11, '=', duration);
+        const settings = getSettings(11, '=', duration);
         expect(conditionDelegate(settings)).toBe(false);
         assertCorrectMethodCall();
       });

@@ -12,9 +12,10 @@
 
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import Configuration, { formConfig } from '../configuration';
-import bootstrap from '../../bootstrap';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import Configuration, { formConfig } from '../configuration.jsx'
+import bootstrap from '../../bootstrap.jsx'
+import { vi } from 'vitest';
 
 // react-testing-library element selectors
 const pageElements = {
@@ -53,10 +54,10 @@ describe('extension configuration view', () => {
   it('does not support non-data element values', () => {
     userEvent.type(pageElements.getCSPNonceTextBox(), 'abc123');
 
-    expect(extensionBridge.validate()).toBeFalse();
+    expect(extensionBridge.validate()).toBe(false);
     expect(
       pageElements.getCSPNonceTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
   });
 
   it('supports a data element', () => {
@@ -68,7 +69,7 @@ describe('extension configuration view', () => {
   });
 
   it('supports opening the data element modal', () => {
-    spyOn(extensionBridge, 'openDataElementSelector').and.callFake(() => {
+    vi.spyOn(extensionBridge, 'openDataElementSelector').mockImplementation(() => {
       return Promise.resolve();
     });
 
@@ -93,7 +94,7 @@ describe('extension configuration view', () => {
     expect(extensionBridge.validate()).toBe(false);
     expect(
       pageElements.getCSPNonceTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
   });
 
   it('sets errors if cspNonce contains two data elements', () => {
@@ -106,7 +107,7 @@ describe('extension configuration view', () => {
     expect(extensionBridge.validate()).toBe(false);
     expect(
       pageElements.getCSPNonceTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
   });
 
   it('removes cspNonce from the settings object if the value is falsy', () => {

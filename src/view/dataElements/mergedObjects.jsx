@@ -13,9 +13,9 @@
 import React from 'react';
 import { Flex, TextField, View } from '@adobe/react-spectrum';
 import { FieldArray } from 'redux-form';
-import WrappedField from '../components/wrappedField';
-import MultipleItemEditor from '../components/multipleItemEditor';
-import { isDataElementToken } from '../utils/validators';
+import WrappedField from '../components/wrappedField.jsx'
+import MultipleItemEditor from '../components/multipleItemEditor.jsx'
+import { isDataElementToken } from '../utils/validators.js'
 
 const createItem = () => '';
 

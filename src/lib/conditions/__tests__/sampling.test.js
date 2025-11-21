@@ -10,21 +10,23 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var conditionDelegate = require('../sampling');
+import { injectSampling } from '../sampling.js'
+import getNamespacedStorage from '../../helpers/getNamespacedStorage.js';
+const conditionDelegate = injectSampling({
+  getNamespacedStorage
+});
 
 describe('sampling condition delegate', function () {
   it('returns false when rate is 0', function () {
-    expect(conditionDelegate({ rate: 0 })).toBeFalse();
+    expect(conditionDelegate({ rate: 0 })).toBe(false);
   });
 
   it('returns true when rate is 1', function () {
-    expect(conditionDelegate({ rate: 1 })).toBeTrue();
+    expect(conditionDelegate({ rate: 1 })).toBe(true);
   });
 
   describe('cohort persistence', function () {
-    var cleanUp = function () {
+    const cleanUp = function () {
       window.localStorage.clear();
     };
 
@@ -79,7 +81,7 @@ describe('sampling condition delegate', function () {
           includedInCohort ? 'true' : 'false'
         );
 
-        for (var i = 0; i < 10; i++) {
+        for (let i = 0; i < 10; i++) {
           expect(
             conditionDelegate(
               {

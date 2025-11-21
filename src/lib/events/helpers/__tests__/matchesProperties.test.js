@@ -10,11 +10,10 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import matchesProperties from '../matchesProperties.js';
 
 describe('matchesProperties', function () {
-  var matchesProperties = require('../matchesProperties');
-  var element;
+  let element;
 
   beforeAll(function () {
     element = document.createElement('div');
@@ -23,7 +22,7 @@ describe('matchesProperties', function () {
   });
 
   it('returns true if the string property value matches', function () {
-    var matches = matchesProperties(element, [
+    const matches = matchesProperties(element, [
       {
         name: 'className',
         value: 'flashy'
@@ -38,7 +37,7 @@ describe('matchesProperties', function () {
   });
 
   it('returns true if the string property value does not match', function () {
-    var matches = matchesProperties(element, [
+    const matches = matchesProperties(element, [
       {
         name: 'className',
         value: 'flashy'
@@ -53,7 +52,7 @@ describe('matchesProperties', function () {
   });
 
   it('returns true if the regex property value matches', function () {
-    var matches = matchesProperties(element, [
+    const matches = matchesProperties(element, [
       {
         name: 'className',
         value: 'flashy'
@@ -69,7 +68,7 @@ describe('matchesProperties', function () {
   });
 
   it('returns false if the regex property value does not match', function () {
-    var matches = matchesProperties(element, [
+    const matches = matchesProperties(element, [
       {
         name: 'className',
         value: 'flashy'

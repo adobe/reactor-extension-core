@@ -7,3 +7,4 @@ dist
 .entries
 package-core*
 **/install-state.gz
+**/testIndex.*.js

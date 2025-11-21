@@ -12,7 +12,8 @@
 
 import React from 'react';
 import { fireEvent, render as rtlRender, screen } from '@testing-library/react';
-import DisclosureButton from '../disclosureButton';
+import DisclosureButton from '../disclosureButton.jsx'
+import { vi } from 'vitest';
 
 const render = (props) => rtlRender(<DisclosureButton {...props} />);
 
@@ -36,7 +37,7 @@ describe('disclosure button', () => {
   });
 
   it('calls onClick when clicked', () => {
-    const onClick = jasmine.createSpy();
+    const onClick = vi.fn();
     render({
       onClick
     });

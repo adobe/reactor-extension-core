@@ -13,7 +13,8 @@
 import React from 'react';
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import { TextField } from '@adobe/react-spectrum';
-import MultipleItemEditor from '../multipleItemEditor';
+import MultipleItemEditor from '../multipleItemEditor.jsx'
+import { vi } from 'vitest';
 
 // react-testing-library element selectors
 const pageElements = {
@@ -56,16 +57,14 @@ const pageElements = {
 const getTestProps = () => ({
   fields: {
     map: (fn) => [0, 1].map((index) => fn(`props[${index}]`, index)),
-    push: jasmine.createSpy('push'),
-    remove: jasmine.createSpy('remove'),
+    push: vi.fn(),
+    remove: vi.fn(),
     length: 2
   },
-  renderItem: jasmine
-    .createSpy('renderItem')
-    .and.callFake((rowData) => (
+  renderItem: vi.fn().mockImplementation((rowData) => (
       <TextField label="Row Input Box" value={rowData} />
     )),
-  createItem: jasmine.createSpy().and.returnValue({}),
+  createItem: vi.fn().and.returnValue({}),
   interstitialLabel: 'OR'
 });
 
@@ -103,7 +102,7 @@ describe('multiple item editor', () => {
     expect(rows.length).toBe(2);
 
     fireEvent.click(rows[1].withinRow.getRemoveButton());
-    const someMouseEvent = jasmine.any(Object);
+    const someMouseEvent = expect.any(Object);
     expect(props.fields.remove).toHaveBeenCalledWith(1, someMouseEvent);
   });
 });

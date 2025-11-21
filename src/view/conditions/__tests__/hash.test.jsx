@@ -12,9 +12,9 @@
 
 import { fireEvent, render, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import Hash, { formConfig } from '../hash';
-import bootstrap from '../../bootstrap';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import Hash, { formConfig } from '../hash.jsx'
+import bootstrap from '../../bootstrap.jsx'
 
 // react-testing-library element selectors
 const pageElements = {
@@ -71,10 +71,10 @@ describe('hash condition view', () => {
     const [firstRow, secondRow] = rows;
 
     expect(firstRow.withinRow.getHashTextBox().value).toBe('foo');
-    expect(firstRow.withinRow.getRegexToggleSwitch().checked).toBeFalse();
+    expect(firstRow.withinRow.getRegexToggleSwitch().checked).toBe(false);
 
     expect(secondRow.withinRow.getHashTextBox().value).toBe('bar');
-    expect(secondRow.withinRow.getRegexToggleSwitch().checked).toBeTrue();
+    expect(secondRow.withinRow.getRegexToggleSwitch().checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -100,6 +100,6 @@ describe('hash condition view', () => {
         .getRows()[0]
         .withinRow.getHashTextBox()
         .hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
   });
 });

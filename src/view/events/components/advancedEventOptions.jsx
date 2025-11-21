@@ -12,8 +12,8 @@
 
 import React from 'react';
 import { Checkbox, Flex, View } from '@adobe/react-spectrum';
-import WrappedField from '../../components/wrappedField';
-import DisclosureButton from '../../components/disclosureButton';
+import WrappedField from '../../components/wrappedField.jsx'
+import DisclosureButton from '../../components/disclosureButton.jsx'
 
 export default class AdvancedEventOptions extends React.Component {
   constructor() {

@@ -10,16 +10,17 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import { injectDataElementChange } from '../dataElementChange.js';
+import { vi } from 'vitest';
 
-var POLL_INTERVAL = 3000;
-var delegate;
-var dataElementValue;
+const POLL_INTERVAL = 3000;
+let delegate;
+let dataElementValue;
 
 // Since we use a single delegate module instance which caches data element values, we use a unique
 // data element name for each test so that subsequent tests aren't affected by cached values.
-var getUniqueDataElementName = (function () {
-  var id = 0;
+const getUniqueDataElementName = (function () {
+  let id = 0;
   return function () {
     id++;
     return 'de' + id;
@@ -32,15 +33,15 @@ var getUniqueDataElementName = (function () {
  * @param {Function} getUpdatedValue A function that returns a (potentially) updated value.
  * @param {boolean} shouldTriggerRule Whether we expect a rule to be triggered.
  */
-var testValueChange = function (
+const testValueChange = function (
   initialValue,
   getUpdatedValue,
   shouldTriggerRule
 ) {
-  var trigger = jasmine.createSpy();
+  const trigger = vi.fn();
   dataElementValue = initialValue;
 
-  var name = getUniqueDataElementName();
+  const name = getUniqueDataElementName();
 
   delegate(
     {
@@ -49,29 +50,29 @@ var testValueChange = function (
     trigger
   );
 
-  jasmine.clock().tick(POLL_INTERVAL);
+  vi.advanceTimersByTime(POLL_INTERVAL);
 
-  expect(trigger.calls.count()).toBe(0);
+  expect(trigger.mock.calls.length).toBe(0);
 
   dataElementValue = getUpdatedValue(dataElementValue);
 
-  jasmine.clock().tick(POLL_INTERVAL);
+  vi.advanceTimersByTime(POLL_INTERVAL);
 
   if (shouldTriggerRule) {
-    expect(trigger.calls.count()).toBe(1);
+    expect(trigger.mock.calls.length).toBe(1);
 
-    var call = trigger.calls.mostRecent();
-    expect(call.args[0]).toEqual({
+    const call = trigger.mock.lastCall;
+    expect(call[0]).toEqual({
       dataElementName: name
     });
   } else {
-    expect(trigger.calls.count()).toBe(0);
+    expect(trigger.mock.calls.length).toBe(0);
   }
 };
 
 describe('data element change event delegate', function () {
   beforeAll(function () {
-    jasmine.clock().install();
+    vi.useFakeTimers();
 
     mockTurbineVariable({
       getDataElementValue: function () {
@@ -79,17 +80,15 @@ describe('data element change event delegate', function () {
       }
     });
 
-    delegate = require('../dataElementChange');
+    delegate = injectDataElementChange({ window });
   });
 
   afterAll(function () {
-    jasmine.clock().uninstall();
-
-    resetTurbineVariable();
+    vi.useRealTimers();
   });
 
   it("doesn't trigger rule the first time a data element is evaluated", function () {
-    var trigger = jasmine.createSpy();
+    const trigger = vi.fn();
 
     dataElementValue = 'foo';
 
@@ -100,7 +99,7 @@ describe('data element change event delegate', function () {
       trigger
     );
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     expect(trigger).not.toHaveBeenCalled();
   });
@@ -176,7 +175,7 @@ describe('data element change event delegate', function () {
   });
 
   it('triggers rule when array item changes', function () {
-    var value = ['a', 'b'];
+    const value = ['a', 'b'];
 
     testValueChange(
       value,
@@ -189,7 +188,7 @@ describe('data element change event delegate', function () {
   });
 
   it('does not trigger when array changes to different array with same values', function () {
-    var value = ['a', 'b'];
+    const value = ['a', 'b'];
     testValueChange(
       value,
       function () {
@@ -200,7 +199,7 @@ describe('data element change event delegate', function () {
   });
 
   it('emits an event when a key get added to an object', function () {
-    var value = {
+    const value = {
       foo: 'bar',
       baz: 'quux'
     };
@@ -304,12 +303,12 @@ describe('data element change event delegate', function () {
   });
 
   it('triggers multiple rules when data element changes', function () {
-    var trigger = jasmine.createSpy();
-    var trigger2 = jasmine.createSpy();
+    const trigger = vi.fn();
+    const trigger2 = vi.fn();
 
     dataElementValue = 'foo';
 
-    var name = getUniqueDataElementName();
+    const name = getUniqueDataElementName();
 
     delegate(
       {
@@ -327,7 +326,7 @@ describe('data element change event delegate', function () {
 
     dataElementValue = 'bar';
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     expect(trigger).toHaveBeenCalled();
     expect(trigger2).toHaveBeenCalled();

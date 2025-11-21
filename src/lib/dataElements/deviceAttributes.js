@@ -9,27 +9,37 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-'use strict';
+import validateInjectedParams from '../../helpers/validate-injected-params.js'
 
-/**
- * The visitor attributes data element.
- * @param {Object} settings The data element settings object.
- * @param {string} settings.attribute The attribute that should be returned.
- * @returns {string}
- */
+function injectDeviceAttributes({ document, window }) {
+  /**
+   * The visitor attributes data element.
+   * @param {Object} settings The data element settings object.
+   * @param {string} settings.attribute The attribute that should be returned.
+   * @returns {string}
+   */
+  return function deviceAttributes(settings) {
+    switch (settings.attribute) {
+      case 'windowSize':
+        return (
+          document.documentElement.clientWidth +
+          'x' +
+          document.documentElement.clientHeight
+        );
+      case 'screenSize':
+        return window.screen.width + 'x' + window.screen.height;
+    }
+  };
+}
 
-var document = require('@adobe/reactor-document');
-var window = require('@adobe/reactor-window');
+const validateInjection = validateInjectedParams(injectDeviceAttributes);
 
-module.exports = function (settings) {
-  switch (settings.attribute) {
-    case 'windowSize':
-      return (
-        document.documentElement.clientWidth +
-        'x' +
-        document.documentElement.clientHeight
-      );
-    case 'screenSize':
-      return window.screen.width + 'x' + window.screen.height;
-  }
-};
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  document: require('@adobe/reactor-document'),
+  window: require('@adobe/reactor-window')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectDeviceAttributes };
+/* END.TESTS_ONLY */

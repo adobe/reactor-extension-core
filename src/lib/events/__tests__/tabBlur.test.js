@@ -10,28 +10,28 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import { injectTabBlur } from '../tabBlur.js';
+import runVisibilityApi from '../helpers/visibilityApi.js';
+import { vi } from 'vitest';
+const { hiddenProperty, visibilityChangeEventType } = runVisibilityApi();
 
-var eventDelegateInjector = require('inject-loader!../tabBlur');
-var visibilityApi = require('../helpers/visibilityApi');
-var visibilityApiInstance = visibilityApi();
-var visibilityChangeListener;
+let visibilityChangeListener;
 
-var mockDocument = {
+const mockDocument = {
   location: 'somelocation',
   addEventListener: function (event, listener) {
-    if (event && event === visibilityApiInstance.visibilityChangeEventType) {
+    if (event && event === visibilityChangeEventType) {
       visibilityChangeListener = listener;
     }
   }
 };
 
-var delegate = eventDelegateInjector({
-  '@adobe/reactor-document': mockDocument
+const delegate = injectTabBlur({
+  document: mockDocument
 });
 
-var isIE = function () {
-  var myNav = navigator.userAgent.toLowerCase();
+const isIE = function () {
+  const myNav = navigator.userAgent.toLowerCase();
   return myNav.indexOf('msie') !== -1
     ? parseInt(myNav.split('msie')[1])
     : false;
@@ -40,17 +40,17 @@ var isIE = function () {
 describe('tab blur event delegate', function () {
   if (!isIE() || isIE() > 9) {
     it('triggers rule when the tabblur event occurs', function () {
-      var trigger = jasmine.createSpy();
+      const trigger = vi.fn();
 
       delegate({}, trigger);
 
-      expect(trigger.calls.count()).toBe(0);
+      expect(trigger.mock.calls.length).toBe(0);
 
-      mockDocument[visibilityApiInstance.hiddenProperty] = true;
+      mockDocument[hiddenProperty] = true;
       visibilityChangeListener.call(location);
 
-      expect(trigger.calls.count()).toBe(1);
-      expect(trigger.calls.mostRecent().args.length).toBe(0);
+      expect(trigger.mock.calls.length).toBe(1);
+      expect(trigger.mock.lastCall.args.length).toBe(0);
     });
   }
 });

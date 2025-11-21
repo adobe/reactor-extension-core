@@ -12,9 +12,10 @@
 
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import QueryStringParameter, { formConfig } from '../queryStringParameter';
-import bootstrap from '../../bootstrap';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import QueryStringParameter, { formConfig } from '../queryStringParameter.jsx'
+import bootstrap from '../../bootstrap.jsx'
+import { vi } from 'vitest';
 
 // react-testing-library element selectors
 const pageElements = {
@@ -131,7 +132,7 @@ describe('query string parameter condition view', () => {
     fireEvent.blur(pageElements.getParameterNameTextBox());
     expect(
       pageElements.getParameterNameTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     const rows = pageElements.getQueryStringValueRows();
     rows.forEach((row) => {
@@ -144,18 +145,18 @@ describe('query string parameter condition view', () => {
       firstRow.withinRow
         .getQueryParamValueTextBox()
         .hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(
       secondRow.withinRow
         .getQueryParamValueTextBox()
         .hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     expect(extensionBridge.validate()).toBe(false);
   });
 
   it('the regex test button gives an example regex', () => {
-    spyOn(extensionBridge, 'openRegexTester').and.callFake(() => ({
+    vi.spyOn(extensionBridge, 'openRegexTester').mockImplementation(() => ({
       then(resolve) {
         resolve('Edited Regex 1234');
       }

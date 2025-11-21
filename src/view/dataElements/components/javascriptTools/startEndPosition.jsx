@@ -11,9 +11,9 @@ governing permissions and limitations under the License.
 
 import React from 'react';
 import { TextField, Flex } from '@adobe/react-spectrum';
-import WrappedField from '../../../components/wrappedField';
-import { isNumberLike } from '../../../utils/validators';
-import operators from '../../utils/javascriptTools/operators';
+import WrappedField from '../../../components/wrappedField.jsx'
+import { isNumberLike } from '../../../utils/validators.js'
+import operators from '../../utils/javascriptTools/operators.js'
 
 export default () => (
   <Flex gap="size-100">

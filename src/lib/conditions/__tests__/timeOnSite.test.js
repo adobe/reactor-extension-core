@@ -10,20 +10,23 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import { injectTimeOnSiteCondition } from '../timeOnSite.js';
+import compareNumbers from '../helpers/compareNumbers.js';
+import { castToNumberIfString } from '../../helpers/stringAndNumberUtils.js';
 
-var mockVisitorTracking = {
+const mockVisitorTracking = {
   getMinutesOnSite: function () {
     return 5;
   }
 };
 
-var conditionDelegateInjector = require('inject-loader!../timeOnSite');
-var conditionDelegate = conditionDelegateInjector({
-  '../helpers/visitorTracking': mockVisitorTracking
+const conditionDelegate = injectTimeOnSiteCondition({
+  visitorTracking: mockVisitorTracking,
+  compareNumbers,
+  castToNumberIfString
 });
 
-var getSettings = function (minutes, operator) {
+const getSettings = function (minutes, operator) {
   return {
     minutes: minutes,
     operator: operator
@@ -32,7 +35,7 @@ var getSettings = function (minutes, operator) {
 
 describe('time on site condition delegate', function () {
   it('returns true when number of minutes is above "greater than" constraint', function () {
-    var settings = getSettings(4, '>');
+    const settings = getSettings(4, '>');
     expect(conditionDelegate(settings)).toBe(true);
   });
 
@@ -40,18 +43,18 @@ describe('time on site condition delegate', function () {
     'returns true when number of minutes is above "greater than" ' +
       'constraint (as a string)',
     function () {
-      var settings = getSettings('4', '>');
+      const settings = getSettings('4', '>');
       expect(conditionDelegate(settings)).toBe(true);
     }
   );
 
   it('returns false when number of minutes is below "greater than" constraint', function () {
-    var settings = getSettings(6, '>');
+    const settings = getSettings(6, '>');
     expect(conditionDelegate(settings)).toBe(false);
   });
 
   it('returns true when number of minutes is below "less than" constraint', function () {
-    var settings = getSettings(6, '<');
+    const settings = getSettings(6, '<');
     expect(conditionDelegate(settings)).toBe(true);
   });
 
@@ -59,23 +62,23 @@ describe('time on site condition delegate', function () {
     'returns true when number of minutes is below "less than" constraint ' +
       '(as a string)',
     function () {
-      var settings = getSettings('6', '<');
+      const settings = getSettings('6', '<');
       expect(conditionDelegate(settings)).toBe(true);
     }
   );
 
   it('returns false when number of minutes is above "less than" constraint', function () {
-    var settings = getSettings(4, '<');
+    const settings = getSettings(4, '<');
     expect(conditionDelegate(settings)).toBe(false);
   });
 
   it('returns true when number of minutes matches "equals" constraint', function () {
-    var settings = getSettings(5, '=');
+    const settings = getSettings(5, '=');
     expect(conditionDelegate(settings)).toBe(true);
   });
 
   it('returns false when number of minutes does not match "equals" constraint', function () {
-    var settings = getSettings(11, '=');
+    const settings = getSettings(11, '=');
     expect(conditionDelegate(settings)).toBe(false);
   });
 });

@@ -10,9 +10,8 @@ This is the Core extension for [Adobe Experience Platform Tags](https://experien
 Contributions are welcomed! Read the [Contributing Guide](.github/CONTRIBUTING.md) for more information about how our community works.
 
 1. [Install node.js](https://nodejs.org/).
-1. [Install Yarn](https://yarnpkg.com/en/docs/install).
 1. Clone this repository.
-1. After navigating into the project directory, install project dependencies by running `yarn install`.
+1. After navigating into the project directory, install project dependencies by running `npm ci`.
 
 Several npm scripts have been provided for assisting in development. Each script can be run by navigating to the cloned repository directory in a terminal and executing `npm run scriptname` where `scriptname` is the name of the script you would like to run. The most useful scripts are as follows:
 
@@ -34,5 +33,3 @@ This project depends on the @react/react-spectrum package which depends on the @
  * to this repo does not apply.
  */
 ```
-
-While changing `package.json` to point to the tar file for @react/react-spectrum is simple and natively supported by npm, this is not the case with @react/collection-view, since it is a dependency of @react/react-spectrum. To solve this problem, this project uses Yarn for installing dependencies since it natively supports [selective dependency resolutions](https://yarnpkg.com/lang/en/docs/selective-version-resolutions/).

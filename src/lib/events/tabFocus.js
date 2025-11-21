@@ -10,42 +10,52 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
+import once from './helpers/once.js';
+import runVisibilityApi from './helpers/visibilityApi.js';
+const { hiddenProperty, visibilityChangeEventType } = runVisibilityApi();
 
-var document = require('@adobe/reactor-document');
-var once = require('./helpers/once');
-var visibilityApi = require('./helpers/visibilityApi')();
-var hiddenProperty = visibilityApi.hiddenProperty;
-var visibilityChangeEventType = visibilityApi.visibilityChangeEventType;
+function injectTabFocus({ document }) {
+  /**
+   * All trigger methods registered for this event type.
+   * @type {ruleTrigger[]}
+   */
+  const triggers = [];
 
-/**
- * All trigger methods registered for this event type.
- * @type {ruleTrigger[]}
- */
-var triggers = [];
+  const watchForTabFocus = once(function () {
+    document.addEventListener(
+      visibilityChangeEventType,
+      function () {
+        if (!document[hiddenProperty]) {
+          triggers.forEach(function (trigger) {
+            trigger();
+          });
+        }
+      },
+      true
+    );
+  });
 
-var watchForTabFocus = once(function () {
-  document.addEventListener(
-    visibilityChangeEventType,
-    function () {
-      if (!document[hiddenProperty]) {
-        triggers.forEach(function (trigger) {
-          trigger();
-        });
-      }
-    },
-    true
-  );
+  /**
+   * Tabfocus event. This event occurs when a webpage is visible or in focus. With tabbed browsing,
+   * there is a reasonable chance that any given webpage is in the background and thus not
+   * visible to the user.
+   * @param {Object} settings The event settings object.
+   * @param {function} trigger The [rule]trigger callback.
+   */
+  return function tabFocus(settings, trigger) {
+    watchForTabFocus();
+    triggers.push(trigger);
+  };
+}
+
+const validateInjection = validateInjectedParams(injectTabFocus);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  document: require('@adobe/reactor-document')
 });
 
-/**
- * Tabfocus event. This event occurs when a webpage is visible or in focus. With tabbed browsing,
- * there is a reasonable chance that any given webpage is in the background and thus not
- * visible to the user.
- * @param {Object} settings The event settings object.
- * @param {ruleTrigger} trigger The trigger callback.
- */
-module.exports = function (settings, trigger) {
-  watchForTabFocus();
-  triggers.push(trigger);
-};
+/* START.TESTS_ONLY */
+export { validateInjection as injectTabFocus };
+/* END.TESTS_ONLY */

@@ -17,7 +17,7 @@ import ReplacementValue, {
 import SearchValue, {
   formConfig as searchValueFormConfig
 } from './searchValue';
-import mergeFormConfigs from '../../../utils/mergeFormConfigs';
+import mergeFormConfigs from '../../../utils/mergeFormConfigs.js'
 
 export default () => (
   <>

@@ -10,14 +10,25 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import deepMerge from '../helpers/deepMerge.js'
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
 
-var deepMerge = require('../helpers/deepMerge');
+function injectMergedObjects({ deepMerge }) {
+  return function mergedObjects(settings) {
+    const args = settings.objects.slice();
+    // This object will be the target object that all other objects
+    // get merged into.
+    args.unshift({});
+    return deepMerge.apply(null, args);
+  };
+}
 
-module.exports = function (settings) {
-  var args = settings.objects.slice();
-  // This object will be the target object that all other objects
-  // get merged into.
-  args.unshift({});
-  return deepMerge.apply(null, args);
-};
+const validateInjection = validateInjectedParams(injectMergedObjects);
+
+export default validateInjection({
+  deepMerge
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectMergedObjects };
+/* END.TESTS_ONLY */

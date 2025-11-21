@@ -10,16 +10,24 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-/*eslint max-len:0*/
-'use strict';
+import { injectBubbly } from '../createBubbly.js';
+import matchesProperties from '../matchesProperties.js';
+import matchesSelector from '../matchesSelector.js';
+import { injectWeakMap } from '../weakMap.js';
+import { vi } from 'vitest';
+const injectedWeakMap = injectWeakMap({ window });
+const createBubbly = injectBubbly({
+  WeakMap: injectedWeakMap,
+  matchesProperties,
+  matchesSelector
+});
+
 describe('createBubbly', function () {
-  var createBubbly = require('../createBubbly');
+  let aElement;
+  let bElement;
+  let cElement;
 
-  var aElement;
-  var bElement;
-  var cElement;
-
-  var createElements = function () {
+  const createElements = function () {
     aElement = document.createElement('div');
     aElement.innerHTML = 'A';
     aElement.id = 'a';
@@ -37,7 +45,7 @@ describe('createBubbly', function () {
     document.body.appendChild(aElement);
   };
 
-  var removeElements = function () {
+  const removeElements = function () {
     document.body.removeChild(aElement);
     aElement = null;
     bElement = null;
@@ -53,11 +61,11 @@ describe('createBubbly', function () {
   });
 
   it('handles a plethora of scenarios', function () {
-    var testScenario = function (options) {
-      var bubbly = createBubbly();
-      var aCallback = jasmine.createSpy();
-      var bCallback = jasmine.createSpy();
-      var cCallback = jasmine.createSpy();
+    const testScenario = function (options) {
+      const bubbly = createBubbly();
+      const aCallback = vi.fn();
+      const bCallback = vi.fn();
+      const cCallback = vi.fn();
 
       bubbly.addListener(
         {
@@ -93,12 +101,12 @@ describe('createBubbly', function () {
         target: cElement
       });
 
-      expect(aCallback.calls.count()).toBe(options.aExecuted ? 1 : 0);
-      expect(bCallback.calls.count()).toBe(options.bExecuted ? 1 : 0);
-      expect(cCallback.calls.count()).toBe(options.cExecuted ? 1 : 0);
+      expect(aCallback.mock.calls.length).toBe(options.aExecuted ? 1 : 0);
+      expect(bCallback.mock.calls.length).toBe(options.bExecuted ? 1 : 0);
+      expect(cCallback.mock.calls.length).toBe(options.cExecuted ? 1 : 0);
     };
 
-    var scenarios = [
+    const scenarios = [
       //    Given element A contains element B and element B contains element C
       //    Given rule A targets element A with:
       //      "Allow events on child elements to bubble"               checked (bubbleFireIfParent = true)
@@ -330,9 +338,9 @@ describe('createBubbly', function () {
   });
 
   it('considers a rule not triggered when the listener callback returns false', function () {
-    var bubbly = createBubbly();
-    var aCallback = jasmine.createSpy();
-    var bCallback = jasmine.createSpy().and.returnValue(false);
+    const bubbly = createBubbly();
+    const aCallback = vi.fn();
+    const bCallback = vi.fn().and.returnValue(false);
 
     bubbly.addListener(
       {
@@ -362,13 +370,13 @@ describe('createBubbly', function () {
       target: bElement
     });
 
-    expect(aCallback.calls.count()).toBe(1);
-    expect(bCallback.calls.count()).toBe(1);
+    expect(aCallback.mock.calls.length).toBe(1);
+    expect(bCallback.mock.calls.length).toBe(1);
   });
 
   it('calls the callback when the element matches elementProperties w/ string value', function () {
-    var bubbly = createBubbly();
-    var callback = jasmine.createSpy();
+    const bubbly = createBubbly();
+    const callback = vi.fn();
 
     bubbly.addListener(
       {
@@ -386,15 +394,15 @@ describe('createBubbly', function () {
       target: cElement
     });
 
-    expect(callback.calls.count()).toBe(1);
+    expect(callback.mock.calls.length).toBe(1);
   });
 
   it(
     'does not call the callback when the element does not match elementProperties ' +
       'w/ string value',
     function () {
-      var bubbly = createBubbly();
-      var callback = jasmine.createSpy();
+      const bubbly = createBubbly();
+      const callback = vi.fn();
 
       bubbly.addListener(
         {
@@ -412,13 +420,13 @@ describe('createBubbly', function () {
         target: cElement
       });
 
-      expect(callback.calls.count()).toBe(0);
+      expect(callback.mock.calls.length).toBe(0);
     }
   );
 
   it('calls the callback when the element matches elementProperties w/ regex value', function () {
-    var bubbly = createBubbly();
-    var callback = jasmine.createSpy();
+    const bubbly = createBubbly();
+    const callback = vi.fn();
 
     bubbly.addListener(
       {
@@ -437,15 +445,15 @@ describe('createBubbly', function () {
       target: cElement
     });
 
-    expect(callback.calls.count()).toBe(1);
+    expect(callback.mock.calls.length).toBe(1);
   });
 
   it(
     'does not call the callback when the element does not match elementProperties ' +
       'w/ regex value',
     function () {
-      var bubbly = createBubbly();
-      var callback = jasmine.createSpy();
+      const bubbly = createBubbly();
+      const callback = vi.fn();
 
       bubbly.addListener(
         {
@@ -464,13 +472,13 @@ describe('createBubbly', function () {
         target: cElement
       });
 
-      expect(callback.calls.count()).toBe(0);
+      expect(callback.mock.calls.length).toBe(0);
     }
   );
 
   it('passes a synthetic event to the callback with attached native event', function () {
-    var bubbly = createBubbly();
-    var callback = jasmine.createSpy();
+    const bubbly = createBubbly();
+    const callback = vi.fn();
 
     bubbly.addListener(
       {
@@ -479,13 +487,13 @@ describe('createBubbly', function () {
       callback
     );
 
-    var nativeEvent = {
+    const nativeEvent = {
       target: cElement
     };
 
     bubbly.evaluateEvent(nativeEvent);
 
-    expect(callback.calls.mostRecent().args[0]).toEqual({
+    expect(callback.mock.lastCall[0]).toEqual({
       element: aElement,
       target: cElement,
       nativeEvent: nativeEvent
@@ -493,8 +501,8 @@ describe('createBubbly', function () {
   });
 
   it('passes a synthetic event to the callback with data from passed synthetic event', function () {
-    var bubbly = createBubbly();
-    var callback = jasmine.createSpy();
+    const bubbly = createBubbly();
+    const callback = vi.fn();
 
     bubbly.addListener(
       {
@@ -503,14 +511,14 @@ describe('createBubbly', function () {
       callback
     );
 
-    var nativeEvent = {
+    const nativeEvent = {
       target: cElement,
       foo: 'bar'
     };
 
     bubbly.evaluateEvent(nativeEvent, true);
 
-    expect(callback.calls.mostRecent().args[0]).toEqual({
+    expect(callback.mock.lastCall[0]).toEqual({
       element: aElement,
       target: cElement,
       foo: 'bar'
@@ -519,8 +527,8 @@ describe('createBubbly', function () {
 
   describe('when no element refinements are specified', function () {
     it('calls the callback once if the target is a nested element', function () {
-      var bubbly = createBubbly();
-      var callback = jasmine.createSpy();
+      const bubbly = createBubbly();
+      const callback = vi.fn();
 
       bubbly.addListener({}, callback);
 
@@ -528,12 +536,12 @@ describe('createBubbly', function () {
         target: cElement
       });
 
-      expect(callback.calls.count()).toBe(1);
+      expect(callback.mock.calls.length).toBe(1);
     });
 
     it('calls the callback once if the target is document', function () {
-      var bubbly = createBubbly();
-      var callback = jasmine.createSpy();
+      const bubbly = createBubbly();
+      const callback = vi.fn();
 
       bubbly.addListener({}, callback);
 
@@ -541,7 +549,7 @@ describe('createBubbly', function () {
         target: document
       });
 
-      expect(callback.calls.count()).toBe(1);
+      expect(callback.mock.calls.length).toBe(1);
     });
   });
 });

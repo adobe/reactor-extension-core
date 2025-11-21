@@ -12,10 +12,10 @@
 
 import React from 'react';
 import { Picker, TextField, Item, Flex } from '@adobe/react-spectrum';
-import WrappedField from '../components/wrappedField';
-import { isDataElementToken, isNumberLikeInRange } from '../utils/validators';
-import comparisonOperatorOptions from './comparisonOperatorOptions';
-import NoWrapText from '../components/noWrapText';
+import WrappedField from '../components/wrappedField.jsx'
+import { isDataElementToken, isNumberLikeInRange } from '../utils/validators.js'
+import comparisonOperatorOptions from './comparisonOperatorOptions.js'
+import NoWrapText from '../components/noWrapText.jsx'
 
 const TimeOnSite = () => (
   <Flex gap="size-100" minWidth="size-6000" alignItems="end" wrap>

@@ -19,10 +19,10 @@ import {
   Text,
   View
 } from '@adobe/react-spectrum';
-import WrappedField from '../components/wrappedField';
-import { isNumberLike } from '../utils/validators';
-import comparisonOperatorOptions from './comparisonOperatorOptions';
-import NoWrapText from '../components/noWrapText';
+import WrappedField from '../components/wrappedField.jsx'
+import { isNumberLike } from '../utils/validators.js'
+import comparisonOperatorOptions from './comparisonOperatorOptions.js'
+import NoWrapText from '../components/noWrapText.jsx'
 
 const ScreenResolution = () => (
   <Flex gap="size-100" direction="column" minWidth="size-6000">

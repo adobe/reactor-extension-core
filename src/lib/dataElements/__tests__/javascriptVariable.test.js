@@ -10,9 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var dataElementDelegate = require('../javascriptVariable');
+import { injectJavascriptVariable } from '../javascriptVariable.js'
+const dataElementDelegate = injectJavascriptVariable({ window });
 
 describe('javascript variable data element delegate', function () {
   beforeAll(function () {
@@ -33,27 +32,27 @@ describe('javascript variable data element delegate', function () {
   });
 
   it('returns a nested object property value', function () {
-    var settings = {
+    const settings = {
       path: 'a.b.1.c'
     };
 
-    var value = dataElementDelegate(settings);
+    const value = dataElementDelegate(settings);
 
     expect(value).toBe('bar');
   });
 
   it('returns undefined if path does not exist', function () {
-    var settings = {
+    const settings = {
       path: 'path.that.does.not.exist'
     };
 
-    var value = dataElementDelegate(settings);
+    const value = dataElementDelegate(settings);
 
     expect(value).toBe(undefined);
   });
 
   it('finds value when path is prefixed with window', function () {
-    var settings = {
+    const settings = {
       path: 'window.a.b.1.c'
     };
     expect(dataElementDelegate(settings)).toBe('bar');

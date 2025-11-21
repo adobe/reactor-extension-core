@@ -10,49 +10,60 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-var loadScript = require('@adobe/reactor-load-script');
-var Promise = require('@adobe/reactor-promise');
-var findScriptByRegexPattern =
-  require('../../helpers/findPageScript').byRegexPattern;
+import { byRegexPattern as findScriptByRegexPattern } from '../../helpers/findPageScript.js';
+import validateInjectedParams from '../../../helpers/validate-injected-params.js';
 
-var codeBySourceUrl = {};
-var scriptStore = {};
+function injectGetSourceByUrl({ window, loadScript, Promise }) {
+  const codeBySourceUrl = {};
+  const scriptStore = {};
 
-var loadScriptOnlyOnce = function (url) {
-  if (!scriptStore[url]) {
-    scriptStore[url] = loadScript(url);
-  }
+  const loadScriptOnlyOnce = function (url) {
+    if (!scriptStore[url]) {
+      scriptStore[url] = loadScript(url);
+    }
+    return scriptStore[url];
+  };
 
-  return scriptStore[url];
-};
+  window._satellite.__registerScript = function (scriptGuid, code) {
+    let scriptUrl;
+    // when premium CDN is enabled, custom code is a relative url. but Turbine will hand us the fully
+    // qualified url by the time we get here. Whether that's assets.adobedtm.com or adoberesources.cn.
+    if (document.currentScript) {
+      scriptUrl = document.currentScript.getAttribute('src');
+    } else {
+      const pattern = new RegExp('.*' + scriptGuid + '.*');
+      scriptUrl = findScriptByRegexPattern(pattern).getAttribute('src');
+    }
+    codeBySourceUrl[scriptUrl] = code;
+  };
 
-_satellite.__registerScript = function (scriptGuid, code) {
-  var scriptUrl;
-  if (document.currentScript) {
-    // use getAttribute in case it's a relative url
-    scriptUrl = document.currentScript.getAttribute('src');
-  } else {
-    var pattern = new RegExp('.*' + scriptGuid + '.*');
-    // use getAttribute in case it's a relative url
-    scriptUrl = findScriptByRegexPattern(pattern).getAttribute('src');
-  }
-  codeBySourceUrl[scriptUrl] = code;
-};
+  return function getSourceByUrl(sourceUrl) {
+    if (codeBySourceUrl[sourceUrl]) {
+      return Promise.resolve(codeBySourceUrl[sourceUrl]);
+    } else {
+      return new Promise(function (resolve) {
+        loadScriptOnlyOnce(sourceUrl).then(
+          function () {
+            resolve(codeBySourceUrl[sourceUrl]);
+          },
+          function () {
+            resolve();
+          }
+        );
+      });
+    }
+  };
+}
 
-module.exports = function (sourceUrl) {
-  if (codeBySourceUrl[sourceUrl]) {
-    return Promise.resolve(codeBySourceUrl[sourceUrl]);
-  } else {
-    return new Promise(function (resolve) {
-      loadScriptOnlyOnce(sourceUrl).then(
-        function () {
-          resolve(codeBySourceUrl[sourceUrl]);
-        },
-        function () {
-          resolve();
-        }
-      );
-    });
-  }
-};
+const validateInjection = validateInjectedParams(injectGetSourceByUrl);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  window: require('@adobe/reactor-window'),
+  Promise: require('@adobe/reactor-promise'),
+  loadScript: require('@adobe/reactor-load-script')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectGetSourceByUrl };
+/* END.TESTS_ONLY */

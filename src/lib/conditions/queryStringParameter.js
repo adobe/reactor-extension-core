@@ -10,45 +10,63 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import textMatch from '../helpers/textMatch.js'
+import validateInjectedParams from '../../helpers/validate-injected-params.js'
 
-var window = require('@adobe/reactor-window');
-var queryString = require('@adobe/reactor-query-string');
-var textMatch = require('../helpers/textMatch');
+function injectQueryStringParameterCondition({
+  window,
+  queryString,
+  textMatch
+}) {
+  /**
+   * Query string parameter condition. Determines if a query string parameter exists with a name and
+   * value that matches the acceptable name and value.
+   * @param {Object} settings Condition settings.
+   * @param {string} settings.name The name of the query string parameter.
+   * @param {string} settings.queryParams Acceptable query string parameters to match.
+   * @param {string} settings.queryParams[].value An acceptable query string parameter value.
+   * @param {boolean} [settings.queryParams[].valueIsRegex=false] Whether <code>settings.value</code>
+   * is intended to be a regular expression.
+   * @returns {boolean}
+   */
+  return function queryStringParameterCondition(settings) {
+    const queryParams = queryString.parse(window.location.search);
+    if (!queryParams.hasOwnProperty(settings.name)) {
+      return false;
+    }
 
-/**
- * Query string parameter condition. Determines if a query string parameter exists with a name and
- * value that matches the acceptable name and value.
- * @param {Object} settings Condition settings.
- * @param {string} settings.name The name of the query string parameter.
- * @param {string} settings.queryParams Acceptable query string parameters to match.
- * @param {string} settings.queryParams[].value An acceptable query string parameter value.
- * @param {boolean} [settings.queryParams[].valueIsRegex=false] Whether <code>settings.value</code>
- * is intended to be a regular expression.
- * @returns {boolean}
- */
-module.exports = function (settings) {
-  var queryParams = queryString.parse(window.location.search);
-  if (!queryParams.hasOwnProperty(settings.name)) {
-    return false;
-  }
+    let queryParamValues;
+    if (!Array.isArray(settings.queryParams)) {
+      // legacy support
+      queryParamValues = [
+        { value: settings.value, valueIsRegex: Boolean(settings.valueIsRegex) }
+      ];
+    } else {
+      queryParamValues = settings.queryParams;
+    }
 
-  var queryParamValues;
-  if (!Array.isArray(settings.queryParams)) {
-    // legacy support
-    queryParamValues = [
-      { value: settings.value, valueIsRegex: Boolean(settings.valueIsRegex) }
-    ];
-  } else {
-    queryParamValues = settings.queryParams;
-  }
+    const queryParamValue = queryParams[settings.name];
+    return queryParamValues.some(function (acceptableQueryParamValue) {
+      const acceptableValue = acceptableQueryParamValue.valueIsRegex
+        ? new RegExp(acceptableQueryParamValue.value, 'i')
+        : acceptableQueryParamValue.value;
 
-  var queryParamValue = queryParams[settings.name];
-  return queryParamValues.some(function (acceptableQueryParamValue) {
-    var acceptableValue = acceptableQueryParamValue.valueIsRegex
-      ? new RegExp(acceptableQueryParamValue.value, 'i')
-      : acceptableQueryParamValue.value;
+      return textMatch(queryParamValue, acceptableValue);
+    });
+  };
+}
 
-    return textMatch(queryParamValue, acceptableValue);
-  });
-};
+const validateInjection = validateInjectedParams(
+  injectQueryStringParameterCondition
+);
+
+export default validateInjection({
+  // runs in Turbine context, which provides the core-module "reactor-window" and "reactor-query-string".
+  window: require('@adobe/reactor-window'),
+  queryString: require('@adobe/reactor-query-string'),
+  textMatch
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectQueryStringParameterCondition };
+/* END.TESTS_ONLY */

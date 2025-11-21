@@ -10,16 +10,19 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-var POLL_INTERVAL = 3000;
-var liveQuerySelector = require('../helpers/liveQuerySelector');
+import Simulate from 'simulate';
+import { injectHover } from '../hover.js';
+import liveQuerySelector, { __reset as resetLiveQuerySelector } from '../helpers/liveQuerySelector.js';
+import { vi } from 'vitest';
+
+const POLL_INTERVAL = 3000;
 
 describe('hover event delegate', function () {
-  var delegate;
-  var aElement;
-  var bElement;
+  let delegate;
+  let aElement;
+  let bElement;
 
-  var createElements = function () {
+  const createElements = function () {
     aElement = document.createElement('div');
     aElement.id = 'a';
     aElement.innerHTML = 'a';
@@ -31,15 +34,15 @@ describe('hover event delegate', function () {
     aElement.appendChild(bElement);
   };
 
-  var removeElements = function () {
+  const removeElements = function () {
     if (aElement) {
       document.body.removeChild(aElement);
     }
     aElement = bElement = null;
   };
 
-  var assertTriggerCall = function (options) {
-    expect(options.call.args[0]).toEqual({
+  const assertTriggerCall = function (options) {
+    expect(options.call[0]).toEqual({
       element: options.element,
       target: options.target,
       delay: options.delay
@@ -47,11 +50,8 @@ describe('hover event delegate', function () {
   };
 
   beforeEach(function () {
-    jasmine.clock().install();
-    delegate = require('inject-loader!../hover')({
-      './helpers/liveQuerySelector': liveQuerySelector
-    });
-
+    vi.useFakeTimers();
+    delegate = injectHover({ liveQuerySelector });
     createElements();
   });
 
@@ -60,17 +60,17 @@ describe('hover event delegate', function () {
     Simulate.mouseleave(aElement);
     removeElements();
 
-    jasmine.clock().uninstall();
+    vi.useRealTimers();
 
     // We need to reset the liveQuerySelector, otherwise it will affect the next test that is run.
-    liveQuerySelector.__reset();
+    resetLiveQuerySelector();
   });
 
   it(
     'can properly parse settings.delay when it is a string ' +
       '(from data element value)',
     function () {
-      var trigger = jasmine.createSpy();
+      const trigger = vi.fn();
 
       delegate(
         {
@@ -83,16 +83,16 @@ describe('hover event delegate', function () {
         trigger
       );
 
-      jasmine.clock().tick(POLL_INTERVAL);
+      vi.advanceTimersByTime(POLL_INTERVAL);
 
       Simulate.mouseenter(aElement);
 
-      jasmine.clock().tick(1100);
+      vi.advanceTimersByTime(1100);
 
-      expect(trigger.calls.count()).toEqual(1);
+      expect(trigger.mock.calls.length).toEqual(1);
 
       assertTriggerCall({
-        call: trigger.calls.mostRecent(),
+        call: trigger.mock.lastCall,
         element: aElement,
         target: aElement,
         delay: 1000 // the string was properly parsed to a number
@@ -101,8 +101,8 @@ describe('hover event delegate', function () {
   );
 
   it('triggers multiple rules with no delay targeting nested elements', function () {
-    var aTrigger = jasmine.createSpy();
-    var bTrigger = jasmine.createSpy();
+    const aTrigger = vi.fn();
+    const bTrigger = vi.fn();
 
     delegate(
       {
@@ -124,14 +124,14 @@ describe('hover event delegate', function () {
       bTrigger
     );
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     Simulate.mouseenter(aElement);
 
-    expect(aTrigger.calls.count()).toEqual(1);
+    expect(aTrigger.mock.calls.length).toEqual(1);
 
     assertTriggerCall({
-      call: aTrigger.calls.mostRecent(),
+      call: aTrigger.mock.lastCall,
       element: aElement,
       target: aElement,
       delay: 0
@@ -140,19 +140,19 @@ describe('hover event delegate', function () {
     Simulate.mouseenter(bElement);
 
     // Rule A ran again because the hover from element B also "bubbled up" to element A.
-    expect(aTrigger.calls.count()).toEqual(2);
+    expect(aTrigger.mock.calls.length).toEqual(2);
 
     assertTriggerCall({
-      call: aTrigger.calls.mostRecent(),
+      call: aTrigger.mock.lastCall,
       element: aElement,
       target: bElement,
       delay: 0
     });
 
-    expect(bTrigger.calls.count()).toEqual(1);
+    expect(bTrigger.mock.calls.length).toEqual(1);
 
     assertTriggerCall({
-      call: bTrigger.calls.mostRecent(),
+      call: bTrigger.mock.lastCall,
       element: bElement,
       target: bElement,
       delay: 0
@@ -160,8 +160,8 @@ describe('hover event delegate', function () {
   });
 
   it('triggers multiple rules with no delay targeting the same element', function () {
-    var aTrigger = jasmine.createSpy();
-    var a2Trigger = jasmine.createSpy();
+    const aTrigger = vi.fn();
+    const a2Trigger = vi.fn();
 
     delegate(
       {
@@ -183,23 +183,23 @@ describe('hover event delegate', function () {
       a2Trigger
     );
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     Simulate.mouseenter(aElement);
 
-    expect(aTrigger.calls.count()).toEqual(1);
+    expect(aTrigger.mock.calls.length).toEqual(1);
 
     assertTriggerCall({
-      call: aTrigger.calls.mostRecent(),
+      call: aTrigger.mock.lastCall,
       element: aElement,
       target: aElement,
       delay: 0
     });
 
-    expect(a2Trigger.calls.count()).toEqual(1);
+    expect(a2Trigger.mock.calls.length).toEqual(1);
 
     assertTriggerCall({
-      call: a2Trigger.calls.mostRecent(),
+      call: a2Trigger.mock.lastCall,
       element: aElement,
       target: aElement,
       delay: 0
@@ -207,8 +207,8 @@ describe('hover event delegate', function () {
   });
 
   it('triggers multiple rules with the same delay targeting nested elements', function () {
-    var aTrigger = jasmine.createSpy();
-    var bTrigger = jasmine.createSpy();
+    const aTrigger = vi.fn();
+    const bTrigger = vi.fn();
 
     delegate(
       {
@@ -232,46 +232,46 @@ describe('hover event delegate', function () {
       bTrigger
     );
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     Simulate.mouseenter(aElement);
     Simulate.mouseenter(bElement);
 
-    jasmine.clock().tick(800);
+    vi.advanceTimersByTime(800);
 
     Simulate.mouseleave(aElement);
     Simulate.mouseleave(bElement);
 
-    expect(aTrigger.calls.count()).toEqual(0);
-    expect(bTrigger.calls.count()).toEqual(0);
+    expect(aTrigger.mock.calls.length).toEqual(0);
+    expect(bTrigger.mock.calls.length).toEqual(0);
 
     Simulate.mouseenter(aElement);
     Simulate.mouseenter(bElement);
 
-    jasmine.clock().tick(1200);
+    vi.advanceTimersByTime(1200);
 
     // Because the rules are on the same delay, the hover event from element B also executes
     // rule A when it "bubbles up".
-    expect(aTrigger.calls.count()).toEqual(2);
+    expect(aTrigger.mock.calls.length).toEqual(2);
 
     assertTriggerCall({
-      call: aTrigger.calls.first(),
+      call: aTrigger.mock.calls[0],
       element: aElement,
       target: aElement,
       delay: 1000
     });
 
     assertTriggerCall({
-      call: aTrigger.calls.mostRecent(),
+      call: aTrigger.mock.lastCall,
       element: aElement,
       target: bElement,
       delay: 1000
     });
 
-    expect(bTrigger.calls.count()).toEqual(1);
+    expect(bTrigger.mock.calls.length).toEqual(1);
 
     assertTriggerCall({
-      call: bTrigger.calls.mostRecent(),
+      call: bTrigger.mock.lastCall,
       element: bElement,
       target: bElement,
       delay: 1000
@@ -279,8 +279,8 @@ describe('hover event delegate', function () {
   });
 
   it('triggers multiple rules with different delays targeting nested elements', function () {
-    var aTrigger = jasmine.createSpy();
-    var bTrigger = jasmine.createSpy();
+    const aTrigger = vi.fn();
+    const bTrigger = vi.fn();
 
     delegate(
       {
@@ -304,43 +304,43 @@ describe('hover event delegate', function () {
       bTrigger
     );
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     Simulate.mouseenter(aElement);
     Simulate.mouseenter(bElement);
 
-    jasmine.clock().tick(800);
+    vi.advanceTimersByTime(800);
 
     Simulate.mouseleave(aElement);
     Simulate.mouseleave(bElement);
 
-    expect(aTrigger.calls.count()).toEqual(0);
-    expect(bTrigger.calls.count()).toEqual(0);
+    expect(aTrigger.mock.calls.length).toEqual(0);
+    expect(bTrigger.mock.calls.length).toEqual(0);
 
     Simulate.mouseenter(aElement);
     Simulate.mouseenter(bElement);
 
-    jasmine.clock().tick(1200);
+    vi.advanceTimersByTime(1200);
 
-    expect(aTrigger.calls.count()).toEqual(0);
-    expect(bTrigger.calls.count()).toEqual(1);
+    expect(aTrigger.mock.calls.length).toEqual(0);
+    expect(bTrigger.mock.calls.length).toEqual(1);
 
     assertTriggerCall({
-      call: bTrigger.calls.mostRecent(),
+      call: bTrigger.mock.lastCall,
       element: bElement,
       target: bElement,
       delay: 1000
     });
 
-    jasmine.clock().tick(1000);
+    vi.advanceTimersByTime(1000);
 
     // Because the rules are on different delays, the hover event from element B doesn't
     // execute rule A when it "bubbles up".
-    expect(aTrigger.calls.count()).toEqual(1);
-    expect(bTrigger.calls.count()).toEqual(1);
+    expect(aTrigger.mock.calls.length).toEqual(1);
+    expect(bTrigger.mock.calls.length).toEqual(1);
 
     assertTriggerCall({
-      call: aTrigger.calls.mostRecent(),
+      call: aTrigger.mock.lastCall,
       element: aElement,
       target: aElement,
       delay: 2000
@@ -348,8 +348,8 @@ describe('hover event delegate', function () {
   });
 
   it('triggers multiple rules with the same delay targeting the same element', function () {
-    var aTrigger = jasmine.createSpy();
-    var a2Trigger = jasmine.createSpy();
+    const aTrigger = vi.fn();
+    const a2Trigger = vi.fn();
 
     delegate(
       {
@@ -373,34 +373,34 @@ describe('hover event delegate', function () {
       a2Trigger
     );
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     Simulate.mouseenter(aElement);
 
-    jasmine.clock().tick(800);
+    vi.advanceTimersByTime(800);
 
     Simulate.mouseleave(aElement);
 
-    expect(aTrigger.calls.count()).toEqual(0);
-    expect(a2Trigger.calls.count()).toEqual(0);
+    expect(aTrigger.mock.calls.length).toEqual(0);
+    expect(a2Trigger.mock.calls.length).toEqual(0);
 
     Simulate.mouseenter(aElement);
 
-    jasmine.clock().tick(1200);
+    vi.advanceTimersByTime(1200);
 
-    expect(aTrigger.calls.count()).toEqual(1);
+    expect(aTrigger.mock.calls.length).toEqual(1);
 
     assertTriggerCall({
-      call: aTrigger.calls.mostRecent(),
+      call: aTrigger.mock.lastCall,
       element: aElement,
       target: aElement,
       delay: 1000
     });
 
-    expect(a2Trigger.calls.count()).toEqual(1);
+    expect(a2Trigger.mock.calls.length).toEqual(1);
 
     assertTriggerCall({
-      call: a2Trigger.calls.mostRecent(),
+      call: a2Trigger.mock.lastCall,
       element: aElement,
       target: aElement,
       delay: 1000
@@ -408,8 +408,8 @@ describe('hover event delegate', function () {
   });
 
   it('triggers multiple rules with different delays targeting the same element', function () {
-    var aTrigger = jasmine.createSpy();
-    var a2Trigger = jasmine.createSpy();
+    const aTrigger = vi.fn();
+    const a2Trigger = vi.fn();
 
     delegate(
       {
@@ -433,38 +433,38 @@ describe('hover event delegate', function () {
       a2Trigger
     );
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     Simulate.mouseenter(aElement);
 
-    jasmine.clock().tick(800);
+    vi.advanceTimersByTime(800);
 
     Simulate.mouseleave(aElement);
 
-    expect(aTrigger.calls.count()).toEqual(0);
-    expect(a2Trigger.calls.count()).toEqual(0);
+    expect(aTrigger.mock.calls.length).toEqual(0);
+    expect(a2Trigger.mock.calls.length).toEqual(0);
 
     Simulate.mouseenter(aElement);
 
-    jasmine.clock().tick(1200);
+    vi.advanceTimersByTime(1200);
 
-    expect(aTrigger.calls.count()).toEqual(1);
-    expect(a2Trigger.calls.count()).toEqual(0);
+    expect(aTrigger.mock.calls.length).toEqual(1);
+    expect(a2Trigger.mock.calls.length).toEqual(0);
 
     assertTriggerCall({
-      call: aTrigger.calls.mostRecent(),
+      call: aTrigger.mock.lastCall,
       element: aElement,
       target: aElement,
       delay: 1000
     });
 
-    jasmine.clock().tick(1000);
+    vi.advanceTimersByTime(1000);
 
-    expect(aTrigger.calls.count()).toEqual(1);
-    expect(a2Trigger.calls.count()).toEqual(1);
+    expect(aTrigger.mock.calls.length).toEqual(1);
+    expect(a2Trigger.mock.calls.length).toEqual(1);
 
     assertTriggerCall({
-      call: a2Trigger.calls.mostRecent(),
+      call: a2Trigger.mock.lastCall,
       element: aElement,
       target: aElement,
       delay: 2000
@@ -472,7 +472,7 @@ describe('hover event delegate', function () {
   });
 
   it('triggers a rule when the element matches elementProperties', function () {
-    var bTrigger = jasmine.createSpy();
+    const bTrigger = vi.fn();
 
     delegate(
       {
@@ -487,15 +487,15 @@ describe('hover event delegate', function () {
       bTrigger
     );
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     Simulate.mouseenter(bElement);
 
-    expect(bTrigger.calls.count()).toEqual(1);
+    expect(bTrigger.mock.calls.length).toEqual(1);
   });
 
   it('does not trigger rule when the element does not match elementProperties', function () {
-    var bTrigger = jasmine.createSpy();
+    const bTrigger = vi.fn();
 
     delegate(
       {
@@ -510,10 +510,10 @@ describe('hover event delegate', function () {
       bTrigger
     );
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     Simulate.mouseenter(bElement);
 
-    expect(bTrigger.calls.count()).toEqual(0);
+    expect(bTrigger.mock.calls.length).toEqual(0);
   });
 });

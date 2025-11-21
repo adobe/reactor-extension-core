@@ -10,18 +10,17 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import { injectPageBottom } from '../pageBottom.js';
 
 describe('page bottom event delegate', function () {
   it('sends the trigger to the pageLifecycleEvents helper module', function () {
-    var pageBottomInjector = require('inject-loader!../pageBottom');
-    var trigger = function () {};
-    var pageLifecycleEventsSpy = jasmine.createSpyObj('pageLifecycleEvents', [
-      'registerPageBottomTrigger'
-    ]);
+    const trigger = function () {};
+    const pageLifecycleEventsSpy = {
+      registerPageBottomTrigger: vi.fn()
+    };
 
-    var delegate = pageBottomInjector({
-      './helpers/pageLifecycleEvents': pageLifecycleEventsSpy
+    const delegate = injectPageBottom({
+      pageLifecycleEvents: pageLifecycleEventsSpy
     });
 
     delegate({}, trigger);

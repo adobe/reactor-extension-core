@@ -10,9 +10,6 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import { isPlainObject } from 'is-plain-object';
 
-var isPlainObject =
-  require('../../../node_modules/is-plain-object/dist/is-plain-object').isPlainObject;
-
-module.exports = isPlainObject;
+export default isPlainObject;

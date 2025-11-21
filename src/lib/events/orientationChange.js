@@ -10,30 +10,42 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
 
-var window = require('@adobe/reactor-window');
-var triggers = [];
+function injectOrientationChange({ window }) {
+  const triggers = [];
 
-window.addEventListener('orientationchange', function (event) {
-  if (triggers.length) {
-    var syntheticEvent = {
-      element: window,
-      target: window,
-      nativeEvent: event
-    };
+  window.addEventListener('orientationchange', function (event) {
+    if (triggers.length) {
+      const syntheticEvent = {
+        element: window,
+        target: window,
+        nativeEvent: event
+      };
 
-    triggers.forEach(function (trigger) {
-      trigger(syntheticEvent);
-    });
-  }
+      triggers.forEach(function (trigger) {
+        trigger(syntheticEvent);
+      });
+    }
+  });
+
+  /**
+   * The orientationchange event. This event occurs when the orientation of the device has changed.
+   * @param {Object} settings The event settings object.
+   * @param {function} trigger The [rule]trigger callback.
+   */
+  return function orientationChange(settings, trigger) {
+    triggers.push(trigger);
+  };
+}
+
+const validateInjection = validateInjectedParams(injectOrientationChange);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  window: require('@adobe/reactor-window')
 });
 
-/**
- * The orientationchange event. This event occurs when the orientation of the device has changed.
- * @param {Object} settings The event settings object.
- * @param {ruleTrigger} trigger The trigger callback.
- */
-module.exports = function (settings, trigger) {
-  triggers.push(trigger);
-};
+/* START.TESTS_ONLY */
+export { validateInjection as injectOrientationChange };
+/* END.TESTS_ONLY */

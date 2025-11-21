@@ -10,10 +10,10 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import { injectPageInfo } from '../pageInfo.js'
 
-var dataElementDelegate = require('inject-loader!../pageInfo')({
-  '@adobe/reactor-document': {
+const dataElementDelegate = injectPageInfo({
+  document: {
     location: {
       href: 'http://www.adobe.com/creativecloud/photography.html?promoid=NQCJRBTZ&mv=other',
       hostname: 'www.adobe.com',
@@ -28,7 +28,7 @@ var dataElementDelegate = require('inject-loader!../pageInfo')({
 
 describe('page info data element delegate', function () {
   it('returns the URL', function () {
-    var settings = {
+    const settings = {
       attribute: 'url'
     };
 
@@ -38,7 +38,7 @@ describe('page info data element delegate', function () {
   });
 
   it('returns the hostname', function () {
-    var settings = {
+    const settings = {
       attribute: 'hostname'
     };
 
@@ -46,7 +46,7 @@ describe('page info data element delegate', function () {
   });
 
   it('returns the pathname', function () {
-    var settings = {
+    const settings = {
       attribute: 'pathname'
     };
 
@@ -56,7 +56,7 @@ describe('page info data element delegate', function () {
   });
 
   it('returns the protocol', function () {
-    var settings = {
+    const settings = {
       attribute: 'protocol'
     };
 
@@ -64,7 +64,7 @@ describe('page info data element delegate', function () {
   });
 
   it('returns the referrer', function () {
-    var settings = {
+    const settings = {
       attribute: 'referrer'
     };
 
@@ -72,7 +72,7 @@ describe('page info data element delegate', function () {
   });
 
   it('returns the title', function () {
-    var settings = {
+    const settings = {
       attribute: 'title'
     };
 

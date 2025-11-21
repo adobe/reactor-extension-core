@@ -12,10 +12,11 @@
 
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import WrappedField from '../wrappedField';
-import RegexToggle from '../regexToggle';
-import bootstrap from '../../bootstrap';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import WrappedField from '../wrappedField.jsx'
+import RegexToggle from '../regexToggle.jsx'
+import bootstrap from '../../bootstrap.jsx'
+import { vi } from 'vitest';
 
 // react-testing-library element selectors
 const pageElements = {
@@ -59,7 +60,7 @@ describe('regex toggle', () => {
   beforeEach(() => {
     extensionBridge = createExtensionBridge();
 
-    spyOn(extensionBridge, 'openRegexTester').and.callFake(() => ({
+    vi.spyOn(extensionBridge, 'openRegexTester').mockImplementation(() => ({
       then(resolve) {
         resolve('bar');
       }
@@ -83,7 +84,7 @@ describe('regex toggle', () => {
       }
     });
 
-    expect(pageElements.getRegexToggleSwitch().checked).toBeTrue();
+    expect(pageElements.getRegexToggleSwitch().checked).toBe(true);
   });
 
   it('calls onChange from ValueIsRegex field when switch is toggled', () => {
@@ -122,7 +123,7 @@ describe('regex toggle', () => {
       }
     });
 
-    expect(pageElements.getRegexToggleSwitch().checked).toBeTrue();
+    expect(pageElements.getRegexToggleSwitch().checked).toBe(true);
     expect(pageElements.getRegexTestButton()).toBeTruthy();
   });
 
@@ -131,7 +132,7 @@ describe('regex toggle', () => {
       settings: {}
     });
 
-    expect(pageElements.getRegexToggleSwitch().checked).toBeFalse();
+    expect(pageElements.getRegexToggleSwitch().checked).toBe(false);
     expect(pageElements.queryForRegexTestButton()).toBeNull();
   });
 });

@@ -10,47 +10,61 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
+const POLL_INTERVAL = 1000;
 
-var POLL_INTERVAL = 1000;
+function injectDataElementChange({ window }) {
+  const triggersByName = {};
+  const cachedStringifiedValueByName = {};
 
-var triggersByName = {};
-var cachedStringifiedValueByName = {};
+  window.setInterval(function () {
+    Object.keys(triggersByName).forEach(function (name) {
+      const stringifiedValue = JSON.stringify(
+        turbine.getDataElementValue(name)
+      );
 
-setInterval(function () {
-  Object.keys(triggersByName).forEach(function (name) {
-    var stringifiedValue = JSON.stringify(turbine.getDataElementValue(name));
+      if (stringifiedValue !== cachedStringifiedValueByName[name]) {
+        const syntheticEvent = {
+          dataElementName: name
+        };
 
-    if (stringifiedValue !== cachedStringifiedValueByName[name]) {
-      var syntheticEvent = {
-        dataElementName: name
-      };
+        triggersByName[name].forEach(function (trigger) {
+          trigger(syntheticEvent);
+        });
 
-      triggersByName[name].forEach(function (trigger) {
-        trigger(syntheticEvent);
-      });
+        cachedStringifiedValueByName[name] = stringifiedValue;
+      }
+    });
+  }, POLL_INTERVAL);
 
-      cachedStringifiedValueByName[name] = stringifiedValue;
+  /**
+   * Data element change event. This event occurs whenever the given data element's value has changed.
+   * @param {Object} settings The event settings object.
+   * @param {string} settings.name The name of the data element.
+   * @param {function} trigger The [rule]trigger callback.
+   */
+  return function dataElementChange(settings, trigger) {
+    const { name } = settings;
+    let triggers = triggersByName[name];
+
+    if (!triggers) {
+      triggers = triggersByName[name] = [];
+      cachedStringifiedValueByName[name] = JSON.stringify(
+        turbine.getDataElementValue(name)
+      );
     }
-  });
-}, POLL_INTERVAL);
 
-/**
- * Data element change event. This event occurs whenever the given data element's value has changed.
- * @param {Object} settings The event settings object.
- * @param {string} settings.name The name of the data element.
- * @param {ruleTrigger} trigger The trigger callback.
- */
-module.exports = function (settings, trigger) {
-  var name = settings.name;
-  var triggers = triggersByName[name];
+    triggers.push(trigger);
+  };
+}
 
-  if (!triggers) {
-    triggers = triggersByName[name] = [];
-    cachedStringifiedValueByName[name] = JSON.stringify(
-      turbine.getDataElementValue(name)
-    );
-  }
+const validateInjection = validateInjectedParams(injectDataElementChange);
 
-  triggers.push(trigger);
-};
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  window: require('@adobe/reactor-window')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectDataElementChange };
+/* END.TESTS_ONLY */

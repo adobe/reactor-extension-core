@@ -10,12 +10,11 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var dataElementDelegate = require('../domAttribute');
+import { injectDomAttribute } from '../domAttribute.js';
+const dataElementDelegate = injectDomAttribute({ document });
 
 describe('dom attribute data element delegate', function () {
-  var testElement;
+  let testElement;
 
   beforeAll(function () {
     testElement = document.createElement('div');
@@ -30,7 +29,7 @@ describe('dom attribute data element delegate', function () {
   });
 
   it('returns the text value of the first matching element', function () {
-    var settings = {
+    const settings = {
       elementSelector: '#domDataElement',
       elementProperty: 'text'
     };
@@ -39,7 +38,7 @@ describe('dom attribute data element delegate', function () {
   });
 
   it('returns an attribute of the first matching element', function () {
-    var settings = {
+    const settings = {
       elementSelector: '#domDataElement',
       elementProperty: 'data-cake'
     };
@@ -48,7 +47,7 @@ describe('dom attribute data element delegate', function () {
   });
 
   it("returns undefined if element doesn't exist", function () {
-    var settings = {
+    const settings = {
       elementSelector: '#doesntExist',
       elementProperty: 'data-cake'
     };
@@ -57,7 +56,7 @@ describe('dom attribute data element delegate', function () {
   });
 
   it("returns null if attribute doesn't exist", function () {
-    var settings = {
+    const settings = {
       elementSelector: '#domDataElement',
       elementProperty: 'data-doesntexist'
     };

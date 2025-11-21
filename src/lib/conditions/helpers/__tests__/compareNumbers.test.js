@@ -10,9 +10,7 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var compareNumbers = require('../compareNumbers');
+import compareNumbers from '../compareNumbers.js';
 
 describe('compare numbers', function () {
   describe('with "greater than" constraint', function () {

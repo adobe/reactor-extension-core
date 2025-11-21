@@ -10,35 +10,40 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import validateInjectedParams from '../../helpers/validate-injected-params.js'
+const matchOperatorsRegex = /[|\\{}()[\]^$+*?.-]/g;
 
-var document = require('@adobe/reactor-document');
-var matchOperatorsRegex = /[|\\{}()[\]^$+*?.-]/g;
-
-var escapeForRegex = function (string) {
+const escapeForRegex = function (string) {
   if (typeof string !== 'string') {
     throw new TypeError('Expected a string');
   }
-
   return string.replace(matchOperatorsRegex, '\\$&');
 };
 
-/**
- * Domain condition. Determines if the actual domain matches at least one acceptable domain.
- * @param {Object} settings Condition settings.
- * @param {string[]} settings.domains An array of acceptable domains.
- * @returns {boolean}
- */
-module.exports = function (settings) {
-  var domain = document.location.hostname;
+function injectDomainCondition({ document }) {
+  /**
+   * Domain condition. Determines if the actual domain matches at least one acceptable domain.
+   * @param {Object} settings Condition settings.
+   * @param {string[]} settings.domains An array of acceptable domains.
+   * @returns {boolean}
+   */
+  return function domainCondition(settings) {
+    const domain = document.location.hostname;
+    return settings.domains.some(function (acceptableDomain) {
+      return domain.match(
+        new RegExp('(^|\\.)' + escapeForRegex(acceptableDomain) + '$', 'i')
+      );
+    });
+  };
+}
 
-  return settings.domains.some(function (acceptableDomain) {
-    // If document.location.hostname is example.com and the acceptableDomain is ample.com, the
-    // condition would pass without (^|\.), which is incorrect. We can't only use ^ though because
-    // if document.location.hostname is niner.example.com and the acceptableDomain is example.com,
-    // the condition should pass. See the tests for examples of why this pattern is necessary.
-    return domain.match(
-      new RegExp('(^|\\.)' + escapeForRegex(acceptableDomain) + '$', 'i')
-    );
-  });
-};
+const validateInjection = validateInjectedParams(injectDomainCondition);
+
+export default validateInjection({
+  // runs in Turbine context, which provides the core-module "reactor-document".
+  document: require('@adobe/reactor-document')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectDecorateDomainCondition };
+/* END.TESTS_ONLY */

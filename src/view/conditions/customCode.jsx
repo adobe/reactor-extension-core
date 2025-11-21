@@ -12,9 +12,9 @@
 
 import React from 'react';
 import { Flex } from '@adobe/react-spectrum';
-import InfoTip from '../components/infoTip';
-import WrappedField from '../components/wrappedField';
-import EditorButton from '../components/editorButton';
+import InfoTip from '../components/infoTip.jsx'
+import WrappedField from '../components/wrappedField.jsx'
+import EditorButton from '../components/editorButton.jsx'
 
 const CustomCode = () => (
   <Flex>

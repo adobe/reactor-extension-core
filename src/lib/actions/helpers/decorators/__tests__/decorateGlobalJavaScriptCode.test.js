@@ -9,20 +9,20 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-'use strict';
-
-var decorateGlobalJavaScriptCodeInjector = require('inject-loader!../decorateGlobalJavaScriptCode');
+import { injectDecorateGlobalJavaScriptCode } from '../decorateGlobalJavaScriptCode.js'
 
 describe('decorate global javascript code', function () {
   it('returns the decorated code on the code key', function () {
-    var settings = {
+    const settings = {
       language: 'javascript',
       global: true,
       source: 'console.log("logging")'
     };
 
-    var decorateGlobalJavaScriptCode = decorateGlobalJavaScriptCodeInjector();
-    var decoratedResult = decorateGlobalJavaScriptCode(
+    const decorateGlobalJavaScriptCode = injectDecorateGlobalJavaScriptCode({
+      Promise
+    });
+    const decoratedResult = decorateGlobalJavaScriptCode(
       {
         settings: settings
       },
@@ -35,22 +35,22 @@ describe('decorate global javascript code', function () {
   });
 
   it('returns a resolved promise on the promise key', function () {
-    var settings = {
+    const settings = {
       language: 'javascript',
       global: true,
       source: 'console.log("logging")'
     };
 
     var p = Promise.resolve();
-    var decorateGlobalJavaScriptCode = decorateGlobalJavaScriptCodeInjector({
-      '@adobe/reactor-promise': {
+    var decorateGlobalJavaScriptCode = injectDecorateGlobalJavaScriptCode({
+      Promise: {
         resolve: function () {
           return p;
         }
       }
     });
 
-    var decoratedResult = decorateGlobalJavaScriptCode(
+    const decoratedResult = decorateGlobalJavaScriptCode(
       {
         settings: settings
       },

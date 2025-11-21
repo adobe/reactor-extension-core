@@ -10,34 +10,45 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import validateInjectedParams from '../../helpers/validate-injected-params.js'
 
-var window = require('@adobe/reactor-window');
-
-/**
- * The custom code action. This loads and executes custom JavaScript or HTML provided by the user.
- * @param {Object} settings Action settings.
- * @param {string} settings.identifier The identifier of the "Direct Call" Event Type that should
- * be called.
- * @param {Array} settings.detail.eventObjectEntries A list of {key, value} tuples that will be
- * provided to _satellite.track as additional event detail.
- */
-module.exports = function (settings) {
-  if (settings && settings.identifier) {
-    var _detail = settings.detail;
-    if (
-      _detail &&
-      Array.isArray(_detail.eventObjectEntries) &&
-      _detail.eventObjectEntries.length
-    ) {
-      var detailEvent = {};
-      // iterate over the array and build the object
-      _detail.eventObjectEntries.forEach(function (tuple) {
-        detailEvent[tuple.key] = tuple.value;
-      });
-      window._satellite.track(settings.identifier, detailEvent);
-    } else {
-      window._satellite.track(settings.identifier);
+function injectDirectCall({ window }) {
+  /**
+   * The custom code action. Tjhis loads and executes custom JavaScript or HTML provided by the user.
+   * @param {Object} settings Action settings.
+   * @param {string} settings.identifier The identifier of the "Direct Call" Event Type that should
+   * be called.
+   * @param {Array} settings.detail.eventObjectEntries A list of {key, value} tuples that will be
+   * provided to _satellite.track as additional event detail.
+   */
+  return function directCall(settings) {
+    if (settings && settings.identifier) {
+      const _detail = settings.detail;
+      if (
+        _detail &&
+        Array.isArray(_detail.eventObjectEntries) &&
+        _detail.eventObjectEntries.length
+      ) {
+        const detailEvent = {};
+        // iterate over the array and build the object
+        _detail.eventObjectEntries.forEach(function (tuple) {
+          detailEvent[tuple.key] = tuple.value;
+        });
+        window._satellite.track(settings.identifier, detailEvent);
+      } else {
+        window._satellite.track(settings.identifier);
+      }
     }
-  }
-};
+  };
+}
+
+const validateInjection = validateInjectedParams(injectDirectCall);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  window: require('@adobe/reactor-window')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectDirectCall };
+/* END.TESTS_ONLY */

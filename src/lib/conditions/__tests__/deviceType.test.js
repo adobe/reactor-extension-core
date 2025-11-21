@@ -10,18 +10,17 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import { injectDeviceType } from '../deviceType.js';
 
-var mockClientInfo = {
+const mockClientInfo = {
   deviceType: 'Foo'
 };
 
-var conditionDelegateInjector = require('inject-loader!../deviceType');
-var conditionDelegate = conditionDelegateInjector({
-  './helpers/clientInfo': mockClientInfo
+const conditionDelegate = injectDeviceType({
+  clientInfo: mockClientInfo
 });
 
-var getSettings = function (deviceTypes) {
+const getSettings = function (deviceTypes) {
   return {
     deviceTypes: deviceTypes
   };
@@ -32,7 +31,7 @@ describe('device type condition delegate', function () {
     'returns true when the current device type matches one of the selected ' +
       'device types',
     function () {
-      var settings = getSettings(['Shoe', 'Goo', 'Foo', 'Moo']);
+      const settings = getSettings(['Shoe', 'Goo', 'Foo', 'Moo']);
       expect(conditionDelegate(settings)).toBe(true);
     }
   );
@@ -41,7 +40,7 @@ describe('device type condition delegate', function () {
     'returns false when the current device type does not match any of the selected ' +
       'device types',
     function () {
-      var settings = getSettings(['Shoe', 'Goo', 'Boo', 'Moo']);
+      const settings = getSettings(['Shoe', 'Goo', 'Boo', 'Moo']);
       expect(conditionDelegate(settings)).toBe(false);
     }
   );

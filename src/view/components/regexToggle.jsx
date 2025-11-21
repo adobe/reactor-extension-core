@@ -12,8 +12,8 @@
 
 import React from 'react';
 import { Switch, Flex } from '@adobe/react-spectrum';
-import WrappedField from './wrappedField';
-import RegexTestButton from './regexTestButton';
+import WrappedField from './wrappedField.jsx'
+import RegexTestButton from './regexTestButton.jsx'
 
 export default React.forwardRef((props, ref) => {
   const { value: valueIsRegex, onChange, valueFieldName } = props;

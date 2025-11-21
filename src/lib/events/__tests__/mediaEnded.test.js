@@ -10,12 +10,11 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import testStandardEvent from './helpers/testStandardEvent.js';
+import { injectMediaEnded } from '../mediaEnded.js';
+const delegate = injectMediaEnded({ document });
 
 describe('media ended event delegate', function () {
-  var testStandardEvent = require('./helpers/testStandardEvent');
-  var delegate = require('../mediaEnded');
-
   testStandardEvent(function () {
     return delegate;
   }, 'ended');

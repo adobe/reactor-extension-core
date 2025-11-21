@@ -9,21 +9,38 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-'use strict';
+import decorateGlobalJavaScriptCode from './decorators/decorateGlobalJavaScriptCode.js'
+import decorateNonGlobalJavaScriptCode from './decorators/decorateNonGlobalJavaScriptCode.js'
+import decorateHtmlCode from './decorators/decorateHtmlCode.js'
+import validateInjectedParams from '../../../helpers/validate-injected-params.js'
 
-var decorateGlobalJavaScriptCode = require('./decorators/decorateGlobalJavaScriptCode');
-var decorateNonGlobalJavaScriptCode = require('./decorators/decorateNonGlobalJavaScriptCode');
-var decorateHtmlCode = require('./decorators/decorateHtmlCode');
+function injectDecorateCode({
+  decorateGlobalJavaScriptCode,
+  decorateNonGlobalJavaScriptCode,
+  decorateHtmlCode
+}) {
+  const decorators = {
+    javascript: function (action, source) {
+      return action.settings.global
+        ? decorateGlobalJavaScriptCode(action, source)
+        : decorateNonGlobalJavaScriptCode(action, source);
+    },
+    html: decorateHtmlCode
+  };
 
-var decorators = {
-  javascript: function (action, source) {
-    return action.settings.global
-      ? decorateGlobalJavaScriptCode(action, source)
-      : decorateNonGlobalJavaScriptCode(action, source);
-  },
-  html: decorateHtmlCode
-};
+  return function decorateCode(action, source) {
+    return decorators[action.settings.language](action, source);
+  };
+}
 
-module.exports = function (action, source) {
-  return decorators[action.settings.language](action, source);
-};
+const validateInjection = validateInjectedParams(injectDecorateCode);
+
+export default validateInjection({
+  decorateGlobalJavaScriptCode,
+  decorateNonGlobalJavaScriptCode,
+  decorateHtmlCode
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectDecorateCode };
+/* END.TESTS_ONLY */

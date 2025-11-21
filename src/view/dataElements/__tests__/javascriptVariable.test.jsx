@@ -12,9 +12,9 @@
 
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import JavaScriptVariable, { formConfig } from '../javascriptVariable';
-import bootstrap from '../../bootstrap';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import JavaScriptVariable, { formConfig } from '../javascriptVariable.jsx'
+import bootstrap from '../../bootstrap.jsx'
 
 // react-testing-library element selectors
 const pageElements = {
@@ -61,7 +61,7 @@ describe('javascript variable data element view', () => {
 
     expect(
       pageElements.getPathTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 });

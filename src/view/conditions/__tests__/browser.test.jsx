@@ -11,9 +11,9 @@
  ****************************************************************************************/
 
 import { fireEvent, render, screen } from '@testing-library/react';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import Browser, { formConfig } from '../browser';
-import bootstrap from '../../bootstrap';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import Browser, { formConfig } from '../browser.jsx'
+import bootstrap from '../../bootstrap.jsx'
 
 const selectedBrowsers = ['Chrome', 'Safari'];
 

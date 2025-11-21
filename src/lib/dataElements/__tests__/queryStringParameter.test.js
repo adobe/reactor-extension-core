@@ -10,60 +10,61 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import queryString from '@adobe/reactor-query-string';
+import { injectQueryStringParameter } from '../queryStringParameter.js';
 
 describe('query string parameter data element delegate', function () {
-  var injectDelegate = require('inject-loader!../queryStringParameter');
-  var delegate;
+  let delegate;
 
   beforeAll(function () {
-    delegate = injectDelegate({
-      '@adobe/reactor-window': {
+    delegate = injectQueryStringParameter({
+      window: {
         location: {
           search: '?foo=bar'
         }
-      }
+      },
+      queryString
     });
   });
 
   it('returns a value when a match is found case-insensitively', function () {
-    var settings = {
+    const settings = {
       name: 'foo',
       caseInsensitive: true
     };
 
-    var value = delegate(settings);
+    const value = delegate(settings);
 
     expect(value).toBe('bar');
   });
 
   it('returns a value when a match is found case-sensitively', function () {
-    var settings = {
+    const settings = {
       name: 'foo'
     };
 
-    var value = delegate(settings);
+    const value = delegate(settings);
 
     expect(value).toBe('bar');
   });
 
   it('returns undefined when a match is not found case-insensitively', function () {
-    var settings = {
+    const settings = {
       name: 'unicorn',
       caseInsensitive: true
     };
 
-    var value = delegate(settings);
+    const value = delegate(settings);
 
     expect(value).toBe(undefined);
   });
 
   it('returns undefined when a match is not found case-sensitively', function () {
-    var settings = {
+    const settings = {
       name: 'FOO'
     };
 
-    var value = delegate(settings);
+    const value = delegate(settings);
 
     expect(value).toBe(undefined);
   });

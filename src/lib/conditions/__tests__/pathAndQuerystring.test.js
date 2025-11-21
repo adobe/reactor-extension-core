@@ -10,23 +10,24 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import { injectPathAndQuerystring } from '../pathAndQuerystring.js'
+import textMatch from '../../helpers/textMatch.js';
 
-var mockDocument = {
+const mockDocument = {
   location: {
     pathname: '/foo/bar.html',
     search: '?mmm=bacon'
   }
 };
 
-var conditionDelegateInjector = require('inject-loader!../pathAndQuerystring');
-var conditionDelegate = conditionDelegateInjector({
-  '@adobe/reactor-document': mockDocument
+const conditionDelegate = injectPathAndQuerystring({
+  document: mockDocument,
+  textMatch
 });
 
 describe('path and query string condition delegate', function () {
   it('returns true when the path matches an acceptable string', function () {
-    var settings = {
+    const settings = {
       paths: [
         {
           value: 'snowcones.html'
@@ -40,7 +41,7 @@ describe('path and query string condition delegate', function () {
   });
 
   it('returns false when the path does not match an acceptable string', function () {
-    var settings = {
+    const settings = {
       paths: [
         {
           value: 'snowcones.html'
@@ -54,7 +55,7 @@ describe('path and query string condition delegate', function () {
   });
 
   it('returns true when the path matches an acceptable regex', function () {
-    var settings = {
+    const settings = {
       paths: [
         {
           value: 'snowcones.html'
@@ -69,7 +70,7 @@ describe('path and query string condition delegate', function () {
   });
 
   it('returns false when the path does not match an acceptable regex', function () {
-    var settings = {
+    const settings = {
       paths: [
         {
           value: 'snowcones.html'

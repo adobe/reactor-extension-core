@@ -15,10 +15,10 @@ import React from 'react';
 import { TextField, Checkbox, Flex, Text } from '@adobe/react-spectrum';
 import { formValueSelector, getFormInitialValues } from 'redux-form';
 import { connect } from 'react-redux';
-import InfoTip from '../components/infoTip';
-import WrappedField from '../components/wrappedField';
-import HelpText from '../components/helpText';
-import NoWrapText from '../components/noWrapText';
+import InfoTip from '../components/infoTip.jsx'
+import WrappedField from '../components/wrappedField.jsx'
+import HelpText from '../components/helpText.jsx'
+import NoWrapText from '../components/noWrapText.jsx'
 
 const Sampling = ({ showCohortResetInfo }) => (
   <>

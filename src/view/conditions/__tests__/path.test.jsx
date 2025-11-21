@@ -12,9 +12,9 @@
 
 import { fireEvent, render, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import Path, { formConfig } from '../path';
-import bootstrap from '../../bootstrap';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import Path, { formConfig } from '../path.jsx'
+import bootstrap from '../../bootstrap.jsx'
 
 // react-testing-library element selectors
 const pageElements = {
@@ -78,10 +78,10 @@ describe('path condition view', () => {
 
     const [firstRow, secondRow] = rows;
     expect(firstRow.withinRow.getPathTextBox().value).toBe('foo');
-    expect(firstRow.withinRow.regex.getToggleSwitch().checked).toBeFalse();
+    expect(firstRow.withinRow.regex.getToggleSwitch().checked).toBe(false);
 
     expect(secondRow.withinRow.getPathTextBox().value).toBe('bar');
-    expect(secondRow.withinRow.regex.getToggleSwitch().checked).toBeTrue();
+    expect(secondRow.withinRow.regex.getToggleSwitch().checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -107,7 +107,7 @@ describe('path condition view', () => {
     fireEvent.blur(firstRow.withinRow.getPathTextBox());
     expect(
       firstRow.withinRow.getPathTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     expect(extensionBridge.validate()).toBe(false);
   });

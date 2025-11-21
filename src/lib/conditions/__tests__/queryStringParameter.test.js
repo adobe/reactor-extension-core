@@ -10,45 +10,41 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import { injectQueryStringParameterCondition } from '../queryStringParameter.js'
+import textMatch from '../../helpers/textMatch.js'
 
-var conditionDelegateInjector = require('inject-loader!../queryStringParameter');
+const conditionDelegate = injectQueryStringParameterCondition({
+  window: {
+    location: {
+      search: '?testParam=foo'
+    }
+  },
+  textMatch,
+  queryString: {
+    parse: () => ({ testParam: 'foo' })
+  }
+});
 
 describe('query string parameter condition delegate', function () {
-  var conditionDelegate;
-
-  beforeAll(function () {
-    conditionDelegate = conditionDelegateInjector({
-      '@adobe/reactor-window': {
-        location: {
-          search: '?testParam=foo'
-        }
-      }
-    });
-  });
-
   describe('legacy behavior', function () {
     it('returns true when value matches using regular string', function () {
-      var settings = { name: 'testParam', value: 'foo' };
+      const settings = { name: 'testParam', value: 'foo' };
       expect(conditionDelegate(settings)).toBe(true);
     });
-
     it('returns false when value does not match using regular string', function () {
-      var settings = { name: 'testParam', value: 'goo' };
+      const settings = { name: 'testParam', value: 'goo' };
       expect(conditionDelegate(settings)).toBe(false);
     });
-
     it('returns true when value matches using regex', function () {
-      var settings = {
+      const settings = {
         name: 'testParam',
         value: '^F[ojd]o$',
         valueIsRegex: true
       };
       expect(conditionDelegate(settings)).toBe(true);
     });
-
     it('returns false when value does not match using regex', function () {
-      var settings = {
+      const settings = {
         name: 'testParam',
         value: '^g[ojd]o$',
         valueIsRegex: true
@@ -56,25 +52,22 @@ describe('query string parameter condition delegate', function () {
       expect(conditionDelegate(settings)).toBe(false);
     });
   });
-
   it('returns false if the query param "value" list is empty', function () {
-    var settings = { name: 'testParam', queryParams: [] };
+    const settings = { name: 'testParam', queryParams: [] };
     expect(conditionDelegate(settings)).toBe(false);
   });
-
-  describe('lists of varying size', function () {
+  describe('lists of constying size', function () {
     describe('as strings', function () {
       describe('returns false when', function () {
         it('the list is of size 1', function () {
-          var settings = {
+          const settings = {
             name: 'testParam',
             queryParams: [{ value: 'bizbaz' }]
           };
           expect(conditionDelegate(settings)).toBe(false);
         });
-
         it('the list has many items', function () {
-          var settings = {
+          const settings = {
             name: 'testParam',
             queryParams: [
               { value: 'bizzy' },
@@ -85,15 +78,16 @@ describe('query string parameter condition delegate', function () {
           expect(conditionDelegate(settings)).toBe(false);
         });
       });
-
       describe('returns true when', function () {
         it('the list is of size 1', function () {
-          var settings = { name: 'testParam', queryParams: [{ value: 'foo' }] };
+          const settings = {
+            name: 'testParam',
+            queryParams: [{ value: 'foo' }]
+          };
           expect(conditionDelegate(settings)).toBe(true);
         });
-
         it('the match is at the front of a many item list', function () {
-          var settings = {
+          const settings = {
             name: 'testParam',
             queryParams: [
               { value: 'foo' },
@@ -103,9 +97,8 @@ describe('query string parameter condition delegate', function () {
           };
           expect(conditionDelegate(settings)).toBe(true);
         });
-
         it('the match is in the middle of a many item list', function () {
-          var settings = {
+          const settings = {
             name: 'testParam',
             queryParams: [
               { value: 'bizzy' },
@@ -115,9 +108,8 @@ describe('query string parameter condition delegate', function () {
           };
           expect(conditionDelegate(settings)).toBe(true);
         });
-
         it('the match is at the end of a many item list', function () {
-          var settings = {
+          const settings = {
             name: 'testParam',
             queryParams: [
               { value: 'bizzy' },
@@ -129,19 +121,17 @@ describe('query string parameter condition delegate', function () {
         });
       });
     });
-
     describe('as RegularExpressions', function () {
       describe('returns false when', function () {
         it('the list is of size 1', function () {
-          var settings = {
+          const settings = {
             name: 'testParam',
             queryParams: [{ value: '^g[ojd]o$', valueIsRegex: true }]
           };
           expect(conditionDelegate(settings)).toBe(false);
         });
-
         it('the list has many items', function () {
-          var settings = {
+          const settings = {
             name: 'testParam',
             queryParams: [
               { value: 'a.b', valueIsRegex: true },
@@ -152,18 +142,16 @@ describe('query string parameter condition delegate', function () {
           expect(conditionDelegate(settings)).toBe(false);
         });
       });
-
       describe('returns true when', function () {
         it('the list is of size 1', function () {
-          var settings = {
+          const settings = {
             name: 'testParam',
             queryParams: [{ value: '^F[ojd]o$', valueIsRegex: true }]
           };
           expect(conditionDelegate(settings)).toBe(true);
         });
-
         it('the match is at the front of a many item list', function () {
-          var settings = {
+          const settings = {
             name: 'testParam',
             queryParams: [
               { value: '^F[ojd]o$', valueIsRegex: true },
@@ -173,9 +161,8 @@ describe('query string parameter condition delegate', function () {
           };
           expect(conditionDelegate(settings)).toBe(true);
         });
-
         it('the match is in the middle of a many item list', function () {
-          var settings = {
+          const settings = {
             name: 'testParam',
             queryParams: [
               { value: 'bizzy', valueIsRegex: false },
@@ -185,9 +172,8 @@ describe('query string parameter condition delegate', function () {
           };
           expect(conditionDelegate(settings)).toBe(true);
         });
-
         it('the match is at the end of a many item list', function () {
-          var settings = {
+          const settings = {
             name: 'testParam',
             queryParams: [
               { value: 'bizzy', valueIsRegex: false },

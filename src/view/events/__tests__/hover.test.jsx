@@ -12,10 +12,11 @@
 
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { sharedTestingElements } from '@test-helpers/react-testing-library';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import Hover, { formConfig } from '../hover';
-import bootstrap from '../../bootstrap';
+import { sharedTestingElements } from '@test-helpers/react-testing-library.jsx';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import Hover, { formConfig } from '../hover.jsx'
+import bootstrap from '../../bootstrap.jsx'
+import { vi } from 'vitest';
 
 // react-testing-library element selectors
 const pageElements = {
@@ -52,10 +53,10 @@ describe('hover event view', () => {
 
     expect(
       pageElements.delayHover.radioGroup.getImmediately().checked
-    ).toBeTrue();
+    ).toBe(true);
     expect(
       pageElements.delayHover.radioGroup.getAfterDelay().checked
-    ).toBeFalse();
+    ).toBe(false);
 
     fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
     expect(
@@ -83,7 +84,7 @@ describe('hover event view', () => {
 
     expect(
       pageElements.delayHover.radioGroup.getAfterDelay().checked
-    ).toBeTrue();
+    ).toBe(true);
     expect(pageElements.delayHover.getDelayTextBox().value).toBe('100');
 
     fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
@@ -107,7 +108,7 @@ describe('hover event view', () => {
 
     expect(
       pageElements.delayHover.radioGroup.getAfterDelay().checked
-    ).toBeTrue();
+    ).toBe(true);
     expect(pageElements.delayHover.getDelayTextBox().value).toBe(
       '%Data Element 1%'
     );
@@ -182,7 +183,7 @@ describe('hover event view', () => {
   });
 
   it('The hover afterDelay input supports opening the data element modal', () => {
-    spyOn(extensionBridge, 'openDataElementSelector').and.callFake(() => {
+    vi.spyOn(extensionBridge, 'openDataElementSelector').mockImplementation(() => {
       return Promise.resolve();
     });
 

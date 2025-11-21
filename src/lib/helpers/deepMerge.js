@@ -10,11 +10,9 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import isPlainObject from '../helpers/isPlainObject.js';
 
-var isPlainObject = require('../helpers/isPlainObject');
-
-var clone = function (value) {
+const clone = function (value) {
   if (isPlainObject(value)) {
     return deepMerge({}, value);
   }
@@ -26,16 +24,16 @@ var clone = function (value) {
   return value;
 };
 
-function deepMerge(target) {
-  var sources = Array.prototype.slice.call(arguments, 1);
+export default function deepMerge(target) {
+  const sources = Array.prototype.slice.call(arguments, 1);
   return sources.reduce(function (merged, source) {
     if (source == null) {
       return merged;
     }
 
     Object.keys(source).forEach(function (key) {
-      var mergedValue = merged[key];
-      var sourceValue = source[key];
+      const mergedValue = merged[key];
+      const sourceValue = source[key];
 
       if (sourceValue === undefined && mergedValue !== undefined) {
         return;
@@ -57,22 +55,3 @@ function deepMerge(target) {
     return merged;
   }, target);
 }
-
-/**
- * Performs a deep merge of source objects into a target object. All arrays
- * and objects within the source objects are cloned when being merged into the
- * target object. None of the source objects are modified. If a property is
- * found at the same location on multiple source objects, the value from the
- * latter object will be used. If a source property value is undefined,
- * it will not override a value from a prior source object. If arrays are found
- * at the same location on multiple source objects, the arrays will be
- * concatenated. Values that are neither plain objects nor arrays are merged by
- * assignment and no effort is made to merge their contents.
- *
- * @param {Object} target A target object that all other
- * arguments will be merged into.
- * @param {...Object} sources Objects that will be merged
- * into the target.
- * @returns {Object}
- */
-module.exports = deepMerge;

@@ -10,40 +10,50 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
+import runVisibilityApi from './helpers/visibilityApi.js';
+const { hiddenProperty, visibilityChangeEventType } = runVisibilityApi();
+import once from './helpers/once.js';
 
-var document = require('@adobe/reactor-document');
-var visibilityApi = require('./helpers/visibilityApi')();
-var hiddenProperty = visibilityApi.hiddenProperty;
-var visibilityChangeEventType = visibilityApi.visibilityChangeEventType;
-var once = require('./helpers/once');
+function injectTabBlur({ document }) {
+  /**
+   * All trigger methods registered for this event type.
+   * @type {ruleTrigger[]}
+   */
+  var triggers = [];
 
-/**
- * All trigger methods registered for this event type.
- * @type {ruleTrigger[]}
- */
-var triggers = [];
+  var watchForTabBlur = once(function () {
+    document.addEventListener(
+      visibilityChangeEventType,
+      function () {
+        if (document[hiddenProperty]) {
+          triggers.forEach(function (trigger) {
+            trigger();
+          });
+        }
+      },
+      true
+    );
+  });
 
-var watchForTabBlur = once(function () {
-  document.addEventListener(
-    visibilityChangeEventType,
-    function () {
-      if (document[hiddenProperty]) {
-        triggers.forEach(function (trigger) {
-          trigger();
-        });
-      }
-    },
-    true
-  );
+  /**
+   * Tabblur event. This event occurs when a webpage is not visible or not in focus.
+   * @param {Object} settings The event settings object.
+   * @param {function} trigger The [rule]trigger callback.
+   */
+  return function tabBlur(settings, trigger) {
+    watchForTabBlur();
+    triggers.push(trigger);
+  };
+}
+
+const validateInjection = validateInjectedParams(injectTabBlur);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  document: require('@adobe/reactor-document')
 });
 
-/**
- * Tabblur event. This event occurs when a webpage is not visible or not in focus.
- * @param {Object} settings The event settings object.
- * @param {ruleTrigger} trigger The trigger callback.
- */
-module.exports = function (settings, trigger) {
-  watchForTabBlur();
-  triggers.push(trigger);
-};
+/* START.TESTS_ONLY */
+export { validateInjection as injectTabBlur };
+/* END.TESTS_ONLY */

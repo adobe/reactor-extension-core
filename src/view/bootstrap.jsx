@@ -21,8 +21,8 @@ import {
 import { Provider, connect } from 'react-redux';
 import { createStore } from 'redux';
 import { reduxForm } from 'redux-form';
-import reducer from './reduxActions/reducer';
-import bridgeAdapter from './bridgeAdapter';
+import reducer from './reduxActions/reducer.js'
+import bridgeAdapter from './bridgeAdapter.js'
 
 export default (
   View,

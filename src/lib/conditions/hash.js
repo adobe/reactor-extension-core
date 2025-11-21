@@ -10,26 +10,39 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import textMatch from '../helpers/textMatch.js';
+import validateInjectedParams from '../../helpers/validate-injected-params.js'
 
-var textMatch = require('../helpers/textMatch');
+function injectHash({ document, textMatch }) {
+  /**
+   * Hash condition. Determines if the actual hash (URL fragment identifier) matches at least one
+   * acceptable hash.
+   * @param {Object} settings Condition settings.
+   * @param {Object[]} settings.hashes Acceptable hashes.
+   * @param {string} settings.hashes[].value An acceptable hash value
+   * @param {boolean} [settings.hashes[].valueIsRegex=false] Whether <code>value</code> on the object
+   * instance is intended to be a regular expression.
+   * @returns {boolean}
+   */
+  return function hash(settings) {
+    const hash = document.location.hash;
+    return settings.hashes.some(function (acceptableHash) {
+      const acceptableValue = acceptableHash.valueIsRegex
+        ? new RegExp(acceptableHash.value, 'i')
+        : acceptableHash.value;
+      return textMatch(hash, acceptableValue);
+    });
+  };
+}
 
-/**
- * Hash condition. Determines if the actual hash (URL fragment identifier) matches at least one
- * acceptable hash.
- * @param {Object} settings Condition settings.
- * @param {Object[]} settings.hashes Acceptable hashes.
- * @param {string} settings.hashes[].value An acceptable hash value
- * @param {boolean} [settings.hashes[].valueIsRegex=false] Whether <code>value</code> on the object
- * instance is intended to be a regular expression.
- * @returns {boolean}
- */
-module.exports = function (settings) {
-  var hash = document.location.hash;
-  return settings.hashes.some(function (acceptableHash) {
-    var acceptableValue = acceptableHash.valueIsRegex
-      ? new RegExp(acceptableHash.value, 'i')
-      : acceptableHash.value;
-    return textMatch(hash, acceptableValue);
-  });
-};
+const validateInjection = validateInjectedParams(injectHash);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  document: require('@adobe/reactor-document'),
+  textMatch
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectHash };
+/* END.TESTS_ONLY */

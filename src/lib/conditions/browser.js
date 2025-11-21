@@ -10,16 +10,27 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import clientInfo from './helpers/clientInfo.js'
+import validateInjectedParams from '../../helpers/validate-injected-params.js'
 
-var clientInfo = require('./helpers/clientInfo');
+function injectBrowser({ clientInfo }) {
+  /**
+   * Browser condition. Determines if the actual browser matches at least one acceptable browser.
+   * @param {Object} settings Condition settings.
+   * @param {string[]} settings.browsers An array of acceptable browsers.
+   * @returns {boolean}
+   */
+  return function browserCondition(settings) {
+    return settings.browsers.indexOf(clientInfo.browser) !== -1;
+  };
+}
 
-/**
- * Browser condition. Determines if the actual browser matches at least one acceptable browser.
- * @param {Object} settings Condition settings.
- * @param {string[]} settings.browsers An array of acceptable browsers.
- * @returns {boolean}
- */
-module.exports = function (settings) {
-  return settings.browsers.indexOf(clientInfo.browser) !== -1;
-};
+const validateInjection = validateInjectedParams(injectBrowser);
+
+export default validateInjection({
+  clientInfo
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectBrowser };
+/* END.TESTS_ONLY */

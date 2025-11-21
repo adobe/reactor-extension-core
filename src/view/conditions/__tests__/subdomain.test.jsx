@@ -12,9 +12,10 @@
 
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import Subdomain, { formConfig } from '../subdomain';
-import bootstrap from '../../bootstrap';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import Subdomain, { formConfig } from '../subdomain.jsx'
+import bootstrap from '../../bootstrap.jsx'
+import { vi } from 'vitest';
 
 // react-testing-library element selectors
 const pageElements = {
@@ -113,19 +114,19 @@ describe('subdomain condition view', () => {
     const [row] = pageElements.getRegexRows();
     expect(
       row.withinRow.getSubDomainTextBox().hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
 
     fireEvent.focus(row.withinRow.getSubDomainTextBox());
     fireEvent.blur(row.withinRow.getSubDomainTextBox());
 
     expect(
       row.withinRow.getSubDomainTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 
   it('regex rows are independent', () => {
-    spyOn(extensionBridge, 'openRegexTester').and.callFake(() => ({
+    vi.spyOn(extensionBridge, 'openRegexTester').mockImplementation(() => ({
       then(resolve) {
         resolve('Edited Regex 1234');
       }

@@ -14,9 +14,9 @@ import React from 'react';
 import { TextField, Picker, Flex, Item, View } from '@adobe/react-spectrum';
 import { formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
-import WrappedField from '../components/wrappedField';
-import SelectorLearnMoreLink from '../components/selectorLearnMoreLink';
-import NoWrapText from '../components/noWrapText';
+import WrappedField from '../components/wrappedField.jsx'
+import SelectorLearnMoreLink from '../components/selectorLearnMoreLink.jsx'
+import NoWrapText from '../components/noWrapText.jsx'
 
 const elementPropertyPresets = [
   {

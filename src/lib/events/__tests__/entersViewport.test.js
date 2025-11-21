@@ -10,14 +10,14 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-var entersViewportInjector = require('inject-loader!../entersViewport');
+import { injectEntersViewport } from '../entersViewport.js';
+import { vi } from 'vitest';
 
 /**
  * Provides a document object that provides native functionality but
  * allows for better mocking capability (e.g., able to set readyState)
  */
-var getDocumentProxy = function () {
+const getDocumentProxy = function () {
   return {
     get body() {
       return document.body;
@@ -38,7 +38,7 @@ var getDocumentProxy = function () {
  * Provides a window object that provides native functionality but
  * allows for better mocking capability (e.g., able to set navigator.appVersion)
  */
-var getWindowProxy = function () {
+const getWindowProxy = function () {
   return {
     addEventListener: function () {
       return window.addEventListener.apply(window, arguments);
@@ -55,22 +55,22 @@ var getWindowProxy = function () {
   };
 };
 
-var OBSERVER_ELEMENT_REFRESH_FREQUENCY = 200;
-var mockIntersectionObserverIntervals = {
+const OBSERVER_ELEMENT_REFRESH_FREQUENCY = 200;
+const mockIntersectionObserverIntervals = {
   standard: {
     pageElementsRefresh: OBSERVER_ELEMENT_REFRESH_FREQUENCY
   }
 };
 
 describe('enters viewport event delegate', function () {
-  var aElement;
-  var aElementId;
-  var bElement;
-  var bElementId;
-  var customPropValue;
+  let aElement;
+  let aElementId;
+  let bElement;
+  let bElementId;
+  let customPropValue;
 
-  var createElements = function () {
-    var timeMillis = Date.now();
+  const createElements = function () {
+    const timeMillis = Date.now();
     customPropValue = 'foo-' + timeMillis;
     aElement = document.createElement('div');
     aElement.id = 'a-' + timeMillis;
@@ -87,7 +87,7 @@ describe('enters viewport event delegate', function () {
     aElement.appendChild(bElement);
   };
 
-  var removeElements = function () {
+  const removeElements = function () {
     if (aElement) {
       document.body.removeChild(aElement);
     }
@@ -95,7 +95,7 @@ describe('enters viewport event delegate', function () {
     aElement = bElement = null;
   };
 
-  var assertTriggerCall = function (options) {
+  const assertTriggerCall = function (options) {
     expect(options.element).not.toBeFalsy();
     expect(options.target).not.toBeFalsy();
     expect(options.callData).toEqual({
@@ -115,16 +115,16 @@ describe('enters viewport event delegate', function () {
   });
 
   describe('with document.readyState at complete', function () {
-    var delegate;
+    let delegate;
 
     beforeAll(function () {
-      var mockDocument = getDocumentProxy();
+      const mockDocument = getDocumentProxy();
       mockDocument.readyState = 'complete';
 
-      delegate = entersViewportInjector({
-        '@adobe/reactor-document': mockDocument,
-        '../helpers/intersectionObserverIntervals':
-          mockIntersectionObserverIntervals
+      delegate = injectEntersViewport({
+        document: mockDocument,
+        window,
+        intersectionObserverIntervals: mockIntersectionObserverIntervals
       });
     });
 
@@ -132,17 +132,17 @@ describe('enters viewport event delegate', function () {
       'only calls setInterval the expected number of times for observation ' +
         'watchers no matter how many times' +
         'the delegate is invoked',
-      function (done) {
-        var mockWindow = getWindowProxy();
-        spyOn(mockWindow, 'setInterval').and.callThrough();
+      async function () {
+        const mockWindow = getWindowProxy();
+        vi.spyOn(mockWindow, 'setInterval');
 
-        var delegate = entersViewportInjector({
-          '@adobe/reactor-window': mockWindow,
-          '../helpers/intersectionObserverIntervals':
-            mockIntersectionObserverIntervals
+        const delegate = injectEntersViewport({
+          document,
+          window: mockWindow,
+          intersectionObserverIntervals: mockIntersectionObserverIntervals
         });
 
-        var triggerFn = jasmine.createSpy();
+        const triggerFn = vi.fn();
 
         delegate(
           {
@@ -166,19 +166,19 @@ describe('enters viewport event delegate', function () {
         // waiting 2 cycles to do our check to avoid boundary race conditions
         window.setTimeout(function () {
           expect(mockWindow.setInterval).toHaveBeenCalledWith(
-            jasmine.any(Function),
+            expect.any(Function),
             OBSERVER_ELEMENT_REFRESH_FREQUENCY
           );
           expect(mockWindow.setInterval).toHaveBeenCalledTimes(1);
           expect(triggerFn).toHaveBeenCalledTimes(0);
-          done();
+          
         }, OBSERVER_ELEMENT_REFRESH_FREQUENCY * 2);
       }
     );
 
-    it('calls trigger with event and related element', function (done) {
+    it('calls trigger with event and related element', async function() {
       // when the trigger function is called, assert the result it was called with
-      var triggerA = {
+      const triggerA = {
         triggerFn: null
       };
 
@@ -188,7 +188,7 @@ describe('enters viewport event delegate', function () {
           element: aElement,
           target: aElement
         });
-        done();
+        
       };
 
       delegate(
@@ -199,17 +199,17 @@ describe('enters viewport event delegate', function () {
       );
     });
 
-    it('triggers multiple rules targeting the same element with no delay', function (done) {
-      var triggerA = {
+    it('triggers multiple rules targeting the same element with no delay', async function() {
+      const triggerA = {
         triggerFn: null,
         count: 0
       };
-      var triggerA2 = {
+      const triggerA2 = {
         triggerFn: null,
         count: 0
       };
 
-      var initialTime;
+      let initialTime;
 
       // wait for both trigger functions to have been called
       Promise.all([
@@ -226,14 +226,14 @@ describe('enters viewport event delegate', function () {
           };
         })
       ]).then(function () {
-        var elapsedTime = Date.now() - initialTime;
+        const elapsedTime = Date.now() - initialTime;
         expect(triggerA.count).toBe(1);
         expect(triggerA2.count).toBe(1);
         // worst case we're on the boundary of timing here
         expect(elapsedTime).toBeLessThan(
           OBSERVER_ELEMENT_REFRESH_FREQUENCY * 2
         );
-        done();
+        
       });
 
       initialTime = Date.now();
@@ -252,8 +252,8 @@ describe('enters viewport event delegate', function () {
       );
     });
 
-    it('handles settings.delay as a string', function (done) {
-      var triggerA = {
+    it('handles settings.delay as a string', async function() {
+      const triggerA = {
         triggerFn: null
       };
 
@@ -264,7 +264,7 @@ describe('enters viewport event delegate', function () {
           target: aElement,
           delay: 100
         });
-        done();
+        
       };
 
       delegate(
@@ -283,17 +283,17 @@ describe('enters viewport event delegate', function () {
       );
     });
 
-    it('triggers multiple rules targeting the same element with same delay', function (done) {
-      var triggerA = {
+    it('triggers multiple rules targeting the same element with same delay', async function() {
+      const triggerA = {
         triggerFn: null,
         count: 0
       };
-      var triggerA2 = {
+      const triggerA2 = {
         triggerFn: null,
         count: 0
       };
-      var initialTime;
-      var triggerDelay = 1000;
+      let initialTime;
+      const triggerDelay = 1000;
 
       // wait for both trigger functions to have been called
       Promise.all([
@@ -310,14 +310,14 @@ describe('enters viewport event delegate', function () {
           };
         })
       ]).then(function () {
-        var elapsedTime = Date.now() - initialTime;
+        const elapsedTime = Date.now() - initialTime;
         expect(triggerA.count).toBe(1);
         expect(triggerA2.count).toBe(1);
         expect(elapsedTime).toBeGreaterThanOrEqual(triggerDelay);
         expect(elapsedTime).toBeLessThan(
           triggerDelay + OBSERVER_ELEMENT_REFRESH_FREQUENCY * 2
         );
-        done();
+        
       });
 
       initialTime = Date.now();
@@ -341,24 +341,24 @@ describe('enters viewport event delegate', function () {
     it(
       'triggers multiple rules targeting the same element with different ' +
         ' delays',
-      function (done) {
-        var triggerA = {
+      async function () {
+        const triggerA = {
           triggerFn: null,
           count: 0
         };
-        var triggerA2 = {
+        const triggerA2 = {
           triggerFn: null,
           count: 0
         };
-        var initialTime;
-        var aTriggerDelay = 100;
-        var a2TriggerDelay = 500;
+        let initialTime;
+        const aTriggerDelay = 100;
+        const a2TriggerDelay = 500;
 
         // wait for both trigger functions to have been called
         Promise.all([
           new Promise(function (resolve) {
             triggerA.triggerFn = function () {
-              var now = Date.now();
+              const now = Date.now();
               triggerA.count += 1;
               expect(now).toBeGreaterThanOrEqual(initialTime + aTriggerDelay);
               expect(now).toBeLessThanOrEqual(initialTime + a2TriggerDelay);
@@ -367,7 +367,7 @@ describe('enters viewport event delegate', function () {
           }),
           new Promise(function (resolve) {
             triggerA2.triggerFn = function () {
-              var now = Date.now();
+              const now = Date.now();
               triggerA2.count += 1;
               expect(now).toBeGreaterThanOrEqual(initialTime + aTriggerDelay);
               expect(now).toBeGreaterThanOrEqual(initialTime + a2TriggerDelay);
@@ -377,7 +377,7 @@ describe('enters viewport event delegate', function () {
         ]).then(function () {
           expect(triggerA.count).toBe(1);
           expect(triggerA2.count).toBe(1);
-          done();
+          
         });
 
         initialTime = Date.now();
@@ -403,12 +403,12 @@ describe('enters viewport event delegate', function () {
     it(
       'triggers multiple rules targeting the same element with different ' +
         'selectors',
-      function (done) {
-        var triggerA = {
+      async function () {
+        const triggerA = {
           triggerFn: null,
           count: 0
         };
-        var triggerA2 = {
+        const triggerA2 = {
           triggerFn: null,
           count: 0
         };
@@ -430,7 +430,7 @@ describe('enters viewport event delegate', function () {
         ]).then(function () {
           expect(triggerA.count).toBe(1);
           expect(triggerA2.count).toBe(1);
-          done();
+          
         });
 
         delegate(
@@ -449,8 +449,8 @@ describe('enters viewport event delegate', function () {
       }
     );
 
-    it('triggers rule when elementProperties match', function (done) {
-      var triggerB = {
+    it('triggers rule when elementProperties match', async function() {
+      const triggerB = {
         triggerFn: null,
         count: 0
       };
@@ -460,7 +460,7 @@ describe('enters viewport event delegate', function () {
           element: bElement,
           target: bElement
         });
-        done();
+        
       };
 
       delegate(
@@ -477,8 +477,8 @@ describe('enters viewport event delegate', function () {
       );
     });
 
-    it('does not trigger rule when elementProperties do not match', function (done) {
-      var triggerB = {
+    it('does not trigger rule when elementProperties do not match', async function() {
+      const triggerB = {
         triggerFn: null,
         count: 0
       };
@@ -496,7 +496,7 @@ describe('enters viewport event delegate', function () {
         })
       ]).then(function () {
         expect(triggerB.count).toBe(0);
-        done();
+        
       });
 
       delegate(
@@ -513,8 +513,8 @@ describe('enters viewport event delegate', function () {
       );
     });
 
-    it('triggers rule when targeting using elementProperties', function (done) {
-      var triggerB = {
+    it('triggers rule when targeting using elementProperties', async function() {
+      const triggerB = {
         triggerFn: null
       };
 
@@ -524,7 +524,7 @@ describe('enters viewport event delegate', function () {
           element: bElement,
           target: bElement
         });
-        done();
+        
       };
 
       delegate(
@@ -541,20 +541,20 @@ describe('enters viewport event delegate', function () {
       );
     });
 
-    it('triggers rule for each matching element', function (done) {
-      var trigger = {
+    it('triggers rule for each matching element', async function() {
+      const trigger = {
         triggerFn: null,
         fnCalls: []
       };
       trigger.triggerFn = function (callData) {
         trigger.fnCalls.push(callData);
       };
-      var elementAddedLater;
+      let elementAddedLater;
 
       Promise.resolve()
         .then(function () {
           return new Promise(function (resolve) {
-            var intervalId = window.setInterval(function () {
+            const intervalId = window.setInterval(function () {
               if (trigger.fnCalls.length === 2) {
                 window.clearInterval(intervalId);
                 resolve();
@@ -586,7 +586,7 @@ describe('enters viewport event delegate', function () {
           document.body.appendChild(elementAddedLater);
 
           return new Promise(function (resolve) {
-            var intervalId = window.setInterval(function () {
+            const intervalId = window.setInterval(function () {
               if (trigger.fnCalls.length === 1) {
                 window.clearInterval(intervalId);
                 assertTriggerCall({
@@ -601,7 +601,7 @@ describe('enters viewport event delegate', function () {
         })
         .then(function () {
           document.body.removeChild(elementAddedLater);
-          done();
+          
         });
 
       delegate(
@@ -621,8 +621,8 @@ describe('enters viewport event delegate', function () {
     it(
       'an element matching a previous selector can enter the DOM ' +
         'and be observed',
-      function (done) {
-        var trigger = {
+      async function () {
+        const trigger = {
           triggerFn: null,
           count: 0,
           fnCalls: []
@@ -633,20 +633,19 @@ describe('enters viewport event delegate', function () {
           trigger.count += 1;
         };
 
-        var timeMillis = Date.now();
-        var sharedClassName = 'nonUniqueElement' + timeMillis;
-        var firstElement;
-        var secondElement;
+        const timeMillis = Date.now();
+        const sharedClassName = 'nonUniqueElement' + timeMillis;
+        let secondElement;
 
-        firstElement = document.createElement('div');
+        const firstElement = document.createElement('div');
         firstElement.id = 'repeated-first-element-' + timeMillis; // make it unique
         firstElement.classList.add(sharedClassName);
         firstElement.innerHTML = 'non unique first element';
         document.body.appendChild(firstElement);
 
-        var waitForTriggerCall = function () {
+        const waitForTriggerCall = function () {
           return new Promise(function (resolve) {
-            var intervalId = window.setInterval(function () {
+            const intervalId = window.setInterval(function () {
               if (trigger.fnCalls.length === 1) {
                 window.clearInterval(intervalId);
                 resolve();
@@ -685,7 +684,7 @@ describe('enters viewport event delegate', function () {
           .then(function () {
             document.body.removeChild(firstElement);
             document.body.removeChild(secondElement);
-            done();
+            
           });
 
         delegate(
@@ -700,12 +699,12 @@ describe('enters viewport event delegate', function () {
     it(
       'A call to observe an element that does not exist yet can bind later and ' +
         'trigger a call',
-      function (done) {
-        var lateElement = document.createElement('div');
+      async function () {
+        const lateElement = document.createElement('div');
         lateElement.id = 'element-added-late' + Date.now(); // make it unique
         lateElement.innerHTML = 'added late element';
 
-        var trigger = {
+        const trigger = {
           triggerFn: null,
           fnCalls: []
         };
@@ -736,7 +735,7 @@ describe('enters viewport event delegate', function () {
           .then(function () {
             // wait for a call to come through
             return new Promise(function (resolve) {
-              var intervalId = window.setInterval(function () {
+              const intervalId = window.setInterval(function () {
                 if (trigger.fnCalls.length === 1) {
                   window.clearInterval(intervalId);
                   resolve();
@@ -751,27 +750,27 @@ describe('enters viewport event delegate', function () {
               target: lateElement
             });
             document.body.removeChild(lateElement);
-            done();
+            
           });
       }
     );
 
-    it('ignores empty element selectors', function (done) {
-      var mockDocument = getDocumentProxy();
-      spyOn(mockDocument, 'querySelectorAll').and.callThrough();
-      var delegate = entersViewportInjector({
-        '@adobe/reactor-document': mockDocument,
-        '../helpers/intersectionObserverIntervals':
-          mockIntersectionObserverIntervals
+    it('ignores empty element selectors', async function() {
+      const mockDocument = getDocumentProxy();
+      vi.spyOn(mockDocument, 'querySelectorAll');
+      const delegate = injectEntersViewport({
+        document: mockDocument,
+        window,
+        intersectionObserverIntervals: mockIntersectionObserverIntervals
       });
 
-      var triggerFn = jasmine.createSpy();
+      const triggerFn = vi.fn();
       delegate({ elementSelector: undefined }, triggerFn);
 
       window.setTimeout(function () {
         expect(mockDocument.querySelectorAll).not.toHaveBeenCalled();
         expect(triggerFn).not.toHaveBeenCalled();
-        done();
+        
       }, OBSERVER_ELEMENT_REFRESH_FREQUENCY * 3);
     });
 
@@ -787,14 +786,14 @@ describe('enters viewport event delegate', function () {
     // https://github.com/karma-runner/karma/issues/849
     // Until then, we're skipping these tests on iOS.
 
-    // var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    // const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
     // if (!isIOS) {
     //   describe('with scrolling', function() {
     //     it('triggers rule with no delay', function() {
     //       aElement.style.position = 'absolute';
     //       aElement.style.top = '3000px';
     //
-    //       var aTrigger = jasmine.createSpy();
+    //       const aTrigger = vi.fn();
     //
     //       delegate({
     //         elementSelector: '#a'
@@ -802,16 +801,16 @@ describe('enters viewport event delegate', function () {
     //
     //
     //       Simulate.event(window, 'scroll');
-    //       jasmine.clock().tick(DEBOUNCE_DELAY); // Skip past debounce.
+    //       vi.advanceTimersByTime(DEBOUNCE_DELAY); // Skip past debounce.
     //
     //       // The rule shouldn't be triggered because the element isn't in view.
-    //       expect(aTrigger.calls.count()).toEqual(0);
+    //       expect(aTrigger.mock.calls.length).toEqual(0);
     //
     //       window.scrollTo(0, 3000);
     //       Simulate.event(window, 'scroll');
-    //       jasmine.clock().tick(DEBOUNCE_DELAY); // Skip past debounce.
+    //       vi.advanceTimersByTime(DEBOUNCE_DELAY); // Skip past debounce.
     //
-    //       expect(aTrigger.calls.count()).toEqual(1);
+    //       expect(aTrigger.mock.calls.length).toEqual(1);
     //     });
     //
     //     it('triggers rules with various delays targeting elements at ' +
@@ -822,10 +821,10 @@ describe('enters viewport event delegate', function () {
     //       bElement.style.position = 'absolute';
     //       bElement.style.top = '10000px';
     //
-    //       var aTrigger = jasmine.createSpy();
-    //       var a2Trigger = jasmine.createSpy();
-    //       var bTrigger = jasmine.createSpy();
-    //       var b2Trigger = jasmine.createSpy();
+    //       const aTrigger = vi.fn();
+    //       const a2Trigger = vi.fn();
+    //       const bTrigger = vi.fn();
+    //       const b2Trigger = vi.fn();
     //
     //       delegate({
     //         elementSelector: '#a'
@@ -846,23 +845,23 @@ describe('enters viewport event delegate', function () {
     //         delay: 200000
     //       }, b2Trigger);
     //
-    //       jasmine.clock().tick(POLL_INTERVAL);
+    //       vi.advanceTimersByTime(POLL_INTERVAL);
     //
-    //       expect(aTrigger.calls.count()).toEqual(0);
-    //       expect(a2Trigger.calls.count()).toEqual(0);
-    //       expect(bTrigger.calls.count()).toEqual(0);
-    //       expect(b2Trigger.calls.count()).toEqual(0);
+    //       expect(aTrigger.mock.calls.length).toEqual(0);
+    //       expect(a2Trigger.mock.calls.length).toEqual(0);
+    //       expect(bTrigger.mock.calls.length).toEqual(0);
+    //       expect(b2Trigger.mock.calls.length).toEqual(0);
     //
     //       window.scrollTo(0, 10000);
-    //       jasmine.clock().tick(POLL_INTERVAL);
+    //       vi.advanceTimersByTime(POLL_INTERVAL);
     //
-    //       expect(aTrigger.calls.count()).toEqual(1);
-    //       expect(a2Trigger.calls.count()).toEqual(1);
-    //       expect(bTrigger.calls.count()).toEqual(0);
-    //       expect(b2Trigger.calls.count()).toEqual(0);
+    //       expect(aTrigger.mock.calls.length).toEqual(1);
+    //       expect(a2Trigger.mock.calls.length).toEqual(1);
+    //       expect(bTrigger.mock.calls.length).toEqual(0);
+    //       expect(b2Trigger.mock.calls.length).toEqual(0);
     //
     //       window.scrollTo(0, 0);
-    //       jasmine.clock().tick(POLL_INTERVAL);
+    //       vi.advanceTimersByTime(POLL_INTERVAL);
     //
     //       window.scrollTo(0, 10000);
     //       // Enough time for the poll interval to elapse many times. The point here is to test:
@@ -872,50 +871,50 @@ describe('enters viewport event delegate', function () {
     //       // the rule each time it enters the viewport.
     //       // 3. a2Trigger should not be repeatedly called on every poll cycle if the element
     //       // has remained inside the viewport throughout that duration.
-    //       jasmine.clock().tick(POLL_INTERVAL * 10);
+    //       vi.advanceTimersByTime(POLL_INTERVAL * 10);
     //
-    //       expect(aTrigger.calls.count()).toEqual(1);
-    //       expect(a2Trigger.calls.count()).toEqual(2);
-    //       expect(bTrigger.calls.count()).toEqual(0);
-    //       expect(b2Trigger.calls.count()).toEqual(0);
+    //       expect(aTrigger.mock.calls.length).toEqual(1);
+    //       expect(a2Trigger.mock.calls.length).toEqual(2);
+    //       expect(bTrigger.mock.calls.length).toEqual(0);
+    //       expect(b2Trigger.mock.calls.length).toEqual(0);
     //
     //       window.scrollTo(0, 20000);
-    //       jasmine.clock().tick(POLL_INTERVAL);
+    //       vi.advanceTimersByTime(POLL_INTERVAL);
     //
-    //       expect(aTrigger.calls.count()).toEqual(1);
-    //       expect(a2Trigger.calls.count()).toEqual(2);
-    //       expect(bTrigger.calls.count()).toEqual(0);
-    //       expect(b2Trigger.calls.count()).toEqual(0);
+    //       expect(aTrigger.mock.calls.length).toEqual(1);
+    //       expect(a2Trigger.mock.calls.length).toEqual(2);
+    //       expect(bTrigger.mock.calls.length).toEqual(0);
+    //       expect(b2Trigger.mock.calls.length).toEqual(0);
     //
     //       window.scrollTo(0, 0);
-    //       jasmine.clock().tick(POLL_INTERVAL);
+    //       vi.advanceTimersByTime(POLL_INTERVAL);
     //
     //       // Give enough time for the configured delay time to pass. The b element rules
     //       // shouldn't be triggered because the b element is no longer in view.
-    //       jasmine.clock().tick(100000);
+    //       vi.advanceTimersByTime(100000);
     //
-    //       expect(aTrigger.calls.count()).toEqual(1);
-    //       expect(a2Trigger.calls.count()).toEqual(2);
-    //       expect(bTrigger.calls.count()).toEqual(0);
-    //       expect(b2Trigger.calls.count()).toEqual(0);
+    //       expect(aTrigger.mock.calls.length).toEqual(1);
+    //       expect(a2Trigger.mock.calls.length).toEqual(2);
+    //       expect(bTrigger.mock.calls.length).toEqual(0);
+    //       expect(b2Trigger.mock.calls.length).toEqual(0);
     //
     //       window.scrollTo(0, 20000);
-    //       jasmine.clock().tick(POLL_INTERVAL);
+    //       vi.advanceTimersByTime(POLL_INTERVAL);
     //
     //       // Give enough time for the configured delay time to
     //       // pass. The second trigger should be called.
-    //       jasmine.clock().tick(50000);
-    //       expect(aTrigger.calls.count()).toEqual(1);
-    //       expect(a2Trigger.calls.count()).toEqual(2);
-    //       expect(bTrigger.calls.count()).toEqual(1);
-    //       expect(b2Trigger.calls.count()).toEqual(0);
+    //       vi.advanceTimersByTime(50000);
+    //       expect(aTrigger.mock.calls.length).toEqual(1);
+    //       expect(a2Trigger.mock.calls.length).toEqual(2);
+    //       expect(bTrigger.mock.calls.length).toEqual(1);
+    //       expect(b2Trigger.mock.calls.length).toEqual(0);
     //
     //       // A different rule watching for the same element but an even longer delay time? Oh my!
-    //       jasmine.clock().tick(200000);
-    //       expect(aTrigger.calls.count()).toEqual(1);
-    //       expect(a2Trigger.calls.count()).toEqual(2);
-    //       expect(bTrigger.calls.count()).toEqual(1);
-    //       expect(b2Trigger.calls.count()).toEqual(1);
+    //       vi.advanceTimersByTime(200000);
+    //       expect(aTrigger.mock.calls.length).toEqual(1);
+    //       expect(a2Trigger.mock.calls.length).toEqual(2);
+    //       expect(bTrigger.mock.calls.length).toEqual(1);
+    //       expect(b2Trigger.mock.calls.length).toEqual(1);
     //     });
     //   });
     // }
@@ -923,29 +922,28 @@ describe('enters viewport event delegate', function () {
 
   describe('with document.readyState at loading', function () {
     describe('with browser that is not IE 10', function () {
-      it('waits until DOMContentLoaded has fired before checking elements', function (done) {
+      it('waits until DOMContentLoaded has fired before checking elements', async function() {
         expect(document.querySelectorAll(aElementId).length).toBe(1);
 
-        var mockDocument = getDocumentProxy();
+        const mockDocument = getDocumentProxy();
         mockDocument.readyState = 'loading';
         // Don't call through. We want to capture and then manually change this.
-        spyOn(mockDocument, 'addEventListener');
-        spyOn(mockDocument, 'querySelectorAll').and.callThrough();
+        vi.spyOn(mockDocument, 'addEventListener');
+        vi.spyOn(mockDocument, 'querySelectorAll');
 
-        var mockWindow = getWindowProxy();
+        const mockWindow = getWindowProxy();
         mockWindow.navigator = {
           appVersion: 'something Chrome something'
         };
-        spyOn(mockWindow, 'addEventListener').and.callThrough();
+        vi.spyOn(mockWindow, 'addEventListener');
 
-        var delegate = entersViewportInjector({
-          '@adobe/reactor-document': mockDocument,
-          '@adobe/reactor-window': mockWindow,
-          '../helpers/intersectionObserverIntervals':
-            mockIntersectionObserverIntervals
+        const delegate = injectEntersViewport({
+          document: mockDocument,
+          window: mockWindow,
+          intersectionObserverIntervals: mockIntersectionObserverIntervals
         });
 
-        var aTrigger = jasmine.createSpy();
+        const aTrigger = vi.fn();
 
         delegate(
           {
@@ -962,18 +960,18 @@ describe('enters viewport event delegate', function () {
             expect(aTrigger).not.toHaveBeenCalled();
             expect(mockDocument.addEventListener).toHaveBeenCalledWith(
               'DOMContentLoaded',
-              jasmine.any(Function)
+              expect.any(Function)
             );
 
-            var domContentLoadedCallback =
-              mockDocument.addEventListener.calls.first().args[1];
+            const domContentLoadedCallback =
+              mockDocument.addEventListener.mock.calls[0][1];
             domContentLoadedCallback();
 
             return new Promise(function (resolve) {
-              var intervalId = window.setInterval(function () {
-                if (aTrigger.calls.mostRecent()) {
+              const intervalId = window.setInterval(function () {
+                if (aTrigger.mock.lastCall) {
                   window.clearInterval(intervalId);
-                  resolve(aTrigger.calls.mostRecent().args[0]);
+                  resolve(aTrigger.mock.lastCall[0]);
                 }
               }, 50);
             });
@@ -989,7 +987,7 @@ describe('enters viewport event delegate', function () {
             expect(mockDocument.querySelectorAll).toHaveBeenCalledWith(
               aElementId
             );
-            done();
+            
           });
       });
     });

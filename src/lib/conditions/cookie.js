@@ -10,46 +10,57 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import textMatch from '../helpers/textMatch.js';
+import validateInjectedParams from '../../helpers/validate-injected-params.js'
 
-var cookie = require('@adobe/reactor-cookie');
-var textMatch = require('../helpers/textMatch');
+function injectCookie({ cookie: cookieImpl }) {
+  /**
+   * Cookie condition. Determines if a particular cookie's actual value matches an acceptable value.
+   * @param {Object} settings Condition settings.
+   * @param {string} settings.name The name of the cookie.
+   * @param {Object[]} settings.cookieValues Acceptable cookie values to match.
+   * @param {string} settings.cookieValues[].value An acceptable cookie value.
+   * @param {string} [settings.cookieValues[].valueIsRegex=false] Is the cookie
+   * value a Regular Expression?
+   * DEPRECATED @param {string=} settings.value An acceptable cookie value.
+   * DEPRECATED @param {boolean=} [settings.valueIsRegex=false] Whether <code>settings.value</code>
+   * is intended to be a regular expression.
+   * @returns {boolean}
+   */
+  return function cookie(settings) {
+    // empty strings aren't allowed because a cookieValue is required in the UI.
+    var storedCookie = cookieImpl.get(settings.name);
+    if (!storedCookie) {
+      return false;
+    }
 
-/**
- * Cookie condition. Determines if a particular cookie's actual value matches an acceptable value.
- * @param {Object} settings Condition settings.
- * @param {string} settings.name The name of the cookie.
- * @param {Object[]} settings.cookieValues Acceptable cookie values to match.
- * @param {string} settings.cookieValues[].value An acceptable cookie value.
- * @param {string} [settings.cookieValues[].valueIsRegex=false] Is the cookie
- * value a Regular Expression?
- * DEPRECATED @param {string=} settings.value An acceptable cookie value.
- * DEPRECATED @param {boolean=} [settings.valueIsRegex=false] Whether <code>settings.value</code>
- * is intended to be a regular expression.
- * @returns {boolean}
- */
-module.exports = function (settings) {
-  // empty strings aren't allowed because a cookieValue is required in the UI.
-  var storedCookie = cookie.get(settings.name);
-  if (!storedCookie) {
-    return false;
-  }
+    var cookieValues;
+    if (!Array.isArray(settings.cookieValues)) {
+      // legacy support
+      cookieValues = [
+        { value: settings.value, valueIsRegex: Boolean(settings.valueIsRegex) }
+      ];
+    } else {
+      cookieValues = settings.cookieValues;
+    }
 
-  var cookieValues;
-  if (!Array.isArray(settings.cookieValues)) {
-    // legacy support
-    cookieValues = [
-      { value: settings.value, valueIsRegex: Boolean(settings.valueIsRegex) }
-    ];
-  } else {
-    cookieValues = settings.cookieValues;
-  }
+    return cookieValues.some(function (acceptableCookieValue) {
+      var acceptableValue = acceptableCookieValue.valueIsRegex
+        ? new RegExp(acceptableCookieValue.value, 'i')
+        : acceptableCookieValue.value;
 
-  return cookieValues.some(function (acceptableCookieValue) {
-    var acceptableValue = acceptableCookieValue.valueIsRegex
-      ? new RegExp(acceptableCookieValue.value, 'i')
-      : acceptableCookieValue.value;
+      return textMatch(storedCookie, acceptableValue);
+    });
+  };
+}
 
-    return textMatch(storedCookie, acceptableValue);
-  });
-};
+const validateInjection = validateInjectedParams(injectCookie);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  cookie: require('@adobe/reactor-cookie')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectCookie };
+/* END.TESTS_ONLY */

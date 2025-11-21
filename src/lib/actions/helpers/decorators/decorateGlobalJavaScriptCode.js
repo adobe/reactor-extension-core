@@ -8,14 +8,28 @@ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTA
 OF ANY KIND, either express or implied. See the License for the specific language
 governing permissions and limitations under the License.
 */
-'use strict';
 
-var Promise = require('@adobe/reactor-promise');
+import validateInjectedParams from '../../../../helpers/validate-injected-params.js'
 
-module.exports = function (_, source) {
-  // The line break after the source is important in case their last line of code is a comment.
-  return {
-    code: '<scr' + 'ipt>\n' + source + '\n</scr' + 'ipt>',
-    promise: Promise.resolve()
+function injectDecorateGlobalJavaScriptCode({ Promise }) {
+  return function decorateGlobalJavaScriptCode(_, source) {
+    // The line break after the source is important in case their last line of code is a comment.
+    return {
+      code: '<scr' + 'ipt>\n' + source + '\n</scr' + 'ipt>',
+      promise: Promise.resolve()
+    };
   };
-};
+}
+
+const validateInjection = validateInjectedParams(
+  injectDecorateGlobalJavaScriptCode
+);
+
+export default validateInjection({
+  // runs in Turbine context, which provides these core-module packages.
+  Promise: require('@adobe/reactor-promise')
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectDecorateGlobalJavaScriptCode };
+/* END.TESTS_ONLY */

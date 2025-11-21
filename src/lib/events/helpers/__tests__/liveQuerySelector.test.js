@@ -10,38 +10,36 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import { injectLiveQuerySelector } from '../liveQuerySelector.js';
+import WeakMap from '../weakMap.js';
+import { vi } from 'vitest';
+const { liveQuerySelector, __reset } = injectLiveQuerySelector({ WeakMap });
 
-var POLL_INTERVAL = 3000;
+const POLL_INTERVAL = 3000;
 
 describe('liveQuerySelector', function () {
-  var liveQuerySelector;
-
   beforeAll(function () {
-    // The module may have been previously required by other another module (namely, hover.js)
-    // which prevents us from installing a clock that is effective unless we clear the cache and
-    // require the module again.
-    delete require.cache[require.resolve('../liveQuerySelector')];
-
-    jasmine.clock().install();
-    liveQuerySelector = require('../liveQuerySelector');
+    vi.useFakeTimers();
   });
 
   afterAll(function () {
-    jasmine.clock().uninstall();
+    vi.useRealTimers();
+    if (__reset) {
+      __reset();
+    }
   });
 
   it('detects an element added before polling starts', function () {
-    var div = document.createElement('div');
+    const div = document.createElement('div');
     div.className = 'foo';
     document.body.appendChild(div);
 
-    var callback = jasmine.createSpy();
+    const callback = vi.fn();
     liveQuerySelector('.foo', callback);
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
-    expect(callback.calls.count()).toBe(1);
+    expect(callback.mock.calls.length).toBe(1);
 
     document.body.removeChild(div);
   });
@@ -49,81 +47,81 @@ describe('liveQuerySelector', function () {
   it('detects an element added after polling starts', function () {
     // Polling doesn't start until liveQuerySelector is called once.
     liveQuerySelector('a', function () {});
-    jasmine.clock().tick(5000);
+    vi.advanceTimersByTime(5000);
 
-    var div = document.createElement('div');
+    const div = document.createElement('div');
     div.className = 'foo';
     document.body.appendChild(div);
 
-    var callback = jasmine.createSpy();
+    const callback = vi.fn();
     liveQuerySelector('.foo', callback);
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
-    expect(callback.calls.count()).toBe(1);
+    expect(callback.mock.calls.length).toBe(1);
 
     document.body.removeChild(div);
   });
 
   it('calls a callback twice when two elements exist that match the selector', function () {
-    var div = document.createElement('div');
+    const div = document.createElement('div');
     div.className = 'foo';
     document.body.appendChild(div);
 
-    var a = document.createElement('a');
+    const a = document.createElement('a');
     a.className = 'foo';
     div.appendChild(a);
 
-    var callback = jasmine.createSpy();
+    const callback = vi.fn();
     liveQuerySelector('.foo', callback);
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
-    expect(callback.calls.count()).toBe(2);
+    expect(callback.mock.calls.length).toBe(2);
 
     document.body.removeChild(div);
   });
 
   it('calls two callbacks targeting the same element', function () {
-    var div = document.createElement('div');
+    const div = document.createElement('div');
     div.className = 'foo';
     document.body.appendChild(div);
 
-    var callback1 = jasmine.createSpy();
+    const callback1 = vi.fn();
     liveQuerySelector('.foo', callback1);
 
-    var callback2 = jasmine.createSpy();
+    const callback2 = vi.fn();
     liveQuerySelector('.foo', callback2);
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
-    expect(callback1.calls.count()).toBe(1);
-    expect(callback2.calls.count()).toBe(1);
+    expect(callback1.mock.calls.length).toBe(1);
+    expect(callback2.mock.calls.length).toBe(1);
 
     document.body.removeChild(div);
   });
 
   it('does not call the same callback again if the element is re-added', function () {
-    var div = document.createElement('div');
+    const div = document.createElement('div');
     div.className = 'foo';
     document.body.appendChild(div);
 
-    var callback = jasmine.createSpy();
+    const callback = vi.fn();
     liveQuerySelector('.foo', callback);
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
-    expect(callback.calls.count()).toBe(1);
+    expect(callback.mock.calls.length).toBe(1);
 
     document.body.removeChild(div);
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     document.body.appendChild(div);
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
-    expect(callback.calls.count()).toBe(1);
+    expect(callback.mock.calls.length).toBe(1);
 
     document.body.removeChild(div);
   });

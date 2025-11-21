@@ -10,26 +10,25 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var mockDocument = {
-  location: {
-    hostname: 'www.example.com'
-  }
-};
-
-var conditionDelegateInjector = require('inject-loader!../domain');
-var conditionDelegate = conditionDelegateInjector({
-  '@adobe/reactor-document': mockDocument
-});
-
-var getSettings = function (domains) {
-  return {
-    domains: domains
-  };
-};
+import { injectDecorateDomainCondition } from '../domain.js';
 
 describe('domain condition delegate', function () {
+  const mockDocument = {
+    location: {
+      hostname: 'www.example.com'
+    }
+  };
+
+  const conditionDelegate = injectDecorateDomainCondition({
+    document: mockDocument
+  });
+
+  const getSettings = function (domains) {
+    return {
+      domains: domains
+    };
+  };
+
   it('returns true when the domain matches', function () {
     var settings = getSettings(['adobe.com', 'Example.com']);
     expect(conditionDelegate(settings)).toBe(true);

@@ -17,6 +17,17 @@ import {
   waitForElementToBeRemoved
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { vi } from 'vitest';
+
+// Fix for React Spectrum Provider's configureTypekit in JSDOM
+// The old @react/react-spectrum Provider tries to access document.head.parentNode
+// which doesn't exist properly in JSDOM
+// Mock the problem by ensuring window.Typekit exists (it checks for this)
+if (typeof window !== 'undefined') {
+  window.Typekit = window.Typekit || {
+    load: vi.fn()
+  };
+}
 
 const animationFrameRequests = {};
 window.requestAnimationFrame = (ckb) => {
@@ -39,9 +50,9 @@ class ResizeObserverMock {
     this.callback = callback;
 
     // Spy on instance methods
-    this.observe = jasmine.createSpy('observe');
-    this.unobserve = jasmine.createSpy('unobserve');
-    this.disconnect = jasmine.createSpy('disconnect');
+    this.observe = vi.fn().mockName('observe');
+    this.unobserve = vi.fn().mockName('unobserve');
+    this.disconnect = vi.fn().mockName('disconnect');
   }
 }
 window.ResizeObserver = ResizeObserverMock;

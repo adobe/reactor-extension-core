@@ -12,10 +12,10 @@
 
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { sharedTestingElements } from '@test-helpers/react-testing-library';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import CustomEvent, { formConfig } from '../customEvent';
-import bootstrap from '../../bootstrap';
+import { sharedTestingElements } from '@test-helpers/react-testing-library.jsx';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import CustomEvent, { formConfig } from '../customEvent.jsx'
+import bootstrap from '../../bootstrap.jsx'
 
 // react-testing-library element selectors
 const pageElements = {
@@ -54,7 +54,7 @@ describe('custom event event view', () => {
     fireEvent.click(sharedTestingElements.advancedSettings.getToggleTrigger());
     expect(
       sharedTestingElements.advancedSettings.getBubbleStopCheckBox().checked
-    ).toBeTrue();
+    ).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -83,7 +83,7 @@ describe('custom event event view', () => {
     fireEvent.blur(pageElements.getEventTypeTextBox());
     expect(
       pageElements.getEventTypeTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     fireEvent.focus(
       sharedTestingElements.elementsMatching.getCssSelectorTextBox()
@@ -95,7 +95,7 @@ describe('custom event event view', () => {
       sharedTestingElements.elementsMatching
         .getCssSelectorTextBox()
         .hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     expect(extensionBridge.validate()).toBe(false);
   });

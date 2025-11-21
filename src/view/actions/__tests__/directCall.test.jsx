@@ -12,9 +12,9 @@
 
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import DirectCallIdentifier, { formConfig } from '../directCall';
-import bootstrap from '../../bootstrap';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import DirectCallIdentifier, { formConfig } from '../directCall.jsx';
+import bootstrap from '../../bootstrap.jsx';
 
 // react-testing-library element selectors
 const pageElements = {
@@ -123,7 +123,7 @@ describe('direct call action view', () => {
 
     expect(
       pageElements.getIdentifierTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 
@@ -135,14 +135,14 @@ describe('direct call action view', () => {
     fireEvent.blur(rows[0].withinRow.getEventObjectKeyTextBox());
     expect(
       rows[0].withinRow.getEventObjectKeyTextBox().hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
     fireEvent.focus(rows[0].withinRow.getEventObjectValueTextBox());
     fireEvent.blur(rows[0].withinRow.getEventObjectValueTextBox());
     expect(
       rows[0].withinRow
         .getEventObjectValueTextBox()
         .hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
 
     // validate shouldn't cause these empty boxes to show an error
     extensionBridge.validate();
@@ -151,23 +151,23 @@ describe('direct call action view', () => {
     });
     expect(
       rows[0].withinRow.getEventObjectKeyTextBox().hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
     expect(
       rows[0].withinRow
         .getEventObjectValueTextBox()
         .hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
 
     // value is optional
     userEvent.type(rows[0].withinRow.getEventObjectKeyTextBox(), 'foo');
     expect(
       rows[0].withinRow.getEventObjectKeyTextBox().hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
     expect(
       rows[0].withinRow
         .getEventObjectValueTextBox()
         .hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
     expect(extensionBridge.getSettings()).toEqual({
       identifier: undefined,
       detail: {
@@ -181,12 +181,12 @@ describe('direct call action view', () => {
     // make the key text box invalid
     expect(
       rows[0].withinRow.getEventObjectKeyTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(
       rows[0].withinRow
         .getEventObjectValueTextBox()
         .hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
     expect(extensionBridge.getSettings()).toEqual({
       identifier: undefined
     });
@@ -204,10 +204,10 @@ describe('direct call action view', () => {
     extensionBridge.validate();
     expect(
       rows[0].withinRow.getEventObjectKeyTextBox().hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
     expect(
       rows[1].withinRow.getEventObjectKeyTextBox().hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
 
     userEvent.clear(rows[1].withinRow.getEventObjectKeyTextBox());
     userEvent.type(rows[1].withinRow.getEventObjectKeyTextBox(), 'test');
@@ -215,10 +215,10 @@ describe('direct call action view', () => {
     extensionBridge.validate();
     expect(
       rows[0].withinRow.getEventObjectKeyTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(
       rows[1].withinRow.getEventObjectKeyTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
   });
 
   it('keys are required, values are optional', () => {
@@ -226,11 +226,11 @@ describe('direct call action view', () => {
 
     const [firstRow] = pageElements.getRows();
     userEvent.type(firstRow.withinRow.getEventObjectValueTextBox(), 'value');
-    expect(extensionBridge.validate()).toBeFalse();
+    expect(extensionBridge.validate()).toBe(false);
 
     userEvent.clear(firstRow.withinRow.getEventObjectValueTextBox());
     userEvent.type(firstRow.withinRow.getEventObjectKeyTextBox(), 'key');
-    expect(extensionBridge.validate()).toBeTrue();
+    expect(extensionBridge.validate()).toBe(true);
 
     expect(extensionBridge.getSettings()).toEqual({
       identifier: 'identifier',
@@ -247,7 +247,7 @@ describe('direct call action view', () => {
       }
     });
 
-    expect(extensionBridge.validate()).toBeTrue();
+    expect(extensionBridge.validate()).toBe(true);
     expect(extensionBridge.getSettings()).toEqual({
       identifier: 'foo'
     });

@@ -11,7 +11,7 @@ governing permissions and limitations under the License.
 
 import React from 'react';
 import { Flex, Well } from '@adobe/react-spectrum';
-import HelpText from './helpText';
+import HelpText from './helpText.jsx'
 
 export default ({ color = 'notice', children, ...containerPositioning }) => (
   <Well {...containerPositioning}>

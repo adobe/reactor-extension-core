@@ -12,9 +12,9 @@
 
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import QueryStringParameter, { formConfig } from '../queryStringParameter';
-import bootstrap from '../../bootstrap';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import QueryStringParameter, { formConfig } from '../queryStringParameter.jsx'
+import bootstrap from '../../bootstrap.jsx'
 
 // react-testing-library element selectors
 const pageElements = {
@@ -45,7 +45,7 @@ describe('query string parameter data element view', () => {
   });
 
   it('checks case insensitive checkbox by default', () => {
-    expect(pageElements.getCaseInsensitiveCheckBox().checked).toBeTrue();
+    expect(pageElements.getCaseInsensitiveCheckBox().checked).toBe(true);
   });
 
   it('sets form values from settings', () => {
@@ -57,7 +57,7 @@ describe('query string parameter data element view', () => {
     });
 
     expect(pageElements.getNameTextBox().value).toBe('foo');
-    expect(pageElements.getCaseInsensitiveCheckBox().checked).toBeFalse();
+    expect(pageElements.getCaseInsensitiveCheckBox().checked).toBe(false);
   });
 
   it('sets settings from form values', () => {
@@ -76,7 +76,7 @@ describe('query string parameter data element view', () => {
 
     expect(
       pageElements.getNameTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 });

@@ -12,10 +12,10 @@
 
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { changePickerValue } from '@test-helpers/react-testing-library';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import DomAttribute, { formConfig } from '../domAttribute';
-import bootstrap from '../../bootstrap';
+import { changePickerValue } from '@test-helpers/react-testing-library.jsx';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import DomAttribute, { formConfig } from '../domAttribute.jsx'
+import bootstrap from '../../bootstrap.jsx'
 
 // react-testing-library element selectors
 const pageElements = {
@@ -95,7 +95,7 @@ describe('DOM attribute data element view', () => {
 
     expect(
       pageElements.getElementSelectorTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 

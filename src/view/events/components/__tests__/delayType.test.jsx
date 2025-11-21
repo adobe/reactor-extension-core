@@ -12,9 +12,10 @@
 
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import DelayType, { formConfig } from '../delayType';
-import bootstrap from '../../../bootstrap';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import DelayType, { formConfig } from '../delayType.jsx'
+import bootstrap from '../../../bootstrap.jsx'
+import { vi } from 'vitest';
 
 // react-testing-library element selectors
 const pageElements = {
@@ -50,7 +51,7 @@ describe('delayType', () => {
         }
       });
 
-      expect(pageElements.radioGroup.getAfterDelay().checked).toBeTrue();
+      expect(pageElements.radioGroup.getAfterDelay().checked).toBe(true);
       expect(pageElements.getTextBox().value).toBe('500');
     });
 
@@ -58,13 +59,13 @@ describe('delayType', () => {
       extensionBridge.init({ settings: {} });
 
       expect(screen.queryAllByRole('textbox').length).toBe(0);
-      expect(pageElements.radioGroup.getImmediately().checked).toBeTrue();
+      expect(pageElements.radioGroup.getImmediately().checked).toBe(true);
     });
   });
 
   it('has the specific element radio button selected', () => {
     expect(screen.queryAllByRole('textbox').length).toBe(0);
-    expect(pageElements.radioGroup.getImmediately().checked).toBeTrue();
+    expect(pageElements.radioGroup.getImmediately().checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -93,7 +94,7 @@ describe('delayType', () => {
     fireEvent.focus(pageElements.getTextBox());
     fireEvent.blur(pageElements.getTextBox());
 
-    expect(pageElements.getTextBox().hasAttribute('aria-invalid')).toBeTrue();
+    expect(pageElements.getTextBox().hasAttribute('aria-invalid')).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 
@@ -103,7 +104,7 @@ describe('delayType', () => {
     userEvent.type(pageElements.getTextBox(), 'aaa');
     fireEvent.blur(pageElements.getTextBox());
 
-    expect(pageElements.getTextBox().hasAttribute('aria-invalid')).toBeTrue();
+    expect(pageElements.getTextBox().hasAttribute('aria-invalid')).toBe(true);
     expect(extensionBridge.validate()).toBe(false);
   });
 
@@ -114,7 +115,7 @@ describe('delayType', () => {
   });
 
   it('The delayType input supports opening the data element modal', () => {
-    spyOn(extensionBridge, 'openDataElementSelector').and.callFake(() => {
+    vi.spyOn(extensionBridge, 'openDataElementSelector').mockImplementation(() => {
       return Promise.resolve();
     });
 

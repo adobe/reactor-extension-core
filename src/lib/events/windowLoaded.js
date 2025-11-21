@@ -10,17 +10,28 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import validateInjectedParams from '../../helpers/validate-injected-params.js';
+import pageLifecycleEvents from './helpers/pageLifecycleEvents.js';
 
-var pageLifecycleEvents = require('./helpers/pageLifecycleEvents');
+function injectWindowLoaded({ pageLifecycleEvents }) {
+  /**
+   * Window loaded event. This event occurs at the end of the document loading process. At this point,
+   * all of the objects in the document are loaded in the DOM, and all images, scripts, links,
+   * and sub-frames have finished loading.
+   * @param {Object} settings The event settings object.
+   * @param {function} trigger The [rule]trigger callback.
+   */
+  return function windowLoaded(settings, trigger) {
+    pageLifecycleEvents.registerWindowLoadedTrigger(trigger);
+  };
+}
 
-/**
- * Window loaded event. This event occurs at the end of the document loading process. At this point,
- * all of the objects in the document are loaded in the DOM, and all images, scripts, links,
- * and sub-frames have finished loading.
- * @param {Object} settings The event settings object.
- * @param {ruleTrigger} trigger The trigger callback.
- */
-module.exports = function (settings, trigger) {
-  pageLifecycleEvents.registerWindowLoadedTrigger(trigger);
-};
+const validateInjection = validateInjectedParams(injectWindowLoaded);
+
+export default validateInjection({
+  pageLifecycleEvents
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectWindowLoaded };
+/* END.TESTS_ONLY */

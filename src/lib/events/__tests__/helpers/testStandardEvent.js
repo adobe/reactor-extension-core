@@ -10,22 +10,23 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import Simulate from 'simulate';
+import { vi } from 'vitest';
 
-var outerElement;
-var innerElement;
+let outerElement;
+let innerElement;
 
-var assertTriggerCall = function (options) {
-  expect(options.call.args[0]).toEqual({
+const assertTriggerCall = function (options) {
+  expect(options.call[0]).toEqual({
     element: options.element,
     target: options.target,
-    nativeEvent: jasmine.any(Object)
+    nativeEvent: expect.any(Object)
   });
 };
 
-module.exports = function (getDelegate, type) {
+export default function testStandardEvent(getDelegate, type) {
   describe('standard event functionality', function () {
-    var delegate;
+    let delegate;
 
     beforeEach(function () {
       delegate = getDelegate();
@@ -46,7 +47,7 @@ module.exports = function (getDelegate, type) {
       document.body.removeChild(outerElement);
     });
 
-    var simulateEvent = function () {
+    const simulateEvent = function () {
       // We're overloading our usage of Simulate here. The second arg is a character which only
       // applies for simulating keyboard events but doesn't really do anything in the case of
       // mouse events.
@@ -54,7 +55,7 @@ module.exports = function (getDelegate, type) {
     };
 
     it('triggers rule when event occurs with no element refinements', function () {
-      var trigger = jasmine.createSpy();
+      const trigger = vi.fn();
 
       delegate(
         {
@@ -66,10 +67,10 @@ module.exports = function (getDelegate, type) {
 
       simulateEvent();
 
-      expect(trigger.calls.count()).toBe(1);
+      expect(trigger.mock.calls.length).toBe(1);
 
       assertTriggerCall({
-        call: trigger.calls.mostRecent(),
+        call: trigger.mock.lastCall,
         type: type,
         target: innerElement,
         element: innerElement
@@ -77,7 +78,7 @@ module.exports = function (getDelegate, type) {
     });
 
     it('triggers rule when elementSelector matches', function () {
-      var trigger = jasmine.createSpy();
+      const trigger = vi.fn();
 
       delegate(
         {
@@ -90,10 +91,10 @@ module.exports = function (getDelegate, type) {
 
       simulateEvent();
 
-      expect(trigger.calls.count()).toBe(1);
+      expect(trigger.mock.calls.length).toBe(1);
 
       assertTriggerCall({
-        call: trigger.calls.mostRecent(),
+        call: trigger.mock.lastCall,
         type: type,
         target: innerElement,
         element: outerElement
@@ -101,7 +102,7 @@ module.exports = function (getDelegate, type) {
     });
 
     it('does not trigger rule when elementSelector does not match', function () {
-      var trigger = jasmine.createSpy();
+      const trigger = vi.fn();
 
       delegate(
         {
@@ -114,11 +115,11 @@ module.exports = function (getDelegate, type) {
 
       simulateEvent();
 
-      expect(trigger.calls.count()).toBe(0);
+      expect(trigger.mock.calls.length).toBe(0);
     });
 
     it('triggers rule when elementProperties matches', function () {
-      var trigger = jasmine.createSpy();
+      const trigger = vi.fn();
 
       delegate(
         {
@@ -136,10 +137,10 @@ module.exports = function (getDelegate, type) {
 
       simulateEvent();
 
-      expect(trigger.calls.count()).toBe(1);
+      expect(trigger.mock.calls.length).toBe(1);
 
       assertTriggerCall({
-        call: trigger.calls.mostRecent(),
+        call: trigger.mock.lastCall,
         type: type,
         target: innerElement,
         element: outerElement
@@ -147,7 +148,7 @@ module.exports = function (getDelegate, type) {
     });
 
     it('does not trigger rule when elementProperties does not match', function () {
-      var trigger = jasmine.createSpy();
+      const trigger = vi.fn();
 
       delegate(
         {
@@ -165,7 +166,7 @@ module.exports = function (getDelegate, type) {
 
       simulateEvent();
 
-      expect(trigger.calls.count()).toBe(0);
+      expect(trigger.mock.calls.length).toBe(0);
     });
   });
-};
+}

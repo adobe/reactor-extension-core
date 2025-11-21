@@ -10,28 +10,27 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import runVisibilityApi from '../helpers/visibilityApi.js';
+import { vi } from 'vitest';
+const { visibilityChangeEventType, hiddenProperty } = runVisibilityApi();
+import { injectTabFocus } from '../tabFocus.js'
+let visibilityChangeListener;
 
-var eventDelegateInjector = require('inject-loader!../tabFocus');
-var visibilityApi = require('../helpers/visibilityApi');
-var visibilityApiInstance = visibilityApi();
-var visibilityChangeListener;
-
-var mockDocument = {
+const mockDocument = {
   location: 'somelocation',
   addEventListener: function (event, listener) {
-    if (event && event === visibilityApiInstance.visibilityChangeEventType) {
+    if (event && event === visibilityChangeEventType) {
       visibilityChangeListener = listener;
     }
   }
 };
 
-var delegate = eventDelegateInjector({
-  '@adobe/reactor-document': mockDocument
+const delegate = injectTabFocus({
+  document: mockDocument
 });
 
-var isIE = function () {
-  var myNav = navigator.userAgent.toLowerCase();
+const isIE = function () {
+  const myNav = navigator.userAgent.toLowerCase();
   return myNav.indexOf('msie') !== -1
     ? parseInt(myNav.split('msie')[1])
     : false;
@@ -40,17 +39,17 @@ var isIE = function () {
 describe('tab focus event delegate', function () {
   if (!isIE() || isIE() > 9) {
     it('triggers rule when the tabfocus event occurs', function () {
-      var trigger = jasmine.createSpy();
+      const trigger = vi.fn();
 
       delegate({}, trigger);
 
-      expect(trigger.calls.count()).toBe(0);
+      expect(trigger.mock.calls.length).toBe(0);
 
-      mockDocument[visibilityApiInstance.hiddenProperty] = false;
+      mockDocument[hiddenProperty] = false;
       visibilityChangeListener.call(location);
 
-      expect(trigger.calls.count()).toBe(1);
-      var call = trigger.calls.mostRecent();
+      expect(trigger.mock.calls.length).toBe(1);
+      const call = trigger.mock.lastCall;
       expect(call.args.length).toBe(0);
     });
   }

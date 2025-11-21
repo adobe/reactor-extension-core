@@ -10,9 +10,12 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import { injectMaxFrequency } from '../maxFrequency.js';
+import { injectGetNamespacedStorage } from '../../helpers/getNamespacedStorage.js';
+import { vi } from 'vitest';
+const injectedGetNamespacedStorage = injectGetNamespacedStorage({ window });
 
-var millisByUnit = {
+const millisByUnit = {
   second: 1000,
   minute: 60000, // 60 seconds
   hour: 3600000, // 60 minutes
@@ -22,18 +25,18 @@ var millisByUnit = {
 };
 
 describe('max frequency condition delegate', function () {
-  var mockVisitorTracking;
-  var mockEvent;
-  var conditionDelegate;
+  let mockVisitorTracking;
+  let mockEvent;
+  let conditionDelegate;
 
   beforeEach(function () {
     window.localStorage.clear();
 
     mockVisitorTracking = {};
 
-    var conditionDelegateInjector = require('inject-loader!../maxFrequency');
-    conditionDelegate = conditionDelegateInjector({
-      '../helpers/visitorTracking': mockVisitorTracking
+    conditionDelegate = injectMaxFrequency({
+      visitorTracking: mockVisitorTracking,
+      getNamespacedStorage: injectedGetNamespacedStorage
     });
 
     mockEvent = {
@@ -58,7 +61,7 @@ describe('max frequency condition delegate', function () {
         '3'
       );
 
-      var result = conditionDelegate(
+      const result = conditionDelegate(
         {
           unit: 'pageView',
           count: 2
@@ -84,7 +87,7 @@ describe('max frequency condition delegate', function () {
         '3'
       );
 
-      var result = conditionDelegate(
+      const result = conditionDelegate(
         {
           unit: 'pageView',
           count: 3
@@ -112,7 +115,7 @@ describe('max frequency condition delegate', function () {
         '3'
       );
 
-      var result = conditionDelegate(
+      const result = conditionDelegate(
         {
           unit: 'session',
           count: 2
@@ -138,7 +141,7 @@ describe('max frequency condition delegate', function () {
         '3'
       );
 
-      var result = conditionDelegate(
+      const result = conditionDelegate(
         {
           unit: 'session',
           count: 3
@@ -157,7 +160,7 @@ describe('max frequency condition delegate', function () {
 
   describe('visitor unit', function () {
     it('returns true if visitor has not been seen', function () {
-      var result = conditionDelegate(
+      const result = conditionDelegate(
         {
           unit: 'visitor'
         },
@@ -178,7 +181,7 @@ describe('max frequency condition delegate', function () {
         'true'
       );
 
-      var result = conditionDelegate(
+      const result = conditionDelegate(
         {
           unit: 'visitor'
         },
@@ -197,22 +200,22 @@ describe('max frequency condition delegate', function () {
   ['second', 'minute', 'hour', 'day', 'week', 'month'].forEach(function (unit) {
     describe(unit + ' unit', function () {
       beforeEach(function () {
-        jasmine.clock().install();
+        vi.useFakeTimers();
       });
 
       afterEach(function () {
-        jasmine.clock().uninstall();
+        vi.useRealTimers();
       });
 
       it('returns true if count has been met', function () {
-        jasmine.clock().mockDate(new Date(5 * millisByUnit[unit]));
+        vi.setSystemTime(new Date(5 * millisByUnit[unit]));
 
         window.localStorage.setItem(
           'com.adobe.reactor.core.maxFrequency.RL123.' + unit,
           String(3 * millisByUnit[unit])
         );
 
-        var result = conditionDelegate(
+        const result = conditionDelegate(
           {
             unit: unit,
             count: 2
@@ -229,14 +232,14 @@ describe('max frequency condition delegate', function () {
       });
 
       it('returns false if count has not been met', function () {
-        jasmine.clock().mockDate(new Date(5 * millisByUnit[unit]));
+        vi.setSystemTime(new Date(5 * millisByUnit[unit]));
 
         window.localStorage.setItem(
           'com.adobe.reactor.core.maxFrequency.RL123.' + unit,
           String(3 * millisByUnit[unit])
         );
 
-        var result = conditionDelegate(
+        const result = conditionDelegate(
           {
             unit: unit,
             count: 3

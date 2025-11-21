@@ -12,11 +12,11 @@
 
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
 import ElementPropertiesEditor, {
   formConfig
 } from '../elementPropertiesEditor';
-import bootstrap from '../../../bootstrap';
+import bootstrap from '../../../bootstrap.jsx'
 
 // react-testing-library element selectors
 const pageElements = {
@@ -77,7 +77,7 @@ describe('elementPropertiesEditor', () => {
 
     expect(row.withinRow.getNameTextBox().value).toBe('some prop');
     expect(row.withinRow.getValueTextBox().value).toBe('some value');
-    expect(row.withinRow.getRegexToggleSwitch().checked).toBeTrue();
+    expect(row.withinRow.getRegexToggleSwitch().checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -108,7 +108,7 @@ describe('elementPropertiesEditor', () => {
     expect(extensionBridge.validate()).toBe(false);
     expect(
       row.withinRow.getNameTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
   });
 
   it('creates a new row when the add button is clicked', () => {
@@ -144,6 +144,6 @@ describe('elementPropertiesEditor', () => {
 
     expect(row.withinRow.getNameTextBox().value).toBe('some prop2');
     expect(row.withinRow.getValueTextBox().value).toBe('some value2');
-    expect(row.withinRow.getRegexToggleSwitch().checked).toBeTrue();
+    expect(row.withinRow.getRegexToggleSwitch().checked).toBe(true);
   });
 });

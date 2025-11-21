@@ -10,91 +10,91 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import { injectTimeOnPage } from '../timeOnPage.js';
+import { injectTimer } from '../helpers/timer.js';
+import runVisibilityApi from '../helpers/visibilityApi.js';
+import { vi } from 'vitest';
+const { visibilityChangeEventType, hiddenProperty } = runVisibilityApi();
+const injectNewTimer = () => injectTimer({ assign: Object.assign });
 
-var visibilityApi = require('../helpers/visibilityApi');
-var visibilityApiInstance = visibilityApi();
-var visibilityChangeListener;
+let visibilityChangeListener;
 
-var mockDocument = {
+const mockDocument = {
   addEventListener: function (event, listener) {
-    if (event && event === visibilityApiInstance.visibilityChangeEventType) {
+    if (event && event === visibilityChangeEventType) {
       visibilityChangeListener = listener;
     }
   }
 };
 
-var Timer = require('../helpers/timer');
-var eventDelegateInjector = require('inject-loader!../timeOnPage');
-
-var isIE = function () {
-  var myNav = navigator.userAgent.toLowerCase();
+const isIE = function () {
+  const myNav = navigator.userAgent.toLowerCase();
   return myNav.indexOf('msie') !== -1
     ? parseInt(myNav.split('msie')[1])
     : false;
 };
 
 describe('time on page event delegate', function () {
-  var delegate;
+  let delegate;
 
   beforeEach(function () {
-    jasmine.clock().install();
+    vi.useFakeTimers();
 
-    var baseTime = new Date();
-    jasmine.clock().mockDate(baseTime);
+    const baseTime = new Date();
+    vi.setSystemTime(baseTime);
 
-    delegate = eventDelegateInjector({
-      './helpers/timer': Timer,
-      '@adobe/reactor-document': mockDocument
+    delegate = injectTimeOnPage({
+      document,
+      Timer: injectNewTimer()
     });
   });
 
   afterEach(function () {
-    jasmine.clock().uninstall();
+    vi.useRealTimers();
   });
 
   it('triggers rule', function () {
-    var trigger = jasmine.createSpy('timeOnPageTrigger');
+    const trigger = vi.fn();
 
     delegate({ timeOnPage: 2 }, trigger);
-    jasmine.clock().tick(2000);
+    vi.advanceTimersByTime(2000);
 
-    var call = trigger.calls.mostRecent();
-    expect(call.args[0]).toEqual({
+    const call = trigger.mock.lastCall;
+    expect(call[0]).toEqual({
       timeOnPage: 2
     });
   });
 
   it('triggers rule when timeOnPage is a string', function () {
-    var trigger = jasmine.createSpy('timeOnPageTrigger');
+    const trigger = vi.fn();
 
     delegate({ timeOnPage: '2' }, trigger);
-    jasmine.clock().tick(2000);
+    vi.advanceTimersByTime(2000);
 
-    var call = trigger.calls.mostRecent();
-    expect(call.args[0]).toEqual({
+    const call = trigger.mock.lastCall;
+    expect(call[0]).toEqual({
       timeOnPage: 2
     });
   });
 
   if (!isIE() || isIE() > 9) {
     it('stops the timer on tab blur', function () {
-      spyOn(Timer.prototype, 'pause');
+      vi.spyOn(Timer.prototype, 'pause');
 
       delegate({});
 
-      mockDocument[visibilityApiInstance.hiddenProperty] = true;
+      mockDocument[hiddenProperty] = true;
       visibilityChangeListener.call(location);
 
       expect(Timer.prototype.pause).toHaveBeenCalled();
     });
 
     it('resumes the timer on tab focus', function () {
-      spyOn(Timer.prototype, 'resume');
+      vi.spyOn(Timer.prototype, 'resume');
 
       delegate({});
 
-      mockDocument[visibilityApiInstance.hiddenProperty] = false;
+      mockDocument[hiddenProperty] = false;
       visibilityChangeListener.call(location);
 
       expect(Timer.prototype.resume).toHaveBeenCalled();

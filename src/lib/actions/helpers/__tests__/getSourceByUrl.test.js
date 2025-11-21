@@ -10,29 +10,31 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var getSourceUrlCodeInjector = require('inject-loader!../getSourceByUrl');
-var Promise = require('@adobe/reactor-promise');
+import { injectGetSourceByUrl } from '../getSourceByUrl.js';
 
 describe('get source by url', function () {
-  var loadScriptSpy;
-  var getSourceUrlCode;
-  var headScriptRefs = [];
-  var domain = 'https://assets.adobedtm.com';
-  var filePath = '/extensions/actions.js';
-  var relativeFile = '/relative/relative-action.js';
-  var fullFileUrl = domain + filePath;
+  let loadScriptSpy;
+  let getSourceUrlCode;
+  const headScriptRefs = [];
+  const domain = 'https://assets.adobedtm.com';
+  const filePath = '/extensions/actions.js';
+  const relativeFile = '/relative/relative-action.js';
+  const fullFileUrl = domain + filePath;
 
   beforeAll(function () {
-    var fullPathRef = document.createElement('script');
+    const fullPathRef = document.createElement('script');
     fullPathRef.src = fullFileUrl;
     document.head.appendChild(fullPathRef);
     headScriptRefs.push(fullPathRef);
-    var relativePathRef = document.createElement('script');
+    const relativePathRef = document.createElement('script');
     relativePathRef.src = relativeFile;
     document.head.appendChild(relativePathRef);
     headScriptRefs.push(relativePathRef);
+  });
+
+  afterEach(() => {
+    // this ensures that spys are restored after each test
+    vi.restoreAllMocks();
   });
 
   afterAll(function () {
@@ -42,32 +44,30 @@ describe('get source by url', function () {
   });
 
   describe(', Modern Browser Scenarios', function () {
-    var currentScriptSpy;
+    let currentScriptSpy;
 
     describe(', registerScript called with a full path', function () {
       describe(', getSourceByUrl called with a full path,', function () {
         beforeEach(function () {
-          currentScriptSpy = spyOnProperty(
-            document,
-            'currentScript',
-            'get'
-          ).and.returnValue({
-            src: fullFileUrl,
-            getAttribute: function (key) {
-              return { src: fullFileUrl }[key]; // only src supported
-            }
-          });
-
-          loadScriptSpy = jasmine
-            .createSpy('load-script')
-            .and.callFake(function () {
-              // files written out by forge will sometimes provide a relative url
-              _satellite.__registerScript(fullFileUrl, 'script code');
-              return Promise.resolve();
+          currentScriptSpy = vi
+            .spyOn(document, 'currentScript', 'get')
+            .mockReturnValue({
+              src: fullFileUrl,
+              getAttribute: function (key) {
+                return { src: fullFileUrl }[key]; // only src supported
+              }
             });
 
-          getSourceUrlCode = getSourceUrlCodeInjector({
-            '@adobe/reactor-load-script': loadScriptSpy
+          loadScriptSpy = vi.fn().mockImplementation(function () {
+            // files written out by forge will sometimes provide a relative url
+            window.window._satellite.__registerScript(fullFileUrl, 'script code');
+            return Promise.resolve();
+          });
+
+          getSourceUrlCode = injectGetSourceByUrl({
+            loadScript: loadScriptSpy,
+            window,
+            Promise
           });
         });
 
@@ -79,154 +79,26 @@ describe('get source by url', function () {
           expect(currentScriptSpy).toHaveBeenCalled();
         });
 
-        it('returns a promise that once fulfilled returns the code', function (done) {
-          getSourceUrlCode(fullFileUrl).then(function (code) {
-            expect(code).toBe('script code');
-            expect(currentScriptSpy).toHaveBeenCalled();
-            done();
-          });
-        });
-
-        it('returns undefined when the script cannot be loaded', function (done) {
-          var loadScriptSpy = jasmine
-            .createSpy('load-script')
-            .and.callFake(function () {
-              return Promise.reject();
-            });
-
-          var getSourceUrlCode = getSourceUrlCodeInjector({
-            '@adobe/reactor-load-script': loadScriptSpy
-          });
-
-          getSourceUrlCode(fullFileUrl).then(function (code) {
-            expect(code).toBeUndefined();
-            expect(currentScriptSpy).not.toHaveBeenCalled();
-            done();
-          });
-        });
-      });
-    });
-
-    describe(', registerScript called with a partial path', function () {
-      describe(', getSourceByUrl called with a partial path,', function () {
-        beforeEach(function () {
-          currentScriptSpy = spyOnProperty(
-            document,
-            'currentScript',
-            'get'
-          ).and.returnValue({
-            src: 'https://somedomain.com' + relativeFile,
-            getAttribute: function (key) {
-              return { src: relativeFile }[key]; // only src supported
-            }
-          });
-
-          loadScriptSpy = jasmine
-            .createSpy('load-script')
-            .and.callFake(function () {
-              // files written out by forge will sometimes provide a relative url
-              _satellite.__registerScript(relativeFile, 'script code');
-              return Promise.resolve();
-            });
-
-          getSourceUrlCode = getSourceUrlCodeInjector({
-            '@adobe/reactor-load-script': loadScriptSpy
-          });
-        });
-
-        it('loads the script containing the script only once', function () {
-          getSourceUrlCode(relativeFile);
-          getSourceUrlCode(relativeFile);
-
-          expect(loadScriptSpy).toHaveBeenCalledTimes(1);
+        it('returns a promise that once fulfilled returns the code', async function () {
+          const code = await getSourceUrlCode(fullFileUrl);
+          expect(code).toBe('script code');
           expect(currentScriptSpy).toHaveBeenCalled();
         });
 
-        it('returns a promise that once fulfilled returns the code', function (done) {
-          getSourceUrlCode(relativeFile).then(function (code) {
-            expect(code).toBe('script code');
-            expect(currentScriptSpy).toHaveBeenCalled();
-            done();
-          });
-        });
-
-        it('returns undefined when the script cannot be loaded', function (done) {
-          var loadScriptSpy = jasmine
-            .createSpy('load-script')
-            .and.callFake(function () {
-              return Promise.reject();
-            });
-
-          var getSourceUrlCode = getSourceUrlCodeInjector({
-            '@adobe/reactor-load-script': loadScriptSpy
+        it('returns undefined when the script cannot be loaded', async function () {
+          const loadScriptSpy = vi.fn().mockImplementation(function () {
+            return Promise.reject();
           });
 
-          getSourceUrlCode(fullFileUrl).then(function (code) {
-            expect(code).toBeUndefined();
-            expect(currentScriptSpy).not.toHaveBeenCalled();
-            done();
-          });
-        });
-      });
-
-      describe(', getSourceByUrl called with full url,', function () {
-        beforeEach(function () {
-          currentScriptSpy = spyOnProperty(
-            document,
-            'currentScript',
-            'get'
-          ).and.returnValue({
-            src: fullFileUrl,
-            getAttribute: function (key) {
-              return { src: fullFileUrl }[key]; // only src supported
-            }
+          const getSourceUrlCode = injectGetSourceByUrl({
+            loadScript: loadScriptSpy,
+            window,
+            Promise
           });
 
-          loadScriptSpy = jasmine
-            .createSpy('load-script')
-            .and.callFake(function () {
-              // files written out by forge will sometimes provide a relative url
-              _satellite.__registerScript(filePath, 'script code');
-              return Promise.resolve();
-            });
-
-          getSourceUrlCode = getSourceUrlCodeInjector({
-            '@adobe/reactor-load-script': loadScriptSpy
-          });
-        });
-
-        it('loads the script containing the script only once', function () {
-          getSourceUrlCode(fullFileUrl);
-          getSourceUrlCode(fullFileUrl);
-
-          expect(loadScriptSpy).toHaveBeenCalledTimes(1);
-          expect(currentScriptSpy).toHaveBeenCalled();
-        });
-
-        it('returns a promise that once fulfilled returns the code', function (done) {
-          getSourceUrlCode(fullFileUrl).then(function (code) {
-            expect(code).toBe('script code');
-            expect(currentScriptSpy).toHaveBeenCalled();
-            done();
-          });
-        });
-
-        it('returns undefined when the script cannot be loaded', function (done) {
-          var loadScriptSpy = jasmine
-            .createSpy('load-script')
-            .and.callFake(function () {
-              return Promise.reject();
-            });
-
-          var getSourceUrlCode = getSourceUrlCodeInjector({
-            '@adobe/reactor-load-script': loadScriptSpy
-          });
-
-          getSourceUrlCode(fullFileUrl).then(function (code) {
-            expect(code).toBeUndefined();
-            expect(currentScriptSpy).not.toHaveBeenCalled();
-            done();
-          });
+          const code = await getSourceUrlCode(fullFileUrl);
+          expect(code).toBeUndefined();
+          expect(currentScriptSpy).not.toHaveBeenCalled();
         });
       });
     });
@@ -236,16 +108,16 @@ describe('get source by url', function () {
     describe(', registerScript called with a full path', function () {
       describe(', getSourceByUrl called with a full path,', function () {
         beforeEach(function () {
-          loadScriptSpy = jasmine
-            .createSpy('load-script')
-            .and.callFake(function () {
-              // files written out by forge will sometimes provide a relative url
-              _satellite.__registerScript(fullFileUrl, 'script code');
-              return Promise.resolve();
-            });
+          loadScriptSpy = vi.fn().mockImplementation(function () {
+            // files written out by forge will sometimes provide a relative url
+            window._satellite.__registerScript(fullFileUrl, 'script code');
+            return Promise.resolve();
+          });
 
-          getSourceUrlCode = getSourceUrlCodeInjector({
-            '@adobe/reactor-load-script': loadScriptSpy
+          getSourceUrlCode = injectGetSourceByUrl({
+            loadScript: loadScriptSpy,
+            window,
+            Promise
           });
         });
 
@@ -256,45 +128,42 @@ describe('get source by url', function () {
           expect(loadScriptSpy).toHaveBeenCalledTimes(1);
         });
 
-        it('returns a promise that once fulfilled returns the code', function (done) {
-          getSourceUrlCode(fullFileUrl).then(function (code) {
-            expect(code).toBe('script code');
-            done();
-          });
+        it('returns a promise that once fulfilled returns the code', async function () {
+          const code = await getSourceUrlCode(fullFileUrl);
+          expect(code).toBe('script code');
         });
 
-        it('returns undefined when the script cannot be loaded', function (done) {
-          var loadScriptSpy = jasmine
-            .createSpy('load-script')
-            .and.callFake(function () {
-              return Promise.reject();
-            });
-
-          var getSourceUrlCode = getSourceUrlCodeInjector({
-            '@adobe/reactor-load-script': loadScriptSpy
+        it('returns undefined when the script cannot be loaded', async function () {
+          const loadScriptSpy = vi.fn().mockImplementation(function () {
+            return Promise.reject();
           });
 
-          getSourceUrlCode(fullFileUrl).then(function (code) {
-            expect(code).toBeUndefined();
-            done();
+          const getSourceUrlCode = injectGetSourceByUrl({
+            loadScript: loadScriptSpy,
+            window,
+            Promise
           });
+
+          const code = await getSourceUrlCode(fullFileUrl);
+          expect(code).toBeUndefined();
         });
       });
     });
 
+    // in IE there is no document.currentScript, so it uses the regex pattern to find the script
     describe(', registerScript called with a partial path', function () {
       describe(', getSourceByUrl called with a partial path,', function () {
         beforeEach(function () {
-          loadScriptSpy = jasmine
-            .createSpy('load-script')
-            .and.callFake(function () {
-              // files written out by forge will sometimes provide a relative url
-              _satellite.__registerScript(relativeFile, 'script code');
-              return Promise.resolve();
-            });
+          loadScriptSpy = vi.fn().mockImplementation(function () {
+            // files written out by forge will sometimes provide a relative url
+            window._satellite.__registerScript(relativeFile, 'script code');
+            return Promise.resolve();
+          });
 
-          getSourceUrlCode = getSourceUrlCodeInjector({
-            '@adobe/reactor-load-script': loadScriptSpy
+          getSourceUrlCode = injectGetSourceByUrl({
+            loadScript: loadScriptSpy,
+            window,
+            Promise
           });
         });
 
@@ -305,43 +174,40 @@ describe('get source by url', function () {
           expect(loadScriptSpy).toHaveBeenCalledTimes(1);
         });
 
-        it('returns a promise that once fulfilled returns the code', function (done) {
+        it('returns a promise that once fulfilled returns the code', async function () {
           getSourceUrlCode(relativeFile).then(function (code) {
             expect(code).toBe('script code');
-            done();
           });
         });
 
-        it('returns undefined when the script cannot be loaded', function (done) {
-          var loadScriptSpy = jasmine
-            .createSpy('load-script')
-            .and.callFake(function () {
-              return Promise.reject();
-            });
-
-          var getSourceUrlCode = getSourceUrlCodeInjector({
-            '@adobe/reactor-load-script': loadScriptSpy
+        it('returns undefined when the script cannot be loaded', async function () {
+          const loadScriptSpy = vi.fn().mockImplementation(function () {
+            return Promise.reject();
           });
 
-          getSourceUrlCode(fullFileUrl).then(function (code) {
-            expect(code).toBeUndefined();
-            done();
+          const getSourceUrlCode = injectGetSourceByUrl({
+            loadScript: loadScriptSpy,
+            window,
+            Promise
           });
+
+          const code = await getSourceUrlCode(fullFileUrl);
+          expect(code).toBeUndefined();
         });
       });
 
       describe(', getSourceByUrl called with full url,', function () {
         beforeEach(function () {
-          loadScriptSpy = jasmine
-            .createSpy('load-script')
-            .and.callFake(function () {
-              // files written out by forge will sometimes provide a relative url
-              _satellite.__registerScript(filePath, 'script code');
-              return Promise.resolve();
-            });
+          loadScriptSpy = vi.fn().mockImplementation(function () {
+            // files written out by forge will sometimes provide a relative url
+            window._satellite.__registerScript(filePath, 'script code');
+            return Promise.resolve();
+          });
 
-          getSourceUrlCode = getSourceUrlCodeInjector({
-            '@adobe/reactor-load-script': loadScriptSpy
+          getSourceUrlCode = injectGetSourceByUrl({
+            loadScript: loadScriptSpy,
+            window,
+            Promise
           });
         });
 
@@ -352,28 +218,24 @@ describe('get source by url', function () {
           expect(loadScriptSpy).toHaveBeenCalledTimes(1);
         });
 
-        it('returns a promise that once fulfilled returns the code', function (done) {
-          getSourceUrlCode(fullFileUrl).then(function (code) {
-            expect(code).toBe('script code');
-            done();
-          });
+        it('returns a promise that once fulfilled returns the code', async function () {
+          const code = await getSourceUrlCode(fullFileUrl);
+          expect(code).toBe('script code');
         });
 
-        it('returns undefined when the script cannot be loaded', function (done) {
-          var loadScriptSpy = jasmine
-            .createSpy('load-script')
-            .and.callFake(function () {
-              return Promise.reject();
-            });
-
-          var getSourceUrlCode = getSourceUrlCodeInjector({
-            '@adobe/reactor-load-script': loadScriptSpy
+        it('returns undefined when the script cannot be loaded', async function () {
+          const loadScriptSpy = vi.fn().mockImplementation(function () {
+            return Promise.reject();
           });
 
-          getSourceUrlCode(fullFileUrl).then(function (code) {
-            expect(code).toBeUndefined();
-            done();
+          const getSourceUrlCode = injectGetSourceByUrl({
+            loadScript: loadScriptSpy,
+            window,
+            Promise
           });
+
+          const code = await getSourceUrlCode(fullFileUrl);
+          expect(code).toBeUndefined();
         });
       });
     });

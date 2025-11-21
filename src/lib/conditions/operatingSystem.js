@@ -10,18 +10,31 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import clientInfo from './helpers/clientInfo.js'
+import validateInjectedParams from '../../helpers/validate-injected-params.js'
 
-var clientInfo = require('./helpers/clientInfo');
+function injectOperatingSystemCondition({ clientInfo }) {
+  /**
+   * Operating system condition. Determines if the actual operating system matches at least one
+   * acceptable operating system.
+   * @param {Object} settings Condition settings.
+   * @param {string[]} settings.operatingSystems An array of acceptable operating
+   * systems.
+   * @returns {boolean}
+   */
+  return function operatingSystemCondition(settings) {
+    return settings.operatingSystems.indexOf(clientInfo.os) !== -1;
+  };
+}
 
-/**
- * Operating system condition. Determines if the actual operating system matches at least one
- * acceptable operating system.
- * @param {Object} settings Condition settings.
- * @param {string[]} settings.operatingSystems An array of acceptable operating
- * systems.
- * @returns {boolean}
- */
-module.exports = function (settings) {
-  return settings.operatingSystems.indexOf(clientInfo.os) !== -1;
-};
+const validateInjection = validateInjectedParams(
+  injectOperatingSystemCondition
+);
+
+export default validateInjection({
+  clientInfo
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectOperatingSystemCondition };
+/* END.TESTS_ONLY */

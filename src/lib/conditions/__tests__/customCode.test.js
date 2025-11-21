@@ -10,29 +10,28 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
-
-var conditionDelegate = require('../customCode');
+import conditionDelegate from '../customCode.js'
+import { vi } from 'vitest';
 
 describe('custom code condition delegate', function () {
   it('should run a user-defined function', function () {
-    var settings = {
+    const settings = {
       source: function () {
         return true;
       }
     };
 
-    var event = {
+    const event = {
       element: {},
       target: {}
     };
 
-    spyOn(settings, 'source').and.callThrough();
+    vi.spyOn(settings, 'source');
     conditionDelegate(settings, event);
 
     expect(settings.source.calls.first()).toEqual({
       object: event.element,
-      invocationOrder: jasmine.any(Number),
+      invocationOrder: expect.any(Number),
       args: [event, event.target],
       returnValue: true
     });

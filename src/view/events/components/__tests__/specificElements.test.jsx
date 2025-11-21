@@ -11,9 +11,9 @@
  ****************************************************************************************/
 
 import { fireEvent, render, screen } from '@testing-library/react';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import SpecificElements, { formConfig } from '../specificElements';
-import bootstrap from '../../../bootstrap';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import SpecificElements, { formConfig } from '../specificElements.jsx'
+import bootstrap from '../../../bootstrap.jsx'
 
 // react-testing-library element selectors
 const pageElements = {
@@ -58,7 +58,7 @@ describe('specificElements', () => {
       }
     });
 
-    expect(pageElements.getPropertiesCheckbox().checked).toBeTrue();
+    expect(pageElements.getPropertiesCheckbox().checked).toBe(true);
     expect(screen.getByTestId('element-properties-editor')).toBeTruthy();
 
     expect(extensionBridge.validate()).toBe(true);
@@ -72,7 +72,7 @@ describe('specificElements', () => {
     });
 
     expect(pageElements.getElementSelectorTextBox().value).toBe('.foo');
-    expect(pageElements.getPropertiesCheckbox().checked).toBeFalse();
+    expect(pageElements.getPropertiesCheckbox().checked).toBe(false);
     expect(screen.queryByTestId('element-properties-editor')).toBeFalsy();
   });
 
@@ -99,7 +99,7 @@ describe('specificElements', () => {
     fireEvent.blur(pageElements.getElementSelectorTextBox());
     expect(
       pageElements.getElementSelectorTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     expect(extensionBridge.validate()).toBe(false);
   });

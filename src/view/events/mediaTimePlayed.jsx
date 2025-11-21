@@ -12,16 +12,16 @@
 
 import React from 'react';
 import { Flex, TextField, Picker, Item } from '@adobe/react-spectrum';
-import WrappedField from '../components/wrappedField';
+import WrappedField from '../components/wrappedField.jsx'
 import ElementFilter, {
   formConfig as elementFilterFormConfig
 } from './components/elementFilter';
 import AdvancedEventOptions, {
   formConfig as advancedEventOptionsFormConfig
 } from './components/advancedEventOptions';
-import { isDataElementToken, isNumberLikeInRange } from '../utils/validators';
-import mergeFormConfigs from '../utils/mergeFormConfigs';
-import NoWrapText from '../components/noWrapText';
+import { isDataElementToken, isNumberLikeInRange } from '../utils/validators.js'
+import mergeFormConfigs from '../utils/mergeFormConfigs.js'
+import NoWrapText from '../components/noWrapText.jsx'
 
 const timePlayedUnit = {
   SECOND: 'second',

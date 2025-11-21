@@ -11,9 +11,9 @@ governing permissions and limitations under the License.
 
 import React from 'react';
 import { View, Flex, TextField } from '@adobe/react-spectrum';
-import WrappedField from './wrappedField';
-import RegexToggle from './regexToggle';
-import NoWrapText from './noWrapText';
+import WrappedField from './wrappedField.jsx'
+import RegexToggle from './regexToggle.jsx'
+import NoWrapText from './noWrapText.jsx'
 
 export const DEFAULT_BLANK_SPACE_PROPS = {
   width: 'size-1600'

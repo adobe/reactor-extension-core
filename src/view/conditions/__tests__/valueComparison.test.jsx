@@ -15,12 +15,14 @@ import userEvent from '@testing-library/user-event';
 import {
   clickSpectrumOption,
   changePickerValue
-} from '@test-helpers/react-testing-library';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import ValueComparison, { formConfig } from '../valueComparison';
-import bootstrap from '../../bootstrap';
+} from '@test-helpers/react-testing-library.jsx';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import ValueComparison, { formConfig } from '../valueComparison.jsx'
+import bootstrap from '../../bootstrap.jsx'
+import { vi } from 'vitest';
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 1540000;
+// Note: Previously had jasmine.DEFAULT_TIMEOUT_INTERVAL = 1540000
+// If timeout issues occur, add: test.setTimeout(1540000) or configure in vitest.config.js
 
 // react-testing-library element selectors
 const pageElements = {
@@ -90,7 +92,7 @@ describe('value comparison condition view', () => {
             within(pageElements.getOperatorDropdownTrigger()).getByText(text)
           ).toBeTruthy();
           expect(pageElements.getRightOperandTextBox().value).toBe('0');
-          expect(pageElements.getCaseInsensitiveCheckBox().checked).toBeTrue();
+          expect(pageElements.getCaseInsensitiveCheckBox().checked).toBe(true);
         });
 
         it('sets settings from form values', async () => {
@@ -128,7 +130,7 @@ describe('value comparison condition view', () => {
           fireEvent.blur(pageElements.getLeftOperandTextBox());
           expect(
             pageElements.getLeftOperandTextBox().hasAttribute('aria-invalid')
-          ).toBeTrue();
+          ).toBe(true);
 
           expect(extensionBridge.validate()).toBe(false);
 
@@ -136,7 +138,7 @@ describe('value comparison condition view', () => {
           // see if a value equals an empty string.
           expect(
             pageElements.getRightOperandTextBox().hasAttribute('aria-invalid')
-          ).toBeFalse();
+          ).toBe(false);
         });
       });
     });
@@ -183,7 +185,7 @@ describe('value comparison condition view', () => {
             within(pageElements.getOperatorDropdownTrigger()).getByText(text)
           ).toBeTruthy();
           expect(pageElements.getRightOperandTextBox().value).toBe('bar');
-          expect(pageElements.getCaseInsensitiveCheckBox().checked).toBeTrue();
+          expect(pageElements.getCaseInsensitiveCheckBox().checked).toBe(true);
         });
 
         it('sets form values from settings (data element version)', () => {
@@ -203,7 +205,7 @@ describe('value comparison condition view', () => {
             within(pageElements.getOperatorDropdownTrigger()).getByText(text)
           ).toBeTruthy();
           expect(pageElements.getRightOperandTextBox().value).toBe('%bar%');
-          expect(pageElements.getCaseInsensitiveCheckBox().checked).toBeTrue();
+          expect(pageElements.getCaseInsensitiveCheckBox().checked).toBe(true);
         });
 
         it('sets settings from form values (non-data element version)', async () => {
@@ -261,10 +263,10 @@ describe('value comparison condition view', () => {
 
           expect(
             pageElements.getLeftOperandTextBox().hasAttribute('aria-invalid')
-          ).toBeTrue();
+          ).toBe(true);
           expect(
             pageElements.getRightOperandTextBox().hasAttribute('aria-invalid')
-          ).toBeTrue();
+          ).toBe(true);
         });
       });
     });
@@ -372,10 +374,10 @@ describe('value comparison condition view', () => {
 
             expect(
               pageElements.getLeftOperandTextBox().hasAttribute('aria-invalid')
-            ).toBeTrue();
+            ).toBe(true);
             expect(
               pageElements.getRightOperandTextBox().hasAttribute('aria-invalid')
-            ).toBeTrue();
+            ).toBe(true);
           });
         });
       });
@@ -442,7 +444,7 @@ describe('value comparison condition view', () => {
             expect(extensionBridge.validate()).toBe(false);
             expect(
               pageElements.getLeftOperandTextBox().hasAttribute('aria-invalid')
-            ).toBeTrue();
+            ).toBe(true);
           });
         });
       });
@@ -465,7 +467,7 @@ describe('value comparison condition view', () => {
   });
 
   it('The left operand can trigger the data element modal', () => {
-    spyOn(extensionBridge, 'openDataElementSelector').and.callFake(() => ({
+    vi.spyOn(extensionBridge, 'openDataElementSelector').mockImplementation(() => ({
       then(resolve) {
         resolve('%foo bar%');
       }
@@ -478,7 +480,7 @@ describe('value comparison condition view', () => {
   });
 
   it('The right operand can trigger the data element modal', () => {
-    spyOn(extensionBridge, 'openDataElementSelector').and.callFake(() => ({
+    vi.spyOn(extensionBridge, 'openDataElementSelector').mockImplementation(() => ({
       then(resolve) {
         resolve('%foo bar%');
       }

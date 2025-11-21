@@ -11,8 +11,8 @@
  ****************************************************************************************/
 
 import React from 'react';
-import EditorButton from '../components/editorButton';
-import WrappedField from '../components/wrappedField';
+import EditorButton from '../components/editorButton.jsx'
+import WrappedField from '../components/wrappedField.jsx'
 
 const CustomCode = () => (
   <>

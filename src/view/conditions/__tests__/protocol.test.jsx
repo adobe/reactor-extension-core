@@ -11,9 +11,9 @@
  ****************************************************************************************/
 
 import { fireEvent, render, screen } from '@testing-library/react';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import Protocol, { formConfig } from '../protocol';
-import bootstrap from '../../bootstrap';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import Protocol, { formConfig } from '../protocol.jsx'
+import bootstrap from '../../bootstrap.jsx'
 
 // react-testing-library element selectors
 const pageElements = {
@@ -38,7 +38,7 @@ describe('protocol condition view', () => {
   });
 
   it('sets http radio as checked by default', () => {
-    expect(pageElements.radioGroup.getHttp().checked).toBeTrue();
+    expect(pageElements.radioGroup.getHttp().checked).toBe(true);
   });
 
   it('sets form values from settings', () => {
@@ -48,7 +48,7 @@ describe('protocol condition view', () => {
       }
     });
 
-    expect(pageElements.radioGroup.getHttps().checked).toBeTrue();
+    expect(pageElements.radioGroup.getHttps().checked).toBe(true);
   });
 
   it('sets settings from form values', () => {

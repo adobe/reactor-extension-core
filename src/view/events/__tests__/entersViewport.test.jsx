@@ -12,10 +12,11 @@
 
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { sharedTestingElements } from '@test-helpers/react-testing-library';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import EntersViewport, { formConfig } from '../entersViewport';
-import bootstrap from '../../bootstrap';
+import { sharedTestingElements } from '@test-helpers/react-testing-library.jsx';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import EntersViewport, { formConfig } from '../entersViewport.jsx'
+import bootstrap from '../../bootstrap.jsx'
+import { vi } from 'vitest';
 
 // react-testing-library element selectors
 const pageElements = {
@@ -73,13 +74,13 @@ describe('enters viewport event view', () => {
 
     expect(
       pageElements.delayWhenEnters.radioGroup.getAfterDelay().checked
-    ).toBeTrue();
+    ).toBe(true);
     expect(pageElements.delayWhenEnters.getDelayTextBox().value).toBe('100');
 
     expect(
       pageElements.frequency.radioGroup.getFirstTime().checked
-    ).toBeFalse();
-    expect(pageElements.frequency.radioGroup.getEveryTime().checked).toBeTrue();
+    ).toBe(false);
+    expect(pageElements.frequency.radioGroup.getEveryTime().checked).toBe(true);
   });
 
   it('sets form values from settings (data element delay)', () => {
@@ -96,15 +97,15 @@ describe('enters viewport event view', () => {
 
     expect(
       pageElements.delayWhenEnters.radioGroup.getAfterDelay().checked
-    ).toBeTrue();
+    ).toBe(true);
     expect(pageElements.delayWhenEnters.getDelayTextBox().value).toBe(
       '%Data Element 1%'
     );
 
     expect(
       pageElements.frequency.radioGroup.getFirstTime().checked
-    ).toBeFalse();
-    expect(pageElements.frequency.radioGroup.getEveryTime().checked).toBeTrue();
+    ).toBe(false);
+    expect(pageElements.frequency.radioGroup.getEveryTime().checked).toBe(true);
   });
 
   it('sets settings from form values', () => {
@@ -122,7 +123,7 @@ describe('enters viewport event view', () => {
       sharedTestingElements.elementsMatching
         .getCssSelectorTextBox()
         .hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
 
     fireEvent.click(pageElements.delayWhenEnters.radioGroup.getAfterDelay());
     fireEvent.focus(pageElements.delayWhenEnters.getDelayTextBox());
@@ -132,7 +133,7 @@ describe('enters viewport event view', () => {
       pageElements.delayWhenEnters
         .getDelayTextBox()
         .hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
 
     fireEvent.click(pageElements.frequency.radioGroup.getEveryTime());
 
@@ -154,7 +155,7 @@ describe('enters viewport event view', () => {
       sharedTestingElements.elementsMatching
         .getCssSelectorTextBox()
         .hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     fireEvent.click(pageElements.delayWhenEnters.radioGroup.getAfterDelay());
     fireEvent.focus(pageElements.delayWhenEnters.getDelayTextBox());
@@ -164,7 +165,7 @@ describe('enters viewport event view', () => {
       pageElements.delayWhenEnters
         .getDelayTextBox()
         .hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
   });
 
   it('sets validation error when the number < 1', () => {
@@ -177,11 +178,11 @@ describe('enters viewport event view', () => {
       pageElements.delayWhenEnters
         .getDelayTextBox()
         .hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
   });
 
   it('The delayWhenEnters input supports opening the data element modal', () => {
-    spyOn(extensionBridge, 'openDataElementSelector').and.callFake(() => {
+    vi.spyOn(extensionBridge, 'openDataElementSelector').mockImplementation(() => {
       return Promise.resolve();
     });
 
@@ -204,7 +205,7 @@ describe('enters viewport event view', () => {
       pageElements.delayWhenEnters
         .getDelayTextBox()
         .hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
 
     expect(extensionBridge.getSettings().delay).toBe('%Data Element 1%');
   });

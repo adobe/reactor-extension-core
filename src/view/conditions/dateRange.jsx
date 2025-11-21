@@ -15,8 +15,8 @@ import Provider from '@react/react-spectrum/Provider';
 import { ComboBox, Item, Flex, Text } from '@adobe/react-spectrum';
 import moment from 'moment-timezone';
 import Datepicker from '@react/react-spectrum/Datepicker';
-import InfoTip from '../components/infoTip';
-import WrappedField from '../components/wrappedField';
+import InfoTip from '../components/infoTip.jsx'
+import WrappedField from '../components/wrappedField.jsx'
 
 import './dateRange.styl';
 

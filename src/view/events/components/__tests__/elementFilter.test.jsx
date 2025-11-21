@@ -11,10 +11,10 @@
  ****************************************************************************************/
 
 import { fireEvent, render, screen } from '@testing-library/react';
-import { sharedTestingElements } from '@test-helpers/react-testing-library';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import ElementFilter, { formConfig } from '../elementFilter';
-import bootstrap from '../../../bootstrap';
+import { sharedTestingElements } from '@test-helpers/react-testing-library.jsx';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import ElementFilter, { formConfig } from '../elementFilter.jsx'
+import bootstrap from '../../../bootstrap.jsx'
 
 // react-testing-library element selectors
 const pageElements = {
@@ -49,13 +49,13 @@ describe('elementFilter', () => {
     expect(
       sharedTestingElements.elementsMatching.getCssSelectorTextBox().value
     ).toBe('.foo');
-    expect(pageElements.radioGroup.getSpecificElements().checked).toBeTrue();
+    expect(pageElements.radioGroup.getSpecificElements().checked).toBe(true);
   });
 
   it('updates view properly when elementSelector is not provided', () => {
     extensionBridge.init({ settings: {} });
 
-    expect(pageElements.radioGroup.getAnyElement().checked).toBeTrue();
+    expect(pageElements.radioGroup.getAnyElement().checked).toBe(true);
     expect(
       sharedTestingElements.elementsMatching.queryForCssSelectorTextBox()
     ).toBeNull();
@@ -95,7 +95,7 @@ describe('elementFilter', () => {
       sharedTestingElements.elementsMatching
         .getCssSelectorTextBox()
         .hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
   });
 
   it('excludes specificElements errors if any element radio is selected', () => {

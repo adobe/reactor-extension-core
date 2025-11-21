@@ -15,10 +15,11 @@ import userEvent from '@testing-library/user-event';
 import {
   clickSpectrumOption,
   sharedTestingElements
-} from '@test-helpers/react-testing-library';
-import createExtensionBridge from '@test-helpers/createExtensionBridge';
-import MediaTimePlayed, { formConfig } from '../mediaTimePlayed';
-import bootstrap from '../../bootstrap';
+} from '@test-helpers/react-testing-library.jsx';
+import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
+import MediaTimePlayed, { formConfig } from '../mediaTimePlayed.jsx'
+import bootstrap from '../../bootstrap.jsx'
+import { vi } from 'vitest';
 
 // react-testing-library element selectors
 const pageElements = {
@@ -120,19 +121,19 @@ describe('time played event view', () => {
       sharedTestingElements.elementsMatching
         .getCssSelectorTextBox()
         .hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     fireEvent.focus(pageElements.triggerWhen.getTextBox());
     fireEvent.blur(pageElements.triggerWhen.getTextBox());
     expect(
       pageElements.triggerWhen.getTextBox().hasAttribute('aria-invalid')
-    ).toBeTrue();
+    ).toBe(true);
 
     expect(extensionBridge.validate()).toBe(false);
   });
 
   it('The media amount input supports opening the data element modal', () => {
-    spyOn(extensionBridge, 'openDataElementSelector').and.callFake(() => {
+    vi.spyOn(extensionBridge, 'openDataElementSelector').mockImplementation(() => {
       return Promise.resolve();
     });
 
@@ -147,7 +148,7 @@ describe('time played event view', () => {
 
     expect(
       pageElements.triggerWhen.getTextBox().hasAttribute('aria-invalid')
-    ).toBeFalse();
+    ).toBe(false);
 
     expect(extensionBridge.getSettings().amount).toBe('%Data Element 1%');
   });

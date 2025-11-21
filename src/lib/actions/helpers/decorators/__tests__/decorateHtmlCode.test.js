@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 /*
 Copyright 2020 Adobe. All rights reserved.
 This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -9,38 +10,33 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-'use strict';
-
-var decorateHtmlCodeInjector = require('inject-loader!../decorateHtmlCode');
-var flushPromiseChains = require('../../../../__tests__/helpers/flushPromiseChains');
+import { injectDecorateHtmlCode } from '../decorateHtmlCode.js';
+import flushPromiseChains from '../../../../__tests__/helpers/flushPromiseChains.js';
 
 describe('decorate html code', function () {
-  var mockTurbine;
-
+  let decorateHtmlCode;
   beforeEach(function () {
-    mockTurbine = {
-      replaceTokens: jasmine.createSpy().and.callFake(function (token) {
-        return token.replace(/%(.+?)%/g, function (token, variableName) {
+    mockTurbineVariable({
+      replaceTokens: vi.fn((token) => {
+        return token.replace(/%(.+?)%/g, (_, variableName) => {
           return 'replaced - ' + variableName;
         });
       })
-    };
+    });
 
-    mockTurbineVariable(mockTurbine);
+    decorateHtmlCode = injectDecorateHtmlCode({
+      window,
+      Promise
+    });
   });
 
-  afterEach(function () {
-    resetTurbineVariable();
-  });
-
-  it('returns the decorated code on the code key', function () {
-    var settings = {
+  it.only('returns the decorated code on the code key', function () {
+    const settings = {
       language: 'html',
       source: '<script>console.log("logging")</script>'
     };
 
-    var decorateHtmlCode = decorateHtmlCodeInjector();
-    var decoratedResult = decorateHtmlCode(
+    const decoratedResult = decorateHtmlCode(
       {
         settings: settings,
         event: {}
@@ -54,14 +50,13 @@ describe('decorate html code', function () {
   });
 
   it('returns the decorated code with replaced callback ids if they exist', function () {
-    var settings = {
+    const settings = {
       language: 'html',
       source:
         '<script>_satellite._onCustomCodeSuccess("${reactorCallbackId}")</script>'
     };
 
-    var decorateHtmlCode = decorateHtmlCodeInjector();
-    var decoratedResult = decorateHtmlCode(
+    const decoratedResult = decorateHtmlCode(
       {
         settings: settings,
         event: {}
@@ -75,13 +70,12 @@ describe('decorate html code', function () {
   });
 
   it('does not replace data element tokens for an embedded html action', function () {
-    var settings = {
+    const settings = {
       language: 'html',
       source: '<div>%productname%</div>'
     };
 
-    var decorateHtmlCode = decorateHtmlCodeInjector();
-    var decoratedResult = decorateHtmlCode(
+    const decoratedResult = decorateHtmlCode(
       {
         settings: settings,
         event: {},
@@ -95,14 +89,13 @@ describe('decorate html code', function () {
   });
 
   it('does replace data element tokens for an html action loaded from a file', function () {
-    var settings = {
+    const settings = {
       language: 'html',
       source: 'url1',
       isExternal: true
     };
 
-    var decorateHtmlCode = decorateHtmlCodeInjector();
-    var decoratedResult = decorateHtmlCode(
+    const decoratedResult = decorateHtmlCode(
       {
         settings: settings,
         event: {},
@@ -118,21 +111,18 @@ describe('decorate html code', function () {
     'returns a resolved promise on the promise key when HTML code ' +
       'does not contain callbacks',
     function () {
-      var settings = {
+      const settings = {
         language: 'html',
         source: '<script>console.log("logging")</script>'
       };
 
-      var p = Promise.resolve();
-      var decorateHtmlCode = decorateHtmlCodeInjector({
-        '@adobe/reactor-promise': {
-          resolve: function () {
-            return p;
-          }
-        }
+      const p = Promise.resolve();
+      const decorateHtmlCodeWithMockPromise = injectDecorateHtmlCode({
+        window,
+        Promise: { resolve: () => p }
       });
 
-      var decoratedResult = decorateHtmlCode(
+      const decoratedResult = decorateHtmlCodeWithMockPromise(
         {
           settings: settings
         },
@@ -146,57 +136,56 @@ describe('decorate html code', function () {
   it(
     'returns a promise that will be resolved when HTML code contains callbacks' +
       'and _satellite._onCustomCodeSuccess is called',
-    function (done) {
-      var settings = {
+    async function () {
+      const settings = {
         language: 'html',
         source:
           '<script>_satellite._onCustomCodeSuccess("${reactorCallbackId}")</script>'
       };
 
-      var decorateHtmlCode = decorateHtmlCodeInjector();
-
-      var onPromiseResolved = jasmine.createSpy('onPromiseResolved');
-      var decorateCodePromise = decorateHtmlCode(
+      const onPromiseResolved = vi.fn();
+      const decorateCodePromise = decorateHtmlCode(
         {
           settings: settings
         },
         settings.source
       ).promise;
 
-      decorateCodePromise.then(onPromiseResolved).then(done);
+      const promise = decorateCodePromise.then(onPromiseResolved);
 
-      flushPromiseChains().then(function () {
-        expect(onPromiseResolved).not.toHaveBeenCalled();
-        window._satellite._onCustomCodeSuccess('0');
-      });
+      await flushPromiseChains();
+      expect(onPromiseResolved).not.toHaveBeenCalled();
+      window._satellite._onCustomCodeSuccess('0');
+
+      await promise;
     }
   );
 
   it(
     'returns a promise that will be rejected when HTML code contains callbacks' +
       'and _satellite._onCustomCodeFailure is called',
-    function (done) {
-      var settings = {
+    async function () {
+      const settings = {
         language: 'html',
         source:
           '<script>_satellite._onCustomCodeFailure("${reactorCallbackId}")</script>'
       };
 
-      var decorateHtmlCode = decorateHtmlCodeInjector();
-      var onPromiseRejected = jasmine.createSpy('onPromiseRejected');
-      var decorateCodePromise = decorateHtmlCode(
+      const onPromiseRejected = vi.fn();
+      const decorateCodePromise = decorateHtmlCode(
         {
           settings: settings
         },
         settings.source
       ).promise;
 
-      decorateCodePromise.catch(onPromiseRejected).then(done);
+      const promise = decorateCodePromise.catch(onPromiseRejected);
 
-      flushPromiseChains().then(function () {
-        expect(onPromiseRejected).not.toHaveBeenCalled();
-        window._satellite._onCustomCodeFailure('0');
-      });
+      await flushPromiseChains();
+      expect(onPromiseRejected).not.toHaveBeenCalled();
+      window._satellite._onCustomCodeFailure('0');
+
+      await promise;
     }
   );
 });

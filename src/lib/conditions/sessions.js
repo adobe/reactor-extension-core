@@ -10,23 +10,35 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import visitorTracking from '../helpers/visitorTracking.js'
+import compareNumbers from './helpers/compareNumbers.js'
+import validateInjectedParams from '../../helpers/validate-injected-params.js'
 
-var visitorTracking = require('../helpers/visitorTracking');
-var compareNumbers = require('./helpers/compareNumbers');
+function injectSessions({ visitorTracking, compareNumbers }) {
+  /**
+   * Sessions condition. Determines if the number of sessions matches constraints.
+   * @param {Object} settings Condition settings.
+   * @param {number} settings.count The number of sessions to compare against.
+   * @param {comparisonOperator} settings.operator The comparison operator to use to
+   * compare against count.
+   * @returns {boolean}
+   */
+  return function sessionsCondition(settings) {
+    return compareNumbers(
+      visitorTracking.getSessionCount(),
+      settings.operator,
+      settings.count
+    );
+  };
+}
 
-/**
- * Sessions condition. Determines if the number of sessions matches constraints.
- * @param {Object} settings Condition settings.
- * @param {number} settings.count The number of sessions to compare against.
- * @param {comparisonOperator} settings.operator The comparison operator to use to
- * compare against count.
- * @returns {boolean}
- */
-module.exports = function (settings) {
-  return compareNumbers(
-    visitorTracking.getSessionCount(),
-    settings.operator,
-    settings.count
-  );
-};
+const validateInjection = validateInjectedParams(injectSessions);
+
+export default validateInjection({
+  visitorTracking,
+  compareNumbers
+});
+
+/* START.TESTS_ONLY */
+export { validateInjection as injectSessions };
+/* END.TESTS_ONLY */

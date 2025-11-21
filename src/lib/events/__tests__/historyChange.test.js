@@ -10,18 +10,23 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import { injectHistoryChange } from '../historyChange.js';
+import { injectDebounce } from '../helpers/debounce.js';
+import { vi } from 'vitest';
 
 describe('history change event delegate', function () {
-  var delegate;
-  var origHref = window.location.href;
+  let delegate;
+  const origHref = window.location.href;
 
-  var assertTriggerCall = function (call) {
+  const assertTriggerCall = function (call) {
     expect(call.args.length).toBe(0);
   };
 
   beforeAll(function () {
-    delegate = require('../historyChange');
+    delegate = injectHistoryChange({
+      window,
+      debounce: injectDebounce({ window })
+    });
   });
 
   afterAll(function () {
@@ -34,52 +39,52 @@ describe('history change event delegate', function () {
     }
   });
 
-  it('triggers rule on the hash change event', function (done) {
-    var trigger = jasmine.createSpy();
+  it('triggers rule on the hash change event', async function() {
+    const trigger = vi.fn();
     delegate({}, trigger);
 
     window.location.hash = 'hashchange-' + Math.floor(Math.random() * 100);
 
     // The hashchange event seems to be triggered asynchronously by the browser.
     waitUntil(function () {
-      return trigger.calls.count() > 0;
+      return trigger.mock.calls.length > 0;
     }).then(function () {
-      expect(trigger.calls.count()).toBe(1);
-      assertTriggerCall(trigger.calls.mostRecent());
-      done();
+      expect(trigger.mock.calls.length).toBe(1);
+      assertTriggerCall(trigger.mock.lastCall);
+      
     });
   });
 
   if (window.history.pushState) {
-    it('triggers rule when pushState is called and on the popstate event', function (done) {
-      var trigger = jasmine.createSpy();
+    it('triggers rule when pushState is called and on the popstate event', async function() {
+      const trigger = vi.fn();
       delegate({}, trigger);
 
       window.history.pushState({ some: 'state' }, null, 'pushStateTest.html');
 
       waitUntil(function () {
-        return trigger.calls.count() > 0;
+        return trigger.mock.calls.length > 0;
       }).then(function () {
-        expect(trigger.calls.count()).toBe(1);
-        assertTriggerCall(trigger.calls.mostRecent());
+        expect(trigger.mock.calls.length).toBe(1);
+        assertTriggerCall(trigger.mock.lastCall);
 
         window.history.back(); // This causes the popstate event.
 
         // The popstate event seems to be triggered asynchronously by the browser.
         waitUntil(function () {
-          return trigger.calls.count() > 1;
+          return trigger.mock.calls.length > 1;
         }).then(function () {
-          expect(trigger.calls.count()).toBe(2);
-          assertTriggerCall(trigger.calls.mostRecent());
-          done();
+          expect(trigger.mock.calls.length).toBe(2);
+          assertTriggerCall(trigger.mock.lastCall);
+          
         });
       });
     });
   }
 
   if (window.history.replaceState) {
-    it('triggers rule when replaceState is called', function (done) {
-      var trigger = jasmine.createSpy();
+    it('triggers rule when replaceState is called', async function() {
+      const trigger = vi.fn();
       delegate({}, trigger);
 
       window.history.replaceState(
@@ -89,11 +94,11 @@ describe('history change event delegate', function () {
       );
 
       waitUntil(function () {
-        return trigger.calls.count() > 0;
+        return trigger.mock.calls.length > 0;
       }).then(function () {
-        expect(trigger.calls.count()).toBe(1);
-        assertTriggerCall(trigger.calls.mostRecent());
-        done();
+        expect(trigger.mock.calls.length).toBe(1);
+        assertTriggerCall(trigger.mock.lastCall);
+        
       });
     });
   }

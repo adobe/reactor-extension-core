@@ -10,14 +10,13 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import delegate from '../customCode.js';
+import { vi } from 'vitest';
 
 describe('custom code event delegate', function () {
-  var delegate = require('../customCode');
-
   it('triggers rule when custom code calls trigger', function () {
-    var trigger = jasmine.createSpy();
-    var contextualData = {
+    const trigger = vi.fn();
+    const contextualData = {
       foo: 'bar'
     };
 
@@ -30,7 +29,7 @@ describe('custom code event delegate', function () {
       trigger
     );
 
-    expect(trigger.calls.count()).toBe(1);
+    expect(trigger.mock.calls.length).toBe(1);
     expect(trigger).toHaveBeenCalledWith(contextualData);
   });
 });

@@ -10,13 +10,10 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-'use strict';
+import { injectLoadCodeSequentially } from '../loadCodeSequentially.js'
 
-var sequentiallyLoadCodePromiseInjector = require('inject-loader!../loadCodeSequentially');
-var Promise = require('@adobe/reactor-promise');
-
-var sequentiallyLoadCodePromise = sequentiallyLoadCodePromiseInjector({
-  './getSourceByUrl': function (sourceUrl) {
+const sequentiallyLoadCodePromise = injectLoadCodeSequentially({
+  getSourceByUrl: function (sourceUrl) {
     if (sourceUrl === 'url1') {
       return new Promise(function (resolve) {
         setTimeout(function () {
@@ -26,24 +23,25 @@ var sequentiallyLoadCodePromise = sequentiallyLoadCodePromiseInjector({
     } else {
       return Promise.resolve('url2 source code');
     }
-  }
+  },
+  Promise
 });
 
 describe('load code sequentially', function () {
-  it('does the correct loaded order', function (done) {
-    var loadedCode = [];
+  it('does the correct loaded order', async function() {
+    const loadedCode = [];
 
-    var action1 = sequentiallyLoadCodePromise('url1').then(function (code) {
+    const action1 = sequentiallyLoadCodePromise('url1').then(function (code) {
       loadedCode.push(code);
     });
 
-    var action2 = sequentiallyLoadCodePromise('url2').then(function (code) {
+    const action2 = sequentiallyLoadCodePromise('url2').then(function (code) {
       loadedCode.push(code);
     });
 
     Promise.all([action2, action1]).then(function () {
       expect(loadedCode).toEqual(['url1 source code', 'url2 source code']);
-      done();
+      
     });
   });
 });
