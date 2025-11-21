@@ -10,7 +10,7 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-import { injectDecorateNonGlobalJavascriptCode } from '../decorateNonGlobalJavaScriptCode.js'
+import { injectDecorateNonGlobalJavascriptCode } from '../decorateNonGlobalJavaScriptCode.js';
 
 describe('decorate non global javascript code', function () {
   it('decorates javascript action and returns it on the code key', function () {
@@ -70,7 +70,16 @@ describe('decorate non global javascript code', function () {
 
       _satellite['_runScript1'](spy);
 
-      expect(spy.mock.lastCall).toEqual({
+      const lastIndex = spy.mock.calls.length - 1;
+
+      const mostRecent = {
+        object: spy.mock.instances[lastIndex],
+        args: spy.mock.calls[lastIndex],
+        invocationOrder: expect.any(Number),
+        returnValue: spy.mock.results[lastIndex].value
+      };
+
+      expect(mostRecent).toEqual({
         object: event.element,
         args: [event, event.target, mockPromise],
         invocationOrder: expect.any(Number),
@@ -101,7 +110,7 @@ describe('decorate non global javascript code', function () {
     expect(_satellite['_runScript1']).not.toBeDefined();
   });
 
-  it('handles javascript code that returns promises that resolve', async function() {
+  it('handles javascript code that returns promises that resolve', async function () {
     const settings = {
       language: 'javascript',
       // This code here is present only for example purposes. The code is not written to the page,
@@ -121,7 +130,6 @@ describe('decorate non global javascript code', function () {
       settings.source
     ).promise.then(function (r) {
       expect(r).toBe('resolved from inside the promise');
-      
     });
 
     _satellite['_runScript1'](function (event, target, Promise) {
@@ -131,7 +139,7 @@ describe('decorate non global javascript code', function () {
     });
   });
 
-  it('handles javascript code that returns promises that reject', async function() {
+  it('handles javascript code that returns promises that reject', async function () {
     const settings = {
       language: 'javascript',
       // This code here is present only for example purposes. The code is not written to the page,
@@ -151,7 +159,6 @@ describe('decorate non global javascript code', function () {
       settings.source
     ).promise.catch(function (r) {
       expect(r).toBe('rejected from inside the promise');
-      
     });
 
     _satellite['_runScript1'](function (event, target, Promise) {
@@ -161,7 +168,7 @@ describe('decorate non global javascript code', function () {
     });
   });
 
-  it('handles javascript code that throws error', async function() {
+  it('handles javascript code that throws error', async function () {
     const settings = {
       language: 'javascript',
       // This code here is present only for example purposes. The code is not written to the page,
@@ -181,7 +188,6 @@ describe('decorate non global javascript code', function () {
       settings.source
     ).promise.catch(function (e) {
       expect(e.message).toBe('error from inside code');
-      
     });
 
     _satellite['_runScript1'](function () {

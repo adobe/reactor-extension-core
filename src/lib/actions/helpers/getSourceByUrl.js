@@ -10,8 +10,8 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 
-import { byRegexPattern as findScriptByRegexPattern } from '../../helpers/findPageScript.js'
-import validateInjectedParams from '../../../helpers/validate-injected-params.js'
+import { byRegexPattern as findScriptByRegexPattern } from '../../helpers/findPageScript.js';
+import validateInjectedParams from '../../../helpers/validate-injected-params.js';
 
 function injectGetSourceByUrl({ window, loadScript, Promise }) {
   const codeBySourceUrl = {};
@@ -26,6 +26,8 @@ function injectGetSourceByUrl({ window, loadScript, Promise }) {
 
   window._satellite.__registerScript = function (scriptGuid, code) {
     let scriptUrl;
+    // when premium CDN is enabled, custom code is a relative url. but Turbine will hand us the fully
+    // qualified url by the time we get here. Whether that's assets.adobedtm.com or adoberesources.cn.
     if (document.currentScript) {
       scriptUrl = document.currentScript.getAttribute('src');
     } else {

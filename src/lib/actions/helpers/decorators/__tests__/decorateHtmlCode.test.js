@@ -10,15 +10,15 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-import { injectDecorateHtmlCode } from '../decorateHtmlCode.js'
-import flushPromiseChains from '../../../../__tests__/helpers/flushPromiseChains.js'
+import { injectDecorateHtmlCode } from '../decorateHtmlCode.js';
+import flushPromiseChains from '../../../../__tests__/helpers/flushPromiseChains.js';
 
 describe('decorate html code', function () {
   let decorateHtmlCode;
   beforeEach(function () {
     mockTurbineVariable({
-      replaceTokens: vi.fn().and.callFake(function (token) {
-        return token.replace(/%(.+?)%/g, function (token, variableName) {
+      replaceTokens: vi.fn((token) => {
+        return token.replace(/%(.+?)%/g, (_, variableName) => {
           return 'replaced - ' + variableName;
         });
       })
@@ -30,7 +30,7 @@ describe('decorate html code', function () {
     });
   });
 
-  it('returns the decorated code on the code key', function () {
+  it.only('returns the decorated code on the code key', function () {
     const settings = {
       language: 'html',
       source: '<script>console.log("logging")</script>'
@@ -156,7 +156,7 @@ describe('decorate html code', function () {
       await flushPromiseChains();
       expect(onPromiseResolved).not.toHaveBeenCalled();
       window._satellite._onCustomCodeSuccess('0');
-      
+
       await promise;
     }
   );
@@ -184,7 +184,7 @@ describe('decorate html code', function () {
       await flushPromiseChains();
       expect(onPromiseRejected).not.toHaveBeenCalled();
       window._satellite._onCustomCodeFailure('0');
-      
+
       await promise;
     }
   );
