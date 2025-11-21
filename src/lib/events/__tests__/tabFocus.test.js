@@ -11,6 +11,7 @@
  ****************************************************************************************/
 
 import runVisibilityApi from '../helpers/visibilityApi.js';
+import { vi } from 'vitest';
 const { visibilityChangeEventType, hiddenProperty } = runVisibilityApi();
 import { injectTabFocus } from '../tabFocus.js'
 let visibilityChangeListener;
@@ -38,17 +39,17 @@ const isIE = function () {
 describe('tab focus event delegate', function () {
   if (!isIE() || isIE() > 9) {
     it('triggers rule when the tabfocus event occurs', function () {
-      const trigger = jasmine.createSpy();
+      const trigger = vi.fn();
 
       delegate({}, trigger);
 
-      expect(trigger.calls.count()).toBe(0);
+      expect(trigger.mock.calls.length).toBe(0);
 
       mockDocument[hiddenProperty] = false;
       visibilityChangeListener.call(location);
 
-      expect(trigger.calls.count()).toBe(1);
-      const call = trigger.calls.mostRecent();
+      expect(trigger.mock.calls.length).toBe(1);
+      const call = trigger.mock.lastCall;
       expect(call.args.length).toBe(0);
     });
   }

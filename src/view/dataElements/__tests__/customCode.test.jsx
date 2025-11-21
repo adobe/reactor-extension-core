@@ -18,6 +18,7 @@ import {
 import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
 import CustomCode, { formConfig } from '../customCode.jsx'
 import bootstrap from '../../bootstrap.jsx'
+import { vi } from 'vitest';
 
 describe('custom code data element view', () => {
   let extensionBridge;
@@ -42,7 +43,7 @@ describe('custom code data element view', () => {
   });
 
   it('allows user to provide custom code', () => {
-    spyOn(extensionBridge, 'openCodeEditor').and.callFake(() => ({
+    vi.spyOn(extensionBridge, 'openCodeEditor').mockImplementation(() => ({
       then(resolve) {
         resolve('foo bar');
       }

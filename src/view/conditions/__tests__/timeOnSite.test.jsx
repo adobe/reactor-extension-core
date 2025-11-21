@@ -16,6 +16,7 @@ import { changePickerValue } from '@test-helpers/react-testing-library.jsx';
 import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
 import TimeOnSite, { formConfig } from '../timeOnSite.jsx'
 import bootstrap from '../../bootstrap.jsx'
+import { vi } from 'vitest';
 
 // react-testing-library element selectors
 const pageElements = {
@@ -106,7 +107,7 @@ describe('time on site condition view', () => {
   });
 
   it('The timeOnSite input supports opening the data element modal', () => {
-    spyOn(extensionBridge, 'openDataElementSelector').and.callFake(() => {
+    vi.spyOn(extensionBridge, 'openDataElementSelector').mockImplementation(() => {
       return Promise.resolve();
     });
 

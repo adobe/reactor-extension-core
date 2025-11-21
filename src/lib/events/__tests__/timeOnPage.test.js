@@ -13,6 +13,7 @@
 import { injectTimeOnPage } from '../timeOnPage.js';
 import { injectTimer } from '../helpers/timer.js';
 import runVisibilityApi from '../helpers/visibilityApi.js';
+import { vi } from 'vitest';
 const { visibilityChangeEventType, hiddenProperty } = runVisibilityApi();
 const injectNewTimer = () => injectTimer({ assign: Object.assign });
 
@@ -53,32 +54,32 @@ describe('time on page event delegate', function () {
   });
 
   it('triggers rule', function () {
-    const trigger = jasmine.createSpy('timeOnPageTrigger');
+    const trigger = vi.fn();
 
     delegate({ timeOnPage: 2 }, trigger);
     jasmine.clock().tick(2000);
 
-    const call = trigger.calls.mostRecent();
-    expect(call.args[0]).toEqual({
+    const call = trigger.mock.lastCall;
+    expect(call[0]).toEqual({
       timeOnPage: 2
     });
   });
 
   it('triggers rule when timeOnPage is a string', function () {
-    const trigger = jasmine.createSpy('timeOnPageTrigger');
+    const trigger = vi.fn();
 
     delegate({ timeOnPage: '2' }, trigger);
     jasmine.clock().tick(2000);
 
-    const call = trigger.calls.mostRecent();
-    expect(call.args[0]).toEqual({
+    const call = trigger.mock.lastCall;
+    expect(call[0]).toEqual({
       timeOnPage: 2
     });
   });
 
   if (!isIE() || isIE() > 9) {
     it('stops the timer on tab blur', function () {
-      spyOn(Timer.prototype, 'pause');
+      vi.spyOn(Timer.prototype, 'pause');
 
       delegate({});
 
@@ -89,7 +90,7 @@ describe('time on page event delegate', function () {
     });
 
     it('resumes the timer on tab focus', function () {
-      spyOn(Timer.prototype, 'resume');
+      vi.spyOn(Timer.prototype, 'resume');
 
       delegate({});
 

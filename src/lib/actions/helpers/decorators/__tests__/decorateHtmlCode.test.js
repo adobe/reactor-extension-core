@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 /*
 Copyright 2020 Adobe. All rights reserved.
 This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -16,7 +17,7 @@ describe('decorate html code', function () {
   let decorateHtmlCode;
   beforeEach(function () {
     mockTurbineVariable({
-      replaceTokens: jasmine.createSpy().and.callFake(function (token) {
+      replaceTokens: vi.fn().and.callFake(function (token) {
         return token.replace(/%(.+?)%/g, function (token, variableName) {
           return 'replaced - ' + variableName;
         });
@@ -142,7 +143,7 @@ describe('decorate html code', function () {
           '<script>_satellite._onCustomCodeSuccess("${reactorCallbackId}")</script>'
       };
 
-      const onPromiseResolved = jasmine.createSpy('onPromiseResolved');
+      const onPromiseResolved = vi.fn();
       const decorateCodePromise = decorateHtmlCode(
         {
           settings: settings
@@ -169,7 +170,7 @@ describe('decorate html code', function () {
           '<script>_satellite._onCustomCodeFailure("${reactorCallbackId}")</script>'
       };
 
-      const onPromiseRejected = jasmine.createSpy('onPromiseRejected');
+      const onPromiseRejected = vi.fn();
       const decorateCodePromise = decorateHtmlCode(
         {
           settings: settings

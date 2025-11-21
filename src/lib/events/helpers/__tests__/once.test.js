@@ -10,37 +10,38 @@
  * governing permissions and limitations under the License.
  ****************************************************************************************/
 import once from '../once.js';
+import { vi } from 'vitest';
 
 describe('once', function () {
   it('calls the target function at most a single time', function () {
-    const targetFn = jasmine.createSpy();
+    const targetFn = vi.fn();
     const oncified = once(targetFn);
 
     oncified();
 
-    expect(targetFn.calls.count()).toBe(1);
+    expect(targetFn.mock.calls.length).toBe(1);
 
     oncified();
 
-    expect(targetFn.calls.count()).toBe(1);
+    expect(targetFn.mock.calls.length).toBe(1);
   });
 
   it('calls the target function with the provided context', function () {
-    const targetFn = jasmine.createSpy();
+    const targetFn = vi.fn();
     const context = {};
     const oncified = once(targetFn, context);
 
     oncified();
 
-    expect(targetFn.calls.first().object).toBe(context);
+    expect(targetFn.mock.calls[0].object).toBe(context);
   });
 
   it('calls the target function with the provided arguments', function () {
-    const targetFn = jasmine.createSpy();
+    const targetFn = vi.fn();
     const oncified = once(targetFn);
 
     oncified('a', 'b');
 
-    expect(targetFn.calls.first().args).toEqual(['a', 'b']);
+    expect(targetFn.mock.calls[0].args).toEqual(['a', 'b']);
   });
 });

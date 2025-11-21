@@ -11,10 +11,11 @@
  ****************************************************************************************/
 
 import delegate from '../customCode.js';
+import { vi } from 'vitest';
 
 describe('custom code event delegate', function () {
   it('triggers rule when custom code calls trigger', function () {
-    const trigger = jasmine.createSpy();
+    const trigger = vi.fn();
     const contextualData = {
       foo: 'bar'
     };
@@ -28,7 +29,7 @@ describe('custom code event delegate', function () {
       trigger
     );
 
-    expect(trigger.calls.count()).toBe(1);
+    expect(trigger.mock.calls.length).toBe(1);
     expect(trigger).toHaveBeenCalledWith(contextualData);
   });
 });

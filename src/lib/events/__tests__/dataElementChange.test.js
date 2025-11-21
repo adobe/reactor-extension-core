@@ -11,6 +11,7 @@
  ****************************************************************************************/
 
 import { injectDataElementChange } from '../dataElementChange.js';
+import { vi } from 'vitest';
 
 const POLL_INTERVAL = 3000;
 let delegate;
@@ -37,7 +38,7 @@ const testValueChange = function (
   getUpdatedValue,
   shouldTriggerRule
 ) {
-  const trigger = jasmine.createSpy();
+  const trigger = vi.fn();
   dataElementValue = initialValue;
 
   const name = getUniqueDataElementName();
@@ -51,21 +52,21 @@ const testValueChange = function (
 
   jasmine.clock().tick(POLL_INTERVAL);
 
-  expect(trigger.calls.count()).toBe(0);
+  expect(trigger.mock.calls.length).toBe(0);
 
   dataElementValue = getUpdatedValue(dataElementValue);
 
   jasmine.clock().tick(POLL_INTERVAL);
 
   if (shouldTriggerRule) {
-    expect(trigger.calls.count()).toBe(1);
+    expect(trigger.mock.calls.length).toBe(1);
 
-    const call = trigger.calls.mostRecent();
-    expect(call.args[0]).toEqual({
+    const call = trigger.mock.lastCall;
+    expect(call[0]).toEqual({
       dataElementName: name
     });
   } else {
-    expect(trigger.calls.count()).toBe(0);
+    expect(trigger.mock.calls.length).toBe(0);
   }
 };
 
@@ -87,7 +88,7 @@ describe('data element change event delegate', function () {
   });
 
   it("doesn't trigger rule the first time a data element is evaluated", function () {
-    const trigger = jasmine.createSpy();
+    const trigger = vi.fn();
 
     dataElementValue = 'foo';
 
@@ -302,8 +303,8 @@ describe('data element change event delegate', function () {
   });
 
   it('triggers multiple rules when data element changes', function () {
-    const trigger = jasmine.createSpy();
-    const trigger2 = jasmine.createSpy();
+    const trigger = vi.fn();
+    const trigger2 = vi.fn();
 
     dataElementValue = 'foo';
 

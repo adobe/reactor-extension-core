@@ -11,6 +11,7 @@
  ****************************************************************************************/
 
 import { injectEntersViewport } from '../entersViewport.js';
+import { vi } from 'vitest';
 
 /**
  * Provides a document object that provides native functionality but
@@ -133,7 +134,7 @@ describe('enters viewport event delegate', function () {
         'the delegate is invoked',
       function (done) {
         const mockWindow = getWindowProxy();
-        spyOn(mockWindow, 'setInterval').and.callThrough();
+        vi.spyOn(mockWindow, 'setInterval');
 
         const delegate = injectEntersViewport({
           document,
@@ -141,7 +142,7 @@ describe('enters viewport event delegate', function () {
           intersectionObserverIntervals: mockIntersectionObserverIntervals
         });
 
-        const triggerFn = jasmine.createSpy();
+        const triggerFn = vi.fn();
 
         delegate(
           {
@@ -756,14 +757,14 @@ describe('enters viewport event delegate', function () {
 
     it('ignores empty element selectors', function (done) {
       const mockDocument = getDocumentProxy();
-      spyOn(mockDocument, 'querySelectorAll').and.callThrough();
+      vi.spyOn(mockDocument, 'querySelectorAll');
       const delegate = injectEntersViewport({
         document: mockDocument,
         window,
         intersectionObserverIntervals: mockIntersectionObserverIntervals
       });
 
-      const triggerFn = jasmine.createSpy();
+      const triggerFn = vi.fn();
       delegate({ elementSelector: undefined }, triggerFn);
 
       window.setTimeout(function () {
@@ -792,7 +793,7 @@ describe('enters viewport event delegate', function () {
     //       aElement.style.position = 'absolute';
     //       aElement.style.top = '3000px';
     //
-    //       const aTrigger = jasmine.createSpy();
+    //       const aTrigger = vi.fn();
     //
     //       delegate({
     //         elementSelector: '#a'
@@ -803,13 +804,13 @@ describe('enters viewport event delegate', function () {
     //       jasmine.clock().tick(DEBOUNCE_DELAY); // Skip past debounce.
     //
     //       // The rule shouldn't be triggered because the element isn't in view.
-    //       expect(aTrigger.calls.count()).toEqual(0);
+    //       expect(aTrigger.mock.calls.length).toEqual(0);
     //
     //       window.scrollTo(0, 3000);
     //       Simulate.event(window, 'scroll');
     //       jasmine.clock().tick(DEBOUNCE_DELAY); // Skip past debounce.
     //
-    //       expect(aTrigger.calls.count()).toEqual(1);
+    //       expect(aTrigger.mock.calls.length).toEqual(1);
     //     });
     //
     //     it('triggers rules with various delays targeting elements at ' +
@@ -820,10 +821,10 @@ describe('enters viewport event delegate', function () {
     //       bElement.style.position = 'absolute';
     //       bElement.style.top = '10000px';
     //
-    //       const aTrigger = jasmine.createSpy();
-    //       const a2Trigger = jasmine.createSpy();
-    //       const bTrigger = jasmine.createSpy();
-    //       const b2Trigger = jasmine.createSpy();
+    //       const aTrigger = vi.fn();
+    //       const a2Trigger = vi.fn();
+    //       const bTrigger = vi.fn();
+    //       const b2Trigger = vi.fn();
     //
     //       delegate({
     //         elementSelector: '#a'
@@ -846,18 +847,18 @@ describe('enters viewport event delegate', function () {
     //
     //       jasmine.clock().tick(POLL_INTERVAL);
     //
-    //       expect(aTrigger.calls.count()).toEqual(0);
-    //       expect(a2Trigger.calls.count()).toEqual(0);
-    //       expect(bTrigger.calls.count()).toEqual(0);
-    //       expect(b2Trigger.calls.count()).toEqual(0);
+    //       expect(aTrigger.mock.calls.length).toEqual(0);
+    //       expect(a2Trigger.mock.calls.length).toEqual(0);
+    //       expect(bTrigger.mock.calls.length).toEqual(0);
+    //       expect(b2Trigger.mock.calls.length).toEqual(0);
     //
     //       window.scrollTo(0, 10000);
     //       jasmine.clock().tick(POLL_INTERVAL);
     //
-    //       expect(aTrigger.calls.count()).toEqual(1);
-    //       expect(a2Trigger.calls.count()).toEqual(1);
-    //       expect(bTrigger.calls.count()).toEqual(0);
-    //       expect(b2Trigger.calls.count()).toEqual(0);
+    //       expect(aTrigger.mock.calls.length).toEqual(1);
+    //       expect(a2Trigger.mock.calls.length).toEqual(1);
+    //       expect(bTrigger.mock.calls.length).toEqual(0);
+    //       expect(b2Trigger.mock.calls.length).toEqual(0);
     //
     //       window.scrollTo(0, 0);
     //       jasmine.clock().tick(POLL_INTERVAL);
@@ -872,18 +873,18 @@ describe('enters viewport event delegate', function () {
     //       // has remained inside the viewport throughout that duration.
     //       jasmine.clock().tick(POLL_INTERVAL * 10);
     //
-    //       expect(aTrigger.calls.count()).toEqual(1);
-    //       expect(a2Trigger.calls.count()).toEqual(2);
-    //       expect(bTrigger.calls.count()).toEqual(0);
-    //       expect(b2Trigger.calls.count()).toEqual(0);
+    //       expect(aTrigger.mock.calls.length).toEqual(1);
+    //       expect(a2Trigger.mock.calls.length).toEqual(2);
+    //       expect(bTrigger.mock.calls.length).toEqual(0);
+    //       expect(b2Trigger.mock.calls.length).toEqual(0);
     //
     //       window.scrollTo(0, 20000);
     //       jasmine.clock().tick(POLL_INTERVAL);
     //
-    //       expect(aTrigger.calls.count()).toEqual(1);
-    //       expect(a2Trigger.calls.count()).toEqual(2);
-    //       expect(bTrigger.calls.count()).toEqual(0);
-    //       expect(b2Trigger.calls.count()).toEqual(0);
+    //       expect(aTrigger.mock.calls.length).toEqual(1);
+    //       expect(a2Trigger.mock.calls.length).toEqual(2);
+    //       expect(bTrigger.mock.calls.length).toEqual(0);
+    //       expect(b2Trigger.mock.calls.length).toEqual(0);
     //
     //       window.scrollTo(0, 0);
     //       jasmine.clock().tick(POLL_INTERVAL);
@@ -892,10 +893,10 @@ describe('enters viewport event delegate', function () {
     //       // shouldn't be triggered because the b element is no longer in view.
     //       jasmine.clock().tick(100000);
     //
-    //       expect(aTrigger.calls.count()).toEqual(1);
-    //       expect(a2Trigger.calls.count()).toEqual(2);
-    //       expect(bTrigger.calls.count()).toEqual(0);
-    //       expect(b2Trigger.calls.count()).toEqual(0);
+    //       expect(aTrigger.mock.calls.length).toEqual(1);
+    //       expect(a2Trigger.mock.calls.length).toEqual(2);
+    //       expect(bTrigger.mock.calls.length).toEqual(0);
+    //       expect(b2Trigger.mock.calls.length).toEqual(0);
     //
     //       window.scrollTo(0, 20000);
     //       jasmine.clock().tick(POLL_INTERVAL);
@@ -903,17 +904,17 @@ describe('enters viewport event delegate', function () {
     //       // Give enough time for the configured delay time to
     //       // pass. The second trigger should be called.
     //       jasmine.clock().tick(50000);
-    //       expect(aTrigger.calls.count()).toEqual(1);
-    //       expect(a2Trigger.calls.count()).toEqual(2);
-    //       expect(bTrigger.calls.count()).toEqual(1);
-    //       expect(b2Trigger.calls.count()).toEqual(0);
+    //       expect(aTrigger.mock.calls.length).toEqual(1);
+    //       expect(a2Trigger.mock.calls.length).toEqual(2);
+    //       expect(bTrigger.mock.calls.length).toEqual(1);
+    //       expect(b2Trigger.mock.calls.length).toEqual(0);
     //
     //       // A different rule watching for the same element but an even longer delay time? Oh my!
     //       jasmine.clock().tick(200000);
-    //       expect(aTrigger.calls.count()).toEqual(1);
-    //       expect(a2Trigger.calls.count()).toEqual(2);
-    //       expect(bTrigger.calls.count()).toEqual(1);
-    //       expect(b2Trigger.calls.count()).toEqual(1);
+    //       expect(aTrigger.mock.calls.length).toEqual(1);
+    //       expect(a2Trigger.mock.calls.length).toEqual(2);
+    //       expect(bTrigger.mock.calls.length).toEqual(1);
+    //       expect(b2Trigger.mock.calls.length).toEqual(1);
     //     });
     //   });
     // }
@@ -927,14 +928,14 @@ describe('enters viewport event delegate', function () {
         const mockDocument = getDocumentProxy();
         mockDocument.readyState = 'loading';
         // Don't call through. We want to capture and then manually change this.
-        spyOn(mockDocument, 'addEventListener');
-        spyOn(mockDocument, 'querySelectorAll').and.callThrough();
+        vi.spyOn(mockDocument, 'addEventListener');
+        vi.spyOn(mockDocument, 'querySelectorAll');
 
         const mockWindow = getWindowProxy();
         mockWindow.navigator = {
           appVersion: 'something Chrome something'
         };
-        spyOn(mockWindow, 'addEventListener').and.callThrough();
+        vi.spyOn(mockWindow, 'addEventListener');
 
         const delegate = injectEntersViewport({
           document: mockDocument,
@@ -942,7 +943,7 @@ describe('enters viewport event delegate', function () {
           intersectionObserverIntervals: mockIntersectionObserverIntervals
         });
 
-        const aTrigger = jasmine.createSpy();
+        const aTrigger = vi.fn();
 
         delegate(
           {
@@ -963,14 +964,14 @@ describe('enters viewport event delegate', function () {
             );
 
             const domContentLoadedCallback =
-              mockDocument.addEventListener.calls.first().args[1];
+              mockDocument.addEventListener.mock.calls[0][1];
             domContentLoadedCallback();
 
             return new Promise(function (resolve) {
               const intervalId = window.setInterval(function () {
-                if (aTrigger.calls.mostRecent()) {
+                if (aTrigger.mock.lastCall) {
                   window.clearInterval(intervalId);
-                  resolve(aTrigger.calls.mostRecent().args[0]);
+                  resolve(aTrigger.mock.lastCall[0]);
                 }
               }, 50);
             });

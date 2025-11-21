@@ -12,6 +12,7 @@
 
 import { injectCustomCodeAction } from '../customCode.js'
 import { injectFindPageScript } from '../../helpers/findPageScript.js'
+import { vi } from 'vitest';
 
 const LAUNCH_LIB_EXAMPLE_SRC =
   'assets.adobedtm.com/launch-ENad46b63a40c84a86a0de29087f7ecb24-development.min.js';
@@ -73,8 +74,8 @@ describe('custom code action delegate', function () {
   let customCode;
 
   beforeAll(() => {
-    postscribeSpy = jasmine.createSpy('postscribe');
-    documentWriteSpy = jasmine.createSpy('documentWrite');
+    postscribeSpy = vi.fn();
+    documentWriteSpy = vi.fn();
   });
 
   beforeEach(function () {
@@ -85,8 +86,8 @@ describe('custom code action delegate', function () {
       }
     });
 
-    postscribeSpy.calls.reset();
-    documentWriteSpy.calls.reset();
+    postscribeSpy.mockClear();
+    documentWriteSpy.mockClear();
   });
 
   [true, false].forEach(function (isIE) {
@@ -112,7 +113,7 @@ describe('custom code action delegate', function () {
               language: 'javascript'
             });
 
-            expect(postscribeSpy.calls.mostRecent().args[1]).toBe(
+            expect(postscribeSpy.mock.lastCall[1]).toBe(
               'inside container'
             );
             expect(documentWriteSpy).not.toHaveBeenCalled();
@@ -124,7 +125,7 @@ describe('custom code action delegate', function () {
               source: 'http://someurl.com/source.js',
               language: 'javascript'
             }).then(function () {
-              expect(postscribeSpy.calls.mostRecent().args[1]).toBe(
+              expect(postscribeSpy.mock.lastCall[1]).toBe(
                 'inside external file'
               );
               expect(documentWriteSpy).not.toHaveBeenCalled();
@@ -168,7 +169,7 @@ describe('custom code action delegate', function () {
             mockDocument.body = {};
             jasmine.clock().tick(20);
 
-            expect(postscribeSpy.calls.mostRecent().args[1]).toBe(
+            expect(postscribeSpy.mock.lastCall[1]).toBe(
               'inside container'
             );
             expect(documentWriteSpy).not.toHaveBeenCalled();
@@ -186,7 +187,7 @@ describe('custom code action delegate', function () {
               mockDocument.body = {};
               jasmine.clock().tick(20);
 
-              expect(postscribeSpy.calls.mostRecent().args[1]).toBe(
+              expect(postscribeSpy.mock.lastCall[1]).toBe(
                 'inside external file'
               );
               expect(documentWriteSpy).not.toHaveBeenCalled();
@@ -238,7 +239,7 @@ describe('custom code action delegate', function () {
               language: 'javascript'
             });
 
-            expect(postscribeSpy.calls.mostRecent().args[1]).toBe(
+            expect(postscribeSpy.mock.lastCall[1]).toBe(
               'inside container'
             );
             expect(documentWriteSpy).not.toHaveBeenCalled();
@@ -342,7 +343,7 @@ describe('custom code action delegate', function () {
               source: 'http://someurl.com/source.js',
               language: 'javascript'
             }).then(function () {
-              expect(postscribeSpy.calls.mostRecent().args[1]).toBe(
+              expect(postscribeSpy.mock.lastCall[1]).toBe(
                 'inside external file'
               );
               expect(documentWriteSpy).not.toHaveBeenCalled();
@@ -367,7 +368,7 @@ describe('custom code action delegate', function () {
                 source: 'inside container',
                 language: 'javascript'
               }).then(function () {
-                expect(postscribeSpy.calls.mostRecent().args[1]).toBe(
+                expect(postscribeSpy.mock.lastCall[1]).toBe(
                   'inside container'
                 );
                 expect(documentWriteSpy).not.toHaveBeenCalled();
@@ -397,7 +398,7 @@ describe('custom code action delegate', function () {
               language: 'javascript'
             });
 
-            expect(postscribeSpy.calls.mostRecent().args[1]).toBe(
+            expect(postscribeSpy.mock.lastCall[1]).toBe(
               'inside container'
             );
             expect(documentWriteSpy).not.toHaveBeenCalled();
@@ -409,7 +410,7 @@ describe('custom code action delegate', function () {
               source: 'http://someurl.com/source.js',
               language: 'javascript'
             }).then(function () {
-              expect(postscribeSpy.calls.mostRecent().args[1]).toBe(
+              expect(postscribeSpy.mock.lastCall[1]).toBe(
                 'inside external file'
               );
               expect(documentWriteSpy).not.toHaveBeenCalled();
@@ -445,7 +446,7 @@ describe('custom code action delegate', function () {
               language: 'javascript'
             });
 
-            expect(postscribeSpy.calls.mostRecent().args[1]).toBe(
+            expect(postscribeSpy.mock.lastCall[1]).toBe(
               'inside container'
             );
             expect(documentWriteSpy).not.toHaveBeenCalled();
@@ -457,7 +458,7 @@ describe('custom code action delegate', function () {
               source: 'http://someurl.com/source.js',
               language: 'javascript'
             }).then(function () {
-              expect(postscribeSpy.calls.mostRecent().args[1]).toBe(
+              expect(postscribeSpy.mock.lastCall[1]).toBe(
                 'inside external file'
               );
               expect(documentWriteSpy).not.toHaveBeenCalled();

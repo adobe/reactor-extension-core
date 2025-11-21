@@ -11,6 +11,7 @@
  ****************************************************************************************/
 
 import { injectDebounce } from '../debounce.js';
+import { vi } from 'vitest';
 const debounce = injectDebounce({ window });
 
 describe('debounce', function () {
@@ -23,12 +24,12 @@ describe('debounce', function () {
   });
 
   it('calls the target function once after delay', function () {
-    const targetFn = jasmine.createSpy();
+    const targetFn = vi.fn();
     const debouncedFn = debounce(targetFn, 100);
 
     debouncedFn();
 
-    expect(targetFn.calls.count()).toBe(0);
+    expect(targetFn.mock.calls.length).toBe(0);
 
     jasmine.clock().tick(60);
 
@@ -36,31 +37,31 @@ describe('debounce', function () {
 
     jasmine.clock().tick(60);
 
-    expect(targetFn.calls.count()).toBe(0);
+    expect(targetFn.mock.calls.length).toBe(0);
 
     jasmine.clock().tick(40);
 
-    expect(targetFn.calls.count()).toBe(1);
+    expect(targetFn.mock.calls.length).toBe(1);
   });
 
   it('calls the target function using the provided context', function () {
-    const targetFn = jasmine.createSpy();
+    const targetFn = vi.fn();
     const context = {};
 
     debounce(targetFn, 100, context)();
 
     jasmine.clock().tick(100);
 
-    expect(targetFn.calls.first().object).toBe(context);
+    expect(targetFn.mock.calls[0].object).toBe(context);
   });
 
   it('calls the target function using the provided arguments', function () {
-    const targetFn = jasmine.createSpy();
+    const targetFn = vi.fn();
 
     debounce(targetFn, 100)('arg1', 'arg2');
 
     jasmine.clock().tick(100);
 
-    expect(targetFn.calls.first().args).toEqual(['arg1', 'arg2']);
+    expect(targetFn.mock.calls[0].args).toEqual(['arg1', 'arg2']);
   });
 });

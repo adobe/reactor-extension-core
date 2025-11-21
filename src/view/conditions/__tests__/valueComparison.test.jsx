@@ -19,6 +19,7 @@ import {
 import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
 import ValueComparison, { formConfig } from '../valueComparison.jsx'
 import bootstrap from '../../bootstrap.jsx'
+import { vi } from 'vitest';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 1540000;
 
@@ -465,7 +466,7 @@ describe('value comparison condition view', () => {
   });
 
   it('The left operand can trigger the data element modal', () => {
-    spyOn(extensionBridge, 'openDataElementSelector').and.callFake(() => ({
+    vi.spyOn(extensionBridge, 'openDataElementSelector').mockImplementation(() => ({
       then(resolve) {
         resolve('%foo bar%');
       }
@@ -478,7 +479,7 @@ describe('value comparison condition view', () => {
   });
 
   it('The right operand can trigger the data element modal', () => {
-    spyOn(extensionBridge, 'openDataElementSelector').and.callFake(() => ({
+    vi.spyOn(extensionBridge, 'openDataElementSelector').mockImplementation(() => ({
       then(resolve) {
         resolve('%foo bar%');
       }

@@ -12,13 +12,14 @@
 
 import { injectPageViewCondition } from '../pageViews.js'
 import compareNumbers from '../helpers/compareNumbers.js'
+import { vi } from 'vitest';
 
 describe('page views condition delegate', function () {
   const mockVisitorTracking = {
-    getLifetimePageViewCount: jasmine.createSpy().and.callFake(function () {
+    getLifetimePageViewCount: vi.fn().and.callFake(function () {
       return 5;
     }),
-    getSessionPageViewCount: jasmine.createSpy().and.callFake(function () {
+    getSessionPageViewCount: vi.fn().and.callFake(function () {
       return 5;
     })
   };
@@ -39,8 +40,8 @@ describe('page views condition delegate', function () {
   };
 
   beforeEach(function () {
-    mockVisitorTracking.getLifetimePageViewCount.calls.reset();
-    mockVisitorTracking.getSessionPageViewCount.calls.reset();
+    mockVisitorTracking.getLifetimePageViewCount.mockClear();
+    mockVisitorTracking.getSessionPageViewCount.mockClear();
   });
 
   DURATIONS.forEach(function (duration) {
@@ -48,9 +49,9 @@ describe('page views condition delegate', function () {
       // Make sure we're calling the correct method with respect to duration.
       const assertCorrectMethodCall = function () {
         const lifetimeCallCount =
-          mockVisitorTracking.getLifetimePageViewCount.calls.count();
+          mockVisitorTracking.getLifetimePageViewCount.mock.calls.length;
         const sessionCallCount =
-          mockVisitorTracking.getSessionPageViewCount.calls.count();
+          mockVisitorTracking.getSessionPageViewCount.mock.calls.length;
         expect(lifetimeCallCount).toBe(duration === 'lifetime' ? 1 : 0);
         expect(sessionCallCount).toBe(duration === 'session' ? 1 : 0);
       };

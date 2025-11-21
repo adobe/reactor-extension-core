@@ -38,7 +38,12 @@ describe('visitor tracking', function () {
   let injectedNameSpacedStorage;
   beforeAll(() => {
     mockTurbineVariable({
-      logger: jasmine.createSpyObj('logger', ['warn', 'error', 'log', 'info'])
+      logger: {
+        warn: vi.fn(),
+        error: vi.fn(),
+        log: vi.fn(),
+        info: vi.fn()
+      }
     });
   });
 

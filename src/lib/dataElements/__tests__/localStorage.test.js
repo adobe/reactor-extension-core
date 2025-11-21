@@ -11,12 +11,13 @@
  ****************************************************************************************/
 
 import { injectLocalStorage } from '../localStorage.js';
+import { vi } from 'vitest';
 
 describe('local storage data element delegate', function () {
   it('returns the value of a local storage item', function () {
     const mockWindow = {
       localStorage: {
-        getItem: jasmine.createSpy().and.returnValue('bar')
+        getItem: vi.fn().and.returnValue('bar')
       }
     };
 
@@ -35,7 +36,7 @@ describe('local storage data element delegate', function () {
   it('returns null if local storage item is not set', function () {
     const mockWindow = {
       localStorage: {
-        getItem: jasmine.createSpy().and.returnValue(null)
+        getItem: vi.fn().and.returnValue(null)
       }
     };
 

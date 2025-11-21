@@ -24,6 +24,7 @@ import { elementIsPosition } from '@test-helpers/react-testing-library.jsx';
 import { TextField, Checkbox } from '@adobe/react-spectrum';
 import WrappedField from '../wrappedField.jsx'
 import bootstrap from '../../bootstrap.jsx'
+import { vi } from 'vitest';
 
 const ConnectedWrappedField = ({
   className,
@@ -69,7 +70,7 @@ let extensionBridge;
 const renderComponent = (props) => {
   extensionBridge = createExtensionBridge();
 
-  spyOn(extensionBridge, 'openDataElementSelector').and.callFake((options) => ({
+  vi.spyOn(extensionBridge, 'openDataElementSelector').mockImplementation((options) => ({
     then(resolve) {
       resolve(options.tokenize ? '%foo%' : 'foo');
     }

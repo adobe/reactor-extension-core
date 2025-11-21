@@ -11,6 +11,7 @@
  ****************************************************************************************/
 
 import { injectTimer } from '../timer.js';
+import { vi } from 'vitest';
 const Timer = injectTimer({ assign: Object.assign });
 
 describe('timer', function () {
@@ -70,7 +71,7 @@ describe('timer', function () {
 
   describe('when markers are provided', function () {
     it('an markerPassed event is emitted', function () {
-      const callback = jasmine.createSpy('onTimePassedCallback');
+      const callback = vi.fn();
       const timer = new Timer();
       timer.on('markerPassed', callback);
       timer.addMarker(5000);
@@ -82,7 +83,7 @@ describe('timer', function () {
     });
 
     it('the markerPassed event is emitted once per each marker', function () {
-      const callback = jasmine.createSpy('onTimePassedCallback');
+      const callback = vi.fn();
       const timer = new Timer();
       timer.on('markerPassed', callback);
       timer.addMarker(1000);
@@ -100,11 +101,11 @@ describe('timer', function () {
 
       expect(callback).toHaveBeenCalledWith(1000);
       expect(callback).toHaveBeenCalledWith(2000);
-      expect(callback.calls.count()).toEqual(2);
+      expect(callback.mock.calls.length).toEqual(2);
     });
 
     it('no marker will be called twice', function () {
-      const callback = jasmine.createSpy('onTimePassedCallback');
+      const callback = vi.fn();
       const timer = new Timer();
       timer.on('markerPassed', callback);
       timer.addMarker(5000);
@@ -113,11 +114,11 @@ describe('timer', function () {
 
       jasmine.clock().tick(6000);
 
-      expect(callback.calls.count()).toEqual(1);
+      expect(callback.mock.calls.length).toEqual(1);
     });
 
     it('the markerPassed event will be emitted in ascending order', function () {
-      const callback = jasmine.createSpy('onTimePassedCallback');
+      const callback = vi.fn();
       const timer = new Timer();
       timer.on('markerPassed', callback);
       timer.addMarker(20);
@@ -131,8 +132,8 @@ describe('timer', function () {
       // be called after the test is completed).
       jasmine.clock().tick(0);
 
-      const call = callback.calls.mostRecent();
-      expect(call.args[0]).toBe(20);
+      const call = callback.mock.lastCall;
+      expect(call[0]).toBe(20);
     });
   });
 });

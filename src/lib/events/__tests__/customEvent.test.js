@@ -11,6 +11,7 @@
  ****************************************************************************************/
 
 import { injectCustomEvent } from '../customEvent.js';
+import { vi } from 'vitest';
 const delegate = injectCustomEvent({ window });
 
 let outerElement;
@@ -42,7 +43,7 @@ describe('custom event event delegate', function () {
   it('triggers rule when event is dispatched from element', function () {
     const CUSTOM_EVENT_TYPE = 'foo';
 
-    const trigger = jasmine.createSpy();
+    const trigger = vi.fn();
 
     delegate(
       {
@@ -55,9 +56,9 @@ describe('custom event event delegate', function () {
 
     triggerCustomEvent(innerElement, CUSTOM_EVENT_TYPE, { foo: 'bar' });
 
-    expect(trigger.calls.count()).toBe(1);
-    const call = trigger.calls.mostRecent();
-    expect(call.args[0]).toEqual({
+    expect(trigger.mock.calls.length).toBe(1);
+    const call = trigger.mock.lastCall;
+    expect(call[0]).toEqual({
       element: outerElement,
       target: innerElement,
       nativeEvent: jasmine.any(Object),
@@ -68,7 +69,7 @@ describe('custom event event delegate', function () {
   it('triggers rule when event is dispatched from window', function () {
     const CUSTOM_EVENT_TYPE = 'foo';
 
-    const trigger = jasmine.createSpy();
+    const trigger = vi.fn();
 
     delegate(
       {
@@ -79,9 +80,9 @@ describe('custom event event delegate', function () {
 
     triggerCustomEvent(window, CUSTOM_EVENT_TYPE, { foo: 'bar' });
 
-    expect(trigger.calls.count()).toBe(1);
-    const call = trigger.calls.mostRecent();
-    expect(call.args[0]).toEqual({
+    expect(trigger.mock.calls.length).toBe(1);
+    const call = trigger.mock.lastCall;
+    expect(call[0]).toEqual({
       element: window,
       target: window,
       nativeEvent: jasmine.any(Object),
@@ -92,7 +93,7 @@ describe('custom event event delegate', function () {
   it('triggers rule when event is dispatched from document', function () {
     const CUSTOM_EVENT_TYPE = 'foo';
 
-    const trigger = jasmine.createSpy();
+    const trigger = vi.fn();
 
     delegate(
       {
@@ -103,9 +104,9 @@ describe('custom event event delegate', function () {
 
     triggerCustomEvent(document, CUSTOM_EVENT_TYPE, { foo: 'bar' });
 
-    expect(trigger.calls.count()).toBe(1);
-    const call = trigger.calls.mostRecent();
-    expect(call.args[0]).toEqual({
+    expect(trigger.mock.calls.length).toBe(1);
+    const call = trigger.mock.lastCall;
+    expect(call[0]).toEqual({
       element: document,
       target: document,
       nativeEvent: jasmine.any(Object),
@@ -117,7 +118,7 @@ describe('custom event event delegate', function () {
     const CUSTOM_EVENT_TYPE_A = 'foo';
     const CUSTOM_EVENT_TYPE_B = 'bar';
 
-    const triggerA = jasmine.createSpy();
+    const triggerA = vi.fn();
 
     delegate(
       {
@@ -128,7 +129,7 @@ describe('custom event event delegate', function () {
       triggerA
     );
 
-    const triggerB = jasmine.createSpy();
+    const triggerB = vi.fn();
 
     delegate(
       {
@@ -141,14 +142,14 @@ describe('custom event event delegate', function () {
 
     triggerCustomEvent(outerElement, CUSTOM_EVENT_TYPE_B);
 
-    expect(triggerA.calls.count()).toBe(0);
-    expect(triggerB.calls.count()).toBe(1);
+    expect(triggerA.mock.calls.length).toBe(0);
+    expect(triggerB.mock.calls.length).toBe(1);
   });
 
   it('only triggers each rule once when multiple rules watching for same event type', function () {
     const CUSTOM_EVENT_TYPE = 'foo';
 
-    const triggerA = jasmine.createSpy();
+    const triggerA = vi.fn();
 
     delegate(
       {
@@ -159,7 +160,7 @@ describe('custom event event delegate', function () {
       triggerA
     );
 
-    const triggerB = jasmine.createSpy();
+    const triggerB = vi.fn();
 
     delegate(
       {
@@ -172,7 +173,7 @@ describe('custom event event delegate', function () {
 
     triggerCustomEvent(outerElement, CUSTOM_EVENT_TYPE);
 
-    expect(triggerA.calls.count()).toBe(1);
-    expect(triggerB.calls.count()).toBe(1);
+    expect(triggerA.mock.calls.length).toBe(1);
+    expect(triggerB.mock.calls.length).toBe(1);
   });
 });

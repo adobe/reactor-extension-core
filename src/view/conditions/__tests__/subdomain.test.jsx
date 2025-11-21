@@ -15,6 +15,7 @@ import userEvent from '@testing-library/user-event';
 import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
 import Subdomain, { formConfig } from '../subdomain.jsx'
 import bootstrap from '../../bootstrap.jsx'
+import { vi } from 'vitest';
 
 // react-testing-library element selectors
 const pageElements = {
@@ -125,7 +126,7 @@ describe('subdomain condition view', () => {
   });
 
   it('regex rows are independent', () => {
-    spyOn(extensionBridge, 'openRegexTester').and.callFake(() => ({
+    vi.spyOn(extensionBridge, 'openRegexTester').mockImplementation(() => ({
       then(resolve) {
         resolve('Edited Regex 1234');
       }

@@ -12,9 +12,10 @@
 
 import Simulate from 'simulate';
 import { injectZoomChange } from '../zoomChange.js';
+import { vi } from 'vitest';
 
 const assertTriggerCall = function (options) {
-  expect(options.call.args[0]).toEqual({
+  expect(options.call[0]).toEqual({
     method: options.method,
     zoom: options.zoom
   });
@@ -46,7 +47,7 @@ describe('zoom change event delegate', function () {
   });
 
   it('triggers rule when zoom changes', function () {
-    const trigger = jasmine.createSpy();
+    const trigger = vi.fn();
 
     mockWindow.innerWidth = document.documentElement.clientWidth;
 
@@ -56,17 +57,17 @@ describe('zoom change event delegate', function () {
 
     mockWindow.innerWidth = document.documentElement.clientWidth / 1.5;
 
-    expect(trigger.calls.count()).toEqual(0);
+    expect(trigger.mock.calls.length).toEqual(0);
 
     jasmine.clock().tick(1049);
 
-    expect(trigger.calls.count()).toEqual(0);
+    expect(trigger.mock.calls.length).toEqual(0);
 
     jasmine.clock().tick(1);
 
-    expect(trigger.calls.count()).toEqual(1);
+    expect(trigger.mock.calls.length).toEqual(1);
     assertTriggerCall({
-      call: trigger.calls.mostRecent(),
+      call: trigger.mock.lastCall,
       method: 'pinch',
       zoom: '1.50'
     });
@@ -76,13 +77,13 @@ describe('zoom change event delegate', function () {
 
     jasmine.clock().tick(1249);
 
-    expect(trigger.calls.count()).toEqual(1);
+    expect(trigger.mock.calls.length).toEqual(1);
 
     jasmine.clock().tick(1);
 
-    expect(trigger.calls.count()).toEqual(2);
+    expect(trigger.mock.calls.length).toEqual(2);
     assertTriggerCall({
-      call: trigger.calls.mostRecent(),
+      call: trigger.mock.lastCall,
       method: 'double tap',
       zoom: '2.00'
     });

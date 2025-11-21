@@ -14,6 +14,7 @@ import { injectBubbly } from '../createBubbly.js';
 import matchesProperties from '../matchesProperties.js';
 import matchesSelector from '../matchesSelector.js';
 import { injectWeakMap } from '../weakMap.js';
+import { vi } from 'vitest';
 const injectedWeakMap = injectWeakMap({ window });
 const createBubbly = injectBubbly({
   WeakMap: injectedWeakMap,
@@ -62,9 +63,9 @@ describe('createBubbly', function () {
   it('handles a plethora of scenarios', function () {
     const testScenario = function (options) {
       const bubbly = createBubbly();
-      const aCallback = jasmine.createSpy();
-      const bCallback = jasmine.createSpy();
-      const cCallback = jasmine.createSpy();
+      const aCallback = vi.fn();
+      const bCallback = vi.fn();
+      const cCallback = vi.fn();
 
       bubbly.addListener(
         {
@@ -100,9 +101,9 @@ describe('createBubbly', function () {
         target: cElement
       });
 
-      expect(aCallback.calls.count()).toBe(options.aExecuted ? 1 : 0);
-      expect(bCallback.calls.count()).toBe(options.bExecuted ? 1 : 0);
-      expect(cCallback.calls.count()).toBe(options.cExecuted ? 1 : 0);
+      expect(aCallback.mock.calls.length).toBe(options.aExecuted ? 1 : 0);
+      expect(bCallback.mock.calls.length).toBe(options.bExecuted ? 1 : 0);
+      expect(cCallback.mock.calls.length).toBe(options.cExecuted ? 1 : 0);
     };
 
     const scenarios = [
@@ -338,8 +339,8 @@ describe('createBubbly', function () {
 
   it('considers a rule not triggered when the listener callback returns false', function () {
     const bubbly = createBubbly();
-    const aCallback = jasmine.createSpy();
-    const bCallback = jasmine.createSpy().and.returnValue(false);
+    const aCallback = vi.fn();
+    const bCallback = vi.fn().and.returnValue(false);
 
     bubbly.addListener(
       {
@@ -369,13 +370,13 @@ describe('createBubbly', function () {
       target: bElement
     });
 
-    expect(aCallback.calls.count()).toBe(1);
-    expect(bCallback.calls.count()).toBe(1);
+    expect(aCallback.mock.calls.length).toBe(1);
+    expect(bCallback.mock.calls.length).toBe(1);
   });
 
   it('calls the callback when the element matches elementProperties w/ string value', function () {
     const bubbly = createBubbly();
-    const callback = jasmine.createSpy();
+    const callback = vi.fn();
 
     bubbly.addListener(
       {
@@ -393,7 +394,7 @@ describe('createBubbly', function () {
       target: cElement
     });
 
-    expect(callback.calls.count()).toBe(1);
+    expect(callback.mock.calls.length).toBe(1);
   });
 
   it(
@@ -401,7 +402,7 @@ describe('createBubbly', function () {
       'w/ string value',
     function () {
       const bubbly = createBubbly();
-      const callback = jasmine.createSpy();
+      const callback = vi.fn();
 
       bubbly.addListener(
         {
@@ -419,13 +420,13 @@ describe('createBubbly', function () {
         target: cElement
       });
 
-      expect(callback.calls.count()).toBe(0);
+      expect(callback.mock.calls.length).toBe(0);
     }
   );
 
   it('calls the callback when the element matches elementProperties w/ regex value', function () {
     const bubbly = createBubbly();
-    const callback = jasmine.createSpy();
+    const callback = vi.fn();
 
     bubbly.addListener(
       {
@@ -444,7 +445,7 @@ describe('createBubbly', function () {
       target: cElement
     });
 
-    expect(callback.calls.count()).toBe(1);
+    expect(callback.mock.calls.length).toBe(1);
   });
 
   it(
@@ -452,7 +453,7 @@ describe('createBubbly', function () {
       'w/ regex value',
     function () {
       const bubbly = createBubbly();
-      const callback = jasmine.createSpy();
+      const callback = vi.fn();
 
       bubbly.addListener(
         {
@@ -471,13 +472,13 @@ describe('createBubbly', function () {
         target: cElement
       });
 
-      expect(callback.calls.count()).toBe(0);
+      expect(callback.mock.calls.length).toBe(0);
     }
   );
 
   it('passes a synthetic event to the callback with attached native event', function () {
     const bubbly = createBubbly();
-    const callback = jasmine.createSpy();
+    const callback = vi.fn();
 
     bubbly.addListener(
       {
@@ -492,7 +493,7 @@ describe('createBubbly', function () {
 
     bubbly.evaluateEvent(nativeEvent);
 
-    expect(callback.calls.mostRecent().args[0]).toEqual({
+    expect(callback.mock.lastCall[0]).toEqual({
       element: aElement,
       target: cElement,
       nativeEvent: nativeEvent
@@ -501,7 +502,7 @@ describe('createBubbly', function () {
 
   it('passes a synthetic event to the callback with data from passed synthetic event', function () {
     const bubbly = createBubbly();
-    const callback = jasmine.createSpy();
+    const callback = vi.fn();
 
     bubbly.addListener(
       {
@@ -517,7 +518,7 @@ describe('createBubbly', function () {
 
     bubbly.evaluateEvent(nativeEvent, true);
 
-    expect(callback.calls.mostRecent().args[0]).toEqual({
+    expect(callback.mock.lastCall[0]).toEqual({
       element: aElement,
       target: cElement,
       foo: 'bar'
@@ -527,7 +528,7 @@ describe('createBubbly', function () {
   describe('when no element refinements are specified', function () {
     it('calls the callback once if the target is a nested element', function () {
       const bubbly = createBubbly();
-      const callback = jasmine.createSpy();
+      const callback = vi.fn();
 
       bubbly.addListener({}, callback);
 
@@ -535,12 +536,12 @@ describe('createBubbly', function () {
         target: cElement
       });
 
-      expect(callback.calls.count()).toBe(1);
+      expect(callback.mock.calls.length).toBe(1);
     });
 
     it('calls the callback once if the target is document', function () {
       const bubbly = createBubbly();
-      const callback = jasmine.createSpy();
+      const callback = vi.fn();
 
       bubbly.addListener({}, callback);
 
@@ -548,7 +549,7 @@ describe('createBubbly', function () {
         target: document
       });
 
-      expect(callback.calls.count()).toBe(1);
+      expect(callback.mock.calls.length).toBe(1);
     });
   });
 });

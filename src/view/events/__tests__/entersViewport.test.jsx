@@ -16,6 +16,7 @@ import { sharedTestingElements } from '@test-helpers/react-testing-library.jsx';
 import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
 import EntersViewport, { formConfig } from '../entersViewport.jsx'
 import bootstrap from '../../bootstrap.jsx'
+import { vi } from 'vitest';
 
 // react-testing-library element selectors
 const pageElements = {
@@ -181,7 +182,7 @@ describe('enters viewport event view', () => {
   });
 
   it('The delayWhenEnters input supports opening the data element modal', () => {
-    spyOn(extensionBridge, 'openDataElementSelector').and.callFake(() => {
+    vi.spyOn(extensionBridge, 'openDataElementSelector').mockImplementation(() => {
       return Promise.resolve();
     });
 

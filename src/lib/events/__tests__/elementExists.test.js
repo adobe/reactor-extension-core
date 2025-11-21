@@ -12,6 +12,7 @@
 
 import WeakMap from '../helpers/weakMap.js';
 import { injectElementExists } from '../elementExists.js';
+import { vi } from 'vitest';
 const POLL_INTERVAL = 3000;
 
 describe('element exists event delegate', function () {
@@ -39,7 +40,7 @@ describe('element exists event delegate', function () {
   };
 
   const assertTriggerCall = function (options) {
-    expect(options.call.args[0]).toEqual({
+    expect(options.call[0]).toEqual({
       element: options.element,
       target: options.element
     });
@@ -62,7 +63,7 @@ describe('element exists event delegate', function () {
   });
 
   it('calls trigger with event and related element', function () {
-    const aTrigger = jasmine.createSpy();
+    const aTrigger = vi.fn();
 
     delegate(
       {
@@ -74,15 +75,15 @@ describe('element exists event delegate', function () {
     jasmine.clock().tick(POLL_INTERVAL);
 
     assertTriggerCall({
-      call: aTrigger.calls.mostRecent(),
+      call: aTrigger.mock.lastCall,
       element: aElement,
       target: aElement
     });
   });
 
   it('triggers multiple rules targeting the same element', function () {
-    const aTrigger = jasmine.createSpy();
-    const a2Trigger = jasmine.createSpy();
+    const aTrigger = vi.fn();
+    const a2Trigger = vi.fn();
 
     delegate(
       {
@@ -100,16 +101,16 @@ describe('element exists event delegate', function () {
 
     jasmine.clock().tick(POLL_INTERVAL);
 
-    expect(aTrigger.calls.count()).toEqual(1);
-    expect(a2Trigger.calls.count()).toEqual(1);
+    expect(aTrigger.mock.calls.length).toEqual(1);
+    expect(a2Trigger.mock.calls.length).toEqual(1);
   });
 
   it('triggers multiple rules targeting the same element in the defined order', function () {
     let result = null;
-    const aTrigger = jasmine.createSpy().and.callFake(function () {
+    const aTrigger = vi.fn().and.callFake(function () {
       result = 'aTrigger';
     });
-    const a2Trigger = jasmine.createSpy().and.callFake(function () {
+    const a2Trigger = vi.fn().and.callFake(function () {
       result = 'a2Trigger';
     });
 
@@ -133,7 +134,7 @@ describe('element exists event delegate', function () {
   });
 
   it('triggers a rule if elementProperties match', function () {
-    const trigger = jasmine.createSpy();
+    const trigger = vi.fn();
 
     delegate(
       {
@@ -150,11 +151,11 @@ describe('element exists event delegate', function () {
 
     jasmine.clock().tick(POLL_INTERVAL);
 
-    expect(trigger.calls.count()).toEqual(1);
+    expect(trigger.mock.calls.length).toEqual(1);
   });
 
   it('does not trigger a rule if elementProperties do not match', function () {
-    const trigger = jasmine.createSpy();
+    const trigger = vi.fn();
 
     delegate(
       {
@@ -171,12 +172,12 @@ describe('element exists event delegate', function () {
 
     jasmine.clock().tick(POLL_INTERVAL);
 
-    expect(trigger.calls.count()).toEqual(0);
+    expect(trigger.mock.calls.length).toEqual(0);
   });
 
   it('continues evaluating elements until elementProperties is satisfied (DTM-6681)', function () {
-    const selectorOnlyTrigger = jasmine.createSpy();
-    const selectorAndPropsTrigger = jasmine.createSpy();
+    const selectorOnlyTrigger = vi.fn();
+    const selectorAndPropsTrigger = vi.fn();
 
     delegate(
       {
@@ -200,8 +201,8 @@ describe('element exists event delegate', function () {
 
     jasmine.clock().tick(POLL_INTERVAL);
 
-    expect(selectorOnlyTrigger.calls.count()).toBe(1);
-    expect(selectorAndPropsTrigger.calls.count()).toBe(0);
+    expect(selectorOnlyTrigger.mock.calls.length).toBe(1);
+    expect(selectorAndPropsTrigger.mock.calls.length).toBe(0);
 
     const addedLaterElement = document.createElement('div');
     addedLaterElement.innerHTML = 'added later';
@@ -209,8 +210,8 @@ describe('element exists event delegate', function () {
 
     jasmine.clock().tick(POLL_INTERVAL);
 
-    expect(selectorOnlyTrigger.calls.count()).toBe(1);
-    expect(selectorAndPropsTrigger.calls.count()).toBe(1);
+    expect(selectorOnlyTrigger.mock.calls.length).toBe(1);
+    expect(selectorAndPropsTrigger.mock.calls.length).toBe(1);
 
     document.body.removeChild(addedLaterElement);
   });

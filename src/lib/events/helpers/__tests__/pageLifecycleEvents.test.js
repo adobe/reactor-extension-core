@@ -11,6 +11,7 @@
  ****************************************************************************************/
 
 import { injectPageLifecycleEvents } from '../pageLifecycleEvents.js';
+import { vi } from 'vitest';
 
 describe('pageLifecycleEvents', function () {
   let triggerDOMContentLoaded;
@@ -34,7 +35,7 @@ describe('pageLifecycleEvents', function () {
   const generateTriggers = function () {
     const triggers = {};
     Object.keys(triggerTypesToRegisterMethods).forEach(function (type) {
-      triggers[type] = jasmine.createSpy(type).and.callFake(function () {
+      triggers[type] = vi.fn().mockImplementation(function () {
         triggersResults.push(type);
       });
     });
@@ -145,7 +146,7 @@ describe('pageLifecycleEvents', function () {
     const fakeEvent = {};
     triggerDOMContentLoaded(fakeEvent);
 
-    expect(triggers.domReady.calls.mostRecent().args[0]).toEqual({
+    expect(triggers.domReady.mock.lastCall[0]).toEqual({
       element: mockDocument,
       target: mockDocument,
       nativeEvent: fakeEvent
@@ -156,7 +157,7 @@ describe('pageLifecycleEvents', function () {
     const fakeEvent = {};
     triggerWindowLoad(fakeEvent);
 
-    expect(triggers.windowLoaded.calls.mostRecent().args[0]).toEqual({
+    expect(triggers.windowLoaded.mock.lastCall[0]).toEqual({
       element: mockWindow,
       target: mockWindow,
       nativeEvent: fakeEvent

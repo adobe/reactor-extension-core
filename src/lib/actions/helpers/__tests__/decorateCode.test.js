@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 /*
 Copyright 2020 Adobe. All rights reserved.
 This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -17,13 +18,9 @@ describe('decorate code', function () {
   let decorateHtmlCodeSpy;
   let decorateCode;
   beforeEach(() => {
-    decorateNonGlobalJavaScriptCodeSpy = jasmine.createSpy(
-      'decorateNonGlobalJavaScriptCode'
-    );
-    decorateGlobalJavaScriptCodeSpy = jasmine.createSpy(
-      'decorateGlobalJavaScriptCode'
-    );
-    decorateHtmlCodeSpy = jasmine.createSpy('decorateHtmlCode');
+    decorateNonGlobalJavaScriptCodeSpy = vi.fn();
+    decorateGlobalJavaScriptCodeSpy = vi.fn();
+    decorateHtmlCodeSpy = vi.fn();
     decorateCode = injectDecorateCode({
       decorateNonGlobalJavaScriptCode: decorateNonGlobalJavaScriptCodeSpy,
       decorateGlobalJavaScriptCode: decorateGlobalJavaScriptCodeSpy,

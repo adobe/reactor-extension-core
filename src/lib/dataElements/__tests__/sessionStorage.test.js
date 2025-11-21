@@ -11,12 +11,13 @@
  ****************************************************************************************/
 
 import { injectSessionStorage } from '../sessionStorage.js'
+import { vi } from 'vitest';
 
 describe('session storage data element delegate', function () {
   it('returns the value of a session storage item', function () {
     const mockWindow = {
       sessionStorage: {
-        getItem: jasmine.createSpy().and.returnValue('bar')
+        getItem: vi.fn().and.returnValue('bar')
       }
     };
 
@@ -35,7 +36,7 @@ describe('session storage data element delegate', function () {
   it('returns null if session storage item is not set', function () {
     const mockWindow = {
       sessionStorage: {
-        getItem: jasmine.createSpy().and.returnValue(null)
+        getItem: vi.fn().and.returnValue(null)
       }
     };
 

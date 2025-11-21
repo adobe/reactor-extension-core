@@ -11,13 +11,14 @@
  ****************************************************************************************/
 
 import { injectMergedObjects } from '../mergedObjects.js';
+import { vi } from 'vitest';
 
 describe('merged objects data element delegate', function () {
   let deepMergeMock;
   let mergedObjects;
 
   beforeEach(function () {
-    deepMergeMock = jasmine.createSpy().and.returnValue({
+    deepMergeMock = vi.fn().and.returnValue({
       a: 'b',
       c: 'd'
     });

@@ -12,6 +12,7 @@
 
 import { injectTabBlur } from '../tabBlur.js';
 import runVisibilityApi from '../helpers/visibilityApi.js';
+import { vi } from 'vitest';
 const { hiddenProperty, visibilityChangeEventType } = runVisibilityApi();
 
 let visibilityChangeListener;
@@ -39,17 +40,17 @@ const isIE = function () {
 describe('tab blur event delegate', function () {
   if (!isIE() || isIE() > 9) {
     it('triggers rule when the tabblur event occurs', function () {
-      const trigger = jasmine.createSpy();
+      const trigger = vi.fn();
 
       delegate({}, trigger);
 
-      expect(trigger.calls.count()).toBe(0);
+      expect(trigger.mock.calls.length).toBe(0);
 
       mockDocument[hiddenProperty] = true;
       visibilityChangeListener.call(location);
 
-      expect(trigger.calls.count()).toBe(1);
-      expect(trigger.calls.mostRecent().args.length).toBe(0);
+      expect(trigger.mock.calls.length).toBe(1);
+      expect(trigger.mock.lastCall.args.length).toBe(0);
     });
   }
 });

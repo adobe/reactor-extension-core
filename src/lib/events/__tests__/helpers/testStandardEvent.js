@@ -11,15 +11,16 @@
  ****************************************************************************************/
 
 import Simulate from 'simulate';
+import { vi } from 'vitest';
 
 let outerElement;
 let innerElement;
 
 const assertTriggerCall = function (options) {
-  expect(options.call.args[0]).toEqual({
+  expect(options.call[0]).toEqual({
     element: options.element,
     target: options.target,
-    nativeEvent: jasmine.any(Object)
+    nativeEvent: expect.any(Object)
   });
 };
 
@@ -54,7 +55,7 @@ export default function testStandardEvent(getDelegate, type) {
     };
 
     it('triggers rule when event occurs with no element refinements', function () {
-      const trigger = jasmine.createSpy();
+      const trigger = vi.fn();
 
       delegate(
         {
@@ -66,10 +67,10 @@ export default function testStandardEvent(getDelegate, type) {
 
       simulateEvent();
 
-      expect(trigger.calls.count()).toBe(1);
+      expect(trigger.mock.calls.length).toBe(1);
 
       assertTriggerCall({
-        call: trigger.calls.mostRecent(),
+        call: trigger.mock.lastCall,
         type: type,
         target: innerElement,
         element: innerElement
@@ -77,7 +78,7 @@ export default function testStandardEvent(getDelegate, type) {
     });
 
     it('triggers rule when elementSelector matches', function () {
-      const trigger = jasmine.createSpy();
+      const trigger = vi.fn();
 
       delegate(
         {
@@ -90,10 +91,10 @@ export default function testStandardEvent(getDelegate, type) {
 
       simulateEvent();
 
-      expect(trigger.calls.count()).toBe(1);
+      expect(trigger.mock.calls.length).toBe(1);
 
       assertTriggerCall({
-        call: trigger.calls.mostRecent(),
+        call: trigger.mock.lastCall,
         type: type,
         target: innerElement,
         element: outerElement
@@ -101,7 +102,7 @@ export default function testStandardEvent(getDelegate, type) {
     });
 
     it('does not trigger rule when elementSelector does not match', function () {
-      const trigger = jasmine.createSpy();
+      const trigger = vi.fn();
 
       delegate(
         {
@@ -114,11 +115,11 @@ export default function testStandardEvent(getDelegate, type) {
 
       simulateEvent();
 
-      expect(trigger.calls.count()).toBe(0);
+      expect(trigger.mock.calls.length).toBe(0);
     });
 
     it('triggers rule when elementProperties matches', function () {
-      const trigger = jasmine.createSpy();
+      const trigger = vi.fn();
 
       delegate(
         {
@@ -136,10 +137,10 @@ export default function testStandardEvent(getDelegate, type) {
 
       simulateEvent();
 
-      expect(trigger.calls.count()).toBe(1);
+      expect(trigger.mock.calls.length).toBe(1);
 
       assertTriggerCall({
-        call: trigger.calls.mostRecent(),
+        call: trigger.mock.lastCall,
         type: type,
         target: innerElement,
         element: outerElement
@@ -147,7 +148,7 @@ export default function testStandardEvent(getDelegate, type) {
     });
 
     it('does not trigger rule when elementProperties does not match', function () {
-      const trigger = jasmine.createSpy();
+      const trigger = vi.fn();
 
       delegate(
         {
@@ -165,7 +166,7 @@ export default function testStandardEvent(getDelegate, type) {
 
       simulateEvent();
 
-      expect(trigger.calls.count()).toBe(0);
+      expect(trigger.mock.calls.length).toBe(0);
     });
   });
 }

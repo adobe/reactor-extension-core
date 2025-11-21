@@ -19,6 +19,7 @@ import {
 import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
 import Click, { formConfig } from '../click.jsx'
 import bootstrap from '../../bootstrap.jsx'
+import { vi } from 'vitest';
 
 // react-testing-library element selectors
 const pageElements = {
@@ -198,7 +199,7 @@ describe('click event view', () => {
   });
 
   it('The linkDelay input supports opening the data element modal', () => {
-    spyOn(extensionBridge, 'openDataElementSelector').and.callFake(() => {
+    vi.spyOn(extensionBridge, 'openDataElementSelector').mockImplementation(() => {
       return Promise.resolve();
     });
 

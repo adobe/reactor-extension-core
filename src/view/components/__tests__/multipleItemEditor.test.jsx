@@ -14,6 +14,7 @@ import React from 'react';
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import { TextField } from '@adobe/react-spectrum';
 import MultipleItemEditor from '../multipleItemEditor.jsx'
+import { vi } from 'vitest';
 
 // react-testing-library element selectors
 const pageElements = {
@@ -56,8 +57,8 @@ const pageElements = {
 const getTestProps = () => ({
   fields: {
     map: (fn) => [0, 1].map((index) => fn(`props[${index}]`, index)),
-    push: jasmine.createSpy('push'),
-    remove: jasmine.createSpy('remove'),
+    push: vi.fn(),
+    remove: vi.fn(),
     length: 2
   },
   renderItem: jasmine
@@ -65,7 +66,7 @@ const getTestProps = () => ({
     .and.callFake((rowData) => (
       <TextField label="Row Input Box" value={rowData} />
     )),
-  createItem: jasmine.createSpy().and.returnValue({}),
+  createItem: vi.fn().and.returnValue({}),
   interstitialLabel: 'OR'
 });
 

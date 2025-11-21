@@ -11,6 +11,7 @@
  ****************************************************************************************/
 
 import { injectOrientationChange } from '../orientationChange.js';
+import { vi } from 'vitest';
 
 describe('orientation change event delegate', function () {
   let delegate;
@@ -38,7 +39,7 @@ describe('orientation change event delegate', function () {
   };
 
   const assertTriggerCall = function (options) {
-    expect(options.call.args[0]).toEqual({
+    expect(options.call[0]).toEqual({
       element: mockWindow,
       target: mockWindow,
       nativeEvent: jasmine.any(Object)
@@ -52,18 +53,18 @@ describe('orientation change event delegate', function () {
   });
 
   it('triggers rule when orientation changes', function () {
-    const trigger = jasmine.createSpy();
+    const trigger = vi.fn();
 
     delegate({}, trigger);
 
-    expect(trigger.calls.count()).toEqual(0);
+    expect(trigger.mock.calls.length).toEqual(0);
 
     triggerOrientationChange();
 
-    expect(trigger.calls.count()).toEqual(1);
+    expect(trigger.mock.calls.length).toEqual(1);
 
     assertTriggerCall({
-      call: trigger.calls.mostRecent()
+      call: trigger.mock.lastCall
     });
   });
 });

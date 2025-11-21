@@ -11,6 +11,7 @@
  ****************************************************************************************/
 
 import conditionDelegate from '../customCode.js'
+import { vi } from 'vitest';
 
 describe('custom code condition delegate', function () {
   it('should run a user-defined function', function () {
@@ -25,7 +26,7 @@ describe('custom code condition delegate', function () {
       target: {}
     };
 
-    spyOn(settings, 'source').and.callThrough();
+    vi.spyOn(settings, 'source');
     conditionDelegate(settings, event);
 
     expect(settings.source.calls.first()).toEqual({

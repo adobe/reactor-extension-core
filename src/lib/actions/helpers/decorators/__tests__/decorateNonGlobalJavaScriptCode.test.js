@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 /*
 Copyright 2020 Adobe. All rights reserved.
 This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -48,7 +49,7 @@ describe('decorate non global javascript code', function () {
         language: 'javascript',
         source: 'console.log("logging")'
       };
-      const spy = jasmine.createSpy('fn');
+      const spy = vi.fn();
 
       const mockPromise = function (fn) {
         return new Promise(fn);
@@ -69,7 +70,7 @@ describe('decorate non global javascript code', function () {
 
       _satellite['_runScript1'](spy);
 
-      expect(spy.calls.mostRecent()).toEqual({
+      expect(spy.mock.lastCall).toEqual({
         object: event.element,
         args: [event, event.target, mockPromise],
         invocationOrder: jasmine.any(Number),

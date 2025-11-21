@@ -12,6 +12,7 @@
 
 import testStandardEvent from './helpers/testStandardEvent.js';
 import { injectClick, __reset } from '../click.js';
+import { vi } from 'vitest';
 
 const getClickEvent = function () {
   let event;
@@ -91,7 +92,7 @@ describe('click event delegate', function () {
 
       document.body.appendChild(link);
 
-      triggerSpy = jasmine.createSpy('trigger');
+      triggerSpy = vi.fn();
     });
 
     afterEach(function () {
@@ -366,7 +367,7 @@ describe('click event delegate', function () {
       event['s_fe'] = 1;
       document.body.dispatchEvent(event);
 
-      expect(triggerSpy.calls.count()).toBe(0);
+      expect(triggerSpy.mock.calls.length).toBe(0);
     });
   });
 });

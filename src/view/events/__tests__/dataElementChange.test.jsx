@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
 import DataElementChange, { formConfig } from '../dataElementChange.jsx'
 import bootstrap from '../../bootstrap.jsx'
+import { vi } from 'vitest';
 
 // react-testing-library element selectors
 const pageElements = {
@@ -64,7 +65,7 @@ describe('dataElementChange event view', () => {
   });
 
   it('supports opening the data element modal', () => {
-    spyOn(extensionBridge, 'openDataElementSelector').and.callFake(() => {
+    vi.spyOn(extensionBridge, 'openDataElementSelector').mockImplementation(() => {
       return Promise.resolve();
     });
 

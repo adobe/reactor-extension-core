@@ -39,9 +39,9 @@ class ResizeObserverMock {
     this.callback = callback;
 
     // Spy on instance methods
-    this.observe = jasmine.createSpy('observe');
-    this.unobserve = jasmine.createSpy('unobserve');
-    this.disconnect = jasmine.createSpy('disconnect');
+    this.observe = vi.fn().mockName('observe');
+    this.unobserve = vi.fn().mockName('unobserve');
+    this.disconnect = vi.fn().mockName('disconnect');
   }
 }
 window.ResizeObserver = ResizeObserverMock;

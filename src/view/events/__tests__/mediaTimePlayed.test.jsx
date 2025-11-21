@@ -19,6 +19,7 @@ import {
 import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
 import MediaTimePlayed, { formConfig } from '../mediaTimePlayed.jsx'
 import bootstrap from '../../bootstrap.jsx'
+import { vi } from 'vitest';
 
 // react-testing-library element selectors
 const pageElements = {
@@ -132,7 +133,7 @@ describe('time played event view', () => {
   });
 
   it('The media amount input supports opening the data element modal', () => {
-    spyOn(extensionBridge, 'openDataElementSelector').and.callFake(() => {
+    vi.spyOn(extensionBridge, 'openDataElementSelector').mockImplementation(() => {
       return Promise.resolve();
     });
 

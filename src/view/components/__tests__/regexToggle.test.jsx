@@ -16,6 +16,7 @@ import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
 import WrappedField from '../wrappedField.jsx'
 import RegexToggle from '../regexToggle.jsx'
 import bootstrap from '../../bootstrap.jsx'
+import { vi } from 'vitest';
 
 // react-testing-library element selectors
 const pageElements = {
@@ -59,7 +60,7 @@ describe('regex toggle', () => {
   beforeEach(() => {
     extensionBridge = createExtensionBridge();
 
-    spyOn(extensionBridge, 'openRegexTester').and.callFake(() => ({
+    vi.spyOn(extensionBridge, 'openRegexTester').mockImplementation(() => ({
       then(resolve) {
         resolve('bar');
       }

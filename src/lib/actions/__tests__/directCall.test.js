@@ -17,7 +17,9 @@ describe('direct call action delegate', function () {
   let delegate;
 
   beforeEach(function () {
-    mockWindow._satellite = jasmine.createSpyObj('_satellite', ['track']);
+    mockWindow._satellite = {
+      track: vi.fn()
+    };
     delegate = injectDirectCall({ window: mockWindow });
   });
 

@@ -15,9 +15,9 @@ import { injectLibraryLoaded } from '../libraryLoaded.js';
 describe('library loaded event delegate', function () {
   it('sends the trigger to the pageLifecycleEvents helper module', function () {
     const trigger = function () {};
-    const pageLifecycleEventsSpy = jasmine.createSpyObj('pageLifecycleEvents', [
-      'registerLibraryLoadedTrigger'
-    ]);
+    const pageLifecycleEventsSpy = {
+      registerLibraryLoadedTrigger: vi.fn()
+    };
 
     const delegate = injectLibraryLoaded({
       pageLifecycleEvents: pageLifecycleEventsSpy

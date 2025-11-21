@@ -12,6 +12,7 @@
 
 import { injectLiveQuerySelector } from '../liveQuerySelector.js';
 import WeakMap from '../weakMap.js';
+import { vi } from 'vitest';
 const { liveQuerySelector, __reset } = injectLiveQuerySelector({ WeakMap });
 
 const POLL_INTERVAL = 3000;
@@ -33,12 +34,12 @@ describe('liveQuerySelector', function () {
     div.className = 'foo';
     document.body.appendChild(div);
 
-    const callback = jasmine.createSpy();
+    const callback = vi.fn();
     liveQuerySelector('.foo', callback);
 
     jasmine.clock().tick(POLL_INTERVAL);
 
-    expect(callback.calls.count()).toBe(1);
+    expect(callback.mock.calls.length).toBe(1);
 
     document.body.removeChild(div);
   });
@@ -52,12 +53,12 @@ describe('liveQuerySelector', function () {
     div.className = 'foo';
     document.body.appendChild(div);
 
-    const callback = jasmine.createSpy();
+    const callback = vi.fn();
     liveQuerySelector('.foo', callback);
 
     jasmine.clock().tick(POLL_INTERVAL);
 
-    expect(callback.calls.count()).toBe(1);
+    expect(callback.mock.calls.length).toBe(1);
 
     document.body.removeChild(div);
   });
@@ -71,12 +72,12 @@ describe('liveQuerySelector', function () {
     a.className = 'foo';
     div.appendChild(a);
 
-    const callback = jasmine.createSpy();
+    const callback = vi.fn();
     liveQuerySelector('.foo', callback);
 
     jasmine.clock().tick(POLL_INTERVAL);
 
-    expect(callback.calls.count()).toBe(2);
+    expect(callback.mock.calls.length).toBe(2);
 
     document.body.removeChild(div);
   });
@@ -86,16 +87,16 @@ describe('liveQuerySelector', function () {
     div.className = 'foo';
     document.body.appendChild(div);
 
-    const callback1 = jasmine.createSpy();
+    const callback1 = vi.fn();
     liveQuerySelector('.foo', callback1);
 
-    const callback2 = jasmine.createSpy();
+    const callback2 = vi.fn();
     liveQuerySelector('.foo', callback2);
 
     jasmine.clock().tick(POLL_INTERVAL);
 
-    expect(callback1.calls.count()).toBe(1);
-    expect(callback2.calls.count()).toBe(1);
+    expect(callback1.mock.calls.length).toBe(1);
+    expect(callback2.mock.calls.length).toBe(1);
 
     document.body.removeChild(div);
   });
@@ -105,12 +106,12 @@ describe('liveQuerySelector', function () {
     div.className = 'foo';
     document.body.appendChild(div);
 
-    const callback = jasmine.createSpy();
+    const callback = vi.fn();
     liveQuerySelector('.foo', callback);
 
     jasmine.clock().tick(POLL_INTERVAL);
 
-    expect(callback.calls.count()).toBe(1);
+    expect(callback.mock.calls.length).toBe(1);
 
     document.body.removeChild(div);
 
@@ -120,7 +121,7 @@ describe('liveQuerySelector', function () {
 
     jasmine.clock().tick(POLL_INTERVAL);
 
-    expect(callback.calls.count()).toBe(1);
+    expect(callback.mock.calls.length).toBe(1);
 
     document.body.removeChild(div);
   });

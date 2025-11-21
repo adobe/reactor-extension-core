@@ -12,6 +12,7 @@
 
 import Simulate from 'simulate';
 import { injectMediaTimePlayed } from '../mediaTimePlayed.js';
+import { vi } from 'vitest';
 
 describe('media time played event delegate', function () {
   const delegate = injectMediaTimePlayed({ document });
@@ -38,7 +39,7 @@ describe('media time played event delegate', function () {
   };
 
   const assertTriggerCall = function (options) {
-    expect(options.call.args[0]).toEqual({
+    expect(options.call[0]).toEqual({
       element: options.element,
       target: options.target,
       amount: options.amount,
@@ -66,8 +67,8 @@ describe('media time played event delegate', function () {
     'triggers multiple rules with the same amount using second unit targeting the ' +
       'same element',
     function () {
-      const aTrigger = jasmine.createSpy();
-      const a2Trigger = jasmine.createSpy();
+      const aTrigger = vi.fn();
+      const a2Trigger = vi.fn();
 
       delegate(
         {
@@ -93,8 +94,8 @@ describe('media time played event delegate', function () {
         a2Trigger
       );
 
-      expect(aTrigger.calls.count()).toEqual(0);
-      expect(a2Trigger.calls.count()).toEqual(0);
+      expect(aTrigger.mock.calls.length).toEqual(0);
+      expect(a2Trigger.mock.calls.length).toEqual(0);
 
       aElement.seekable = {
         start: function () {
@@ -109,18 +110,18 @@ describe('media time played event delegate', function () {
 
       Simulate.timeupdate(aElement);
 
-      expect(aTrigger.calls.count()).toEqual(0);
-      expect(a2Trigger.calls.count()).toEqual(0);
+      expect(aTrigger.mock.calls.length).toEqual(0);
+      expect(a2Trigger.mock.calls.length).toEqual(0);
 
       aElement.currentTime = 35;
 
       Simulate.timeupdate(aElement);
 
-      expect(aTrigger.calls.count()).toEqual(1);
-      expect(a2Trigger.calls.count()).toEqual(1);
+      expect(aTrigger.mock.calls.length).toEqual(1);
+      expect(a2Trigger.mock.calls.length).toEqual(1);
 
       assertTriggerCall({
-        call: aTrigger.calls.first(),
+        call: aTrigger.mock.calls[0],
         element: aElement,
         target: aElement,
         amount: 5,
@@ -128,7 +129,7 @@ describe('media time played event delegate', function () {
       });
 
       assertTriggerCall({
-        call: a2Trigger.calls.first(),
+        call: a2Trigger.mock.calls[0],
         element: aElement,
         target: aElement,
         amount: 5,
@@ -141,8 +142,8 @@ describe('media time played event delegate', function () {
     'triggers multiple rules with the same amount using second unit targeting ' +
       'nested elements',
     function () {
-      const aTrigger = jasmine.createSpy();
-      const bTrigger = jasmine.createSpy();
+      const aTrigger = vi.fn();
+      const bTrigger = vi.fn();
 
       delegate(
         {
@@ -168,8 +169,8 @@ describe('media time played event delegate', function () {
         bTrigger
       );
 
-      expect(aTrigger.calls.count()).toEqual(0);
-      expect(bTrigger.calls.count()).toEqual(0);
+      expect(aTrigger.mock.calls.length).toEqual(0);
+      expect(bTrigger.mock.calls.length).toEqual(0);
 
       bElement.seekable = {
         start: function () {
@@ -184,18 +185,18 @@ describe('media time played event delegate', function () {
 
       Simulate.timeupdate(bElement);
 
-      expect(aTrigger.calls.count()).toEqual(0);
-      expect(bTrigger.calls.count()).toEqual(0);
+      expect(aTrigger.mock.calls.length).toEqual(0);
+      expect(bTrigger.mock.calls.length).toEqual(0);
 
       bElement.currentTime = 35;
 
       Simulate.timeupdate(bElement);
 
-      expect(aTrigger.calls.count()).toEqual(1);
-      expect(bTrigger.calls.count()).toEqual(1);
+      expect(aTrigger.mock.calls.length).toEqual(1);
+      expect(bTrigger.mock.calls.length).toEqual(1);
 
       assertTriggerCall({
-        call: aTrigger.calls.first(),
+        call: aTrigger.mock.calls[0],
         element: aElement,
         target: bElement,
         amount: 5,
@@ -203,7 +204,7 @@ describe('media time played event delegate', function () {
       });
 
       assertTriggerCall({
-        call: bTrigger.calls.first(),
+        call: bTrigger.mock.calls[0],
         element: bElement,
         target: bElement,
         amount: 5,
@@ -216,8 +217,8 @@ describe('media time played event delegate', function () {
     'triggers multiple rules with the same amount using second unit targeting ' +
       'nested elements (as strings)',
     function () {
-      const aTrigger = jasmine.createSpy();
-      const bTrigger = jasmine.createSpy();
+      const aTrigger = vi.fn();
+      const bTrigger = vi.fn();
 
       delegate(
         {
@@ -243,8 +244,8 @@ describe('media time played event delegate', function () {
         bTrigger
       );
 
-      expect(aTrigger.calls.count()).toEqual(0);
-      expect(bTrigger.calls.count()).toEqual(0);
+      expect(aTrigger.mock.calls.length).toEqual(0);
+      expect(bTrigger.mock.calls.length).toEqual(0);
 
       bElement.seekable = {
         start: function () {
@@ -259,18 +260,18 @@ describe('media time played event delegate', function () {
 
       Simulate.timeupdate(bElement);
 
-      expect(aTrigger.calls.count()).toEqual(0);
-      expect(bTrigger.calls.count()).toEqual(0);
+      expect(aTrigger.mock.calls.length).toEqual(0);
+      expect(bTrigger.mock.calls.length).toEqual(0);
 
       bElement.currentTime = 35;
 
       Simulate.timeupdate(bElement);
 
-      expect(aTrigger.calls.count()).toEqual(1);
-      expect(bTrigger.calls.count()).toEqual(1);
+      expect(aTrigger.mock.calls.length).toEqual(1);
+      expect(bTrigger.mock.calls.length).toEqual(1);
 
       assertTriggerCall({
-        call: aTrigger.calls.first(),
+        call: aTrigger.mock.calls[0],
         element: aElement,
         target: bElement,
         amount: 5,
@@ -278,7 +279,7 @@ describe('media time played event delegate', function () {
       });
 
       assertTriggerCall({
-        call: bTrigger.calls.first(),
+        call: bTrigger.mock.calls[0],
         element: bElement,
         target: bElement,
         amount: 5,
@@ -291,8 +292,8 @@ describe('media time played event delegate', function () {
     'triggers multiple rules with the different amounts using second unit targeting nested ' +
       'elements',
     function () {
-      const aTrigger = jasmine.createSpy();
-      const bTrigger = jasmine.createSpy();
+      const aTrigger = vi.fn();
+      const bTrigger = vi.fn();
 
       delegate(
         {
@@ -318,8 +319,8 @@ describe('media time played event delegate', function () {
         bTrigger
       );
 
-      expect(aTrigger.calls.count()).toEqual(0);
-      expect(bTrigger.calls.count()).toEqual(0);
+      expect(aTrigger.mock.calls.length).toEqual(0);
+      expect(bTrigger.mock.calls.length).toEqual(0);
 
       bElement.seekable = {
         start: function () {
@@ -334,25 +335,25 @@ describe('media time played event delegate', function () {
 
       Simulate.timeupdate(bElement);
 
-      expect(aTrigger.calls.count()).toEqual(0);
-      expect(bTrigger.calls.count()).toEqual(0);
+      expect(aTrigger.mock.calls.length).toEqual(0);
+      expect(bTrigger.mock.calls.length).toEqual(0);
 
       bElement.currentTime = 35;
 
       Simulate.timeupdate(bElement);
 
-      expect(aTrigger.calls.count()).toEqual(1);
-      expect(bTrigger.calls.count()).toEqual(0);
+      expect(aTrigger.mock.calls.length).toEqual(1);
+      expect(bTrigger.mock.calls.length).toEqual(0);
 
       bElement.currentTime = 42;
 
       Simulate.timeupdate(bElement);
 
-      expect(aTrigger.calls.count()).toEqual(1);
-      expect(bTrigger.calls.count()).toEqual(1);
+      expect(aTrigger.mock.calls.length).toEqual(1);
+      expect(bTrigger.mock.calls.length).toEqual(1);
 
       assertTriggerCall({
-        call: aTrigger.calls.first(),
+        call: aTrigger.mock.calls[0],
         element: aElement,
         target: bElement,
         amount: 5,
@@ -360,7 +361,7 @@ describe('media time played event delegate', function () {
       });
 
       assertTriggerCall({
-        call: bTrigger.calls.first(),
+        call: bTrigger.mock.calls[0],
         element: bElement,
         target: bElement,
         amount: 10,
@@ -373,8 +374,8 @@ describe('media time played event delegate', function () {
     'triggers multiple rules with the different amounts using second unit targeting the same ' +
       'element',
     function () {
-      const aTrigger = jasmine.createSpy();
-      const a2Trigger = jasmine.createSpy();
+      const aTrigger = vi.fn();
+      const a2Trigger = vi.fn();
 
       delegate(
         {
@@ -400,8 +401,8 @@ describe('media time played event delegate', function () {
         a2Trigger
       );
 
-      expect(aTrigger.calls.count()).toEqual(0);
-      expect(a2Trigger.calls.count()).toEqual(0);
+      expect(aTrigger.mock.calls.length).toEqual(0);
+      expect(a2Trigger.mock.calls.length).toEqual(0);
 
       aElement.seekable = {
         start: function () {
@@ -416,25 +417,25 @@ describe('media time played event delegate', function () {
 
       Simulate.timeupdate(aElement);
 
-      expect(aTrigger.calls.count()).toEqual(0);
-      expect(a2Trigger.calls.count()).toEqual(0);
+      expect(aTrigger.mock.calls.length).toEqual(0);
+      expect(a2Trigger.mock.calls.length).toEqual(0);
 
       aElement.currentTime = 35;
 
       Simulate.timeupdate(aElement);
 
-      expect(aTrigger.calls.count()).toEqual(1);
-      expect(a2Trigger.calls.count()).toEqual(0);
+      expect(aTrigger.mock.calls.length).toEqual(1);
+      expect(a2Trigger.mock.calls.length).toEqual(0);
 
       aElement.currentTime = 42;
 
       Simulate.timeupdate(aElement);
 
-      expect(aTrigger.calls.count()).toEqual(1);
-      expect(a2Trigger.calls.count()).toEqual(1);
+      expect(aTrigger.mock.calls.length).toEqual(1);
+      expect(a2Trigger.mock.calls.length).toEqual(1);
 
       assertTriggerCall({
-        call: aTrigger.calls.first(),
+        call: aTrigger.mock.calls[0],
         element: aElement,
         target: aElement,
         amount: 5,
@@ -442,7 +443,7 @@ describe('media time played event delegate', function () {
       });
 
       assertTriggerCall({
-        call: a2Trigger.calls.first(),
+        call: a2Trigger.mock.calls[0],
         element: aElement,
         target: aElement,
         amount: 10,
@@ -455,8 +456,8 @@ describe('media time played event delegate', function () {
     'triggers multiple rules with the different amounts using percent unit targeting nested ' +
       'elements',
     function () {
-      const aTrigger = jasmine.createSpy();
-      const bTrigger = jasmine.createSpy();
+      const aTrigger = vi.fn();
+      const bTrigger = vi.fn();
 
       delegate(
         {
@@ -482,8 +483,8 @@ describe('media time played event delegate', function () {
         bTrigger
       );
 
-      expect(aTrigger.calls.count()).toEqual(0);
-      expect(bTrigger.calls.count()).toEqual(0);
+      expect(aTrigger.mock.calls.length).toEqual(0);
+      expect(bTrigger.mock.calls.length).toEqual(0);
 
       bElement.seekable = {
         start: function () {
@@ -498,25 +499,25 @@ describe('media time played event delegate', function () {
 
       Simulate.timeupdate(bElement);
 
-      expect(aTrigger.calls.count()).toEqual(0);
-      expect(bTrigger.calls.count()).toEqual(0);
+      expect(aTrigger.mock.calls.length).toEqual(0);
+      expect(bTrigger.mock.calls.length).toEqual(0);
 
       bElement.currentTime = 35; // 7%, 5s complete.
 
       Simulate.timeupdate(bElement);
 
-      expect(aTrigger.calls.count()).toEqual(1);
-      expect(bTrigger.calls.count()).toEqual(0);
+      expect(aTrigger.mock.calls.length).toEqual(1);
+      expect(bTrigger.mock.calls.length).toEqual(0);
 
       bElement.currentTime = 60; // 43%, 30s complete
 
       Simulate.timeupdate(bElement);
 
-      expect(aTrigger.calls.count()).toEqual(1);
-      expect(bTrigger.calls.count()).toEqual(1);
+      expect(aTrigger.mock.calls.length).toEqual(1);
+      expect(bTrigger.mock.calls.length).toEqual(1);
 
       assertTriggerCall({
-        call: aTrigger.calls.first(),
+        call: aTrigger.mock.calls[0],
         element: aElement,
         target: bElement,
         amount: 5,
@@ -524,7 +525,7 @@ describe('media time played event delegate', function () {
       });
 
       assertTriggerCall({
-        call: bTrigger.calls.first(),
+        call: bTrigger.mock.calls[0],
         element: bElement,
         target: bElement,
         amount: 10,
@@ -537,8 +538,8 @@ describe('media time played event delegate', function () {
     'triggers multiple rules with the same amount using different units targeting the same ' +
       'element',
     function () {
-      const aTrigger = jasmine.createSpy();
-      const a2Trigger = jasmine.createSpy();
+      const aTrigger = vi.fn();
+      const a2Trigger = vi.fn();
 
       delegate(
         {
@@ -564,8 +565,8 @@ describe('media time played event delegate', function () {
         a2Trigger
       );
 
-      expect(aTrigger.calls.count()).toEqual(0);
-      expect(a2Trigger.calls.count()).toEqual(0);
+      expect(aTrigger.mock.calls.length).toEqual(0);
+      expect(a2Trigger.mock.calls.length).toEqual(0);
 
       aElement.seekable = {
         start: function () {
@@ -580,23 +581,23 @@ describe('media time played event delegate', function () {
       aElement.currentTime = 33; // 4%, 3s complete.
       Simulate.timeupdate(aElement);
 
-      expect(aTrigger.calls.count()).toEqual(0);
-      expect(a2Trigger.calls.count()).toEqual(0);
+      expect(aTrigger.mock.calls.length).toEqual(0);
+      expect(a2Trigger.mock.calls.length).toEqual(0);
 
       aElement.currentTime = 34; // 6%, 4s complete.
       Simulate.timeupdate(aElement);
 
-      expect(aTrigger.calls.count()).toEqual(0);
-      expect(a2Trigger.calls.count()).toEqual(1);
+      expect(aTrigger.mock.calls.length).toEqual(0);
+      expect(a2Trigger.mock.calls.length).toEqual(1);
 
       aElement.currentTime = 35; // 7%, 5s complete.
       Simulate.timeupdate(aElement);
 
-      expect(aTrigger.calls.count()).toEqual(1);
-      expect(a2Trigger.calls.count()).toEqual(1);
+      expect(aTrigger.mock.calls.length).toEqual(1);
+      expect(a2Trigger.mock.calls.length).toEqual(1);
 
       assertTriggerCall({
-        call: aTrigger.calls.first(),
+        call: aTrigger.mock.calls[0],
         element: aElement,
         target: aElement,
         amount: 5,
@@ -604,7 +605,7 @@ describe('media time played event delegate', function () {
       });
 
       assertTriggerCall({
-        call: a2Trigger.calls.first(),
+        call: a2Trigger.mock.calls[0],
         element: aElement,
         target: aElement,
         amount: 5,

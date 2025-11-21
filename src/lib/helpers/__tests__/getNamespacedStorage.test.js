@@ -11,6 +11,7 @@
  ****************************************************************************************/
 
 import { injectGetNamespacedStorage } from '../getNamespacedStorage.js';
+import { vi } from 'vitest';
 
 describe('getNamespacedStorage', function () {
   function createMockStorage() {
@@ -64,7 +65,7 @@ describe('getNamespacedStorage', function () {
         it('proper error handling if storage is disabled', function () {
           mockTurbineVariable({
             logger: {
-              warn: jasmine.createSpy()
+              warn: vi.fn()
             }
           });
           const mockWindow = createMockWindowUnavailableStorage();
@@ -100,7 +101,7 @@ describe('getNamespacedStorage', function () {
         it('proper error handling if storage is disabled', function () {
           mockTurbineVariable({
             logger: {
-              warn: jasmine.createSpy()
+              warn: vi.fn()
             }
           });
           const mockWindow = createMockWindowUnavailableStorage();

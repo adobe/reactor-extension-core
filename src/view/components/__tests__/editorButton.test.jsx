@@ -15,6 +15,7 @@ import { fireEvent, render as rtlRender, screen } from '@testing-library/react';
 import { isButtonValid } from '@test-helpers/react-testing-library.jsx';
 import createExtensionBridge from '@test-helpers/createExtensionBridge.jsx';
 import EditorButton from '../editorButton.jsx'
+import { vi } from 'vitest';
 
 const render = (props) => rtlRender(<EditorButton {...props} />);
 
@@ -29,7 +30,7 @@ describe('editor button', () => {
   beforeEach(() => {
     extensionBridge = createExtensionBridge();
     window.extensionBridge = extensionBridge;
-    spyOn(window.extensionBridge, 'openCodeEditor').and.callFake((options) => ({
+    vi.spyOn(window.extensionBridge, 'openCodeEditor').mockImplementation((options) => ({
       then(resolve) {
         resolve(`${options.code} bar`);
       }
@@ -49,7 +50,7 @@ describe('editor button', () => {
   });
 
   it('supports code editing workflow', () => {
-    const onChange = jasmine.createSpy();
+    const onChange = vi.fn();
     render({
       invalid: true,
       value: 'foo',
