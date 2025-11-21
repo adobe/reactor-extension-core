@@ -1,7 +1,6 @@
 {
   "env": {
     "browser": true,
-    "jasmine": true,
     "node": true
   },
   "extends": ["plugin:prettier/recommended"],
@@ -47,7 +46,16 @@
   "globals": {
     "Simulate": true,
     "_satellite": true,
-    "REACTOR_KARMA_CI_UNIT_TEST_MODE": true
+    "REACTOR_KARMA_CI_UNIT_TEST_MODE": true,
+    "describe": "readonly",
+    "it": "readonly",
+    "test": "readonly",
+    "expect": "readonly",
+    "beforeEach": "readonly",
+    "afterEach": "readonly",
+    "beforeAll": "readonly",
+    "afterAll": "readonly",
+    "vi": "readonly"
   },
   "settings": {
     "import/resolver": {

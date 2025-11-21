@@ -33,8 +33,8 @@ describe('zoom change event delegate', function () {
   };
 
   beforeAll(function () {
-    jasmine.clock().install();
-    jasmine.clock().mockDate();
+    vi.useFakeTimers();
+    vi.setSystemTime();
 
     delegate = injectZoomChange({
       window: mockWindow,
@@ -43,7 +43,7 @@ describe('zoom change event delegate', function () {
   });
 
   afterAll(function () {
-    jasmine.clock().uninstall();
+    vi.useRealTimers();
   });
 
   it('triggers rule when zoom changes', function () {
@@ -59,11 +59,11 @@ describe('zoom change event delegate', function () {
 
     expect(trigger.mock.calls.length).toEqual(0);
 
-    jasmine.clock().tick(1049);
+    vi.advanceTimersByTime(1049);
 
     expect(trigger.mock.calls.length).toEqual(0);
 
-    jasmine.clock().tick(1);
+    vi.advanceTimersByTime(1);
 
     expect(trigger.mock.calls.length).toEqual(1);
     assertTriggerCall({
@@ -75,11 +75,11 @@ describe('zoom change event delegate', function () {
     Simulate.event(document, 'touchend');
     mockWindow.innerWidth = document.documentElement.clientWidth / 2;
 
-    jasmine.clock().tick(1249);
+    vi.advanceTimersByTime(1249);
 
     expect(trigger.mock.calls.length).toEqual(1);
 
-    jasmine.clock().tick(1);
+    vi.advanceTimersByTime(1);
 
     expect(trigger.mock.calls.length).toEqual(2);
     assertTriggerCall({

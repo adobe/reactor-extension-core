@@ -138,7 +138,7 @@ describe('custom code action delegate', function () {
           let mockDocument;
 
           beforeEach(function () {
-            jasmine.clock().install();
+            vi.useFakeTimers();
 
             mockDocument = getMockDocument({
               isIE: isIE,
@@ -154,7 +154,7 @@ describe('custom code action delegate', function () {
           });
 
           afterEach(function () {
-            jasmine.clock().uninstall();
+            vi.useRealTimers();
           });
 
           it('writes the code defined inside the main library', function () {
@@ -167,7 +167,7 @@ describe('custom code action delegate', function () {
             expect(documentWriteSpy).not.toHaveBeenCalled();
 
             mockDocument.body = {};
-            jasmine.clock().tick(20);
+            vi.advanceTimersByTime(20);
 
             expect(postscribeSpy.mock.lastCall[1]).toBe(
               'inside container'
@@ -185,7 +185,7 @@ describe('custom code action delegate', function () {
               expect(documentWriteSpy).not.toHaveBeenCalled();
 
               mockDocument.body = {};
-              jasmine.clock().tick(20);
+              vi.advanceTimersByTime(20);
 
               expect(postscribeSpy.mock.lastCall[1]).toBe(
                 'inside external file'

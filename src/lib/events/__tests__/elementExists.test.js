@@ -47,11 +47,11 @@ describe('element exists event delegate', function () {
   };
 
   beforeAll(function () {
-    jasmine.clock().install();
+    vi.useFakeTimers();
   });
 
   afterAll(function () {
-    jasmine.clock().uninstall();
+    vi.useRealTimers();
   });
 
   beforeEach(function () {
@@ -72,7 +72,7 @@ describe('element exists event delegate', function () {
       aTrigger
     );
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     assertTriggerCall({
       call: aTrigger.mock.lastCall,
@@ -99,7 +99,7 @@ describe('element exists event delegate', function () {
       a2Trigger
     );
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     expect(aTrigger.mock.calls.length).toEqual(1);
     expect(a2Trigger.mock.calls.length).toEqual(1);
@@ -128,7 +128,7 @@ describe('element exists event delegate', function () {
       a2Trigger
     );
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     expect(result).toEqual('a2Trigger');
   });
@@ -149,7 +149,7 @@ describe('element exists event delegate', function () {
       trigger
     );
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     expect(trigger.mock.calls.length).toEqual(1);
   });
@@ -170,7 +170,7 @@ describe('element exists event delegate', function () {
       trigger
     );
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     expect(trigger.mock.calls.length).toEqual(0);
   });
@@ -199,7 +199,7 @@ describe('element exists event delegate', function () {
       selectorAndPropsTrigger
     );
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     expect(selectorOnlyTrigger.mock.calls.length).toBe(1);
     expect(selectorAndPropsTrigger.mock.calls.length).toBe(0);
@@ -208,7 +208,7 @@ describe('element exists event delegate', function () {
     addedLaterElement.innerHTML = 'added later';
     document.body.appendChild(addedLaterElement);
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     expect(selectorOnlyTrigger.mock.calls.length).toBe(1);
     expect(selectorAndPropsTrigger.mock.calls.length).toBe(1);

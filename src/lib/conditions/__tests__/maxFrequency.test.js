@@ -12,6 +12,7 @@
 
 import { injectMaxFrequency } from '../maxFrequency.js';
 import { injectGetNamespacedStorage } from '../../helpers/getNamespacedStorage.js';
+import { vi } from 'vitest';
 const injectedGetNamespacedStorage = injectGetNamespacedStorage({ window });
 
 const millisByUnit = {
@@ -199,15 +200,15 @@ describe('max frequency condition delegate', function () {
   ['second', 'minute', 'hour', 'day', 'week', 'month'].forEach(function (unit) {
     describe(unit + ' unit', function () {
       beforeEach(function () {
-        jasmine.clock().install();
+        vi.useFakeTimers();
       });
 
       afterEach(function () {
-        jasmine.clock().uninstall();
+        vi.useRealTimers();
       });
 
       it('returns true if count has been met', function () {
-        jasmine.clock().mockDate(new Date(5 * millisByUnit[unit]));
+        vi.setSystemTime(new Date(5 * millisByUnit[unit]));
 
         window.localStorage.setItem(
           'com.adobe.reactor.core.maxFrequency.RL123.' + unit,
@@ -231,7 +232,7 @@ describe('max frequency condition delegate', function () {
       });
 
       it('returns false if count has not been met', function () {
-        jasmine.clock().mockDate(new Date(5 * millisByUnit[unit]));
+        vi.setSystemTime(new Date(5 * millisByUnit[unit]));
 
         window.localStorage.setItem(
           'com.adobe.reactor.core.maxFrequency.RL123.' + unit,

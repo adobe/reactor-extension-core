@@ -19,11 +19,11 @@ const POLL_INTERVAL = 3000;
 
 describe('liveQuerySelector', function () {
   beforeAll(function () {
-    jasmine.clock().install();
+    vi.useFakeTimers();
   });
 
   afterAll(function () {
-    jasmine.clock().uninstall();
+    vi.useRealTimers();
     if (__reset) {
       __reset();
     }
@@ -37,7 +37,7 @@ describe('liveQuerySelector', function () {
     const callback = vi.fn();
     liveQuerySelector('.foo', callback);
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     expect(callback.mock.calls.length).toBe(1);
 
@@ -47,7 +47,7 @@ describe('liveQuerySelector', function () {
   it('detects an element added after polling starts', function () {
     // Polling doesn't start until liveQuerySelector is called once.
     liveQuerySelector('a', function () {});
-    jasmine.clock().tick(5000);
+    vi.advanceTimersByTime(5000);
 
     const div = document.createElement('div');
     div.className = 'foo';
@@ -56,7 +56,7 @@ describe('liveQuerySelector', function () {
     const callback = vi.fn();
     liveQuerySelector('.foo', callback);
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     expect(callback.mock.calls.length).toBe(1);
 
@@ -75,7 +75,7 @@ describe('liveQuerySelector', function () {
     const callback = vi.fn();
     liveQuerySelector('.foo', callback);
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     expect(callback.mock.calls.length).toBe(2);
 
@@ -93,7 +93,7 @@ describe('liveQuerySelector', function () {
     const callback2 = vi.fn();
     liveQuerySelector('.foo', callback2);
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     expect(callback1.mock.calls.length).toBe(1);
     expect(callback2.mock.calls.length).toBe(1);
@@ -109,17 +109,17 @@ describe('liveQuerySelector', function () {
     const callback = vi.fn();
     liveQuerySelector('.foo', callback);
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     expect(callback.mock.calls.length).toBe(1);
 
     document.body.removeChild(div);
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     document.body.appendChild(div);
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     expect(callback.mock.calls.length).toBe(1);
 

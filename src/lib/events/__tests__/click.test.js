@@ -75,7 +75,7 @@ describe('click event delegate', function () {
     };
 
     beforeEach(function () {
-      jasmine.clock().install();
+      vi.useFakeTimers();
       document.addEventListener('click', clickHandler);
 
       mockWindow.location = INITIAL_LOCATION;
@@ -102,7 +102,7 @@ describe('click event delegate', function () {
       // action on click events from prior tests.
       __reset();
 
-      jasmine.clock().uninstall();
+      vi.useRealTimers();
       document.removeEventListener('click', clickHandler);
     });
 
@@ -117,9 +117,9 @@ describe('click event delegate', function () {
       link.click();
 
       expect(defaultPrevented).toBe(true);
-      jasmine.clock().tick(2999);
+      vi.advanceTimersByTime(2999);
       expect(mockWindow.location).toEqual(INITIAL_LOCATION);
-      jasmine.clock().tick(1);
+      vi.advanceTimersByTime(1);
       expect(mockWindow.location).toEqual(LINK_LOCATION);
     });
 
@@ -134,9 +134,9 @@ describe('click event delegate', function () {
       spanWithinLink.click();
 
       expect(defaultPrevented).toBe(true);
-      jasmine.clock().tick(2999);
+      vi.advanceTimersByTime(2999);
       expect(mockWindow.location).toEqual(INITIAL_LOCATION);
-      jasmine.clock().tick(1);
+      vi.advanceTimersByTime(1);
       expect(mockWindow.location).toEqual(LINK_LOCATION);
     });
 

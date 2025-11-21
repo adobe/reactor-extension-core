@@ -38,10 +38,10 @@ describe('time on page event delegate', function () {
   let delegate;
 
   beforeEach(function () {
-    jasmine.clock().install();
+    vi.useFakeTimers();
 
     const baseTime = new Date();
-    jasmine.clock().mockDate(baseTime);
+    vi.setSystemTime(baseTime);
 
     delegate = injectTimeOnPage({
       document,
@@ -50,14 +50,14 @@ describe('time on page event delegate', function () {
   });
 
   afterEach(function () {
-    jasmine.clock().uninstall();
+    vi.useRealTimers();
   });
 
   it('triggers rule', function () {
     const trigger = vi.fn();
 
     delegate({ timeOnPage: 2 }, trigger);
-    jasmine.clock().tick(2000);
+    vi.advanceTimersByTime(2000);
 
     const call = trigger.mock.lastCall;
     expect(call[0]).toEqual({
@@ -69,7 +69,7 @@ describe('time on page event delegate', function () {
     const trigger = vi.fn();
 
     delegate({ timeOnPage: '2' }, trigger);
-    jasmine.clock().tick(2000);
+    vi.advanceTimersByTime(2000);
 
     const call = trigger.mock.lastCall;
     expect(call[0]).toEqual({

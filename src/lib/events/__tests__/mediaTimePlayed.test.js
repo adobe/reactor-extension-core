@@ -48,11 +48,11 @@ describe('media time played event delegate', function () {
   };
 
   beforeAll(function () {
-    jasmine.clock().install();
+    vi.useFakeTimers();
   });
 
   afterAll(function () {
-    jasmine.clock().uninstall();
+    vi.useRealTimers();
   });
 
   beforeEach(function () {

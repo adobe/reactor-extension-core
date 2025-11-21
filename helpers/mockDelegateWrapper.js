@@ -10,7 +10,7 @@
  *
  * In this context, module, require, and turbine were "free" variables wrapped
  * around the delegate code. We can't easily do that for our tests, so we'll
- * place "require" and "turbine" on globalThis for jasmine (not on window).
+ * place "require" and "turbine" on globalThis for the test environment (not on window).
  *
  * We don't need to do anything for module.exports because the bundler in this
  * project handles those for us. and the globalThis require and turbine are
@@ -20,6 +20,7 @@
 /* START.TESTS_ONLY */
 // make process available globally because we bundle karma as modules now.
 import process from 'process';
+import { vi } from 'vitest';
 globalThis.process = process;
 process.env.NODE_ENV = 'test';
 
@@ -34,10 +35,10 @@ function setupGlobals() {
   window._satellite = {};
   globalThis.turbine = {
     logger: {
-      warn: jasmine.createSpy('warn'),
-      error: jasmine.createSpy('error'),
-      info: jasmine.createSpy('info'),
-      debug: jasmine.createSpy('debug')
+      warn: vi.fn(),
+      error: vi.fn(),
+      info: vi.fn(),
+      debug: vi.fn()
     }
   };
   // --- mock Turbine's public "require" function ---
@@ -68,7 +69,7 @@ function setupGlobals() {
     }
 
     // we don't really care what it was, just mock it.
-    return jasmine.createSpy(path);
+    return vi.fn();
   };
   // --- mock Turbine's public "require" function ---
 }

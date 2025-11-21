@@ -21,7 +21,8 @@ import ValueComparison, { formConfig } from '../valueComparison.jsx'
 import bootstrap from '../../bootstrap.jsx'
 import { vi } from 'vitest';
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 1540000;
+// Note: Previously had jasmine.DEFAULT_TIMEOUT_INTERVAL = 1540000
+// If timeout issues occur, add: test.setTimeout(1540000) or configure in vitest.config.js
 
 // react-testing-library element selectors
 const pageElements = {

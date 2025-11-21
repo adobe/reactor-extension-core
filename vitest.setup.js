@@ -6,24 +6,6 @@ import '@testing-library/jest-dom';
 import { expect, beforeEach, vi } from 'vitest';
 import Simulate from 'simulate';
 
-// ============================================================
-// Jasmine Compatibility Shims for Vitest
-// ============================================================
-
-/**
- * Jasmine-compatible API for Vitest
- * Minimal shims for patterns not yet migrated
- */
-globalThis.jasmine = {
-  // jasmine.clock() → vi fake timers
-  clock: () => ({
-    install: () => vi.useFakeTimers(),
-    uninstall: () => vi.useRealTimers(),
-    tick: (ms) => vi.advanceTimersByTime(ms),
-    mockDate: (date) => vi.setSystemTime(date),
-  }),
-};
-
 // Make Simulate available globally for tests that need it
 globalThis.Simulate = Simulate;
 

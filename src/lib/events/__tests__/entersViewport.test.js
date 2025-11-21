@@ -801,14 +801,14 @@ describe('enters viewport event delegate', function () {
     //
     //
     //       Simulate.event(window, 'scroll');
-    //       jasmine.clock().tick(DEBOUNCE_DELAY); // Skip past debounce.
+    //       vi.advanceTimersByTime(DEBOUNCE_DELAY); // Skip past debounce.
     //
     //       // The rule shouldn't be triggered because the element isn't in view.
     //       expect(aTrigger.mock.calls.length).toEqual(0);
     //
     //       window.scrollTo(0, 3000);
     //       Simulate.event(window, 'scroll');
-    //       jasmine.clock().tick(DEBOUNCE_DELAY); // Skip past debounce.
+    //       vi.advanceTimersByTime(DEBOUNCE_DELAY); // Skip past debounce.
     //
     //       expect(aTrigger.mock.calls.length).toEqual(1);
     //     });
@@ -845,7 +845,7 @@ describe('enters viewport event delegate', function () {
     //         delay: 200000
     //       }, b2Trigger);
     //
-    //       jasmine.clock().tick(POLL_INTERVAL);
+    //       vi.advanceTimersByTime(POLL_INTERVAL);
     //
     //       expect(aTrigger.mock.calls.length).toEqual(0);
     //       expect(a2Trigger.mock.calls.length).toEqual(0);
@@ -853,7 +853,7 @@ describe('enters viewport event delegate', function () {
     //       expect(b2Trigger.mock.calls.length).toEqual(0);
     //
     //       window.scrollTo(0, 10000);
-    //       jasmine.clock().tick(POLL_INTERVAL);
+    //       vi.advanceTimersByTime(POLL_INTERVAL);
     //
     //       expect(aTrigger.mock.calls.length).toEqual(1);
     //       expect(a2Trigger.mock.calls.length).toEqual(1);
@@ -861,7 +861,7 @@ describe('enters viewport event delegate', function () {
     //       expect(b2Trigger.mock.calls.length).toEqual(0);
     //
     //       window.scrollTo(0, 0);
-    //       jasmine.clock().tick(POLL_INTERVAL);
+    //       vi.advanceTimersByTime(POLL_INTERVAL);
     //
     //       window.scrollTo(0, 10000);
     //       // Enough time for the poll interval to elapse many times. The point here is to test:
@@ -871,7 +871,7 @@ describe('enters viewport event delegate', function () {
     //       // the rule each time it enters the viewport.
     //       // 3. a2Trigger should not be repeatedly called on every poll cycle if the element
     //       // has remained inside the viewport throughout that duration.
-    //       jasmine.clock().tick(POLL_INTERVAL * 10);
+    //       vi.advanceTimersByTime(POLL_INTERVAL * 10);
     //
     //       expect(aTrigger.mock.calls.length).toEqual(1);
     //       expect(a2Trigger.mock.calls.length).toEqual(2);
@@ -879,7 +879,7 @@ describe('enters viewport event delegate', function () {
     //       expect(b2Trigger.mock.calls.length).toEqual(0);
     //
     //       window.scrollTo(0, 20000);
-    //       jasmine.clock().tick(POLL_INTERVAL);
+    //       vi.advanceTimersByTime(POLL_INTERVAL);
     //
     //       expect(aTrigger.mock.calls.length).toEqual(1);
     //       expect(a2Trigger.mock.calls.length).toEqual(2);
@@ -887,11 +887,11 @@ describe('enters viewport event delegate', function () {
     //       expect(b2Trigger.mock.calls.length).toEqual(0);
     //
     //       window.scrollTo(0, 0);
-    //       jasmine.clock().tick(POLL_INTERVAL);
+    //       vi.advanceTimersByTime(POLL_INTERVAL);
     //
     //       // Give enough time for the configured delay time to pass. The b element rules
     //       // shouldn't be triggered because the b element is no longer in view.
-    //       jasmine.clock().tick(100000);
+    //       vi.advanceTimersByTime(100000);
     //
     //       expect(aTrigger.mock.calls.length).toEqual(1);
     //       expect(a2Trigger.mock.calls.length).toEqual(2);
@@ -899,18 +899,18 @@ describe('enters viewport event delegate', function () {
     //       expect(b2Trigger.mock.calls.length).toEqual(0);
     //
     //       window.scrollTo(0, 20000);
-    //       jasmine.clock().tick(POLL_INTERVAL);
+    //       vi.advanceTimersByTime(POLL_INTERVAL);
     //
     //       // Give enough time for the configured delay time to
     //       // pass. The second trigger should be called.
-    //       jasmine.clock().tick(50000);
+    //       vi.advanceTimersByTime(50000);
     //       expect(aTrigger.mock.calls.length).toEqual(1);
     //       expect(a2Trigger.mock.calls.length).toEqual(2);
     //       expect(bTrigger.mock.calls.length).toEqual(1);
     //       expect(b2Trigger.mock.calls.length).toEqual(0);
     //
     //       // A different rule watching for the same element but an even longer delay time? Oh my!
-    //       jasmine.clock().tick(200000);
+    //       vi.advanceTimersByTime(200000);
     //       expect(aTrigger.mock.calls.length).toEqual(1);
     //       expect(a2Trigger.mock.calls.length).toEqual(2);
     //       expect(bTrigger.mock.calls.length).toEqual(1);

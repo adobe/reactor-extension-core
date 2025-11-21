@@ -61,9 +61,7 @@ const getTestProps = () => ({
     remove: vi.fn(),
     length: 2
   },
-  renderItem: jasmine
-    .createSpy('renderItem')
-    .and.callFake((rowData) => (
+  renderItem: vi.fn().mockImplementation((rowData) => (
       <TextField label="Row Input Box" value={rowData} />
     )),
   createItem: vi.fn().and.returnValue({}),

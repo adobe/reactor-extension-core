@@ -50,7 +50,7 @@ describe('hover event delegate', function () {
   };
 
   beforeEach(function () {
-    jasmine.clock().install();
+    vi.useFakeTimers();
     delegate = injectHover({ liveQuerySelector });
     createElements();
   });
@@ -60,7 +60,7 @@ describe('hover event delegate', function () {
     Simulate.mouseleave(aElement);
     removeElements();
 
-    jasmine.clock().uninstall();
+    vi.useRealTimers();
 
     // We need to reset the liveQuerySelector, otherwise it will affect the next test that is run.
     resetLiveQuerySelector();
@@ -83,11 +83,11 @@ describe('hover event delegate', function () {
         trigger
       );
 
-      jasmine.clock().tick(POLL_INTERVAL);
+      vi.advanceTimersByTime(POLL_INTERVAL);
 
       Simulate.mouseenter(aElement);
 
-      jasmine.clock().tick(1100);
+      vi.advanceTimersByTime(1100);
 
       expect(trigger.mock.calls.length).toEqual(1);
 
@@ -124,7 +124,7 @@ describe('hover event delegate', function () {
       bTrigger
     );
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     Simulate.mouseenter(aElement);
 
@@ -183,7 +183,7 @@ describe('hover event delegate', function () {
       a2Trigger
     );
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     Simulate.mouseenter(aElement);
 
@@ -232,12 +232,12 @@ describe('hover event delegate', function () {
       bTrigger
     );
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     Simulate.mouseenter(aElement);
     Simulate.mouseenter(bElement);
 
-    jasmine.clock().tick(800);
+    vi.advanceTimersByTime(800);
 
     Simulate.mouseleave(aElement);
     Simulate.mouseleave(bElement);
@@ -248,7 +248,7 @@ describe('hover event delegate', function () {
     Simulate.mouseenter(aElement);
     Simulate.mouseenter(bElement);
 
-    jasmine.clock().tick(1200);
+    vi.advanceTimersByTime(1200);
 
     // Because the rules are on the same delay, the hover event from element B also executes
     // rule A when it "bubbles up".
@@ -304,12 +304,12 @@ describe('hover event delegate', function () {
       bTrigger
     );
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     Simulate.mouseenter(aElement);
     Simulate.mouseenter(bElement);
 
-    jasmine.clock().tick(800);
+    vi.advanceTimersByTime(800);
 
     Simulate.mouseleave(aElement);
     Simulate.mouseleave(bElement);
@@ -320,7 +320,7 @@ describe('hover event delegate', function () {
     Simulate.mouseenter(aElement);
     Simulate.mouseenter(bElement);
 
-    jasmine.clock().tick(1200);
+    vi.advanceTimersByTime(1200);
 
     expect(aTrigger.mock.calls.length).toEqual(0);
     expect(bTrigger.mock.calls.length).toEqual(1);
@@ -332,7 +332,7 @@ describe('hover event delegate', function () {
       delay: 1000
     });
 
-    jasmine.clock().tick(1000);
+    vi.advanceTimersByTime(1000);
 
     // Because the rules are on different delays, the hover event from element B doesn't
     // execute rule A when it "bubbles up".
@@ -373,11 +373,11 @@ describe('hover event delegate', function () {
       a2Trigger
     );
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     Simulate.mouseenter(aElement);
 
-    jasmine.clock().tick(800);
+    vi.advanceTimersByTime(800);
 
     Simulate.mouseleave(aElement);
 
@@ -386,7 +386,7 @@ describe('hover event delegate', function () {
 
     Simulate.mouseenter(aElement);
 
-    jasmine.clock().tick(1200);
+    vi.advanceTimersByTime(1200);
 
     expect(aTrigger.mock.calls.length).toEqual(1);
 
@@ -433,11 +433,11 @@ describe('hover event delegate', function () {
       a2Trigger
     );
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     Simulate.mouseenter(aElement);
 
-    jasmine.clock().tick(800);
+    vi.advanceTimersByTime(800);
 
     Simulate.mouseleave(aElement);
 
@@ -446,7 +446,7 @@ describe('hover event delegate', function () {
 
     Simulate.mouseenter(aElement);
 
-    jasmine.clock().tick(1200);
+    vi.advanceTimersByTime(1200);
 
     expect(aTrigger.mock.calls.length).toEqual(1);
     expect(a2Trigger.mock.calls.length).toEqual(0);
@@ -458,7 +458,7 @@ describe('hover event delegate', function () {
       delay: 1000
     });
 
-    jasmine.clock().tick(1000);
+    vi.advanceTimersByTime(1000);
 
     expect(aTrigger.mock.calls.length).toEqual(1);
     expect(a2Trigger.mock.calls.length).toEqual(1);
@@ -487,7 +487,7 @@ describe('hover event delegate', function () {
       bTrigger
     );
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     Simulate.mouseenter(bElement);
 
@@ -510,7 +510,7 @@ describe('hover event delegate', function () {
       bTrigger
     );
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     Simulate.mouseenter(bElement);
 

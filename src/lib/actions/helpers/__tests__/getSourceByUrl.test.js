@@ -55,9 +55,7 @@ describe('get source by url', function () {
             }
           });
 
-          loadScriptSpy = jasmine
-            .createSpy('load-script')
-            .and.callFake(function () {
+          loadScriptSpy = vi.fn().mockImplementation(function () {
               // files written out by forge will sometimes provide a relative url
               _satellite.__registerScript(fullFileUrl, 'script code');
               return Promise.resolve();
@@ -87,9 +85,7 @@ describe('get source by url', function () {
         });
 
         it('returns undefined when the script cannot be loaded', function (done) {
-          const loadScriptSpy = jasmine
-            .createSpy('load-script')
-            .and.callFake(function () {
+          const loadScriptSpy = vi.fn().mockImplementation(function () {
               return Promise.reject();
             });
 
@@ -122,9 +118,7 @@ describe('get source by url', function () {
             }
           });
 
-          loadScriptSpy = jasmine
-            .createSpy('load-script')
-            .and.callFake(function () {
+          loadScriptSpy = vi.fn().mockImplementation(function () {
               // files written out by forge will sometimes provide a relative url
               _satellite.__registerScript(relativeFile, 'script code');
               return Promise.resolve();
@@ -154,9 +148,7 @@ describe('get source by url', function () {
         });
 
         it('returns undefined when the script cannot be loaded', function (done) {
-          const loadScriptSpy = jasmine
-            .createSpy('load-script')
-            .and.callFake(function () {
+          const loadScriptSpy = vi.fn().mockImplementation(function () {
               return Promise.reject();
             });
 
@@ -187,9 +179,7 @@ describe('get source by url', function () {
             }
           });
 
-          loadScriptSpy = jasmine
-            .createSpy('load-script')
-            .and.callFake(function () {
+          loadScriptSpy = vi.fn().mockImplementation(function () {
               // files written out by forge will sometimes provide a relative url
               _satellite.__registerScript(filePath, 'script code');
               return Promise.resolve();
@@ -219,9 +209,7 @@ describe('get source by url', function () {
         });
 
         it('returns undefined when the script cannot be loaded', function (done) {
-          const loadScriptSpy = jasmine
-            .createSpy('load-script')
-            .and.callFake(function () {
+          const loadScriptSpy = vi.fn().mockImplementation(function () {
               return Promise.reject();
             });
 
@@ -245,9 +233,7 @@ describe('get source by url', function () {
     describe(', registerScript called with a full path', function () {
       describe(', getSourceByUrl called with a full path,', function () {
         beforeEach(function () {
-          loadScriptSpy = jasmine
-            .createSpy('load-script')
-            .and.callFake(function () {
+          loadScriptSpy = vi.fn().mockImplementation(function () {
               // files written out by forge will sometimes provide a relative url
               _satellite.__registerScript(fullFileUrl, 'script code');
               return Promise.resolve();
@@ -275,9 +261,7 @@ describe('get source by url', function () {
         });
 
         it('returns undefined when the script cannot be loaded', function (done) {
-          const loadScriptSpy = jasmine
-            .createSpy('load-script')
-            .and.callFake(function () {
+          const loadScriptSpy = vi.fn().mockImplementation(function () {
               return Promise.reject();
             });
 
@@ -298,9 +282,7 @@ describe('get source by url', function () {
     describe(', registerScript called with a partial path', function () {
       describe(', getSourceByUrl called with a partial path,', function () {
         beforeEach(function () {
-          loadScriptSpy = jasmine
-            .createSpy('load-script')
-            .and.callFake(function () {
+          loadScriptSpy = vi.fn().mockImplementation(function () {
               // files written out by forge will sometimes provide a relative url
               _satellite.__registerScript(relativeFile, 'script code');
               return Promise.resolve();
@@ -328,9 +310,7 @@ describe('get source by url', function () {
         });
 
         it('returns undefined when the script cannot be loaded', function (done) {
-          const loadScriptSpy = jasmine
-            .createSpy('load-script')
-            .and.callFake(function () {
+          const loadScriptSpy = vi.fn().mockImplementation(function () {
               return Promise.reject();
             });
 
@@ -349,9 +329,7 @@ describe('get source by url', function () {
 
       describe(', getSourceByUrl called with full url,', function () {
         beforeEach(function () {
-          loadScriptSpy = jasmine
-            .createSpy('load-script')
-            .and.callFake(function () {
+          loadScriptSpy = vi.fn().mockImplementation(function () {
               // files written out by forge will sometimes provide a relative url
               _satellite.__registerScript(filePath, 'script code');
               return Promise.resolve();
@@ -379,9 +357,7 @@ describe('get source by url', function () {
         });
 
         it('returns undefined when the script cannot be loaded', function (done) {
-          const loadScriptSpy = jasmine
-            .createSpy('load-script')
-            .and.callFake(function () {
+          const loadScriptSpy = vi.fn().mockImplementation(function () {
               return Promise.reject();
             });
 

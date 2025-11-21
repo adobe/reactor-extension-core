@@ -13,6 +13,7 @@
 import { injectVisitorTracking } from '../visitorTracking.js';
 import { injectGetNamespacedStorage } from '../getNamespacedStorage.js';
 import cookie from 'js-cookie';
+import { vi } from 'vitest';
 
 const COOKIE_PREFIX = '_sdsat_';
 
@@ -98,10 +99,10 @@ describe('visitor tracking', function () {
   });
 
   it('tracks the landing time', function () {
-    jasmine.clock().install();
+    vi.useFakeTimers();
 
     const landingDate = new Date();
-    jasmine.clock().mockDate(landingDate);
+    vi.setSystemTime(landingDate);
 
     let trackedVisit = injectVisitorTracking({
       window,
@@ -118,7 +119,7 @@ describe('visitor tracking', function () {
     // Simulate moving to a new page. The landing time should remain the same.
     changeWindowLocation('/pages2/something-else.html');
 
-    jasmine.clock().tick(100000);
+    vi.advanceTimersByTime(100000);
 
     trackedVisit = trackedVisit = injectVisitorTracking({
       window,
@@ -132,12 +133,12 @@ describe('visitor tracking', function () {
     ).toBe(landingDate.getTime().toString());
     expect(trackedVisit.getLandingTime()).toBe(landingDate.getTime());
 
-    jasmine.clock().uninstall();
+    vi.useRealTimers();
   });
 
   it('tracks minutes on site', function () {
-    jasmine.clock().install();
-    jasmine.clock().mockDate(new Date(1000));
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(1000));
 
     let trackedVisit = injectVisitorTracking({
       window,
@@ -151,7 +152,7 @@ describe('visitor tracking', function () {
     ).toBe('1000');
     expect(trackedVisit.getMinutesOnSite()).toBe(0);
 
-    jasmine.clock().tick(2.7 * 60 * 1000);
+    vi.advanceTimersByTime(2.7 * 60 * 1000);
 
     trackedVisit = injectVisitorTracking({
       window,
@@ -164,7 +165,7 @@ describe('visitor tracking', function () {
       )
     ).toBe('1000');
     expect(trackedVisit.getMinutesOnSite()).toBe(2);
-    jasmine.clock().uninstall();
+    vi.useRealTimers();
   });
 
   it('tracks the number of sessions', function () {

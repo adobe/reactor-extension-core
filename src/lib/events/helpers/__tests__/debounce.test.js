@@ -16,11 +16,11 @@ const debounce = injectDebounce({ window });
 
 describe('debounce', function () {
   beforeAll(function () {
-    jasmine.clock().install();
+    vi.useFakeTimers();
   });
 
   afterAll(function () {
-    jasmine.clock().uninstall();
+    vi.useRealTimers();
   });
 
   it('calls the target function once after delay', function () {
@@ -31,15 +31,15 @@ describe('debounce', function () {
 
     expect(targetFn.mock.calls.length).toBe(0);
 
-    jasmine.clock().tick(60);
+    vi.advanceTimersByTime(60);
 
     debouncedFn();
 
-    jasmine.clock().tick(60);
+    vi.advanceTimersByTime(60);
 
     expect(targetFn.mock.calls.length).toBe(0);
 
-    jasmine.clock().tick(40);
+    vi.advanceTimersByTime(40);
 
     expect(targetFn.mock.calls.length).toBe(1);
   });
@@ -50,7 +50,7 @@ describe('debounce', function () {
 
     debounce(targetFn, 100, context)();
 
-    jasmine.clock().tick(100);
+    vi.advanceTimersByTime(100);
 
     expect(targetFn.mock.calls[0].object).toBe(context);
   });
@@ -60,7 +60,7 @@ describe('debounce', function () {
 
     debounce(targetFn, 100)('arg1', 'arg2');
 
-    jasmine.clock().tick(100);
+    vi.advanceTimersByTime(100);
 
     expect(targetFn.mock.calls[0].args).toEqual(['arg1', 'arg2']);
   });

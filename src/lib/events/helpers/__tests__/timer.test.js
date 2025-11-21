@@ -16,20 +16,20 @@ const Timer = injectTimer({ assign: Object.assign });
 
 describe('timer', function () {
   beforeEach(function () {
-    jasmine.clock().install();
+    vi.useFakeTimers();
 
     const baseTime = new Date();
-    jasmine.clock().mockDate(baseTime);
+    vi.setSystemTime(baseTime);
   });
 
   afterEach(function () {
-    jasmine.clock().uninstall();
+    vi.useRealTimers();
   });
 
   it('updates the tracked time every 1s', function () {
     const timer = new Timer();
     timer.start();
-    jasmine.clock().tick(1000);
+    vi.advanceTimersByTime(1000);
 
     expect(timer.getTime()).toBe(1000);
   });
@@ -38,7 +38,7 @@ describe('timer', function () {
     it('updates the track time until that moment', function () {
       const timer = new Timer();
       timer.start();
-      jasmine.clock().tick(400);
+      vi.advanceTimersByTime(400);
       timer.pause();
 
       expect(timer.getTime()).toBe(400);
@@ -47,9 +47,9 @@ describe('timer', function () {
     it('stops updating the tracked time', function () {
       const timer = new Timer();
       timer.start();
-      jasmine.clock().tick(200);
+      vi.advanceTimersByTime(200);
       timer.pause();
-      jasmine.clock().tick(400);
+      vi.advanceTimersByTime(400);
 
       expect(timer.getTime()).toBe(200);
     });
@@ -59,11 +59,11 @@ describe('timer', function () {
     it('it counts the time starting from that moment', function () {
       const timer = new Timer();
       timer.start();
-      jasmine.clock().tick(400);
+      vi.advanceTimersByTime(400);
       timer.pause();
-      jasmine.clock().tick(100);
+      vi.advanceTimersByTime(100);
       timer.resume();
-      jasmine.clock().tick(3000);
+      vi.advanceTimersByTime(3000);
 
       expect(timer.getTime()).toBe(3400);
     });
@@ -77,7 +77,7 @@ describe('timer', function () {
       timer.addMarker(5000);
       timer.start();
 
-      jasmine.clock().tick(6000);
+      vi.advanceTimersByTime(6000);
 
       expect(callback).toHaveBeenCalledWith(5000);
     });
@@ -90,14 +90,14 @@ describe('timer', function () {
       timer.addMarker(2000);
       timer.start();
 
-      jasmine.clock().tick(1000);
-      jasmine.clock().tick(1000);
+      vi.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
 
       // The emitters listeners are called using `setTimeout(listener, 0);`. We need this extra
       // `tick` call to ensure the listener is called the second time (otherwise, the listener will
       // be called after the test is completed). The `1000` value of the tick will also insure that
       // no extra calls will be made.
-      jasmine.clock().tick(1000);
+      vi.advanceTimersByTime(1000);
 
       expect(callback).toHaveBeenCalledWith(1000);
       expect(callback).toHaveBeenCalledWith(2000);
@@ -112,7 +112,7 @@ describe('timer', function () {
       timer.addMarker(5000);
       timer.start();
 
-      jasmine.clock().tick(6000);
+      vi.advanceTimersByTime(6000);
 
       expect(callback.mock.calls.length).toEqual(1);
     });
@@ -125,12 +125,12 @@ describe('timer', function () {
       timer.addMarker(10);
       timer.start();
 
-      jasmine.clock().tick(1000);
+      vi.advanceTimersByTime(1000);
 
       // The emitters listeners are called using `setTimeout(listener, 0);`. We need this extra
       // `tick` call to ensure the listener is called the second time (otherwise, the listener will
       // be called after the test is completed).
-      jasmine.clock().tick(0);
+      vi.advanceTimersByTime(0);
 
       const call = callback.mock.lastCall;
       expect(call[0]).toBe(20);

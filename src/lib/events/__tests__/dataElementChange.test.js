@@ -50,13 +50,13 @@ const testValueChange = function (
     trigger
   );
 
-  jasmine.clock().tick(POLL_INTERVAL);
+  vi.advanceTimersByTime(POLL_INTERVAL);
 
   expect(trigger.mock.calls.length).toBe(0);
 
   dataElementValue = getUpdatedValue(dataElementValue);
 
-  jasmine.clock().tick(POLL_INTERVAL);
+  vi.advanceTimersByTime(POLL_INTERVAL);
 
   if (shouldTriggerRule) {
     expect(trigger.mock.calls.length).toBe(1);
@@ -72,7 +72,7 @@ const testValueChange = function (
 
 describe('data element change event delegate', function () {
   beforeAll(function () {
-    jasmine.clock().install();
+    vi.useFakeTimers();
 
     mockTurbineVariable({
       getDataElementValue: function () {
@@ -84,7 +84,7 @@ describe('data element change event delegate', function () {
   });
 
   afterAll(function () {
-    jasmine.clock().uninstall();
+    vi.useRealTimers();
   });
 
   it("doesn't trigger rule the first time a data element is evaluated", function () {
@@ -99,7 +99,7 @@ describe('data element change event delegate', function () {
       trigger
     );
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     expect(trigger).not.toHaveBeenCalled();
   });
@@ -326,7 +326,7 @@ describe('data element change event delegate', function () {
 
     dataElementValue = 'bar';
 
-    jasmine.clock().tick(POLL_INTERVAL);
+    vi.advanceTimersByTime(POLL_INTERVAL);
 
     expect(trigger).toHaveBeenCalled();
     expect(trigger2).toHaveBeenCalled();
