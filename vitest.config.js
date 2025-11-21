@@ -5,25 +5,11 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// Plugin to mock CSS imports in tests
-const mockCssPlugin = () => ({
-  name: 'mock-css',
-  transform(code, id) {
-    if (/\.(css|styl|scss|sass|less)$/.test(id)) {
-      return {
-        code: 'export default {}',
-        map: null,
-      };
-    }
-  },
-});
-
 export default defineConfig({
   plugins: [
     react({
       jsxRuntime: 'classic', // React 17 classic mode
     }),
-    mockCssPlugin(), // Mock CSS imports in tests
   ],
   
   test: {
@@ -32,10 +18,10 @@ export default defineConfig({
     setupFiles: ['./vitest.setup.js'],
     allowOnly: true, // Allow .only() in tests during development
     
-    // Enable CSS processing
-    css: true,
+    // Don't process CSS - vmThreads will handle imports without parsing
+    css: false,
     
-    // Use pool 'vmThreads' which has better CSS support
+    // Use pool 'vmThreads' which has better CSS import support
     pool: 'vmThreads',
     
     // Coverage configuration
@@ -75,15 +61,6 @@ export default defineConfig({
         transformCss: true,
       },
     },
-  },
-  
-  // Optimize deps to handle CSS
-  optimizeDeps: {
-    include: [
-      '@react-spectrum/provider',
-      '@react-spectrum/theme-dark',
-      '@react-spectrum/theme-light',
-    ],
   },
   
   define: {
