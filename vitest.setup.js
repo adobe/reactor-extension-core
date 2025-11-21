@@ -31,6 +31,48 @@ if (typeof document !== 'undefined') {
   }
 }
 
+// Mock IntersectionObserver for JSDOM (not available by default)
+// This was implicitly available in Karma through polyfills
+if (typeof window !== 'undefined' && !window.IntersectionObserver) {
+  class IntersectionObserverMock {
+    constructor(callback, options) {
+      this.callback = callback;
+      this.options = options;
+      this.observedElements = new Set();
+    }
+
+    observe(element) {
+      this.observedElements.add(element);
+      // Immediately trigger callback as if element is intersecting
+      // Tests can override this behavior if needed
+      this.callback([{
+        target: element,
+        isIntersecting: true,
+        intersectionRatio: 1,
+        boundingClientRect: element.getBoundingClientRect(),
+        intersectionRect: element.getBoundingClientRect(),
+        rootBounds: null,
+        time: Date.now()
+      }], this);
+    }
+
+    unobserve(element) {
+      this.observedElements.delete(element);
+    }
+
+    disconnect() {
+      this.observedElements.clear();
+    }
+
+    takeRecords() {
+      return [];
+    }
+  }
+
+  window.IntersectionObserver = IntersectionObserverMock;
+  global.IntersectionObserver = IntersectionObserverMock;
+}
+
 // Set up turbine and require mocks (from mockDelegateWrapper.js logic)
 import process from 'process';
 globalThis.process = process;
